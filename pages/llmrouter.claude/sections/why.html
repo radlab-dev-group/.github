@@ -7,39 +7,31 @@
                 <title>Cechy: bezpieczeństwo, wydajność, przepływ</title>
                 <!-- Security Shield -->
                 <g transform="translate(70, 40)">
-                    <path d="M 30 0 L 50 10 L 50 40 Q 30 60 30 60 Q 10 40 10 10 Z"
-                          fill="none" stroke="#7ea1ff" stroke-width="2"/>
+                    <path d="M 30 0 L 50 10 L 50 40 Q 30 60 30 60 Q 10 40 10 10 Z" fill="none" stroke="#7ea1ff"
+                          stroke-width="2"/>
                     <circle cx="30" cy="35" r="8" fill="#7ea1ff" opacity="0.7"/>
-                    <animate attributeName="opacity" values="1;0.65;1" dur="2s"
-                             repeatCount="indefinite" attributeType="CSS"/>
+                    <animate attributeName="opacity" values="1;0.65;1" dur="2s" repeatCount="indefinite"
+                             attributeType="CSS"/>
                 </g>
 
                 <!-- Speed Lightning -->
                 <g transform="translate(200, 30)">
-                    <path d="M 20 0 L 30 15 L 25 15 L 35 40 L 15 20 L 20 20 Z"
-                          fill="none" stroke="#a07be6" stroke-width="2.5"
-                          stroke-linejoin="round"/>
-                    <animate attributeName="stroke" values="#a07be6;#88c0ff;#a07be6"
-                             dur="1.5s" repeatCount="indefinite"/>
+                    <path d="M 20 0 L 30 15 L 25 15 L 35 40 L 15 20 L 20 20 Z" fill="none" stroke="#a07be6"
+                          stroke-width="2.5" stroke-linejoin="round"/>
+                    <animate attributeName="stroke" values="#a07be6;#88c0ff;#a07be6" dur="1.5s"
+                             repeatCount="indefinite"/>
                 </g>
 
                 <!-- Data Flow -->
                 <g transform="translate(320, 50)">
-                    <rect x="10" y="0" width="15" height="15" fill="none"
-                          stroke="#7ea1ff" stroke-width="2" rx="2"/>
-                    <rect x="10" y="20" width="15" height="15" fill="none"
-                          stroke="#7ea1ff" stroke-width="2" rx="2"/>
-                    <rect x="10" y="40" width="15" height="15" fill="none"
-                          stroke="#7ea1ff" stroke-width="2" rx="2"/>
-                    <line x1="27" y1="7" x2="35" y2="7" stroke="#88c0ff"
-                          stroke-width="1.7"/>
-                    <line x1="27" y1="27" x2="35" y2="27" stroke="#88c0ff"
-                          stroke-width="1.7"/>
-                    <line x1="27" y1="47" x2="35" y2="47" stroke="#88c0ff"
-                          stroke-width="1.7"/>
+                    <rect x="10" y="0" width="15" height="15" fill="none" stroke="#7ea1ff" stroke-width="2" rx="2"/>
+                    <rect x="10" y="20" width="15" height="15" fill="none" stroke="#7ea1ff" stroke-width="2" rx="2"/>
+                    <rect x="10" y="40" width="15" height="15" fill="none" stroke="#7ea1ff" stroke-width="2" rx="2"/>
+                    <line x1="27" y1="7" x2="35" y2="7" stroke="#88c0ff" stroke-width="1.7"/>
+                    <line x1="27" y1="27" x2="35" y2="27" stroke="#88c0ff" stroke-width="1.7"/>
+                    <line x1="27" y1="47" x2="35" y2="47" stroke="#88c0ff" stroke-width="1.7"/>
                     <circle cx="40" cy="7" r="3" fill="#88c0ff">
-                        <animate attributeName="cy" from="7" to="47" dur="2s"
-                                 repeatCount="indefinite"/>
+                        <animate attributeName="cy" from="7" to="47" dur="2s" repeatCount="indefinite"/>
                     </circle>
                 </g>
 
@@ -49,48 +41,42 @@
                 <text x="310" y="130" font-size="13" font-weight="700">Przepływ</text>
             </svg>
         </div>
-
         <div class="features-grid">
             <div class="feature-card">
                 <span class="feature-icon">🛡️</span>
                 <h3>Zaawansowane Bezpieczeństwo</h3>
-                <p>Automatyczna anonimizacja danych wrażliwych przed wysłaniem do modeli LLM. Ochrona PESEL,
-                    NIP, KRS, REGON, adresów email, numerów telefonu, danych bankowych i wielu innych.</p>
+                <p>Automatyczna anonimizacja danych wrażliwych przed wysłaniem do modeli LLM. Ochrona PESEL, NIP, KRS,
+                    REGON, adresów email, numerów telefonu, danych bankowych i wielu innych.</p>
             </div>
-
             <div class="feature-card">
                 <span class="feature-icon">⚡</span>
                 <h3>Optymalizacja Zasobów</h3>
-                <p>Inteligentne strategie load‑balancingu (balanced, weighted, dynamic_weighted,
-                    first_available) zapewniają maksymalne wykorzystanie dostępnych zasobów.</p>
+                <p>Inteligentne strategie load-balancingu (balanced, weighted, dynamic_weighted, first_available)
+                    zapewniają maksymalne wykorzystanie dostępnych zasobów.</p>
             </div>
-
             <div class="feature-card">
                 <span class="feature-icon">🔄</span>
                 <h3>Uniwersalny Interface</h3>
-                <p>Jeden zunifikowany REST API dla wszystkich dostawców: OpenAI, Ollama, vLLM,
-                    LM Studio i innych. Zmiana providera bez modyfikacji kodu aplikacji.</p>
+                <p>Jeden zunifikowany REST API dla wszystkich dostawców: OpenAI, Ollama, vLLM, LM Studio i innych.
+                    Zmiana providera bez modyfikacji kodu aplikacji.</p>
             </div>
-
             <div class="feature-card">
                 <span class="feature-icon">📊</span>
                 <h3>Monitoring i Metryki</h3>
-                <p>Wbudowana integracja z Prometheus dla monitorowania latencji, liczby błędów i
-                    wykorzystania providerów w czasie rzeczywistym.</p>
+                <p>Wbudowana integracja z Prometheus dla monitorowania latencji, liczby błędów i wykorzystania
+                    providerów w czasie rzeczywistym.</p>
             </div>
-
             <div class="feature-card">
                 <span class="feature-icon">🚀</span>
                 <h3>Streaming i Batch</h3>
-                <p>Pełne wsparcie dla streamingu odpowiedzi oraz trybu batch. Możliwość przetwarzania
-                    partial output w czasie rzeczywistym.</p>
+                <p>Pełne wsparcie dla streamingu odpowiedzi oraz trybu batch. Możliwość przetwarzania partial output w
+                    czasie rzeczywistym.</p>
             </div>
-
             <div class="feature-card">
                 <span class="feature-icon">🔌</span>
                 <h3>Architektura Pluginowa</h3>
-                <p>Rozszerzalna architektura z automatycznym discover endpointów,
-                    custom rules dla anonimizacji i możliwością dodawania własnych strategii routingu.</p>
+                <p>Rozszerzalna architektura z automatycznym discover endpointów, custom rules dla anonimizacji i
+                    możliwością dodawania własnych strategii routingu.</p>
             </div>
         </div>
     </div>
