@@ -1,0 +1,41 @@
+<section class="cta-section" id="documentation">
+    <div class="container">
+        <h2>Rozpocznij w 60 sekund</h2>
+        <p style="font-size:1.08rem;margin-bottom:16px;color:#f5f8ff;">
+            Wdrożenie <strong>llm-router</strong> zajmuje mniej niż minutę
+        </p>
+
+        <div style="background:rgba(255,255,255,0.14);padding:22px;border-radius:12px;
+                    max-width:720px;margin:22px auto;text-align:left;
+                    font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,'Liberation Mono',monospace;
+                    color:#0b102d;">
+            <div style="margin-bottom:10px;font-weight:700;"># Docker – najszybszy start</div>
+            <div style="color:#1f2937;background:rgba(255,255,255,0.75);padding:8px 10px;
+                        border-radius:8px;">docker run -p 5555:8080 quay.io/radlab/llm-router:rc1
+            </div>
+
+            <div style="margin:18px 0 10px;border-top:1px solid rgba(255,255,255,0.35);
+                        padding-top:12px;font-weight:700;"># Lub lokalnie
+            </div>
+
+            <div style="color:#1f2937;background:rgba(255,255,255,0.75);padding:8px 10px;
+                        border-radius:8px;">python3 -m venv .venv
+            </div>
+            <div style="color:#1f2937;background:rgba(255,255,255,0.75);padding:8px 10px;
+                        border-radius:8px;">source .venv/bin/activate
+            </div>
+            <div style="color:#1f2937;background:rgba(255,255,255,0.75);padding:8px 10px;
+                        border-radius:8px;">pip install .[api]
+            </div>
+            <div style="color:#1f2937;background:rgba(255,255,255,0.75);padding:8px 10px;
+                        border-radius:8px;">LLM_ROUTER_MINIMUM=1 python3 -m llm_router_api.rest_api
+            </div>
+        </div>
+
+        <div class="cta-buttons">
+            <a href="https://github.com/radlab-dev-group/llm-proxy-api"
+               class="btn btn-primary" rel="noopener noreferrer">Zobacz na GitHub</a>
+            <a href="#documentation" class="btn btn-secondary">Dokumentacja</a>
+        </div>
+    </div>
+</section>
