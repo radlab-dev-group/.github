@@ -4,13 +4,12 @@
 // ------------------------------------------------
 const sections = [
   { selector: '#header',       url: 'sections/header.html' },
-  { selector: '#why',          url: 'sections/why.html' },
+  { selector: '#hero',         url: 'sections/hero.html' },
+  { selector: '#features',     url: 'sections/features.html' },
   { selector: '#security',     url: 'sections/security.html' },
-  { selector: '#optimization', url: 'sections/optimization.html' },
+  { selector: '#performance',  url: 'sections/performance.html' },
   { selector: '#use-cases',    url: 'sections/use-cases.html' },
-  { selector: '#tech-specs',   url: 'sections/tech-specs.html' },
-  { selector: '#cta',          url: 'sections/cta.html' },
-  { selector: '#components',   url: 'sections/components.html'},
+  { selector: '#open-source',  url: 'sections/open-source.html' },
   { selector: '#footer',       url: 'sections/footer.html' },
 ];
 
