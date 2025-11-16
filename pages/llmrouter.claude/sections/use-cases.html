@@ -1,85 +1,37 @@
-<section class="use-cases">
+<section id="use-cases" class="use-cases">
     <div class="container">
-        <h2>Przypadki Użycia</h2>
-        <div class="graphic-container">
-            <svg viewBox="0 0 500 120" role="img" aria-label="Sektory zastosowań" xmlns="http://www.w3.org/2000/svg"
-                 preserveAspectRatio="xMidYMid meet">
-                <title>Sektory zastosowań</title>
-                <!-- Healthcare -->
-                <g transform="translate(40, 20)">
-                    <circle cx="15" cy="15" r="14" fill="rgba(126,161,255,0.22)" stroke="#7ea1ff" stroke-width="2"/>
-                    <path d="M 15 8 L 15 22 M 9 15 L 21 15" stroke="#88c0ff" stroke-width="2" stroke-linecap="round"/>
-                    <text x="15" y="70" text-anchor="middle" font-size="11" font-weight="700">Medycyna</text>
-                </g>
-
-                <!-- Finance -->
-                <g transform="translate(140, 20)">
-                    <rect x="5" y="8" width="20" height="14" rx="2" fill="none" stroke="#a07be6" stroke-width="2"/>
-                    <line x1="9" y1="12" x2="16" y2="12" stroke="#88c0ff" stroke-width="1.4"/>
-                    <line x1="9" y1="16" x2="16" y2="16" stroke="#88c0ff" stroke-width="1.4"/>
-                    <line x1="9" y1="20" x2="12" y2="20" stroke="#88c0ff" stroke-width="1.4"/>
-                    <text x="15" y="70" text-anchor="middle" font-size="11" font-weight="700">Finanse</text>
-                </g>
-
-                <!-- Government -->
-                <g transform="translate(240, 20)">
-                    <path d="M 15 5 L 22 15 L 20 15 L 20 22 L 10 22 L 10 15 L 8 15 Z" fill="none" stroke="#7ea1ff"
-                          stroke-width="2" stroke-linejoin="round"/>
-                    <circle cx="15" cy="18" r="2.5" fill="#88c0ff"/>
-                    <text x="15" y="70" text-anchor="middle" font-size="11" font-weight="700">Administracja</text>
-                </g>
-
-                <!-- Enterprise -->
-                <g transform="translate(340, 20)">
-                    <rect x="5" y="8" width="6" height="14" fill="rgba(126,161,255,0.28)" stroke="#7ea1ff"
-                          stroke-width="1.2"/>
-                    <rect x="12" y="10" width="6" height="12" fill="rgba(160,123,230,0.28)" stroke="#a07be6"
-                          stroke-width="1.2"/>
-                    <rect x="19" y="12" width="6" height="10" fill="rgba(126,161,255,0.28)" stroke="#7ea1ff"
-                          stroke-width="1.2"/>
-                    <text x="15" y="70" text-anchor="middle" font-size="11" font-weight="700">Enterprise</text>
-                </g>
-
-                <!-- Research -->
-                <g transform="translate(440, 20)">
-                    <circle cx="15" cy="15" r="6" fill="none" stroke="#a07be6" stroke-width="1.6"/>
-                    <line x1="21" y1="9" x2="24" y2="6" stroke="#88c0ff" stroke-width="1.6" stroke-linecap="round"/>
-                    <circle cx="12" cy="12" r="2" fill="#88c0ff"/>
-                    <text x="15" y="70" text-anchor="middle" font-size="11" font-weight="700">Badania</text>
-                </g>
-            </svg>
-        </div>
-        <div class="use-case-grid">
+        <h2 class="section-title">Przypadki użycia</h2>
+        <p class="section-subtitle">LLM-Router sprawdza się w różnych scenariuszach</p>
+        <div class="use-case-list">
             <div class="use-case">
-                <h3>🏥 Sektor Medyczny i Zdrowotny</h3>
-                <p>Automatyczna anonimizacja danych pacjentów (PESEL, adresy, numery telefonu) przed przetwarzaniem
-                    przez LLM. Compliance z RODO i przepisami medycznymi. Routing do dedykowanych on-premise modeli dla
-                    maksymalnej prywatności.</p>
+                <h3>🏢 Środowiska Korporacyjne</h3>
+                <p>Centralizacja dostępu do LLM w organizacji z kontrolą nad danymi wrażliwymi. Compliance z RODO/GDPR
+                    przez automatyczną anonimizację danych osobowych przed wysłaniem do zewnętrznych API.</p>
             </div>
             <div class="use-case">
-                <h3>🏦 Finanse i Banking</h3>
-                <p>Maskowanie numerów kont bankowych, IBAN, kwot transakcji, NIP firm. Load balancing między lokalnymi
-                    instancjami modeli dla wysokiej dostępności. Monitoring latencji dla SLA compliance.</p>
+                <h3>🏥 Sektor Zdrowia i Finanse</h3>
+                <p>Przetwarzanie dokumentacji medycznej i finansowej z gwarancją ochrony danych. Maskowanie PESEL,
+                    numerów kont bankowych, danych osobowych pacjentów i klientów.</p>
             </div>
             <div class="use-case">
-                <h3>🏛️ Administracja Publiczna</h3>
-                <p>Ochrona danych obywateli podczas przetwarzania dokumentów urzędowych. Anonimizacja KRS, REGON, PESEL,
-                    adresów. Routing do certyfikowanych instancji modeli zgodnie z wymogami bezpieczeństwa.</p>
+                <h3>🔬 Badania i Development</h3>
+                <p>Testowanie różnych modeli LLM bez zmiany kodu aplikacji. Łatwe przełączanie między providerami, A/B
+                    testing modeli, cost optimization przez routing do tańszych dostawców.</p>
             </div>
             <div class="use-case">
-                <h3>💼 Enterprise RAG Systems</h3>
-                <p>Bezpieczne przetwarzanie dokumentów firmowych z automatyczną anonimizacją. Load balancing dla
-                    wysokiego throughput. Failover między providerami dla 99.9% uptime.</p>
+                <h3>📈 High-Availability Systems</h3>
+                <p>Failover między providerami, health checks, automatic retry. Maksymalna dostępność dzięki load
+                    balancingu i redundancji dostawców LLM.</p>
             </div>
             <div class="use-case">
-                <h3>🔬 Badania i Rozwój</h3>
-                <p>Eksperymentowanie z różnymi strategiami routingu. A/B testing między providerami. Prometheus metrics
-                    dla analizy performance. Custom rules dla specyficznych domen.</p>
+                <h3>🌍 Multi-Region Deployment</h3>
+                <p>Routing requestów do najbliższego geograficznie providera. Optymalizacja latencji i compliance z
+                    regulacjami dotyczącymi przechowywania danych (data residency).</p>
             </div>
             <div class="use-case">
-                <h3>📞 Customer Support</h3>
-                <p>Anonimizacja danych klientów w real-time podczas konwersacji. Streaming responses dla lepszego UX.
-                    Dynamic weighted routing dla optymalizacji kosztów i latencji.</p>
+                <h3>💰 Cost Optimization</h3>
+                <p>Weighted routing do tańszych providerów dla mniej krytycznych zapytań. Monitoring kosztów per model,
+                    user, tenant. Budżetowanie i alerty przy przekroczeniach.</p>
             </div>
         </div>
     </div>
