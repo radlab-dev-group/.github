@@ -200,14 +200,14 @@ header {
 
 /* NAVIGATION */
 
-nav {
+.main-nav {
     display: flex;
     align-items: center;
     gap: 1.8rem;
     font-size: 0.95rem;
 }
 
-nav a {
+.main-nav a {
     position: relative;
     color: var(--muted);
     text-decoration: none;
@@ -219,7 +219,7 @@ nav a {
     padding-bottom: 4px;
 }
 
-nav a::after {
+.main-nav a::after {
     content: "";
     position: absolute;
     left: 0;
@@ -231,13 +231,56 @@ nav a::after {
     transition: width 200ms ease-out;
 }
 
-nav a:hover {
+.main-nav a:hover {
     color: var(--fg);
     transform: translateY(-1px);
 }
 
-nav a:hover::after {
+.main-nav a:hover::after {
     width: 100%;
+}
+
+/* HAMBURGER BUTTON */
+
+.menu-toggle {
+    display: none;
+    position: relative;
+    width: 36px;
+    height: 32px;
+    border: 1px solid rgba(148, 163, 184, 0.5);
+    border-radius: 999px;
+    background: rgba(15, 23, 42, 0.9);
+    cursor: pointer;
+    padding: 0 6px;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+    transition: background 160ms ease, border-color 160ms ease, transform 140ms ease;
+}
+
+.menu-toggle .menu-bar {
+    width: 100%;
+    height: 2px;
+    border-radius: 999px;
+    background: var(--fg);
+    transition: transform 160ms ease, opacity 160ms ease, background 160ms ease;
+}
+
+.menu-toggle:hover {
+    background: rgba(15, 23, 42, 0.98);
+    border-color: rgba(56, 189, 248, 0.7);
+    transform: translateY(-1px);
+}
+
+/* stan aktywny (kiedy menu jest otwarte) – klasy dodaje JS */
+.menu-toggle.is-open .menu-bar:nth-child(1) {
+    transform: translateY(4px) rotate(45deg);
+}
+.menu-toggle.is-open .menu-bar:nth-child(2) {
+    opacity: 0;
+}
+.menu-toggle.is-open .menu-bar:nth-child(3) {
+    transform: translateY(-4px) rotate(-45deg);
 }
 
 /* HERO */
@@ -654,7 +697,7 @@ nav a:hover::after {
     border: 2px solid rgba(74, 222, 128, 0.9);
     box-shadow: 0 0 0 2px rgba(22, 163, 74, 0.32),
     0 0 12px rgba(74, 222, 128, 0.7);
-    animation: bullet-pulse 2.2s.ease-in-out infinite;
+    animation: bullet-pulse 2.2s ease-in-out infinite;
 }
 
 @keyframes bullet-pulse {
@@ -795,9 +838,9 @@ nav a:hover::after {
     border: 1px solid rgba(148, 163, 184, 0.45);
     box-shadow: var(--shadow-card);
     overflow: hidden;
-    transition: transform 180ms.ease-out,
-    box-shadow 200ms.ease-out,
-    border-color 180ms.ease-out;
+    transition: transform 180ms ease-out,
+    box-shadow 200ms ease-out,
+    border-color 180ms ease-out;
 
     display: flex;
     flex-direction: column;
@@ -850,14 +893,13 @@ nav a:hover::after {
 }
 
 /* powiększona nieskończoność w 2. karcie */
-
 .stat-card:nth-child(2) .stat-number {
     font-size: 3rem;
     letter-spacing: 0.16em;
     transform-origin: center;
     animation: stat-pop 0.8s cubic-bezier(0.19, 1, 0.22, 1) forwards,
-    stat-breathe 3s ease-in-out infinite 0.8s,
-    stat-spin 6s linear infinite 1.2s;
+               stat-breathe 3s ease-in-out infinite 0.8s,
+               stat-spin 6s linear infinite 1.2s;
 }
 
 /* opis pod liczbą */
@@ -1052,7 +1094,7 @@ footer {
     font-size: 0.86rem;
     position: relative;
     padding-left: 0;
-    transition: color 160ms ease, padding-left 160ms.ease;
+    transition: color 160ms ease, padding-left 160ms ease;
 }
 
 .footer-section a::before {
@@ -1183,7 +1225,7 @@ footer {
         gap: 1rem;
     }
 
-    nav {
+    .main-nav {
         gap: 1.2rem;
         font-size: 0.86rem;
     }
@@ -1195,14 +1237,46 @@ footer {
     }
 
     .header-content {
-        flex-direction: column;
-        align-items: flex-start;
-        justify-content: center;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
     }
 
-    nav {
-        flex-wrap: wrap;
-        gap: 0.8rem 1.3rem;
+    /* hamburger pojawia się, a nawigacja staje się rozwijana */
+    .menu-toggle {
+        display: inline-flex;
+        margin-left: auto;
+        z-index: 60;
+    }
+
+    .main-nav {
+        position: absolute;
+        top: var(--header-height);
+        left: 0;
+        right: 0;
+        padding: 0.75rem 1.25rem 1rem;
+        flex-direction: column;
+        gap: 0.8rem;
+        background: radial-gradient(circle at top left, rgba(56, 189, 248, 0.14), transparent 55%),
+        rgba(2, 6, 23, 0.98);
+        border-bottom: 1px solid rgba(148, 163, 184, 0.25);
+        box-shadow: 0 18px 40px rgba(15, 23, 42, 0.9);
+        max-height: 0;
+        opacity: 0;
+        overflow: hidden;
+        pointer-events: none;
+        transition: max-height 240ms ease, opacity 200ms ease;
+    }
+
+    .main-nav a {
+        font-size: 0.82rem;
+    }
+
+    /* klasa dodawana przez JS gdy menu jest otwarte */
+    .main-nav.is-open {
+        max-height: 260px;
+        opacity: 1;
+        pointer-events: auto;
     }
 
     .hero {
