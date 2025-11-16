@@ -1133,6 +1133,65 @@ footer {
     text-align: center;
 }
 
+/* CONTACT SECTION ----------------------------------------------------------- */
+.contact {
+    position: relative;
+    padding: 4.4rem 0;
+    background: radial-gradient(circle at 50% 0%, rgba(56, 189, 248, 0.08), transparent 55%),
+    #020617;
+    text-align: center;
+}
+
+.contact .section-title {
+    color: var(--fg);
+}
+
+.contact .section-subtitle {
+    color: var(--muted);
+}
+
+/* list of contact items */
+.contact-list {
+    list-style: none;
+    margin: 1.6rem 0 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+    align-items: center;
+    font-size: 1rem;
+    color: var(--fg);
+}
+
+/* individual links */
+.contact-list a {
+    color: var(--accent);
+    text-decoration: none;
+    position: relative;
+    padding-bottom: 2px;
+    transition: color 180ms ease, transform 180ms ease;
+}
+
+.contact-list a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 2px;
+    width: 0;
+    background: var(--accent);
+    transition: width 200ms ease-out;
+}
+
+.contact-list a:hover {
+    color: var(--accent-strong);
+    transform: translateY(-1px);
+}
+
+.contact-list a:hover::after {
+    width: 100%;
+}
+
 /* ANIMACJE */
 
 @keyframes perf-line {

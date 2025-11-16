@@ -10,6 +10,7 @@ const sections = [
   { selector: '#performance',  url: 'sections/performance.html' },
   { selector: '#use-cases',    url: 'sections/use-cases.html' },
   { selector: '#open-source',  url: 'sections/open-source.html' },
+  { selector: '#contact',      url: 'sections/contact.html' },
   { selector: '#footer',       url: 'sections/footer.html' },
 ];
 
