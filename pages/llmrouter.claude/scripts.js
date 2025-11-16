@@ -38,16 +38,16 @@ async function loadSection(selector, url) {
 
 // Uruchom wszystkie wczytania równocześnie
 Promise.all(sections.map(s => loadSection(s.selector, s.url)))
-  .then(() => {
-    // Wszystkie sekcje (w tym header) są już w DOM – zakładamy nasłuchiwacze
-    initMenuToggle();
+  .catch(err => {
+    console.error('Nieoczekiwany błąd przy ładowaniu sekcji:', err);
   })
-  .catch(err => console.error('Nieoczekiwany błąd przy ładowaniu sekcji:', err));
+  .finally(() => {
+    initMenuToggle();
+  });
 
 function initMenuToggle() {
   const toggle = document.querySelector(".menu-toggle");
   const nav = document.querySelector(".main-nav");
-
   if (!toggle || !nav) {
     console.warn("Nie znaleziono .menu-toggle lub .main-nav – pomijam inicjalizację menu.");
     return;
