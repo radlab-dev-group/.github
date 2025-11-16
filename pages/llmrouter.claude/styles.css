@@ -276,9 +276,11 @@ header {
 .menu-toggle.is-open .menu-bar:nth-child(1) {
     transform: translateY(4px) rotate(45deg);
 }
+
 .menu-toggle.is-open .menu-bar:nth-child(2) {
     opacity: 0;
 }
+
 .menu-toggle.is-open .menu-bar:nth-child(3) {
     transform: translateY(-4px) rotate(-45deg);
 }
@@ -898,8 +900,8 @@ header {
     letter-spacing: 0.16em;
     transform-origin: center;
     animation: stat-pop 0.8s cubic-bezier(0.19, 1, 0.22, 1) forwards,
-               stat-breathe 3s ease-in-out infinite 0.8s,
-               stat-spin 6s linear infinite 1.2s;
+    stat-breathe 3s ease-in-out infinite 0.8s,
+    stat-spin 6s linear infinite 1.2s;
 }
 
 /* opis pod liczbą */
@@ -1266,6 +1268,7 @@ footer {
         overflow: hidden;
         pointer-events: none;
         transition: max-height 240ms ease, opacity 200ms ease;
+        z-index: 55; /* ważne na mobile */
     }
 
     .main-nav a {
