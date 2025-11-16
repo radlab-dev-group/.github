@@ -10,6 +10,7 @@ const sections = [
   { selector: '#performance',  url: 'sections/performance.html' },
   { selector: '#use-cases',    url: 'sections/use-cases.html' },
   { selector: '#open-source',  url: 'sections/open-source.html' },
+  { selector: '#contact',      url: 'sections/contact.html' },
   { selector: '#footer',       url: 'sections/footer.html' },
 ];
 
@@ -38,4 +39,74 @@ async function loadSection(selector, url) {
 
 // Uruchom wszystkie wczytania równocześnie
 Promise.all(sections.map(s => loadSection(s.selector, s.url)))
-  .catch(err => console.error('Nieoczekiwany błąd przy ładowaniu sekcji:', err));
+  .catch(err => {
+    console.error('Nieoczekiwany błąd przy ładowaniu sekcji:', err);
+  })
+  .finally(() => {
+    initMenuToggle();
+  });
+
+function initMenuToggle() {
+  const toggle = document.querySelector(".menu-toggle");
+  const nav = document.querySelector(".main-nav");
+  if (!toggle || !nav) {
+    console.warn("Nie znaleziono .menu-toggle lub .main-nav – pomijam inicjalizację menu.");
+    return;
+  }
+
+  toggle.addEventListener("click", () => {
+    const isOpen = nav.classList.toggle("is-open");
+    toggle.classList.toggle("is-open", isOpen);
+    toggle.setAttribute("aria-expanded", String(isOpen));
+  });
+
+  nav.addEventListener("click", (event) => {
+    if (event.target.closest("a") && nav.classList.contains("is-open")) {
+      nav.classList.remove("is-open");
+      toggle.classList.remove("is-open");
+      toggle.setAttribute("aria-expanded", "false");
+    }
+  });
+}
+
+// Initialize scroll indicator and back‑to‑top button
+function initScrollFeatures() {
+  const progressBar = document.getElementById('scroll-progress');
+  const backToTopBtn = document.getElementById('back-to-top');
+
+  if (!progressBar || !backToTopBtn) return;
+
+  const updateScroll = () => {
+    const scrollTop = window.scrollY || document.documentElement.scrollTop;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const scrolled = (scrollTop / docHeight) * 100;
+    progressBar.style.height = `${scrolled}%`;
+
+    // Show button after scrolling down 200px
+    if (scrollTop > 200) {
+      backToTopBtn.classList.add('show');
+    } else {
+      backToTopBtn.classList.remove('show');
+    }
+  };
+
+  // Smooth scroll to top when button is clicked
+  backToTopBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  window.addEventListener('scroll', updateScroll);
+  // Initialise on load
+  updateScroll();
+}
+
+// Run after all sections are loaded
+Promise.all(sections.map(s => loadSection(s.selector, s.url)))
+  .catch(err => {
+    console.error('Nieoczekiwany błąd przy ładowaniu sekcji:', err);
+  })
+  .finally(() => {
+    initMenuToggle();
+    initScrollFeatures(); // <- added
+  });
