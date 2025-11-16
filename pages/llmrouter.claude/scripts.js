@@ -68,3 +68,45 @@ function initMenuToggle() {
     }
   });
 }
+
+// Initialize scroll indicator and back‑to‑top button
+function initScrollFeatures() {
+  const progressBar = document.getElementById('scroll-progress');
+  const backToTopBtn = document.getElementById('back-to-top');
+
+  if (!progressBar || !backToTopBtn) return;
+
+  const updateScroll = () => {
+    const scrollTop = window.scrollY || document.documentElement.scrollTop;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const scrolled = (scrollTop / docHeight) * 100;
+    progressBar.style.height = `${scrolled}%`;
+
+    // Show button after scrolling down 200px
+    if (scrollTop > 200) {
+      backToTopBtn.classList.add('show');
+    } else {
+      backToTopBtn.classList.remove('show');
+    }
+  };
+
+  // Smooth scroll to top when button is clicked
+  backToTopBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  window.addEventListener('scroll', updateScroll);
+  // Initialise on load
+  updateScroll();
+}
+
+// Run after all sections are loaded
+Promise.all(sections.map(s => loadSection(s.selector, s.url)))
+  .catch(err => {
+    console.error('Nieoczekiwany błąd przy ładowaniu sekcji:', err);
+  })
+  .finally(() => {
+    initMenuToggle();
+    initScrollFeatures(); // <- added
+  });
