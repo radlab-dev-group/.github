@@ -38,4 +38,32 @@ async function loadSection(selector, url) {
 
 // Uruchom wszystkie wczytania równocześnie
 Promise.all(sections.map(s => loadSection(s.selector, s.url)))
+  .then(() => {
+    // Wszystkie sekcje (w tym header) są już w DOM – zakładamy nasłuchiwacze
+    initMenuToggle();
+  })
   .catch(err => console.error('Nieoczekiwany błąd przy ładowaniu sekcji:', err));
+
+function initMenuToggle() {
+  const toggle = document.querySelector(".menu-toggle");
+  const nav = document.querySelector(".main-nav");
+
+  if (!toggle || !nav) {
+    console.warn("Nie znaleziono .menu-toggle lub .main-nav – pomijam inicjalizację menu.");
+    return;
+  }
+
+  toggle.addEventListener("click", () => {
+    const isOpen = nav.classList.toggle("is-open");
+    toggle.classList.toggle("is-open", isOpen);
+    toggle.setAttribute("aria-expanded", String(isOpen));
+  });
+
+  nav.addEventListener("click", (event) => {
+    if (event.target.closest("a") && nav.classList.contains("is-open")) {
+      nav.classList.remove("is-open");
+      toggle.classList.remove("is-open");
+      toggle.setAttribute("aria-expanded", "false");
+    }
+  });
+}
