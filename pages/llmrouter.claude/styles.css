@@ -402,6 +402,36 @@ footer {
     color: var(--muted);
 }
 
+.use-case-features {
+    list-style: none;
+    padding: 0;
+    margin: 1.5rem 0 0 0;
+    font-size: 0.95rem;
+}
+
+.use-case-features li {
+    padding: 0.4rem 0;
+    padding-left: 1.5rem;
+    position: relative;
+    color: var(--muted);
+}
+
+.use-case-features li:before {
+    content: "";
+    position: absolute;
+    left: 0;
+    color: var(--ok);
+    font-weight: bold;
+}
+
+.use-case p {
+    margin-bottom: 0.8rem;
+}
+
+.use-case p strong {
+    color: var(--accent);
+}
+
 /* Responsive */
 @media (max-width: 768px) {
     .hero h1 {
