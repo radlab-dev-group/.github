@@ -9,31 +9,34 @@
                 <strong>1. Request Ingress</strong> – Flask receives HTTP request at registered endpoint
             </div>
             <div class="flow-step">
-                <strong>2. Parameter Extraction</strong> – FlaskEndpointRegistrar extracts JSON/form params
+                <strong>2. Parameter Extraction</strong> – <code>FlaskEndpointRegistrar</code> extracts JSON/form params
             </div>
             <div class="flow-step">
-                <strong>3. Endpoint Dispatch</strong> – run_ep() called on concrete EndpointI subclass
+                <strong>3. Endpoint Dispatch</strong> – <code>run_ep()</code> called on concrete EndpointI subclass
             </div>
             <div class="flow-step">
-                <strong>4. Payload Preparation</strong> – prepare_payload() normalizes params, validates required args
+                <strong>4. Payload Preparation</strong> – <code>prepare_payload()</code> normalizes params, validates
+                required args
             </div>
             <div class="flow-step">
-                <strong>5. Model Resolution</strong> – get_model_provider() resolves model name via ModelHandler
+                <strong>5. Model Resolution</strong> – <code>get_model_provider()</code> resolves model name via
+                ModelHandler
             </div>
             <div class="flow-step">
-                <strong>6. Provider Selection</strong> – ProviderChooser picks provider using configured strategy
+                <strong>6. Provider Selection</strong> – <code>ProviderChooser</code> picks provider using configured
+                strategy
             </div>
             <div class="flow-step">
-                <strong>7. Prompt Injection</strong> – (optional) System prompt injected from PromptHandler
+                <strong>7. Prompt Injection</strong> – (optional) System prompt injected from <code>PromptHandler</code>
             </div>
             <div class="flow-step">
-                <strong>8. HTTP Execution</strong> – HttpRequestExecutor sends request to external LLM API
+                <strong>8. HTTP Execution</strong> – <code>HttpRequestExecutor</code> sends request to external LLM API
             </div>
             <div class="flow-step">
                 <strong>9. Response Handling</strong> – Response parsed, optionally streamed via SSE
             </div>
             <div class="flow-step">
-                <strong>10. Retry Logic</strong> – (on failure) Automatic retry with backoff, up to MAX_RECONNECTIONS
+                <strong>10. Retry Logic</strong> – (on failure) Automatic retry with backoff, up to <code>MAX_RECONNECTIONS</code>
             </div>
         </div>
     </div>
