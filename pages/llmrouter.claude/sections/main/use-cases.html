@@ -1,16 +1,25 @@
 <section id="use-cases" class="use-cases">
     <div class="container">
         <h2 class="section-title">Przypadki użycia</h2>
-        <p class="section-subtitle">LLM-Router sprawdza się w różnych scenariuszach biznesowych i technicznych</p>
+        <p class="section-subtitle">
+            LLM Router Claude sprawdza się w różnych scenariuszach biznesowych i technicznych.
+            Niezależnie czy programujesz z AI, czy posiadasz już istniejącą aplikację,
+            która wykorzystuje providerów modeli językowych.
+        </p>
         <div class="use-case-list">
 
             <div class="use-case">
                 <h3>🏢 Środowiska Korporacyjne</h3>
-                <p><strong>Problem:</strong> Rozproszony dostęp do różnych modeli LLM bez centralnej kontroli i audytu.
+                <p>
+                    <strong>Problem:</strong>
+                    Rozproszony dostęp do różnych modeli LLM bez centralnej kontroli.
                 </p>
-                <p><strong>Rozwiązanie:</strong> LLM-Router centralizuje wszystkie requesty z pojedynczego endpointa,
+                <p>
+                    <strong>Rozwiązanie:</strong>
+                    LLM-Router centralizuje wszystkie requesty z pojedynczego endpointa,
                     umożliwiając kontrolę nad danymi wrażliwymi i compliance z RODO/GDPR poprzez automatyczną
-                    anonimizację danych osobowych przed wysłaniem do zewnętrznych API.</p>
+                    anonimizację danych osobowych przed wysłaniem do dostawcy modelu.
+                </p>
                 <ul class="use-case-features">
                     <li>Centralna kontrola dostępu i uprawnień</li>
                     <li>Audyt wszystkich zapytań</li>
@@ -19,74 +28,104 @@
             </div>
 
             <div class="use-case">
-                <h3>📈 Systemy wysoko wydajne</h3>
-                <p><strong>Problem:</strong> Wypadki dostawców LLM prowadzą do niedostępności całej aplikacji.</p>
-                <p><strong>Rozwiązanie:</strong> Automatyczny failover między providerami, health checks, automatic
-                    retry. Maksymalna dostępność dzięki load balancingu i redundancji dostawców LLM.</p>
+                <h3>📈 Systemy Wysoko Dostępne</h3>
+                <p>
+                    <strong>Problem:</strong>
+                    Wypadki dostawców LLM prowadzą do niedostępności całej aplikacji.
+                </p>
+                <p>
+                    <strong>Rozwiązanie:</strong>
+                    Automatyczne przełączanie między providerami, health checks,
+                    obsługa niedostępności dostawców. Maksymalna dostępność dzięki load balancingu i redundancji
+                    dostawców LLM połączona z opcjonalną anonimizacją danych w locie.
+                </p>
                 <ul class="use-case-features">
-                    <li>Automatyczne failover</li>
-                    <li>Health checks per provider</li>
-                    <li>Retry logic z backoff strategią</li>
+                    <li>Balansowanie obciążenia</li>
+                    <li>Sprawdzanie dostępności każdego dostawcy</li>
+                    <li>Automatyczne przełączanie dostawców</li>
                 </ul>
             </div>
 
-
             <div class="use-case">
                 <h3>🏥 Sektor Zdrowia i Finanse</h3>
-                <p><strong>Problem:</strong> Strogi wymóg ochrony danych pacjentów i klientów, ryzyko karnych regulacje.
+                <p>
+                    <strong>Problem:</strong>
+                    Srogi wymóg ochrony danych pacjentów i klientów, ryzyko karne i regulacje.
                 </p>
-                <p><strong>Rozwiązanie:</strong> Przetwarzanie dokumentacji medycznej i finansowej z gwarancją ochrony
-                    danych. Automatyczne maskowanie PESEL, numerów kont bankowych, danych osobowych pacjentów i
-                    klientów.</p>
+                <p>
+                    <strong>Rozwiązanie:</strong>
+                    Przetwarzanie dokumentacji medycznej i finansowej
+                    z gwarancją ochrony danych. Automatyczne maskowanie PESEL, numerów kont bankowych,
+                    danych osobowych pacjentów i klientów. Wymuszona anonimizacja - niezależna od aplikacji.
+                </p>
                 <ul class="use-case-features">
                     <li>Maskowanie 15+ typów identyfikatorów</li>
-                    <li>Walidacja checksumów</li>
-                    <li>Force anonymization mode</li>
+                    <li>Walidacja sum kontrolnych identyfikatorów</li>
+                    <li>Tryb wymuszonej anonimizacji</li>
                 </ul>
             </div>
 
             <div class="use-case">
                 <h3>🔬 Badania i Development</h3>
-                <p><strong>Problem:</strong> Eksperymentowanie z różnymi modelami wymaga zmian w kodzie aplikacji.</p>
-                <p><strong>Rozwiązanie:</strong> Testowanie różnych modeli LLM bez żadnych zmian w kodzie aplikacji.
-                    Łatwe przełączanie między providerami (OpenAI, Ollama, vLLM, LM Studio), A/B testing modeli, cost
-                    optimization przez routing do tańszych dostawców.</p>
+                <p>
+                    <strong>Problem:</strong>
+                    Eksperymentowanie z różnymi modelami wymaga zmian w kodzie aplikacji.
+                </p>
+                <p>
+                    <strong>Rozwiązanie:</strong>
+                    Testowanie różnych modeli LLM bez żadnych zmian w kodzie aplikacji.
+                    Łatwe przełączanie między dostawcami (OpenAI, Ollama, vLLM, LM Studio),
+                    testy A/B modeli, optymalizacja kosztów przez routing do tańszych dostawców.
+                </p>
                 <ul class="use-case-features">
                     <li>Zero zmian w kodzie aplikacji</li>
-                    <li>A/B testing modeli</li>
+                    <li>Testy A/B dowolnych modeli</li>
                     <li>Automatyczna migracja między providerami</li>
                 </ul>
             </div>
 
 
             <div class="use-case">
-                <h3>🚀 Streaming i Real-time Processing</h3>
-                <p><strong>Problem:</strong> Opóźnienia w przetwarzaniu long-running requestów, brak obsługi streaming
-                    responses dla large outputs.</p>
-                <p><strong>Rozwiązanie:</strong> LLM-Router obsługuje Server-Sent Events (SSE) i streaming responses z
-                    connection pooling. Optymalizacja dla minimum latencji, Redis-based coordination dla distributed
-                    systems, pipelining requestów bez blokowania.</p>
+                <h3>🚀 Przetwarzanie Real Time</h3>
+                <p>
+                    <strong>Problem:</strong>
+                    Opóźnienia w przetwarzaniu, brak obsługi strumieniowania dla dużych odpowiedzi.
+                </p>
+                <p>
+                    <strong>Rozwiązanie:</strong>
+                    LLM-Router obsługuje Server-Sent Events (SSE) i strumieniowanie odpowiedzi
+                    z automatyczną konwersją standardów.
+                    Optymalizacja dla minimalizacji opóźnień,
+                    Centralizacja w Redisie dla rozporoszonych
+                    systemów, obsługa zapytań bez blokowania.
+                </p>
                 <ul class="use-case-features">
-                    <li>Server-Sent Events (SSE) streaming</li>
-                    <li>Connection pooling i pipelining</li>
-                    <li>Redis coordination dla load balancingu</li>
+                    <li>Strumieniowanie SSE <span class="arrow-icon">&#8596;</span> OLLAMA</li>
+                    <li>Pula połączeń i przetwarzanie potokowe</li>
+                    <li>Centralny Redis i równoważenie obciążenia</li>
                 </ul>
             </div>
 
             <div class="use-case">
-                <h3>⚡ Integracja Legacy Systems</h3>
-                <p><strong>Problem:</strong> Stare aplikacje nie mają wspólnego interfejsu do komunikacji z różnymi
-                    modelami LLM.</p>
-                <p><strong>Rozwiązanie:</strong> LLM-Router stanowi ujednolicony proxy dla wszystkich systemów legacy.
-                    Jedna API dla wszystkich aplikacji niezależnie od wersji, architektury czy języka programowania.
-                    Modernizacja bez refaktoryzacji.</p>
+                <h3>⚡ Integracja Starszych Systemów</h3>
+                <p>
+                    <strong>Problem:</strong>
+                    Starsze aplikacje nie mają wspólnego interfejsu do komunikacji z modelami LLM.
+                </p>
+                <p>
+                    <strong>Rozwiązanie:</strong>
+                    Router jako jednolite proxy dla wszystkich starszych systemów z jedną spójną
+                    warstwą API, dostępną z dowolnej aplikacji – niezależnie od wersji, architektury
+                    czy języka programowania. Modernizacja funkcjonalności bez
+                    potrzeby refaktoryzacji istniejącego kodu.
+                </p>
                 <ul class="use-case-features">
-                    <li>Unified REST API</li>
-                    <li>Backward compatibility</li>
-                    <li>Bezbolesna migracja</li>
+                    <li>Centralne, ujednolicone API REST</li>
+                    <li>Kompatybilność z dowolnym dostawcą</li>
+                    <li>Migracja bez zmian w istniejącym kodzie</li>
                 </ul>
             </div>
         </div>
-        
+
     </div>
 </section>

@@ -1169,6 +1169,23 @@ footer {
     text-align: center;
 }
 
+/* ICONS SECTION ----------------------------------------------------------- */
+.arrow-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    line-height: 1;
+    color: var(--accent);
+    margin: 0 0.4rem;
+    transition: color 0.2s ease;
+    transform: translateY(-2px);
+}
+
+.arrow-icon:hover {
+    color: var(--accent-strong);
+}
+
 /* CONTACT SECTION ----------------------------------------------------------- */
 .contact {
     position: relative;
