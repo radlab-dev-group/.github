@@ -138,6 +138,7 @@ header {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    padding-top: 15px;
 }
 
 /* LOGO: mini “packet router” */
@@ -283,6 +284,31 @@ header {
 
 .menu-toggle.is-open .menu-bar:nth-child(3) {
     transform: translateY(-4px) rotate(-45deg);
+}
+
+/* Tooltip displayed on hover for links that have a `data-tooltip` attribute */
+.main-nav a[data-tooltip]::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 120%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.85);
+    color: #fff;
+    padding: 0.4rem 0.6rem;
+    border-radius: var(--radius-sm);
+    white-space: nowrap;
+    font-size: 0.78rem;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    z-index: 100;
+}
+
+/* Show the tooltip with a slight upward shift when the link is hovered */
+.main-nav a[data-tooltip]:hover::after {
+    opacity: 1;
+    transform: translate(-50%, -8px);
 }
 
 /* HERO */
@@ -486,7 +512,7 @@ header {
 .section-subtitle {
     text-align: center;
     color: var(--muted);
-    font-size: 0.98rem;
+    font-size: 1.00rem;
     max-width: 520px;
     margin: 0.6rem auto 2.6rem;
 }
@@ -1141,6 +1167,23 @@ footer {
     font-size: 0.78rem;
     color: rgba(148, 163, 184, 0.85);
     text-align: center;
+}
+
+/* ICONS SECTION ----------------------------------------------------------- */
+.arrow-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    line-height: 1;
+    color: var(--accent);
+    margin: 0 0.4rem;
+    transition: color 0.2s ease;
+    transform: translateY(-2px);
+}
+
+.arrow-icon:hover {
+    color: var(--accent-strong);
 }
 
 /* CONTACT SECTION ----------------------------------------------------------- */

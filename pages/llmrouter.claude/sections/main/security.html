@@ -2,33 +2,36 @@
     <div class="container">
         <div class="security-content">
             <div class="security-text">
-                <h2>Bezpieczeństwo w centrum architektury</h2>
+                <h2>Bezpieczeństwo w centrum architektury!</h2>
                 <p>LLM-Router został zaprojektowany z myślą o środowiskach gdzie bezpieczeństwo danych jest priorytetem.
-                    Każdy request może być automatycznie anonimizowany przed przekazaniem do zewnętrznego dostawcy
-                    LLM.</p>
+                    Każdy request (klucze i wartości) może być automatycznie anonimizowany przed przekazaniem
+                    do dowolnego dostawcy LLM, zarówno lokalnie jak i w chmurze.
+                </p>
+
                 <ul class="security-features">
                     <li>Automatyczna detekcja i maskowanie danych osobowych (RODO/GDPR)</li>
                     <li>Wsparcie dla polskich identyfikatorów: PESEL, NIP, KRS, REGON</li>
                     <li>Maskowanie danych finansowych (numery kont, kwoty)</li>
-                    <li>Usuwanie metadanych i PII z requestów</li>
-                    <li>Walidacja checksumów dla zidentyfikowanych numerów</li>
-                    <li>Extensible rule engine z możliwością własnych reguł</li>
-                    <li>Force anonymization mode dla całego payloadu</li>
-                    <li>GenAI-powered anonymization endpoint (opcjonalny)</li>
+                    <li>Usuwanie metadanych i request-injectionów z requestów</li>
+                    <li>Walidacja sum kontrolnych dla zidentyfikowanych identyfikatorów</li>
+                    <li>Rozszerzalny silnik maskowania z możliwościąd dodania własnych reguł</li>
+                    <li>Wymymuszone maskowanie ze wskazaną strategią dla całego payloadu</li>
+                    <li>Dodatkowe strategia anonimizacji lokalnym GenAI (opcjonalny)</li>
                 </ul>
+
             </div>
             <div class="code-example">
+                <span class="comment"># =======================================</span>
                 <span class="comment"># Przykład: Automatyczna anonimizacja</span>
                 <span class="keyword">export</span> LLM_ROUTER_FORCE_ANONYMISATION=<span class="string">1</span>
-
                 <span class="comment"># Przed wysłaniem do LLM:</span>
-                <span class="string">"Jan Kowalski, PESEL: 92032145678,
+                <span class="string">"Odeślij te dane: PESEL: 92032145678,
 tel: +48 123 456 789,
 email: jan.kowalski@example.com,
 NIP: 1234563218"</span>
 
                 <span class="comment"># Po anonimizacji:</span>
-                <span class="string">"{{MASKED}} {{MASKED}}, PESEL: {{PESEL}},
+                <span class="string">"Odeślij te dane, PESEL: {{PESEL}},
 tel: {{PHONE}},
 email: {{EMAIL}},
 NIP: {{NIP}}"</span>
