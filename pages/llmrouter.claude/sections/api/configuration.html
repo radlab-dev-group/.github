@@ -15,53 +15,98 @@
             </thead>
             <tbody>
             <tr>
-                <td>LLM_ROUTER_MINIMUM</td>
-                <td>Must be set to enable proxy mode (1/true)</td>
-                <td><em>required</em></td>
+                <td>LLM_ROUTER_PROMPTS_DIR</td>
+                <td>Directory containing system prompt files.</td>
+                <td>resources/prompts</td>
             </tr>
             <tr>
                 <td>LLM_ROUTER_MODELS_CONFIG</td>
-                <td>Path to JSON file defining models and providers</td>
+                <td>Path to the JSON file defining models and providers.</td>
                 <td>resources/configs/models-config.json</td>
             </tr>
             <tr>
+                <td>LLM_ROUTER_EXTERNAL_TIMEOUT</td>
+                <td>HTTP timeout (seconds) for outbound LLM calls.</td>
+                <td>300</td>
+            </tr>
+            <tr>
+                <td>LLM_ROUTER_TIMEOUT</td>
+                <td>Timeout for the proxy server itself.</td>
+                <td>0 (no timeout)</td>
+            </tr>
+            <tr>
+                <td>LLM_ROUTER_LOG_FILENAME</td>
+                <td>Log file name for the router.</td>
+                <td>llm-router.log</td>
+            </tr>
+            <tr>
+                <td>LLM_ROUTER_LOG_LEVEL</td>
+                <td>Logging level (DEBUG, INFO, …).</td>
+                <td>INFO</td>
+            </tr>
+            <tr>
+                <td>LLM_ROUTER_EP_PREFIX</td>
+                <td>Global URL prefix (e.g., /api).</td>
+                <td>/api</td>
+            </tr>
+            <tr>
+                <td>LLM_ROUTER_MINIMUM</td>
+                <td>Must be set to enable proxy mode (1/true).</td>
+                <td><em>required</em></td>
+            </tr>
+            <tr>
                 <td>LLM_ROUTER_BALANCE_STRATEGY</td>
-                <td>Load-balancing strategy (balanced, weighted, etc.)</td>
-                <td>balanced</td>
+                <td>Load‑balancing strategy (balanced, weighted, first_available, first_available_optim).</td>
+                <td>first_available</td>
+            </tr>
+            <tr>
+                <td>LLM_ROUTER_REDIS_HOST</td>
+                <td>Redis connection host for provider locking/monitoring.</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td>LLM_ROUTER_REDIS_HOST</td>
+                <td>Redis connection host for provider locking/monitoring.</td>
+                <td>6379</td>
+            </tr>
+            <tr>
+                <td>LLM_ROUTER_USE_PROMETHEUS</td>
+                <td>Enable Prometheus metrics (1/true).</td>
+                <td>False</td>
             </tr>
             <tr>
                 <td>LLM_ROUTER_SERVER_TYPE</td>
-                <td>Server backend (flask, gunicorn, waitress)</td>
+                <td>Server backend (flask, gunicorn, waitress).</td>
                 <td>flask</td>
             </tr>
             <tr>
                 <td>LLM_ROUTER_SERVER_PORT</td>
-                <td>Port the server listens on</td>
+                <td>Port the server listens on.</td>
                 <td>8080</td>
             </tr>
             <tr>
-                <td>LLM_ROUTER_EP_PREFIX</td>
-                <td>Global URL prefix for all endpoints</td>
-                <td>/api</td>
+                <td>LLM_ROUTER_SERVER_HOST</td>
+                <td>Host/interface to bind.</td>
+                <td>0.0.0.0</td>
             </tr>
             <tr>
-                <td>LLM_ROUTER_EXTERNAL_TIMEOUT</td>
-                <td>HTTP timeout (seconds) for outbound LLM calls</td>
-                <td>300</td>
+                <td>LLM_ROUTER_SERVER_WORKERS_COUNT</td>
+                <td>Number of workers (Gunicorn/Waitress).</td>
+                <td>2</td>
             </tr>
             <tr>
-                <td>LLM_ROUTER_USE_PROMETHEUS</td>
-                <td>Enable Prometheus metrics (1/true)</td>
-                <td>False</td>
+                <td>LLM_ROUTER_SERVER_THREADS_COUNT</td>
+                <td>Number of threads per worker.</td>
+                <td>8</td>
             </tr>
             <tr>
-                <td>LLM_ROUTER_REDIS_HOST</td>
-                <td>Redis host for provider locking/monitoring</td>
-                <td>""</td>
+                <td>LLM_ROUTER_SERVER_WORKER_CLASS</td>
+                <td>Gunicorn worker class (e.g., gevent).</td>
+                <td></td>
             </tr>
             <tr>
                 <td>LLM_ROUTER_FORCE_ANONYMISATION</td>
-                <td>Force anonymization of all request payloads</td>
+                <td>Each request payload will be fully anonymised.</td>
                 <td>False</td>
             </tr>
             </tbody>
