@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>llm-router-api · Technical Documentation</title>
+    <link rel="stylesheet" href="styles.css"/>
+    <link rel="stylesheet" href="styles-api.css"/>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+    <div class="container header-content">
+        <div class="logo">llm-router-api</div>
+        <nav class="main-nav">
+            <a href="#overview">Overview</a>
+            <a href="#architecture">Architecture</a>
+            <a href="#endpoints">Endpoints</a>
+            <a href="#configuration">Configuration</a>
+            <a href="#strategies">Strategies</a>
+            <a href="https://github.com/radlab-dev-group/llm-router">GitHub</a>
+        </nav>
+        <button class="menu-toggle" aria-label="Toggle menu">
+            <span class="menu-bar"></span>
+            <span class="menu-bar"></span>
+            <span class="menu-bar"></span>
+        </button>
+    </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+    <div class="container">
+        <a href="index.html" class="back-link">← Back to Main Documentation</a>
+        <div class="tech-header">
+            <span class="tech-badge python">Python 3.10+</span>
+            <span class="tech-badge flask">Flask</span>
+            <span class="tech-badge rest">REST API</span>
+        </div>
+        <h1>llm-router-api</h1>
+        <p class="subtitle">
+            Lightweight, extensible REST proxy for Large Language Model backends
+        </p>
+        <p>
+            <strong>llm-router-api</strong> provides a unified API layer that abstracts multiple LLM providers
+            (OpenAI, Ollama, vLLM, LM Studio) with built-in load balancing, health checks, and Prometheus metrics.
+        </p>
+    </div>
+</section>
+
+<!-- OVERVIEW -->
+<section id="overview" class="tech-section">
+    <div class="container">
+        <h2 class="section-title">Module Overview</h2>
+        <p class="section-subtitle">Core capabilities and design principles</p>
+
+        <div class="key-feature-box">
+            <h3>Key Features</h3>
+            <ul>
+                <li><strong>Unified API Surface</strong> – Single REST interface (<code>/api/...</code>) for all LLM
+                    backends
+                </li>
+                <li><strong>Pluggable Provider Selection</strong> – Multiple load-balancing strategies (balanced,
+                    weighted, adaptive, first-available)
+                </li>
+                <li><strong>Streaming Support</strong> – Transparent Server-Sent Events (SSE) for OpenAI and Ollama
+                    endpoints
+                </li>
+                <li><strong>Health Monitoring</strong> – Built-in ping endpoints and Redis-based provider health
+                    tracking
+                </li>
+                <li><strong>Prometheus Metrics</strong> – Optional instrumentation for request counts, latencies, and
+                    error rates
+                </li>
+                <li><strong>Auto-Discovery</strong> – Endpoints automatically discovered and registered at startup</li>
+                <li><strong>Extensible Architecture</strong> – Add new providers, strategies, or endpoints with minimal
+                    code
+                </li>
+                <li><strong>Privacy-First</strong> – Built-in anonymization support via FastMasker integration</li>
+            </ul>
+        </div>
+
+        <div class="code-block" data-lang="shell">
+<pre><code># Installation
+git clone https://github.com/radlab-dev-group/llm-router.git
+cd llm-router
+python3 -m venv venv
+source venv/bin/activate
+pip install -e .[metrics]
+
+# Start server
+export LLM_ROUTER_MINIMUM=1
+python -m llm_router_api.rest_api --gunicorn</code></pre>
+        </div>
+    </div>
+</section>
+
+<!-- ARCHITECTURE -->
+<section id="architecture" class="tech-section">
+    <div class="container">
+        <h2 class="section-title">Architecture</h2>
+        <p class="section-subtitle">Layered design for maximum flexibility</p>
+
+        <div class="architecture-diagram">
+            <div class="arch-layer">
+                <h4>1. REST Layer (core/server.py, rest_api.py)</h4>
+                <p>Flask/Gunicorn/Waitress server with automatic route registration</p>
+            </div>
+            <div class="arch-layer">
+                <h4>2. Engine Layer (core/engine.py)</h4>
+                <p>FlaskEngine: discovers endpoints, initializes ProviderChooser, registers routes</p>
+            </div>
+            <div class="arch-layer">
+                <h4>3. Endpoint Layer (endpoints/)</h4>
+                <p>EndpointI abstract base → EndpointWithHttpRequestI (proxy) → Concrete implementations</p>
+            </div>
+            <div class="arch-layer">
+                <h4>4. Load Balancing (base/lb/)</h4>
+                <p>ProviderChooser + pluggable strategies (balanced, weighted, dynamic, first-available)</p>
+            </div>
+            <div class="arch-layer">
+                <h4>5. Provider Abstraction (base/model_handler.py)</h4>
+                <p>ModelHandler: resolves model names → ApiModel instances with provider configs</p>
+            </div>
+            <div class="arch-layer">
+                <h4>6. HTTP Execution (endpoints/httprequest.py)</h4>
+                <p>HttpRequestExecutor: handles outbound requests, streaming, retry logic</p>
+            </div>
+        </div>
+
+        <h3 style="margin-top: 2.5rem; color: var(--fg);">Core Components</h3>
+        <div class="component-list">
+            <div class="component-item">
+                <h4>FlaskEngine</h4>
+                <p>Orchestrates app initialization, endpoint discovery, and route registration</p>
+            </div>
+            <div class="component-item">
+                <h4>EndpointI</h4>
+                <p>Abstract base class for all endpoints with validation, logging, response formatting</p>
+            </div>
+            <div class="component-item">
+                <h4>ProviderChooser</h4>
+                <p>Facade for load-balancing strategies with unified get_provider() interface</p>
+            </div>
+            <div class="component-item">
+                <h4>ModelHandler</h4>
+                <p>Manages model-to-provider mapping and provider lifecycle</p>
+            </div>
+            <div class="component-item">
+                <h4>HttpRequestExecutor</h4>
+                <p>Executes HTTP requests with streaming support and automatic retries</p>
+            </div>
+            <div class="component-item">
+                <h4>ApiTypesDispatcher</h4>
+                <p>Maps API types (openai, ollama, vllm) to correct endpoint paths</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- REQUEST FLOW -->
+<section class="tech-section"
+         style="background: radial-gradient(circle at 50% 0%, rgba(56, 189, 248, 0.08), transparent 60%), #020617; padding: 3rem 0;">
+    <div class="container">
+        <h2 class="section-title">Request Flow</h2>
+        <p class="section-subtitle">How a request travels through the system</p>
+
+        <div class="flow-diagram">
+            <div class="flow-step">
+                <strong>1. Request Ingress</strong> – Flask receives HTTP request at registered endpoint
+            </div>
+            <div class="flow-step">
+                <strong>2. Parameter Extraction</strong> – FlaskEndpointRegistrar extracts JSON/form params
+            </div>
+            <div class="flow-step">
+                <strong>3. Endpoint Dispatch</strong> – run_ep() called on concrete EndpointI subclass
+            </div>
+            <div class="flow-step">
+                <strong>4. Payload Preparation</strong> – prepare_payload() normalizes params, validates required args
+            </div>
+            <div class="flow-step">
+                <strong>5. Model Resolution</strong> – get_model_provider() resolves model name via ModelHandler
+            </div>
+            <div class="flow-step">
+                <strong>6. Provider Selection</strong> – ProviderChooser picks provider using configured strategy
+            </div>
+            <div class="flow-step">
+                <strong>7. Prompt Injection</strong> – (optional) System prompt injected from PromptHandler
+            </div>
+            <div class="flow-step">
+                <strong>8. HTTP Execution</strong> – HttpRequestExecutor sends request to external LLM API
+            </div>
+            <div class="flow-step">
+                <strong>9. Response Handling</strong> – Response parsed, optionally streamed via SSE
+            </div>
+            <div class="flow-step">
+                <strong>10. Retry Logic</strong> – (on failure) Automatic retry with backoff, up to MAX_RECONNECTIONS
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ENDPOINTS -->
+<section id="endpoints" class="tech-section">
+    <div class="container">
+        <h2 class="section-title">REST Endpoints</h2>
+        <p class="section-subtitle">All routes prefixed by <span class="inline-code">LLM_ROUTER_EP_PREFIX</span>
+            (default <span class="inline-code">/api</span>)</p>
+
+        <h3 style="margin-top: 2rem; color: var(--fg);">Health & Info</h3>
+        <div class="endpoint-card">
+            <span class="endpoint-method get">GET</span>
+            <span class="endpoint-path">/api/ping</span>
+            <div class="endpoint-desc">Health check endpoint, returns "pong"</div>
+        </div>
+
+        <h3 style="margin-top: 2rem; color: var(--fg);">Provider-Specific</h3>
+        <div class="endpoint-card">
+            <span class="endpoint-method get">GET</span>
+            <span class="endpoint-path">/api/ollama/</span>
+            <div class="endpoint-desc">Ollama health endpoint</div>
+        </div>
+        <div class="endpoint-card">
+            <span class="endpoint-method get">GET</span>
+            <span class="endpoint-path">/api/ollama/tags</span>
+            <div class="endpoint-desc">List available Ollama models</div>
+        </div>
+        <div class="endpoint-card">
+            <span class="endpoint-method get">GET</span>
+            <span class="endpoint-path">/api/openai/models</span>
+            <div class="endpoint-desc">List OpenAI-compatible models</div>
+        </div>
+        <div class="endpoint-card">
+            <span class="endpoint-method post">POST</span>
+            <span class="endpoint-path">/api/v0/models</span>
+            <div class="endpoint-desc">List LM Studio models</div>
+        </div>
+
+        <h3 style="margin-top: 2rem; color: var(--fg);">Chat & Completions (Built-in)</h3>
+        <div class="endpoint-card">
+            <span class="endpoint-method post">POST</span>
+            <span class="endpoint-path">/api/conversation_with_model</span>
+            <div class="endpoint-desc">Standard chat endpoint (OpenAI-compatible payload)</div>
+        </div>
+        <div class="endpoint-card">
+            <span class="endpoint-method post">POST</span>
+            <span class="endpoint-path">/api/extended_conversation_with_model</span>
+            <div class="endpoint-desc">Chat with extended fields support</div>
+        </div>
+        <div class="endpoint-card">
+            <span class="endpoint-method post">POST</span>
+            <span class="endpoint-path">/api/generative_answer</span>
+            <div class="endpoint-desc">Answer a question using provided context</div>
+        </div>
+
+        <h3 style="margin-top: 2rem; color: var(--fg);">Utility Endpoints (Built-in)</h3>
+        <div class="endpoint-card">
+            <span class="endpoint-method post">POST</span>
+            <span class="endpoint-path">/api/generate_questions</span>
+            <div class="endpoint-desc">Generate questions from input texts</div>
+        </div>
+        <div class="endpoint-card">
+            <span class="endpoint-method post">POST</span>
+            <span class="endpoint-path">/api/translate</span>
+            <div class="endpoint-desc">Translate list of texts</div>
+        </div>
+        <div class="endpoint-card">
+            <span class="endpoint-method post">POST</span>
+            <span class="endpoint-path">/api/simplify_text</span>
+            <div class="endpoint-desc">Simplify input texts</div>
+        </div>
+        <div class="endpoint-card">
+            <span class="endpoint-method post">POST</span>
+            <span class="endpoint-path">/api/generate_article_from_text</span>
+            <div class="endpoint-desc">Generate article from single text</div>
+        </div>
+        <div class="endpoint-card">
+            <span class="endpoint-method post">POST</span>
+            <span class="endpoint-path">/api/create_full_article_from_texts</span>
+            <div class="endpoint-desc">Generate full article from multiple texts</div>
+        </div>
+
+        <div class="code-block" data-lang="python">
+<pre><code># Example: Chat request
+import requests
+
+response = requests.post(
+    "http://localhost:8080/api/conversation_with_model",
+    json={
+        "model": "gpt-4",
+        "messages": [
+            {"role": "user", "content": "Hello!"}
+        ],
+        "stream": False
+    }
+)
+print(response.json())</code></pre>
+        </div>
+    </div>
+</section>
+
+<!-- CONFIGURATION -->
+<section id="configuration" class="tech-section"
+         style="background: radial-gradient(circle at 50% 0%, rgba(15, 23, 42, 0.95), rgba(2, 6, 23, 1)); padding: 3rem 0;">
+    <div class="container">
+        <h2 class="section-title">Configuration</h2>
+        <p class="section-subtitle">Environment variables and model configuration</p>
+
+        <h3 style="color: var(--fg); margin-top: 2rem;">Key Environment Variables</h3>
+        <table class="env-var-table">
+            <thead>
+            <tr>
+                <th>Variable</th>
+                <th>Description</th>
+                <th>Default</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>LLM_ROUTER_MINIMUM</td>
+                <td>Must be set to enable proxy mode (1/true)</td>
+                <td><em>required</em></td>
+            </tr>
+            <tr>
+                <td>LLM_ROUTER_MODELS_CONFIG</td>
+                <td>Path to JSON file defining models and providers</td>
+                <td>resources/configs/models-config.json</td>
+            </tr>
+            <tr>
+                <td>LLM_ROUTER_BALANCE_STRATEGY</td>
+                <td>Load-balancing strategy (balanced, weighted, etc.)</td>
+                <td>balanced</td>
+            </tr>
+            <tr>
+                <td>LLM_ROUTER_SERVER_TYPE</td>
+                <td>Server backend (flask, gunicorn, waitress)</td>
+                <td>flask</td>
+            </tr>
+            <tr>
+                <td>LLM_ROUTER_SERVER_PORT</td>
+                <td>Port the server listens on</td>
+                <td>8080</td>
+            </tr>
+            <tr>
+                <td>LLM_ROUTER_EP_PREFIX</td>
+                <td>Global URL prefix for all endpoints</td>
+                <td>/api</td>
+            </tr>
+            <tr>
+                <td>LLM_ROUTER_EXTERNAL_TIMEOUT</td>
+                <td>HTTP timeout (seconds) for outbound LLM calls</td>
+                <td>300</td>
+            </tr>
+            <tr>
+                <td>LLM_ROUTER_USE_PROMETHEUS</td>
+                <td>Enable Prometheus metrics (1/true)</td>
+                <td>False</td>
+            </tr>
+            <tr>
+                <td>LLM_ROUTER_REDIS_HOST</td>
+                <td>Redis host for provider locking/monitoring</td>
+                <td>""</td>
+            </tr>
+            <tr>
+                <td>LLM_ROUTER_FORCE_ANONYMISATION</td>
+                <td>Force anonymization of all request payloads</td>
+                <td>False</td>
+            </tr>
+            </tbody>
+        </table>
+
+        <h3 style="color: var(--fg); margin-top: 2.5rem;">Model Configuration (JSON)</h3>
+        <div class="code-block" data-lang="json">
+<pre><code>{
+  "active_models": {
+    "openai_models": ["gpt-4", "gpt-3.5-turbo"],
+    "ollama_models": ["llama2"]
+  },
+  "openai_models": {
+    "gpt-4": {
+      "providers": [
+        {
+          "id": "openai-gpt4-1",
+          "api_host": "https://api.openai.com/v1",
+          "api_token": "sk-...",
+          "api_type": "openai",
+          "input_size": 8192,
+          "model_path": ""
+        }
+      ]
+    }
+  }
+}</code></pre>
+        </div>
+    </div>
+</section>
+
+<!-- LOAD BALANCING STRATEGIES -->
+<section id="strategies" class="tech-section">
+    <div class="container">
+        <h2 class="section-title">Load Balancing Strategies</h2>
+        <p class="section-subtitle">Pluggable provider selection algorithms</p>
+
+        <div class="strategy-grid">
+            <div class="strategy-card">
+                <h4>balanced</h4>
+                <p>Simple round-robin based on usage counters. Each provider receives approximately equal traffic.</p>
+            </div>
+            <div class="strategy-card">
+                <h4>weighted</h4>
+                <p>Static weights defined in provider configuration (<code>weight</code> field). Higher weight = more
+                    traffic.</p>
+            </div>
+            <div class="strategy-card">
+                <h4>dynamic_weighted</h4>
+                <p>Weights updated at runtime based on latency and failure penalties. Adapts to provider
+                    performance.</p>
+            </div>
+            <div class="strategy-card">
+                <h4>first_available</h4>
+                <p>Uses Redis locks to guarantee exclusive access. Useful for stateful backends with session
+                    affinity.</p>
+            </div>
+        </div>
+
+        <div class="key-feature-box" style="margin-top: 2rem;">
+            <h3>Adding Custom Strategies</h3>
+            <ul>
+                <li>Subclass <code>ChooseProviderStrategyI</code> from <code>llm_router_api.base.lb.strategy</code></li>
+                <li>Implement <code>get_provider(model_name, provider_list, options)</code> method</li>
+                <li>Register in <code>STRATEGIES</code> dict in <code>llm_router_api.base.lb.chooser</code></li>
+                <li>Set <code>LLM_ROUTER_BALANCE_STRATEGY</code> to your strategy name</li>
+            </ul>
+        </div>
+
+        <div class="code-block" data-lang="python">
+<pre><code># Example: Custom strategy implementation
+from llm_router_api.base.lb.strategy import ChooseProviderStrategyI
+
+class MyCustomStrategy(ChooseProviderStrategyI):
+    def get_provider(self, model_name, provider_list, options=None):
+        # Your selection logic here
+        return provider_list[0]  # Example: always first
+
+# Register in chooser.py
+STRATEGIES["my_custom"] = MyCustomStrategy</code></pre>
+        </div>
+    </div>
+</section>
+
+<!-- EXTENDING -->
+<section class="tech-section"
+         style="background: radial-gradient(circle at 50% 0%, rgba(34, 197, 94, 0.08), transparent 60%), #020617; padding: 3rem 0;">
+    <div class="container">
+        <h2 class="section-title">Extending the Router</h2>
+        <p class="section-subtitle">Add new providers, endpoints, and functionality</p>
+
+        <div class="key-feature-box">
+            <h3>Adding a New Provider Type</h3>
+            <ul>
+                <li>Implement <code>ApiTypesI</code> abstract class with methods: <code>chat_ep</code>, <code>chat_method</code>,
+                    <code>completions_ep</code>, <code>completions_method</code></li>
+                <li>Register in <code>ApiTypesDispatcher._REGISTRY</code> with lowercase key</li>
+                <li>Update model config JSON to include new provider type</li>
+                <li>(Optional) Add new balance strategy if needed</li>
+            </ul>
+        </div>
+
+        <div class="key-feature-box">
+            <h3>Adding a New Endpoint</h3>
+            <ul>
+                <li>Choose base class: <code>EndpointWithHttpRequestI</code> (proxy), <code>PassthroughI</code>
+                    (forward), or <code>EndpointI</code> (custom)
+                </li>
+                <li>Define <code>REQUIRED_ARGS</code>, <code>OPTIONAL_ARGS</code>, and optionally <code>SYSTEM_PROMPT_NAME</code>
+                </li>
+                <li>Implement <code>prepare_payload(self, params)</code> to convert params to downstream format</li>
+                <li>(Optional) Set <code>self._prepare_response_function</code> for post-processing</li>
+                <li>Place in <code>llm_router_api/endpoints/</code> – auto-discovered at startup</li>
+            </ul>
+        </div>
+
+        <div class="code-block" data-lang="python">
+<pre><code># Example: Custom endpoint
+from llm_router_api.endpoints.endpoint_i import EndpointWithHttpRequestI
+
+class MyCustomEndpoint(EndpointWithHttpRequestI):
+    REQUIRED_ARGS = ["model", "input_text"]
+    OPTIONAL_ARGS = ["temperature"]
+
+    def __init__(self, **kwargs):
+        super().__init__(
+            ep_name="my_custom_endpoint",
+            api_types=["openai"],
+            method="POST",
+            **kwargs
+        )
+
+    def prepare_payload(self, params):
+        self._check_required_params(params)
+        return {
+            "model": params["model"],
+            "messages": [
+                {"role": "user", "content": params["input_text"]}
+            ],
+            "temperature": params.get("temperature", 0.7)
+        }</code></pre>
+        </div>
+    </div>
+</section>
+
+<!-- MONITORING -->
+<section class="tech-section">
+    <div class="container">
+        <h2 class="section-title">Monitoring & Metrics</h2>
+        <p class="section-subtitle">Prometheus integration for observability</p>
+
+        <div class="key-feature-box">
+            <h3>When LLM_ROUTER_USE_PROMETHEUS=1</h3>
+            <ul>
+                <li><strong>/metrics</strong> endpoint exposed in Prometheus format</li>
+                <li><strong>Request counts</strong> tracked per endpoint and model</li>
+                <li><strong>Latency histograms</strong> for response time distribution</li>
+                <li><strong>In-progress gauges</strong> for concurrent requests</li>
+                <li><strong>Error counters</strong> for failure tracking</li>
+            </ul>
+        </div>
+
+        <div class="code-block" data-lang="yaml">
+<pre><code># Example: Prometheus scrape config
+scrape_configs:
+  - job_name: 'llm-router'
+    static_configs:
+      - targets: ['localhost:8080']
+    metrics_path: '/metrics'
+    scrape_interval: 15s</code></pre>
+        </div>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Documentation</h4>
+                <ul>
+                    <li><a href="https://github.com/radlab-dev-group/llm-router/tree/main/llm_router_api">Source
+                        Code</a></li>
+                    <li><a href="https://github.com/radlab-dev-group/llm-router/blob/main/llm_router_api/README.md">README</a>
+                    </li>
+                    <li><a href="#configuration">Configuration Guide</a></li>
+                    <li><a href="#endpoints">API Reference</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Resources</h4>
+                <ul>
+                    <li><a href="https://github.com/radlab-dev-group/llm-router">Main Repository</a></li>
+                    <li><a href="https://github.com/radlab-dev-group/llm-router/issues">Report Issues</a></li>
+                    <li><a href="https://github.com/radlab-dev-group/llm-router/blob/main/LICENSE">License (Apache
+                        2.0)</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Related Modules</h4>
+                <ul>
+                    <li><a href="#">llm-router-lib</a></li>
+                    <li><a href="#">llm-router-plugins</a></li>
+                    <li><a href="#">rdl-ml-utils</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            © 2025 llm-router · Open Source (Apache 2.0) · <a href="https://github.com/radlab-dev-group"
+                                                              style="color: var(--accent);">radlab-dev-group</a>
+        </div>
+    </div>
+</footer>
+
+<!-- Scroll Indicator -->
+<div id="scroll-indicator">
+    <div id="scroll-progress"></div>
+</div>
+
+<!-- Back to Top -->
+<button id="back-to-top" aria-label="Back to top">↑</button>
+
+<script>
+    // Mobile menu toggle
+    const menuToggle = document.querySelector('.menu-toggle');
+    const mainNav = document.querySelector('.main-nav');
+
+    menuToggle.addEventListener('click', () => {
+        menuToggle.classList.toggle('is-open');
+        mainNav.classList.toggle('is-open');
+    });
+
+    // Scroll indicator
+    const scrollProgress = document.getElementById('scroll-progress');
+    const backToTop = document.getElementById('back-to-top');
+
+    window.addEventListener('scroll', () => {
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        const scrollPercent = (scrollTop / scrollHeight) * 100;
+
+        scrollProgress.style.height = scrollPercent + '%';
+
+        // Back to top button
+        if (scrollTop > 400) {
+            backToTop.classList.add('show');
+        } else {
+            backToTop.classList.remove('show');
+        }
+    });
+
+    backToTop.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // Smooth scroll for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        });
+    });
+</script>
+
+</body>
+</html>
