@@ -1,0 +1,45 @@
+<section id="overview" class="tech-section">
+    <div class="container">
+        <h2 class="section-title">Module Overview</h2>
+        <p class="section-subtitle">Core capabilities and design principles</p>
+
+        <div class="key-feature-box">
+            <h3>Key Features</h3>
+            <ul>
+                <li><strong>Unified API Surface</strong> – Single REST interface (<code>/api/...</code>) for all LLM
+                    backends
+                </li>
+                <li><strong>Pluggable Provider Selection</strong> – Multiple load-balancing strategies (balanced,
+                    weighted, adaptive, first-available)
+                </li>
+                <li><strong>Streaming Support</strong> – Transparent Server-Sent Events (SSE) for OpenAI and Ollama
+                    endpoints
+                </li>
+                <li><strong>Health Monitoring</strong> – Built-in ping endpoints and Redis-based provider health
+                    tracking
+                </li>
+                <li><strong>Prometheus Metrics</strong> – Optional instrumentation for request counts, latencies, and
+                    error rates
+                </li>
+                <li><strong>Auto-Discovery</strong> – Endpoints automatically discovered and registered at startup</li>
+                <li><strong>Extensible Architecture</strong> – Add new providers, strategies, or endpoints with minimal
+                    code
+                </li>
+                <li><strong>Privacy-First</strong> – Built-in anonymization support via FastMasker integration</li>
+            </ul>
+        </div>
+
+        <div class="code-block" data-lang="shell">
+<pre><code># Installation
+git clone https://github.com/radlab-dev-group/llm-router.git
+cd llm-router
+python3 -m venv venv
+source venv/bin/activate
+pip install -e .[metrics]
+
+# Start server
+export LLM_ROUTER_MINIMUM=1
+python -m llm_router_api.rest_api --gunicorn</code></pre>
+        </div>
+    </div>
+</section>

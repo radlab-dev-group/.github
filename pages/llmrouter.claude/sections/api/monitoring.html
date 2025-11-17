@@ -1,0 +1,27 @@
+<section class="tech-section" id="monitoring">
+    <div class="container">
+        <h2 class="section-title">Monitoring & Metrics</h2>
+        <p class="section-subtitle">Prometheus integration for observability</p>
+
+        <div class="key-feature-box">
+            <h3>When LLM_ROUTER_USE_PROMETHEUS=1</h3>
+            <ul>
+                <li><strong>/metrics</strong> endpoint exposed in Prometheus format</li>
+                <li><strong>Request counts</strong> tracked per endpoint and model</li>
+                <li><strong>Latency histograms</strong> for response time distribution</li>
+                <li><strong>In-progress gauges</strong> for concurrent requests</li>
+                <li><strong>Error counters</strong> for failure tracking</li>
+            </ul>
+        </div>
+
+        <div class="code-block" data-lang="yaml">
+<pre><code># Example: Prometheus scrape config
+scrape_configs:
+  - job_name: 'llm-router'
+    static_configs:
+      - targets: ['localhost:8080']
+    metrics_path: '/metrics'
+    scrape_interval: 15s</code></pre>
+        </div>
+    </div>
+</section>

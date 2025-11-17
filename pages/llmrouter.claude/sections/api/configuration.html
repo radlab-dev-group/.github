@@ -1,0 +1,94 @@
+<section id="configuration" class="tech-section"
+         style="background: radial-gradient(circle at 50% 0%, rgba(15, 23, 42, 0.95), rgba(2, 6, 23, 1)); padding: 3rem 0;">
+    <div class="container">
+        <h2 class="section-title">Configuration</h2>
+        <p class="section-subtitle">Environment variables and model configuration</p>
+
+        <h3 style="color: var(--fg); margin-top: 2rem;">Key Environment Variables</h3>
+        <table class="env-var-table">
+            <thead>
+            <tr>
+                <th>Variable</th>
+                <th>Description</th>
+                <th>Default</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>LLM_ROUTER_MINIMUM</td>
+                <td>Must be set to enable proxy mode (1/true)</td>
+                <td><em>required</em></td>
+            </tr>
+            <tr>
+                <td>LLM_ROUTER_MODELS_CONFIG</td>
+                <td>Path to JSON file defining models and providers</td>
+                <td>resources/configs/models-config.json</td>
+            </tr>
+            <tr>
+                <td>LLM_ROUTER_BALANCE_STRATEGY</td>
+                <td>Load-balancing strategy (balanced, weighted, etc.)</td>
+                <td>balanced</td>
+            </tr>
+            <tr>
+                <td>LLM_ROUTER_SERVER_TYPE</td>
+                <td>Server backend (flask, gunicorn, waitress)</td>
+                <td>flask</td>
+            </tr>
+            <tr>
+                <td>LLM_ROUTER_SERVER_PORT</td>
+                <td>Port the server listens on</td>
+                <td>8080</td>
+            </tr>
+            <tr>
+                <td>LLM_ROUTER_EP_PREFIX</td>
+                <td>Global URL prefix for all endpoints</td>
+                <td>/api</td>
+            </tr>
+            <tr>
+                <td>LLM_ROUTER_EXTERNAL_TIMEOUT</td>
+                <td>HTTP timeout (seconds) for outbound LLM calls</td>
+                <td>300</td>
+            </tr>
+            <tr>
+                <td>LLM_ROUTER_USE_PROMETHEUS</td>
+                <td>Enable Prometheus metrics (1/true)</td>
+                <td>False</td>
+            </tr>
+            <tr>
+                <td>LLM_ROUTER_REDIS_HOST</td>
+                <td>Redis host for provider locking/monitoring</td>
+                <td>""</td>
+            </tr>
+            <tr>
+                <td>LLM_ROUTER_FORCE_ANONYMISATION</td>
+                <td>Force anonymization of all request payloads</td>
+                <td>False</td>
+            </tr>
+            </tbody>
+        </table>
+
+        <h3 style="color: var(--fg); margin-top: 2.5rem;">Model Configuration (JSON)</h3>
+        <div class="code-block" data-lang="json">
+<pre><code>{
+  "active_models": {
+    "openai_models": ["gpt-4", "gpt-3.5-turbo"],
+    "ollama_models": ["llama2"]
+  },
+  "openai_models": {
+    "gpt-4": {
+      "providers": [
+        {
+          "id": "openai-gpt4-1",
+          "api_host": "https://api.openai.com/v1",
+          "api_token": "sk-...",
+          "api_type": "openai",
+          "input_size": 8192,
+          "model_path": ""
+        }
+      ]
+    }
+  }
+}</code></pre>
+        </div>
+    </div>
+</section>
