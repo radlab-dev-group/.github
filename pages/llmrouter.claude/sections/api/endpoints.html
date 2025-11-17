@@ -10,27 +10,51 @@
             <span class="endpoint-path">/api/ping</span>
             <div class="endpoint-desc">Health check endpoint, returns "pong"</div>
         </div>
+        <div class="endpoint-card">
+            <span class="endpoint-method get">GET</span>
+            <span class="endpoint-path">/</span>
+            <div class="endpoint-desc">Ollama health endpoint</div>
+        </div>
 
         <h3 style="margin-top: 2rem; color: var(--fg);">Provider-Specific</h3>
         <div class="endpoint-card">
             <span class="endpoint-method get">GET</span>
-            <span class="endpoint-path">/api/ollama/</span>
-            <div class="endpoint-desc">Ollama health endpoint</div>
-        </div>
-        <div class="endpoint-card">
-            <span class="endpoint-method get">GET</span>
-            <span class="endpoint-path">/api/ollama/tags</span>
+            <span class="endpoint-path">/tags</span>
             <div class="endpoint-desc">List available Ollama models</div>
         </div>
         <div class="endpoint-card">
             <span class="endpoint-method get">GET</span>
-            <span class="endpoint-path">/api/openai/models</span>
+            <span class="endpoint-path">/models</span>
             <div class="endpoint-desc">List OpenAI-compatible models</div>
         </div>
         <div class="endpoint-card">
             <span class="endpoint-method post">POST</span>
             <span class="endpoint-path">/api/v0/models</span>
             <div class="endpoint-desc">List LM Studio models</div>
+        </div>
+
+        <div class="endpoint-card">
+            <span class="endpoint-method post">POST</span>
+            <span class="endpoint-path">/api/chat</span>
+            <div class="endpoint-desc">Ollama-style chat completion</div>
+        </div>
+
+        <div class="endpoint-card">
+            <span class="endpoint-method post">POST</span>
+            <span class="endpoint-path">/api/chat/completions</span>
+            <div class="endpoint-desc">OpenAI-style chat completion</div>
+        </div>
+
+        <div class="endpoint-card">
+            <span class="endpoint-method post">POST</span>
+            <span class="endpoint-path">/chat/completions</span>
+            <div class="endpoint-desc">OpenAI-style chat completion</div>
+        </div>
+
+        <div class="endpoint-card">
+            <span class="endpoint-method post">POST</span>
+            <span class="endpoint-path">/v1/chat/completions</span>
+            <div class="endpoint-desc">vLLM like chat completion</div>
         </div>
 
         <h3 style="margin-top: 2rem; color: var(--fg);">Chat & Completions (Built-in)</h3>

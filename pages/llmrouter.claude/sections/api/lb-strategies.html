@@ -6,22 +6,28 @@
         <div class="strategy-grid">
             <div class="strategy-card">
                 <h4>balanced</h4>
-                <p>Simple round-robin based on usage counters. Each provider receives approximately equal traffic.</p>
+                <p>
+                    Simple round-robin based on usage counters. Each provider receives approximately equal traffic.
+                </p>
             </div>
             <div class="strategy-card">
                 <h4>weighted</h4>
-                <p>Static weights defined in provider configuration (<code>weight</code> field). Higher weight = more
-                    traffic.</p>
+                <p>
+                    Static weights defined in provider configuration (<code>weight</code> field).
+                    Higher weight = more traffic.
+                </p>
             </div>
             <div class="strategy-card">
-                <h4>dynamic_weighted</h4>
-                <p>Weights updated at runtime based on latency and failure penalties. Adapts to provider
-                    performance.</p>
+                <h4>first_available (fa)</h4>
+                <p>
+                    Uses Redis locks to guarantee exclusive access. Useful for stateful backends with session affinity.
+                </p>
             </div>
             <div class="strategy-card">
-                <h4>first_available</h4>
-                <p>Uses Redis locks to guarantee exclusive access. Useful for stateful backends with session
-                    affinity.</p>
+                <h4>first_available_optim</h4>
+                <p>
+                    Like <code>fa</code> aims for efficient routing, additionally remembers the worker where a model was last run.
+                </p>
             </div>
         </div>
 
