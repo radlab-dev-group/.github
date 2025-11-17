@@ -3,6 +3,7 @@
         <h2 class="section-title">Przypadki użycia</h2>
         <p class="section-subtitle">LLM-Router sprawdza się w różnych scenariuszach biznesowych i technicznych</p>
         <div class="use-case-list">
+
             <div class="use-case">
                 <h3>🏢 Środowiska Korporacyjne</h3>
                 <p><strong>Problem:</strong> Rozproszony dostęp do różnych modeli LLM bez centralnej kontroli i audytu.
@@ -16,6 +17,19 @@
                     <li>Brak rate limitingu, szybkie działanie.</li>
                 </ul>
             </div>
+
+            <div class="use-case">
+                <h3>📈 Systemy wysoko wydajne</h3>
+                <p><strong>Problem:</strong> Wypadki dostawców LLM prowadzą do niedostępności całej aplikacji.</p>
+                <p><strong>Rozwiązanie:</strong> Automatyczny failover między providerami, health checks, automatic
+                    retry. Maksymalna dostępność dzięki load balancingu i redundancji dostawców LLM.</p>
+                <ul class="use-case-features">
+                    <li>Automatyczne failover</li>
+                    <li>Health checks per provider</li>
+                    <li>Retry logic z backoff strategią</li>
+                </ul>
+            </div>
+
 
             <div class="use-case">
                 <h3>🏥 Sektor Zdrowia i Finanse</h3>
@@ -44,17 +58,6 @@
                 </ul>
             </div>
 
-            <div class="use-case">
-                <h3>📈 High-Availability Systems</h3>
-                <p><strong>Problem:</strong> Wypadki dostawców LLM prowadzą do niedostępności całej aplikacji.</p>
-                <p><strong>Rozwiązanie:</strong> Automatyczny failover między providerami, health checks, automatic
-                    retry. Maksymalna dostępność dzięki load balancingu i redundancji dostawców LLM.</p>
-                <ul class="use-case-features">
-                    <li>Automatyczne failover</li>
-                    <li>Health checks per provider</li>
-                    <li>Retry logic z backoff strategią</li>
-                </ul>
-            </div>
 
             <div class="use-case">
                 <h3>🚀 Streaming i Real-time Processing</h3>
@@ -84,5 +87,6 @@
                 </ul>
             </div>
         </div>
+        
     </div>
 </section>
