@@ -1,0 +1,97 @@
+<section id="endpoints" class="tech-section">
+    <div class="container">
+        <h2 class="section-title">REST Endpoints</h2>
+        <p class="section-subtitle">All routes prefixed by <span class="inline-code">LLM_ROUTER_EP_PREFIX</span>
+            (default <span class="inline-code">/api</span>)</p>
+
+        <h3 style="margin-top: 2rem; color: var(--fg);">Health & Info</h3>
+        <div class="endpoint-card">
+            <span class="endpoint-method get">GET</span>
+            <span class="endpoint-path">/api/ping</span>
+            <div class="endpoint-desc">Health check endpoint, returns "pong"</div>
+        </div>
+
+        <h3 style="margin-top: 2rem; color: var(--fg);">Provider-Specific</h3>
+        <div class="endpoint-card">
+            <span class="endpoint-method get">GET</span>
+            <span class="endpoint-path">/api/ollama/</span>
+            <div class="endpoint-desc">Ollama health endpoint</div>
+        </div>
+        <div class="endpoint-card">
+            <span class="endpoint-method get">GET</span>
+            <span class="endpoint-path">/api/ollama/tags</span>
+            <div class="endpoint-desc">List available Ollama models</div>
+        </div>
+        <div class="endpoint-card">
+            <span class="endpoint-method get">GET</span>
+            <span class="endpoint-path">/api/openai/models</span>
+            <div class="endpoint-desc">List OpenAI-compatible models</div>
+        </div>
+        <div class="endpoint-card">
+            <span class="endpoint-method post">POST</span>
+            <span class="endpoint-path">/api/v0/models</span>
+            <div class="endpoint-desc">List LM Studio models</div>
+        </div>
+
+        <h3 style="margin-top: 2rem; color: var(--fg);">Chat & Completions (Built-in)</h3>
+        <div class="endpoint-card">
+            <span class="endpoint-method post">POST</span>
+            <span class="endpoint-path">/api/conversation_with_model</span>
+            <div class="endpoint-desc">Standard chat endpoint (OpenAI-compatible payload)</div>
+        </div>
+        <div class="endpoint-card">
+            <span class="endpoint-method post">POST</span>
+            <span class="endpoint-path">/api/extended_conversation_with_model</span>
+            <div class="endpoint-desc">Chat with extended fields support</div>
+        </div>
+        <div class="endpoint-card">
+            <span class="endpoint-method post">POST</span>
+            <span class="endpoint-path">/api/generative_answer</span>
+            <div class="endpoint-desc">Answer a question using provided context</div>
+        </div>
+
+        <h3 style="margin-top: 2rem; color: var(--fg);">Utility Endpoints (Built-in)</h3>
+        <div class="endpoint-card">
+            <span class="endpoint-method post">POST</span>
+            <span class="endpoint-path">/api/generate_questions</span>
+            <div class="endpoint-desc">Generate questions from input texts</div>
+        </div>
+        <div class="endpoint-card">
+            <span class="endpoint-method post">POST</span>
+            <span class="endpoint-path">/api/translate</span>
+            <div class="endpoint-desc">Translate list of texts</div>
+        </div>
+        <div class="endpoint-card">
+            <span class="endpoint-method post">POST</span>
+            <span class="endpoint-path">/api/simplify_text</span>
+            <div class="endpoint-desc">Simplify input texts</div>
+        </div>
+        <div class="endpoint-card">
+            <span class="endpoint-method post">POST</span>
+            <span class="endpoint-path">/api/generate_article_from_text</span>
+            <div class="endpoint-desc">Generate article from single text</div>
+        </div>
+        <div class="endpoint-card">
+            <span class="endpoint-method post">POST</span>
+            <span class="endpoint-path">/api/create_full_article_from_texts</span>
+            <div class="endpoint-desc">Generate full article from multiple texts</div>
+        </div>
+
+        <div class="code-block" data-lang="python">
+<pre><code># Example: Chat request
+import requests
+
+response = requests.post(
+    "http://localhost:8080/api/conversation_with_model",
+    json={
+        "model": "gpt-4",
+        "messages": [
+            {"role": "user", "content": "Hello!"}
+        ],
+        "stream": False
+    }
+)
+print(response.json())</code></pre>
+        </div>
+    </div>
+</section>

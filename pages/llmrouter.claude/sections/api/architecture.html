@@ -1,0 +1,61 @@
+<section id="architecture" class="tech-section">
+    <div class="container">
+        <h2 class="section-title">Architecture</h2>
+        <p class="section-subtitle">Layered design for maximum flexibility</p>
+
+        <div class="architecture-diagram">
+            <div class="arch-layer">
+                <h4>1. REST Layer (core/server.py, rest_api.py)</h4>
+                <p>Flask/Gunicorn/Waitress server with automatic route registration</p>
+            </div>
+            <div class="arch-layer">
+                <h4>2. Engine Layer (core/engine.py)</h4>
+                <p>FlaskEngine: discovers endpoints, initializes ProviderChooser, registers routes</p>
+            </div>
+            <div class="arch-layer">
+                <h4>3. Endpoint Layer (endpoints/)</h4>
+                <p>EndpointI abstract base → EndpointWithHttpRequestI (proxy) → Concrete implementations</p>
+            </div>
+            <div class="arch-layer">
+                <h4>4. Load Balancing (base/lb/)</h4>
+                <p>ProviderChooser + pluggable strategies (balanced, weighted, dynamic, first-available)</p>
+            </div>
+            <div class="arch-layer">
+                <h4>5. Provider Abstraction (base/model_handler.py)</h4>
+                <p>ModelHandler: resolves model names → ApiModel instances with provider configs</p>
+            </div>
+            <div class="arch-layer">
+                <h4>6. HTTP Execution (endpoints/httprequest.py)</h4>
+                <p>HttpRequestExecutor: handles outbound requests, streaming, retry logic</p>
+            </div>
+        </div>
+
+        <h3 style="margin-top: 2.5rem; color: var(--fg);">Core Components</h3>
+        <div class="component-list">
+            <div class="component-item">
+                <h4>FlaskEngine</h4>
+                <p>Orchestrates app initialization, endpoint discovery, and route registration</p>
+            </div>
+            <div class="component-item">
+                <h4>EndpointI</h4>
+                <p>Abstract base class for all endpoints with validation, logging, response formatting</p>
+            </div>
+            <div class="component-item">
+                <h4>ProviderChooser</h4>
+                <p>Facade for load-balancing strategies with unified get_provider() interface</p>
+            </div>
+            <div class="component-item">
+                <h4>ModelHandler</h4>
+                <p>Manages model-to-provider mapping and provider lifecycle</p>
+            </div>
+            <div class="component-item">
+                <h4>HttpRequestExecutor</h4>
+                <p>Executes HTTP requests with streaming support and automatic retries</p>
+            </div>
+            <div class="component-item">
+                <h4>ApiTypesDispatcher</h4>
+                <p>Maps API types (openai, ollama, vllm) to correct endpoint paths</p>
+            </div>
+        </div>
+    </div>
+</section>
