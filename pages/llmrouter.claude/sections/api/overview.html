@@ -6,26 +6,41 @@
         <div class="key-feature-box">
             <h3>Key Features</h3>
             <ul>
-                <li><strong>Unified API Surface</strong> – Single REST interface (<code>/api/...</code>) for all LLM
-                    backends
+                <li>
+                    <strong>Unified API Surface</strong>
+                    – Single REST interface for all LLM backends (vLLM, OpenAI, vLLM, ...), conversion between standards
                 </li>
-                <li><strong>Pluggable Provider Selection</strong> – Multiple load-balancing strategies (balanced,
-                    weighted, adaptive, first-available)
+                <li>
+                    <strong>Pluggable Provider Selection</strong>
+                    – Multiple load-balancing strategies (balanced, weighted, first-available, first-available-optim)
                 </li>
-                <li><strong>Streaming Support</strong> – Transparent Server-Sent Events (SSE) for OpenAI and Ollama
-                    endpoints
+                <li>
+                    <strong>Streaming Support</strong>
+                    – Transparent Server-Sent Events (SSE) for OpenAI and Ollama endpoints with automatic conversion
                 </li>
-                <li><strong>Health Monitoring</strong> – Built-in ping endpoints and Redis-based provider health
-                    tracking
+                <li>
+                    <strong>Health Monitoring</strong>
+                    – Built-in ping endpoints and Redis-based provider health tracking for each used provider
                 </li>
-                <li><strong>Prometheus Metrics</strong> – Optional instrumentation for request counts, latencies, and
-                    error rates
+                <li>
+                    <strong>Prometheus Metrics</strong>
+                    – Optional instrumentation for request counts, latencies, and error rates
                 </li>
-                <li><strong>Auto-Discovery</strong> – Endpoints automatically discovered and registered at startup</li>
-                <li><strong>Extensible Architecture</strong> – Add new providers, strategies, or endpoints with minimal
-                    code
+                <li>
+                    <strong>Auto-Discovery</strong>
+                    – Endpoints automatically discovered and registered at startup, Simple addition of new endpoints
                 </li>
-                <li><strong>Privacy-First</strong> – Built-in anonymization support via FastMasker integration</li>
+
+                <li>
+                    <strong>Extensible Architecture</strong>
+                    – Easily extend the platform by plugging in new providers, custom strategies, or additional API
+                    endpoints.
+                </li>
+
+                <li>
+                    <strong>Privacy-First</strong>
+                    – Built-in anonymization support via FastMasker integration, integration with local GenAI anonymizer
+                </li>
             </ul>
         </div>
 
