@@ -1,63 +1,83 @@
 <section id="features" class="features">
     <div class="container">
         <h2 class="section-title">Kluczowe funkcjonalności</h2>
-        <p class="section-subtitle">Kompletne rozwiązanie do zarządzania infrastrukturą LLM</p>
+        <p class="section-subtitle">
+            <strong>Kompletne</strong> rozwiązanie do zarządzania infrastrukturą <strong>LLM
+            lokalnie i w chmurze</strong>. W jednym miejscu integruje wszystkich dostawców.
+        </p>
         <div class="features-grid">
+
             <div class="feature-card">
                 <div class="feature-icon">🔒</div>
                 <h3>Wbudowana Anonimizacja</h3>
-                <p>Zaawansowany plugin fast_masker maskujący wrażliwe dane: PESEL, NIP, KRS, REGON, e-maile, numery
-                    kont, adresy IP i więcej – przed wysłaniem do modelu.</p>
+                <p>Wbudowany, bardzo szybko działający plugin <code>fast_masker</code>
+                    maskujący wrażliwe dane: PESEL, NIP, KRS, REGON, e-maile,
+                    numery kont, adresy IP i więcej – przed wysłaniem do modelu.
+                </p>
             </div>
 
             <div class="feature-card">
                 <div class="feature-icon">⚖️</div>
                 <h3>Load Balancing</h3>
-                <p>4 strategie balansowania: balanced, weighted, dynamic_weighted, first_available. Optymalne
-                    wykorzystanie zasobów i maksymalna dostępność.</p>
+                <p>
+                    4 strategie balansowania:
+                    <code>balanced</code>,
+                    <code>weighted</code>,
+                    <code>first_available</code>,
+                    <code>first_available_optim</code>.
+                    Optymalne wykorzystanie zasobów i maksymalna dostępność.
+                </p>
             </div>
 
             <div class="feature-card">
                 <div class="feature-icon">🔀</div>
-                <h3>Inteligentny Routing</h3>
-                <p>Unified REST API dla OpenAI, Ollama, vLLM, LM Studio i innych. Jeden endpoint obsługujący wszystkich
-                    dostawców z automatycznym load balancingiem.</p>
+                <h3>Zunifikowany Routing</h3>
+                <p>
+                    Jedno REST API dla OpenAI, Ollama, vLLM, LM Studio i innych dostawców.
+                    Każdy endpoint obsługuje wszystkich dostawców z automatyczną konwersją
+                    między standardami i load balancingiem.
+                </p>
             </div>
 
             <div class="feature-card">
                 <div class="feature-icon">📊</div>
                 <h3>Monitoring i Metryki</h3>
-                <p>Integracja z Prometheus: metryki wydajności, liczba requestów, latencja, błędy per provider. Pełna
-                    observability infrastruktury LLM.</p>
+                <p>
+                    Integracja z Prometheus: metryki wydajności, liczba zapytań, opóźnienia, błędy per provider.
+                    Pełny podgląd routera np. w Grafanie z automatycznym sprawdzaniem dostępności routera.
+                </p>
             </div>
+
             <div class="feature-card">
                 <div class="feature-icon">🚀</div>
                 <h3>Wysoka Wydajność</h3>
-                <p>Streaming responses, connection pooling, Redis-based coordination. Optymalizacja pod kątem minimum
-                    latencji i maksimum throughput.</p>
+                <p>
+                    Odpowiedzi strumieniowane, zarządzanie pulą połączeń, broker Redis.
+                    Optymalizacja pod kątem minimum późnień i maksimum wydajności.</p>
             </div>
+
             <div class="feature-card">
                 <div class="feature-icon">🔧</div>
                 <h3>Łatwa Konfiguracja</h3>
                 <p>Konfiguracja przez JSON i zmienne środowiskowe. Docker-ready z oficjalnymi obrazami. Deploy w minuty,
                     nie godziny.</p>
             </div>
+
             <div class="feature-card">
-                <div class="feature-icon">⚙️</div>
-                <h3>Interfejs webowy</h3>
-                <p>Configs Manager do zarządzania konfiguracjami projektów
-                    oraz Anonymyzer do bezpiecznej komunikacji z providerami LLM.</p>
+                <div class="feature-icon">🛠️</div>
+                <h3>Wbudowane endpointy</h3>
+                <p>
+                    Odpowiedzi do RAG, generowanie pytań, tłumaczenie
+                    i wiele innych dostępnych od ręki.
+                </p>
             </div>
 
-
-        <div class="feature-card">
-            <div class="feature-icon">🛠️</div>
-            <h3>Wbudowane endpointy</h3>
-            <p>
-                Odpowiedź na pytanie w kontekście, generowanie pytań, tłumaczenie, upraszczanie,
-                generowanie artykułu z jednego czy też tworzenie pełnego artykułu z wielu tekstów.
-            </p>
-        </div>
+            <div class="feature-card">
+                <div class="feature-icon">⚙️</div>
+                <h3>Interfejsy webowe</h3>
+                <p>Configs Manager do zarządzania konfiguracjami
+                    oraz Anonymyzer do bezpiecznej komunikacji z providerami LLM.</p>
+            </div>
 
         </div>
     </div>
