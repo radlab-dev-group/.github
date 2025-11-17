@@ -512,7 +512,7 @@ header {
 .section-subtitle {
     text-align: center;
     color: var(--muted);
-    font-size: 0.98rem;
+    font-size: 1.00rem;
     max-width: 520px;
     margin: 0.6rem auto 2.6rem;
 }
