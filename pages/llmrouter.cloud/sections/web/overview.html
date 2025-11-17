@@ -1,0 +1,42 @@
+<section id="overview" class="tech-section">
+    <div class="container">
+        <h2 class="section-title">Module Overview</h2>
+        <p class="section-subtitle">Two complementary web applications for router management</p>
+
+        <div class="key-feature-box">
+            <h3>Key Features</h3>
+            <ul>
+                <li><strong>Dual Application Architecture</strong> – Separate apps for config management (port 8081) and
+                    anonymization (port 8082)
+                </li>
+                <li><strong>Multi-User Support</strong> – Authentication system with admin/user roles and per-user
+                    project isolation
+                </li>
+                <li><strong>Configuration Versioning</strong> – Snapshot-based version control with restore capability
+                </li>
+                <li><strong>Visual Config Editor</strong> – Web UI for managing model providers, API hosts, weights, and
+                    active models
+                </li>
+                <li><strong>Text Anonymization</strong> – Three anonymization algorithms (FastMasker, GenAI, PrivMasker)
+                </li>
+                <li><strong>Interactive Chat</strong> – Real-time chat interface with model selection and anonymization
+                    toggle
+                </li>
+                <li><strong>SQLite Backend</strong> – Lightweight database with SQLAlchemy ORM for easy deployment</li>
+                <li><strong>Import/Export</strong> – JSON-based configuration import/export for portability</li>
+            </ul>
+        </div>
+
+        <div class="code-block">
+<pre><code># Start Config Manager (port 8081)
+./run-configs-manager.sh
+
+# Start Anonymizer (port 8082)
+./run-anonymizer.sh
+
+# Or run directly with Python
+python app_cfg_manager.py
+python app_anonymizer.py</code></pre>
+        </div>
+    </div>
+</section>

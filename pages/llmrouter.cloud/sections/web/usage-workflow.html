@@ -1,0 +1,67 @@
+<section class="tech-section" id="usage-workflow">
+    <div class="container">
+        <h2 class="section-title">Usage Workflows</h2>
+        <p class="section-subtitle">Common tasks and operations</p>
+
+        <div class="key-feature-box">
+            <h3>Config Manager: First-Time Setup</h3>
+            <ul>
+                <li>Access http://localhost:8081/ – redirected to /setup (no users exist)</li>
+                <li>Create initial admin user with username and password</li>
+                <li>Login with admin credentials</li>
+                <li>Default project "default_project" automatically created</li>
+                <li>Create first configuration via "New Config" button</li>
+                <li>Add models and providers via visual editor</li>
+                <li>Mark models as active, export to JSON, activate configuration</li>
+            </ul>
+        </div>
+
+        <div class="key-feature-box">
+            <h3>Config Manager: Adding Users (Admin Only)</h3>
+            <ul>
+                <li>Navigate to Admin → Users</li>
+                <li>Click "Add User", enter username/password/role</li>
+                <li>New user gets automatic default project</li>
+                <li>Edit user role or reset password via edit form</li>
+                <li>Block/unblock users to disable/enable access</li>
+            </ul>
+        </div>
+
+        <div class="key-feature-box">
+            <h3>Config Manager: Version Control</h3>
+            <ul>
+                <li>Every config change (model add/delete, provider update, active model change) creates automatic
+                    snapshot
+                </li>
+                <li>View version history on config detail page</li>
+                <li>Restore to previous version via "Restore" button</li>
+                <li>Add optional note when saving changes</li>
+                <li>Version number auto-increments</li>
+            </ul>
+        </div>
+
+        <div class="key-feature-box">
+            <h3>Anonymizer: Text Anonymization</h3>
+            <ul>
+                <li>Access http://localhost:8082/anonymize/</li>
+                <li>Paste text into textarea</li>
+                <li>Select algorithm: fast (default), genai (requires model), priv (not available)</li>
+                <li>Click "Anonymize" – result displayed inline</li>
+                <li>FastMasker: regex-based, instant, no external calls</li>
+                <li>GenAI: forwards to LLM Router /api/anonymize_text_genai endpoint</li>
+            </ul>
+        </div>
+
+        <div class="key-feature-box">
+            <h3>Anonymizer: Interactive Chat</h3>
+            <ul>
+                <li>Access http://localhost:8082/anonymize/chat</li>
+                <li>Select model from dropdown (populated via /anonymize/models proxy)</li>
+                <li>Choose anonymization: no_anno, fast, genai</li>
+                <li>Type message, click "Send"</li>
+                <li>Request forwarded to LLM Router /v1/chat/completions with anonymize flag</li>
+                <li>Response rendered inline below message box</li>
+            </ul>
+        </div>
+    </div>
+</section>
