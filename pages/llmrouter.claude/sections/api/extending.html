@@ -1,0 +1,59 @@
+<section class="tech-section" id="extending"
+         style="background: radial-gradient(circle at 50% 0%, rgba(34, 197, 94, 0.08), transparent 60%), #020617; padding: 3rem 0;">
+    <div class="container">
+        <h2 class="section-title">Extending the Router</h2>
+        <p class="section-subtitle">Add new providers, endpoints, and functionality</p>
+
+        <div class="key-feature-box">
+            <h3>Adding a New Provider Type</h3>
+            <ul>
+                <li>Implement <code>ApiTypesI</code> abstract class with methods: <code>chat_ep</code>, <code>chat_method</code>,
+                    <code>completions_ep</code>, <code>completions_method</code></li>
+                <li>Register in <code>ApiTypesDispatcher._REGISTRY</code> with lowercase key</li>
+                <li>Update model config JSON to include new provider type</li>
+                <li>(Optional) Add new balance strategy if needed</li>
+            </ul>
+        </div>
+
+        <div class="key-feature-box">
+            <h3>Adding a New Endpoint</h3>
+            <ul>
+                <li>Choose base class: <code>EndpointWithHttpRequestI</code> (proxy), <code>PassthroughI</code>
+                    (forward), or <code>EndpointI</code> (custom)
+                </li>
+                <li>Define <code>REQUIRED_ARGS</code>, <code>OPTIONAL_ARGS</code>, and optionally <code>SYSTEM_PROMPT_NAME</code>
+                </li>
+                <li>Implement <code>prepare_payload(self, params)</code> to convert params to downstream format</li>
+                <li>(Optional) Set <code>self._prepare_response_function</code> for post-processing</li>
+                <li>Place in <code>llm_router_api/endpoints/</code> – auto-discovered at startup</li>
+            </ul>
+        </div>
+
+        <div class="code-block" data-lang="python">
+<pre><code># Example: Custom endpoint
+from llm_router_api.endpoints.endpoint_i import EndpointWithHttpRequestI
+
+class MyCustomEndpoint(EndpointWithHttpRequestI):
+    REQUIRED_ARGS = ["model", "input_text"]
+    OPTIONAL_ARGS = ["temperature"]
+
+    def __init__(self, **kwargs):
+        super().__init__(
+            ep_name="my_custom_endpoint",
+            api_types=["openai"],
+            method="POST",
+            **kwargs
+        )
+
+    def prepare_payload(self, params):
+        self._check_required_params(params)
+        return {
+            "model": params["model"],
+            "messages": [
+                {"role": "user", "content": params["input_text"]}
+            ],
+            "temperature": params.get("temperature", 0.7)
+        }</code></pre>
+        </div>
+    </div>
+</section>
