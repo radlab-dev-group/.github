@@ -1,13 +1,13 @@
 const sections = [
-  { selector: '#header',       url: 'sections/header.html' },
-  { selector: '#hero',         url: 'sections/hero.html' },
-  { selector: '#features',     url: 'sections/features.html' },
-  { selector: '#security',     url: 'sections/security.html' },
-  { selector: '#performance',  url: 'sections/performance.html' },
-  { selector: '#use-cases',    url: 'sections/use-cases.html' },
-  { selector: '#open-source',  url: 'sections/open-source.html' },
-  { selector: '#contact',      url: 'sections/contact.html' },
-  { selector: '#footer',       url: 'sections/footer.html' },
+  { selector: '#header',       url: 'sections/main/header.html' },
+  { selector: '#hero',         url: 'sections/main/hero.html' },
+  { selector: '#features',     url: 'sections/main/features.html' },
+  { selector: '#security',     url: 'sections/main/security.html' },
+  { selector: '#performance',  url: 'sections/main/performance.html' },
+  { selector: '#use-cases',    url: 'sections/main/use-cases.html' },
+  { selector: '#open-source',  url: 'sections/main/open-source.html' },
+  { selector: '#contact',      url: 'sections/main/contact.html' },
+  { selector: '#footer',       url: 'sections/main/footer.html' },
 ];
 
 
