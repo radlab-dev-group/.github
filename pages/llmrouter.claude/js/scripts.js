@@ -1,7 +1,3 @@
-// include.js – ES‑module
-// ------------------------------------------------
-// Lista sekcji:  selector → plik w katalogu `sections/`
-// ------------------------------------------------
 const sections = [
   { selector: '#header',       url: 'sections/header.html' },
   { selector: '#hero',         url: 'sections/hero.html' },
@@ -14,15 +10,11 @@ const sections = [
   { selector: '#footer',       url: 'sections/footer.html' },
 ];
 
-/**
- * Pobiera plik HTML i wstawia go do elementu wskazanego selektorem.
- * @param {string} selector - CSS selector (np. "#header")
- * @param {string} url      - ścieżka do pliku HTML
- */
+
 async function loadSection(selector, url) {
   const container = document.querySelector(selector);
   if (!container) {
-    console.warn(`Brak elementu ${selector} – pomijam wczytywanie ${url}`);
+    console.warn(`Cannot find ${selector} – skipping ${url}`);
     return;
   }
 
@@ -32,25 +24,16 @@ async function loadSection(selector, url) {
     const html = await response.text();
     container.innerHTML = html;
   } catch (err) {
-    console.error(`Nie udało się wczytać sekcji ${url}:`, err);
-    container.innerHTML = `<p style="color:#c00;">Błąd wczytywania sekcji.</p>`;
+    console.error(`Cannot read section ${url}:`, err);
+    container.innerHTML = `<p style="color:#c00;">Error during section reading.</p>`;
   }
 }
-
-// Uruchom wszystkie wczytania równocześnie
-Promise.all(sections.map(s => loadSection(s.selector, s.url)))
-  .catch(err => {
-    console.error('Nieoczekiwany błąd przy ładowaniu sekcji:', err);
-  })
-  .finally(() => {
-    initMenuToggle();
-  });
 
 function initMenuToggle() {
   const toggle = document.querySelector(".menu-toggle");
   const nav = document.querySelector(".main-nav");
   if (!toggle || !nav) {
-    console.warn("Nie znaleziono .menu-toggle lub .main-nav – pomijam inicjalizację menu.");
+    console.warn("Cannot find .menu-toggle/.main-nav – skipping menu init.");
     return;
   }
 
@@ -104,9 +87,9 @@ function initScrollFeatures() {
 // Run after all sections are loaded
 Promise.all(sections.map(s => loadSection(s.selector, s.url)))
   .catch(err => {
-    console.error('Nieoczekiwany błąd przy ładowaniu sekcji:', err);
+    console.error('Error while loading section:', err);
   })
   .finally(() => {
     initMenuToggle();
-    initScrollFeatures(); // <- added
+    initScrollFeatures();
   });
