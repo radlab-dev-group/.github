@@ -1297,6 +1297,25 @@ footer {
     pointer-events: auto;
 }
 
+
+/* For any "subpage" */
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--accent);
+    text-decoration: none;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+    transition: all 180ms ease;
+}
+
+.back-link:hover {
+    color: var(--accent-strong);
+    transform: translateX(-3px);
+}
+
+
 /* ANIMACJE */
 
 @keyframes perf-line {
