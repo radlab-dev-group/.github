@@ -286,6 +286,31 @@ header {
     transform: translateY(-4px) rotate(-45deg);
 }
 
+/* Tooltip displayed on hover for links that have a `data-tooltip` attribute */
+.main-nav a[data-tooltip]::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 120%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.85);
+    color: #fff;
+    padding: 0.4rem 0.6rem;
+    border-radius: var(--radius-sm);
+    white-space: nowrap;
+    font-size: 0.78rem;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    z-index: 100;
+}
+
+/* Show the tooltip with a slight upward shift when the link is hovered */
+.main-nav a[data-tooltip]:hover::after {
+    opacity: 1;
+    transform: translate(-50%, -8px);
+}
+
 /* HERO */
 
 .hero {
