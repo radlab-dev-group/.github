@@ -1,0 +1,31 @@
+<!-- favicon.svg -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+    <!-- tło z lekkim gradientem jak w motywie -->
+    <defs>
+        <radialGradient id="bg" cx="30%" cy="20%" r="80%">
+            <stop offset="0%" stop-color="#020617"/>
+            <stop offset="60%" stop-color="#020617"/>
+            <stop offset="100%" stop-color="#000000"/>
+        </radialGradient>
+        <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+            <feDropShadow dx="0" dy="0" stdDeviation="3" flood-color="rgba(56,189,248,0.8)"/>
+            <feDropShadow dx="0" dy="0" stdDeviation="8" flood-color="rgba(56,189,248,0.45)"/>
+        </filter>
+    </defs>
+
+    <rect x="0" y="0" width="64" height="64" fill="url(#bg)"/>
+
+    <!-- kwadrat jak .logo::before -->
+    <rect x="22" y="22" width="20" height="20" rx="5"
+          fill="none" stroke="#38bdf8" stroke-width="3"
+          filter="url(#glow)"/>
+
+    <!-- “pakiet” (pozioma kreska) – statyczna wersja animacji -->
+    <rect x="14" y="32" width="14" height="3" rx="2" fill="#38bdf8" opacity="0.95"/>
+
+    <!--    &lt;!&ndash; delikatna poświata pakietu &ndash;&gt;-->
+    <rect x="14" y="32" width="14" height="3" rx="2"
+          fill="#38bdf8" opacity="0.35">
+        <animate attributeName="opacity" values="0.15;0.6;0.15" dur="2.4s" repeatCount="indefinite"/>
+    </rect>
+</svg>
