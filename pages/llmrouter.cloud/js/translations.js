@@ -21,7 +21,7 @@ export const translations = {
 
     // Features
     'features.title': 'Kluczowe funkcjonalności',
-    'features.subtitle': '<strong>Kompletne</strong> rozwiązanie do zarządzania infrastrukturą <strong>LLM lokalnie i w chmurze</strong>. W jednym miejscu integruje wszystkich dostawców.',
+    'features.subtitle': '<strong>Kompletne</strong> rozwiązanie do zarządzania infrastrukturą <strong>LLMów uruchomionych przede wszystkim lokalnie, ale wbudowane mechanizmy mogą pełnić rolę anonimizatora requestów wysyłanych do dostawców chmurowych</strong>. W jednym miejscu integruje wszystkich dostawców.',
     'features.anonymization.title': 'Wbudowana Anonimizacja',
     'features.anonymization.desc': 'Wbudowany, bardzo szybko działający plugin <code>fast_masker</code> maskujący wrażliwe dane: PESEL, NIP, KRS, REGON, e-maile, numery kont, adresy IP i więcej – przed wysłaniem do modelu.',
     'features.loadbalancing.title': 'Load Balancing',
@@ -167,7 +167,7 @@ export const translations = {
 
     // Features
     'features.title': 'Key Features',
-    'features.subtitle': '<strong>Complete</strong> solution for managing <strong>LLM infrastructure locally and in the cloud</strong>. Integrates all providers in one place.',
+    'features.subtitle': '<strong>Complete</strong> solution for managing <strong>LLM infrastructure that runs primarily locally, but built‑in mechanisms can act as an anonymizer for requests sent to cloud providers</strong>. It integrates all providers in one place.',
     'features.anonymization.title': 'Built-in Anonymization',
     'features.anonymization.desc': 'Built-in, very fast <code>fast_masker</code> plugin that masks sensitive data: PESEL, NIP, KRS, REGON, emails, account numbers, IP addresses, and more – before sending to the model.',
     'features.loadbalancing.title': 'Load Balancing',
