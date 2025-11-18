@@ -1,0 +1,110 @@
+<section id="architecture" class="tech-section">
+    <div class="container">
+        <h2 class="section-title">Architecture</h2>
+        <p class="section-subtitle">Flask blueprints, SQLAlchemy ORM, session-based auth</p>
+
+        <h3 style="color: var(--fg); margin-top: 2rem;">Directory Structure</h3>
+        <div class="code-block">
+<pre><code>llm_router_web/
+├── app_cfg_manager.py          # Config Manager entry point
+├── app_anonymizer.py           # Anonymizer entry point
+├── run-configs-manager.sh      # Gunicorn startup script (cfg)
+├── run-anonymizer.sh           # Gunicorn startup script (ano)
+├── instance/
+│   └── configs.db             # SQLite database (auto-created)
+└── web/
+    ├── anonymizer/            # Anonymizer blueprint
+    │   ├── __init__.py
+    │   ├── routes.py          # Endpoints: /, /chat, /models
+    │   └── constants.py
+    ├── configs_manager/       # Config Manager blueprint
+    │   ├── __init__.py
+    │   ├── routes.py          # CRUD routes for configs/models/providers
+    │   ├── models.py          # SQLAlchemy models
+    │   ├── utils.py           # to_json, snapshot_version, export
+    │   └── constants.py
+    ├── static/                # CSS, JS assets
+    └── templates/             # Jinja2 HTML templates</code></pre>
+        </div>
+
+        <h3 style="color: var(--fg); margin-top: 2.5rem;">Database Schema (Config Manager)</h3>
+        <div class="db-schema">
+            <div class="db-table">
+                <h4>User</h4>
+                <ul>
+                    <li>id, username, password_hash, role (admin/user), is_active</li>
+                </ul>
+            </div>
+            <div class="db-table">
+                <h4>Project</h4>
+                <ul>
+                    <li>id, name, user_id (FK), is_default, description</li>
+                    <li>Relationship: one-to-many with Config</li>
+                </ul>
+            </div>
+            <div class="db-table">
+                <h4>Config</h4>
+                <ul>
+                    <li>id, name, user_id (FK), project_id (FK), is_active, description, created_at, updated_at</li>
+                    <li>Relationships: one-to-many with Model, ActiveModel, ConfigVersion</li>
+                </ul>
+            </div>
+            <div class="db-table">
+                <h4>Model</h4>
+                <ul>
+                    <li>id, config_id (FK), family (google_models|openai_models|qwen_models), name</li>
+                    <li>Relationship: one-to-many with Provider</li>
+                </ul>
+            </div>
+            <div class="db-table">
+                <h4>Provider</h4>
+                <ul>
+                    <li>id, model_id (FK), provider_id, api_host, api_token, api_type, input_size, model_path, weight,
+                        enabled, order
+                    </li>
+                </ul>
+            </div>
+            <div class="db-table">
+                <h4>ActiveModel</h4>
+                <ul>
+                    <li>id, config_id (FK), family, model_name</li>
+                    <li>Tracks which models are marked as "active" in a config</li>
+                </ul>
+            </div>
+            <div class="db-table">
+                <h4>ConfigVersion</h4>
+                <ul>
+                    <li>id, config_id (FK), version (int), created_at, note, json_blob (full config snapshot)</li>
+                </ul>
+            </div>
+        </div>
+
+        <h3 style="color: var(--fg); margin-top: 2.5rem;">Core Components</h3>
+        <div class="component-list">
+            <div class="component-item">
+                <h4>Flask Blueprints</h4>
+                <p>Modular routing for config manager (web) and anonymizer (anonymize_bp)</p>
+            </div>
+            <div class="component-item">
+                <h4>SQLAlchemy ORM</h4>
+                <p>Database abstraction with models, relationships, cascading deletes</p>
+            </div>
+            <div class="component-item">
+                <h4>Session Auth</h4>
+                <p>Flask sessions for user authentication, role-based access control (admin/user)</p>
+            </div>
+            <div class="component-item">
+                <h4>Password Hashing</h4>
+                <p>Werkzeug's generate_password_hash / check_password_hash for secure credentials</p>
+            </div>
+            <div class="component-item">
+                <h4>Version Snapshots</h4>
+                <p>JSON serialization of full config state on each modification</p>
+            </div>
+            <div class="component-item">
+                <h4>Requests Proxy</h4>
+                <p>HTTP forwarding to LLM Router for anonymization, chat, model catalogue</p>
+            </div>
+        </div>
+    </div>
+</section>

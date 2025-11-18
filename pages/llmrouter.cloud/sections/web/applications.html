@@ -1,0 +1,112 @@
+<section id="applications" class="tech-section"
+         style="background: radial-gradient(circle at 50% 0%, rgba(56, 189, 248, 0.08), transparent 60%), #020617; padding: 3rem 0;">
+    <div class="container">
+        <h2 class="section-title">Applications</h2>
+        <p class="section-subtitle">Two specialized web interfaces</p>
+
+        <div class="app-card">
+            <h3><span class="app-icon">⚙️</span> Configuration Manager</h3>
+            <p style="color: var(--muted); margin-bottom: 1.2rem;">
+                Full-featured web UI for managing LLM Router model configurations with multi-user support,
+                project organization, and version control.
+            </p>
+
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>User Management</h4>
+                    <p>Admin panel for user creation, role assignment (admin/user), password management, and account
+                        blocking</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Project Organization</h4>
+                    <p>Group configurations by project with descriptions, default project per user, project
+                        switching</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Config CRUD</h4>
+                    <p>Create, read, update, delete configurations with descriptions, activation status, timestamps</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Model Management</h4>
+                    <p>Add/delete models per family (openai_models, google_models, qwen_models), mark as active</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Provider Management</h4>
+                    <p>Add/update/delete/reorder providers per model with fields: id, api_host, api_token, api_type,
+                        input_size, weight, enabled</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Version Control</h4>
+                    <p>Automatic snapshots on each change, version history, restore to previous version, optional
+                        notes</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Import/Export</h4>
+                    <p>Import configs from JSON file or raw text, export active config to JSON file</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Host Validation</h4>
+                    <p>Built-in endpoint to check API host availability before saving</p>
+                </div>
+            </div>
+
+            <div class="code-block">
+<pre><code># Environment variables (Config Manager)
+LLM_ROUTER_WEB_CFG_HOST=0.0.0.0    # default
+LLM_ROUTER_WEB_CFG_PORT=8081       # default
+LLM_ROUTER_WEB_CFG_DEBUG=true      # default
+
+# Access the UI
+http://localhost:8081/</code></pre>
+            </div>
+        </div>
+
+        <div class="app-card">
+            <h3><span class="app-icon">🔒</span> Text Anonymizer</h3>
+            <p style="color: var(--muted); margin-bottom: 1.2rem;">
+                Interactive web interface for text anonymization with multiple algorithm options and
+                integrated chat functionality for testing anonymized LLM interactions.
+            </p>
+
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>FastMasker</h4>
+                    <p>Regex-based fast anonymization for common PII patterns (emails, phones, IDs, etc.)</p>
+                </div>
+                <div class="feature-card">
+                    <h4>GenAI Anonymizer</h4>
+                    <p>LLM-powered anonymization using configurable model for context-aware PII detection</p>
+                </div>
+                <div class="feature-card">
+                    <h4>PrivMasker (planned)</h4>
+                    <p>Privacy-preserving masker with advanced anonymization techniques (not yet available)</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Anonymization Form</h4>
+                    <p>Simple textarea input, algorithm selection dropdown, instant result display</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Chat Interface</h4>
+                    <p>Interactive chat with model selection, anonymization toggle, real-time responses</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Model Catalogue</h4>
+                    <p>Proxy endpoint to fetch available models from LLM Router for dropdown population</p>
+                </div>
+            </div>
+
+            <div class="code-block">
+<pre><code># Environment variables (Anonymizer)
+LLM_ROUTER_WEB_ANO_HOST=0.0.0.0              # default
+LLM_ROUTER_WEB_ANO_PORT=8082                 # default
+LLM_ROUTER_WEB_ANO_DEBUG=true                # default
+LLM_ROUTER_HOST=http://localhost:8080        # router API URL
+LLM_ROUTER_GENAI_MODEL_ANONYMISATION=gpt-4   # genai model
+
+# Access the UI
+http://localhost:8082/anonymize/        # anonymization form
+http://localhost:8082/anonymize/chat    # chat interface</code></pre>
+            </div>
+        </div>
+    </div>
+</section>
