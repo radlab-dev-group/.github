@@ -1,7 +1,7 @@
 <section id="use-cases" class="use-cases">
     <div class="container">
-        <h2 class="section-title">Przypadki użycia</h2>
-        <p class="section-subtitle">
+        <h2 class="section-title" data-i18n="usecases.title">Przypadki użycia</h2>
+        <p class="section-subtitle" data-i18n="usecases.subtitle">
             LLM Router Cloud sprawdza się w różnych scenariuszach biznesowych i technicznych.
             Niezależnie czy programujesz z AI, czy posiadasz już istniejącą aplikację,
             która wykorzystuje providerów modeli językowych.
@@ -9,89 +9,89 @@
         <div class="use-case-list">
 
             <div class="use-case">
-                <h3>🏢 Środowiska Korporacyjne</h3>
-                <p>
+                <h3 data-i18n="usecases.corporate.title">🏢 Środowiska Korporacyjne</h3>
+                <p data-i18n="usecases.corporate.problem" data-i18n-html="true">
                     <strong>Problem:</strong>
                     Rozproszony dostęp do różnych modeli LLM bez centralnej kontroli.
                 </p>
-                <p>
+                <p data-i18n="usecases.corporate.solution" data-i18n-html="true">
                     <strong>Rozwiązanie:</strong>
                     LLM-Router centralizuje wszystkie requesty z pojedynczego endpointa,
                     umożliwiając kontrolę nad danymi wrażliwymi i compliance z RODO/GDPR poprzez automatyczną
                     anonimizację danych osobowych przed wysłaniem do dostawcy modelu.
                 </p>
                 <ul class="use-case-features">
-                    <li>Centralna kontrola dostępu i uprawnień</li>
-                    <li>Audyt wszystkich zapytań</li>
-                    <li>Brak rate limitingu, szybkie działanie.</li>
+                    <li data-i18n="usecases.corporate.feature1">Centralna kontrola dostępu i uprawnień</li>
+                    <li data-i18n="usecases.corporate.feature2">Audyt wszystkich zapytań</li>
+                    <li data-i18n="usecases.corporate.feature3">Brak rate limitingu, szybkie działanie.</li>
                 </ul>
             </div>
 
             <div class="use-case">
-                <h3>📈 Systemy Wysoko Dostępne</h3>
-                <p>
+                <h3 data-i18n="usecases.highavailability.title">📈 Systemy Wysoko Dostępne</h3>
+                <p data-i18n="usecases.highavailability.problem" data-i18n-html="true">
                     <strong>Problem:</strong>
                     Wypadki dostawców LLM prowadzą do niedostępności całej aplikacji.
                 </p>
-                <p>
+                <p data-i18n="usecases.highavailability.solution" data-i18n-html="true">
                     <strong>Rozwiązanie:</strong>
                     Automatyczne przełączanie między providerami, health checks,
                     obsługa niedostępności dostawców. Maksymalna dostępność dzięki load balancingu i redundancji
                     dostawców LLM połączona z opcjonalną anonimizacją danych w locie.
                 </p>
                 <ul class="use-case-features">
-                    <li>Balansowanie obciążenia</li>
-                    <li>Sprawdzanie dostępności każdego dostawcy</li>
-                    <li>Automatyczne przełączanie dostawców</li>
+                    <li data-i18n="usecases.highavailability.feature1">Balansowanie obciążenia</li>
+                    <li data-i18n="usecases.highavailability.feature2">Sprawdzanie dostępności każdego dostawcy</li>
+                    <li data-i18n="usecases.highavailability.feature3">Automatyczne przełączanie dostawców</li>
                 </ul>
             </div>
 
             <div class="use-case">
-                <h3>🏥 Sektor Zdrowia i Finanse</h3>
-                <p>
+                <h3 data-i18n="usecases.healthcare.title">🏥 Sektor Zdrowia i Finanse</h3>
+                <p data-i18n="usecases.healthcare.problem" data-i18n-html="true">
                     <strong>Problem:</strong>
                     Srogi wymóg ochrony danych pacjentów i klientów, ryzyko karne i regulacje.
                 </p>
-                <p>
+                <p data-i18n="usecases.healthcare.solution" data-i18n-html="true">
                     <strong>Rozwiązanie:</strong>
                     Przetwarzanie dokumentacji medycznej i finansowej
                     z gwarancją ochrony danych. Automatyczne maskowanie PESEL, numerów kont bankowych,
                     danych osobowych pacjentów i klientów. Wymuszona anonimizacja - niezależna od aplikacji.
                 </p>
                 <ul class="use-case-features">
-                    <li>Maskowanie 15+ typów identyfikatorów</li>
-                    <li>Walidacja sum kontrolnych identyfikatorów</li>
-                    <li>Tryb wymuszonej anonimizacji</li>
+                    <li data-i18n="usecases.healthcare.feature1">Maskowanie 15+ typów identyfikatorów</li>
+                    <li data-i18n="usecases.healthcare.feature2">Walidacja sum kontrolnych identyfikatorów</li>
+                    <li data-i18n="usecases.healthcare.feature3">Tryb wymuszonej anonimizacji</li>
                 </ul>
             </div>
 
             <div class="use-case">
-                <h3>🔬 Badania i Development</h3>
-                <p>
+                <h3 data-i18n="usecases.research.title">🔬 Badania i Development</h3>
+                <p data-i18n="usecases.research.problem" data-i18n-html="true">
                     <strong>Problem:</strong>
                     Eksperymentowanie z różnymi modelami wymaga zmian w kodzie aplikacji.
                 </p>
-                <p>
+                <p data-i18n="usecases.research.solution" data-i18n-html="true">
                     <strong>Rozwiązanie:</strong>
                     Testowanie różnych modeli LLM bez żadnych zmian w kodzie aplikacji.
                     Łatwe przełączanie między dostawcami (OpenAI, Ollama, vLLM, LM Studio),
                     testy A/B modeli, optymalizacja kosztów przez routing do tańszych dostawców.
                 </p>
                 <ul class="use-case-features">
-                    <li>Zero zmian w kodzie aplikacji</li>
-                    <li>Testy A/B dowolnych modeli</li>
-                    <li>Automatyczna migracja między providerami</li>
+                    <li data-i18n="usecases.research.feature1">Zero zmian w kodzie aplikacji</li>
+                    <li data-i18n="usecases.research.feature2">Testy A/B dowolnych modeli</li>
+                    <li data-i18n="usecases.research.feature3">Automatyczna migracja między providerami</li>
                 </ul>
             </div>
 
 
             <div class="use-case">
-                <h3>🚀 Przetwarzanie Real Time</h3>
-                <p>
+                <h3 data-i18n="usecases.realtime.title">🚀 Przetwarzanie Real Time</h3>
+                <p data-i18n="usecases.realtime.problem" data-i18n-html="true">
                     <strong>Problem:</strong>
                     Opóźnienia w przetwarzaniu, brak obsługi strumieniowania dla dużych odpowiedzi.
                 </p>
-                <p>
+                <p data-i18n="usecases.realtime.solution" data-i18n-html="true">
                     <strong>Rozwiązanie:</strong>
                     LLM-Router obsługuje Server-Sent Events (SSE) i strumieniowanie odpowiedzi
                     z automatyczną konwersją standardów.
@@ -100,9 +100,9 @@
                     systemów, obsługa zapytań bez blokowania.
                 </p>
                 <ul class="use-case-features">
-                    <li>Strumieniowanie SSE <span class="arrow-icon">&#8596;</span> OLLAMA</li>
-                    <li>Pula połączeń i przetwarzanie potokowe</li>
-                    <li>Centralny Redis i równoważenie obciążenia</li>
+                    <li data-i18n="usecases.realtime.feature1" data-i18n-html="true">Strumieniowanie SSE <span class="arrow-icon">&#8596;</span> OLLAMA</li>
+                    <li data-i18n="usecases.realtime.feature2">Pula połączeń i przetwarzanie potokowe</li>
+                    <li data-i18n="usecases.realtime.feature3">Centralny Redis i równoważenie obciążenia</li>
                 </ul>
             </div>
 

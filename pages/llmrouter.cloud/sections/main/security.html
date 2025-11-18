@@ -2,36 +2,36 @@
     <div class="container">
         <div class="security-content">
             <div class="security-text">
-                <h2>Bezpieczeństwo w centrum architektury!</h2>
-                <p>
+                <h2 data-i18n="security.title">Bezpieczeństwo w centrum architektury!</h2>
+                <p data-i18n="security.description">
                     LLM Router Cloud został zaprojektowany z myślą o środowiskach gdzie bezpieczeństwo danych
                     jest priorytetem. Każdy request (klucze i wartości) może być automatycznie anonimizowany
                     przed przekazaniem do dowolnego dostawcy LLM, zarówno lokalnie jak i w chmurze.
                 </p>
 
                 <ul class="security-features">
-                    <li>Automatyczna detekcja i maskowanie danych osobowych (RODO/GDPR)</li>
-                    <li>Wsparcie dla polskich identyfikatorów: PESEL, NIP, KRS, REGON</li>
-                    <li>Maskowanie danych finansowych (numery kont, kwoty)</li>
-                    <li>Usuwanie metadanych i request-injectionów z requestów</li>
-                    <li>Walidacja sum kontrolnych dla zidentyfikowanych identyfikatorów</li>
-                    <li>Rozszerzalny silnik maskowania z możliwością dodania własnych reguł</li>
-                    <li>Wymymuszone maskowanie ze wskazaną strategią dla całego payloadu</li>
-                    <li>Dodatkowe strategia anonimizacji lokalnym GenAI (opcjonalny)</li>
+                    <li data-i18n="security.feature1">Automatyczna detekcja i maskowanie danych osobowych (RODO/GDPR)</li>
+                    <li data-i18n="security.feature2">Wsparcie dla polskich identyfikatorów: PESEL, NIP, KRS, REGON</li>
+                    <li data-i18n="security.feature3">Maskowanie danych finansowych (numery kont, kwoty)</li>
+                    <li data-i18n="security.feature4">Usuwanie metadanych i request-injectionów z requestów</li>
+                    <li data-i18n="security.feature5">Walidacja sum kontrolnych dla zidentyfikowanych identyfikatorów</li>
+                    <li data-i18n="security.feature6">Rozszerzalny silnik maskowania z możliwością dodania własnych reguł</li>
+                    <li data-i18n="security.feature7">Wymymuszone maskowanie ze wskazaną strategią dla całego payloadu</li>
+                    <li data-i18n="security.feature8">Dodatkowe strategia anonimizacji lokalnym GenAI (opcjonalny)</li>
                 </ul>
 
             </div>
             <div class="code-example">
-                <span class="comment"># =======================================</span>
-                <span class="comment"># Przykład: Automatyczna anonimizacja</span>
+                <span class="comment" data-i18n="security.code.comment1"># =======================================</span>
+                <span class="comment" data-i18n="security.code.comment2"># Przykład: Automatyczna anonimizacja</span>
                 <span class="keyword">export</span> LLM_ROUTER_FORCE_ANONYMISATION=<span class="string">1</span>
-                <span class="comment"># Przed wysłaniem do LLM:</span>
+                <span class="comment" data-i18n="security.code.comment3"># Przed wysłaniem do LLM:</span>
                 <span class="string">"Odeślij te dane: PESEL: 92032145678,
 tel: +48 123 456 789,
 email: jan.kowalski@example.com,
 NIP: 1234563218"</span>
 
-                <span class="comment"># Po anonimizacji:</span>
+                <span class="comment" data-i18n="security.code.comment4"># Po anonimizacji:</span>
                 <span class="string">"Odeślij te dane, PESEL: {{PESEL}},
 tel: {{PHONE}},
 email: {{EMAIL}},
