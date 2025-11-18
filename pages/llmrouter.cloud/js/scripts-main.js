@@ -1,3 +1,5 @@
+import { i18n } from './i18n.js';
+
 const sections = [
   { selector: '#header',       url: 'sections/main/header.html' },
   { selector: '#hero',         url: 'sections/main/hero.html' },
@@ -52,6 +54,35 @@ function initMenuToggle() {
   });
 }
 
+function initLanguageToggle() {
+  const langToggle = document.getElementById('lang-toggle');
+  if (!langToggle) {
+    console.warn("Cannot find #lang-toggle – skipping language toggle init.");
+    return;
+  }
+
+  const updateToggleButton = () => {
+    const currentLang = i18n.getLanguage();
+    const langCode = langToggle.querySelector('.lang-code');
+    if (langCode) {
+      langCode.textContent = currentLang.toUpperCase();
+    }
+  };
+
+  langToggle.addEventListener('click', () => {
+    const currentLang = i18n.getLanguage();
+    const newLang = currentLang === 'pl' ? 'en' : 'pl';
+    i18n.setLanguage(newLang);
+    updateToggleButton();
+  });
+
+  // Update button text on language change
+  window.addEventListener('languageChanged', updateToggleButton);
+
+  // Initial update
+  updateToggleButton();
+}
+
 // Initialize scroll indicator and back‑to‑top button
 function initScrollFeatures() {
   const progressBar = document.getElementById('scroll-progress');
@@ -90,6 +121,10 @@ Promise.all(sections.map(s => loadSection(s.selector, s.url)))
     console.error('Error while loading section:', err);
   })
   .finally(() => {
+    // Initialize i18n after sections are loaded
+    i18n.init();
+
     initMenuToggle();
+    initLanguageToggle();
     initScrollFeatures();
   });
