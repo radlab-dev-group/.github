@@ -1302,17 +1302,28 @@ footer {
 .back-link {
     display: inline-flex;
     align-items: center;
-    gap: 0.5rem;
-    color: var(--accent);
-    text-decoration: none;
+    gap: 0.3rem;
     font-size: 0.9rem;
+    font-weight: 500;
+    color: rgba(56, 189, 248, 0.85);
+    text-decoration: none;
+    padding: 0.2rem 0.6rem;
+    border-radius: 6px;
+    border: 1px solid rgba(56, 189, 248, 0.3);
+    background: rgba(56, 189, 248, 0.07);
+    transition: background 180ms ease, color 180ms ease, border-color 180ms ease;
     margin-bottom: 1rem;
-    transition: all 180ms ease;
 }
 
 .back-link:hover {
-    color: var(--accent-strong);
-    transform: translateX(-3px);
+    background: rgba(56, 189, 248, 0.15);
+    color: #38bdf8;
+    border-color: rgba(56, 189, 248, 0.6);
+}
+
+.back-link::before {
+    font-size: 1rem;
+    line-height: 1;
 }
 
 
