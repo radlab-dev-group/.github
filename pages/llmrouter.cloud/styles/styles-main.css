@@ -241,6 +241,37 @@ header {
     width: 100%;
 }
 
+/* Language toggle button */
+
+.lang-toggle {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 999px;
+    border: 1px solid rgba(148, 163, 184, 0.5);
+    background: rgba(15, 23, 42, 0.9);
+    cursor: pointer;
+    padding: 0;
+    transition: background 160ms ease, border-color 160ms ease, transform 140ms ease;
+}
+
+.lang-toggle:hover {
+    background: rgba(15, 23, 42, 0.98);
+    border-color: rgba(56, 189, 248, 0.7);
+    transform: translateY(-1px);
+}
+
+.lang-toggle .lang-code {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: var(--fg);
+    text-transform: uppercase;
+}
+
 /* HAMBURGER BUTTON */
 
 .menu-toggle {
