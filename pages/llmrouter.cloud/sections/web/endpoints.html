@@ -1,0 +1,73 @@
+<section class="tech-section" id="endpoints"
+         style="background: radial-gradient(circle at 50% 0%, rgba(34, 197, 94, 0.08), transparent 60%), #020617; padding: 3rem 0;">
+    <div class="container">
+        <h2 class="section-title">API Endpoints Reference</h2>
+        <p class="section-subtitle">Internal routes for both applications</p>
+
+        <h3 style="color: var(--fg); margin-top: 2rem;">Config Manager Routes</h3>
+        <div class="code-block">
+<pre><code># Authentication
+GET  /login
+POST /login
+GET  /logout
+GET  /setup               # First-time admin creation
+POST /setup
+
+# Admin Panel
+GET  /admin/users         # List users
+POST /admin/users         # Create user
+POST /admin/users/:id/edit         # Edit user role/password
+POST /admin/users/:id/toggle_block # Block/unblock user
+
+# Projects
+GET  /projects            # List projects
+POST /projects            # Create project
+POST /projects/:id/select # Switch active project
+POST /projects/:id/rename
+POST /projects/:id/delete
+
+# Configs
+GET  /                    # Index (list configs)
+GET  /configs             # List configs
+GET  /configs/new
+POST /configs/new         # Create config
+GET  /configs/import
+POST /configs/import      # Import from JSON
+GET  /configs/:id         # View config detail
+GET  /configs/:id/edit
+POST /configs/:id/edit    # Update config
+GET  /configs/:id/export  # Download JSON
+POST /configs/:id/activate
+POST /configs/:id/delete
+
+# Models & Providers
+POST /configs/:id/models/add
+POST /models/:id/delete
+POST /models/:id/providers/add
+POST /models/:id/providers/reorder
+POST /providers/:id/update
+POST /providers/:id/delete
+
+# Versions
+GET  /configs/:id/versions
+POST /configs/:id/versions/:v/restore
+
+# Utility
+POST /check_host          # Validate API host availability</code></pre>
+        </div>
+
+        <h3 style="color: var(--fg); margin-top: 2rem;">Anonymizer Routes</h3>
+        <div class="code-block">
+<pre><code># Anonymization Form
+GET  /anonymize/          # Show form
+POST /anonymize/          # Process text (returns partial HTML)
+
+# Chat Interface
+GET  /anonymize/chat      # Show chat page
+POST /anonymize/chat/message # Send message (returns partial HTML)
+
+# Model Catalogue (proxy to LLM Router)
+GET  /anonymize/models    # Fetch available models → forwards to {LLM_ROUTER_HOST}/models</code></pre>
+        </div>
+    </div>
+</section>
