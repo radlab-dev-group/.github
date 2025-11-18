@@ -116,18 +116,25 @@
         <div class="code-block" data-lang="json">
 <pre><code>{
   "active_models": {
-    "openai_models": ["gpt-4", "gpt-3.5-turbo"],
-    "ollama_models": ["llama2"]
+    "openai_models": ["openai-gptoss120b-1", "openai-gptoss120b-2"],
   },
   "openai_models": {
-    "gpt-4": {
+    "gpt-oss:120b": {
       "providers": [
         {
-          "id": "openai-gpt4-1",
-          "api_host": "https://api.openai.com/v1",
-          "api_token": "sk-...",
-          "api_type": "openai",
-          "input_size": 8192,
+          "id": "openai-gptoss120b-1",
+          "api_host": "http://192.1.1.20:11434",
+          "api_token": "<not used>",
+          "api_type": "ollama",
+          "input_size": 32000,
+          "model_path": ""
+        },
+        {
+          "id": "openai-gptoss120b-2",
+          "api_host": "http://192.1.1.55:7000",
+          "api_token": "<not used>",
+          "api_type": "vllm",
+          "input_size": 32000,
           "model_path": ""
         }
       ]

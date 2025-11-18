@@ -108,7 +108,7 @@ import requests
 response = requests.post(
     "http://localhost:8080/api/conversation_with_model",
     json={
-        "model": "gpt-4",
+        "model": "google/gemma-3-12b-it",
         "messages": [
             {"role": "user", "content": "Hello!"}
         ],
