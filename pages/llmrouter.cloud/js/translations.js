@@ -11,11 +11,11 @@ export const translations = {
     'header.github.page.tooltip': 'llmrouter website on GitHub',
 
     // Hero
-    'hero.title': 'LLM Router Cloud',
+    'hero.title': 'Wydajność i bezpieczeństwo aplikacji GenAI',
     'hero.subtitle.reliable': 'Niezawodny',
     'hero.subtitle.text': 'routing dla dużych modeli językowych z wbudowanym',
     'hero.subtitle.security': 'zabezpieczeniem danych',
-    'hero.description': 'Rozwiązanie open-source (<strong>Apache 2.0</strong>) do <strong>zarządzania ruchem</strong> LLM z wbudowaną <strong>anonimizacją</strong> każdego requestu, <strong>load balancingiem</strong> i <strong>optymalizacją</strong> wykorzystania zasobów. Nastawione na optymalizację czasu odpowiedzi oraz bezpieczeństo przesyłanych danych. <code>llm-router</code> nie jest rozwiązaniem do optymalizacji kosztów odpytywanych providerów, stawia na szybkość, niezawodność oraz bezpieczeństwo, to rozwiązanie dedykowane do instalacji on-prem.',
+    'hero.description': 'LLM Router jest serwisem uruchamianym on-prem lub w chmurze. Wprowadza warstwę między dowolną aplikacją, a dostawcą LLM. W czasie rzeczywistym kontroluje ruch, rozkłada obciążenie między dostawcami konkretnego LLM oraz umożliwia analizę wysyłanych requestów z perspektywy bezpieczeństwa (maskowanie, anonimizacja, zakazane treści). Jest to rozwiązanie open-source (<strong>Apache 2.0</strong>) z możliwością natychmiastowego uruchomienia gotowego obrazu we własnej infrastrukturze.',
     'hero.cta.github': 'Zobacz na GitHub',
     'hero.cta.docs': 'Dokumentacja',
 
@@ -157,11 +157,11 @@ export const translations = {
     'header.github.page.tooltip': 'llmrouter website on GitHub',
 
     // Hero
-    'hero.title': 'LLM Router Cloud',
+    'hero.title': 'Performance and security of GenAI applications',
     'hero.subtitle.reliable': 'Reliable',
     'hero.subtitle.text': 'routing for large language models with built-in',
     'hero.subtitle.security': 'data protection',
-    'hero.description': 'Open-source solution (<strong>Apache 2.0</strong>) for <strong>LLM traffic management</strong> with built-in <strong>anonymization</strong> of every request, <strong>load balancing</strong>, and <strong>resource optimization</strong>. Focused on response time optimization and data security. <code>llm-router</code> is not a cost optimization solution for queried providers, it prioritizes speed, reliability, and security – a solution dedicated to on-premise installation.',
+    'hero.description': 'LLM Router is a service that can be deployed on‑premises or in the cloud. It adds a layer between any application and the LLM provider. In real time it controls traffic, distributes load among providers of a specific LLM, and enables analysis of outgoing requests from a security perspective (masking, anonymization, prohibited content). It is an open‑source solution (<strong>Apache 2.0</strong>) that can be launched instantly by running a ready‑made image in your own infrastructure.',
     'hero.cta.github': 'View on GitHub',
     'hero.cta.docs': 'Documentation',
 
