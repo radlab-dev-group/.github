@@ -15,7 +15,7 @@ export const translations = {
     'hero.subtitle.reliable': 'Niezawodny',
     'hero.subtitle.text': 'routing dla dużych modeli językowych z wbudowanym',
     'hero.subtitle.security': 'zabezpieczeniem danych',
-    'hero.description': 'LLM Router to elastyczna brama open-source do zarządzania lokalnymi wdrożeniami LLM (vLLM, Ollama, LM Studio) oraz dostawcami chmurowymi. Zapewnia inteligentną warstwę między aplikacjami a modelami, oferując zarządzanie ruchem w czasie rzeczywistym, inteligentne równoważenie obciążenia między lokalnymi i chmurowymi dostawcami oraz kompleksowe mechanizmy bezpieczeństwa, w tym maskowanie danych osobowych, anonimizację i filtrowanie treści. Zbudowana na licencji <strong>Apache 2.0</strong>, została zaprojektowana dla zespołów, które chcą uruchamiać infrastrukturę AI lokalnie z opcjonalnym wsparciem dostawców chmurowych—dając pełną kontrolę i elastyczność.',
+    'hero.description': 'Elastyczna brama open-source do zarządzania lokalnymi wdrożeniami LLM (vLLM, Ollama, LM Studio) oraz dostawcami chmurowymi. Zapewnia inteligentną warstwę między aplikacjami a modelami, oferując zarządzanie ruchem w czasie rzeczywistym, inteligentne równoważenie obciążenia między lokalnymi i chmurowymi dostawcami oraz kompleksowe mechanizmy bezpieczeństwa, w tym maskowanie danych osobowych, anonimizację i filtrowanie treści. Zbudowana na licencji <strong>Apache 2.0</strong>, została zaprojektowana dla zespołów, które chcą uruchamiać infrastrukturę AI lokalnie z opcjonalnym wsparciem dostawców chmurowych—dając pełną kontrolę i elastyczność.',
     'hero.cta.github': 'Zobacz na GitHub',
     'hero.cta.docs': 'Dokumentacja',
 
