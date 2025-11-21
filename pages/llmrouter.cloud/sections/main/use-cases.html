@@ -64,20 +64,37 @@
             </div>
 
             <div class="use-case">
-                <h3 data-i18n="usecases.research.title">🔬 Model Experimentation</h3>
+                <h3 data-i18n="usecases.local.title">🖥️ Self-Hosted Local Models</h3>
+                <p data-i18n="usecases.local.problem" data-i18n-html="true">
+                    <strong>Challenge:</strong>
+                    Running models on local infrastructure (vLLM, Ollama, LM Studio) requires managing multiple endpoints and protocols manually.
+                </p>
+                <p data-i18n="usecases.local.solution" data-i18n-html="true">
+                    <strong>Solution:</strong>
+                    LLM Router provides unified management for all your local model deployments. Run models on your own hardware with full control, distribute load across multiple local instances, and optionally add cloud providers as backup. Keep data and processing entirely within your infrastructure.
+                </p>
+                <ul class="use-case-features">
+                    <li data-i18n="usecases.local.feature1">Full data sovereignty and control</li>
+                    <li data-i18n="usecases.local.feature2">Load balancing across local model instances</li>
+                    <li data-i18n="usecases.local.feature3">Optional cloud fallback for peak loads</li>
+                </ul>
+            </div>
+
+            <div class="use-case">
+                <h3 data-i18n="usecases.research.title">🔬 Model Experimentation & A/B Testing</h3>
                 <p data-i18n="usecases.research.problem" data-i18n-html="true">
                     <strong>Challenge:</strong>
-                    Model experimentation requires code changes, redeployment, and extensive testing cycles.
+                    Testing different models and providers requires code changes and complex infrastructure setup.
                 </p>
                 <p data-i18n="usecases.research.solution" data-i18n-html="true">
                     <strong>Solution:</strong>
-                    Test different LLM models without any application code changes through configuration-driven routing.
-                    Seamless switching between providers (OpenAI, Ollama, vLLM, LM Studio), A/B testing capabilities, and cost-optimized provider selection strategies.
+                    Experiment with local models (vLLM, Ollama, LM Studio) and cloud providers without any application code changes.
+                    Configuration-driven routing enables seamless switching, A/B testing between different models, and cost-optimized strategies that prioritize local deployments.
                 </p>
                 <ul class="use-case-features">
-                    <li data-i18n="usecases.research.feature1">Zero application code changes</li>
+                    <li data-i18n="usecases.research.feature1">Compare local vs. cloud model performance</li>
                     <li data-i18n="usecases.research.feature2">A/B testing any model combination</li>
-                    <li data-i18n="usecases.research.feature3">Dynamic provider migration</li>
+                    <li data-i18n="usecases.research.feature3">Cost optimization with local-first routing</li>
                 </ul>
             </div>
 
