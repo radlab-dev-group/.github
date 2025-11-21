@@ -1,81 +1,76 @@
 <section id="features" class="features">
     <div class="container">
-        <h2 class="section-title" data-i18n="features.title">Kluczowe funkcjonalności</h2>
+        <h2 class="section-title" data-i18n="features.title">Comprehensive LLM Infrastructure Management</h2>
         <p class="section-subtitle" data-i18n="features.subtitle" data-i18n-html="true">
-            <strong>Kompletne</strong> rozwiązanie do zarządzania infrastrukturą <strong>LLMów uruchomionych przede wszystkim lokalnie, ale i w chmurze</strong>. W jednym miejscu integruje wszystkich dostawców.
+            <strong>Complete</strong> platform for managing <strong>on-premise and cloud LLM infrastructure at any scale</strong>. Unified management for all major AI providers with production-grade security and observability. Open-source architecture enables customization and community-driven enhancements.
         </p>
         <div class="features-grid">
 
             <div class="feature-card">
                 <div class="feature-icon">🔒</div>
-                <h3 data-i18n="features.anonymization.title">Wbudowana Anonimizacja</h3>
-                <p data-i18n="features.anonymization.desc" data-i18n-html="true">Wbudowany, bardzo szybko działający plugin <code>fast_masker</code>
-                    maskujący wrażliwe dane: PESEL, NIP, KRS, REGON, e-maile,
-                    numery kont, adresy IP i więcej – przed wysłaniem do modelu.
+                <h3 data-i18n="features.anonymization.title">Built-in PII Anonymization</h3>
+                <p data-i18n="features.anonymization.desc" data-i18n-html="true">High-performance <code>fast_masker</code> plugin automatically detects and masks sensitive data including national IDs, tax numbers, emails, account numbers, IP addresses, and more before transmission to LLM providers. GDPR and SOC2 compliant by design.
                 </p>
             </div>
 
             <div class="feature-card">
                 <div class="feature-icon">⚖️</div>
-                <h3 data-i18n="features.loadbalancing.title">Load Balancing</h3>
+                <h3 data-i18n="features.loadbalancing.title">Flexible Load Balancing</h3>
                 <p data-i18n="features.loadbalancing.desc" data-i18n-html="true">
-                    4 strategie balansowania:
+                    Four configurable load balancing strategies:
                     <code>balanced</code>,
                     <code>weighted</code>,
                     <code>first_available</code>,
                     <code>first_available_optim</code>.
-                    Optymalne wykorzystanie zasobów i maksymalna dostępność.
+                    Optimize resource utilization and ensure high availability for any deployment size.
                 </p>
             </div>
 
             <div class="feature-card">
                 <div class="feature-icon">🔀</div>
-                <h3 data-i18n="features.routing.title">Zunifikowany Routing</h3>
+                <h3 data-i18n="features.routing.title">Unified Multi-Provider Routing</h3>
                 <p data-i18n="features.routing.desc">
-                    Jedno REST API dla OpenAI, Ollama, vLLM, LM Studio i innych dostawców.
-                    Każdy endpoint obsługuje wszystkich dostawców z automatyczną konwersją
-                    między standardami i load balancingiem.
+                    Single REST API supporting OpenAI, Ollama, vLLM, LM Studio, and other major providers.
+                    Automatic protocol conversion, seamless provider switching, and intelligent load distribution across all endpoints.
                 </p>
             </div>
 
             <div class="feature-card">
                 <div class="feature-icon">📊</div>
-                <h3 data-i18n="features.monitoring.title">Monitoring i Metryki</h3>
+                <h3 data-i18n="features.monitoring.title">Full Observability</h3>
                 <p data-i18n="features.monitoring.desc">
-                    Integracja z Prometheus: metryki wydajności, liczba zapytań, opóźnienia, błędy per provider.
-                    Pełny podgląd routera np. w Grafanie z automatycznym sprawdzaniem dostępności routera.
+                    Native Prometheus integration delivering real-time metrics: request rates, latency percentiles, error rates per provider, and health checks.
+                    Complete visibility through Grafana dashboards with automatic service discovery and alerting.
                 </p>
             </div>
 
             <div class="feature-card">
                 <div class="feature-icon">🚀</div>
-                <h3 data-i18n="features.performance.title">Wysoka Wydajność</h3>
+                <h3 data-i18n="features.performance.title">High Performance</h3>
                 <p data-i18n="features.performance.desc">
-                    Odpowiedzi strumieniowane, zarządzanie pulą połączeń, broker Redis.
-                    Optymalizacja pod kątem minimum późnień i maksimum wydajności.</p>
+                    Streaming responses, connection pooling, Redis broker for distributed deployments.
+                    Optimized for minimal latency and maximum throughput across various deployment scenarios.</p>
             </div>
 
             <div class="feature-card">
                 <div class="feature-icon">🔧</div>
-                <h3 data-i18n="features.config.title">Łatwa Konfiguracja</h3>
-                <p data-i18n="features.config.desc">Konfiguracja przez JSON i zmienne środowiskowe. Docker-ready z oficjalnymi obrazami. Deploy w minuty,
-                    nie godziny.</p>
+                <h3 data-i18n="features.config.title">Easy Deployment</h3>
+                <p data-i18n="features.config.desc">Infrastructure-as-code configuration via JSON and environment variables. Docker and Kubernetes ready with official images. Deploy in minutes with flexible configuration options for any environment.</p>
             </div>
 
             <div class="feature-card">
                 <div class="feature-icon">🛠️</div>
-                <h3 data-i18n="features.endpoints.title">Wbudowane endpointy</h3>
+                <h3 data-i18n="features.endpoints.title">Extensible Endpoints</h3>
                 <p data-i18n="features.endpoints.desc">
-                    Odpowiedzi do RAG, generowanie pytań, tłumaczenie
-                    i wiele innych dostępnych od ręki.
+                    Ready-to-use endpoints for RAG pipelines, question generation, translation,
+                    and other common AI workflows. Easily extensible for custom use cases.
                 </p>
             </div>
 
             <div class="feature-card">
                 <div class="feature-icon">⚙️</div>
-                <h3 data-i18n="features.web.title">Interfejsy webowe</h3>
-                <p data-i18n="features.web.desc">Configs Manager do zarządzania konfiguracjami
-                    oraz Anonymyzer do bezpiecznej komunikacji z providerami LLM.</p>
+                <h3 data-i18n="features.web.title">Management Interfaces</h3>
+                <p data-i18n="features.web.desc">Configuration Manager for centralized infrastructure control and Anonymizer interface for secure, compliant LLM communication.</p>
             </div>
 
         </div>
