@@ -1458,6 +1458,56 @@ footer {
     }
 }
 
+@media (max-width: 1280px) {
+    /* 2‑column layout for the grids */
+    .features-grid,
+    .performance-grid,
+    .use-case-list {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    /* ---------- Hamburger (menu toggle) ---------- */
+    .menu-toggle {
+        /* show the hamburger just like on mobile */
+        display: inline-flex;
+        margin-left: auto;
+        z-index: 60;
+    }
+
+    /* ---------- Navigation (mobile style) ---------- */
+    .main-nav {
+        /* hidden by default – will be shown when .is-open is added */
+        position: absolute;
+        top: var(--header-height);
+        left: 0;
+        right: 0;
+        padding: 0.75rem 1.25rem 1rem;
+        flex-direction: column;
+        gap: 0.8rem;
+        background: radial-gradient(circle at top left, rgba(56, 189, 248, 0.14), transparent 55%),
+        rgba(2, 6, 23, 0.98);
+        border-bottom: 1px solid rgba(148, 163, 184, 0.25);
+        box-shadow: 0 18px 40px rgba(15, 23, 42, 0.9);
+
+        display: none;
+        opacity: 0;
+        pointer-events: none;
+        z-index: 55;
+        transition: opacity 200ms ease;
+    }
+
+    .main-nav a {
+        font-size: 0.82rem;
+    }
+
+    .main-nav.is-open {
+        /* show the menu when the JS toggles the class */
+        display: flex;
+        opacity: 1;
+        pointer-events: auto;
+    }
+}
+
 @media (max-width: 768px) {
     body {
         padding-top: calc(var(--header-height) + 6px);
