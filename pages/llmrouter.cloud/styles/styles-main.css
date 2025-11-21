@@ -145,7 +145,7 @@ header {
 
 .logo {
     font-weight: 700;
-    font-size: 1.3rem;
+    font-size: 1.0rem;
     letter-spacing: 0.08em;
     text-transform: uppercase;
     color: var(--fg);
