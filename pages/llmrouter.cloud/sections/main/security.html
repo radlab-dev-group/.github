@@ -2,40 +2,38 @@
     <div class="container">
         <div class="security-content">
             <div class="security-text">
-                <h2 data-i18n="security.title">Bezpieczeństwo w centrum architektury!</h2>
+                <h2 data-i18n="security.title">Security-First Architecture</h2>
                 <p data-i18n="security.description">
-                    LLM Router Cloud został zaprojektowany z myślą o środowiskach gdzie bezpieczeństwo danych
-                    jest priorytetem. Każdy request (klucze i wartości) może być automatycznie anonimizowany
-                    przed przekazaniem do dowolnego dostawcy LLM, zarówno lokalnie jak i w chmurze.
+                    LLM Router is built with data protection at its core, suitable for organizations of any size where data security matters. Every request can be automatically inspected and anonymized before transmission to any LLM provider, whether on-premise or cloud-based, ensuring compliance with GDPR, HIPAA, SOC2, and other regulatory frameworks.
                 </p>
 
                 <ul class="security-features">
-                    <li data-i18n="security.feature1">Automatyczna detekcja i maskowanie danych osobowych (RODO/GDPR)</li>
-                    <li data-i18n="security.feature2">Wsparcie dla polskich identyfikatorów: PESEL, NIP, KRS, REGON</li>
-                    <li data-i18n="security.feature3">Maskowanie danych finansowych (numery kont, kwoty)</li>
-                    <li data-i18n="security.feature4">Usuwanie metadanych i request-injectionów z requestów</li>
-                    <li data-i18n="security.feature5">Walidacja sum kontrolnych dla zidentyfikowanych identyfikatorów</li>
-                    <li data-i18n="security.feature6">Rozszerzalny silnik maskowania z możliwością dodania własnych reguł</li>
-                    <li data-i18n="security.feature7">Wymymuszone maskowanie ze wskazaną strategią dla całego payloadu</li>
-                    <li data-i18n="security.feature8">Dodatkowe strategia anonimizacji lokalnym GenAI (opcjonalny)</li>
+                    <li data-i18n="security.feature1">Automatic PII detection and masking (GDPR/CCPA/HIPAA compliant)</li>
+                    <li data-i18n="security.feature2">Support for international identifiers: SSN, tax IDs, national IDs, business registration numbers</li>
+                    <li data-i18n="security.feature3">Financial data masking (account numbers, credit cards, transaction amounts)</li>
+                    <li data-i18n="security.feature4">Prompt injection detection and removal with security layer filtering</li>
+                    <li data-i18n="security.feature5">Checksum validation for detected identifiers ensuring accuracy</li>
+                    <li data-i18n="security.feature6">Extensible masking engine with custom rule support for industry-specific requirements</li>
+                    <li data-i18n="security.feature7">Enforced anonymization with configurable strategies across entire payload</li>
+                    <li data-i18n="security.feature8">Optional local GenAI anonymization strategy for air-gapped deployments</li>
                 </ul>
 
             </div>
             <div class="code-example">
                 <span class="comment" data-i18n="security.code.comment1"># =======================================</span>
-                <span class="comment" data-i18n="security.code.comment2"># Przykład: Automatyczna anonimizacja</span>
+                <span class="comment" data-i18n="security.code.comment2"># Example: Automatic Anonymization</span>
                 <span class="keyword">export</span> LLM_ROUTER_FORCE_ANONYMISATION=<span class="string">1</span>
-                <span class="comment" data-i18n="security.code.comment3"># Przed wysłaniem do LLM:</span>
-                <span class="string">"Odeślij te dane: PESEL: 92032145678,
-tel: +48 123 456 789,
-email: jan.kowalski@example.com,
-NIP: 1234563218"</span>
+                <span class="comment" data-i18n="security.code.comment3"># Before transmission to LLM:</span>
+                <span class="string">"Process this data: SSN: 123-45-6789,
+phone: +1 555-123-4567,
+email: john.doe@enterprise.com,
+account: 4532-1234-5678-9010"</span>
 
-                <span class="comment" data-i18n="security.code.comment4"># Po anonimizacji:</span>
-                <span class="string">"Odeślij te dane, PESEL: {{PESEL}},
-tel: {{PHONE}},
+                <span class="comment" data-i18n="security.code.comment4"># After anonymization:</span>
+                <span class="string">"Process this data: SSN: {{SSN}},
+phone: {{PHONE}},
 email: {{EMAIL}},
-NIP: {{NIP}}"</span>
+account: {{ACCOUNT}}"</span>
             </div>
         </div>
     </div>
