@@ -1,128 +1,136 @@
 <section id="use-cases" class="use-cases">
     <div class="container">
-        <h2 class="section-title" data-i18n="usecases.title">Przypadki użycia</h2>
+        <h2 class="section-title" data-i18n="usecases.title">Use Cases</h2>
         <p class="section-subtitle" data-i18n="usecases.subtitle">
-            LLM Router Cloud sprawdza się w różnych scenariuszach biznesowych i technicznych.
-            Niezależnie czy programujesz z AI, czy posiadasz już istniejącą aplikację,
-            która wykorzystuje providerów modeli językowych.
+            LLM Router delivers value across diverse scenarios for development and operations teams.
+            Whether building new AI-powered applications, modernizing existing systems, or experimenting with models,
+            it provides flexible infrastructure that scales with your needs.
         </p>
         <div class="use-case-list">
 
             <div class="use-case">
-                <h3 data-i18n="usecases.corporate.title">🏢 Środowiska Korporacyjne</h3>
+                <h3 data-i18n="usecases.corporate.title">🏢 Centralized AI Management</h3>
                 <p data-i18n="usecases.corporate.problem" data-i18n-html="true">
-                    <strong>Problem:</strong>
-                    Rozproszony dostęp do różnych modeli LLM bez centralnej kontroli.
+                    <strong>Challenge:</strong>
+                    Scattered LLM access across teams without unified governance, security controls, or cost visibility.
                 </p>
                 <p data-i18n="usecases.corporate.solution" data-i18n-html="true">
-                    <strong>Rozwiązanie:</strong>
-                    LLM-Router centralizuje wszystkie requesty z pojedynczego endpointa,
-                    umożliwiając kontrolę nad danymi wrażliwymi i compliance z RODO/GDPR poprzez automatyczną
-                    anonimizację danych osobowych przed wysłaniem do dostawcy modelu.
+                    <strong>Solution:</strong>
+                    LLM Router centralizes all AI traffic through a single gateway,
+                    enabling comprehensive data governance, automatic compliance through PII anonymization,
+                    and centralized access control before requests reach any provider.
                 </p>
                 <ul class="use-case-features">
-                    <li data-i18n="usecases.corporate.feature1">Centralna kontrola dostępu i uprawnień</li>
-                    <li data-i18n="usecases.corporate.feature2">Audyt wszystkich zapytań</li>
-                    <li data-i18n="usecases.corporate.feature3">Brak rate limitingu, szybkie działanie.</li>
+                    <li data-i18n="usecases.corporate.feature1">Centralized access and policy control</li>
+                    <li data-i18n="usecases.corporate.feature2">Complete audit trail for compliance</li>
+                    <li data-i18n="usecases.corporate.feature3">No rate limiting overhead, optimized throughput</li>
                 </ul>
             </div>
 
             <div class="use-case">
-                <h3 data-i18n="usecases.highavailability.title">📈 Systemy Wysoko Dostępne</h3>
+                <h3 data-i18n="usecases.highavailability.title">📈 High Availability Systems</h3>
                 <p data-i18n="usecases.highavailability.problem" data-i18n-html="true">
-                    <strong>Problem:</strong>
-                    Wypadki dostawców LLM prowadzą do niedostępności całej aplikacji.
+                    <strong>Challenge:</strong>
+                    Provider outages cause complete application downtime, disrupting operations.
                 </p>
                 <p data-i18n="usecases.highavailability.solution" data-i18n-html="true">
-                    <strong>Rozwiązanie:</strong>
-                    Automatyczne przełączanie między providerami, health checks,
-                    obsługa niedostępności dostawców. Maksymalna dostępność dzięki load balancingu i redundancji
-                    dostawców LLM połączona z opcjonalną anonimizacją danych w locie.
+                    <strong>Solution:</strong>
+                    Automatic failover between providers with continuous health monitoring and circuit breakers.
+                    Achieve high uptime through intelligent load balancing, provider redundancy, and real-time traffic routing with optional in-flight anonymization.
                 </p>
                 <ul class="use-case-features">
-                    <li data-i18n="usecases.highavailability.feature1">Balansowanie obciążenia</li>
-                    <li data-i18n="usecases.highavailability.feature2">Sprawdzanie dostępności każdego dostawcy</li>
-                    <li data-i18n="usecases.highavailability.feature3">Automatyczne przełączanie dostawców</li>
+                    <li data-i18n="usecases.highavailability.feature1">Multi-provider load distribution</li>
+                    <li data-i18n="usecases.highavailability.feature2">Real-time health checks per provider</li>
+                    <li data-i18n="usecases.highavailability.feature3">Automatic failover and circuit breaking</li>
                 </ul>
             </div>
 
             <div class="use-case">
-                <h3 data-i18n="usecases.healthcare.title">🏥 Sektor Zdrowia i Finanse</h3>
+                <h3 data-i18n="usecases.healthcare.title">🏥 Data Protection & Compliance</h3>
                 <p data-i18n="usecases.healthcare.problem" data-i18n-html="true">
-                    <strong>Problem:</strong>
-                    Srogi wymóg ochrony danych pacjentów i klientów, ryzyko karne i regulacje.
+                    <strong>Challenge:</strong>
+                    Strict regulatory requirements for data protection (GDPR, HIPAA) with penalties for breaches.
                 </p>
                 <p data-i18n="usecases.healthcare.solution" data-i18n-html="true">
-                    <strong>Rozwiązanie:</strong>
-                    Przetwarzanie dokumentacji medycznej i finansowej
-                    z gwarancją ochrony danych. Automatyczne maskowanie PESEL, numerów kont bankowych,
-                    danych osobowych pacjentów i klientów. Wymuszona anonimizacja - niezależna od aplikacji.
+                    <strong>Solution:</strong>
+                    Process sensitive documents with built-in data protection.
+                    Automatic masking of PHI, PII, account numbers, and sensitive identifiers. Enforced anonymization independent of application implementation ensuring compliance at the infrastructure layer.
                 </p>
                 <ul class="use-case-features">
-                    <li data-i18n="usecases.healthcare.feature1">Maskowanie 15+ typów identyfikatorów</li>
-                    <li data-i18n="usecases.healthcare.feature2">Walidacja sum kontrolnych identyfikatorów</li>
-                    <li data-i18n="usecases.healthcare.feature3">Tryb wymuszonej anonimizacji</li>
+                    <li data-i18n="usecases.healthcare.feature1">15+ identifier types with validation</li>
+                    <li data-i18n="usecases.healthcare.feature2">Checksum validation for accuracy</li>
+                    <li data-i18n="usecases.healthcare.feature3">Enforced anonymization mode</li>
                 </ul>
             </div>
 
             <div class="use-case">
-                <h3 data-i18n="usecases.research.title">🔬 Badania i Development</h3>
+                <h3 data-i18n="usecases.local.title">🖥️ Self-Hosted Local Models</h3>
+                <p data-i18n="usecases.local.problem" data-i18n-html="true">
+                    <strong>Challenge:</strong>
+                    Running models on local infrastructure (vLLM, Ollama, LM Studio) requires managing multiple endpoints and protocols manually.
+                </p>
+                <p data-i18n="usecases.local.solution" data-i18n-html="true">
+                    <strong>Solution:</strong>
+                    LLM Router provides unified management for all your local model deployments. Run models on your own hardware with full control, distribute load across multiple local instances, and optionally add cloud providers as backup. Keep data and processing entirely within your infrastructure.
+                </p>
+                <ul class="use-case-features">
+                    <li data-i18n="usecases.local.feature1">Full data sovereignty and control</li>
+                    <li data-i18n="usecases.local.feature2">Load balancing across local model instances</li>
+                    <li data-i18n="usecases.local.feature3">Optional cloud fallback for peak loads</li>
+                </ul>
+            </div>
+
+            <div class="use-case">
+                <h3 data-i18n="usecases.research.title">🔬 Model Experimentation & A/B Testing</h3>
                 <p data-i18n="usecases.research.problem" data-i18n-html="true">
-                    <strong>Problem:</strong>
-                    Eksperymentowanie z różnymi modelami wymaga zmian w kodzie aplikacji.
+                    <strong>Challenge:</strong>
+                    Testing different models and providers requires code changes and complex infrastructure setup.
                 </p>
                 <p data-i18n="usecases.research.solution" data-i18n-html="true">
-                    <strong>Rozwiązanie:</strong>
-                    Testowanie różnych modeli LLM bez żadnych zmian w kodzie aplikacji.
-                    Łatwe przełączanie między dostawcami (OpenAI, Ollama, vLLM, LM Studio),
-                    testy A/B modeli, strategia wyboru providera dopasowana do kosztów.
+                    <strong>Solution:</strong>
+                    Experiment with local models (vLLM, Ollama, LM Studio) and cloud providers without any application code changes.
+                    Configuration-driven routing enables seamless switching, A/B testing between different models, and cost-optimized strategies that prioritize local deployments.
                 </p>
                 <ul class="use-case-features">
-                    <li data-i18n="usecases.research.feature1">Zero zmian w kodzie aplikacji</li>
-                    <li data-i18n="usecases.research.feature2">Testy A/B dowolnych modeli</li>
-                    <li data-i18n="usecases.research.feature3">Automatyczna migracja między providerami</li>
+                    <li data-i18n="usecases.research.feature1">Compare local vs. cloud model performance</li>
+                    <li data-i18n="usecases.research.feature2">A/B testing any model combination</li>
+                    <li data-i18n="usecases.research.feature3">Cost optimization with local-first routing</li>
                 </ul>
             </div>
 
 
             <div class="use-case">
-                <h3 data-i18n="usecases.realtime.title">🚀 Przetwarzanie Real Time</h3>
+                <h3 data-i18n="usecases.realtime.title">🚀 Low-Latency Real-Time Processing</h3>
                 <p data-i18n="usecases.realtime.problem" data-i18n-html="true">
-                    <strong>Problem:</strong>
-                    Opóźnienia w przetwarzaniu, brak obsługi strumieniowania dla dużych odpowiedzi.
+                    <strong>Challenge:</strong>
+                    Processing delays and lack of streaming support impacting user experience in real-time applications.
                 </p>
                 <p data-i18n="usecases.realtime.solution" data-i18n-html="true">
-                    <strong>Rozwiązanie:</strong>
-                    LLM-Router obsługuje Server-Sent Events (SSE) i strumieniowanie odpowiedzi
-                    z automatyczną konwersją standardów.
-                    Optymalizacja dla minimalizacji opóźnień,
-                    Centralizacja w Redisie dla rozporoszonych
-                    systemów, obsługa zapytań bez blokowania.
+                    <strong>Solution:</strong>
+                    LLM Router supports Server-Sent Events (SSE) and response streaming with automatic protocol conversion.
+                    Optimized for minimal latency with connection pooling, Redis centralization for distributed systems, and non-blocking request handling.
                 </p>
                 <ul class="use-case-features">
-                    <li data-i18n="usecases.realtime.feature1" data-i18n-html="true">Strumieniowanie SSE <span class="arrow-icon">&#8596;</span> OLLAMA</li>
-                    <li data-i18n="usecases.realtime.feature2">Pula połączeń i przetwarzanie potokowe</li>
-                    <li data-i18n="usecases.realtime.feature3">Centralny Redis i równoważenie obciążenia</li>
+                    <li data-i18n="usecases.realtime.feature1" data-i18n-html="true">SSE streaming <span class="arrow-icon">&#8596;</span> Ollama conversion</li>
+                    <li data-i18n="usecases.realtime.feature2">Connection pooling and pipelining</li>
+                    <li data-i18n="usecases.realtime.feature3">Distributed Redis coordination</li>
                 </ul>
             </div>
 
             <div class="use-case">
-                <h3 data-i18n="usecases.legacy.title">⚡ Integracja Starszych Systemów</h3>
+                <h3 data-i18n="usecases.legacy.title">⚡ Legacy System Modernization</h3>
                 <p data-i18n="usecases.legacy.problem" data-i18n-html="true">
-                    <strong>Problem:</strong>
-                    Starsze aplikacje nie mają wspólnego interfejsu do komunikacji z modelami LLM.
+                    <strong>Challenge:</strong>
+                    Legacy applications lack modern interfaces for LLM integration, requiring extensive refactoring.
                 </p>
                 <p data-i18n="usecases.legacy.solution" data-i18n-html="true">
-                    <strong>Rozwiązanie:</strong>
-                    Router jako jednolite proxy dla wszystkich starszych systemów z jedną spójną
-                    warstwą API, dostępną z dowolnej aplikacji – niezależnie od wersji, architektury
-                    czy języka programowania. Modernizacja funkcjonalności bez
-                    potrzeby refaktoryzacji istniejącego kodu.
+                    <strong>Solution:</strong>
+                    Deploy LLM Router as a unified proxy layer providing consistent REST API access from any application—regardless of version, architecture, or programming language. Modernize AI capabilities without refactoring existing codebases.
                 </p>
                 <ul class="use-case-features">
-                    <li data-i18n="usecases.legacy.feature1">Centralne, ujednolicone API REST</li>
-                    <li data-i18n="usecases.legacy.feature2">Kompatybilność z dowolnym dostawcą</li>
-                    <li data-i18n="usecases.legacy.feature3">Migracja bez zmian w istniejącym kodzie</li>
+                    <li data-i18n="usecases.legacy.feature1">Unified REST API gateway</li>
+                    <li data-i18n="usecases.legacy.feature2">Universal provider compatibility</li>
+                    <li data-i18n="usecases.legacy.feature3">Zero-touch legacy integration</li>
                 </ul>
             </div>
         </div>
