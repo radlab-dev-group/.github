@@ -105,9 +105,19 @@
                 <td></td>
             </tr>
             <tr>
-                <td>LLM_ROUTER_FORCE_ANONYMISATION</td>
-                <td>Each request payload will be fully anonymised.</td>
+                <td>LLM_ROUTER_FORCE_MASKING</td>
+                <td>Each request payload will be fully masked.</td>
                 <td>False</td>
+            </tr>
+            <tr>
+                <td>LLM_ROUTER_MASKING_WITH_AUDIT</td>
+                <td>Each masking operation is recorded in an audit log.</td>
+                <td>False</td>
+            </tr>
+            <tr>
+                <td>LLM_ROUTER_MASKING_STRATEGY_PIPELINE</td>
+                <td>Defines the ordered list of masking strategies.</td>
+                <td>['fast_masker']</td>
             </tr>
             </tbody>
         </table>
