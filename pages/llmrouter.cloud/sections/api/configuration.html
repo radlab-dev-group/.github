@@ -119,21 +119,21 @@
                 <td>Ordered list of guardrail strategies (request).</td>
                 <td>-</td>
             </tr>
-            <tr>
-                <td>LLM_ROUTER_FORCE_GUARDRAIL_RESPONSE</td>
-                <td>Force guardrail evaluation on every response before user receives the result.</td>
-                <td>False</td>
-            </tr>
-            <tr>
-                <td>LLM_ROUTER_GUARDRAIL_WITH_AUDIT_RESPONSE</td>
-                <td>Audits all guardrail decisions (response).</td>
-                <td>False</td>
-            </tr>
-            <tr>
-                <td>GUARDRAIL_STRATEGY_PIPELINE_RESPONSE</td>
-                <td>Ordered list of guardrail strategies (response).</td>
-                <td>-</td>
-            </tr>
+            <!--            <tr>-->
+            <!--                <td>LLM_ROUTER_FORCE_GUARDRAIL_RESPONSE</td>-->
+            <!--                <td>Force guardrail evaluation on every response before user receives the result.</td>-->
+            <!--                <td>False</td>-->
+            <!--            </tr>-->
+            <!--            <tr>-->
+            <!--                <td>LLM_ROUTER_GUARDRAIL_WITH_AUDIT_RESPONSE</td>-->
+            <!--                <td>Audits all guardrail decisions (response).</td>-->
+            <!--                <td>False</td>-->
+            <!--            </tr>-->
+            <!--            <tr>-->
+            <!--                <td>GUARDRAIL_STRATEGY_PIPELINE_RESPONSE</td>-->
+            <!--                <td>Ordered list of guardrail strategies (response).</td>-->
+            <!--                <td>-</td>-->
+            <!--            </tr>-->
             <tr>
                 <td>LLM_ROUTER_FORCE_MASKING</td>
                 <td>Each request payload will be fully masked.</td>
@@ -148,6 +148,14 @@
                 <td>LLM_ROUTER_MASKING_STRATEGY_PIPELINE</td>
                 <td>Defines the ordered list of masking strategies.</td>
                 <td>['fast_masker']</td>
+            </tr>
+            <tr>
+                <td>LLM_ROUTER_GUARDRAIL_NASK_GUARD_HOST_EP</td>
+                <td>Full endpoint address with the <code>naskguard</code>
+                    service running, <strong>NOTE!</strong> Read
+                    the plugin license before using the proposed model!
+                </td>
+                <td>-</td>
             </tr>
             </tbody>
         </table>
