@@ -106,17 +106,32 @@
             </tr>
             <tr>
                 <td>LLM_ROUTER_FORCE_GUARDRAIL_REQUEST</td>
-                <td>Forces guardrail evaluation on every request.</td>
+                <td>Force guardrail evaluation on every request.</td>
                 <td>False</td>
             </tr>
             <tr>
                 <td>LLM_ROUTER_GUARDRAIL_WITH_AUDIT_REQUEST</td>
-                <td>Audits all guardrail decisions.</td>
+                <td>Audits all guardrail decisions (request).</td>
                 <td>False</td>
             </tr>
             <tr>
                 <td>GUARDRAIL_STRATEGY_PIPELINE_REQUEST</td>
-                <td>Ordered list of guardrail strategies.</td>
+                <td>Ordered list of guardrail strategies (request).</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td>LLM_ROUTER_FORCE_GUARDRAIL_RESPONSE</td>
+                <td>Force guardrail evaluation on every response before user receives the result.</td>
+                <td>False</td>
+            </tr>
+            <tr>
+                <td>LLM_ROUTER_GUARDRAIL_WITH_AUDIT_RESPONSE</td>
+                <td>Audits all guardrail decisions (response).</td>
+                <td>False</td>
+            </tr>
+            <tr>
+                <td>GUARDRAIL_STRATEGY_PIPELINE_RESPONSE</td>
+                <td>Ordered list of guardrail strategies (response).</td>
                 <td>-</td>
             </tr>
             <tr>
