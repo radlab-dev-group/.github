@@ -12,31 +12,37 @@
                 <strong>2. Parameter Extraction</strong> – <code>FlaskEndpointRegistrar</code> extracts JSON/form params
             </div>
             <div class="flow-step">
-                <strong>3. Endpoint Dispatch</strong> – <code>run_ep()</code> called on concrete EndpointI subclass
+                <strong>3. Guardrail Validation</strong> – (optional) <code>GuardrailPipeline</code> validates content safety through sequential plugins (e.g., NASK Guard)
             </div>
             <div class="flow-step">
-                <strong>4. Payload Preparation</strong> – <code>prepare_payload()</code> normalizes params, validates
+                <strong>4. Data Masking</strong> – (optional) <code>MaskerPipeline</code> anonymizes sensitive data through sequential plugins (e.g., fast_masker)
+            </div>
+            <div class="flow-step">
+                <strong>5. Endpoint Dispatch</strong> – <code>run_ep()</code> called on concrete EndpointI subclass
+            </div>
+            <div class="flow-step">
+                <strong>6. Payload Preparation</strong> – <code>prepare_payload()</code> normalizes params, validates
                 required args
             </div>
             <div class="flow-step">
-                <strong>5. Model Resolution</strong> – <code>get_model_provider()</code> resolves model name via
+                <strong>7. Model Resolution</strong> – <code>get_model_provider()</code> resolves model name via
                 ModelHandler
             </div>
             <div class="flow-step">
-                <strong>6. Provider Selection</strong> – <code>ProviderChooser</code> picks provider using configured
+                <strong>8. Provider Selection</strong> – <code>ProviderChooser</code> picks provider using configured
                 strategy
             </div>
             <div class="flow-step">
-                <strong>7. Prompt Injection</strong> – (optional) System prompt injected from <code>PromptHandler</code>
+                <strong>9. Prompt Injection</strong> – (optional) System prompt injected from <code>PromptHandler</code>
             </div>
             <div class="flow-step">
-                <strong>8. HTTP Execution</strong> – <code>HttpRequestExecutor</code> sends request to external LLM API
+                <strong>10. HTTP Execution</strong> – <code>HttpRequestExecutor</code> sends request to external LLM API
             </div>
             <div class="flow-step">
-                <strong>9. Response Handling</strong> – Response parsed, optionally streamed via SSE
+                <strong>11. Response Handling</strong> – Response parsed, optionally streamed via SSE
             </div>
             <div class="flow-step">
-                <strong>10. Retry Logic</strong> – (on failure) Automatic retry with backoff, up to <code>MAX_RECONNECTIONS</code>
+                <strong>12. Retry Logic</strong> – (on failure) Automatic retry with backoff, up to <code>MAX_RECONNECTIONS</code>
             </div>
         </div>
     </div>

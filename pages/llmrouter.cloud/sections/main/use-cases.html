@@ -46,6 +46,23 @@
             </div>
 
             <div class="use-case">
+                <h3 data-i18n="usecases.security.title">🛡️ Multi-Layer Security with Guardrails & Masking</h3>
+                <p data-i18n="usecases.security.problem" data-i18n-html="true">
+                    <strong>Challenge:</strong>
+                    Organizations need both content safety validation and data protection before sending requests to LLM providers, but implementing these controls requires complex infrastructure.
+                </p>
+                <p data-i18n="usecases.security.solution" data-i18n-html="true">
+                    <strong>Solution:</strong>
+                    LLM Router provides a two-layer security system: <strong>guardrail pipelines</strong> validate content safety and block prohibited requests, while <strong>masking pipelines</strong> automatically anonymize sensitive data. Configure sequential processing stages for both guardrails and maskers, ensuring complete protection before requests reach any LLM provider.
+                </p>
+                <ul class="use-case-features">
+                    <li data-i18n="usecases.security.feature1">Sequential guardrail validation (NASK Guard + custom plugins)</li>
+                    <li data-i18n="usecases.security.feature2">Automatic PII masking with 15+ rule types</li>
+                    <li data-i18n="usecases.security.feature3">Pipeline architecture for composable security layers</li>
+                </ul>
+            </div>
+
+            <div class="use-case">
                 <h3 data-i18n="usecases.healthcare.title">🏥 Data Protection & Compliance</h3>
                 <p data-i18n="usecases.healthcare.problem" data-i18n-html="true">
                     <strong>Challenge:</strong>
