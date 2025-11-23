@@ -41,7 +41,7 @@ export const translations = {
 
     // Security
     'security.title': 'Architektura z bezpieczeństwem na pierwszym miejscu',
-    'security.description': 'LLM Router został zaprojektowany z myślą o środowiskach gdzie bezpieczeństwo danych oraz zgodność z SOC2 ma znaczenie. Każde żądanie jest automatycznie chronione przez dwuwarstwowy system bezpieczeństwa: guardrails walidujące bezpieczeństwo treści przed przetwarzaniem oraz pipeline maskerów anonimizujące wrażliwe dane przed transmisją — czy to do lokalnych modeli, cze dane bezpiecznie w swojej infrastrukturze.',
+    'security.description': 'LLM Router został zaprojektowany z myślą o środowiskach gdzie bezpieczeństwo danych oraz zgodność z SOC2 ma znaczenie. Każde żądanie jest automatycznie chronione przez dwuwarstwowy system bezpieczeństwa: guardrails walidujące bezpieczeństwo treści przed przetwarzaniem oraz pipeline maskerów anonimizujące wrażliwe dane przed dalszą transmisją.',
     'security.guardrails.title': 'Guardrails - Warstwa Bezpieczeństwa Treści',
     'security.guardrails.feature1': 'Wieloetapowe pipeline guardrails do walidacji i kontroli bezpieczeństwa treści',
     'security.guardrails.feature2': 'Integracja NASK Guard dla bezpieczeństwa treści w języku polskim (model NASK-PIB/PL-Guard)',
@@ -200,7 +200,7 @@ export const translations = {
 
     // Security
     'security.title': 'Security-First Architecture',
-    'security.description': 'LLM Router is designed for environments where data security and SOC2 compliance matter. Every request is automatically protected through a two-layer security system: guardrails validating content safety before processing, and masking pipelines anonymizing sensitive data before transmission—whether to local models or cloud. Keep your data secure within your infrastructure.',
+    'security.description': 'LLM Router was designed with environments in mind where data security and SOC 2 compliance matter. Every request is automatically protected by a two‑layer security system: guardrails that validate content safety before processing, and a masking pipeline that anonymizes sensitive data before further transmission.',
     'security.guardrails.title': 'Guardrails - Content Safety Layer',
     'security.guardrails.feature1': 'Multi-stage guardrail pipelines for content validation and safety control',
     'security.guardrails.feature2': 'NASK Guard integration for Polish language content safety (NASK-PIB/PL-Guard model)',
