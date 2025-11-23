@@ -4,12 +4,13 @@ const sections = [
   { selector: '#overview',     url: 'sections/api/overview.html' },
   { selector: '#architecture', url: 'sections/api/architecture.html' },
   { selector: '#request-flow', url: 'sections/api/request-flow.html' },
-  { selector: '#endpoints', url: 'sections/api/endpoints.html' },
+  { selector: '#plugins',      url: 'sections/api/plugins.html' },
+  { selector: '#endpoints',    url: 'sections/api/endpoints.html' },
   { selector: '#configuration', url: 'sections/api/configuration.html' },
   { selector: '#lb-strategies', url: 'sections/api/lb-strategies.html' },
-  { selector: '#extending',  url: 'sections/api/extending.html' },
-  { selector: '#monitoring',  url: 'sections/api/monitoring.html' },
-  { selector: '#footer',  url: 'sections/api/footer.html' },
+  { selector: '#extending',    url: 'sections/api/extending.html' },
+  { selector: '#monitoring',   url: 'sections/api/monitoring.html' },
+  { selector: '#footer',       url: 'sections/api/footer.html' },
 
 ];
 

@@ -1,0 +1,135 @@
+<section class="tech-section" id="plugins"
+         style="background: radial-gradient(circle at 50% 0%, rgba(56, 189, 248, 0.08), transparent 60%), #020617; padding: 3rem 0;">
+    <div class="container">
+        <h2 class="section-title">Guardrails & Masking Plugins</h2>
+        <p class="section-subtitle">Multi-layer security through composable plugin pipelines</p>
+
+        <div class="tech-grid">
+            <div class="tech-card">
+                <h3>🛡️ Guardrail Pipelines</h3>
+                <p>
+                    Guardrails provide a first line of defense by validating content safety before processing.
+                    Configured as sequential pipelines, each guardrail plugin can inspect, validate, and potentially
+                    block requests based on safety criteria.
+                </p>
+                <ul>
+                    <li><strong>Pipeline Architecture</strong> – Sequential validation through ordered plugin list</li>
+                    <li><strong>NASK Guard Plugin</strong> – Polish language content safety using PL-Guard model (CC BY-NC-SA 4.0)</li>
+                    <li><strong>Custom Plugins</strong> – Implement <code>HttpPluginInterface</code> for custom guardrails</li>
+                    <li><strong>Configuration</strong> – Define guardrail chains via environment variables</li>
+                </ul>
+                <div class="code-block">
+                    <code>
+# Example: Configure guardrail pipeline
+export LLM_ROUTER_GUARDRAIL_PLUGINS="nask_guard,custom_filter"
+export LLM_ROUTER_GUARDRAIL_NASK_GUARD_HOST_EP="http://localhost:8080/guard"
+
+# Guardrails execute sequentially:
+# 1. NASK Guard validates content safety
+# 2. Custom filter applies additional rules
+# If any guardrail returns unsafe → request blocked
+                    </code>
+                </div>
+            </div>
+
+            <div class="tech-card">
+                <h3>🔒 Masking Pipelines</h3>
+                <p>
+                    Masking pipelines automatically detect and anonymize sensitive data before transmission to LLM providers.
+                    Multiple masker plugins can be chained to apply different anonymization strategies sequentially.
+                </p>
+                <ul>
+                    <li><strong>FastMasker Plugin</strong> – High-performance PII detection with 15+ rule types</li>
+                    <li><strong>Pipeline Composition</strong> – Chain multiple maskers for complex anonymization</li>
+                    <li><strong>Rule Types</strong> – PESEL, NIP, REGON, KRS, emails, phones, IPs, credit cards, etc.</li>
+                    <li><strong>Validation</strong> – Checksum validation for Polish identifiers (PESEL, NIP, REGON)</li>
+                </ul>
+                <div class="code-block">
+                    <code>
+# Example: Configure masking pipeline
+export LLM_ROUTER_FORCE_MASKING=1
+export LLM_ROUTER_MASKER_PLUGINS="fast_masker"
+
+# Input:
+"Contact: john@example.com, PESEL: 44051401359"
+
+# Output (after masking):
+"Contact: {{EMAIL}}, PESEL: {{PESEL}}"
+                    </code>
+                </div>
+            </div>
+
+            <div class="tech-card">
+                <h3>🔧 Plugin Architecture</h3>
+                <p>
+                    Both guardrails and maskers follow a unified plugin architecture, making it easy to extend
+                    the system with custom implementations.
+                </p>
+                <ul>
+                    <li><strong>PluginInterface</strong> – Base class for all plugins with <code>apply(payload)</code> method</li>
+                    <li><strong>Registry Pattern</strong> – Automatic plugin registration and instantiation</li>
+                    <li><strong>Pipeline Execution</strong> – Sequential processing through <code>GuardrailPipeline</code> / <code>MaskerPipeline</code></li>
+                    <li><strong>Error Handling</strong> – Graceful degradation and logging for plugin failures</li>
+                </ul>
+                <div class="code-block">
+                    <code>
+# Implementing a custom guardrail plugin:
+
+from llm_router_plugins.plugin_interface import HttpPluginInterface
+
+class MyGuardPlugin(HttpPluginInterface):
+    name = "my_guard"
+
+    def apply(self, payload: Dict) -> Tuple[bool, Dict]:
+        # Validate content
+        is_safe = validate_content(payload)
+        return is_safe, {"reason": "..."}
+
+# Register in environment:
+export LLM_ROUTER_GUARDRAIL_PLUGINS="my_guard"
+                    </code>
+                </div>
+            </div>
+
+            <div class="tech-card">
+                <h3>⚙️ Configuration & Deployment</h3>
+                <p>
+                    Guardrails and maskers are configured through environment variables, enabling flexible
+                    deployment strategies without code changes.
+                </p>
+                <ul>
+                    <li><strong>Environment Variables</strong> – All configuration via env vars (12-factor app)</li>
+                    <li><strong>Plugin Order</strong> – Define execution order through comma-separated lists</li>
+                    <li><strong>Forced Masking</strong> – <code>LLM_ROUTER_FORCE_MASKING=1</code> enforces anonymization</li>
+                    <li><strong>Per-Endpoint Control</strong> – Enable/disable guardrails and maskers per endpoint</li>
+                </ul>
+                <div class="code-block">
+                    <code>
+# Complete security configuration example:
+
+# Guardrails (executed first)
+export LLM_ROUTER_GUARDRAIL_PLUGINS="nask_guard"
+export LLM_ROUTER_GUARDRAIL_NASK_GUARD_HOST_EP="http://nask-guard:8080"
+
+# Masking (executed after guardrails pass)
+export LLM_ROUTER_FORCE_MASKING=1
+export LLM_ROUTER_MASKER_PLUGINS="fast_masker"
+
+# Request flow:
+# 1. Guardrail validates → blocks if unsafe
+# 2. Masker anonymizes → replaces PII with tokens
+# 3. Request forwarded to LLM provider
+                    </code>
+                </div>
+            </div>
+        </div>
+
+        <div class="tech-note" style="margin-top: 2rem; padding: 1.5rem; background: rgba(56, 189, 248, 0.05); border-left: 4px solid #38bdf8; border-radius: 0.5rem;">
+            <h4 style="margin-top: 0; color: #38bdf8;">📚 More Information</h4>
+            <p style="margin-bottom: 0;">
+                For detailed information about available plugins, masking strategies, and extending the system,
+                see the <a href="https://github.com/radlab-dev-group/llm-router-cloud" style="color: #38bdf8;">plugin documentation</a> in the repository.
+            </p>
+        </div>
+    </div>
+</section>
