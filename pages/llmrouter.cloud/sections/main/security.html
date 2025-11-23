@@ -4,31 +4,57 @@
             <div class="security-text">
                 <h2 data-i18n="security.title">Security-First Architecture</h2>
                 <p data-i18n="security.description">
-                    LLM Router is designed for environments where data security and SOC2 compliance matter. Every request is automatically protected through a two-layer security system: guardrails validating content safety before processing, and masking pipelines anonymizing sensitive data before transmission—whether to local models or cloud. Keep your data secure within your infrastructure.
+                    LLM Router was designed with environments in mind where data security and SOC 2 compliance matter.
+                    Every request is automatically protected by a two‑layer security system: guardrails that validate
+                    content safety before processing, and a masking pipeline that anonymizes sensitive data before
+                    further transmission.
                 </p>
 
                 <h3 data-i18n="security.guardrails.title">Guardrails - Content Safety Layer</h3>
                 <ul class="security-features">
-                    <li data-i18n="security.guardrails.feature1">Multi-stage guardrail pipelines for content validation and safety control</li>
-                    <li data-i18n="security.guardrails.feature2">NASK Guard integration for Polish language content safety (NASK-PIB/PL-Guard model)</li>
-                    <li data-i18n="security.guardrails.feature3">Extensible plugin architecture for custom guardrail implementations</li>
-                    <li data-i18n="security.guardrails.feature4">Blocking requests with unsafe or prohibited content before LLM processing</li>
-                    <li data-i18n="security.guardrails.feature5">Configurable guardrail chains with sequential validation stages</li>
+                    <li data-i18n="security.guardrails.feature1">Multi-stage guardrail pipelines for content validation
+                        and safety control
+                    </li>
+                    <li data-i18n="security.guardrails.feature2">NASK Guard integration for Polish language content
+                        safety (NASK-PIB/PL-Guard model)
+                    </li>
+                    <li data-i18n="security.guardrails.feature3">Extensible plugin architecture for custom guardrail
+                        implementations
+                    </li>
+                    <li data-i18n="security.guardrails.feature4">Blocking requests with unsafe or prohibited content
+                        before LLM processing
+                    </li>
+                    <li data-i18n="security.guardrails.feature5">Configurable guardrail chains with sequential
+                        validation stages
+                    </li>
                 </ul>
 
                 <h3 data-i18n="security.masking.title">Data Masking - PII Protection Layer</h3>
                 <ul class="security-features">
-                    <li data-i18n="security.masking.feature1">Automatic detection and masking of personal, financial, and email data</li>
-                    <li data-i18n="security.masking.feature2">Support for international identifiers: SSN, NIP, REGON, ID numbers</li>
-                    <li data-i18n="security.masking.feature4">Checksum validation of detected identifiers ensuring accuracy</li>
-                    <li data-i18n="security.masking.feature5">Extensible masking engine with custom rule support for industry-specific requirements</li>
-                    <li data-i18n="security.masking.feature6">Multi-plugin masking pipeline with sequential data transformation</li>
-                    <li data-i18n="security.masking.feature7">Enforced anonymization with configurable strategies for entire payload</li>
+                    <li data-i18n="security.masking.feature1">Automatic detection and masking of personal, financial,
+                        and email data
+                    </li>
+                    <li data-i18n="security.masking.feature2">Support for international identifiers: SSN, NIP, REGON, ID
+                        numbers
+                    </li>
+                    <li data-i18n="security.masking.feature4">Checksum validation of detected identifiers ensuring
+                        accuracy
+                    </li>
+                    <li data-i18n="security.masking.feature5">Extensible masking engine with custom rule support for
+                        industry-specific requirements
+                    </li>
+                    <li data-i18n="security.masking.feature6">Multi-plugin masking pipeline with sequential data
+                        transformation
+                    </li>
+                    <li data-i18n="security.masking.feature7">Enforced anonymization with configurable strategies for
+                        entire payload
+                    </li>
                 </ul>
 
             </div>
             <div class="code-example">
-                <span class="comment" data-i18n="security.code.comment1"># =======================================</span>
+                <span class="comment"
+                      data-i18n="security.code.comment1"># =======================================</span>
                 <span class="comment" data-i18n="security.code.comment2"># Example: Automatic Masking</span>
                 <span class="keyword">export</span> LLM_ROUTER_FORCE_MASKING=<span class="string">1</span>
                 <span class="comment" data-i18n="security.code.comment3"># Before transmission to LLM:</span>
