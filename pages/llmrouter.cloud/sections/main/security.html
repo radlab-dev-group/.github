@@ -4,26 +4,26 @@
             <div class="security-text">
                 <h2 data-i18n="security.title">Security-First Architecture</h2>
                 <p data-i18n="security.description">
-                    LLM Router is built with data protection at its core, suitable for organizations of any size where data security matters. Every request is automatically protected through a two-layer security system: <strong>guardrails</strong> that validate content safety before processing, and <strong>masking pipelines</strong> that anonymize sensitive data before transmission—whether to your local models (vLLM, Ollama, LM Studio) or cloud providers. Keep sensitive data secure within your infrastructure while ensuring compliance with GDPR, HIPAA, SOC2, and other regulatory frameworks.
+                    LLM Router is designed for environments where data security and SOC2 compliance matter. Every request is automatically protected through a two-layer security system: guardrails validating content safety before processing, and masking pipelines anonymizing sensitive data before transmission—whether to local models or cloud. Keep your data secure within your infrastructure.
                 </p>
 
                 <h3 data-i18n="security.guardrails.title">Guardrails - Content Safety Layer</h3>
                 <ul class="security-features">
-                    <li data-i18n="security.guardrails.feature1">Multi-stage guardrail pipelines for content validation and safety checks</li>
-                    <li data-i18n="security.guardrails.feature2">NASK Guard integration for Polish language content safety (PL-Guard model)</li>
+                    <li data-i18n="security.guardrails.feature1">Multi-stage guardrail pipelines for content validation and safety control</li>
+                    <li data-i18n="security.guardrails.feature2">NASK Guard integration for Polish language content safety (NASK-PIB/PL-Guard model)</li>
                     <li data-i18n="security.guardrails.feature3">Extensible plugin architecture for custom guardrail implementations</li>
-                    <li data-i18n="security.guardrails.feature4">Request blocking for unsafe or prohibited content before LLM processing</li>
+                    <li data-i18n="security.guardrails.feature4">Blocking requests with unsafe or prohibited content before LLM processing</li>
                     <li data-i18n="security.guardrails.feature5">Configurable guardrail chains with sequential validation stages</li>
                 </ul>
 
                 <h3 data-i18n="security.masking.title">Data Masking - PII Protection Layer</h3>
                 <ul class="security-features">
-                    <li data-i18n="security.masking.feature1">Automatic PII detection and masking (GDPR/CCPA/HIPAA compliant)</li>
-                    <li data-i18n="security.masking.feature2">Support for international identifiers: SSN, tax IDs, national IDs, business registration numbers</li>
-                    <li data-i18n="security.masking.feature4">Checksum validation for detected identifiers ensuring accuracy</li>
+                    <li data-i18n="security.masking.feature1">Automatic detection and masking of personal, financial, and email data</li>
+                    <li data-i18n="security.masking.feature2">Support for international identifiers: SSN, NIP, REGON, ID numbers</li>
+                    <li data-i18n="security.masking.feature4">Checksum validation of detected identifiers ensuring accuracy</li>
                     <li data-i18n="security.masking.feature5">Extensible masking engine with custom rule support for industry-specific requirements</li>
-                    <li data-i18n="security.masking.feature6">Multi-plugin masking pipelines with sequential data transformation</li>
-                    <li data-i18n="security.masking.feature7">Enforced anonymization with configurable strategies across entire payload</li>
+                    <li data-i18n="security.masking.feature6">Multi-plugin masking pipeline with sequential data transformation</li>
+                    <li data-i18n="security.masking.feature7">Enforced anonymization with configurable strategies for entire payload</li>
                 </ul>
 
             </div>
