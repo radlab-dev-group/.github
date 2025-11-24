@@ -4,33 +4,34 @@
         <!-- SCENA -->
         <div class="anim-stage">
 
+            <!-- NOWOŚĆ: Granica Systemu (Ramka Routera) -->
+            <div class="router-boundary">
+                <span class="boundary-label">LLM ROUTER CORE</span>
+            </div>
+
             <!-- SVG: Linie i Pakiety -->
             <svg class="anim-lines" viewBox="0 0 800 240" preserveAspectRatio="none">
-                <!-- 1. Linia Główna (Request) -->
+                <!-- Linie -->
                 <path class="line-path" d="M 100 120 L 300 120 L 500 120 L 700 120"/>
-
-                <!-- 2. Linia Błędu (Górny łuk) -->
                 <path class="line-path-return" d="M 300 120 Q 200 60 100 120"/>
-
-                <!-- 3. Linia Sukcesu (Dolny łuk - NOWA) -->
                 <path class="line-path-success" d="M 700 120 Q 400 240 100 120"/>
 
                 <!-- Pakiety -->
-                <circle class="data-packet" cx="0" cy="0" r="6"/>  <!-- Niebieska (Request) -->
-                <circle class="error-packet" cx="0" cy="0" r="5"/> <!-- Czerwona (Block) -->
-                <circle class="return-packet" cx="0" cy="0" r="6"/> <!-- Zielona (Response - NOWA) -->
+                <circle class="data-packet" cx="0" cy="0" r="6"/>
+                <circle class="error-packet" cx="0" cy="0" r="5"/>
+                <circle class="return-packet" cx="0" cy="0" r="6"/>
             </svg>
 
-            <!-- 1. USER NODE -->
+            <!-- 1. USER NODE (External) -->
             <div class="anim-node" style="left: 100px;">
-                <div class="node-icon icon-user">👤</div>
+                <div class="node-icon icon-user external-node">👤</div>
                 <div class="node-label">User Request</div>
                 <div class="node-status-text"></div>
             </div>
 
-            <!-- 2. SECURITY NODE -->
+            <!-- 2. SECURITY NODE (Internal) -->
             <div class="anim-node" style="left: 300px;">
-                <div class="node-icon icon-security">🛡️</div>
+                <div class="node-icon icon-security internal-node">🛡️</div>
                 <div class="node-label">Guardrails & Masking</div>
 
                 <div class="node-popover popover-security">
@@ -40,9 +41,9 @@
                 </div>
             </div>
 
-            <!-- 3. ROUTER NODE -->
+            <!-- 3. ROUTER NODE (Internal) -->
             <div class="anim-node" style="left: 500px;">
-                <div class="node-icon icon-router">🧠</div>
+                <div class="node-icon icon-router internal-node">🧠</div>
                 <div class="node-label">Router Logic</div>
 
                 <div class="node-popover popover-router" style="width: 180px; left: -90px;">
@@ -53,9 +54,9 @@
                 </div>
             </div>
 
-            <!-- 4. PROVIDER NODE -->
+            <!-- 4. PROVIDER NODE (External) -->
             <div class="anim-node" style="left: 700px;">
-                <div class="node-icon icon-provider">⚡</div>
+                <div class="node-icon icon-provider external-node">⚡</div>
                 <div class="node-label">Selected Provider</div>
 
                 <div class="node-popover popover-provider">
@@ -80,6 +81,48 @@
             overflow: hidden;
             font-family: system-ui, -apple-system, sans-serif;
         }
+
+        /* --- GRANICA SYSTEMU (NOWE CSS) --- */
+        .router-boundary {
+            position: absolute;
+            top: 20px;
+            bottom: 40px; /* Marginesy góra/dół */
+            left: 210px;
+            right: 210px; /* Obejmuje Security(300) i Router(500) */
+            border: 1px dashed rgba(56, 189, 248, 0.3); /* Niebieska przerywana linia */
+            border-radius: 16px;
+            background: rgba(56, 189, 248, 0.02); /* Bardzo delikatne tło */
+            z-index: 0; /* Pod spodem */
+        }
+
+        .boundary-label {
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #0b1221; /* Dopasowane do tła gradientu w tym miejscu */
+            padding: 0 12px;
+            color: #38bdf8;
+            font-size: 0.7rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            border-radius: 12px;
+        }
+
+        /* Subtelne rozróżnienie ikon */
+        .external-node {
+            border-style: dotted;
+        }
+
+        /* User i Provider kropkowane obramowanie */
+        .internal-node {
+            border-style: solid;
+            border-width: 2px;
+        }
+
+        /* Wewnętrzne pełne */
+
 
         /* --- SVG --- */
         .anim-lines {
@@ -106,7 +149,6 @@
             opacity: 0.3;
         }
 
-        /* Nowa linia sukcesu - zielona, przerywana */
         .line-path-success {
             stroke: #22c55e;
             stroke-width: 2;
@@ -115,9 +157,7 @@
             opacity: 0.2;
         }
 
-        /* PAKIETY DANYCH (10s Duration) */
-
-        /* 1. Request (Blue) - Leci od Usera do Providera (0-75%) */
+        /* Pakiety */
         .data-packet {
             fill: #38bdf8;
             filter: drop-shadow(0 0 8px #38bdf8);
@@ -126,7 +166,6 @@
             opacity: 0;
         }
 
-        /* 2. Block (Red) - Odbija się w Security (ok. 20-35%) */
         .error-packet {
             fill: #ef4444;
             filter: drop-shadow(0 0 8px #ef4444);
@@ -135,16 +174,13 @@
             opacity: 0;
         }
 
-        /* 3. Response (Green) - Wraca od Providera do Usera (80-95%) - NOWE */
         .return-packet {
             fill: #22c55e;
             filter: drop-shadow(0 0 8px #22c55e);
-            /* Łuk dolny: od 700 do 100 */
             offset-path: path("M 700 120 Q 400 240 100 120");
             animation: travel-return 10s linear infinite;
             opacity: 0;
         }
-
 
         /* --- NODES --- */
         .anim-node {
@@ -162,7 +198,7 @@
             width: 60px;
             height: 60px;
             background: #0f172a;
-            border: 2px solid #334155;
+            border-color: #334155;
             border-radius: 14px;
             display: flex;
             align-items: center;
@@ -221,7 +257,6 @@
             font-weight: bold;
         }
 
-        /* Animacje komponentów (10s Loop) */
         .popover-security {
             animation: security-pop-anim 10s infinite;
         }
@@ -254,10 +289,7 @@
             opacity: 0;
         }
 
-
-        /* --- KEYFRAMES (10s Timeline) --- */
-
-        /* 1. Request (Blue) */
+        /* --- KEYFRAMES --- */
         @keyframes travel-blue {
             0% {
                 offset-distance: 0%;
@@ -269,24 +301,19 @@
             20% {
                 offset-distance: 33.3%;
             }
-            /* Security */
             35% {
                 offset-distance: 33.3%;
             }
-            /* Wait */
             45% {
                 offset-distance: 66.6%;
             }
-            /* Router */
             55% {
                 offset-distance: 66.6%;
             }
-            /* Wait */
             70% {
                 offset-distance: 100%;
                 opacity: 1;
             }
-            /* Provider */
             80% {
                 opacity: 0;
             }
@@ -296,7 +323,6 @@
             }
         }
 
-        /* 2. Block (Red) */
         @keyframes travel-red {
             0%, 20% {
                 offset-distance: 0%;
@@ -305,12 +331,10 @@
             21% {
                 opacity: 1;
             }
-            /* Security */
             35% {
                 offset-distance: 100%;
                 opacity: 1;
             }
-            /* User */
             40% {
                 opacity: 0;
             }
@@ -320,7 +344,6 @@
             }
         }
 
-        /* 3. Return (Green) - NOWA */
         @keyframes travel-return {
             0%, 79% {
                 offset-distance: 0%;
@@ -329,19 +352,16 @@
             80% {
                 opacity: 1;
             }
-            /* Start Provider */
             95% {
                 offset-distance: 100%;
                 opacity: 1;
             }
-            /* Hit User */
             100% {
                 offset-distance: 100%;
                 opacity: 0;
             }
         }
 
-        /* USER ICON */
         .icon-user {
             animation: user-pulse 10s infinite;
         }
@@ -351,12 +371,10 @@
                 border-color: #38bdf8;
                 box-shadow: 0 0 15px rgba(56, 189, 248, 0.3);
             }
-            /* Sending */
             33%, 38% {
                 border-color: #ef4444;
                 box-shadow: 0 0 15px rgba(239, 68, 68, 0.5);
             }
-            /* Block hit */
             40%, 93% {
                 border-color: #334155;
                 box-shadow: none;
@@ -367,10 +385,8 @@
                 transform: scale(1.1);
                 background: rgba(34, 197, 94, 0.1);
             }
-            /* Success hit */
         }
 
-        /* TEXT STATUS */
         .node-status-text::after {
             content: '';
             animation: status-text-cycle 10s infinite;
@@ -397,13 +413,11 @@
                 content: 'Success ✅';
                 color: #22c55e;
             }
-            /* Pojawia się późno, przy powrocie */
             100% {
                 content: '';
             }
         }
 
-        /* SECURITY ICON */
         .icon-security {
             animation: security-pulse 10s infinite;
         }
@@ -446,7 +460,6 @@
             }
         }
 
-        /* Teksty w Security - timing dopasowany */
         @keyframes txt-check-anim {
             0%, 21% {
                 opacity: 1;
@@ -486,7 +499,6 @@
             }
         }
 
-        /* ROUTER ICON */
         .icon-router {
             animation: router-pulse 10s infinite;
         }
@@ -522,7 +534,6 @@
             }
         }
 
-        /* PROVIDER ICON */
         .icon-provider {
             animation: provider-pulse 10s infinite;
         }
@@ -571,6 +582,11 @@
                 display: none;
             }
 
+            .router-boundary {
+                display: none;
+            }
+
+            /* Ukrywamy ramkę na mobile dla czystości */
             .anim-node {
                 position: relative;
                 top: auto;
