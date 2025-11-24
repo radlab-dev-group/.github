@@ -4,32 +4,31 @@
         <!-- SCENA GŁÓWNA -->
         <div class="anim-stage">
 
-            <!-- Tło "CORE SYSTEM" (Ramka) -->
             <div class="router-boundary">
                 <span class="boundary-label">LLM ROUTER CORE</span>
             </div>
 
-            <!-- 1. SVG DESKTOP (Poziome, 5 punktów) -->
+            <!-- SVG DESKTOP -->
             <svg class="anim-lines-desktop" viewBox="0 0 800 240" preserveAspectRatio="none">
                 <path class="line-base" d="M 80 120 L 720 120"/>
                 <path class="line-err" d="M 240 120 Q 160 60 80 120"/>
                 <path class="line-succ" d="M 720 120 Q 400 240 80 120"/>
             </svg>
 
-            <!-- 2. SVG MOBILE (Pionowe, 5 punktów) -->
+            <!-- SVG MOBILE -->
             <svg class="anim-lines-mobile" viewBox="0 0 320 600" preserveAspectRatio="none">
                 <path class="line-base" d="M 160 50 L 160 550"/>
                 <path class="line-err" d="M 160 175 Q 60 110 160 50"/>
                 <path class="line-succ" d="M 160 550 Q 280 300 160 50"/>
             </svg>
 
-            <!-- 3. PAKIETY DANYCH -->
+            <!-- PAKIETY -->
             <div class="packet packet-blue"></div>
             <div class="packet packet-red"></div>
             <div class="packet packet-green"></div>
 
 
-            <!-- 4. WĘZŁY (NODES) -->
+            <!-- WĘZŁY -->
 
             <!-- Node 1: User -->
             <div class="anim-node node-1">
@@ -43,24 +42,27 @@
                 <div class="node-icon icon-security internal-node">🛡️</div>
                 <div class="node-label">Guardrails</div>
 
-                <!-- Szerszy dymek -->
-                <div class="node-popover popover-security" style="width: 140px; left: -70px;">
+                <!-- POPRAWKA: Szerszy dymek, stała wysokość -->
+                <div class="node-popover popover-security" style="width: 160px; height: 34px; left: -80px;">
                     <span class="p-txt t-check">Checking Content...</span>
                     <span class="p-txt t-block">Unsafe Content 🚫</span>
                     <span class="p-txt t-pass">Content Safe ✅</span>
                 </div>
             </div>
 
-            <!-- Node 3: Masking (IKONA ZMIENIONA) -->
+            <!-- Node 3: Masking -->
             <div class="anim-node node-3">
                 <div class="node-icon icon-mask internal-node">🪪</div>
                 <div class="node-label">Data Masking</div>
 
-                <!-- Bardzo szeroki dymek dla maila -->
-                <div class="node-popover popover-mask" style="width: 180px; left: -90px;">
-                    <span class="p-txt t-raw">Email: john@doe.com</span>
-                    <span class="p-txt t-masked">Email: j***@***.***</span>
-                    <span class="p-txt t-label" style="color: #c084fc; font-size: 0.6rem; margin-top: 4px;">PII Detected & Masked</span>
+                <!-- POPRAWKA: Bardzo szeroki dymek, wyższy, separacja linii -->
+                <div class="node-popover popover-mask" style="width: 210px; height: 46px; left: -105px;">
+                    <!-- Linia 1: Email (zmienia się) -->
+                    <span class="p-txt t-raw" style="top: 8px;">Email: john@doe.com</span>
+                    <span class="p-txt t-masked" style="top: 8px;">Email: j***@***.***</span>
+
+                    <!-- Linia 2: Status (stała pozycja na dole) -->
+                    <span class="p-txt t-label" style="top: 26px; color: #c084fc; font-size: 0.6rem;">PII Detected & Masked</span>
                 </div>
             </div>
 
@@ -69,10 +71,9 @@
                 <div class="node-icon icon-router internal-node">🧠</div>
                 <div class="node-label">Router Logic</div>
 
-                <div class="node-popover popover-router" style="width: 160px; left: -80px;">
-                    <span class="p-txt" style="color:#38bdf8;">Strategy: Weighted</span>
-                    <span class="p-txt"
-                          style="color:#64748b; font-size:0.65rem; margin-top:4px;">Target: l1-gpt:120b</span>
+                <div class="node-popover popover-router" style="width: 160px; height: 34px; left: -80px;">
+                    <span class="p-txt" style="color:#38bdf8; top: 6px;">Strategy: Weighted</span>
+                    <span class="p-txt" style="color:#64748b; font-size:0.65rem; top: 20px;">Target: l1-gpt:120b</span>
                 </div>
             </div>
 
@@ -80,8 +81,8 @@
             <div class="anim-node node-5">
                 <div class="node-icon icon-provider external-node">⚡</div>
                 <div class="node-label">LLM Provider</div>
-                <div class="node-popover popover-provider">
-                    <span class="p-txt" style="color:#22c55e;">Generating Tokens...</span>
+                <div class="node-popover popover-provider" style="height: 24px;">
+                    <span class="p-txt" style="color:#22c55e; top: 6px;">Generating Tokens...</span>
                 </div>
             </div>
 
@@ -90,7 +91,7 @@
 
     <style>
         /* =========================================
-           1. LAYOUT
+           1. LAYOUT & SVG
            ========================================= */
         .anim-stage {
             position: relative;
@@ -174,7 +175,7 @@
 
 
         /* =========================================
-           2. NODES
+           2. NODES & ICONS
            ========================================= */
         .anim-node {
             position: absolute;
@@ -255,29 +256,31 @@
 
 
         /* =========================================
-           3. POPOVERS & PACKETS
+           3. POPOVERS (POPRAWIONE)
            ========================================= */
         .node-popover {
             position: absolute;
-            top: -95px; /* Wyżej, żeby nie zasłaniało */
+            top: -95px;
             background: rgba(15, 23, 42, 0.95);
             border: 1px solid #334155;
             border-radius: 6px;
-            padding: 8px 6px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            /* Brak paddingu, używamy absolutnego pozycjonowania wewnątrz */
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
             opacity: 0;
             pointer-events: none;
+            overflow: hidden; /* Żeby tekst nie wychodził */
         }
 
+        /* Teksty wewnątrz dymków */
         .p-txt {
+            position: absolute; /* Kluczowa zmiana: absolutne pozycjonowanie wewnątrz dymku */
+            left: 0;
+            width: 100%;
+            text-align: center;
             font-size: 0.7rem;
             font-weight: bold;
             display: block;
-            text-align: center;
-            width: 100%;
+            top: 8px; /* Domyślna pozycja góra */
         }
 
         .packet {
@@ -324,18 +327,8 @@
 
 
         /* =========================================
-           4. KEYFRAMES (12s Cycle)
+           4. ANIMACJE (12s)
            ========================================= */
-        /*
-           Timeline (12s):
-           0-15%: Move to Guard
-           15-30%: Wait at Guard
-           30-45%: Wait at Mask
-           45-60%: Wait at Router
-           60-80%: Move to Provider & Wait
-           80-100%: Return
-        */
-
         @keyframes move-blue {
             0% {
                 offset-distance: 0%;
@@ -347,15 +340,12 @@
             15%, 25% {
                 offset-distance: 25%;
             }
-            /* Guard Wait */
             35%, 45% {
                 offset-distance: 50%;
             }
-            /* Mask Wait */
             55%, 65% {
                 offset-distance: 75%;
             }
-            /* Router Wait */
             75% {
                 offset-distance: 100%;
                 opacity: 1;
@@ -408,7 +398,7 @@
             }
         }
 
-        /* --- PULSOWANIE IKON (12s) --- */
+        /* ICONS */
         .icon-user {
             animation: pulse-user 12s infinite;
         }
@@ -483,7 +473,7 @@
             }
         }
 
-        /* --- POPOVER VISIBILITY (12s) --- */
+        /* POPOVER OPACITY */
         .popover-security {
             animation: pop-sec 12s infinite;
         }
@@ -523,7 +513,7 @@
         }
 
         @keyframes pop-route {
-            55%, 70% {
+            55%, 68% {
                 opacity: 1;
                 transform: translateY(0);
             }
@@ -544,24 +534,20 @@
             }
         }
 
-        /* --- TEXT ANIMATIONS --- */
-        /* Security */
+        /* TEXT ANIMATIONS */
         .t-check {
             color: #94a3b8;
-            position: absolute;
             animation: txt-check 12s infinite;
         }
 
         .t-block {
             color: #ef4444;
-            position: absolute;
             animation: txt-block 12s infinite;
             opacity: 0;
         }
 
         .t-pass {
             color: #22c55e;
-            position: absolute;
             animation: txt-pass 12s infinite;
             opacity: 0;
         }
@@ -605,16 +591,13 @@
             }
         }
 
-        /* Masking */
         .t-raw {
             color: #ef4444;
-            position: absolute;
             animation: txt-raw 12s infinite;
         }
 
         .t-masked {
             color: #22c55e;
-            position: absolute;
             animation: txt-masked 12s infinite;
             opacity: 0;
         }
@@ -643,7 +626,6 @@
             }
         }
 
-        /* Status Usera */
         .node-status-text::after {
             content: '';
             animation: txt-status 12s infinite;
@@ -680,7 +662,7 @@
         }
 
         /* =========================================
-           6. MOBILE OVERRIDES
+           5. MOBILE OVERRIDES
            ========================================= */
         @media (max-width: 768px) {
             .anim-stage {
@@ -707,7 +689,6 @@
                 transform: translateX(-50%);
             }
 
-            /* Pionowe pozycje */
             .node-1 {
                 top: 50px;
             }
@@ -740,33 +721,27 @@
                 text-align: left;
             }
 
-            /* Dymki na mobile: w lewo od ikony */
+            /* Popovers on Mobile - Shifted Left to stay on screen */
             .node-popover {
                 top: 5px;
                 left: auto;
                 right: 45px;
-                width: 120px;
+                /* Reset widths on mobile if needed, but keeping fixed is safer */
                 align-items: flex-end;
             }
 
             .p-txt {
                 text-align: right;
-            }
-
-            /* Custom widths na mobile */
-            .popover-router {
-                width: 140px;
                 left: auto;
-                right: 45px;
+                right: 6px;
             }
 
+            /* Align text right inside popover */
+            /* Specific widths override for mobile */
             .popover-mask {
-                width: 150px;
-                left: auto;
-                right: 45px;
+                width: 200px;
             }
 
-            /* Szeroki dla maila */
             /* MOBILE PATHS */
             .packet-blue {
                 offset-path: path("M 160 50 L 160 550") !important;
