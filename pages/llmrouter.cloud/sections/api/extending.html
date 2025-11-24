@@ -1,59 +1,128 @@
 <section class="tech-section" id="extending"
-         style="background: radial-gradient(circle at 50% 0%, rgba(34, 197, 94, 0.08), transparent 60%), #020617; padding: 3rem 0;">
-    <div class="container">
-        <h2 class="section-title">Extending the Router</h2>
-        <p class="section-subtitle">Add new providers, endpoints, and functionality</p>
+         style="background-color: #020617; padding: 4rem 0; font-family: system-ui, -apple-system, sans-serif; color: #e2e8f0; position: relative;">
 
-        <div class="key-feature-box">
-            <h3>Adding a New Provider Type</h3>
-            <ul>
-                <li>Implement <code>ApiTypesI</code> abstract class with methods: <code>chat_ep</code>, <code>chat_method</code>,
-                    <code>completions_ep</code>, <code>completions_method</code></li>
-                <li>Register in <code>ApiTypesDispatcher._REGISTRY</code> with lowercase key</li>
-                <li>Update model config JSON to include new provider type</li>
-                <li>(Optional) Add new balance strategy if needed</li>
-            </ul>
+    <!-- Background Blueprint Grid -->
+    <div style="position: absolute; inset: 0; background-image: linear-gradient(rgba(34, 197, 94, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(34, 197, 94, 0.05) 1px, transparent 1px); background-size: 20px 20px; pointer-events: none;"></div>
+    <div class="ext-container">
+        <div class="ext-header">
+            <h2 class="ext-title">Extending the Router</h2>
+            <p class="ext-subtitle">Plug in new capabilities with a modular architecture</p>
         </div>
 
-        <div class="key-feature-box">
-            <h3>Adding a New Endpoint</h3>
-            <ul>
-                <li>Choose base class: <code>EndpointWithHttpRequestI</code> (proxy), <code>PassthroughI</code>
-                    (forward), or <code>EndpointI</code> (custom)
-                </li>
-                <li>Define <code>REQUIRED_ARGS</code>, <code>OPTIONAL_ARGS</code>, and optionally <code>SYSTEM_PROMPT_NAME</code>
-                </li>
-                <li>Implement <code>prepare_payload(self, params)</code> to convert params to downstream format</li>
-                <li>(Optional) Set <code>self._prepare_response_function</code> for post-processing</li>
-                <li>Place in <code>llm_router_api/endpoints/</code> – auto-discovered at startup</li>
-            </ul>
+        <div class="blueprint-grid">
+
+            <!-- Card 1: New Provider -->
+            <div class="blueprint-card">
+                <div class="bp-icon">🧩</div>
+                <h3 class="bp-title">Adding a New Provider</h3>
+                <ul class="step-list">
+                    <li class="step-item">
+                        <span class="step-num">1</span>
+                        <span>Implement <span class="highlight-code">ApiTypesI</span> abstract class (chat/completions methods).</span>
+                    </li>
+                    <li class="step-item">
+                        <span class="step-num">2</span>
+                        <span>Register in <span class="highlight-code">ApiTypesDispatcher._REGISTRY</span> with a unique lowercase key.</span>
+                    </li>
+                    <li class="step-item">
+                        <span class="step-num">3</span>
+                        <span>Update <span class="highlight-code">model_config.json</span> to include the new provider type.</span>
+                    </li>
+                    <li class="step-item">
+                        <span class="step-num">4</span>
+                        <span style="opacity: 0.7;">(Optional) Add a custom load-balancing strategy if needed.</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Card 2: New Endpoint -->
+            <div class="blueprint-card">
+                <div class="bp-icon">🔌</div>
+                <h3 class="bp-title">Adding a New Endpoint</h3>
+                <ul class="step-list">
+                    <li class="step-item">
+                        <span class="step-num">1</span>
+                        <span>Inherit from <span class="highlight-code">EndpointWithHttpRequestI</span> (proxy) or <span
+                                class="highlight-code">EndpointI</span> (custom).</span>
+                    </li>
+                    <li class="step-item">
+                        <span class="step-num">2</span>
+                        <span>Define <span class="highlight-code">REQUIRED_ARGS</span>, <span class="highlight-code">OPTIONAL_ARGS</span>, and prompt configuration.</span>
+                    </li>
+                    <li class="step-item">
+                        <span class="step-num">3</span>
+                        <span>Implement <span class="highlight-code">prepare_payload()</span> to normalize inputs for downstream API.</span>
+                    </li>
+                    <li class="step-item">
+                        <span class="step-num">4</span>
+                        <span>Place file in <span class="highlight-code">llm_router_api/endpoints/</span> for auto-discovery.</span>
+                    </li>
+                </ul>
+            </div>
+
         </div>
 
-        <div class="code-block" data-lang="python">
-<pre><code># Example: Custom endpoint
-from llm_router_api.endpoints.endpoint_i import EndpointWithHttpRequestI
+        <!-- IDE CODE BLOCK -->
+        <div class="ide-wrapper">
+            <!-- IDE Header -->
+            <div class="ide-header">
+                <div class="file-tab">
+                    <span class="file-icon">🐍</span> custom_endpoint.py
+                </div>
+                <div style="display: flex; gap: 6px;">
+                    <div style="width: 10px; height: 10px; border-radius: 50%; background: #334155;"></div>
+                    <div style="width: 10px; height: 10px; border-radius: 50%; background: #334155;"></div>
+                </div>
+            </div>
 
-class MyCustomEndpoint(EndpointWithHttpRequestI):
-    REQUIRED_ARGS = ["model", "input_text"]
-    OPTIONAL_ARGS = ["temperature"]
+            <!-- IDE Body -->
+            <div class="ide-body">
+                <div class="line-nums">
+                    1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9<br>10<br>11<br>12<br>13<br>14<br>15<br>16<br>17<br>18<br>19<br>20<br>21
+                </div>
+                <div class="code-content">
+                    <span class="cmt"># Example: Implementation of a custom endpoint</span><br>
+                    <span class="kwd">from</span> llm_router_api.endpoints.endpoint_i <span class="kwd">import</span>
+                    EndpointWithHttpRequestI<br>
+                    <br>
+                    <span class="kwd">class</span> <span
+                        class="cls">MyCustomEndpoint</span>(EndpointWithHttpRequestI):<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;REQUIRED_ARGS = [<span class="str">"model"</span>, <span class="str">"input_text"</span>]<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;OPTIONAL_ARGS = [<span class="str">"temperature"</span>]<br>
+                    <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="kwd">def</span> <span class="fn">__init__</span>(<span
+                        class="kwd">self</span>, **kwargs):<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="kwd">super</span>().<span class="fn">__init__</span>(<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ep_name=<span class="str">"my_custom_endpoint"</span>,<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;api_types=[<span
+                        class="str">"openai"</span>],<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;method=<span class="str">"POST"</span>,<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**kwargs<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)<br>
+                    <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="kwd">def</span> <span class="fn">prepare_payload</span>(<span
+                        class="kwd">self</span>, <span class="arg">params</span>):<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="kwd">return</span> {<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                        class="str">"model"</span>: params[<span class="str">"model"</span>],<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                        class="str">"messages"</span>: [<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<span
+                        class="str">"role"</span>: <span class="str">"user"</span>, <span class="str">"content"</span>:
+                    params[<span class="str">"input_text"</span>]}<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;],<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="str">"temperature"</span>:
+                    params.get(<span class="str">"temperature"</span>, 0.7)<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+                </div>
+            </div>
 
-    def __init__(self, **kwargs):
-        super().__init__(
-            ep_name="my_custom_endpoint",
-            api_types=["openai"],
-            method="POST",
-            **kwargs
-        )
-
-    def prepare_payload(self, params):
-        self._check_required_params(params)
-        return {
-            "model": params["model"],
-            "messages": [
-                {"role": "user", "content": params["input_text"]}
-            ],
-            "temperature": params.get("temperature", 0.7)
-        }</code></pre>
+            <!-- IDE Footer -->
+            <div class="ide-footer">
+                <span>PYTHON 3.10</span>
+                <span>UTF-8</span>
+            </div>
         </div>
+
     </div>
 </section>
