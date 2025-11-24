@@ -8,23 +8,26 @@
                 <span class="boundary-label">LLM ROUTER CORE</span>
             </div>
 
-            <!-- SVG DESKTOP -->
+            <!-- SVG DESKTOP (Bez zmian) -->
             <svg class="anim-lines-desktop" viewBox="0 0 800 240" preserveAspectRatio="none">
                 <path class="line-base" d="M 80 120 L 720 120"/>
                 <path class="line-err" d="M 240 120 Q 160 60 80 120"/>
                 <path class="line-succ" d="M 720 120 Q 400 240 80 120"/>
             </svg>
 
-            <!-- SVG MOBILE (POPRAWIONE WSPÓŁRZĘDNE) -->
-            <!-- ViewBox 320x600. Środek X=160.
-                 Środki ikon Y: User=80, Guard=205, Mask=330, Router=455, Prov=580 -->
+            <!-- SVG MOBILE (POPRAWIONE ŁUKI) -->
+            <!-- ViewBox 320x600. Center X=160. -->
             <svg class="anim-lines-mobile" viewBox="0 0 320 600" preserveAspectRatio="none">
-                <!-- Główna linia (80 do 580) -->
+                <!-- Linia prosta -->
                 <path class="line-base" d="M 160 80 L 160 580"/>
-                <!-- Błąd (Guard 205 -> User 80) -->
-                <path class="line-err" d="M 160 205 Q 60 140 160 80"/>
-                <!-- Sukces (Prov 580 -> User 80) -->
-                <path class="line-succ" d="M 160 580 Q 280 330 160 80"/>
+
+                <!-- Czerwona (Błąd) - Łuk w lewo -->
+                <!-- Start: 205 (Guard), Control: X=20 Y=140 (Szeroko w lewo), End: 80 (User) -->
+                <path class="line-err" d="M 160 205 Q 20 140 160 80"/>
+
+                <!-- Zielona (Sukces) - Łuk w prawo -->
+                <!-- Start: 580 (Prov), Control: X=300 Y=330 (Szeroko w prawo), End: 80 (User) -->
+                <path class="line-succ" d="M 160 580 Q 300 330 160 80"/>
             </svg>
 
             <!-- PAKIETY -->
@@ -34,15 +37,12 @@
 
 
             <!-- WĘZŁY -->
-
-            <!-- Node 1: User (Top: 50px -> Center Y: 80px) -->
             <div class="anim-node node-1">
                 <div class="node-icon icon-user external-node">👤</div>
                 <div class="node-label">User Request</div>
                 <div class="node-status-text"></div>
             </div>
 
-            <!-- Node 2: Guardrails (Top: 175px -> Center Y: 205px) -->
             <div class="anim-node node-2">
                 <div class="node-icon icon-security internal-node">🛡️</div>
                 <div class="node-label">Guardrails</div>
@@ -53,7 +53,6 @@
                 </div>
             </div>
 
-            <!-- Node 3: Masking (Top: 300px -> Center Y: 330px) -->
             <div class="anim-node node-3">
                 <div class="node-icon icon-mask internal-node">🪪</div>
                 <div class="node-label">Data Masking</div>
@@ -64,7 +63,6 @@
                 </div>
             </div>
 
-            <!-- Node 4: Router (Top: 425px -> Center Y: 455px) -->
             <div class="anim-node node-4">
                 <div class="node-icon icon-router internal-node">🧠</div>
                 <div class="node-label">Router Logic</div>
@@ -74,7 +72,6 @@
                 </div>
             </div>
 
-            <!-- Node 5: Provider (Top: 550px -> Center Y: 580px) -->
             <div class="anim-node node-5">
                 <div class="node-icon icon-provider external-node">⚡</div>
                 <div class="node-label">LLM Provider</div>
@@ -393,7 +390,6 @@
             }
         }
 
-        /* ICONS */
         .icon-user {
             animation: pulse-user 12s infinite;
         }
@@ -468,7 +464,6 @@
             }
         }
 
-        /* POPOVER OPACITY */
         .popover-security {
             animation: pop-sec 12s infinite;
         }
@@ -529,23 +524,19 @@
             }
         }
 
-        /* TEXT ANIMATIONS */
         .t-check {
             color: #94a3b8;
-            position: absolute;
             animation: txt-check 12s infinite;
         }
 
         .t-block {
             color: #ef4444;
-            position: absolute;
             animation: txt-block 12s infinite;
             opacity: 0;
         }
 
         .t-pass {
             color: #22c55e;
-            position: absolute;
             animation: txt-pass 12s infinite;
             opacity: 0;
         }
@@ -591,13 +582,11 @@
 
         .t-raw {
             color: #ef4444;
-            position: absolute;
             animation: txt-raw 12s infinite;
         }
 
         .t-masked {
             color: #22c55e;
-            position: absolute;
             animation: txt-masked 12s infinite;
             opacity: 0;
         }
@@ -665,8 +654,12 @@
            5. MOBILE OVERRIDES
            ========================================= */
         @media (max-width: 768px) {
+            /* KLUCZOWA POPRAWKA: Stała szerokość na mobile, wyśrodkowana */
             .anim-stage {
                 height: 600px;
+                width: 320px; /* Blokujemy szerokość na 320px */
+                max-width: 320px;
+                margin: 0 auto; /* Centrowanie */
             }
 
             .anim-lines-desktop {
@@ -678,9 +671,8 @@
             }
 
             .router-boundary {
-                /* Ramka obejmuje Guard(175), Mask(300), Router(425) */
-                top: 135px;
-                bottom: 135px;
+                top: 140px;
+                bottom: 140px;
                 left: 20px;
                 right: 20px;
             }
@@ -690,28 +682,32 @@
                 transform: translateX(-50%);
             }
 
-            /* Pionowe pozycje (Gap 125px) */
-            /* User=50, Guard=175, Mask=300, Router=425, Provider=550 */
+            /* Pionowe pozycje (Zgrane ze ścieżkami SVG Mobile) */
             .node-1 {
                 top: 50px;
             }
 
+            /* Center Y = 80 */
             .node-2 {
                 top: 175px;
             }
 
+            /* Center Y = 205 */
             .node-3 {
                 top: 300px;
             }
 
+            /* Center Y = 330 */
             .node-4 {
                 top: 425px;
             }
 
+            /* Center Y = 455 */
             .node-5 {
                 top: 550px;
             }
 
+            /* Center Y = 580 */
             .node-label {
                 top: 18px;
                 left: 45px;
@@ -724,13 +720,13 @@
                 text-align: left;
             }
 
-            /* POPRAWKA: Dymki na mobile przeniesione NAD ikony i wycentrowane */
+            /* Popovery NAD ikonami */
             .node-popover {
                 top: -45px;
                 left: 50%;
                 transform: translateX(-50%);
-                right: auto; /* Reset */
-                align-items: center; /* Wyśrodkowanie tekstu */
+                right: auto;
+                align-items: center;
             }
 
             .p-txt {
@@ -739,20 +735,25 @@
                 right: 0;
             }
 
-            /* MOBILE PATHS (Zsynchronizowane z pozycjami ikon) */
-            /* Blue: 50 -> 550 */
+            .popover-mask {
+                width: 200px;
+            }
+
+            .popover-provider {
+                width: 150px;
+            }
+
+            /* ŚCIEŻKI MOBILE (Muszą pasować do viewBox 320) */
             .packet-blue {
                 offset-path: path("M 160 80 L 160 580") !important;
             }
 
-            /* Red: 175 -> 50 (Środek Guard = 175+30 = 205. Środek User = 50+30 = 80) */
             .packet-red {
-                offset-path: path("M 160 205 Q 60 140 160 80") !important;
+                offset-path: path("M 160 205 Q 20 140 160 80") !important;
             }
 
-            /* Green: 550 -> 50 (Środek Prov = 550+30 = 580) */
             .packet-green {
-                offset-path: path("M 160 580 Q 280 330 160 80") !important;
+                offset-path: path("M 160 580 Q 300 330 160 80") !important;
             }
         }
     </style>
