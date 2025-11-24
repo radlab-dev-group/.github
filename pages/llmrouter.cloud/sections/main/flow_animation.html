@@ -4,12 +4,21 @@
         <!-- SCENA -->
         <div class="anim-stage">
 
-            <!-- SVG: Linie -->
+            <!-- SVG: Linie i Pakiety -->
             <svg class="anim-lines" viewBox="0 0 800 240" preserveAspectRatio="none">
+                <!-- 1. Linia Główna (Request) -->
                 <path class="line-path" d="M 100 120 L 300 120 L 500 120 L 700 120"/>
+
+                <!-- 2. Linia Błędu (Górny łuk) -->
                 <path class="line-path-return" d="M 300 120 Q 200 60 100 120"/>
-                <circle class="data-packet" cx="0" cy="0" r="6"/>
-                <circle class="error-packet" cx="0" cy="0" r="5"/>
+
+                <!-- 3. Linia Sukcesu (Dolny łuk - NOWA) -->
+                <path class="line-path-success" d="M 700 120 Q 400 240 100 120"/>
+
+                <!-- Pakiety -->
+                <circle class="data-packet" cx="0" cy="0" r="6"/>  <!-- Niebieska (Request) -->
+                <circle class="error-packet" cx="0" cy="0" r="5"/> <!-- Czerwona (Block) -->
+                <circle class="return-packet" cx="0" cy="0" r="6"/> <!-- Zielona (Response - NOWA) -->
             </svg>
 
             <!-- 1. USER NODE -->
@@ -31,12 +40,11 @@
                 </div>
             </div>
 
-            <!-- 3. ROUTER NODE (Zaktualizowany Tekst) -->
+            <!-- 3. ROUTER NODE -->
             <div class="anim-node" style="left: 500px;">
                 <div class="node-icon icon-router">🧠</div>
                 <div class="node-label">Router Logic</div>
 
-                <!-- ZMIANA: Szerszy dymek i nowy tekst -->
                 <div class="node-popover popover-router" style="width: 180px; left: -90px;">
                     <div class="pop-text" style="color: #38bdf8;">Strategy: FA</div>
                     <div class="pop-text" style="color: #94a3b8; font-size: 0.7rem; margin-top: 3px;">Provider:
@@ -98,21 +106,45 @@
             opacity: 0.3;
         }
 
+        /* Nowa linia sukcesu - zielona, przerywana */
+        .line-path-success {
+            stroke: #22c55e;
+            stroke-width: 2;
+            fill: none;
+            stroke-dasharray: 8 6;
+            opacity: 0.2;
+        }
+
+        /* PAKIETY DANYCH (10s Duration) */
+
+        /* 1. Request (Blue) - Leci od Usera do Providera (0-75%) */
         .data-packet {
             fill: #38bdf8;
             filter: drop-shadow(0 0 8px #38bdf8);
             offset-path: path("M 100 120 L 300 120 L 500 120 L 700 120");
-            animation: travel-blue 8s linear infinite;
+            animation: travel-blue 10s linear infinite;
             opacity: 0;
         }
 
+        /* 2. Block (Red) - Odbija się w Security (ok. 20-35%) */
         .error-packet {
             fill: #ef4444;
             filter: drop-shadow(0 0 8px #ef4444);
             offset-path: path("M 300 120 Q 200 60 100 120");
-            animation: travel-red 8s linear infinite;
+            animation: travel-red 10s linear infinite;
             opacity: 0;
         }
+
+        /* 3. Response (Green) - Wraca od Providera do Usera (80-95%) - NOWE */
+        .return-packet {
+            fill: #22c55e;
+            filter: drop-shadow(0 0 8px #22c55e);
+            /* Łuk dolny: od 700 do 100 */
+            offset-path: path("M 700 120 Q 400 240 100 120");
+            animation: travel-return 10s linear infinite;
+            opacity: 0;
+        }
+
 
         /* --- NODES --- */
         .anim-node {
@@ -189,42 +221,43 @@
             font-weight: bold;
         }
 
-        /* Animacje dymków */
+        /* Animacje komponentów (10s Loop) */
         .popover-security {
-            animation: security-pop-anim 8s infinite;
+            animation: security-pop-anim 10s infinite;
         }
 
         .popover-router {
-            animation: router-pop-anim 8s infinite;
+            animation: router-pop-anim 10s infinite;
         }
 
         .popover-provider {
-            animation: provider-pop-anim 8s infinite;
+            animation: provider-pop-anim 10s infinite;
         }
 
-        /* Teksty Security */
         .pop-text.txt-check {
             color: #94a3b8;
             position: absolute;
-            animation: txt-check-anim 8s infinite;
+            animation: txt-check-anim 10s infinite;
         }
 
         .pop-text.txt-block {
             color: #ef4444;
             position: absolute;
-            animation: txt-block-anim 8s infinite;
+            animation: txt-block-anim 10s infinite;
             opacity: 0;
         }
 
         .pop-text.txt-pass {
             color: #22c55e;
             position: absolute;
-            animation: txt-pass-anim 8s infinite;
+            animation: txt-pass-anim 10s infinite;
             opacity: 0;
         }
 
 
-        /* --- KEYFRAMES --- */
+        /* --- KEYFRAMES (10s Timeline) --- */
+
+        /* 1. Request (Blue) */
         @keyframes travel-blue {
             0% {
                 offset-distance: 0%;
@@ -236,20 +269,25 @@
             20% {
                 offset-distance: 33.3%;
             }
-            40% {
+            /* Security */
+            35% {
                 offset-distance: 33.3%;
             }
-            50% {
+            /* Wait */
+            45% {
                 offset-distance: 66.6%;
             }
-            60% {
+            /* Router */
+            55% {
                 offset-distance: 66.6%;
             }
-            75% {
+            /* Wait */
+            70% {
                 offset-distance: 100%;
                 opacity: 1;
             }
-            85% {
+            /* Provider */
+            80% {
                 opacity: 0;
             }
             100% {
@@ -258,19 +296,22 @@
             }
         }
 
+        /* 2. Block (Red) */
         @keyframes travel-red {
-            0%, 24% {
+            0%, 20% {
                 offset-distance: 0%;
                 opacity: 0;
             }
-            25% {
+            21% {
                 opacity: 1;
             }
-            38% {
+            /* Security */
+            35% {
                 offset-distance: 100%;
                 opacity: 1;
             }
-            45% {
+            /* User */
+            40% {
                 opacity: 0;
             }
             100% {
@@ -279,8 +320,30 @@
             }
         }
 
+        /* 3. Return (Green) - NOWA */
+        @keyframes travel-return {
+            0%, 79% {
+                offset-distance: 0%;
+                opacity: 0;
+            }
+            80% {
+                opacity: 1;
+            }
+            /* Start Provider */
+            95% {
+                offset-distance: 100%;
+                opacity: 1;
+            }
+            /* Hit User */
+            100% {
+                offset-distance: 100%;
+                opacity: 0;
+            }
+        }
+
+        /* USER ICON */
         .icon-user {
-            animation: user-pulse 8s infinite;
+            animation: user-pulse 10s infinite;
         }
 
         @keyframes user-pulse {
@@ -288,19 +351,29 @@
                 border-color: #38bdf8;
                 box-shadow: 0 0 15px rgba(56, 189, 248, 0.3);
             }
-            35%, 40% {
+            /* Sending */
+            33%, 38% {
                 border-color: #ef4444;
                 box-shadow: 0 0 15px rgba(239, 68, 68, 0.5);
             }
-            45%, 100% {
+            /* Block hit */
+            40%, 93% {
                 border-color: #334155;
                 box-shadow: none;
             }
+            95%, 100% {
+                border-color: #22c55e;
+                box-shadow: 0 0 20px rgba(34, 197, 94, 0.6);
+                transform: scale(1.1);
+                background: rgba(34, 197, 94, 0.1);
+            }
+            /* Success hit */
         }
 
+        /* TEXT STATUS */
         .node-status-text::after {
             content: '';
-            animation: status-text-cycle 8s infinite;
+            animation: status-text-cycle 10s infinite;
         }
 
         @keyframes status-text-cycle {
@@ -320,17 +393,19 @@
                 content: 'Processing...';
                 color: #38bdf8;
             }
-            75% {
+            95% {
                 content: 'Success ✅';
                 color: #22c55e;
             }
-            90% {
+            /* Pojawia się późno, przy powrocie */
+            100% {
                 content: '';
             }
         }
 
+        /* SECURITY ICON */
         .icon-security {
-            animation: security-pulse 8s infinite;
+            animation: security-pulse 10s infinite;
         }
 
         @keyframes security-pulse {
@@ -338,19 +413,19 @@
                 border-color: #334155;
                 transform: scale(1);
             }
-            25%, 30% {
+            22%, 28% {
                 border-color: #ef4444;
                 background: rgba(239, 68, 68, 0.1);
                 transform: scale(1.1);
                 box-shadow: 0 0 15px rgba(239, 68, 68, 0.4);
             }
-            35%, 40% {
+            30%, 35% {
                 border-color: #22c55e;
                 background: #0f172a;
                 transform: scale(1.1);
                 box-shadow: 0 0 15px rgba(34, 197, 94, 0.4);
             }
-            45%, 100% {
+            40%, 100% {
                 border-color: #334155;
                 transform: scale(1);
             }
@@ -361,122 +436,125 @@
                 opacity: 0;
                 transform: translateY(10px);
             }
-            20%, 45% {
+            20%, 38% {
                 opacity: 1;
                 transform: translateY(0);
             }
-            50%, 100% {
+            42%, 100% {
                 opacity: 0;
                 transform: translateY(10px);
             }
         }
 
+        /* Teksty w Security - timing dopasowany */
         @keyframes txt-check-anim {
-            0%, 24% {
+            0%, 21% {
                 opacity: 1;
             }
-            25%, 100% {
+            22%, 100% {
                 opacity: 0;
             }
         }
 
         @keyframes txt-block-anim {
-            0%, 24% {
+            0%, 21% {
                 opacity: 0;
                 transform: translateY(5px);
             }
-            25%, 32% {
+            22%, 29% {
                 opacity: 1;
                 transform: translateY(0);
             }
-            33%, 100% {
+            30%, 100% {
                 opacity: 0;
                 transform: translateY(-5px);
             }
         }
 
         @keyframes txt-pass-anim {
-            0%, 32% {
+            0%, 29% {
                 opacity: 0;
                 transform: translateY(5px);
             }
-            33%, 45% {
+            30%, 38% {
                 opacity: 1;
                 transform: translateY(0);
             }
-            50%, 100% {
+            42%, 100% {
                 opacity: 0;
                 transform: translateY(-5px);
             }
         }
 
+        /* ROUTER ICON */
         .icon-router {
-            animation: router-pulse 8s infinite;
+            animation: router-pulse 10s infinite;
         }
 
         @keyframes router-pulse {
-            0%, 45% {
+            0%, 42% {
                 border-color: #334155;
                 transform: scale(1);
             }
-            50%, 60% {
+            45%, 55% {
                 border-color: #38bdf8;
                 box-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
                 transform: scale(1.1);
             }
-            65%, 100% {
+            60%, 100% {
                 border-color: #334155;
                 transform: scale(1);
             }
         }
 
         @keyframes router-pop-anim {
-            0%, 45% {
+            0%, 42% {
                 opacity: 0;
                 transform: translateY(10px);
             }
-            50%, 65% {
+            45%, 58% {
                 opacity: 1;
                 transform: translateY(0);
             }
-            70%, 100% {
+            62%, 100% {
                 opacity: 0;
                 transform: translateY(10px);
             }
         }
 
+        /* PROVIDER ICON */
         .icon-provider {
-            animation: provider-pulse 8s infinite;
+            animation: provider-pulse 10s infinite;
         }
 
         @keyframes provider-pulse {
-            0%, 70% {
+            0%, 68% {
                 border-color: #334155;
                 transform: scale(1);
                 background: #0f172a;
             }
-            75%, 85% {
+            70%, 80% {
                 border-color: #22c55e;
                 box-shadow: 0 0 20px rgba(34, 197, 94, 0.4);
                 transform: scale(1.1);
                 background: rgba(34, 197, 94, 0.1);
             }
-            90%, 100% {
+            85%, 100% {
                 border-color: #334155;
                 transform: scale(1);
             }
         }
 
         @keyframes provider-pop-anim {
-            0%, 70% {
+            0%, 68% {
                 opacity: 0;
                 transform: translateY(10px);
             }
-            75%, 88% {
+            70%, 85% {
                 opacity: 1;
                 transform: translateY(0);
             }
-            92%, 100% {
+            90%, 100% {
                 opacity: 0;
                 transform: translateY(10px);
             }
