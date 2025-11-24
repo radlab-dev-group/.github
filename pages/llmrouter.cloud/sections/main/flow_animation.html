@@ -9,18 +9,18 @@
                 <span class="boundary-label">LLM ROUTER CORE</span>
             </div>
 
-            <!-- 1. SVG DESKTOP (Poziome) -->
+            <!-- 1. SVG DESKTOP (Poziome, 5 punktów) -->
             <svg class="anim-lines-desktop" viewBox="0 0 800 240" preserveAspectRatio="none">
-                <path class="line-base" d="M 100 120 L 700 120"/>
-                <path class="line-err" d="M 300 120 Q 200 60 100 120"/>
-                <path class="line-succ" d="M 700 120 Q 400 240 100 120"/>
+                <path class="line-base" d="M 80 120 L 720 120"/>
+                <path class="line-err" d="M 240 120 Q 160 60 80 120"/>
+                <path class="line-succ" d="M 720 120 Q 400 240 80 120"/>
             </svg>
 
-            <!-- 2. SVG MOBILE (Pionowe) -->
+            <!-- 2. SVG MOBILE (Pionowe, 5 punktów) -->
             <svg class="anim-lines-mobile" viewBox="0 0 320 600" preserveAspectRatio="none">
-                <path class="line-base" d="M 160 60 L 160 480"/>
-                <path class="line-err" d="M 160 200 Q 60 130 160 60"/>
-                <path class="line-succ" d="M 160 480 Q 280 270 160 60"/>
+                <path class="line-base" d="M 160 50 L 160 550"/>
+                <path class="line-err" d="M 160 175 Q 60 110 160 50"/>
+                <path class="line-succ" d="M 160 550 Q 280 300 160 50"/>
             </svg>
 
             <!-- 3. PAKIETY DANYCH -->
@@ -38,36 +38,50 @@
                 <div class="node-status-text"></div>
             </div>
 
-            <!-- Node 2: Security -->
+            <!-- Node 2: Guardrails -->
             <div class="anim-node node-2">
                 <div class="node-icon icon-security internal-node">🛡️</div>
                 <div class="node-label">Guardrails</div>
 
-                <div class="node-popover popover-security">
-                    <span class="p-txt t-check">Checking...</span>
-                    <span class="p-txt t-block">Block 🚫</span>
-                    <span class="p-txt t-pass">Pass ✅</span>
+                <!-- Szerszy dymek -->
+                <div class="node-popover popover-security" style="width: 140px; left: -70px;">
+                    <span class="p-txt t-check">Checking Content...</span>
+                    <span class="p-txt t-block">Unsafe Content 🚫</span>
+                    <span class="p-txt t-pass">Content Safe ✅</span>
                 </div>
             </div>
 
-            <!-- Node 3: Router -->
+            <!-- Node 3: Masking (IKONA ZMIENIONA) -->
             <div class="anim-node node-3">
+                <div class="node-icon icon-mask internal-node">🪪</div>
+                <div class="node-label">Data Masking</div>
+
+                <!-- Bardzo szeroki dymek dla maila -->
+                <div class="node-popover popover-mask" style="width: 180px; left: -90px;">
+                    <span class="p-txt t-raw">Email: john@doe.com</span>
+                    <span class="p-txt t-masked">Email: j***@***.***</span>
+                    <span class="p-txt t-label" style="color: #c084fc; font-size: 0.6rem; margin-top: 4px;">PII Detected & Masked</span>
+                </div>
+            </div>
+
+            <!-- Node 4: Router -->
+            <div class="anim-node node-4">
                 <div class="node-icon icon-router internal-node">🧠</div>
                 <div class="node-label">Router Logic</div>
 
-                <div class="node-popover popover-router">
-                    <span class="p-txt" style="color:#38bdf8; position: relative;">Strategy: FA</span>
-                    <span class="p-txt" style="color:#64748b; font-size:0.65rem; margin-top:4px; position: relative;">Pro: l1-gpt:120b</span>
+                <div class="node-popover popover-router" style="width: 160px; left: -80px;">
+                    <span class="p-txt" style="color:#38bdf8;">Strategy: Weighted</span>
+                    <span class="p-txt"
+                          style="color:#64748b; font-size:0.65rem; margin-top:4px;">Target: l1-gpt:120b</span>
                 </div>
             </div>
 
-            <!-- Node 4: Provider -->
-            <div class="anim-node node-4">
+            <!-- Node 5: Provider -->
+            <div class="anim-node node-5">
                 <div class="node-icon icon-provider external-node">⚡</div>
-                <div class="node-label">Selected Provider</div>
-
+                <div class="node-label">LLM Provider</div>
                 <div class="node-popover popover-provider">
-                    <span class="p-txt" style="color:#22c55e; position: relative;">Generating...</span>
+                    <span class="p-txt" style="color:#22c55e;">Generating Tokens...</span>
                 </div>
             </div>
 
@@ -76,7 +90,7 @@
 
     <style>
         /* =========================================
-           1. CORE STAGE & LAYOUT
+           1. LAYOUT
            ========================================= */
         .anim-stage {
             position: relative;
@@ -92,13 +106,12 @@
             z-index: 1;
         }
 
-        /* Granica Routera (Ramka) - DESKTOP */
         .router-boundary {
             position: absolute;
             top: 20px;
             bottom: 40px;
-            left: 210px;
-            right: 210px; /* Obejmuje Security i Router */
+            left: 170px;
+            right: 170px;
             border: 1px dashed rgba(56, 189, 248, 0.3);
             border-radius: 12px;
             background: rgba(56, 189, 248, 0.03);
@@ -120,22 +133,20 @@
             white-space: nowrap;
         }
 
-        /* SVG */
-        .anim-lines-desktop, .anim-lines-mobile {
+        .anim-lines-desktop {
+            display: block;
             position: absolute;
             inset: 0;
-            width: 100%;
-            height: 100%;
             pointer-events: none;
             z-index: 3;
         }
 
-        .anim-lines-desktop {
-            display: block;
-        }
-
         .anim-lines-mobile {
             display: none;
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: 3;
         }
 
         .line-base {
@@ -161,12 +172,13 @@
             opacity: 0.2;
         }
 
+
         /* =========================================
-           2. NODES (Węzły)
+           2. NODES
            ========================================= */
         .anim-node {
             position: absolute;
-            top: 120px; /* Center Y Desktop */
+            top: 120px;
             width: 0;
             height: 0;
             z-index: 10;
@@ -174,21 +186,24 @@
             justify-content: center;
         }
 
-        /* Pozycje Desktop */
         .node-1 {
-            left: 100px;
+            left: 80px;
         }
 
         .node-2 {
-            left: 300px;
+            left: 240px;
         }
 
         .node-3 {
-            left: 500px;
+            left: 400px;
         }
 
         .node-4 {
-            left: 700px;
+            left: 560px;
+        }
+
+        .node-5 {
+            left: 720px;
         }
 
         .node-icon {
@@ -238,33 +253,24 @@
             font-family: monospace;
         }
 
+
         /* =========================================
-           3. POPOVERS (Dymki)
+           3. POPOVERS & PACKETS
            ========================================= */
         .node-popover {
             position: absolute;
-            top: -90px;
-            left: -70px;
-            width: 140px; /* Szerszy domyślnie */
+            top: -95px; /* Wyżej, żeby nie zasłaniało */
             background: rgba(15, 23, 42, 0.95);
             border: 1px solid #334155;
             border-radius: 6px;
-            padding: 8px 4px;
+            padding: 8px 6px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
             opacity: 0;
-            white-space: nowrap; /* Zapobiega łamaniu "Checking..." */
+            pointer-events: none;
         }
-
-        .popover-router {
-            width: 170px;
-            left: -85px;
-        }
-
-        /* Jeszcze szerszy dla Routera */
 
         .p-txt {
             font-size: 0.7rem;
@@ -274,53 +280,13 @@
             width: 100%;
         }
 
-        /* Wewnętrzne animacje tekstów */
-        .t-check {
-            color: #94a3b8;
-            position: absolute;
-            animation: txt-check 10s infinite;
-        }
-
-        .t-block {
-            color: #ef4444;
-            position: absolute;
-            animation: txt-block 10s infinite;
-            opacity: 0;
-        }
-
-        .t-pass {
-            color: #22c55e;
-            position: absolute;
-            animation: txt-pass 10s infinite;
-            opacity: 0;
-        }
-
-        /* Animacje dymków */
-        .popover-security {
-            animation: pop-sec 10s infinite;
-        }
-
-        .popover-router {
-            animation: pop-route 10s infinite;
-        }
-
-        .popover-provider {
-            animation: pop-prov 10s infinite;
-        }
-
-
-        /* =========================================
-           4. PACKETS (Kropki)
-           ========================================= */
         .packet {
             position: absolute;
+            top: 0;
+            left: 0;
             width: 12px;
             height: 12px;
             border-radius: 50%;
-            /* WAŻNE: Na desktopie offset-path jest liczony od pozycji rodzica.
-               Resetujemy pozycję, aby offset-path działał poprawnie. */
-            top: 0;
-            left: 0;
             z-index: 5;
             opacity: 0;
         }
@@ -328,38 +294,47 @@
         .packet-blue {
             background: #38bdf8;
             box-shadow: 0 0 10px #38bdf8;
-            animation: move-blue 10s linear infinite;
+            animation: move-blue 12s linear infinite;
         }
 
         .packet-red {
             background: #ef4444;
             box-shadow: 0 0 10px #ef4444;
-            animation: move-red 10s linear infinite;
+            animation: move-red 12s linear infinite;
         }
 
         .packet-green {
             background: #22c55e;
             box-shadow: 0 0 10px #22c55e;
-            animation: move-green 10s linear infinite;
+            animation: move-green 12s linear infinite;
         }
 
-        /* Ścieżki Desktopowe (Default) */
+        /* Ścieżki Desktop */
         .packet-blue {
-            offset-path: path("M 100 120 L 700 120");
+            offset-path: path("M 80 120 L 240 120 L 400 120 L 560 120 L 720 120");
         }
 
         .packet-red {
-            offset-path: path("M 300 120 Q 200 60 100 120");
+            offset-path: path("M 240 120 Q 160 60 80 120");
         }
 
         .packet-green {
-            offset-path: path("M 700 120 Q 400 240 100 120");
+            offset-path: path("M 720 120 Q 400 240 80 120");
         }
 
 
         /* =========================================
-           5. KEYFRAMES ANIMATION (10s Cycle)
+           4. KEYFRAMES (12s Cycle)
            ========================================= */
+        /*
+           Timeline (12s):
+           0-15%: Move to Guard
+           15-30%: Wait at Guard
+           30-45%: Wait at Mask
+           45-60%: Wait at Router
+           60-80%: Move to Provider & Wait
+           80-100%: Return
+        */
 
         @keyframes move-blue {
             0% {
@@ -369,13 +344,19 @@
             5% {
                 opacity: 1;
             }
-            20%, 35% {
-                offset-distance: 33.3%;
+            15%, 25% {
+                offset-distance: 25%;
             }
-            45%, 55% {
-                offset-distance: 66.6%;
+            /* Guard Wait */
+            35%, 45% {
+                offset-distance: 50%;
             }
-            70% {
+            /* Mask Wait */
+            55%, 65% {
+                offset-distance: 75%;
+            }
+            /* Router Wait */
+            75% {
                 offset-distance: 100%;
                 opacity: 1;
             }
@@ -389,18 +370,18 @@
         }
 
         @keyframes move-red {
-            0%, 20% {
+            0%, 15% {
                 offset-distance: 0%;
                 opacity: 0;
             }
-            21% {
+            16% {
                 opacity: 1;
             }
-            35% {
+            30% {
                 offset-distance: 100%;
                 opacity: 1;
             }
-            40% {
+            35% {
                 opacity: 0;
             }
             100% {
@@ -410,11 +391,11 @@
         }
 
         @keyframes move-green {
-            0%, 79% {
+            0%, 75% {
                 offset-distance: 0%;
                 opacity: 0;
             }
-            80% {
+            76% {
                 opacity: 1;
             }
             95% {
@@ -427,20 +408,25 @@
             }
         }
 
+        /* --- PULSOWANIE IKON (12s) --- */
         .icon-user {
-            animation: pulse-user 10s infinite;
+            animation: pulse-user 12s infinite;
         }
 
         .icon-security {
-            animation: pulse-sec 10s infinite;
+            animation: pulse-sec 12s infinite;
+        }
+
+        .icon-mask {
+            animation: pulse-mask 12s infinite;
         }
 
         .icon-router {
-            animation: pulse-route 10s infinite;
+            animation: pulse-route 12s infinite;
         }
 
         .icon-provider {
-            animation: pulse-prov 10s infinite;
+            animation: pulse-prov 12s infinite;
         }
 
         @keyframes pulse-user {
@@ -448,7 +434,7 @@
                 border-color: #38bdf8;
                 box-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
             }
-            33%, 38% {
+            30%, 35% {
                 border-color: #ef4444;
                 box-shadow: 0 0 15px rgba(239, 68, 68, 0.5);
             }
@@ -464,107 +450,203 @@
         }
 
         @keyframes pulse-sec {
-            22%, 28% {
+            15%, 23% {
                 border-color: #ef4444;
                 background: rgba(239, 68, 68, 0.1);
             }
-            30%, 35% {
+            24%, 30% {
                 border-color: #22c55e;
                 background: #0f172a;
-                box-shadow: 0 0 15px rgba(34, 197, 94, 0.4);
+            }
+        }
+
+        @keyframes pulse-mask {
+            35%, 45% {
+                border-color: #c084fc;
+                background: rgba(192, 132, 252, 0.1);
+                box-shadow: 0 0 15px rgba(192, 132, 252, 0.4);
             }
         }
 
         @keyframes pulse-route {
-            45%, 55% {
+            55%, 65% {
                 border-color: #38bdf8;
                 box-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
             }
         }
 
         @keyframes pulse-prov {
-            70%, 80% {
+            75%, 85% {
                 border-color: #22c55e;
                 background: rgba(34, 197, 94, 0.1);
                 box-shadow: 0 0 15px rgba(34, 197, 94, 0.4);
             }
         }
 
+        /* --- POPOVER VISIBILITY (12s) --- */
+        .popover-security {
+            animation: pop-sec 12s infinite;
+        }
+
+        .popover-mask {
+            animation: pop-mask 12s infinite;
+        }
+
+        .popover-router {
+            animation: pop-route 12s infinite;
+        }
+
+        .popover-provider {
+            animation: pop-prov 12s infinite;
+        }
+
         @keyframes pop-sec {
-            20%, 38% {
+            15%, 30% {
                 opacity: 1;
                 transform: translateY(0);
             }
-            0%, 15%, 45%, 100% {
+            0%, 10%, 35%, 100% {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+        }
+
+        @keyframes pop-mask {
+            35%, 50% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            0%, 30%, 55%, 100% {
                 opacity: 0;
                 transform: translateY(10px);
             }
         }
 
         @keyframes pop-route {
-            45%, 58% {
+            55%, 70% {
                 opacity: 1;
                 transform: translateY(0);
             }
-            0%, 40%, 65%, 100% {
+            0%, 50%, 75%, 100% {
                 opacity: 0;
                 transform: translateY(10px);
             }
         }
 
         @keyframes pop-prov {
-            70%, 85% {
+            75%, 90% {
                 opacity: 1;
                 transform: translateY(0);
             }
-            0%, 65%, 90%, 100% {
+            0%, 70%, 95%, 100% {
                 opacity: 0;
                 transform: translateY(10px);
             }
         }
 
+        /* --- TEXT ANIMATIONS --- */
+        /* Security */
+        .t-check {
+            color: #94a3b8;
+            position: absolute;
+            animation: txt-check 12s infinite;
+        }
+
+        .t-block {
+            color: #ef4444;
+            position: absolute;
+            animation: txt-block 12s infinite;
+            opacity: 0;
+        }
+
+        .t-pass {
+            color: #22c55e;
+            position: absolute;
+            animation: txt-pass 12s infinite;
+            opacity: 0;
+        }
+
         @keyframes txt-check {
-            0%, 21% {
+            0%, 19% {
                 opacity: 1;
             }
-            22%, 100% {
+            20%, 100% {
                 opacity: 0;
             }
         }
 
         @keyframes txt-block {
-            22%, 29% {
+            20%, 23% {
                 opacity: 1;
                 transform: translateY(0);
             }
-            0%, 21% {
+            0%, 19% {
                 opacity: 0;
                 transform: translateY(5px);
             }
-            30%, 100% {
+            24%, 100% {
                 opacity: 0;
                 transform: translateY(-5px);
             }
         }
 
         @keyframes txt-pass {
-            30%, 38% {
+            24%, 30% {
                 opacity: 1;
                 transform: translateY(0);
             }
-            0%, 29% {
+            0%, 23% {
                 opacity: 0;
                 transform: translateY(5px);
             }
-            42%, 100% {
+            35%, 100% {
                 opacity: 0;
                 transform: translateY(-5px);
             }
         }
 
+        /* Masking */
+        .t-raw {
+            color: #ef4444;
+            position: absolute;
+            animation: txt-raw 12s infinite;
+        }
+
+        .t-masked {
+            color: #22c55e;
+            position: absolute;
+            animation: txt-masked 12s infinite;
+            opacity: 0;
+        }
+
+        @keyframes txt-raw {
+            0%, 41% {
+                opacity: 1;
+            }
+            42%, 100% {
+                opacity: 0;
+            }
+        }
+
+        @keyframes txt-masked {
+            0%, 41% {
+                opacity: 0;
+                transform: translateY(5px);
+            }
+            42%, 50% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            55%, 100% {
+                opacity: 0;
+                transform: translateY(-5px);
+            }
+        }
+
+        /* Status Usera */
         .node-status-text::after {
             content: '';
-            animation: txt-status 10s infinite;
+            animation: txt-status 12s infinite;
         }
 
         @keyframes txt-status {
@@ -572,16 +654,20 @@
                 content: 'Sending...';
                 color: #38bdf8;
             }
-            20% {
-                content: 'Waiting...';
+            15% {
+                content: 'Safety Check...';
                 color: #94a3b8;
             }
-            35% {
+            30% {
                 content: 'Blocked 🚫';
                 color: #ef4444;
             }
             45% {
-                content: 'Processing...';
+                content: 'Masking PII...';
+                color: #c084fc;
+            }
+            55% {
+                content: 'Routing...';
                 color: #38bdf8;
             }
             95% {
@@ -593,17 +679,14 @@
             }
         }
 
-
         /* =========================================
-           6. MOBILE OVERRIDES (Max Width 768px)
+           6. MOBILE OVERRIDES
            ========================================= */
         @media (max-width: 768px) {
-            /* Wyższa scena na mobile */
             .anim-stage {
                 height: 600px;
             }
 
-            /* SVG */
             .anim-lines-desktop {
                 display: none;
             }
@@ -612,96 +695,89 @@
                 display: block;
             }
 
-            /* RAMKA ROUTERA (Pionowa) */
             .router-boundary {
                 top: 140px;
-                bottom: 160px; /* Obejmuje Security(200) i Router(340) */
-                left: 40px;
-                right: 40px; /* Odstęp od krawędzi, żeby nie zasłaniać labeli? Nie, label jest pod spodem */
-                /* Ale label "LLM CORE" musi być widoczny */
+                bottom: 140px;
+                left: 20px;
+                right: 20px;
             }
 
-            /* Pozycjonowanie Węzłów - RESET */
             .anim-node {
                 left: 50% !important;
                 transform: translateX(-50%);
             }
 
-            /* Pionowe pozycje (na linii X=160px w SVG 320px) */
+            /* Pionowe pozycje */
             .node-1 {
-                top: 60px;
+                top: 50px;
             }
 
-            /* User */
             .node-2 {
-                top: 200px;
+                top: 175px;
             }
 
-            /* Security */
             .node-3 {
-                top: 340px;
+                top: 300px;
             }
 
-            /* Router */
             .node-4 {
-                top: 480px;
+                top: 425px;
             }
 
-            /* Provider */
-            /* Labele i Statusy - Przesunięcie w prawo */
+            .node-5 {
+                top: 550px;
+            }
+
             .node-label {
                 top: 18px;
                 left: 45px;
                 text-align: left;
-                width: auto;
-                white-space: nowrap;
             }
 
             .node-status-text {
                 top: 38px;
                 left: 45px;
                 text-align: left;
-                width: auto;
-                white-space: nowrap;
             }
 
-            /* Dymki - Przesunięcie w lewo */
+            /* Dymki na mobile: w lewo od ikony */
             .node-popover {
                 top: 5px;
                 left: auto;
-                right: 45px; /* Zakotwiczenie z prawej strony elementu */
+                right: 45px;
+                width: 120px;
                 align-items: flex-end;
-                transform-origin: right center;
             }
 
             .p-txt {
                 text-align: right;
             }
 
+            /* Custom widths na mobile */
             .popover-router {
                 width: 140px;
                 left: auto;
                 right: 45px;
             }
 
-            /* PAKIETY - Reset pozycji i nowe ścieżki */
-            /* Ważne: Na mobile offset-path musi być liczony od lewej krawędzi kontenera,
-               ale pakiety mają position:absolute. Ustawiamy left:0, top:0 w kontenerze. */
-            .packet {
-                left: 0;
-                top: 0;
+            .popover-mask {
+                width: 150px;
+                left: auto;
+                right: 45px;
             }
 
+            /* Szeroki dla maila */
+            /* MOBILE PATHS */
             .packet-blue {
-                offset-path: path("M 160 60 L 160 480") !important;
+                offset-path: path("M 160 50 L 160 550") !important;
             }
 
             .packet-red {
-                offset-path: path("M 160 200 Q 60 130 160 60") !important;
+                offset-path: path("M 160 175 Q 60 110 160 50") !important;
             }
 
             .packet-green {
-                offset-path: path("M 160 480 Q 280 270 160 60") !important;
+                offset-path: path("M 160 550 Q 280 300 160 50") !important;
             }
         }
     </style>
