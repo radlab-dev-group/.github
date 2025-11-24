@@ -548,6 +548,245 @@ code {
     }
 }
 
+/* plugins */
+.plugin-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    position: relative;
+    z-index: 1;
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: 3.5rem;
+}
+
+.section-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #fff;
+    margin: 0 0 0.5rem 0;
+    background: linear-gradient(to right, #fff, #94a3b8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.section-subtitle {
+    color: #64748b;
+    font-size: 1.1rem;
+}
+
+/* Grid */
+.plugin-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+}
+
+@media (min-width: 992px) {
+    .plugin-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Karty */
+.plugin-card {
+    background: rgba(30, 41, 59, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 1rem;
+    padding: 2rem;
+    backdrop-filter: blur(10px);
+    transition: transform 0.3s, border-color 0.3s, background-color 0.3s;
+    display: flex;
+    flex-direction: column;
+}
+
+.plugin-card:hover {
+    border-color: rgba(56, 189, 248, 0.2);
+    background: rgba(30, 41, 59, 0.6);
+    transform: translateY(-5px);
+}
+
+/* Akcenty kolorystyczne dla kart */
+.accent-blue {
+    border-top: 1px solid rgba(56, 189, 248, 0.3);
+}
+
+.accent-purple {
+    border-top: 1px solid rgba(168, 85, 247, 0.3);
+}
+
+.accent-green {
+    border-top: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+.accent-orange {
+    border-top: 1px solid rgba(249, 115, 22, 0.3);
+}
+
+/* Header Karty */
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1.5rem;
+}
+
+.icon-box {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.badge {
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.25rem 0.75rem;
+    border-radius: 99px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.badge-blue {
+    background: rgba(56, 189, 248, 0.1);
+    color: #38bdf8;
+    border: 1px solid rgba(56, 189, 248, 0.2);
+}
+
+.badge-purple {
+    background: rgba(168, 85, 247, 0.1);
+    color: #c084fc;
+    border: 1px solid rgba(168, 85, 247, 0.2);
+}
+
+.badge-green {
+    background: rgba(34, 197, 94, 0.1);
+    color: #4ade80;
+    border: 1px solid rgba(34, 197, 94, 0.2);
+}
+
+.badge-orange {
+    background: rgba(249, 115, 22, 0.1);
+    color: #fb923c;
+    border: 1px solid rgba(249, 115, 22, 0.2);
+}
+
+.card-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #f1f5f9;
+    margin-bottom: 0.5rem;
+}
+
+.card-desc {
+    font-size: 0.95rem;
+    color: #94a3b8;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+}
+
+/* Lista z customowymi bulletami */
+.feature-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 2rem 0;
+}
+
+.feature-list li {
+    position: relative;
+    padding-left: 1.5rem;
+    margin-bottom: 0.75rem;
+    color: #cbd5e1;
+    font-size: 0.9rem;
+}
+
+.feature-list li::before {
+    content: "▹";
+    position: absolute;
+    left: 0;
+    color: #64748b;
+}
+
+/* Terminal Window */
+.terminal {
+    background: #0f172a;
+    border-radius: 8px;
+    border: 1px solid #334155;
+    overflow: hidden;
+    margin-top: auto; /* Dopycha terminal do dołu karty */
+    font-family: 'Menlo', 'Monaco', 'Courier New', monospace;
+    font-size: 0.8rem;
+}
+
+.terminal-header {
+    background: #1e293b;
+    padding: 8px 12px;
+    display: flex;
+    gap: 6px;
+    border-bottom: 1px solid #334155;
+}
+
+.dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+}
+
+.dot-r {
+    background: #ef4444;
+}
+
+.dot-y {
+    background: #eab308;
+}
+
+.dot-g {
+    background: #22c55e;
+}
+
+.terminal-body {
+    padding: 1rem;
+    color: #e2e8f0;
+    overflow-x: auto;
+}
+
+/* Syntax highlighting simple simulation */
+.t-cmd {
+    color: #facc15;
+}
+
+/* Yellow for export */
+.t-var {
+    color: #38bdf8;
+}
+
+/* Blue for variables */
+.t-str {
+    color: #a5f3fc;
+}
+
+/* Light blue for strings */
+.t-comment {
+    color: #64748b;
+    font-style: italic;
+}
+
+.t-py-kw {
+    color: #c084fc;
+}
+
+/* Purple for def/class */
+.t-py-cls {
+    color: #facc15;
+}
+
 @media (max-width: 768px) {
     .env-var-table {
         display: block;
