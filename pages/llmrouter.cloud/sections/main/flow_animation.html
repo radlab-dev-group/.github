@@ -15,11 +15,16 @@
                 <path class="line-succ" d="M 720 120 Q 400 240 80 120"/>
             </svg>
 
-            <!-- SVG MOBILE -->
+            <!-- SVG MOBILE (POPRAWIONE WSPÓŁRZĘDNE) -->
+            <!-- ViewBox 320x600. Środek X=160.
+                 Środki ikon Y: User=80, Guard=205, Mask=330, Router=455, Prov=580 -->
             <svg class="anim-lines-mobile" viewBox="0 0 320 600" preserveAspectRatio="none">
-                <path class="line-base" d="M 160 50 L 160 550"/>
-                <path class="line-err" d="M 160 175 Q 60 110 160 50"/>
-                <path class="line-succ" d="M 160 550 Q 280 300 160 50"/>
+                <!-- Główna linia (80 do 580) -->
+                <path class="line-base" d="M 160 80 L 160 580"/>
+                <!-- Błąd (Guard 205 -> User 80) -->
+                <path class="line-err" d="M 160 205 Q 60 140 160 80"/>
+                <!-- Sukces (Prov 580 -> User 80) -->
+                <path class="line-succ" d="M 160 580 Q 280 330 160 80"/>
             </svg>
 
             <!-- PAKIETY -->
@@ -30,14 +35,14 @@
 
             <!-- WĘZŁY -->
 
-            <!-- Node 1: User -->
+            <!-- Node 1: User (Top: 50px -> Center Y: 80px) -->
             <div class="anim-node node-1">
                 <div class="node-icon icon-user external-node">👤</div>
                 <div class="node-label">User Request</div>
                 <div class="node-status-text"></div>
             </div>
 
-            <!-- Node 2: Guardrails -->
+            <!-- Node 2: Guardrails (Top: 175px -> Center Y: 205px) -->
             <div class="anim-node node-2">
                 <div class="node-icon icon-security internal-node">🛡️</div>
                 <div class="node-label">Guardrails</div>
@@ -48,7 +53,7 @@
                 </div>
             </div>
 
-            <!-- Node 3: Masking -->
+            <!-- Node 3: Masking (Top: 300px -> Center Y: 330px) -->
             <div class="anim-node node-3">
                 <div class="node-icon icon-mask internal-node">🪪</div>
                 <div class="node-label">Data Masking</div>
@@ -59,7 +64,7 @@
                 </div>
             </div>
 
-            <!-- Node 4: Router -->
+            <!-- Node 4: Router (Top: 425px -> Center Y: 455px) -->
             <div class="anim-node node-4">
                 <div class="node-icon icon-router internal-node">🧠</div>
                 <div class="node-label">Router Logic</div>
@@ -69,11 +74,10 @@
                 </div>
             </div>
 
-            <!-- Node 5: Provider -->
+            <!-- Node 5: Provider (Top: 550px -> Center Y: 580px) -->
             <div class="anim-node node-5">
                 <div class="node-icon icon-provider external-node">⚡</div>
                 <div class="node-label">LLM Provider</div>
-
                 <div class="node-popover popover-provider" style="width: 150px; height: 34px; left: -75px;">
                     <span class="p-txt" style="color:#22c55e; top: 8px;">Generating Tokens...</span>
                 </div>
@@ -166,6 +170,7 @@
             opacity: 0.2;
         }
 
+
         /* =========================================
            2. NODES
            ========================================= */
@@ -245,6 +250,7 @@
             font-weight: bold;
             font-family: monospace;
         }
+
 
         /* =========================================
            3. POPOVERS & PACKETS
@@ -512,7 +518,6 @@
             }
         }
 
-        /* POPRAWIONY TIMING PROVIDERA: Startuje na 70% (ciut wcześniej) */
         @keyframes pop-prov {
             70%, 88% {
                 opacity: 1;
@@ -673,8 +678,9 @@
             }
 
             .router-boundary {
-                top: 140px;
-                bottom: 140px;
+                /* Ramka obejmuje Guard(175), Mask(300), Router(425) */
+                top: 135px;
+                bottom: 135px;
                 left: 20px;
                 right: 20px;
             }
@@ -684,6 +690,8 @@
                 transform: translateX(-50%);
             }
 
+            /* Pionowe pozycje (Gap 125px) */
+            /* User=50, Guard=175, Mask=300, Router=425, Provider=550 */
             .node-1 {
                 top: 50px;
             }
@@ -716,39 +724,35 @@
                 text-align: left;
             }
 
+            /* POPRAWKA: Dymki na mobile przeniesione NAD ikony i wycentrowane */
             .node-popover {
-                top: 5px;
-                left: auto;
-                right: 45px;
-                align-items: flex-end;
+                top: -45px;
+                left: 50%;
+                transform: translateX(-50%);
+                right: auto; /* Reset */
+                align-items: center; /* Wyśrodkowanie tekstu */
             }
 
             .p-txt {
-                text-align: right;
-                left: auto;
-                right: 6px;
+                text-align: center;
+                left: 0;
+                right: 0;
             }
 
-            /* Custom widths on mobile */
-            .popover-mask {
-                width: 200px;
-            }
-
-            .popover-provider {
-                width: 150px;
-            }
-
-            /* MOBILE PATHS */
+            /* MOBILE PATHS (Zsynchronizowane z pozycjami ikon) */
+            /* Blue: 50 -> 550 */
             .packet-blue {
-                offset-path: path("M 160 50 L 160 550") !important;
+                offset-path: path("M 160 80 L 160 580") !important;
             }
 
+            /* Red: 175 -> 50 (Środek Guard = 175+30 = 205. Środek User = 50+30 = 80) */
             .packet-red {
-                offset-path: path("M 160 175 Q 60 110 160 50") !important;
+                offset-path: path("M 160 205 Q 60 140 160 80") !important;
             }
 
+            /* Green: 550 -> 50 (Środek Prov = 550+30 = 580) */
             .packet-green {
-                offset-path: path("M 160 550 Q 280 300 160 50") !important;
+                offset-path: path("M 160 580 Q 280 330 160 80") !important;
             }
         }
     </style>
