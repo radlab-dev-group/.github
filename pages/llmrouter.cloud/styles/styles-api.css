@@ -787,36 +787,6 @@ code {
     color: #facc15;
 }
 
-/* architecture */
-.arch-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 1.5rem;
-    position: relative;
-    z-index: 2;
-}
-
-.sec-title {
-    font-size: 2.5rem;
-    font-weight: 800;
-    margin-bottom: 0.5rem;
-    color: #fff;
-    text-align: center;
-}
-
-.sec-sub {
-    text-align: center;
-    color: #94a3b8;
-    margin-bottom: 4rem;
-}
-
-/* Layout Główny: Dwie kolumny na dużych ekranach */
-.arch-layout {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 4rem;
-}
-
 @media (min-width: 992px) {
     .arch-layout {
         grid-template-columns: 1fr 1fr;
@@ -1013,6 +983,247 @@ code {
     flex-grow: 1;
     height: 1px;
     background: rgba(255, 255, 255, 0.1);
+}
+
+
+.arch-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem; /* Mniejszy padding kontenera na mobile */
+    position: relative;
+    z-index: 2;
+}
+
+.sec-title {
+    font-size: 2rem; /* Mniejszy font na start */
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+    color: #fff;
+    text-align: center;
+}
+
+.sec-sub {
+    text-align: center;
+    color: #94a3b8;
+    margin-bottom: 3rem;
+    font-size: 1rem;
+    padding: 0 1rem;
+}
+
+/* Layout Główny */
+.arch-layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+}
+
+/* --- LEWA STRONA: THE STACK --- */
+.stack-wrapper {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+/* Linia łącząca ("System Bus") */
+.system-bus {
+    position: absolute;
+    left: 12px; /* Bliżej krawędzi na mobile */
+    top: 20px;
+    bottom: 20px;
+    width: 2px;
+    background: linear-gradient(to bottom, #3b82f6, #a855f7, #10b981);
+    z-index: 0;
+    opacity: 0.5;
+}
+
+.layer-card {
+    background: rgba(15, 23, 42, 0.85);
+    border: 1px solid #334155;
+    border-radius: 12px;
+    padding: 1rem;
+    padding-left: 2.5rem; /* Zmniejszony wcięcie na mobile */
+    position: relative;
+    backdrop-filter: blur(8px);
+}
+
+/* Kropki na linii (Nodes) */
+.layer-node {
+    position: absolute;
+    left: 7px; /* Idealnie wycentrowane na nowej linii (12px - 5px) */
+    top: 50%;
+    transform: translateY(-50%);
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 2px solid #0f172a;
+    z-index: 1;
+    flex-shrink: 0;
+}
+
+.l-blue .layer-node {
+    background: #3b82f6;
+    box-shadow: 0 0 8px rgba(59, 130, 246, 0.5);
+}
+
+.l-purple .layer-node {
+    background: #a855f7;
+    box-shadow: 0 0 8px rgba(168, 85, 247, 0.5);
+}
+
+.l-green .layer-node {
+    background: #10b981;
+    box-shadow: 0 0 8px rgba(16, 185, 129, 0.5);
+}
+
+/* Stylizacja treści w karcie */
+.layer-header-row {
+    display: flex;
+    flex-wrap: wrap; /* Pozwala spaść tagowi niżej na bardzo małych ekranach */
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 0.25rem;
+}
+
+.layer-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #fff;
+}
+
+.layer-file {
+    font-family: monospace;
+    font-size: 0.7rem;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 2px 6px;
+    border-radius: 4px;
+    color: #94a3b8;
+    white-space: nowrap; /* Nie łam nazwy pliku */
+}
+
+.layer-desc {
+    font-size: 0.85rem;
+    color: #94a3b8;
+    line-height: 1.4;
+}
+
+/* --- PRAWA STRONA: COMPONENTS --- */
+.comp-grid {
+    display: grid;
+    grid-template-columns: 1fr; /* Domyślnie jedna kolumna (Mobile first) */
+    gap: 1rem;
+}
+
+.chip-card {
+    background: #1e293b;
+    border: 1px solid #334155;
+    padding: 1rem;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Ozdobny pasek */
+.chip-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, #3b82f6, transparent);
+    opacity: 0.5;
+}
+
+.chip-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: monospace;
+    font-weight: 600;
+    color: #e2e8f0;
+    font-size: 1rem;
+}
+
+.chip-body {
+    font-size: 0.85rem;
+    color: #94a3b8;
+    line-height: 1.4;
+}
+
+.led {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #22c55e;
+    box-shadow: 0 0 5px #22c55e;
+    margin-left: auto;
+}
+
+.col-title {
+    font-size: 1.2rem;
+    color: #fff;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.col-title::after {
+    content: '';
+    flex-grow: 1;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* --- MEDIA QUERIES (DESKTOP) --- */
+@media (min-width: 992px) {
+    .sec-title {
+        font-size: 2.5rem;
+    }
+
+    .arch-container {
+        padding: 0 1.5rem;
+    }
+
+    .arch-layout {
+        grid-template-columns: 1fr 1fr;
+        gap: 4rem;
+    }
+
+    /* Przywracamy szersze marginesy na desktopie */
+    .system-bus {
+        left: 20px;
+    }
+
+    .layer-node {
+        left: 15px;
+    }
+
+    .layer-card {
+        padding-left: 3.5rem;
+    }
+
+    .layer-card:hover {
+        transform: translateX(5px);
+        background: rgba(30, 41, 59, 0.9);
+        border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .chip-card:hover {
+        transform: translateY(-3px);
+        border-color: #475569;
+    }
+
+    /* Grid na 2 kolumny dla chipów na dużych ekranach */
+    .comp-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
 
 @media (max-width: 768px) {
