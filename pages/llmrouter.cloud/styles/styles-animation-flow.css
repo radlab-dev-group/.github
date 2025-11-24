@@ -1,0 +1,774 @@
+/* =========================================
+           1. LAYOUT & SVG
+           ========================================= */
+.anim-stage {
+    position: relative;
+    width: 100%;
+    max-width: 800px;
+    height: 240px;
+    margin: 0 auto;
+    background: radial-gradient(ellipse at center, #1e293b 0%, #020617 70%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    overflow: hidden;
+    font-family: monospace, sans-serif;
+    z-index: 1;
+}
+
+.router-boundary {
+    position: absolute;
+    top: 20px;
+    bottom: 40px;
+    left: 170px;
+    right: 170px;
+    border: 1px dashed rgba(56, 189, 248, 0.3);
+    border-radius: 12px;
+    background: rgba(56, 189, 248, 0.03);
+    z-index: 2;
+}
+
+.boundary-label {
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #020617;
+    padding: 0 10px;
+    color: #38bdf8;
+    font-size: 0.7rem;
+    font-weight: bold;
+    border: 1px solid #1e293b;
+    border-radius: 10px;
+    white-space: nowrap;
+}
+
+.anim-lines-desktop {
+    display: block;
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 3;
+}
+
+.anim-lines-mobile {
+    display: none;
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 3;
+}
+
+.line-base {
+    stroke: #334155;
+    stroke-width: 4;
+    fill: none;
+    stroke-linecap: round;
+}
+
+.line-err {
+    stroke: #ef4444;
+    stroke-width: 2;
+    fill: none;
+    stroke-dasharray: 6 4;
+    opacity: 0.3;
+}
+
+.line-succ {
+    stroke: #22c55e;
+    stroke-width: 2;
+    fill: none;
+    stroke-dasharray: 8 6;
+    opacity: 0.2;
+}
+
+
+/* =========================================
+   2. NODES & ICONS
+   ========================================= */
+.anim-node {
+    position: absolute;
+    top: 120px;
+    width: 0;
+    height: 0;
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+}
+
+.node-1 {
+    left: 80px;
+}
+
+.node-2 {
+    left: 240px;
+}
+
+.node-3 {
+    left: 400px;
+}
+
+.node-4 {
+    left: 560px;
+}
+
+.node-5 {
+    left: 720px;
+}
+
+.node-icon {
+    position: absolute;
+    top: -30px;
+    left: -30px;
+    width: 60px;
+    height: 60px;
+    background: #0f172a;
+    border: 2px solid #334155;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    transition: 0.3s;
+    overflow: hidden; /* Dla efektu skanera */
+}
+
+.external-node {
+    border-style: dotted;
+}
+
+.internal-node {
+    border-style: solid;
+}
+
+.node-label {
+    position: absolute;
+    top: 45px;
+    width: 140px;
+    left: -70px;
+    text-align: center;
+    color: #94a3b8;
+    font-size: 0.75rem;
+    font-weight: bold;
+}
+
+.node-status-text {
+    position: absolute;
+    top: 65px;
+    width: 140px;
+    left: -70px;
+    text-align: center;
+    font-size: 0.7rem;
+    font-weight: bold;
+    font-family: monospace;
+}
+
+
+/* =========================================
+   3. ZAAWANSOWANE EFEKTY IKON (NOWOŚĆ)
+   ========================================= */
+
+/* A. Guardrails SCANNER */
+.scan-line {
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    top: 0;
+    left: 0;
+    background: #ef4444;
+    box-shadow: 0 0 10px #ef4444;
+    opacity: 0;
+    animation: scan-anim 12s linear infinite;
+}
+
+@keyframes scan-anim {
+    15% {
+        opacity: 1;
+        top: 0;
+        background: #ef4444;
+    }
+    /* Red Scan Down */
+    19% {
+        top: 100%;
+    }
+    20% {
+        opacity: 0;
+    }
+    24% {
+        opacity: 1;
+        top: 0;
+        background: #22c55e;
+        box-shadow: 0 0 10px #22c55e;
+    }
+    /* Green Scan Down */
+    28% {
+        top: 100%;
+        opacity: 1;
+    }
+    30% {
+        opacity: 0;
+    }
+}
+
+/* B. Masking GLITCH */
+.icon-mask {
+    animation: glitch-anim 12s linear infinite;
+}
+
+@keyframes glitch-anim {
+    /* Normal State */
+    0%, 34% {
+        transform: translate(0);
+        border-color: #334155;
+    }
+    /* Active State (35% - 45%) */
+    35% {
+        border-color: #c084fc;
+        background: rgba(192, 132, 252, 0.1);
+        box-shadow: 0 0 15px rgba(192, 132, 252, 0.4);
+    }
+    36% {
+        transform: translate(-2px, 1px);
+    }
+    37% {
+        transform: translate(2px, -1px);
+    }
+    38% {
+        transform: translate(-1px, -1px);
+    }
+    39% {
+        transform: translate(1px, 2px);
+    }
+    40% {
+        transform: translate(0);
+    }
+    /* End Active */
+    45% {
+        border-color: #334155;
+        background: #0f172a;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    }
+}
+
+/* C. Router SPINNER */
+.thinking-ring {
+    position: absolute;
+    inset: 2px;
+    border-radius: 12px;
+    border: 2px dashed transparent;
+    opacity: 0;
+    animation: spin-anim 12s linear infinite;
+}
+
+@keyframes spin-anim {
+    55% {
+        opacity: 1;
+        border-color: #38bdf8;
+        transform: rotate(0deg);
+    }
+    65% {
+        opacity: 1;
+        border-color: #38bdf8;
+        transform: rotate(180deg);
+    }
+    70% {
+        opacity: 0;
+    }
+}
+
+
+/* =========================================
+   4. POPOVERS & PACKETS
+   ========================================= */
+.node-popover {
+    position: absolute;
+    top: -95px;
+    background: rgba(15, 23, 42, 0.95);
+    border: 1px solid #334155;
+    border-radius: 6px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.p-txt {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    font-size: 0.7rem;
+    font-weight: bold;
+    display: block;
+    top: 8px;
+}
+
+.packet {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    z-index: 5;
+    opacity: 0;
+}
+
+.packet-blue {
+    background: #38bdf8;
+    box-shadow: 0 0 10px #38bdf8;
+    animation: move-blue 12s linear infinite;
+}
+
+.packet-red {
+    background: #ef4444;
+    box-shadow: 0 0 10px #ef4444;
+    animation: move-red 12s linear infinite;
+}
+
+.packet-green {
+    background: #22c55e;
+    box-shadow: 0 0 10px #22c55e;
+    animation: move-green 12s linear infinite;
+}
+
+/* Ścieżki Desktop */
+.packet-blue {
+    offset-path: path("M 80 120 L 240 120 L 400 120 L 560 120 L 720 120");
+}
+
+.packet-red {
+    offset-path: path("M 240 120 Q 160 60 80 120");
+}
+
+.packet-green {
+    offset-path: path("M 720 120 Q 400 240 80 120");
+}
+
+
+/* =========================================
+   5. ANIMACJE OGÓLNE (12s)
+   ========================================= */
+@keyframes move-blue {
+    0% {
+        offset-distance: 0%;
+        opacity: 0;
+    }
+    5% {
+        opacity: 1;
+    }
+    15%, 25% {
+        offset-distance: 25%;
+    }
+    35%, 45% {
+        offset-distance: 50%;
+    }
+    55%, 65% {
+        offset-distance: 75%;
+    }
+    75% {
+        offset-distance: 100%;
+        opacity: 1;
+    }
+    80% {
+        opacity: 0;
+    }
+    100% {
+        offset-distance: 100%;
+        opacity: 0;
+    }
+}
+
+@keyframes move-red {
+    0%, 15% {
+        offset-distance: 0%;
+        opacity: 0;
+    }
+    16% {
+        opacity: 1;
+    }
+    30% {
+        offset-distance: 100%;
+        opacity: 1;
+    }
+    35% {
+        opacity: 0;
+    }
+    100% {
+        offset-distance: 100%;
+        opacity: 0;
+    }
+}
+
+@keyframes move-green {
+    0%, 75% {
+        offset-distance: 0%;
+        opacity: 0;
+    }
+    76% {
+        opacity: 1;
+    }
+    95% {
+        offset-distance: 100%;
+        opacity: 1;
+    }
+    100% {
+        offset-distance: 100%;
+        opacity: 0;
+    }
+}
+
+/* PULSOWANIE STANDARDOWE (User, Sec, Router, Prov - Mask ma własną animację Glitch) */
+.icon-user {
+    animation: pulse-user 12s infinite;
+}
+
+.icon-security {
+    animation: pulse-sec 12s infinite;
+}
+
+/* .icon-mask ma glitch-anim wyżej */
+.icon-router {
+    animation: pulse-route 12s infinite;
+}
+
+.icon-provider {
+    animation: pulse-prov 12s infinite;
+}
+
+@keyframes pulse-user {
+    0%, 10% {
+        border-color: #38bdf8;
+        box-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
+    }
+    30%, 35% {
+        border-color: #ef4444;
+        box-shadow: 0 0 15px rgba(239, 68, 68, 0.5);
+    }
+    40%, 93% {
+        border-color: #334155;
+        box-shadow: none;
+    }
+    95%, 100% {
+        border-color: #22c55e;
+        background: rgba(34, 197, 94, 0.1);
+        box-shadow: 0 0 20px rgba(34, 197, 94, 0.5);
+    }
+}
+
+/* Security tylko pulsuje tłem, border jest animowany też, ale skaner robi robotę */
+@keyframes pulse-sec {
+    15%, 23% {
+        border-color: #ef4444;
+        background: rgba(239, 68, 68, 0.1);
+    }
+    24%, 30% {
+        border-color: #22c55e;
+        background: #0f172a;
+    }
+}
+
+@keyframes pulse-route {
+    55%, 65% {
+        border-color: #38bdf8;
+        box-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
+    }
+}
+
+@keyframes pulse-prov {
+    75%, 85% {
+        border-color: #22c55e;
+        background: rgba(34, 197, 94, 0.1);
+        box-shadow: 0 0 15px rgba(34, 197, 94, 0.4);
+    }
+}
+
+/* POPOVER OPACITY */
+.popover-security {
+    animation: pop-sec 12s infinite;
+}
+
+.popover-mask {
+    animation: pop-mask 12s infinite;
+}
+
+.popover-router {
+    animation: pop-route 12s infinite;
+}
+
+.popover-provider {
+    animation: pop-prov 12s infinite;
+}
+
+@keyframes pop-sec {
+    15%, 30% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    0%, 10%, 35%, 100% {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+}
+
+@keyframes pop-mask {
+    35%, 50% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    0%, 30%, 55%, 100% {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+}
+
+@keyframes pop-route {
+    55%, 68% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    0%, 50%, 75%, 100% {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+}
+
+@keyframes pop-prov {
+    70%, 88% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    0%, 65%, 93%, 100% {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+}
+
+/* TEXT ANIMATIONS */
+.t-check {
+    color: #94a3b8;
+    position: absolute;
+    animation: txt-check 12s infinite;
+}
+
+.t-block {
+    color: #ef4444;
+    position: absolute;
+    animation: txt-block 12s infinite;
+    opacity: 0;
+}
+
+.t-pass {
+    color: #22c55e;
+    position: absolute;
+    animation: txt-pass 12s infinite;
+    opacity: 0;
+}
+
+@keyframes txt-check {
+    0%, 19% {
+        opacity: 1;
+    }
+    20%, 100% {
+        opacity: 0;
+    }
+}
+
+@keyframes txt-block {
+    20%, 23% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    0%, 19% {
+        opacity: 0;
+        transform: translateY(5px);
+    }
+    24%, 100% {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+}
+
+@keyframes txt-pass {
+    24%, 30% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    0%, 23% {
+        opacity: 0;
+        transform: translateY(5px);
+    }
+    35%, 100% {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+}
+
+.t-raw {
+    color: #ef4444;
+    position: absolute;
+    animation: txt-raw 12s infinite;
+}
+
+.t-masked {
+    color: #22c55e;
+    position: absolute;
+    animation: txt-masked 12s infinite;
+    opacity: 0;
+}
+
+@keyframes txt-raw {
+    0%, 41% {
+        opacity: 1;
+    }
+    42%, 100% {
+        opacity: 0;
+    }
+}
+
+@keyframes txt-masked {
+    0%, 41% {
+        opacity: 0;
+        transform: translateY(5px);
+    }
+    42%, 50% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    55%, 100% {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+}
+
+.node-status-text::after {
+    content: '';
+    animation: txt-status 12s infinite;
+}
+
+@keyframes txt-status {
+    0% {
+        content: 'Sending...';
+        color: #38bdf8;
+    }
+    15% {
+        content: 'Safety Check...';
+        color: #94a3b8;
+    }
+    30% {
+        content: 'Blocked 🚫';
+        color: #ef4444;
+    }
+    45% {
+        content: 'Masking PII...';
+        color: #c084fc;
+    }
+    55% {
+        content: 'Routing...';
+        color: #38bdf8;
+    }
+    95% {
+        content: 'Success ✅';
+        color: #22c55e;
+    }
+    100% {
+        content: '';
+    }
+}
+
+/* =========================================
+   6. MOBILE OVERRIDES
+   ========================================= */
+@media (max-width: 768px) {
+    .anim-stage {
+        height: 600px;
+        width: 320px;
+        max-width: 320px;
+        margin: 0 auto;
+    }
+
+    .anim-lines-desktop {
+        display: none;
+    }
+
+    .anim-lines-mobile {
+        display: block;
+    }
+
+    .router-boundary {
+        top: 140px;
+        bottom: 140px;
+        left: 20px;
+        right: 20px;
+    }
+
+    .anim-node {
+        left: 50% !important;
+        transform: translateX(-50%);
+    }
+
+    .node-1 {
+        top: 50px;
+    }
+
+    .node-2 {
+        top: 175px;
+    }
+
+    .node-3 {
+        top: 300px;
+    }
+
+    .node-4 {
+        top: 425px;
+    }
+
+    .node-5 {
+        top: 550px;
+    }
+
+    .node-label {
+        top: 18px;
+        left: 45px;
+        text-align: left;
+    }
+
+    .node-status-text {
+        top: 38px;
+        left: 45px;
+        text-align: left;
+    }
+
+    .node-popover {
+        top: 5px;
+        left: auto;
+        right: 45px;
+        align-items: flex-end;
+    }
+
+    .p-txt {
+        text-align: right;
+        left: auto;
+        right: 6px;
+    }
+
+    .popover-mask {
+        width: 200px;
+    }
+
+    .popover-provider {
+        width: 150px;
+    }
+
+    .packet-blue {
+        offset-path: path("M 160 50 L 160 550") !important;
+    }
+
+    .packet-red {
+        offset-path: path("M 160 175 Q 60 110 160 50") !important;
+    }
+
+    .packet-green {
+        offset-path: path("M 160 550 Q 280 300 160 50") !important;
+    }
+}
