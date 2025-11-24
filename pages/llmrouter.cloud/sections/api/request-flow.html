@@ -1,49 +1,279 @@
 <section class="tech-section" id="request-flow"
-         style="background: radial-gradient(circle at 50% 0%, rgba(56, 189, 248, 0.08), transparent 60%), #020617; padding: 3rem 0;">
-    <div class="container">
-        <h2 class="section-title">Request Flow</h2>
-        <p class="section-subtitle">How a request travels through the system</p>
+         style="background: radial-gradient(circle at 50% 0%, rgba(56, 189, 248, 0.08), transparent 60%), #020617; padding: 4rem 0; color: #e2e8f0; font-family: system-ui, -apple-system, sans-serif;">
 
-        <div class="flow-diagram">
-            <div class="flow-step">
-                <strong>1. Request Ingress</strong> – Flask receives HTTP request at registered endpoint
+    <!-- Style CSS dla diagramu (możesz przenieść do pliku .css) -->
+    <style>
+        .flow-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #fff;
+            margin: 0 0 0.5rem 0;
+            text-shadow: 0 0 20px rgba(56, 189, 248, 0.3);
+        }
+
+        .section-subtitle {
+            color: #94a3b8;
+            font-size: 1.1rem;
+        }
+
+        /* Grid Layout */
+        .flow-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+
+        @media (min-width: 992px) {
+            .flow-grid {
+                grid-template-columns: repeat(3, 1fr);
+                align-items: start;
+            }
+        }
+
+        /* Column Styles */
+        .flow-column {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            position: relative;
+        }
+
+        .column-header {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #64748b;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid #1e293b;
+            padding-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Card Styles */
+        .flow-card {
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid rgba(56, 189, 248, 0.1);
+            border-radius: 0.75rem;
+            padding: 1rem;
+            position: relative;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(4px);
+        }
+
+        .flow-card:hover {
+            background: rgba(30, 41, 59, 0.8);
+            border-color: rgba(56, 189, 248, 0.4);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px -5px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Step Number */
+        .step-num {
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            width: 28px;
+            height: 28px;
+            background: #0f172a;
+            border: 1px solid #3b82f6;
+            color: #3b82f6;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.8rem;
+            box-shadow: 0 0 10px rgba(59, 130, 246, 0.2);
+        }
+
+        /* Specific Card Variations */
+        .card-optional {
+            border-style: dashed;
+            border-color: rgba(168, 85, 247, 0.3);
+        }
+
+        .card-optional .step-num {
+            border-color: #a855f7;
+            color: #a855f7;
+        }
+
+        .card-execute {
+            background: rgba(16, 185, 129, 0.05);
+            border-color: rgba(16, 185, 129, 0.4);
+        }
+
+        .card-execute .step-num {
+            border-color: #10b981;
+            color: #10b981;
+            background: #022c22;
+        }
+
+        .card-retry {
+            border-color: rgba(239, 68, 68, 0.3);
+        }
+
+        .card-retry .step-num {
+            border-color: #ef4444;
+            color: #ef4444;
+        }
+
+        /* Content Typography */
+        .card-title {
+            font-weight: 600;
+            color: #f1f5f9;
+            margin-bottom: 0.25rem;
+            padding-left: 10px;
+            display: block;
+        }
+
+        .card-desc {
+            font-size: 0.85rem;
+            color: #94a3b8;
+            line-height: 1.4;
+            padding-left: 10px;
+            display: block;
+        }
+
+        code {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 0.1em 0.3em;
+            border-radius: 4px;
+            font-family: monospace;
+            color: #e2e8f0;
+            font-size: 0.8em;
+        }
+
+        /* Connecting Arrows (Desktop only) */
+        @media (min-width: 992px) {
+            .flow-arrow {
+                position: absolute;
+                right: -1.5rem;
+                top: 50%;
+                font-size: 1.5rem;
+                color: #334155;
+                transform: translateY(-50%);
+                z-index: 0;
+            }
+        }
+    </style>
+
+    <div class="flow-container">
+        <div class="section-header">
+            <h2 class="section-title">Request Flow</h2>
+            <p class="section-subtitle">Lifecycle of a request from ingress to response</p>
+        </div>
+
+        <div class="flow-grid">
+
+            <!-- KOLUMNA 1: Ingress & Security -->
+            <div class="flow-column">
+                <div class="column-header">
+                    <span>Phase 1</span> Input & Security
+                    <span class="flow-arrow">→</span>
+                </div>
+
+                <div class="flow-card">
+                    <div class="step-num">1</div>
+                    <span class="card-title">Request Ingress</span>
+                    <span class="card-desc">Flask receives HTTP request at registered endpoint.</span>
+                </div>
+
+                <div class="flow-card">
+                    <div class="step-num">2</div>
+                    <span class="card-title">Parameter Extraction</span>
+                    <span class="card-desc"><code>FlaskEndpointRegistrar</code> extracts JSON/form params.</span>
+                </div>
+
+                <div class="flow-card card-optional">
+                    <div class="step-num">3</div>
+                    <span class="card-title">Guardrail Validation <small>(Optional)</small></span>
+                    <span class="card-desc"><code>GuardrailPipeline</code> checks content safety via plugins.</span>
+                </div>
+
+                <div class="flow-card card-optional">
+                    <div class="step-num">4</div>
+                    <span class="card-title">Data Masking <small>(Optional)</small></span>
+                    <span class="card-desc"><code>MaskerPipeline</code> anonymizes sensitive data (PII).</span>
+                </div>
             </div>
-            <div class="flow-step">
-                <strong>2. Parameter Extraction</strong> – <code>FlaskEndpointRegistrar</code> extracts JSON/form params
+
+            <!-- KOLUMNA 2: Logic & Routing -->
+            <div class="flow-column">
+                <div class="column-header">
+                    <span>Phase 2</span> Routing & Logic
+                    <span class="flow-arrow">→</span>
+                </div>
+
+                <div class="flow-card">
+                    <div class="step-num">5</div>
+                    <span class="card-title">Endpoint Dispatch</span>
+                    <span class="card-desc"><code>run_ep()</code> called on concrete Endpoint implementation.</span>
+                </div>
+
+                <div class="flow-card">
+                    <div class="step-num">6</div>
+                    <span class="card-title">Payload Preparation</span>
+                    <span class="card-desc"><code>prepare_payload()</code> normalizes params & validates args.</span>
+                </div>
+
+                <div class="flow-card">
+                    <div class="step-num">7</div>
+                    <span class="card-title">Model Resolution</span>
+                    <span class="card-desc"><code>get_model_provider()</code> resolves model name via Handler.</span>
+                </div>
+
+                <div class="flow-card">
+                    <div class="step-num">8</div>
+                    <span class="card-title">Provider Selection</span>
+                    <span class="card-desc"><code>ProviderChooser</code> picks provider using strategy.</span>
+                </div>
+
+                <div class="flow-card card-optional">
+                    <div class="step-num">9</div>
+                    <span class="card-title">Prompt Injection <small>(Optional)</small></span>
+                    <span class="card-desc">System prompt injected from <code>PromptHandler</code>.</span>
+                </div>
             </div>
-            <div class="flow-step">
-                <strong>3. Guardrail Validation</strong> – (optional) <code>GuardrailPipeline</code> validates content safety through sequential plugins
+
+            <!-- KOLUMNA 3: Execution -->
+            <div class="flow-column">
+                <div class="column-header">
+                    <span>Phase 3</span> Execution & Output
+                </div>
+
+                <div class="flow-card card-execute">
+                    <div class="step-num">10</div>
+                    <span class="card-title">HTTP Execution</span>
+                    <span class="card-desc"><code>HttpRequestExecutor</code> sends request to external LLM API.</span>
+                </div>
+
+                <div class="flow-card card-retry">
+                    <div class="step-num">12</div>
+                    <span class="card-title">Retry Logic <small>(If failed)</small></span>
+                    <span class="card-desc">Auto retry with backoff up to <code>MAX_RECONNECTIONS</code>.</span>
+                </div>
+
+                <div class="flow-card card-execute">
+                    <div class="step-num">11</div>
+                    <span class="card-title">Response Handling</span>
+                    <span class="card-desc">Response parsed, optionally streamed via SSE.</span>
+                </div>
             </div>
-            <div class="flow-step">
-                <strong>4. Data Masking</strong> – (optional) <code>MaskerPipeline</code> anonymizes sensitive data through sequential plugins (e.g., fast_masker)
-            </div>
-            <div class="flow-step">
-                <strong>5. Endpoint Dispatch</strong> – <code>run_ep()</code> called on concrete EndpointI subclass
-            </div>
-            <div class="flow-step">
-                <strong>6. Payload Preparation</strong> – <code>prepare_payload()</code> normalizes params, validates
-                required args
-            </div>
-            <div class="flow-step">
-                <strong>7. Model Resolution</strong> – <code>get_model_provider()</code> resolves model name via
-                ModelHandler
-            </div>
-            <div class="flow-step">
-                <strong>8. Provider Selection</strong> – <code>ProviderChooser</code> picks provider using configured
-                strategy
-            </div>
-            <div class="flow-step">
-                <strong>9. Prompt Injection</strong> – (optional) System prompt injected from <code>PromptHandler</code>
-            </div>
-            <div class="flow-step">
-                <strong>10. HTTP Execution</strong> – <code>HttpRequestExecutor</code> sends request to external LLM API
-            </div>
-            <div class="flow-step">
-                <strong>11. Response Handling</strong> – Response parsed, optionally streamed via SSE
-            </div>
-            <div class="flow-step">
-                <strong>12. Retry Logic</strong> – (on failure) Automatic retry with backoff, up to <code>MAX_RECONNECTIONS</code>
-            </div>
+
         </div>
     </div>
 </section>
+
