@@ -787,6 +787,234 @@ code {
     color: #facc15;
 }
 
+/* architecture */
+.arch-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    position: relative;
+    z-index: 2;
+}
+
+.sec-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+    color: #fff;
+    text-align: center;
+}
+
+.sec-sub {
+    text-align: center;
+    color: #94a3b8;
+    margin-bottom: 4rem;
+}
+
+/* Layout Główny: Dwie kolumny na dużych ekranach */
+.arch-layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 4rem;
+}
+
+@media (min-width: 992px) {
+    .arch-layout {
+        grid-template-columns: 1fr 1fr;
+        align-items: start;
+    }
+}
+
+/* --- LEWA STRONA: THE STACK (WARSTWY) --- */
+.stack-wrapper {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+/* Linia łącząca ("System Bus") */
+.system-bus {
+    position: absolute;
+    left: 20px;
+    top: 20px;
+    bottom: 20px;
+    width: 2px;
+    background: linear-gradient(to bottom, #3b82f6, #a855f7, #10b981);
+    z-index: 0;
+    opacity: 0.5;
+}
+
+.layer-card {
+    background: rgba(15, 23, 42, 0.8);
+    border: 1px solid #334155;
+    border-radius: 12px;
+    padding: 1.25rem;
+    padding-left: 3.5rem; /* Miejsce na linię */
+    position: relative;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(8px);
+}
+
+.layer-card:hover {
+    transform: translateX(5px);
+    border-color: rgba(255, 255, 255, 0.2);
+    background: rgba(30, 41, 59, 0.9);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+/* Kropki na linii (Nodes) */
+.layer-node {
+    position: absolute;
+    left: 15px; /* Pozycja względem karty, trzeba dopasować do Bus */
+    top: 50%;
+    transform: translateY(-50%);
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 2px solid #0f172a;
+    z-index: 1;
+}
+
+/* Kolory warstw */
+.l-blue .layer-node {
+    background: #3b82f6;
+    box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+}
+
+.l-blue {
+    border-left: 1px solid rgba(59, 130, 246, 0.3);
+}
+
+.l-purple .layer-node {
+    background: #a855f7;
+    box-shadow: 0 0 10px rgba(168, 85, 247, 0.5);
+}
+
+.l-purple {
+    border-left: 1px solid rgba(168, 85, 247, 0.3);
+}
+
+.l-green .layer-node {
+    background: #10b981;
+    box-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
+}
+
+.l-green {
+    border-left: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.layer-title {
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.25rem;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.layer-file {
+    font-family: monospace;
+    font-size: 0.75rem;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 2px 6px;
+    border-radius: 4px;
+    color: #94a3b8;
+    text-transform: none;
+}
+
+.layer-desc {
+    font-size: 0.9rem;
+    color: #94a3b8;
+    line-height: 1.4;
+}
+
+
+/* --- PRAWA STRONA: COMPONENTS (GRID) --- */
+.comp-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1rem;
+}
+
+.chip-card {
+    background: #1e293b;
+    border: 1px solid #334155;
+    padding: 1rem;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    transition: transform 0.2s;
+    position: relative;
+    overflow: hidden;
+}
+
+.chip-card:hover {
+    transform: translateY(-3px);
+    border-color: #475569;
+}
+
+/* Ozdobny pasek na górze chipa */
+.chip-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, #3b82f6, transparent);
+    opacity: 0.5;
+}
+
+.chip-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: monospace;
+    font-weight: 600;
+    color: #e2e8f0;
+    font-size: 0.95rem;
+}
+
+.chip-icon {
+    color: #64748b;
+}
+
+.chip-body {
+    font-size: 0.85rem;
+    color: #94a3b8;
+    line-height: 1.4;
+}
+
+/* Status LEDs for visual flair */
+.led {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #22c55e;
+    box-shadow: 0 0 5px #22c55e;
+    margin-left: auto;
+}
+
+.col-title {
+    font-size: 1.2rem;
+    color: #fff;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.col-title::after {
+    content: '';
+    flex-grow: 1;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.1);
+}
+
 @media (max-width: 768px) {
     .env-var-table {
         display: block;
