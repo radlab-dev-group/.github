@@ -24,7 +24,6 @@
                 <div class="node-icon icon-security">🛡️</div>
                 <div class="node-label">Guardrails & Masking</div>
 
-                <!-- Dymek Security (zmienia status) -->
                 <div class="node-popover popover-security">
                     <div class="pop-text txt-check">Checking...</div>
                     <div class="pop-text txt-block">Block 🚫</div>
@@ -32,14 +31,17 @@
                 </div>
             </div>
 
-            <!-- 3. ROUTER NODE -->
+            <!-- 3. ROUTER NODE (Zaktualizowany Tekst) -->
             <div class="anim-node" style="left: 500px;">
                 <div class="node-icon icon-router">🧠</div>
                 <div class="node-label">Router Logic</div>
 
-                <!-- NOWE: Dymek Routera -->
-                <div class="node-popover popover-router">
+                <!-- ZMIANA: Szerszy dymek i nowy tekst -->
+                <div class="node-popover popover-router" style="width: 180px; left: -90px;">
                     <div class="pop-text" style="color: #38bdf8;">Strategy: FA</div>
+                    <div class="pop-text" style="color: #94a3b8; font-size: 0.7rem; margin-top: 3px;">Provider:
+                        l1-gpt-oss:120b
+                    </div>
                 </div>
             </div>
 
@@ -48,7 +50,6 @@
                 <div class="node-icon icon-provider">⚡</div>
                 <div class="node-label">Selected Provider</div>
 
-                <!-- NOWE: Dymek Providera -->
                 <div class="node-popover popover-provider">
                     <div class="pop-text" style="color: #22c55e;">Generating...</div>
                 </div>
@@ -163,7 +164,7 @@
             font-weight: bold;
         }
 
-        /* --- POPOVERS (Dymki) --- */
+        /* --- POPOVERS --- */
         .node-popover {
             position: absolute;
             top: -75px;
@@ -188,7 +189,7 @@
             font-weight: bold;
         }
 
-        /* Przypisanie animacji do konkretnych dymków */
+        /* Animacje dymków */
         .popover-security {
             animation: security-pop-anim 8s infinite;
         }
@@ -201,7 +202,7 @@
             animation: provider-pop-anim 8s infinite;
         }
 
-        /* Wewnętrzne teksty w Security */
+        /* Teksty Security */
         .pop-text.txt-check {
             color: #94a3b8;
             position: absolute;
@@ -223,9 +224,7 @@
         }
 
 
-        /* --- KEYFRAMES (Timeline 8s) --- */
-
-        /* 1. Ruch Pakietów */
+        /* --- KEYFRAMES --- */
         @keyframes travel-blue {
             0% {
                 offset-distance: 0%;
@@ -280,7 +279,6 @@
             }
         }
 
-        /* 2. Ikona Usera */
         .icon-user {
             animation: user-pulse 8s infinite;
         }
@@ -331,7 +329,6 @@
             }
         }
 
-        /* 3. Security Pulse & Popover */
         .icon-security {
             animation: security-pulse 8s infinite;
         }
@@ -413,7 +410,6 @@
             }
         }
 
-        /* 4. Router Pulse & Popover (NOWE) */
         .icon-router {
             animation: router-pulse 8s infinite;
         }
@@ -434,7 +430,6 @@
             }
         }
 
-        /* Dymek routera pojawia się gdy niebieska kropka tam jest (ok. 50-60%) */
         @keyframes router-pop-anim {
             0%, 45% {
                 opacity: 0;
@@ -450,7 +445,6 @@
             }
         }
 
-        /* 5. Provider Pulse & Popover (NOWE) */
         .icon-provider {
             animation: provider-pulse 8s infinite;
         }
@@ -473,7 +467,6 @@
             }
         }
 
-        /* Dymek providera pojawia się gdy kropka tam dociera (ok. 75%) */
         @keyframes provider-pop-anim {
             0%, 70% {
                 opacity: 0;
@@ -531,7 +524,6 @@
                 transform: translateX(-50%);
             }
 
-            /* Dymki na mobile */
             .node-popover {
                 top: -40px;
                 left: 50%;
