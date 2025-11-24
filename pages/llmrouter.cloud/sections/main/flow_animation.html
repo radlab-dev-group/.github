@@ -1,0 +1,424 @@
+<section class="flow-animation-section"
+         style="background: #020617; padding: 4rem 0; overflow: hidden;">
+    <div class="container" style="max-width: 900px; margin: 0 auto; position: relative;">
+
+        <!-- Kontener Animacji -->
+        <div class="anim-stage">
+
+            <!-- Linie łączące (tło) -->
+            <svg class="anim-lines" viewBox="0 0 800 200" preserveAspectRatio="none">
+                <!-- Linia główna pozioma -->
+                <path class="line-path" d="M 100 100 L 300 100 L 500 100 L 700 100"/>
+                <!-- Impuls (wędrująca kropka) -->
+                <circle class="data-packet" cx="0" cy="0" r="6"/>
+            </svg>
+
+            <!-- BLOK 1: USER -->
+            <div class="anim-node node-user" style="left: 50px;">
+                <div class="node-icon">👤</div>
+                <div class="node-label">User Request</div>
+                <div class="node-status">POST /chat</div>
+            </div>
+
+            <!-- BLOK 2: SECURITY -->
+            <div class="anim-node node-security" style="left: 300px;">
+                <div class="node-icon icon-shield">🛡️</div>
+                <div class="node-label">Guardrails & Masking</div>
+                <div class="node-popover">
+                    <span class="check-item">Context Check... OK</span>
+                    <span class="check-item">PII Masking... OK</span>
+                </div>
+            </div>
+
+            <!-- BLOK 3: ROUTER -->
+            <div class="anim-node node-router" style="left: 500px;">
+                <div class="node-icon icon-brain">🧠</div>
+                <div class="node-label">Router Logic</div>
+                <div class="node-popover popover-router">
+                    <span class="check-item">Strategy: First Available</span>
+                    <span class="check-item">Select: gpt-oss120b-m1</span>
+                </div>
+            </div>
+
+            <!-- BLOK 4: LLM PROVIDER -->
+            <div class="anim-node node-llm" style="left: 700px;">
+                <div class="node-icon icon-chip">⚡</div>
+                <div class="node-label">Selected provider</div>
+                <div class="node-status status-generating">Generating...</div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <style>
+        /* --- STAGE SETUP --- */
+        .anim-stage {
+            position: relative;
+            height: 240px;
+            width: 100%;
+            background: radial-gradient(ellipse at center, rgba(30, 41, 59, 0.4) 0%, rgba(2, 6, 23, 1) 70%);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            overflow: hidden;
+            font-family: system-ui, -apple-system, sans-serif;
+        }
+
+        /* --- SVG LINES --- */
+        .anim-lines {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .line-path {
+            fill: none;
+            stroke: #1e293b;
+            stroke-width: 4;
+            stroke-linecap: round;
+        }
+
+        /* Wędrująca paczka danych */
+        .data-packet {
+            fill: #38bdf8;
+            filter: drop-shadow(0 0 8px #38bdf8);
+            offset-path: path("M 100 100 L 300 100 L 500 100 L 700 100");
+            animation: travel-path 7s linear infinite;
+            opacity: 0;
+        }
+
+        /* --- NODES (BLOCZKI) --- */
+        .anim-node {
+            position: absolute;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 2;
+            width: 140px;
+        }
+
+        .node-icon {
+            width: 60px;
+            height: 60px;
+            background: #0f172a;
+            border: 2px solid #334155;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 2;
+        }
+
+        .node-label {
+            margin-top: 12px;
+            font-size: 0.85rem;
+            color: #94a3b8;
+            font-weight: 600;
+            text-align: center;
+            opacity: 0.5;
+            transition: opacity 0.3s;
+        }
+
+        .node-status {
+            font-size: 0.7rem;
+            color: #38bdf8;
+            margin-top: 4px;
+            opacity: 0;
+            font-family: monospace;
+        }
+
+        /* --- POPOVERS (Dymki z informacjami) --- */
+        .node-popover {
+            position: absolute;
+            top: -50px;
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid #475569;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            color: #e2e8f0;
+            white-space: nowrap;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.3s;
+            pointer-events: none;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+            font-family: monospace;
+        }
+
+        .check-item {
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        .check-item:last-child {
+            margin-bottom: 0;
+        }
+
+        /* --- KEYFRAMES (Timeline: 7s total) --- */
+
+        /* 1. Packet Movement */
+        @keyframes travel-path {
+            0% {
+                offset-distance: 0%;
+                opacity: 0;
+            }
+            5% {
+                opacity: 1;
+            }
+            20% {
+                offset-distance: 33%;
+            }
+            /* Arrive at Security */
+            40% {
+                offset-distance: 33%;
+            }
+            /* Stay at Security */
+            50% {
+                offset-distance: 66%;
+            }
+            /* Arrive at Router */
+            70% {
+                offset-distance: 66%;
+            }
+            /* Stay at Router */
+            80% {
+                offset-distance: 100%;
+                opacity: 1;
+            }
+            /* Arrive at LLM */
+            90% {
+                opacity: 0;
+            }
+            /* Packet consumed by LLM */
+            100% {
+                offset-distance: 100%;
+                opacity: 0;
+            }
+        }
+
+        /* 2. Security Animations */
+        /* Start: ~1.4s, End: ~2.8s */
+        .node-security .node-icon {
+            animation: highlight-purple 7s infinite;
+        }
+
+        .node-security .node-popover {
+            animation: show-popover-security 7s infinite;
+        }
+
+        @keyframes highlight-purple {
+            0%, 15% {
+                border-color: #334155;
+                box-shadow: none;
+                transform: scale(1);
+            }
+            20%, 35% {
+                border-color: #a855f7;
+                box-shadow: 0 0 20px rgba(168, 85, 247, 0.4);
+                transform: scale(1.1);
+                background: #2e1065;
+            }
+            40%, 100% {
+                border-color: #334155;
+                box-shadow: none;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes show-popover-security {
+            0%, 18% {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            20%, 35% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            40%, 100% {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+        }
+
+        /* 3. Router Animations */
+        /* Start: ~3.5s, End: ~4.9s */
+        .node-router .node-icon {
+            animation: highlight-blue 7s infinite;
+        }
+
+        .node-router .node-popover {
+            animation: show-popover-router 7s infinite;
+        }
+
+        @keyframes highlight-blue {
+            0%, 45% {
+                border-color: #334155;
+                transform: scale(1);
+            }
+            50%, 65% {
+                border-color: #38bdf8;
+                box-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
+                transform: scale(1.1);
+                background: #0c4a6e;
+            }
+            70%, 100% {
+                border-color: #334155;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes show-popover-router {
+            0%, 48% {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            50%, 65% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            70%, 100% {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+        }
+
+        /* 4. LLM Animations */
+        /* Start: ~5.6s */
+        .node-llm .node-icon {
+            animation: highlight-green 7s infinite;
+        }
+
+        .node-llm .status-generating {
+            animation: show-status 7s infinite;
+        }
+
+        @keyframes highlight-green {
+            0%, 75% {
+                border-color: #334155;
+                transform: scale(1);
+            }
+            80%, 95% {
+                border-color: #22c55e;
+                box-shadow: 0 0 20px rgba(34, 197, 94, 0.4);
+                transform: scale(1.1);
+                background: #064e3b;
+            }
+            100% {
+                border-color: #334155;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes show-status {
+            0%, 78% {
+                opacity: 0;
+            }
+            80%, 95% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+            }
+        }
+
+        /* User Pulse (Start & End) */
+        .node-user .node-icon {
+            animation: highlight-user 7s infinite;
+        }
+
+        @keyframes highlight-user {
+            0%, 5% {
+                border-color: #38bdf8;
+                box-shadow: 0 0 15px rgba(56, 189, 248, 0.2);
+            }
+            10%, 90% {
+                border-color: #334155;
+                box-shadow: none;
+            }
+            95%, 100% {
+                border-color: #22c55e;
+                box-shadow: 0 0 15px rgba(34, 197, 94, 0.4);
+            }
+            /* Success return */
+        }
+
+        .node-user .node-status {
+            animation: show-req 7s infinite;
+        }
+
+        @keyframes show-req {
+            0%, 10% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            15%, 100% {
+                opacity: 0;
+                transform: translateY(-5px);
+            }
+        }
+
+
+        /* Responsywność dla mobile */
+        @media (max-width: 768px) {
+            .anim-stage {
+                height: 400px;
+            }
+
+            .anim-lines {
+                display: none; /* Ukryj SVG na mobile, bo układ pionowy */
+            }
+
+            .anim-node {
+                position: relative;
+                top: auto;
+                left: auto !important;
+                transform: none;
+                width: 100%;
+                margin-bottom: 20px;
+                flex-direction: row;
+                justify-content: flex-start;
+                padding-left: 20%;
+                gap: 20px;
+            }
+
+            .node-popover {
+                left: 55%;
+                top: 10px;
+                transform: none !important;
+            }
+
+            /* Prosta linia pionowa CSS zamiast SVG */
+            .anim-stage::before {
+                content: '';
+                position: absolute;
+                left: 32%;
+                top: 20px;
+                bottom: 20px;
+                width: 2px;
+                background: #334155;
+                z-index: 1;
+            }
+
+            .node-icon {
+                z-index: 2;
+                margin: 0;
+            }
+
+            /* Wyłącz animację kropki na mobile, zostaw tylko pulsowanie bloków */
+            .data-packet {
+                display: none;
+            }
+        }
+    </style>
+</section>
