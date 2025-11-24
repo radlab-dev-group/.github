@@ -1,60 +1,169 @@
-<section id="overview" class="tech-section">
-    <div class="container">
-        <h2 class="section-title">Module Overview</h2>
-        <p class="section-subtitle">Core capabilities and design principles</p>
+<section id="overview" class="tech-section"
+         style="background-color: #020617; padding: 4rem 0; font-family: system-ui, -apple-system, sans-serif; color: #e2e8f0; position: relative; overflow: hidden;">
 
-        <div class="key-feature-box">
-            <h3>Key Features</h3>
-            <ul>
-                <li>
-                    <strong>Unified API Surface</strong>
-                    – Single REST interface for all LLM backends (vLLM, OpenAI, vLLM, ...), conversion between standards
-                </li>
-                <li>
-                    <strong>Pluggable Provider Selection</strong>
-                    – Multiple load-balancing strategies (balanced, weighted, first-available, first-available-optim)
-                </li>
-                <li>
-                    <strong>Streaming Support</strong>
-                    – Transparent Server-Sent Events (SSE) for OpenAI and Ollama endpoints with automatic conversion
-                </li>
-                <li>
-                    <strong>Health Monitoring</strong>
-                    – Built-in ping endpoints and Redis-based provider health tracking for each used provider
-                </li>
-                <li>
-                    <strong>Prometheus Metrics</strong>
-                    – Optional instrumentation for request counts, latencies, and error rates
-                </li>
-                <li>
-                    <strong>Auto-Discovery</strong>
-                    – Endpoints automatically discovered and registered at startup, simple addition of new endpoints
-                </li>
+    <!-- Tło: Subtelna siatka cyfrowa -->
+    <div style="position: absolute; inset: 0; background-image: radial-gradient(#1e293b 1px, transparent 1px); background-size: 30px 30px; opacity: 0.3; pointer-events: none;"></div>
 
-                <li>
-                    <strong>Extensible Architecture</strong>
-                    – Easily extend the platform by plugging in new providers, custom strategies, or additional API
-                    endpoints
-                </li>
+    <!-- Glow effect -->
+    <div style="position: absolute; top: -20%; right: -10%; width: 600px; height: 600px; background: radial-gradient(circle, rgba(6, 182, 212, 0.1), transparent 70%); pointer-events: none;"></div>
 
-                <li>
-                    <strong>Privacy-First</strong>
-                    – Built-in anonymization support via FastMasker integration, integration with local GenAI anonymizer
-                </li>
-            </ul>
+
+    <div class="ov-container">
+        <!-- Header -->
+        <div class="ov-header">
+            <div>
+                <h2 class="ov-title">Module Overview</h2>
+                <p class="ov-subtitle">Core capabilities and system status</p>
+            </div>
+            <!-- Mały badge "v1.0 Ready" -->
+            <div style="background: rgba(16, 185, 129, 0.1); color: #10b981; padding: 5px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; border: 1px solid rgba(16, 185, 129, 0.2);">
+                ● SYSTEM READY
+            </div>
         </div>
 
-        <div class="code-block" data-lang="shell">
-<pre><code># Installation
-git clone https://github.com/radlab-dev-group/llm-router.git
-cd llm-router
-python3 -m venv venv
-source venv/bin/activate
-pip install -e .[metrics]
+        <div class="ov-layout">
 
-# Start server
-export LLM_ROUTER_MINIMUM=1
-python -m llm_router_api.rest_api --gunicorn</code></pre>
+            <!-- LEWA STRONA: FEATURE GRID -->
+            <div class="feat-grid">
+
+                <!-- 1. API -->
+                <div class="feat-card">
+                    <div class="status-dot"></div>
+                    <div class="feat-icon">🌐</div>
+                    <div class="feat-title">Unified API Surface</div>
+                    <div class="feat-desc">Single REST interface for all backends (vLLM, OpenAI, Ollama). Automatic
+                        standards conversion.
+                    </div>
+                </div>
+
+                <!-- 2. LB -->
+                <div class="feat-card">
+                    <div class="status-dot"></div>
+                    <div class="feat-icon">⚖️</div>
+                    <div class="feat-title">Smart Routing</div>
+                    <div class="feat-desc">Pluggable load-balancing: weighted, round-robin, first-available, and optim
+                        strategies.
+                    </div>
+                </div>
+
+                <!-- 3. Streaming -->
+                <div class="feat-card">
+                    <div class="status-dot"></div>
+                    <div class="feat-icon">⚡</div>
+                    <div class="feat-title">SSE Streaming</div>
+                    <div class="feat-desc">Transparent Server-Sent Events support with automatic token conversion for
+                        all providers.
+                    </div>
+                </div>
+
+                <!-- 4. Monitoring -->
+                <div class="feat-card">
+                    <div class="status-dot"></div>
+                    <div class="feat-icon">💓</div>
+                    <div class="feat-title">Health Monitoring</div>
+                    <div class="feat-desc">Built-in Redis-based health tracking & ping endpoints for every connected
+                        provider.
+                    </div>
+                </div>
+
+                <!-- 5. Metrics -->
+                <div class="feat-card">
+                    <div class="status-dot"></div>
+                    <div class="feat-icon">📊</div>
+                    <div class="feat-title">Observability</div>
+                    <div class="feat-desc">Full Prometheus instrumentation for request counts, latencies, and error
+                        rates.
+                    </div>
+                </div>
+
+                <!-- 6. Discovery -->
+                <div class="feat-card">
+                    <div class="status-dot"></div>
+                    <div class="feat-icon">🔍</div>
+                    <div class="feat-title">Auto-Discovery</div>
+                    <div class="feat-desc">Endpoints are automatically detected and registered at startup via
+                        reflection.
+                    </div>
+                </div>
+
+                <!-- 7. Extensible -->
+                <div class="feat-card">
+                    <div class="status-dot"></div>
+                    <div class="feat-icon">🧩</div>
+                    <div class="feat-title">Modular Core</div>
+                    <div class="feat-desc">Easily plug in new providers, custom strategies, or add endpoints without
+                        forking core.
+                    </div>
+                </div>
+
+                <!-- 8. Privacy -->
+                <div class="feat-card">
+                    <div class="status-dot"></div>
+                    <div class="feat-icon">🛡️</div>
+                    <div class="feat-title">Privacy First</div>
+                    <div class="feat-desc">Integrated anonymization layers (FastMasker) ensure no PII leaks to external
+                        LLMs.
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- PRAWA STRONA: DEPLOY TERMINAL -->
+            <div class="deploy-panel">
+                <div class="panel-label">
+                    <span>🚀 Quick Deployment</span>
+                </div>
+
+                <div class="term-window">
+                    <div class="term-bar">
+                        <div class="win-btn win-close"></div>
+                        <div class="win-btn win-min"></div>
+                        <div class="win-btn win-max"></div>
+                    </div>
+                    <div class="term-content">
+                        <span class="comment"># 1. Clone Repository</span>
+                        <div class="cmd-line">
+                            <span class="prompt">$</span>
+                            <span class="cmd">git clone https://github.com/radlab/llm-router.git</span>
+                        </div>
+                        <br>
+                        <span class="comment"># 2. Setup Environment</span>
+                        <div class="cmd-line">
+                            <span class="prompt">$</span>
+                            <span class="cmd">cd llm-router && python3 -m venv venv</span>
+                        </div>
+                        <div class="cmd-line">
+                            <span class="prompt">$</span>
+                            <span class="cmd">source venv/bin/activate</span>
+                        </div>
+                        <div class="cmd-line">
+                            <span class="prompt">$</span>
+                            <span class="cmd">pip install -e .[metrics]</span>
+                        </div>
+                        <br>
+                        <span class="comment"># 3. Launch System</span>
+                        <div class="cmd-line">
+                            <span class="prompt">$</span>
+                            <span class="cmd">export <span class="hl-yellow">LLM_ROUTER_MINIMUM</span>=<span
+                                    class="hl-blue">1</span></span>
+                        </div>
+                        <div class="cmd-line">
+                            <span class="prompt">$</span>
+                            <span class="cmd">python -m llm_router_api.rest_api --gunicorn</span>
+                        </div>
+                        <br>
+                        <div class="cmd-line" style="opacity: 0.7;">
+                            <span class="prompt">></span>
+                            <span class="cmd" style="color: #10b981;">System Initialized. Listening on :8080...</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="background: rgba(30, 41, 59, 0.5); padding: 1rem; border-radius: 8px; border: 1px dashed rgba(255,255,255,0.1); font-size: 0.85rem; color: #94a3b8;">
+                    <strong>ℹ️ Note:</strong> Ensure Redis is running for health checks and rate limiting features.
+                </div>
+            </div>
+
         </div>
     </div>
 </section>
