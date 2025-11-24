@@ -1383,6 +1383,255 @@ code {
 }
 
 
+/* Extending */
+.ext-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    position: relative;
+    z-index: 2;
+}
+
+.ext-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.ext-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: #fff;
+    margin: 0;
+    text-shadow: 0 0 20px rgba(34, 197, 94, 0.2);
+}
+
+.ext-subtitle {
+    color: #94a3b8;
+    font-size: 1.1rem;
+    margin-top: 0.5rem;
+}
+
+/* Blueprint Cards Layout */
+.blueprint-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+@media (min-width: 992px) {
+    .blueprint-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+.blueprint-card {
+    background: rgba(15, 23, 42, 0.8);
+    border: 1px dashed rgba(34, 197, 94, 0.4); /* Dashed border = Blueprint look */
+    border-radius: 8px;
+    padding: 2rem;
+    position: relative;
+    backdrop-filter: blur(5px);
+    transition: border-color 0.3s, transform 0.3s;
+}
+
+.blueprint-card:hover {
+    border-color: rgba(34, 197, 94, 0.8);
+    background: rgba(15, 23, 42, 0.95);
+    transform: translateY(-2px);
+}
+
+/* Narożniki ozdobne */
+.blueprint-card::before, .blueprint-card::after {
+    content: '';
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border: 1px solid #22c55e;
+    transition: all 0.3s;
+}
+
+.blueprint-card::before {
+    top: -1px;
+    left: -1px;
+    border-right: none;
+    border-bottom: none;
+}
+
+.blueprint-card::after {
+    bottom: -1px;
+    right: -1px;
+    border-left: none;
+    border-top: none;
+}
+
+.bp-icon {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: #22c55e;
+    background: rgba(34, 197, 94, 0.1);
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+}
+
+.bp-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 1.5rem;
+}
+
+/* Step List */
+.step-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.step-item {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    align-items: flex-start;
+    font-size: 0.95rem;
+    color: #cbd5e1;
+    line-height: 1.5;
+}
+
+.step-num {
+    min-width: 24px;
+    height: 24px;
+    background: #1e293b;
+    border: 1px solid #475569;
+    border-radius: 50%;
+    color: #22c55e;
+    font-size: 0.8rem;
+    font-weight: bold;
+    font-family: monospace;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2px;
+}
+
+.highlight-code {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 2px 5px;
+    border-radius: 4px;
+    font-family: monospace;
+    color: #e2e8f0;
+    font-size: 0.85em;
+}
+
+
+/* IDE Window Styles */
+.ide-wrapper {
+    max-width: 900px;
+    margin: 0 auto;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+    border: 1px solid #334155;
+    background: #0f172a;
+}
+
+.ide-header {
+    background: #1e293b;
+    padding: 8px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #334155;
+}
+
+.file-tab {
+    background: #0f172a;
+    color: #fff;
+    padding: 5px 15px;
+    border-radius: 4px 4px 0 0;
+    font-size: 0.85rem;
+    font-family: sans-serif;
+    border-top: 2px solid #22c55e; /* Green active tab */
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.file-icon {
+    color: #3b82f6;
+    font-size: 1rem;
+}
+
+.ide-body {
+    display: flex;
+    font-family: 'Consolas', 'Monaco', monospace;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    padding: 1rem 0;
+    overflow-x: auto;
+}
+
+.line-nums {
+    padding: 0 1rem;
+    color: #475569;
+    text-align: right;
+    user-select: none;
+    border-right: 1px solid #334155;
+    margin-right: 1rem;
+}
+
+.code-content {
+    color: #e2e8f0;
+    padding-right: 1rem;
+}
+
+/* Syntax Highlight Colors (Monokai-ish) */
+.kwd {
+    color: #c084fc;
+}
+
+/* keyword (purple) */
+.cls {
+    color: #facc15;
+}
+
+/* class (yellow) */
+.str {
+    color: #a5f3fc;
+}
+
+/* string (cyan) */
+.fn {
+    color: #22c55e;
+}
+
+/* function (green) */
+.arg {
+    color: #fdba74;
+}
+
+/* argument (orange) */
+.cmt {
+    color: #64748b;
+    font-style: italic;
+}
+
+/* comment */
+
+.ide-footer {
+    background: #22c55e;
+    color: #020617;
+    padding: 4px 12px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+}
+
 /* --- MEDIA QUERIES (DESKTOP) --- */
 @media (min-width: 992px) {
     .sec-title {
