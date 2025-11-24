@@ -28,23 +28,26 @@
             <div class="packet packet-green"></div>
 
 
-            <!-- WĘZŁY -->
+            <!-- ================= WĘZŁY ================= -->
 
-            <!-- Node 1: User -->
+            <!-- Node 1: User (Ripple Effect) -->
             <div class="anim-node node-1">
+                <!-- Efekt fali radiowej -->
+                <div class="signal-ripple"></div>
+                <div class="signal-ripple delay"></div>
+
                 <div class="node-icon icon-user external-node">👤</div>
                 <div class="node-label">User Request</div>
                 <div class="node-status-text"></div>
             </div>
 
-            <!-- Node 2: Guardrails (Skaner) -->
+            <!-- Node 2: Guardrails -->
             <div class="anim-node node-2">
                 <div class="node-icon icon-security internal-node">
                     🛡️
-                    <div class="scan-line"></div> <!-- Element skanujący -->
+                    <div class="scan-line"></div>
                 </div>
                 <div class="node-label">Guardrails</div>
-
                 <div class="node-popover popover-security" style="width: 160px; height: 34px; left: -80px;">
                     <span class="p-txt t-check">Checking Content...</span>
                     <span class="p-txt t-block">Unsafe Content 🚫</span>
@@ -52,11 +55,10 @@
                 </div>
             </div>
 
-            <!-- Node 3: Masking (Glitch) -->
+            <!-- Node 3: Masking -->
             <div class="anim-node node-3">
                 <div class="node-icon icon-mask internal-node">🪪</div>
                 <div class="node-label">Data Masking</div>
-
                 <div class="node-popover popover-mask" style="width: 210px; height: 46px; left: -105px;">
                     <span class="p-txt t-raw" style="top: 8px;">Email: john@doe.com</span>
                     <span class="p-txt t-masked" style="top: 8px;">Email: j***@***.***</span>
@@ -64,24 +66,35 @@
                 </div>
             </div>
 
-            <!-- Node 4: Router (Spinner) -->
+            <!-- Node 4: Router -->
             <div class="anim-node node-4">
                 <div class="node-icon icon-router internal-node">
                     🧠
-                    <div class="thinking-ring"></div> <!-- Pierścień -->
+                    <div class="thinking-ring"></div>
                 </div>
                 <div class="node-label">Router Logic</div>
-
                 <div class="node-popover popover-router" style="width: 160px; height: 34px; left: -80px;">
                     <span class="p-txt" style="color:#38bdf8; top: 6px;">Strategy: Weighted</span>
                     <span class="p-txt" style="color:#64748b; font-size:0.65rem; top: 20px;">Target: l1-gpt:120b</span>
                 </div>
             </div>
 
-            <!-- Node 5: Provider -->
+            <!-- Node 5: Provider (Network Hub Effect) -->
             <div class="anim-node node-5">
+
+                <!-- Satelity Providerów -->
+                <div class="provider-satellites">
+                    <div class="sat sat-1">OpenAI</div>
+                    <div class="sat sat-2 selected">vLLM</div> <!-- Wybrany -->
+                    <div class="sat sat-3">Ollama</div>
+                    <div class="sat sat-4">LM Studio</div>
+                    <!-- Linie łączące (ozdobne) -->
+                    <div class="sat-line line-2"></div>
+                </div>
+
                 <div class="node-icon icon-provider external-node">⚡</div>
                 <div class="node-label">LLM Provider</div>
+
                 <div class="node-popover popover-provider" style="width: 150px; height: 34px; left: -75px;">
                     <span class="p-txt" style="color:#22c55e; top: 8px;">Generating Tokens...</span>
                 </div>
@@ -223,7 +236,12 @@
             font-size: 1.8rem;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
             transition: 0.3s;
-            overflow: hidden; /* Dla efektu skanera */
+            overflow: visible; /* Zmienione na visible, żeby satelity mogły wystawać */
+        }
+
+        /* Specjalny wrapper dla skanera, żeby nie wychodził poza border */
+        .icon-security, .icon-mask, .icon-router {
+            overflow: hidden;
         }
 
         .external-node {
@@ -258,10 +276,203 @@
 
 
         /* =========================================
-           3. ZAAWANSOWANE EFEKTY IKON (NOWOŚĆ)
+           3. NEW EFFECTS (USER & PROVIDER)
            ========================================= */
 
-        /* A. Guardrails SCANNER */
+        /* --- USER RIPPLE (SONAR) --- */
+        .signal-ripple {
+            position: absolute;
+            top: -30px;
+            left: -30px;
+            width: 60px;
+            height: 60px;
+            border: 2px solid #38bdf8;
+            border-radius: 14px;
+            opacity: 0;
+            z-index: 1;
+            pointer-events: none;
+            animation: ripple-anim 12s infinite;
+        }
+
+        .signal-ripple.delay {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes ripple-anim {
+            0% {
+                transform: scale(1);
+                opacity: 0.8;
+                border-width: 2px;
+            }
+            8% {
+                transform: scale(2.2);
+                opacity: 0;
+                border-width: 0px;
+            }
+            100% {
+                transform: scale(2.2);
+                opacity: 0;
+            }
+        }
+
+        /* --- PROVIDER SATELLITES --- */
+        .provider-satellites {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            z-index: 5; /* Pod ikoną */
+        }
+
+        .sat {
+            position: absolute;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.55rem;
+            font-weight: bold;
+            color: #94a3b8;
+            background: #0f172a;
+            border: 1px solid #334155;
+            white-space: nowrap;
+            opacity: 0;
+            transform: scale(0);
+            animation: sat-anim 12s infinite;
+        }
+
+        /* Pozycje satelitów (Desktop) */
+        .sat-1 {
+            top: -60px;
+            left: -50px;
+        }
+
+        /* OpenAI */
+        .sat-2 {
+            top: -60px;
+            left: 10px;
+        }
+
+        /* vLLM */
+        .sat-3 {
+            top: 40px;
+            left: -50px;
+        }
+
+        /* Ollama */
+        .sat-4 {
+            top: 40px;
+            left: 10px;
+        }
+
+        /* LM Studio */
+
+        /* Linia łącząca wybranego satelitę z ikoną */
+        .sat-line {
+            position: absolute;
+            background: #22c55e;
+            opacity: 0;
+            transform-origin: bottom center;
+            animation: line-anim 12s infinite;
+        }
+
+        /* Linia do vLLM (sat-2) */
+        .line-2 {
+            width: 2px;
+            height: 30px;
+            top: -30px;
+            left: 20px; /* Celuje w środek vLLM */
+            transform: rotate(-20deg); /* Lekki kąt */
+        }
+
+        @keyframes sat-anim {
+            /* Pojawienie się opcji */
+            70% {
+                opacity: 0;
+                transform: scale(0);
+                border-color: #334155;
+                color: #94a3b8;
+                box-shadow: none;
+            }
+            72% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            /* Wybór (Highlight) */
+            75% {
+                opacity: 1;
+            }
+
+            /* Zachowanie dla klasy .selected (vLLM) */
+            76% {
+            }
+
+            /* Wygaszanie */
+            85% {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+            100% {
+                opacity: 0;
+            }
+        }
+
+        /* Nadpisanie animacji tylko dla wybranego (.selected) */
+        .sat.selected {
+            animation: sat-anim-selected 12s infinite;
+        }
+
+        @keyframes sat-anim-selected {
+            70% {
+                opacity: 0;
+                transform: scale(0);
+                background: #0f172a;
+            }
+            72% {
+                opacity: 1;
+                transform: scale(1);
+                border-color: #334155;
+            }
+            75% {
+                border-color: #22c55e;
+                color: #22c55e;
+                background: rgba(34, 197, 94, 0.1);
+                box-shadow: 0 0 10px rgba(34, 197, 94, 0.3);
+                transform: scale(1.2);
+                z-index: 20;
+            }
+            85% {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+            100% {
+                opacity: 0;
+            }
+        }
+
+        @keyframes line-anim {
+            74% {
+                opacity: 0;
+                height: 0;
+            }
+            75% {
+                opacity: 1;
+                height: 30px;
+            }
+            82% {
+                opacity: 1;
+                height: 30px;
+            }
+            85% {
+                opacity: 0;
+                height: 0;
+            }
+        }
+
+
+        /* =========================================
+           4. EXISTING COMPONENT EFFECTS
+           ========================================= */
+        /* Guard Skaner */
         .scan-line {
             position: absolute;
             width: 100%;
@@ -280,7 +491,6 @@
                 top: 0;
                 background: #ef4444;
             }
-            /* Red Scan Down */
             19% {
                 top: 100%;
             }
@@ -293,7 +503,6 @@
                 background: #22c55e;
                 box-shadow: 0 0 10px #22c55e;
             }
-            /* Green Scan Down */
             28% {
                 top: 100%;
                 opacity: 1;
@@ -303,18 +512,16 @@
             }
         }
 
-        /* B. Masking GLITCH */
+        /* Masking Glitch */
         .icon-mask {
             animation: glitch-anim 12s linear infinite;
         }
 
         @keyframes glitch-anim {
-            /* Normal State */
             0%, 34% {
                 transform: translate(0);
                 border-color: #334155;
             }
-            /* Active State (35% - 45%) */
             35% {
                 border-color: #c084fc;
                 background: rgba(192, 132, 252, 0.1);
@@ -335,7 +542,6 @@
             40% {
                 transform: translate(0);
             }
-            /* End Active */
             45% {
                 border-color: #334155;
                 background: #0f172a;
@@ -343,7 +549,7 @@
             }
         }
 
-        /* C. Router SPINNER */
+        /* Router Spinner */
         .thinking-ring {
             position: absolute;
             inset: 2px;
@@ -371,7 +577,7 @@
 
 
         /* =========================================
-           4. POPOVERS & PACKETS
+           5. POPOVERS & PACKETS
            ========================================= */
         .node-popover {
             position: absolute;
@@ -440,7 +646,7 @@
 
 
         /* =========================================
-           5. ANIMACJE OGÓLNE (12s)
+           6. GENERAL ANIMATIONS (12s)
            ========================================= */
         @keyframes move-blue {
             0% {
@@ -511,7 +717,7 @@
             }
         }
 
-        /* PULSOWANIE STANDARDOWE (User, Sec, Router, Prov - Mask ma własną animację Glitch) */
+        /* ICONS */
         .icon-user {
             animation: pulse-user 12s infinite;
         }
@@ -520,7 +726,7 @@
             animation: pulse-sec 12s infinite;
         }
 
-        /* .icon-mask ma glitch-anim wyżej */
+        /* Masking uses glitch-anim */
         .icon-router {
             animation: pulse-route 12s infinite;
         }
@@ -549,7 +755,6 @@
             }
         }
 
-        /* Security tylko pulsuje tłem, border jest animowany też, ale skaner robi robotę */
         @keyframes pulse-sec {
             15%, 23% {
                 border-color: #ef4444;
@@ -770,14 +975,11 @@
         }
 
         /* =========================================
-           6. MOBILE OVERRIDES
+           7. MOBILE OVERRIDES
            ========================================= */
         @media (max-width: 768px) {
             .anim-stage {
                 height: 600px;
-                width: 320px;
-                max-width: 320px;
-                margin: 0 auto;
             }
 
             .anim-lines-desktop {
@@ -863,6 +1065,33 @@
 
             .packet-green {
                 offset-path: path("M 160 550 Q 280 300 160 50") !important;
+            }
+
+            /* Mobile Satellites Layout - Ciaśniej wokół ikony */
+            .sat-1 {
+                top: -35px;
+                left: -45px;
+            }
+
+            .sat-2 {
+                top: -35px;
+                left: 35px;
+            }
+
+            .sat-3 {
+                top: 35px;
+                left: -45px;
+            }
+
+            .sat-4 {
+                top: 35px;
+                left: 35px;
+            }
+
+            .line-2 {
+                height: 20px;
+                top: -20px;
+                left: 15px;
             }
         }
     </style>
