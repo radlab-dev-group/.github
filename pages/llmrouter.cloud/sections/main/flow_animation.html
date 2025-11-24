@@ -41,8 +41,6 @@
             <div class="anim-node node-2">
                 <div class="node-icon icon-security internal-node">🛡️</div>
                 <div class="node-label">Guardrails</div>
-
-                <!-- POPRAWKA: Szerszy dymek, stała wysokość -->
                 <div class="node-popover popover-security" style="width: 160px; height: 34px; left: -80px;">
                     <span class="p-txt t-check">Checking Content...</span>
                     <span class="p-txt t-block">Unsafe Content 🚫</span>
@@ -54,14 +52,9 @@
             <div class="anim-node node-3">
                 <div class="node-icon icon-mask internal-node">🪪</div>
                 <div class="node-label">Data Masking</div>
-
-                <!-- POPRAWKA: Bardzo szeroki dymek, wyższy, separacja linii -->
                 <div class="node-popover popover-mask" style="width: 210px; height: 46px; left: -105px;">
-                    <!-- Linia 1: Email (zmienia się) -->
                     <span class="p-txt t-raw" style="top: 8px;">Email: john@doe.com</span>
                     <span class="p-txt t-masked" style="top: 8px;">Email: j***@***.***</span>
-
-                    <!-- Linia 2: Status (stała pozycja na dole) -->
                     <span class="p-txt t-label" style="top: 26px; color: #c084fc; font-size: 0.6rem;">PII Detected & Masked</span>
                 </div>
             </div>
@@ -70,7 +63,6 @@
             <div class="anim-node node-4">
                 <div class="node-icon icon-router internal-node">🧠</div>
                 <div class="node-label">Router Logic</div>
-
                 <div class="node-popover popover-router" style="width: 160px; height: 34px; left: -80px;">
                     <span class="p-txt" style="color:#38bdf8; top: 6px;">Strategy: Weighted</span>
                     <span class="p-txt" style="color:#64748b; font-size:0.65rem; top: 20px;">Target: l1-gpt:120b</span>
@@ -81,8 +73,9 @@
             <div class="anim-node node-5">
                 <div class="node-icon icon-provider external-node">⚡</div>
                 <div class="node-label">LLM Provider</div>
-                <div class="node-popover popover-provider" style="height: 24px;">
-                    <span class="p-txt" style="color:#22c55e; top: 6px;">Generating Tokens...</span>
+
+                <div class="node-popover popover-provider" style="width: 150px; height: 34px; left: -75px;">
+                    <span class="p-txt" style="color:#22c55e; top: 8px;">Generating Tokens...</span>
                 </div>
             </div>
 
@@ -173,9 +166,8 @@
             opacity: 0.2;
         }
 
-
         /* =========================================
-           2. NODES & ICONS
+           2. NODES
            ========================================= */
         .anim-node {
             position: absolute;
@@ -254,9 +246,8 @@
             font-family: monospace;
         }
 
-
         /* =========================================
-           3. POPOVERS (POPRAWIONE)
+           3. POPOVERS & PACKETS
            ========================================= */
         .node-popover {
             position: absolute;
@@ -264,23 +255,21 @@
             background: rgba(15, 23, 42, 0.95);
             border: 1px solid #334155;
             border-radius: 6px;
-            /* Brak paddingu, używamy absolutnego pozycjonowania wewnątrz */
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
             opacity: 0;
             pointer-events: none;
-            overflow: hidden; /* Żeby tekst nie wychodził */
+            overflow: hidden;
         }
 
-        /* Teksty wewnątrz dymków */
         .p-txt {
-            position: absolute; /* Kluczowa zmiana: absolutne pozycjonowanie wewnątrz dymku */
+            position: absolute;
             left: 0;
             width: 100%;
             text-align: center;
             font-size: 0.7rem;
             font-weight: bold;
             display: block;
-            top: 8px; /* Domyślna pozycja góra */
+            top: 8px;
         }
 
         .packet {
@@ -523,12 +512,13 @@
             }
         }
 
+        /* POPRAWIONY TIMING PROVIDERA: Startuje na 70% (ciut wcześniej) */
         @keyframes pop-prov {
-            75%, 90% {
+            70%, 88% {
                 opacity: 1;
                 transform: translateY(0);
             }
-            0%, 70%, 95%, 100% {
+            0%, 65%, 93%, 100% {
                 opacity: 0;
                 transform: translateY(10px);
             }
@@ -537,17 +527,20 @@
         /* TEXT ANIMATIONS */
         .t-check {
             color: #94a3b8;
+            position: absolute;
             animation: txt-check 12s infinite;
         }
 
         .t-block {
             color: #ef4444;
+            position: absolute;
             animation: txt-block 12s infinite;
             opacity: 0;
         }
 
         .t-pass {
             color: #22c55e;
+            position: absolute;
             animation: txt-pass 12s infinite;
             opacity: 0;
         }
@@ -593,11 +586,13 @@
 
         .t-raw {
             color: #ef4444;
+            position: absolute;
             animation: txt-raw 12s infinite;
         }
 
         .t-masked {
             color: #22c55e;
+            position: absolute;
             animation: txt-masked 12s infinite;
             opacity: 0;
         }
@@ -721,12 +716,10 @@
                 text-align: left;
             }
 
-            /* Popovers on Mobile - Shifted Left to stay on screen */
             .node-popover {
                 top: 5px;
                 left: auto;
                 right: 45px;
-                /* Reset widths on mobile if needed, but keeping fixed is safer */
                 align-items: flex-end;
             }
 
@@ -736,10 +729,13 @@
                 right: 6px;
             }
 
-            /* Align text right inside popover */
-            /* Specific widths override for mobile */
+            /* Custom widths on mobile */
             .popover-mask {
                 width: 200px;
+            }
+
+            .popover-provider {
+                width: 150px;
             }
 
             /* MOBILE PATHS */
