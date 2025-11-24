@@ -1,509 +1,55 @@
 <section class="flow-animation-section" style="background: #020617; padding: 4rem 0; overflow: hidden;">
     <div class="container" style="max-width: 900px; margin: 0 auto; position: relative;">
 
-        <!-- Kontener Animacji -->
+        <!-- SCENA -->
         <div class="anim-stage">
 
-            <!-- SVG: Linie i Pakiety -->
-            <svg class="anim-lines" viewBox="0 0 800 200" preserveAspectRatio="none">
-                <!-- 1. Główna linia (Prosta) -->
-                <path class="line-path" d="M 100 100 L 300 100 L 500 100 L 700 100"/>
+            <!-- SVG: Linie (Y=120 to idealny środek wysokości 240px) -->
+            <svg class="anim-lines" viewBox="0 0 800 240" preserveAspectRatio="none">
+                <!-- Linia główna -->
+                <path class="line-path" d="M 100 120 L 300 120 L 500 120 L 700 120"/>
+                <!-- Łuk błędu (powrót) -->
+                <path class="line-path-return" d="M 300 120 Q 200 60 100 120"/>
 
-                <!-- 2. Linia powrotna (Łuk błędu) - domyślnie lekko widoczna -->
-                <path class="line-path-return" d="M 300 90 Q 200 40 100 90"/>
-
-                <!-- Pakiet Sukcesu (Niebieska kropka) -->
+                <!-- Niebieska kropka (Happy Path) -->
                 <circle class="data-packet" cx="0" cy="0" r="6"/>
-
-                <!-- Pakiet Błędu (Czerwona kropka) -->
+                <!-- Czerwona kropka (Error Path) -->
                 <circle class="error-packet" cx="0" cy="0" r="5"/>
             </svg>
 
-            <!-- BLOK 1: USER -->
-            <div class="anim-node node-user" style="left: 100px;">
-                <div class="node-icon">👤</div>
+            <!-- 1. USER NODE -->
+            <div class="anim-node" style="left: 100px;">
+                <div class="node-icon icon-user">👤</div>
                 <div class="node-label">User Request</div>
-                <!-- Status Usera (wysłano / odebrano / błąd) -->
-                <div class="node-status-badge"></div>
+                <div class="node-status-text"></div> <!-- Status dynamiczny -->
             </div>
 
-            <!-- BLOK 2: SECURITY -->
-            <div class="anim-node node-security" style="left: 300px;">
-                <div class="node-icon icon-shield">🛡️</div>
+            <!-- 2. SECURITY NODE -->
+            <div class="anim-node" style="left: 300px;">
+                <div class="node-icon icon-security">🛡️</div>
                 <div class="node-label">Guardrails & Masking</div>
+
+                <!-- Dymek statusu -->
                 <div class="node-popover">
-                    <span class="check-text">Checking...</span>
-                    <span class="check-result result-ok">Pass ✅</span>
-                    <span class="check-result result-bad">Block 🚫</span>
+                    <div class="pop-text txt-check">Checking...</div>
+                    <div class="pop-text txt-block">Block 🚫</div>
+                    <div class="pop-text txt-pass">Pass ✅</div>
                 </div>
             </div>
 
-            <!-- BLOK 3: ROUTER -->
-            <div class="anim-node node-router" style="left: 500px;">
-                <div class="node-icon icon-brain">🧠</div>
+            <!-- 3. ROUTER NODE -->
+            <div class="anim-node" style="left: 500px;">
+                <div class="node-icon icon-router">🧠</div>
                 <div class="node-label">Router Logic</div>
             </div>
 
-            <!-- BLOK 4: LLM PROVIDER -->
-            <div class="anim-node node-llm" style="left: 700px;">
-                <div class="node-icon icon-chip">⚡</div>
+            <!-- 4. PROVIDER NODE -->
+            <div class="anim-node" style="left: 700px;">
+                <div class="node-icon icon-provider">⚡</div>
                 <div class="node-label">Selected Provider</div>
+                <div class="node-status-provider"></div>
             </div>
 
         </div>
-
     </div>
-
-    <style>
-        /* --- STAGE SETUP --- */
-        .anim-stage {
-            position: relative;
-            height: 240px;
-            width: 100%;
-            background: radial-gradient(ellipse at center, rgba(30, 41, 59, 0.4) 0%, rgba(2, 6, 23, 1) 70%);
-            border-radius: 16px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            overflow: hidden;
-            font-family: system-ui, -apple-system, sans-serif;
-        }
-
-        /* --- SVG STYLES --- */
-        .anim-lines {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
-            pointer-events: none;
-        }
-
-        /* Główna linia */
-        .line-path {
-            fill: none;
-            stroke: #1e293b;
-            stroke-width: 4;
-            stroke-linecap: round;
-        }
-
-        /* Linia powrotna (Błąd) */
-        .line-path-return {
-            fill: none;
-            stroke: #ef4444;
-            stroke-width: 2;
-            stroke-linecap: round;
-            stroke-dasharray: 6 4;
-            opacity: 0.2;
-        }
-
-        /* Wędrująca paczka (SUKCES) */
-        .data-packet {
-            fill: #38bdf8;
-            filter: drop-shadow(0 0 8px #38bdf8);
-            /* Ścieżka od Usera do LLM */
-            offset-path: path("M 100 100 L 300 100 L 500 100 L 700 100");
-            animation: travel-success 8s linear infinite;
-            opacity: 0;
-        }
-
-        /* Wędrująca paczka (BŁĄD/POWRÓT) */
-        .error-packet {
-            fill: #ef4444;
-            filter: drop-shadow(0 0 8px #ef4444);
-            /* Ścieżka powrotna (łuk) od Security do Usera */
-            offset-path: path("M 300 90 Q 200 40 100 90");
-            animation: travel-error 8s linear infinite;
-            opacity: 0;
-        }
-
-        /* --- NODES --- */
-        .anim-node {
-            position: absolute;
-            top: 50%;
-            /* Centrowanie idealne względem punktu X */
-            transform: translate(-50%, -50%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-start;
-            z-index: 2;
-            width: 160px; /* Stała szerokość dla wszystkich */
-        }
-
-        .node-icon {
-            width: 60px;
-            height: 60px;
-            background: #0f172a;
-            border: 2px solid #334155;
-            border-radius: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.8rem;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-            transition: all 0.3s ease;
-            position: relative;
-            z-index: 2;
-        }
-
-        .node-label {
-            margin-top: 14px;
-            font-size: 0.9rem;
-            color: #94a3b8;
-            font-weight: 600;
-            text-align: center;
-            opacity: 0.8;
-            white-space: nowrap; /* Zapobiega łamaniu tekstu */
-        }
-
-        /* Status Badge pod Userem */
-        .node-status-badge {
-            margin-top: 6px;
-            font-size: 0.75rem;
-            font-family: monospace;
-            font-weight: bold;
-            height: 20px;
-        }
-
-        /* --- POPOVER (Security) --- */
-        .node-popover {
-            position: absolute;
-            top: -55px;
-            background: rgba(15, 23, 42, 0.95);
-            border: 1px solid #475569;
-            padding: 8px 12px;
-            border-radius: 8px;
-            font-size: 0.75rem;
-            font-family: monospace;
-            color: #e2e8f0;
-            white-space: nowrap;
-            opacity: 0;
-            transform: translateY(10px);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
-            pointer-events: none;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .check-result {
-            display: none;
-            font-weight: bold;
-            margin-top: 2px;
-        }
-
-        .result-ok {
-            color: #22c55e;
-        }
-
-        .result-bad {
-            color: #ef4444;
-        }
-
-
-        /* --- ANIMACJE (Timeline 8s) --- */
-
-        /*
-           0s-2s: Start -> Security
-           2s-3s: Processing (Success packet waits, Error packet visualizes)
-           3s-5s: Router -> LLM (Success flow)
-           6s-8s: Reset / Idle
-        */
-
-        /* 1. Ruch Pakietu Głównego (Czeka w Security) */
-        @keyframes travel-success {
-            0% {
-                offset-distance: 0%;
-                opacity: 0;
-            }
-            5% {
-                opacity: 1;
-            }
-            20% {
-                offset-distance: 33.3%;
-            }
-            /* Dojazd do Security */
-            35% {
-                offset-distance: 33.3%;
-            }
-            /* Czekanie (Processing) */
-            45% {
-                offset-distance: 66.6%;
-            }
-            /* Dojazd do Routera */
-            55% {
-                offset-distance: 66.6%;
-            }
-            /* Czekanie w Routerze */
-            70% {
-                offset-distance: 100%;
-                opacity: 1;
-            }
-            /* Dojazd do LLM */
-            80% {
-                opacity: 0;
-            }
-            100% {
-                offset-distance: 100%;
-                opacity: 0;
-            }
-        }
-
-        /* 2. Ruch Pakietu Błędu (Wybija w Security i wraca) */
-        /* Uruchamiamy go w środku cyklu, żeby pokazać "że czasem wraca" */
-        @keyframes travel-error {
-            0%, 22% {
-                offset-distance: 0%;
-                opacity: 0;
-            }
-            23% {
-                opacity: 1;
-            }
-            /* Pojawia się w Security */
-            35% {
-                offset-distance: 100%;
-                opacity: 1;
-            }
-            /* Wraca do Usera */
-            40% {
-                opacity: 0;
-            }
-            100% {
-                offset-distance: 100%;
-                opacity: 0;
-            }
-        }
-
-        /* 3. User Icon Pulse */
-        /* Reaguje na start (niebieski) i na błąd powrotny (czerwony) */
-        .node-user .node-icon {
-            animation: user-anim 8s infinite;
-        }
-
-        @keyframes user-anim {
-            0%, 10% {
-                border-color: #38bdf8;
-                box-shadow: 0 0 15px rgba(56, 189, 248, 0.3);
-            }
-            /* Start */
-            33%, 38% {
-                border-color: #ef4444;
-                box-shadow: 0 0 15px rgba(239, 68, 68, 0.5);
-            }
-            /* Error Return */
-            40%, 100% {
-                border-color: #334155;
-                box-shadow: none;
-            }
-        }
-
-        .node-user .node-status-badge::after {
-            content: '';
-            animation: user-text-anim 8s infinite;
-        }
-
-        @keyframes user-text-anim {
-            0% {
-                content: 'Sending...';
-                color: #38bdf8;
-            }
-            20% {
-                content: 'Waiting...';
-                color: #94a3b8;
-            }
-            33% {
-                content: 'Blocked 🚫';
-                color: #ef4444;
-            }
-            /* Moment powrotu błędu */
-            45% {
-                content: 'Processing...';
-                color: #38bdf8;
-            }
-            70% {
-                content: 'Success ✅';
-                color: #22c55e;
-            }
-            85% {
-                content: '';
-            }
-        }
-
-        /* 4. Security Pulse */
-        /* Najpierw Flash Czerwony (blokada), potem Zielony (przepuszczenie) */
-        .node-security .node-icon {
-            animation: sec-anim 8s infinite;
-        }
-
-        @keyframes sec-anim {
-            0%, 15% {
-                border-color: #334155;
-                transform: scale(1);
-            }
-            /* Moment generowania błędu (Red Flash) */
-            20%, 25% {
-                border-color: #ef4444;
-                background: rgba(239, 68, 68, 0.1);
-                transform: scale(1.1);
-                box-shadow: 0 0 15px rgba(239, 68, 68, 0.4);
-            }
-            /* Moment przepuszczenia (Green/Purple Flash) */
-            30%, 35% {
-                border-color: #a855f7;
-                background: #0f172a;
-                transform: scale(1.1);
-                box-shadow: 0 0 15px rgba(168, 85, 247, 0.4);
-            }
-            40%, 100% {
-                border-color: #334155;
-                transform: scale(1);
-            }
-        }
-
-        /* Popover Logic */
-        .node-security .node-popover {
-            animation: popover-anim 8s infinite;
-        }
-
-        .result-ok {
-            animation: show-ok 8s infinite;
-        }
-
-        .result-bad {
-            animation: show-bad 8s infinite;
-        }
-
-        .check-text {
-            animation: hide-check 8s infinite;
-        }
-
-        @keyframes popover-anim {
-            0%, 18% {
-                opacity: 0;
-                transform: translateY(5px);
-            }
-            20%, 38% {
-                opacity: 1;
-                transform: translateY(0);
-            }
-            /* Pokazany */
-            40%, 100% {
-                opacity: 0;
-                transform: translateY(5px);
-            }
-        }
-
-        @keyframes show-bad {
-            0%, 20% {
-                display: none;
-            }
-            21%, 28% {
-                display: block;
-            }
-            /* Show BLOCK temporarily */
-            29%, 100% {
-                display: none;
-            }
-        }
-
-        @keyframes show-ok {
-            0%, 29% {
-                display: none;
-            }
-            30%, 100% {
-                display: block;
-            }
-            /* Show PASS afterwards */
-        }
-
-        @keyframes hide-check {
-            0%, 20% {
-                display: block;
-            }
-            21%, 100% {
-                display: none;
-            }
-        }
-
-
-        /* 5. Router Pulse */
-        .node-router .node-icon {
-            animation: router-anim 8s infinite;
-        }
-
-        @keyframes router-anim {
-            0%, 40% {
-                border-color: #334155;
-                transform: scale(1);
-            }
-            45%, 55% {
-                border-color: #38bdf8;
-                box-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
-                transform: scale(1.1);
-            }
-            60%, 100% {
-                border-color: #334155;
-                transform: scale(1);
-            }
-        }
-
-        /* 6. LLM Provider Pulse */
-        .node-llm .node-icon {
-            animation: llm-anim 8s infinite;
-        }
-
-        @keyframes llm-anim {
-            0%, 65% {
-                border-color: #334155;
-                transform: scale(1);
-            }
-            70%, 80% {
-                border-color: #22c55e;
-                box-shadow: 0 0 20px rgba(34, 197, 94, 0.4);
-                transform: scale(1.1);
-                background: rgba(34, 197, 94, 0.1);
-            }
-            85%, 100% {
-                border-color: #334155;
-                transform: scale(1);
-                background: #0f172a;
-            }
-        }
-
-
-        /* --- RESPONSIVE --- */
-        @media (max-width: 768px) {
-            .anim-stage {
-                height: 450px;
-            }
-
-            .anim-lines {
-                display: none;
-            }
-
-            /* Ukrywamy SVG na mobile */
-            .anim-node {
-                position: relative;
-                top: auto;
-                left: auto !important;
-                transform: none;
-                margin: 0 auto 30px;
-                width: 100%;
-                max-width: 200px;
-            }
-
-            /* Linia pionowa CSS zamiast SVG */
-            .anim-stage::before {
-                content: '';
-                position: absolute;
-                left: 50%;
-                top: 40px;
-                bottom: 40px;
-                width: 2px;
-                background: #334155;
-                transform: translateX(-50%);
-                z-index: 1;
-            }
-        }
-    </style>
 </section>
