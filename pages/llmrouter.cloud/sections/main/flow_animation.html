@@ -4,16 +4,11 @@
         <!-- SCENA -->
         <div class="anim-stage">
 
-            <!-- SVG: Linie (Y=120 to idealny środek wysokości 240px) -->
+            <!-- SVG: Linie -->
             <svg class="anim-lines" viewBox="0 0 800 240" preserveAspectRatio="none">
-                <!-- Linia główna -->
                 <path class="line-path" d="M 100 120 L 300 120 L 500 120 L 700 120"/>
-                <!-- Łuk błędu (powrót) -->
                 <path class="line-path-return" d="M 300 120 Q 200 60 100 120"/>
-
-                <!-- Niebieska kropka (Happy Path) -->
                 <circle class="data-packet" cx="0" cy="0" r="6"/>
-                <!-- Czerwona kropka (Error Path) -->
                 <circle class="error-packet" cx="0" cy="0" r="5"/>
             </svg>
 
@@ -21,7 +16,7 @@
             <div class="anim-node" style="left: 100px;">
                 <div class="node-icon icon-user">👤</div>
                 <div class="node-label">User Request</div>
-                <div class="node-status-text"></div> <!-- Status dynamiczny -->
+                <div class="node-status-text"></div>
             </div>
 
             <!-- 2. SECURITY NODE -->
@@ -29,8 +24,8 @@
                 <div class="node-icon icon-security">🛡️</div>
                 <div class="node-label">Guardrails & Masking</div>
 
-                <!-- Dymek statusu -->
-                <div class="node-popover">
+                <!-- Dymek Security (zmienia status) -->
+                <div class="node-popover popover-security">
                     <div class="pop-text txt-check">Checking...</div>
                     <div class="pop-text txt-block">Block 🚫</div>
                     <div class="pop-text txt-pass">Pass ✅</div>
@@ -41,15 +36,518 @@
             <div class="anim-node" style="left: 500px;">
                 <div class="node-icon icon-router">🧠</div>
                 <div class="node-label">Router Logic</div>
+
+                <!-- NOWE: Dymek Routera -->
+                <div class="node-popover popover-router">
+                    <div class="pop-text" style="color: #38bdf8;">Strategy: FA</div>
+                </div>
             </div>
 
             <!-- 4. PROVIDER NODE -->
             <div class="anim-node" style="left: 700px;">
                 <div class="node-icon icon-provider">⚡</div>
                 <div class="node-label">Selected Provider</div>
-                <div class="node-status-provider"></div>
+
+                <!-- NOWE: Dymek Providera -->
+                <div class="node-popover popover-provider">
+                    <div class="pop-text" style="color: #22c55e;">Generating...</div>
+                </div>
             </div>
 
         </div>
     </div>
+
+    <style>
+        /* --- UKŁAD SCENY --- */
+        .anim-stage {
+            position: relative;
+            height: 240px;
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            background: radial-gradient(ellipse at center, rgba(30, 41, 59, 0.4) 0%, rgba(2, 6, 23, 1) 70%);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            overflow: hidden;
+            font-family: system-ui, -apple-system, sans-serif;
+        }
+
+        /* --- SVG --- */
+        .anim-lines {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .line-path {
+            stroke: #334155;
+            stroke-width: 4;
+            fill: none;
+            stroke-linecap: round;
+        }
+
+        .line-path-return {
+            stroke: #ef4444;
+            stroke-width: 2;
+            fill: none;
+            stroke-dasharray: 6 4;
+            opacity: 0.3;
+        }
+
+        .data-packet {
+            fill: #38bdf8;
+            filter: drop-shadow(0 0 8px #38bdf8);
+            offset-path: path("M 100 120 L 300 120 L 500 120 L 700 120");
+            animation: travel-blue 8s linear infinite;
+            opacity: 0;
+        }
+
+        .error-packet {
+            fill: #ef4444;
+            filter: drop-shadow(0 0 8px #ef4444);
+            offset-path: path("M 300 120 Q 200 60 100 120");
+            animation: travel-red 8s linear infinite;
+            opacity: 0;
+        }
+
+        /* --- NODES --- */
+        .anim-node {
+            position: absolute;
+            top: 120px;
+            width: 0;
+            height: 0;
+            z-index: 5;
+        }
+
+        .node-icon {
+            position: absolute;
+            left: -30px;
+            top: -30px;
+            width: 60px;
+            height: 60px;
+            background: #0f172a;
+            border: 2px solid #334155;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s;
+            z-index: 10;
+        }
+
+        .node-label {
+            position: absolute;
+            top: 40px;
+            left: -75px;
+            width: 150px;
+            text-align: center;
+            font-size: 0.85rem;
+            color: #94a3b8;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .node-status-text {
+            position: absolute;
+            top: 60px;
+            left: -75px;
+            width: 150px;
+            text-align: center;
+            font-family: monospace;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+
+        /* --- POPOVERS (Dymki) --- */
+        .node-popover {
+            position: absolute;
+            top: -75px;
+            left: -60px;
+            width: 120px;
+            background: rgba(15, 23, 42, 0.95);
+            border: 1px solid #475569;
+            border-radius: 8px;
+            padding: 6px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            z-index: 20;
+        }
+
+        .pop-text {
+            font-family: monospace;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+
+        /* Przypisanie animacji do konkretnych dymków */
+        .popover-security {
+            animation: security-pop-anim 8s infinite;
+        }
+
+        .popover-router {
+            animation: router-pop-anim 8s infinite;
+        }
+
+        .popover-provider {
+            animation: provider-pop-anim 8s infinite;
+        }
+
+        /* Wewnętrzne teksty w Security */
+        .pop-text.txt-check {
+            color: #94a3b8;
+            position: absolute;
+            animation: txt-check-anim 8s infinite;
+        }
+
+        .pop-text.txt-block {
+            color: #ef4444;
+            position: absolute;
+            animation: txt-block-anim 8s infinite;
+            opacity: 0;
+        }
+
+        .pop-text.txt-pass {
+            color: #22c55e;
+            position: absolute;
+            animation: txt-pass-anim 8s infinite;
+            opacity: 0;
+        }
+
+
+        /* --- KEYFRAMES (Timeline 8s) --- */
+
+        /* 1. Ruch Pakietów */
+        @keyframes travel-blue {
+            0% {
+                offset-distance: 0%;
+                opacity: 0;
+            }
+            5% {
+                opacity: 1;
+            }
+            20% {
+                offset-distance: 33.3%;
+            }
+            40% {
+                offset-distance: 33.3%;
+            }
+            50% {
+                offset-distance: 66.6%;
+            }
+            60% {
+                offset-distance: 66.6%;
+            }
+            75% {
+                offset-distance: 100%;
+                opacity: 1;
+            }
+            85% {
+                opacity: 0;
+            }
+            100% {
+                offset-distance: 100%;
+                opacity: 0;
+            }
+        }
+
+        @keyframes travel-red {
+            0%, 24% {
+                offset-distance: 0%;
+                opacity: 0;
+            }
+            25% {
+                opacity: 1;
+            }
+            38% {
+                offset-distance: 100%;
+                opacity: 1;
+            }
+            45% {
+                opacity: 0;
+            }
+            100% {
+                offset-distance: 100%;
+                opacity: 0;
+            }
+        }
+
+        /* 2. Ikona Usera */
+        .icon-user {
+            animation: user-pulse 8s infinite;
+        }
+
+        @keyframes user-pulse {
+            0%, 10% {
+                border-color: #38bdf8;
+                box-shadow: 0 0 15px rgba(56, 189, 248, 0.3);
+            }
+            35%, 40% {
+                border-color: #ef4444;
+                box-shadow: 0 0 15px rgba(239, 68, 68, 0.5);
+            }
+            45%, 100% {
+                border-color: #334155;
+                box-shadow: none;
+            }
+        }
+
+        .node-status-text::after {
+            content: '';
+            animation: status-text-cycle 8s infinite;
+        }
+
+        @keyframes status-text-cycle {
+            0% {
+                content: 'Sending...';
+                color: #38bdf8;
+            }
+            20% {
+                content: 'Waiting...';
+                color: #94a3b8;
+            }
+            35% {
+                content: 'Blocked 🚫';
+                color: #ef4444;
+            }
+            45% {
+                content: 'Processing...';
+                color: #38bdf8;
+            }
+            75% {
+                content: 'Success ✅';
+                color: #22c55e;
+            }
+            90% {
+                content: '';
+            }
+        }
+
+        /* 3. Security Pulse & Popover */
+        .icon-security {
+            animation: security-pulse 8s infinite;
+        }
+
+        @keyframes security-pulse {
+            0%, 20% {
+                border-color: #334155;
+                transform: scale(1);
+            }
+            25%, 30% {
+                border-color: #ef4444;
+                background: rgba(239, 68, 68, 0.1);
+                transform: scale(1.1);
+                box-shadow: 0 0 15px rgba(239, 68, 68, 0.4);
+            }
+            35%, 40% {
+                border-color: #22c55e;
+                background: #0f172a;
+                transform: scale(1.1);
+                box-shadow: 0 0 15px rgba(34, 197, 94, 0.4);
+            }
+            45%, 100% {
+                border-color: #334155;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes security-pop-anim {
+            0%, 15% {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            20%, 45% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            50%, 100% {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+        }
+
+        @keyframes txt-check-anim {
+            0%, 24% {
+                opacity: 1;
+            }
+            25%, 100% {
+                opacity: 0;
+            }
+        }
+
+        @keyframes txt-block-anim {
+            0%, 24% {
+                opacity: 0;
+                transform: translateY(5px);
+            }
+            25%, 32% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            33%, 100% {
+                opacity: 0;
+                transform: translateY(-5px);
+            }
+        }
+
+        @keyframes txt-pass-anim {
+            0%, 32% {
+                opacity: 0;
+                transform: translateY(5px);
+            }
+            33%, 45% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            50%, 100% {
+                opacity: 0;
+                transform: translateY(-5px);
+            }
+        }
+
+        /* 4. Router Pulse & Popover (NOWE) */
+        .icon-router {
+            animation: router-pulse 8s infinite;
+        }
+
+        @keyframes router-pulse {
+            0%, 45% {
+                border-color: #334155;
+                transform: scale(1);
+            }
+            50%, 60% {
+                border-color: #38bdf8;
+                box-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
+                transform: scale(1.1);
+            }
+            65%, 100% {
+                border-color: #334155;
+                transform: scale(1);
+            }
+        }
+
+        /* Dymek routera pojawia się gdy niebieska kropka tam jest (ok. 50-60%) */
+        @keyframes router-pop-anim {
+            0%, 45% {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            50%, 65% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            70%, 100% {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+        }
+
+        /* 5. Provider Pulse & Popover (NOWE) */
+        .icon-provider {
+            animation: provider-pulse 8s infinite;
+        }
+
+        @keyframes provider-pulse {
+            0%, 70% {
+                border-color: #334155;
+                transform: scale(1);
+                background: #0f172a;
+            }
+            75%, 85% {
+                border-color: #22c55e;
+                box-shadow: 0 0 20px rgba(34, 197, 94, 0.4);
+                transform: scale(1.1);
+                background: rgba(34, 197, 94, 0.1);
+            }
+            90%, 100% {
+                border-color: #334155;
+                transform: scale(1);
+            }
+        }
+
+        /* Dymek providera pojawia się gdy kropka tam dociera (ok. 75%) */
+        @keyframes provider-pop-anim {
+            0%, 70% {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            75%, 88% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            92%, 100% {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+        }
+
+        /* --- MOBILE --- */
+        @media (max-width: 768px) {
+            .anim-stage {
+                height: 480px;
+                max-width: 100%;
+            }
+
+            .anim-lines {
+                display: none;
+            }
+
+            .anim-node {
+                position: relative;
+                top: auto;
+                left: auto !important;
+                margin: 0 auto 50px;
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .node-icon {
+                position: relative;
+                top: auto;
+                left: auto;
+                margin-bottom: 10px;
+            }
+
+            .node-label {
+                position: relative;
+                top: auto;
+                left: auto;
+                text-align: center;
+            }
+
+            .node-status-text {
+                top: 90px;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
+            /* Dymki na mobile */
+            .node-popover {
+                top: -40px;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
+            .anim-stage::before {
+                content: '';
+                position: absolute;
+                top: 30px;
+                bottom: 30px;
+                left: 50%;
+                width: 2px;
+                background: #334155;
+                transform: translateX(-50%);
+            }
+        }
+    </style>
 </section>
