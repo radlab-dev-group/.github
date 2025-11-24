@@ -1,157 +1,61 @@
-<section class="tech-section" id="architecture"
-         style="background-color: #020617; padding: 4rem 0; font-family: system-ui, -apple-system, sans-serif; color: #e2e8f0; position: relative;">
+<section id="architecture" class="tech-section">
+    <div class="container">
+        <h2 class="section-title">Architecture</h2>
+        <p class="section-subtitle">Layered design for maximum flexibility</p>
 
-    <div style="position: absolute; inset: 0; background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px); background-size: 40px 40px; pointer-events: none;"></div>
-    <div class="arch-container">
-        <h2 class="sec-title">System Architecture</h2>
-        <p class="sec-sub">Modular layered design with clear separation of concerns</p>
-
-        <div class="arch-layout">
-
-            <!-- LEFT COLUMN: THE STACK -->
-            <div>
-                <h3 class="col-title"><span style="color: #3b82f6;">01.</span> Execution Stack</h3>
-                <div class="stack-wrapper">
-                    <!-- Bus Line -->
-                    <div class="system-bus"></div>
-
-                    <!-- Layer 1 -->
-                    <div class="layer-card l-blue">
-                        <div class="layer-node"></div>
-                        <div class="layer-title">
-                            REST Interface
-                            <span class="layer-file">core/server.py</span>
-                        </div>
-                        <div class="layer-desc">
-                            Flask/Gunicorn entry point. Handles raw HTTP ingress and automatic route registration.
-                        </div>
-                    </div>
-
-                    <!-- Layer 2 -->
-                    <div class="layer-card l-blue">
-                        <div class="layer-node"></div>
-                        <div class="layer-title">
-                            Engine Core
-                            <span class="layer-file">core/engine.py</span>
-                        </div>
-                        <div class="layer-desc">
-                            Orchestrator that initializes components, discovers endpoints, and binds routes.
-                        </div>
-                    </div>
-
-                    <!-- Layer 3 -->
-                    <div class="layer-card l-purple">
-                        <div class="layer-node"></div>
-                        <div class="layer-title">
-                            Endpoint Logic
-                            <span class="layer-file">endpoints/*</span>
-                        </div>
-                        <div class="layer-desc">
-                            Proxy layer (EndpointWithHttpRequestI) connecting specific API logic with core services.
-                        </div>
-                    </div>
-
-                    <!-- Layer 4 -->
-                    <div class="layer-card l-purple">
-                        <div class="layer-node"></div>
-                        <div class="layer-title">
-                            Load Balancing
-                            <span class="layer-file">base/lb/*</span>
-                        </div>
-                        <div class="layer-desc">
-                            Strategy pattern implementation (Weighted, Round-Robin) via ProviderChooser.
-                        </div>
-                    </div>
-
-                    <!-- Layer 5 -->
-                    <div class="layer-card l-green">
-                        <div class="layer-node"></div>
-                        <div class="layer-title">
-                            Provider Abstraction
-                            <span class="layer-file">model_handler.py</span>
-                        </div>
-                        <div class="layer-desc">
-                            Resolves abstract model names to concrete API providers and configurations.
-                        </div>
-                    </div>
-
-                    <!-- Layer 6 -->
-                    <div class="layer-card l-green">
-                        <div class="layer-node"></div>
-                        <div class="layer-title">
-                            HTTP I/O
-                            <span class="layer-file">httprequest.py</span>
-                        </div>
-                        <div class="layer-desc">
-                            Low-level execution handling, retries, streaming response management.
-                        </div>
-                    </div>
-                </div>
+        <div class="architecture-diagram">
+            <div class="arch-layer">
+                <h4>1. REST Layer (core/server.py, rest_api.py)</h4>
+                <p>Flask/Gunicorn/Waitress server with automatic route registration</p>
             </div>
-
-            <!-- RIGHT COLUMN: COMPONENTS -->
-            <div>
-                <h3 class="col-title"><span style="color: #10b981;">02.</span> Core Components</h3>
-                <div class="comp-grid">
-
-                    <div class="chip-card">
-                        <div class="chip-header">
-                            <span class="chip-icon">⚡</span> FlaskEngine
-                            <div class="led"></div>
-                        </div>
-                        <div class="chip-body">
-                            The heart of the application. Bootstraps the environment and loads plugins.
-                        </div>
-                    </div>
-
-                    <div class="chip-card">
-                        <div class="chip-header">
-                            <span class="chip-icon">🏗️</span> EndpointI
-                        </div>
-                        <div class="chip-body">
-                            Base abstract class enforcing validation, logging, and error handling standards.
-                        </div>
-                    </div>
-
-                    <div class="chip-card">
-                        <div class="chip-header">
-                            <span class="chip-icon">⚖️</span> ProviderChooser
-                        </div>
-                        <div class="chip-body">
-                            Facade for LB strategies. Delivers <code>get_provider()</code> unified interface.
-                        </div>
-                    </div>
-
-                    <div class="chip-card">
-                        <div class="chip-header">
-                            <span class="chip-icon">🗺️</span> ModelHandler
-                        </div>
-                        <div class="chip-body">
-                            Manages lifecycle of providers and mapping of virtual models to endpoints.
-                        </div>
-                    </div>
-
-                    <div class="chip-card">
-                        <div class="chip-header">
-                            <span class="chip-icon">📡</span> HttpRequestEx
-                        </div>
-                        <div class="chip-body">
-                            Robust HTTP client wrapper with automatic backoff and stream processing.
-                        </div>
-                    </div>
-
-                    <div class="chip-card">
-                        <div class="chip-header">
-                            <span class="chip-icon">🔌</span> ApiDispatcher
-                        </div>
-                        <div class="chip-body">
-                            Routes requests based on API type (OpenAI vs Ollama vs vLLM formats).
-                        </div>
-                    </div>
-
-                </div>
+            <div class="arch-layer">
+                <h4>2. Engine Layer (core/engine.py)</h4>
+                <p>FlaskEngine: discovers endpoints, initializes ProviderChooser, registers routes</p>
             </div>
+            <div class="arch-layer">
+                <h4>3. Endpoint Layer (endpoints/)</h4>
+                <p>EndpointI abstract base → EndpointWithHttpRequestI (proxy) → Concrete implementations</p>
+            </div>
+            <div class="arch-layer">
+                <h4>4. Load Balancing (base/lb/)</h4>
+                <p>ProviderChooser + pluggable strategies (balanced, weighted, first-available, first-available-optim)</p>
+            </div>
+            <div class="arch-layer">
+                <h4>5. Provider Abstraction (model_handler.py)</h4>
+                <p>ModelHandler: resolves model names → ApiModel instances with provider configs</p>
+            </div>
+            <div class="arch-layer">
+                <h4>6. HTTP Execution (httprequest.py)</h4>
+                <p>HttpRequestExecutor: handles outbound requests, streaming, retry logic</p>
+            </div>
+        </div>
 
+        <h3 style="margin-top: 2.5rem; color: var(--fg);">Core Components</h3>
+        <div class="component-list">
+            <div class="component-item">
+                <h4>FlaskEngine</h4>
+                <p>Orchestrates app initialization, endpoint discovery, and route registration</p>
+            </div>
+            <div class="component-item">
+                <h4>EndpointI</h4>
+                <p>Abstract base class for all endpoints with validation, logging, response formatting</p>
+            </div>
+            <div class="component-item">
+                <h4>ProviderChooser</h4>
+                <p>Facade for load-balancing strategies with unified get_provider() interface</p>
+            </div>
+            <div class="component-item">
+                <h4>ModelHandler</h4>
+                <p>Manages model-to-provider mapping and provider lifecycle</p>
+            </div>
+            <div class="component-item">
+                <h4>HttpRequestExecutor</h4>
+                <p>Executes HTTP requests with streaming support and automatic retries</p>
+            </div>
+            <div class="component-item">
+                <h4>ApiTypesDispatcher</h4>
+                <p>Maps API types (openai, ollama, vllm) to correct endpoint paths</p>
+            </div>
         </div>
     </div>
 </section>
