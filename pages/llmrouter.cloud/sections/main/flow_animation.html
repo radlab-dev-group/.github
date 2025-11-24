@@ -1,0 +1,92 @@
+<section class="flow-animation-section" style="background: #020617; padding: 4rem 0; overflow: hidden;">
+    <div class="container" style="max-width: 900px; margin: 0 auto; position: relative;">
+
+        <!-- SCENA GŁÓWNA -->
+        <div class="anim-stage">
+
+            <div class="router-boundary">
+                <span class="boundary-label">LLM ROUTER CORE</span>
+            </div>
+
+            <!-- SVG DESKTOP -->
+            <svg class="anim-lines-desktop" viewBox="0 0 800 240" preserveAspectRatio="none">
+                <path class="line-base" d="M 80 120 L 720 120"/>
+                <path class="line-err" d="M 240 120 Q 160 60 80 120"/>
+                <path class="line-succ" d="M 720 120 Q 400 240 80 120"/>
+            </svg>
+
+            <!-- SVG MOBILE -->
+            <svg class="anim-lines-mobile" viewBox="0 0 320 600" preserveAspectRatio="none">
+                <path class="line-base" d="M 160 50 L 160 550"/>
+                <path class="line-err" d="M 160 175 Q 60 110 160 50"/>
+                <path class="line-succ" d="M 160 550 Q 280 300 160 50"/>
+            </svg>
+
+            <!-- PAKIETY -->
+            <div class="packet packet-blue"></div>
+            <div class="packet packet-red"></div>
+            <div class="packet packet-green"></div>
+
+
+            <!-- WĘZŁY -->
+
+            <!-- Node 1: User -->
+            <div class="anim-node node-1">
+                <div class="node-icon icon-user external-node">👤</div>
+                <div class="node-label">User Request</div>
+                <div class="node-status-text"></div>
+            </div>
+
+            <!-- Node 2: Guardrails (Skaner) -->
+            <div class="anim-node node-2">
+                <div class="node-icon icon-security internal-node">
+                    🛡️
+                    <div class="scan-line"></div> <!-- Element skanujący -->
+                </div>
+                <div class="node-label">Guardrails</div>
+
+                <div class="node-popover popover-security" style="width: 160px; height: 34px; left: -80px;">
+                    <span class="p-txt t-check">Checking Content...</span>
+                    <span class="p-txt t-block">Unsafe Content 🚫</span>
+                    <span class="p-txt t-pass">Content Safe ✅</span>
+                </div>
+            </div>
+
+            <!-- Node 3: Masking (Glitch) -->
+            <div class="anim-node node-3">
+                <div class="node-icon icon-mask internal-node">🪪</div>
+                <div class="node-label">Data Masking</div>
+
+                <div class="node-popover popover-mask" style="width: 210px; height: 46px; left: -105px;">
+                    <span class="p-txt t-raw" style="top: 8px;">Email: john@doe.com</span>
+                    <span class="p-txt t-masked" style="top: 8px;">Email: j***@***.***</span>
+                    <span class="p-txt t-label" style="top: 26px; color: #c084fc; font-size: 0.6rem;">PII Detected & Masked</span>
+                </div>
+            </div>
+
+            <!-- Node 4: Router (Spinner) -->
+            <div class="anim-node node-4">
+                <div class="node-icon icon-router internal-node">
+                    🧠
+                    <div class="thinking-ring"></div> <!-- Pierścień -->
+                </div>
+                <div class="node-label">Router Logic</div>
+
+                <div class="node-popover popover-router" style="width: 160px; height: 34px; left: -80px;">
+                    <span class="p-txt" style="color:#38bdf8; top: 6px;">Strategy: Weighted</span>
+                    <span class="p-txt" style="color:#64748b; font-size:0.65rem; top: 20px;">Target: l1-gpt:120b</span>
+                </div>
+            </div>
+
+            <!-- Node 5: Provider -->
+            <div class="anim-node node-5">
+                <div class="node-icon icon-provider external-node">⚡</div>
+                <div class="node-label">LLM Provider</div>
+                <div class="node-popover popover-provider" style="width: 150px; height: 34px; left: -75px;">
+                    <span class="p-txt" style="color:#22c55e; top: 8px;">Generating Tokens...</span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
