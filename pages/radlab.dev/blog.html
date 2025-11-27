@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Blog techniczny RadLab.dev - Artykuły o Machine Learning, NLP, i inżynierii oprogramowania.">
+    <title>Blog - RadLab.dev</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/blog.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <a href="index.html">RadLab<span class="accent">.dev</span></a>
+            </div>
+            <button class="nav-toggle" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="nav-menu">
+                <li><a href="index.html#about">O Nas</a></li>
+                <li><a href="index.html#solutions">Rozwiązania</a></li>
+                <li><a href="index.html#services">Obszary Działalności</a></li>
+                <li><a href="index.html#projects">Projekty</a></li>
+                <li><a href="blog.html" class="active">Blog</a></li>
+                <li><a href="index.html#contact" class="nav-cta">Kontakt</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Blog Page -->
+    <div class="blog-page">
+        <div class="container">
+            <div class="blog-header">
+                <span class="section-tag">Blog Techniczny</span>
+                <h1>Artykuły & Eksperymenty</h1>
+                <p>
+                    Dzielimy się naszymi doświadczeniami, eksperymentami i najlepszymi praktykami
+                    z dziedziny Machine Learning i NLP.
+                </p>
+            </div>
+
+            <!-- Blog Filters -->
+            <div class="blog-filters">
+                <button class="filter-btn active" data-filter="all">Wszystkie</button>
+                <button class="filter-btn" data-filter="transformers">Transformers</button>
+                <button class="filter-btn" data-filter="rag">RAG</button>
+                <button class="filter-btn" data-filter="data science">Data Science</button>
+                <button class="filter-btn" data-filter="nlp">NLP</button>
+                <button class="filter-btn" data-filter="deployment">Deployment</button>
+            </div>
+
+            <!-- Blog Archive -->
+            <div class="blog-archive">
+                <article class="blog-card">
+                    <div class="blog-meta">
+                        <span class="blog-date">2025-01-15</span>
+                        <span class="blog-category">Transformers</span>
+                    </div>
+                    <h3><a href="blog/fine-tuning-transformers-pl.html">Fine-tuning modeli Transformer dla języka polskiego</a></h3>
+                    <p>
+                        Praktyczny przewodnik po dostrajaniu modeli językowych dla języka polskiego.
+                        Omówienie technik, narzędzi i najlepszych praktyk z wykorzystaniem HuggingFace Transformers.
+                    </p>
+                    <a href="blog/fine-tuning-transformers-pl.html" class="blog-link">Czytaj więcej →</a>
+                </article>
+
+                <article class="blog-card">
+                    <div class="blog-meta">
+                        <span class="blog-date">2025-01-08</span>
+                        <span class="blog-category">RAG</span>
+                    </div>
+                    <h3><a href="blog/rag-architecture-guide.html">Architektura systemów RAG w praktyce</a></h3>
+                    <p>
+                        Jak zaprojektować i wdrożyć skuteczny system Retrieval-Augmented Generation.
+                        Case study z naszych projektów, omówienie komponentów i najlepszych praktyk.
+                    </p>
+                    <a href="blog/rag-architecture-guide.html" class="blog-link">Czytaj więcej →</a>
+                </article>
+
+                <article class="blog-card">
+                    <div class="blog-meta">
+                        <span class="blog-date">2024-12-20</span>
+                        <span class="blog-category">Data Science</span>
+                    </div>
+                    <h3><a href="blog/data-augmentation-nlp.html">Augmentacja danych w NLP - techniki i narzędzia</a></h3>
+                    <p>
+                        Przegląd metod augmentacji danych tekstowych. Od prostych technik po zaawansowane
+                        podejścia z wykorzystaniem modeli generatywnych. Praktyczne przykłady i kod.
+                    </p>
+                    <a href="blog/data-augmentation-nlp.html" class="blog-link">Czytaj więcej →</a>
+                </article>
+
+                <article class="blog-card">
+                    <div class="blog-meta">
+                        <span class="blog-date">2024-12-10</span>
+                        <span class="blog-category">NLP</span>
+                    </div>
+                    <h3><a href="blog/polish-language-models.html">Modele językowe dla języka polskiego - przegląd</a></h3>
+                    <p>
+                        Kompleksowy przegląd dostępnych modeli językowych dla języka polskiego.
+                        Porównanie wydajności, zastosowań i rekomendacje doboru modelu do projektu.
+                    </p>
+                    <a href="blog/polish-language-models.html" class="blog-link">Czytaj więcej →</a>
+                </article>
+
+                <article class="blog-card">
+                    <div class="blog-meta">
+                        <span class="blog-date">2024-11-28</span>
+                        <span class="blog-category">Deployment</span>
+                    </div>
+                    <h3><a href="blog/ml-model-deployment-docker.html">Wdrażanie modeli ML z wykorzystaniem Docker</a></h3>
+                    <p>
+                        Praktyczny przewodnik po wdrażaniu modeli uczenia maszynowego w środowisku produkcyjnym.
+                        Dockeryzacja, CI/CD, monitoring i best practices.
+                    </p>
+                    <a href="blog/ml-model-deployment-docker.html" class="blog-link">Czytaj więcej →</a>
+                </article>
+
+                <article class="blog-card">
+                    <div class="blog-meta">
+                        <span class="blog-date">2024-11-15</span>
+                        <span class="blog-category">Transformers</span>
+                    </div>
+                    <h3><a href="blog/efficient-transformers.html">Optymalizacja modeli Transformer dla produkcji</a></h3>
+                    <p>
+                        Techniki optymalizacji modeli Transformer: kwantyzacja, pruning, destylacja.
+                        Jak zmniejszyć rozmiar modelu i zwiększyć szybkość inferencji bez utraty jakości.
+                    </p>
+                    <a href="blog/efficient-transformers.html" class="blog-link">Czytaj więcej →</a>
+                </article>
+
+                <article class="blog-card">
+                    <div class="blog-meta">
+                        <span class="blog-date">2024-10-30</span>
+                        <span class="blog-category">NLP</span>
+                    </div>
+                    <h3><a href="blog/semantic-search-implementation.html">Implementacja semantycznego wyszukiwania</a></h3>
+                    <p>
+                        Od teorii do praktyki - jak zbudować system semantycznego wyszukiwania.
+                        Embeddingi, indeksacja wektorowa, Milvus i optymalizacja wydajności.
+                    </p>
+                    <a href="blog/semantic-search-implementation.html" class="blog-link">Czytaj więcej →</a>
+                </article>
+
+                <article class="blog-card">
+                    <div class="blog-meta">
+                        <span class="blog-date">2024-10-12</span>
+                        <span class="blog-category">Data Science</span>
+                    </div>
+                    <h3><a href="blog/text-preprocessing-polish.html">Preprocessig tekstów w języku polskim</a></h3>
+                    <p>
+                        Kompletny guide po preprocessingu tekstów polskich. Tokenizacja, normalizacja,
+                        lematyzacja i inne techniki przygotowania danych do modeli NLP.
+                    </p>
+                    <a href="blog/text-preprocessing-polish.html" class="blog-link">Czytaj więcej →</a>
+                </article>
+
+                <article class="blog-card">
+                    <div class="blog-meta">
+                        <span class="blog-date">2024-09-25</span>
+                        <span class="blog-category">RAG</span>
+                    </div>
+                    <h3><a href="blog/rag-chunking-strategies.html">Strategie dzielenia dokumentów w systemach RAG</a></h3>
+                    <p>
+                        Jak efektywnie dzielić dokumenty dla systemów RAG? Przegląd strategii,
+                        wpływ na jakość wyników i praktyczne implementacje.
+                    </p>
+                    <a href="blog/rag-chunking-strategies.html" class="blog-link">Czytaj więcej →</a>
+                </article>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <h3>RadLab<span class="accent">.dev</span></h3>
+                    <p>Machine Learning and Natural Language Processing are our interests.<br>
+                    Software development is our daily routine!</p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h4>Nawigacja</h4>
+                        <ul>
+                            <li><a href="index.html#about">O Nas</a></li>
+                            <li><a href="index.html#solutions">Rozwiązania</a></li>
+                            <li><a href="index.html#services">Obszary Działalności</a></li>
+                            <li><a href="index.html#projects">Projekty</a></li>
+                            <li><a href="blog.html">Blog</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Rozwiązania</h4>
+                        <ul>
+                            <li><a href="https://llm-router.cloud/" target="_blank">LLM Router Cloud</a></li>
+                            <li><a href="https://playground.radlab.dev/" target="_blank">RDL Playground AI</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Zasoby</h4>
+                        <ul>
+                            <li><a href="https://github.com/radlab" target="_blank">GitHub</a></li>
+                            <li><a href="https://huggingface.co/radlab" target="_blank">HuggingFace</a></li>
+                            <li><a href="blog.html">Blog Techniczny</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Kontakt</h4>
+                        <ul>
+                            <li><a href="mailto:hello@radlab.dev">hello@radlab.dev</a></li>
+                            <li><a href="tel:+48512750525">+48 512 750 525</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 RadLab.dev. All rights reserved.</p>
+                <p>Machine Learning • NLP • Software Engineering</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Praktyczny przewodnik po fine-tuningu modeli Transformer dla języka polskiego z wykorzystaniem HuggingFace.">
+    <title>Fine-tuning modeli Transformer dla języka polskiego - RadLab.dev</title>
+    <link rel="stylesheet" href="../styles/main.css">
+    <link rel="stylesheet" href="../styles/blog.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <a href="../index.html">RadLab<span class="accent">.dev</span></a>
+            </div>
+            <button class="nav-toggle" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="nav-menu">
+                <li><a href="../index.html#about">O Nas</a></li>
+                <li><a href="../index.html#solutions">Rozwiązania</a></li>
+                <li><a href="../index.html#services">Obszary Działalności</a></li>
+                <li><a href="../index.html#projects">Projekty</a></li>
+                <li><a href="../blog.html">Blog</a></li>
+                <li><a href="../index.html#contact" class="nav-cta">Kontakt</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Blog Post -->
+    <article class="blog-post">
+        <div class="container">
+            <div class="post-header">
+                <div class="post-meta">
+                    <span class="blog-date">2025-01-15</span>
+                    <span class="blog-category">Transformers</span>
+                </div>
+                <h1 class="post-title">Fine-tuning modeli Transformer dla języka polskiego</h1>
+                <p class="post-excerpt">
+                    Praktyczny przewodnik po dostrajaniu modeli językowych dla języka polskiego.
+                    Omówienie technik, narzędzi i najlepszych praktyk z wykorzystaniem HuggingFace Transformers.
+                </p>
+            </div>
+
+            <div class="post-content">
+                <h2>Wprowadzenie</h2>
+                <p>
+                    Fine-tuning modeli Transformer to kluczowy proces w adaptacji ogólnych modeli językowych
+                    do specyficznych zadań i domen. W tym artykule omówimy kompletny proces dostrajania
+                    modeli dla języka polskiego, od wyboru modelu bazowego po ewaluację wyników.
+                </p>
+
+                <h2>Wybór modelu bazowego</h2>
+                <p>
+                    Pierwszym krokiem jest wybór odpowiedniego modelu bazowego. Dla języka polskiego
+                    mamy kilka doskonałych opcji:
+                </p>
+
+                <ul>
+                    <li><strong>HerBERT</strong> - dedykowany model dla języka polskiego trenowany na polskich korpusach</li>
+                    <li><strong>Polish RoBERTa</strong> - polska wersja modelu RoBERTa</li>
+                    <li><strong>mT5</strong> - multilingwalny model nadający się do zadań generatywnych</li>
+                    <li><strong>XLM-RoBERTa</strong> - multilingwalny model z dobrym wsparciem dla języka polskiego</li>
+                </ul>
+
+                <h3>Przykład: Ładowanie modelu HerBERT</h3>
+
+                <pre><code>from transformers import AutoTokenizer, AutoModel
+
+model_name = "allegro/herbert-base-cased"
+tokenizer = AutoTokenizer.from_pretrained(model_name)
+model = AutoModel.from_pretrained(model_name)
+
+# Przykład tokenizacji
+text = "Machine learning i przetwarzanie języka naturalnego to nasza pasja."
+tokens = tokenizer(text, return_tensors="pt")
+print(f"Tokeny: {tokens['input_ids']}")
+</code></pre>
+
+                <h2>Przygotowanie danych treningowych</h2>
+                <p>
+                    Jakość danych treningowych ma kluczowe znaczenie dla sukcesu fine-tuningu.
+                    Oto najważniejsze aspekty przygotowania danych:
+                </p>
+
+                <h3>1. Czyszczenie i normalizacja</h3>
+                <p>
+                    Teksty polskie wymagają specjalnej uwagi ze względu na polskie znaki diakrytyczne
+                    i złożoną morfologię. Zawsze zachowuj polskie znaki (ą, ć, ę, ł, ń, ó, ś, ź, ż).
+                </p>
+
+                <pre><code>import unicodedata
+
+def normalize_polish_text(text):
+    # Normalizacja unicode (NFC dla polskich znaków)
+    text = unicodedata.normalize('NFC', text)
+
+    # Usunięcie nadmiarowych białych znaków
+    text = ' '.join(text.split())
+
+    return text
+
+# Przykład użycia
+text = "Przykładowy  tekst   z   nadmiarem   spacji."
+cleaned = normalize_polish_text(text)
+print(cleaned)
+</code></pre>
+
+                <h3>2. Balansowanie zbioru danych</h3>
+                <p>
+                    W przypadku zadań klasyfikacji, upewnij się, że Twój zbiór jest wybalansowany
+                    lub zastosuj odpowiednie techniki radzenia sobie z niezbalansowaniem:
+                </p>
+
+                <ul>
+                    <li>Oversampling mniejszościowych klas</li>
+                    <li>Undersampling większościowych klas</li>
+                    <li>Użycie wag klas podczas treningu</li>
+                    <li>Augmentacja danych dla rzadkich klas</li>
+                </ul>
+
+                <h2>Konfiguracja treningu</h2>
+                <p>
+                    Wykorzystamy bibliotekę HuggingFace Transformers do skonfigurowania
+                    procesu treningu. Oto przykład dla zadania klasyfikacji sekwencji:
+                </p>
+
+                <pre><code>from transformers import (
+    AutoModelForSequenceClassification,
+    TrainingArguments,
+    Trainer
+)
+from datasets import load_dataset
+
+# Załaduj model
+model = AutoModelForSequenceClassification.from_pretrained(
+    "allegro/herbert-base-cased",
+    num_labels=3  # liczba klas do klasyfikacji
+)
+
+# Konfiguracja parametrów treningu
+training_args = TrainingArguments(
+    output_dir="./results",
+    num_train_epochs=3,
+    per_device_train_batch_size=16,
+    per_device_eval_batch_size=64,
+    warmup_steps=500,
+    weight_decay=0.01,
+    logging_dir='./logs',
+    logging_steps=10,
+    evaluation_strategy="epoch",
+    save_strategy="epoch",
+    load_best_model_at_end=True,
+    metric_for_best_model="f1",
+)
+
+# Inicjalizacja Trainera
+trainer = Trainer(
+    model=model,
+    args=training_args,
+    train_dataset=train_dataset,
+    eval_dataset=eval_dataset,
+    compute_metrics=compute_metrics
+)
+
+# Rozpocznij trening
+trainer.train()
+</code></pre>
+
+                <h2>Najlepsze praktyki</h2>
+
+                <h3>1. Learning Rate</h3>
+                <p>
+                    Dla fine-tuningu modeli Transformer zazwyczaj używamy niższych wartości learning rate
+                    niż podczas treningu od zera. Rekomendowane wartości to <code>2e-5</code> do <code>5e-5</code>.
+                </p>
+
+                <h3>2. Gradient Accumulation</h3>
+                <p>
+                    Jeśli masz ograniczoną pamięć GPU, użyj gradient accumulation aby symulować większe batch size:
+                </p>
+
+                <pre><code>training_args = TrainingArguments(
+    ...
+    per_device_train_batch_size=8,
+    gradient_accumulation_steps=4,  # efektywny batch size = 8 * 4 = 32
+)
+</code></pre>
+
+                <h3>3. Mixed Precision Training</h3>
+                <p>
+                    Użyj fp16 aby przyspieszyć trening i zmniejszyć zużycie pamięci:
+                </p>
+
+                <pre><code>training_args = TrainingArguments(
+    ...
+    fp16=True,  # wymaga GPU z obsługą fp16
+)
+</code></pre>
+
+                <h2>Ewaluacja modelu</h2>
+                <p>
+                    Po zakończeniu treningu, przeprowadź dokładną ewaluację modelu na zbiorze testowym:
+                </p>
+
+                <pre><code>from sklearn.metrics import classification_report
+import numpy as np
+
+def compute_metrics(eval_pred):
+    predictions, labels = eval_pred
+    predictions = np.argmax(predictions, axis=1)
+
+    # Oblicz metryki
+    report = classification_report(
+        labels,
+        predictions,
+        output_dict=True
+    )
+
+    return {
+        'accuracy': report['accuracy'],
+        'f1': report['weighted avg']['f1-score'],
+        'precision': report['weighted avg']['precision'],
+        'recall': report['weighted avg']['recall']
+    }
+
+# Ewaluacja
+results = trainer.evaluate()
+print(results)
+</code></pre>
+
+                <h2>Eksport i wdrożenie</h2>
+                <p>
+                    Po udanym fine-tuningu, zapisz model i wdróż go w środowisku produkcyjnym:
+                </p>
+
+                <pre><code># Zapisz model
+model.save_pretrained("./my-finetuned-model")
+tokenizer.save_pretrained("./my-finetuned-model")
+
+# Załaduj w późniejszym czasie
+from transformers import pipeline
+
+classifier = pipeline(
+    "text-classification",
+    model="./my-finetuned-model",
+    tokenizer="./my-finetuned-model"
+)
+
+# Użyj modelu
+result = classifier("To jest przykładowy tekst do klasyfikacji.")
+print(result)
+</code></pre>
+
+                <h2>Podsumowanie</h2>
+                <p>
+                    Fine-tuning modeli Transformer dla języka polskiego to proces wymagający uwagi
+                    na wiele szczegółów, ale przy odpowiednim podejściu można osiągnąć doskonałe
+                    wyniki. Kluczowe elementy to:
+                </p>
+
+                <ul>
+                    <li>Wybór odpowiedniego modelu bazowego dla języka polskiego</li>
+                    <li>Staranne przygotowanie i czyszczenie danych</li>
+                    <li>Dobór odpowiednich hiperparametrów</li>
+                    <li>Dokładna ewaluacja i monitorowanie procesu treningu</li>
+                    <li>Testowanie modelu w warunkach produkcyjnych</li>
+                </ul>
+
+                <p>
+                    W RadLab mamy bogate doświadczenie w fine-tuningu modeli dla języka polskiego.
+                    Jeśli potrzebujesz pomocy w swoim projekcie, <a href="../index.html#contact">skontaktuj się z nami</a>.
+                </p>
+            </div>
+
+            <!-- Post Navigation -->
+            <div class="post-navigation">
+                <a href="../blog.html" class="post-nav-link">
+                    <div class="post-nav-label">← Powrót</div>
+                    <div class="post-nav-title">Blog</div>
+                </a>
+                <a href="rag-architecture-guide.html" class="post-nav-link next">
+                    <div class="post-nav-label">Następny →</div>
+                    <div class="post-nav-title">Architektura systemów RAG</div>
+                </a>
+            </div>
+        </div>
+    </article>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <h3>RadLab<span class="accent">.dev</span></h3>
+                    <p>Machine Learning and Natural Language Processing are our interests.<br>
+                    Software development is our daily routine!</p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h4>Nawigacja</h4>
+                        <ul>
+                            <li><a href="../index.html#about">O Nas</a></li>
+                            <li><a href="../index.html#solutions">Rozwiązania</a></li>
+                            <li><a href="../index.html#services">Obszary Działalności</a></li>
+                            <li><a href="../index.html#projects">Projekty</a></li>
+                            <li><a href="../blog.html">Blog</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Rozwiązania</h4>
+                        <ul>
+                            <li><a href="https://llm-router.cloud/" target="_blank">LLM Router Cloud</a></li>
+                            <li><a href="https://playground.radlab.dev/" target="_blank">RDL Playground AI</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Zasoby</h4>
+                        <ul>
+                            <li><a href="https://github.com/radlab" target="_blank">GitHub</a></li>
+                            <li><a href="https://huggingface.co/radlab" target="_blank">HuggingFace</a></li>
+                            <li><a href="../blog.html">Blog Techniczny</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Kontakt</h4>
+                        <ul>
+                            <li><a href="mailto:hello@radlab.dev">hello@radlab.dev</a></li>
+                            <li><a href="tel:+48512750525">+48 512 750 525</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 RadLab.dev. All rights reserved.</p>
+                <p>Machine Learning • NLP • Software Engineering</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../js/main.js"></script>
+</body>
+</html>
