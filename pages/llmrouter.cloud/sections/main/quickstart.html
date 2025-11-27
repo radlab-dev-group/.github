@@ -8,6 +8,7 @@
         </p>
 
         <div class="quickstart-grid">
+
             <!-- OpenAI SDK -->
             <div class="quickstart-card">
                 <div class="quickstart-header">
@@ -17,8 +18,16 @@
                 <p class="quickstart-desc" data-i18n="quickstart.openai.desc">
                     Native OpenAI Python SDK with one-line configuration change
                 </p>
-                <div class="code-wrapper">
-                    <pre><code class="language-python">from openai import OpenAI
+
+                <div class="code-window">
+                    <div class="window-header">
+                        <div class="window-controls">
+                            <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                        </div>
+                        <span class="filename">main.py</span>
+                    </div>
+                    <div class="code-content">
+<pre><code class="language-python">from openai import OpenAI
 
 client = OpenAI(
     base_url="http://your-router:5555/api/v1",
@@ -33,6 +42,7 @@ response = client.chat.completions.create(
 )
 
 print(response.choices[0].message.content)</code></pre>
+                    </div>
                 </div>
             </div>
 
@@ -45,8 +55,16 @@ print(response.choices[0].message.content)</code></pre>
                 <p class="quickstart-desc" data-i18n="quickstart.langchain.desc">
                     Build AI chains and agents with automatic protocol conversion
                 </p>
-                <div class="code-wrapper">
-                    <pre><code class="language-python">from langchain_openai import ChatOpenAI
+
+                <div class="code-window">
+                    <div class="window-header">
+                        <div class="window-controls">
+                            <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                        </div>
+                        <span class="filename">chain.py</span>
+                    </div>
+                    <div class="code-content">
+<pre><code class="language-python">from langchain_openai import ChatOpenAI
 from langchain_core.messages import HumanMessage
 
 llm = ChatOpenAI(
@@ -61,6 +79,7 @@ messages = [
 
 response = llm.invoke(messages)
 print(response.content)</code></pre>
+                    </div>
                 </div>
             </div>
 
@@ -73,8 +92,16 @@ print(response.content)</code></pre>
                 <p class="quickstart-desc" data-i18n="quickstart.llamaindex.desc">
                     Build RAG applications with unified model access
                 </p>
-                <div class="code-wrapper">
-                    <pre><code class="language-python">from llama_index.llms.openai import OpenAI
+
+                <div class="code-window">
+                    <div class="window-header">
+                        <div class="window-controls">
+                            <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                        </div>
+                        <span class="filename">rag.py</span>
+                    </div>
+                    <div class="code-content">
+<pre><code class="language-python">from llama_index.llms.openai import OpenAI
 from llama_index.core.llms import ChatMessage
 
 llm = OpenAI(
@@ -90,6 +117,7 @@ response = llm.chat(
 )
 
 print(response.message.content)</code></pre>
+                    </div>
                 </div>
             </div>
 
@@ -102,8 +130,16 @@ print(response.message.content)</code></pre>
                 <p class="quickstart-desc" data-i18n="quickstart.litellm.desc">
                     Unified interface with built-in retries and fallbacks
                 </p>
-                <div class="code-wrapper">
-                    <pre><code class="language-python">from litellm import completion
+
+                <div class="code-window">
+                    <div class="window-header">
+                        <div class="window-controls">
+                            <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                        </div>
+                        <span class="filename">proxy.py</span>
+                    </div>
+                    <div class="code-content">
+<pre><code class="language-python">from litellm import completion
 
 response = completion(
     model="openai/gpt-3.5-turbo",
@@ -115,6 +151,7 @@ response = completion(
 )
 
 print(response.choices[0].message.content)</code></pre>
+                    </div>
                 </div>
             </div>
 
@@ -127,8 +164,16 @@ print(response.choices[0].message.content)</code></pre>
                 <p class="quickstart-desc" data-i18n="quickstart.haystack.desc">
                     Build composable AI pipelines with production components
                 </p>
-                <div class="code-wrapper">
-                    <pre><code class="language-python">from haystack.components.generators import OpenAIGenerator
+
+                <div class="code-window">
+                    <div class="window-header">
+                        <div class="window-controls">
+                            <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                        </div>
+                        <span class="filename">pipeline.py</span>
+                    </div>
+                    <div class="code-content">
+<pre><code class="language-python">from haystack.components.generators import OpenAIGenerator
 from haystack.utils import Secret
 
 generator = OpenAIGenerator(
@@ -142,6 +187,7 @@ response = generator.run(
 )
 
 print(response["replies"][0])</code></pre>
+                    </div>
                 </div>
             </div>
 
