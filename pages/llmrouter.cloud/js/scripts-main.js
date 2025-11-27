@@ -5,6 +5,7 @@ const sections = [
   { selector: '#header',         url: 'sections/main/header.html' },
   { selector: '#hero',           url: 'sections/main/hero.html' },
   { selector: '#flow-animation', url: 'sections/main/flow_animation.html' },
+  { selector: '#quickstart',     url: 'sections/main/quickstart.html' },
   { selector: '#features',       url: 'sections/main/features.html' },
   { selector: '#security',       url: 'sections/main/security.html' },
   { selector: '#performance',    url: 'sections/main/performance.html' },

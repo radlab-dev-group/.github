@@ -19,6 +19,22 @@ export const translations = {
     'hero.cta.github': 'Zobacz na GitHub',
     'hero.cta.docs': 'Dokumentacja',
 
+    // Quick Start
+    'quickstart.title': 'Szybki Start Integracji',
+    'quickstart.subtitle': '<strong>Gotowe do użycia przykłady kodu</strong> dla popularnych frameworków AI. <strong>Wystarczy zmienić base_url</strong> na adres swojej instancji LLM Router i zacząć routować żądania do swoich lokalnych modeli (vLLM, Ollama, LM Studio) lub dostawców chmurowych.',
+    'quickstart.openai.title': 'OpenAI SDK',
+    'quickstart.openai.desc': 'Natywny OpenAI Python SDK z jednolinijkową zmianą konfiguracji',
+    'quickstart.langchain.title': 'LangChain',
+    'quickstart.langchain.desc': 'Buduj łańcuchy AI i agentów z automatyczną konwersją protokołów',
+    'quickstart.llamaindex.title': 'LlamaIndex',
+    'quickstart.llamaindex.desc': 'Twórz aplikacje RAG ze zunifikowanym dostępem do modeli',
+    'quickstart.litellm.title': 'LiteLLM',
+    'quickstart.litellm.desc': 'Zunifikowany interfejs z wbudowanymi retry i fallbackami',
+    'quickstart.haystack.title': 'Haystack',
+    'quickstart.haystack.desc': 'Buduj kompozycyjne pipeline\'y AI z produkcyjnymi komponentami',
+    'quickstart.cta.examples': '📚 Zobacz Wszystkie Przykłady',
+    'quickstart.cta.docs': '📖 Przeczytaj Dokumentację',
+
     // Features
     'features.title': 'Kompleksowe zarządzanie infrastrukturą LLM',
     'features.subtitle': '<strong>Kompletna</strong> platforma do zarządzania <strong>lokalnymi wdrożeniami LLM (vLLM, Ollama, LM Studio) i opcjonalnie dostawcami chmurowymi</strong> w dowolnej skali. Zunifikowane zarządzanie z produkcyjnym bezpieczeństwem i obserwowalnością. Architektura open-source umożliwia dostosowywanie i rozwój wspierany przez społeczność. <strong>Uruchamiaj modele lokalnie</strong> z pełną kontrolą nad infrastrukturą.',
@@ -177,6 +193,22 @@ export const translations = {
     'hero.description': 'LLM Router is a flexible, open-source gateway for managing both local LLM deployments (vLLM, Ollama, LM Studio) and cloud providers. It provides an intelligent layer between your applications and models, delivering real-time traffic management, intelligent load balancing across local and cloud providers, and comprehensive security controls including PII masking, data anonymization, and content filtering. Built with <strong>Apache 2.0</strong> license, it\'s designed for teams who want to run AI infrastructure locally with optional cloud provider support—giving you full control and flexibility.',
     'hero.cta.github': 'View on GitHub',
     'hero.cta.docs': 'Documentation',
+
+    // Quick Start
+    'quickstart.title': 'Quick Start Integration',
+    'quickstart.subtitle': '<strong>Ready-to-use code examples</strong> for popular AI frameworks. <strong>Just change the base_url</strong> to point to your LLM Router instance and start routing requests to your local models (vLLM, Ollama, LM Studio) or cloud providers.',
+    'quickstart.openai.title': 'OpenAI SDK',
+    'quickstart.openai.desc': 'Native OpenAI Python SDK with one-line configuration change',
+    'quickstart.langchain.title': 'LangChain',
+    'quickstart.langchain.desc': 'Build AI chains and agents with automatic protocol conversion',
+    'quickstart.llamaindex.title': 'LlamaIndex',
+    'quickstart.llamaindex.desc': 'Build RAG applications with unified model access',
+    'quickstart.litellm.title': 'LiteLLM',
+    'quickstart.litellm.desc': 'Unified interface with built-in retries and fallbacks',
+    'quickstart.haystack.title': 'Haystack',
+    'quickstart.haystack.desc': 'Build composable AI pipelines with production components',
+    'quickstart.cta.examples': '📚 View All Examples',
+    'quickstart.cta.docs': '📖 Read Documentation',
 
     // Features
     'features.title': 'Comprehensive LLM Infrastructure Management',

@@ -1,0 +1,165 @@
+<section id="quickstart" class="quickstart">
+    <div class="container">
+        <h2 class="section-title" data-i18n="quickstart.title">Quick Start Integration</h2>
+        <p class="section-subtitle" data-i18n="quickstart.subtitle" data-i18n-html="true">
+            <strong>Ready-to-use code examples</strong> for popular AI frameworks. <strong>Just change the
+            base_url</strong> to point to your LLM Router instance and start routing requests to your local models
+            (vLLM, Ollama, LM Studio) or cloud providers.
+        </p>
+
+        <div class="quickstart-grid">
+            <!-- OpenAI SDK -->
+            <div class="quickstart-card">
+                <div class="quickstart-header">
+                    <div class="quickstart-icon">🔵</div>
+                    <h3 data-i18n="quickstart.openai.title">OpenAI SDK</h3>
+                </div>
+                <p class="quickstart-desc" data-i18n="quickstart.openai.desc">
+                    Native OpenAI Python SDK with one-line configuration change
+                </p>
+                <div class="code-wrapper">
+                    <pre><code class="language-python">from openai import OpenAI
+
+client = OpenAI(
+    base_url="http://your-router:5555/api/v1",
+    api_key="not-needed"
+)
+
+response = client.chat.completions.create(
+    model="gpt-3.5-turbo",
+    messages=[
+        {"role": "user", "content": "Hello!"}
+    ]
+)
+
+print(response.choices[0].message.content)</code></pre>
+                </div>
+            </div>
+
+            <!-- LangChain -->
+            <div class="quickstart-card">
+                <div class="quickstart-header">
+                    <div class="quickstart-icon">🦜</div>
+                    <h3 data-i18n="quickstart.langchain.title">LangChain</h3>
+                </div>
+                <p class="quickstart-desc" data-i18n="quickstart.langchain.desc">
+                    Build AI chains and agents with automatic protocol conversion
+                </p>
+                <div class="code-wrapper">
+                    <pre><code class="language-python">from langchain_openai import ChatOpenAI
+from langchain_core.messages import HumanMessage
+
+llm = ChatOpenAI(
+    model="gpt-3.5-turbo",
+    base_url="http://your-router:5555/api/v1",
+    api_key="not-needed"
+)
+
+messages = [
+    HumanMessage(content="Explain load balancing")
+]
+
+response = llm.invoke(messages)
+print(response.content)</code></pre>
+                </div>
+            </div>
+
+            <!-- LlamaIndex -->
+            <div class="quickstart-card">
+                <div class="quickstart-header">
+                    <div class="quickstart-icon">🦙</div>
+                    <h3 data-i18n="quickstart.llamaindex.title">LlamaIndex</h3>
+                </div>
+                <p class="quickstart-desc" data-i18n="quickstart.llamaindex.desc">
+                    Build RAG applications with unified model access
+                </p>
+                <div class="code-wrapper">
+                    <pre><code class="language-python">from llama_index.llms.openai import OpenAI
+from llama_index.core.llms import ChatMessage
+
+llm = OpenAI(
+    model="gpt-3.5-turbo",
+    api_base="http://your-router:5555/api/v1",
+    api_key="not-needed"
+)
+
+response = llm.chat(
+    messages=[
+        ChatMessage(role="user", content="What is RAG?")
+    ]
+)
+
+print(response.message.content)</code></pre>
+                </div>
+            </div>
+
+            <!-- LiteLLM -->
+            <div class="quickstart-card">
+                <div class="quickstart-header">
+                    <div class="quickstart-icon">⚡</div>
+                    <h3 data-i18n="quickstart.litellm.title">LiteLLM</h3>
+                </div>
+                <p class="quickstart-desc" data-i18n="quickstart.litellm.desc">
+                    Unified interface with built-in retries and fallbacks
+                </p>
+                <div class="code-wrapper">
+                    <pre><code class="language-python">from litellm import completion
+
+response = completion(
+    model="openai/gpt-3.5-turbo",
+    messages=[
+        {"role": "user", "content": "Explain streaming"}
+    ],
+    api_base="http://your-router:5555/api/v1",
+    api_key="not-needed"
+)
+
+print(response.choices[0].message.content)</code></pre>
+                </div>
+            </div>
+
+            <!-- Haystack -->
+            <div class="quickstart-card">
+                <div class="quickstart-header">
+                    <div class="quickstart-icon">🌾</div>
+                    <h3 data-i18n="quickstart.haystack.title">Haystack</h3>
+                </div>
+                <p class="quickstart-desc" data-i18n="quickstart.haystack.desc">
+                    Build composable AI pipelines with production components
+                </p>
+                <div class="code-wrapper">
+                    <pre><code class="language-python">from haystack.components.generators import OpenAIGenerator
+from haystack.utils import Secret
+
+generator = OpenAIGenerator(
+    api_key=Secret.from_token("not-needed"),
+    api_base_url="http://your-router:5555/api/v1",
+    model="gpt-3.5-turbo"
+)
+
+response = generator.run(
+    prompt="What are AI pipelines?"
+)
+
+print(response["replies"][0])</code></pre>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="quickstart-cta">
+            <a href="https://github.com/radlab-dev-group/llm-router/blob/main/examples/"
+               class="cta-button primary"
+               target="_blank"
+               data-i18n="quickstart.cta.examples">
+                📚 View All Examples
+            </a>
+            <a href="https://github.com/radlab-dev-group/llm-router/blob/main/examples/README.md"
+               class="cta-button secondary"
+               target="_blank"
+               data-i18n="quickstart.cta.docs">
+                📖 Read Documentation
+            </a>
+        </div>
+    </div>
+</section>
