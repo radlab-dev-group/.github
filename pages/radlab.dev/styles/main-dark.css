@@ -716,7 +716,7 @@ body::before {
 
 .contact-content {
     display: grid;
-    grid-template-columns: 1fr 1.5fr;
+    grid-template-columns: 1fr 1fr;
     gap: 5rem;
     background: var(--color-bg-tertiary);
     padding: 4rem;
