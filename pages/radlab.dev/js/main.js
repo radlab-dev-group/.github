@@ -51,6 +51,30 @@
     });
 
     /* =====================================================
+       Back to Top Button
+       ===================================================== */
+    const backToTopBtn = document.getElementById('back-to-top');
+
+    if (backToTopBtn) {
+        // Show/hide button based on scroll position
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 500) {
+                backToTopBtn.classList.add('visible');
+            } else {
+                backToTopBtn.classList.remove('visible');
+            }
+        });
+
+        // Scroll to top on click
+        backToTopBtn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    }
+
+    /* =====================================================
        Smooth Scroll for Anchor Links
        ===================================================== */
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
