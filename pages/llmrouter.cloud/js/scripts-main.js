@@ -1,4 +1,5 @@
 import { i18n } from './i18n.js';
+//import { initRouterAnimation } from './scripts-router-animation.js';
 
 const sections = [
   { selector: '#header',         url: 'sections/main/header.html' },
@@ -128,4 +129,7 @@ Promise.all(sections.map(s => loadSection(s.selector, s.url)))
     initMenuToggle();
     initLanguageToggle();
     initScrollFeatures();
+
+    // Initialize router animation after DOM is fully loaded
+    setTimeout(initRouterAnimation, 100);
   });
