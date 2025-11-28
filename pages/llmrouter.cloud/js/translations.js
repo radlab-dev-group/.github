@@ -168,7 +168,7 @@ export const translations = {
     'footer.resources.install': 'Instalacja',
     'footer.resources.docker': 'Obrazy Docker',
     'footer.resources.mlutils': 'ML Utils (zależność)',
-    'footer.copyright': '© 2025 LLM-Router | Projekt Open Source | Licencja Apache 2.0',
+    'footer.copyright': '© 2025 LLM-Router | Projekt Open Source | Licencja Apache 2.0 | contact@llm-router.cloud',
 
     // Back to top
     'backToTop.aria': 'Powrót na górę',
@@ -343,7 +343,7 @@ export const translations = {
     'footer.resources.install': 'Installation',
     'footer.resources.docker': 'Docker Images',
     'footer.resources.mlutils': 'ML Utils (dependency)',
-    'footer.copyright': '© 2025 LLM-Router | Open Source Project | Licensed under Apache 2.0',
+    'footer.copyright': '© 2025 LLM-Router | Open Source Project | Licensed under Apache 2.0 | contact@llm-router.cloud',
 
     // Back to top
     'backToTop.aria': 'Back to top',
