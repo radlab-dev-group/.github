@@ -11,7 +11,6 @@ const sections = [
   { selector: '#performance',    url: 'sections/main/performance.html' },
   { selector: '#use-cases',      url: 'sections/main/use-cases.html' },
   { selector: '#open-source',    url: 'sections/main/open-source.html' },
-  { selector: '#contact',        url: 'sections/main/contact.html' },
   { selector: '#footer',         url: 'sections/main/footer.html' },
 ];
 
