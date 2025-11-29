@@ -38,8 +38,8 @@ export const translations = {
     // Features
     'features.title': 'Kompleksowe zarządzanie infrastrukturą LLM',
     'features.subtitle': '<strong>Kompletna</strong> platforma do zarządzania <strong>lokalnymi wdrożeniami LLM (vLLM, Ollama, LM Studio) i opcjonalnie dostawcami chmurowymi</strong> w dowolnej skali. Zunifikowane zarządzanie z produkcyjnym bezpieczeństwem i obserwowalnością. Architektura open-source umożliwia dostosowywanie i rozwój wspierany przez społeczność. <strong>Uruchamiaj modele lokalnie</strong> z pełną kontrolą nad infrastrukturą.',
-    'features.anonymization.title': 'Wbudowana ochrona danych',
-    'features.anonymization.desc': 'Niezależnie konfigurowalne pipeliny chronią dane przed wysłaniem do dostawców modeli. Metody typu guardrails w pipeline blokują ruch do dostawcy w momencie wykrycia treści niezgodnych z zasadami etyki. Natomiast metody maskujące w pipeline mają za zadanie ukryć chronione informacje, zanim zostaną one wysłane na zewnątrz.',
+    'features.protection.title': 'Wbudowana ochrona danych',
+    'features.protection.desc': 'Platforma maskuje wrażliwe dane (identyfikatory narodowe, numery podatkowe, e‑maile, numery kont, adresy IP itp.) oraz wykonuje kontrole guardrails przed przekazaniem żądania do dostawców LLM. Zarówno etap maskowania, jak i guardrails generują niezmienialne logi audytowe.',
     'features.loadbalancing.title': 'Elastyczne równoważenie obciążenia',
     'features.loadbalancing.desc': 'Cztery konfigurowalne strategie równoważenia obciążenia: <code>balanced</code>, <code>weighted</code>, <code>first_available</code>, <code>first_available_optim</code>. Optymalizacja wykorzystania zasobów i zapewnienie wysokiej dostępności dla wdrożeń dowolnej wielkości.',
     'features.routing.title': 'Zunifikowany routing lokalny i chmurowy',
@@ -213,8 +213,8 @@ export const translations = {
     // Features
     'features.title': 'Comprehensive LLM Infrastructure Management',
     'features.subtitle': '<strong>Complete</strong> platform for managing <strong>local LLM deployments (vLLM, Ollama, LM Studio) and optionally cloud providers</strong> at any scale. Unified management with production-grade security and observability. Open-source architecture enables customization and community-driven enhancements. <strong>Run your models locally</strong> with full control over your infrastructure.',
-    'features.anonymization.title': 'Built-in Data Protection',
-    'features.anonymization.desc': 'Independently configurable pipelines protect data before sending to model providers. Guardrail methods in the pipeline block traffic to the provider when content violating ethical policies is detected. Masking methods in the pipeline hide protected information before it is sent externally.',
+    'features.protection.title': 'Built‑in Data Protection',
+    'features.protection.desc': 'The platform masks sensitive data (national IDs, tax numbers, emails, account numbers, IP addresses, etc.) and runs guard‑rail checks before forwarding requests to LLM providers. Both masking and guard‑rail stages emit tamper‑evident audit logs.',
     'features.loadbalancing.title': 'Flexible Load Balancing',
     'features.loadbalancing.desc': 'Four configurable load balancing strategies: <code>balanced</code>, <code>weighted</code>, <code>first_available</code>, <code>first_available_optim</code>. Optimize resource utilization and ensure high availability for any deployment size.',
     'features.routing.title': 'Unified Local & Cloud Routing',

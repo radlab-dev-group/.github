@@ -23,5 +23,24 @@ scrape_configs:
     metrics_path: '/metrics'
     scrape_interval: 15s</code></pre>
         </div>
+
+        <div class="key-feature-box">
+            <h3>Auditor Overview</h3>
+            <ul>
+                <li><strong>AnyRequestAuditor</strong> records audit logs for masking and guardrail operations.</li>
+                <li>Logs contain endpoint name, audit type, timestamps, and payload snapshots.</li>
+                <li>Configured via environment variables <code>MASKING_WITH_AUDIT</code> and <code>GUARDRAIL_WITH_AUDIT_REQUEST/RESPONSE</code>.
+                </li>
+            </ul>
+        </div>
+        <div class="code-block" data-lang="json">
+<pre><code>{
+    "endpoint": "/api/chat",
+    "audit_type": "masking",
+    "begin": {"timestamp": 1730281234.567, "payload": {...}},
+    "end": {"timestamp": 1730281235.001, "payload": {...}}
+}</code></pre>
+        </div>
+
     </div>
 </section>
