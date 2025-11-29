@@ -2,14 +2,21 @@
     <div class="container">
         <h2 class="section-title" data-i18n="features.title">Comprehensive LLM Infrastructure Management</h2>
         <p class="section-subtitle" data-i18n="features.subtitle" data-i18n-html="true">
-            <strong>Complete</strong> platform for managing <strong>local LLM deployments (vLLM, Ollama, LM Studio) and optionally cloud providers</strong> at any scale. Unified management with production-grade security and observability. Open-source architecture enables customization and community-driven enhancements. <strong>Run your models locally</strong> with full control over your infrastructure.
+            <strong>Complete</strong> platform for managing <strong>local LLM deployments (vLLM, Ollama, LM Studio) and
+            optionally cloud providers</strong> at any scale. Unified management with production-grade security and
+            observability. Open-source architecture enables customization and community-driven enhancements. <strong>Run
+            your models locally</strong> with full control over your infrastructure.
         </p>
         <div class="features-grid">
 
             <div class="feature-card">
                 <div class="feature-icon">🔒</div>
-                <h3 data-i18n="features.anonymization.title">Built-in PII Anonymization</h3>
-                <p data-i18n="features.anonymization.desc" data-i18n-html="true">High-performance <code>fast_masker</code> plugin automatically detects and masks sensitive data including national IDs, tax numbers, emails, account numbers, IP addresses, and more before transmission to LLM providers. GDPR and SOC2 compliant by design.
+                <h3 data-i18n="features.protection.title">Built‑in Data Protection</h3>
+                <p data-i18n="features.protection.desc" data-i18n-html="true">
+                    The platform masks sensitive data (national IDs, tax numbers, emails, account numbers,
+                    IP addresses, etc.) and runs guard‑rail checks before forwarding requests to LLM
+                    providers. Both masking and guard‑rail stages emit tamper‑evident audit logs, giving
+                    full traceability while staying GDPR and SOC2 compliant.
                 </p>
             </div>
 
@@ -30,8 +37,10 @@
                 <div class="feature-icon">🔀</div>
                 <h3 data-i18n="features.routing.title">Unified Local & Cloud Routing</h3>
                 <p data-i18n="features.routing.desc">
-                    Single REST API supporting local providers (Ollama, vLLM, LM Studio) and cloud services (OpenAI, Anthropic, etc.).
-                    Automatic protocol conversion, seamless switching between local and cloud providers, and intelligent load distribution across all endpoints.
+                    Single REST API supporting local providers (Ollama, vLLM, LM Studio) and cloud services (OpenAI,
+                    Anthropic, etc.).
+                    Automatic protocol conversion, seamless switching between local and cloud providers, and intelligent
+                    load distribution across all endpoints.
                 </p>
             </div>
 
@@ -39,7 +48,8 @@
                 <div class="feature-icon">📊</div>
                 <h3 data-i18n="features.monitoring.title">Full Observability</h3>
                 <p data-i18n="features.monitoring.desc">
-                    Native Prometheus integration delivering real-time metrics: request rates, latency percentiles, error rates per provider, and health checks.
+                    Native Prometheus integration delivering real-time metrics: request rates, latency percentiles,
+                    error rates per provider, and health checks.
                     Complete visibility through Grafana dashboards with automatic service discovery and alerting.
                 </p>
             </div>
@@ -55,7 +65,9 @@
             <div class="feature-card">
                 <div class="feature-icon">🔧</div>
                 <h3 data-i18n="features.config.title">Easy Deployment</h3>
-                <p data-i18n="features.config.desc">Infrastructure-as-code configuration via JSON and environment variables. Docker and Kubernetes ready with official images. Deploy in minutes with flexible configuration options for any environment.</p>
+                <p data-i18n="features.config.desc">Infrastructure-as-code configuration via JSON and environment
+                    variables. Docker and Kubernetes ready with official images. Deploy in minutes with flexible
+                    configuration options for any environment.</p>
             </div>
 
             <div class="feature-card">
@@ -70,7 +82,8 @@
             <div class="feature-card">
                 <div class="feature-icon">⚙️</div>
                 <h3 data-i18n="features.web.title">Management Interfaces</h3>
-                <p data-i18n="features.web.desc">Configuration Manager for centralized infrastructure control and Anonymizer interface for secure, compliant LLM communication.</p>
+                <p data-i18n="features.web.desc">Configuration Manager for centralized infrastructure control and
+                    Anonymizer interface for secure, compliant LLM communication.</p>
             </div>
 
         </div>
