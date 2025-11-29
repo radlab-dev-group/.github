@@ -34,16 +34,16 @@
         <div class="key-feature-box" style="margin-top: 2rem;">
             <h3>Adding Custom Strategies</h3>
             <ul>
-                <li>Subclass <code>ChooseProviderStrategyI</code> from <code>llm_router_api.base.lb.strategy</code></li>
+                <li>Subclass <code>ChooseProviderStrategyI</code> from <code>llm_router_api.core.lb.strategy</code></li>
                 <li>Implement <code>get_provider(model_name, provider_list, options)</code> method</li>
-                <li>Register in <code>STRATEGIES</code> dict in <code>llm_router_api.base.lb.chooser</code></li>
+                <li>Register in <code>STRATEGIES</code> dict in <code>llm_router_api.core.lb.chooser</code></li>
                 <li>Set <code>LLM_ROUTER_BALANCE_STRATEGY</code> to your strategy name</li>
             </ul>
         </div>
 
         <div class="code-block" data-lang="python">
 <pre><code># Example: Custom strategy implementation
-from llm_router_api.base.lb.strategy import ChooseProviderStrategyI
+from llm_router_api.core.lb.strategy import ChooseProviderStrategyI
 
 class MyCustomStrategy(ChooseProviderStrategyI):
     def get_provider(self, model_name, provider_list, options=None):
