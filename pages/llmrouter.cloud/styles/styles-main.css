@@ -2051,7 +2051,7 @@ footer {
 }
 
 .step-desc {
-    font-size: 0.85rem;
+    font-size: 1.05rem;
     color: var(--muted);
     margin-bottom: 1.2rem;
     line-height: 1.5;
@@ -2068,7 +2068,7 @@ footer {
 }
 
 .step-list li {
-    font-size: 0.82rem;
+    font-size: 0.95rem;
     color: rgba(229, 231, 235, 0.85);
     margin-bottom: 0.6rem;
     padding-left: 1rem;
