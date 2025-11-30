@@ -1,6 +1,6 @@
 # Project Overview
 
-This repository contains the roadmap for **LLM‑Router** in two languages:
+This directory contains the roadmap for **LLM‑Router** in two languages:
 
 - **English** roadmap: [`en/README.md`](en/README.md) – details the development levels, tasks, and future research
   directions.
