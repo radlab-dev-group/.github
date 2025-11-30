@@ -1884,3 +1884,313 @@ footer {
         justify-content: center;
     }
 }
+
+/* ROADMAP SECTION - HORIZONTAL LAYOUT */
+
+.roadmap {
+    position: relative;
+    padding: 5rem 0 6rem;
+    background: radial-gradient(circle at 50% 0%, rgba(56, 189, 248, 0.05) 0, transparent 60%),
+                #020617;
+    overflow: hidden;
+}
+
+.roadmap-header {
+    text-align: center;
+    margin-bottom: 4rem;
+}
+
+/* --- GRID CONTAINER --- */
+.roadmap-steps {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 4 równe kolumny */
+    gap: 1.5rem;
+    position: relative;
+    padding-top: 20px; /* Miejsce na markery wystające w górę */
+}
+
+/* --- CONNECTING LINE (PIPE) --- */
+.roadmap-line {
+    position: absolute;
+    top: 28px; /* Pozycja linii w pionie (przechodzi przez kropki) */
+    left: 10%; /* Zaczyna się w połowie pierwszej kolumny */
+    right: 10%; /* Kończy się w połowie ostatniej */
+    height: 2px;
+    background: linear-gradient(90deg,
+        var(--accent) 0%,
+        rgba(34, 197, 94, 0.5) 40%,
+        rgba(234, 179, 8, 0.5) 70%,
+        rgba(168, 85, 247, 0.5) 100%
+    );
+    z-index: 0;
+    opacity: 0.4;
+}
+
+/* --- INDIVIDUAL STEP --- */
+.step {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+/* --- MARKER (DOT) --- */
+.step-marker {
+    align-self: center;
+    width: 18px;
+    height: 18px;
+    background: #020617;
+    border: 2px solid rgba(148, 163, 184, 0.5);
+    border-radius: 50%;
+    margin-bottom: 1.5rem;
+    z-index: 2; /* Nad linią */
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.step.active .step-marker {
+    border-color: var(--accent);
+    background: var(--accent);
+    box-shadow: 0 0 15px var(--accent);
+}
+
+/* Pulsing effect for active step */
+.step.active .marker-pulse {
+    position: absolute;
+    inset: -6px;
+    border-radius: 50%;
+    border: 2px solid var(--accent);
+    opacity: 0;
+    animation: pulse-ring 2s infinite;
+}
+
+@keyframes pulse-ring {
+    0% { transform: scale(0.5); opacity: 1; }
+    100% { transform: scale(1.5); opacity: 0; }
+}
+
+/* --- CARD STYLE --- */
+.step-card {
+    flex-grow: 1;
+    background: rgba(2, 8, 23, 0.6);
+    border: 1px solid rgba(148, 163, 184, 0.15);
+    border-radius: var(--radius-md);
+    padding: 1.5rem;
+    backdrop-filter: blur(12px);
+    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Card Hover Effects */
+.step:hover .step-card {
+    transform: translateY(-5px);
+    border-color: rgba(148, 163, 184, 0.3);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+/* Active Card Highlight */
+.step.active .step-card {
+    border-color: rgba(56, 189, 248, 0.4);
+    background: radial-gradient(circle at top left, rgba(56, 189, 248, 0.08), transparent 70%),
+                rgba(2, 8, 23, 0.8);
+}
+
+/* Active Card Top Border Accent */
+.step.active .step-card::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    opacity: 0.7;
+}
+
+/* --- TYPOGRAPHY & BADGES --- */
+.card-badge {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 0.25rem 0.6rem;
+    border-radius: 999px;
+    margin-bottom: 0.8rem;
+    border: 1px solid transparent;
+}
+
+.badge-active {
+    color: var(--accent);
+    background: rgba(56, 189, 248, 0.1);
+    border-color: rgba(56, 189, 248, 0.25);
+}
+
+.badge-planned {
+    color: var(--accent-alt); /* Green */
+    background: rgba(34, 197, 94, 0.1);
+    border-color: rgba(34, 197, 94, 0.25);
+}
+
+.badge-future {
+    color: var(--warning); /* Yellow/Amber */
+    background: rgba(234, 179, 8, 0.1);
+    border-color: rgba(234, 179, 8, 0.25);
+}
+
+.badge-research {
+    color: #a855f7; /* Purple */
+    background: rgba(168, 85, 247, 0.1);
+    border-color: rgba(168, 85, 247, 0.25);
+}
+
+.step-card h3 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.15rem;
+    color: var(--fg);
+}
+
+.step-desc {
+    font-size: 1.05rem;
+    color: var(--muted);
+    margin-bottom: 1.2rem;
+    line-height: 1.5;
+    min-height: 2.5em; /* Wyrównanie wysokości opisów */
+}
+
+/* --- LIST --- */
+.step-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border-top: 1px solid rgba(148, 163, 184, 0.1);
+    padding-top: 1rem;
+}
+
+.step-list li {
+    font-size: 0.95rem;
+    color: rgba(229, 231, 235, 0.85);
+    margin-bottom: 0.6rem;
+    padding-left: 1rem;
+    position: relative;
+    line-height: 1.4;
+}
+
+.step-list li::before {
+    content: "›";
+    position: absolute;
+    left: 0;
+    color: var(--muted);
+    font-weight: bold;
+    font-size: 1rem;
+    line-height: 1rem;
+    top: 0;
+}
+
+/* Kolorowanie strzałek listy zależnie od etapu */
+.step.active .step-list li::before { color: var(--accent); }
+.step:nth-child(3) .step-list li::before { color: var(--accent-alt); }
+.step:nth-child(4) .step-list li::before { color: var(--warning); }
+.step:nth-child(5) .step-list li::before { color: #a855f7; }
+
+.step-list strong {
+    color: #e5e7eb;
+}
+
+/* --- ROADMAP RESPONSIVE FIXES --- */
+
+/* Tablet i Mobile (poniżej 1100px - wtedy 4 kolumny robią się zbyt wąskie) */
+@media (max-width: 1100px) {
+
+    .roadmap-steps {
+        /* Zmiana z 4 kolumn na 1 pionową */
+        grid-template-columns: 1fr;
+        gap: 0;
+        padding-top: 0;
+    }
+
+    /* Zmiana poziomej linii w pionową linię "timeline" po lewej stronie */
+    .roadmap-line {
+        width: 2px;
+        height: 100%;
+        top: 0;
+        bottom: 0;
+        left: 28px; /* Pozycja linii w pionie */
+        right: auto;
+        background: linear-gradient(to bottom,
+            var(--accent) 0%,
+            rgba(34, 197, 94, 0.5) 40%,
+            rgba(234, 179, 8, 0.5) 70%,
+            rgba(168, 85, 247, 0.5) 100%
+        );
+        mask-image: linear-gradient(to bottom, black 85%, transparent 100%);
+        -webkit-mask-image: linear-gradient(to bottom, black 85%, transparent 100%);
+    }
+
+    /* Pojedynczy krok - zmiana orientacji */
+    .step {
+        flex-direction: row; /* Kropka po lewej, karta po prawej */
+        gap: 1.5rem;
+        padding-bottom: 2.5rem; /* Odstęp między krokami */
+    }
+
+    /* Ostatni krok nie potrzebuje dużego marginesu na dole */
+    .step:last-child {
+        padding-bottom: 0;
+    }
+
+    /* Pozycjonowanie kropki na linii */
+    .step-marker {
+        margin-bottom: 0;
+        margin-top: 1.8rem; /* Wyrównanie kropki do wysokości tytułu karty */
+        margin-left: 20px; /* Centrowanie względem linii (28px left linii) */
+        flex-shrink: 0; /* Zapobiega zgniataniu kropki */
+        background: #020617; /* Tło, aby linia nie prześwitywała przez środek kropki */
+    }
+
+    /* Wyrównanie aktywnej "pulsującej" otoczki */
+    .step.active .marker-pulse {
+        background: #020617;
+        z-index: -1;
+    }
+
+    /* Karta zajmuje całą dostępną szerokość po prawej */
+    .step-card {
+        width: 100%;
+    }
+}
+
+/* Dostosowania dla bardzo małych ekranów (telefony < 480px) */
+@media (max-width: 480px) {
+    .roadmap-header {
+        margin-bottom: 3rem;
+    }
+
+    /* Przesuwamy linię i kropki bliżej lewej krawędzi, by zyskać miejsce na tekst */
+    .roadmap-line {
+        left: 16px;
+    }
+
+    .step-marker {
+        margin-left: 8px;
+        margin-top: 1.5rem;
+    }
+
+    .step {
+        gap: 1rem;
+    }
+
+    .step-card {
+        padding: 1.2rem;
+    }
+
+    .card-badge {
+        font-size: 0.65rem;
+    }
+
+    .step-card h3 {
+        font-size: 1.1rem;
+    }
+}
+
+/* --- RESPONSIVE BREAK
