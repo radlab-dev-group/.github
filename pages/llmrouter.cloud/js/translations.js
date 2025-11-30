@@ -138,6 +138,44 @@ export const translations = {
     'usecases.legacy.feature2': 'Uniwersalna kompatybilność z dostawcami',
     'usecases.legacy.feature3': 'Integracja legacy bez zmian',
 
+
+    /// --- ROADMAP SECTION ---
+    'roadmap.title': 'Mapa Drogowa Projektu',
+    'roadmap.subtitle': 'Od lokalnego środowiska deweloperskiego po rozproszoną infrastrukturę opartą o blockchain. <br><a href="https://github.com/radlab-dev-group/.github/tree/main/pages/llmrouter.cloud/roadmap" target="_blank" style="color:var(--accent); text-decoration:underline;">Zobacz szczegółową roadmapę na GitHub</a>.',
+
+    // Level 1
+    'roadmap.level1.badge': 'Poziom 1: Dev / Test',
+    'roadmap.level1.title': 'Fundamenty',
+    'roadmap.level1.desc': 'Obecny cel: Wdrażanie kluczowych integracji i stabilizacja platformy.',
+    'roadmap.level1.item1': '<strong>Integracje:</strong> Pełne wsparcie dla LM Studio i natywne API Anthropic.',
+    'roadmap.level1.item2': '<strong>Streaming:</strong> Filtrowanie Guardrails dla odpowiedzi strumieniowych.',
+    'roadmap.level1.item3': '<strong>Funkcje:</strong> API RAG (embeddings) i wykrywanie Prompt Injection.',
+    'roadmap.level1.item4': '<strong>UI:</strong> Nowy interfejs ConfigsManager oraz czat Anonymizer.',
+
+    // Level 2
+    'roadmap.level2.badge': 'Poziom 2: Produkcja',
+    'roadmap.level2.title': 'Ekosystem',
+    'roadmap.level2.desc': 'Budowa systemu rozproszonego gotowego na wysokie obciążenia.',
+    'roadmap.level2.item1': '<strong>Kafka:</strong> Asynchroniczne kolejkowanie zadań i komunikacja.',
+    'roadmap.level2.item2': '<strong>Skalowalność:</strong> Logika auto-scalingu dla specyficznych zadań.',
+    'roadmap.level2.item3': '<strong>Agenci:</strong> Natywna integracja z lokalnymi systemami agentowymi.',
+
+    // Level 3
+    'roadmap.level3.badge': 'Poziom 3: Biznes',
+    'roadmap.level3.title': 'Bezpieczeństwo',
+    'roadmap.level3.desc': 'Rozwiązywanie krytycznych wyzwań związanych z zarządzaniem danymi.',
+    'roadmap.level3.item1': '<strong>SIEM:</strong> Integracja z systemami monitorowania bezpieczeństwa.',
+    'roadmap.level3.item2': '<strong>Węzły:</strong> Warstwa agregująca routing między podsieciami.',
+    'roadmap.level3.item3': '<strong>Dokumenty:</strong> Bezpieczny i audytowalny transfer plików w czacie.',
+
+    // Level 4
+    'roadmap.level4.badge': 'Poziom 4: Badania',
+    'roadmap.level4.title': 'Decentralizacja',
+    'roadmap.level4.desc': 'Projekty badawcze nad ultraniskimi opóźnieniami i niezmiennym zaufaniem.',
+    'roadmap.level4.item1': '<strong>Protokół gRPC:</strong> Rozgłaszanie zadań w zaufanych podsieciach.',
+    'roadmap.level4.item2': '<strong>Blockchain:</strong> Niezmienny rejestr interakcji z modelami.',
+    'roadmap.level4.item3': '<strong>Sieć Zaufania:</strong> Najbezpieczniejsza warstwa wymiany informacji.',
+
     // Open Source
     'opensource.title': 'Open Source i rozwój wspierany przez społeczność',
     'opensource.subtitle': 'Transparentny, rozszerzalny, gotowy do produkcji',
@@ -312,6 +350,43 @@ export const translations = {
     'usecases.legacy.feature1': 'Unified REST API gateway',
     'usecases.legacy.feature2': 'Universal provider compatibility',
     'usecases.legacy.feature3': 'Zero-touch legacy integration',
+
+    // --- ROADMAP SECTION ---
+    'roadmap.title': 'Project Roadmap',
+    'roadmap.subtitle': 'From local development to distributed blockchain-verified infrastructure. <br><a href="https://github.com/radlab-dev-group/.github/tree/main/pages/llmrouter.cloud/roadmap" target="_blank" style="color:var(--accent); text-decoration:underline;">View detailed roadmap on GitHub</a>.',
+
+    // Level 1
+    'roadmap.level1.badge': 'Level 1: Dev / Test',
+    'roadmap.level1.title': 'Foundation',
+    'roadmap.level1.desc': 'Current focus: Establishing core integrations and platform stabilization.',
+    'roadmap.level1.item1': '<strong>Integrations:</strong> LM Studio & Anthropic native support.',
+    'roadmap.level1.item2': '<strong>Streaming:</strong> Real-time Guardrails for streamed responses.',
+    'roadmap.level1.item3': '<strong>Features:</strong> RAG API (embeddings) & Prompt Injection detection.',
+    'roadmap.level1.item4': '<strong>UI:</strong> Enhanced ConfigsManager & Anonymizer chat interface.',
+
+    // Level 2
+    'roadmap.level2.badge': 'Level 2: Production',
+    'roadmap.level2.title': 'Ecosystem',
+    'roadmap.level2.desc': 'Transforming the router into a distributed system for high-load environments.',
+    'roadmap.level2.item1': '<strong>Kafka:</strong> Async task queuing and communication mechanisms.',
+    'roadmap.level2.item2': '<strong>Scalability:</strong> Auto-scaling logic for specific task loads.',
+    'roadmap.level2.item3': '<strong>Agents:</strong> Native integration with local agentic systems.',
+
+    // Level 3
+    'roadmap.level3.badge': 'Level 3: Enterprise',
+    'roadmap.level3.title': 'Security',
+    'roadmap.level3.desc': 'Solving critical business challenges regarding data governance.',
+    'roadmap.level3.item1': '<strong>SIEM:</strong> Full security event logging and monitoring integration.',
+    'roadmap.level3.item2': '<strong>Node Layer:</strong> Aggregator layer for subnet routing.',
+    'roadmap.level3.item3': '<strong>Secure Docs:</strong> Auditable document transfer within chat contexts.',
+
+    // Level 4
+    'roadmap.level4.badge': 'Level 4: Research',
+    'roadmap.level4.title': 'Decentralized',
+    'roadmap.level4.desc': 'Long-term research aiming for ultra-low latency and immutable trust.',
+    'roadmap.level4.item1': '<strong>gRPC Protocol:</strong> RPC protocol for trusted subnet task broadcasting.',
+    'roadmap.level4.item2': '<strong>Blockchain:</strong> Immutable ledger for model interactions.',
+    'roadmap.level4.item3': '<strong>Trust Net:</strong> The ultimate secure information exchange layer.',
 
     // Open Source
     'opensource.title': 'Open Source & Community-Driven',
