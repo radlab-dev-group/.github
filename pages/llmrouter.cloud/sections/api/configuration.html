@@ -160,21 +160,41 @@
                 <td>['fast_masker']</td>
             </tr>
             <tr>
-                <td>LLM_ROUTER_GUARDRAIL_NASK_GUARD_HOST_EP</td>
-                <td>Full endpoint address with the <code>naskguard</code>
+                <td>LLM_ROUTER_GUARDRAIL_NASK_GUARD_HOST</td>
+                <td>Host and port address with the <code>naskguard</code>
                     service running, <strong>NOTE!</strong> Read
                     the plugin license before using the proposed model!
                 </td>
                 <td>-</td>
             </tr>
             <tr>
-                <td>LLM_ROUTER_GUARDRAIL_SOJKA_GUARD_HOST_EP</td>
-                <td>Full endpoint address with the <code>sojkaguard</code>
+                <td>LLM_ROUTER_GUARDRAIL_SOJKA_GUARD_HOST</td>
+                <td>Host and port address with the <code>sojkaguard</code>
                     service running.
                 </td>
                 <td>-</td>
             </tr>
+            <tr>
+                <td>LLM_ROUTER_SERVICES_MONITOR_INTERVAL_SECONDS</td>
+                <td>Time interval to check services availability.
+                    Values lower than <code>1</code> will be treated as
+                    <strong>not-use monitor</strong> and monitor will not be started.
+                </td>
+                <td>5 seconds</td>
+            </tr>
             </tbody>
+
+            <tr>
+                <td>LLM_ROUTER_KEEPALIVE_MODEL_MONITOR_INTERVAL_SECONDS</td>
+                <td>Keep alive model monitor time interval (seconds)</td>
+                <td>1 second</td>
+            </tr>
+
+            <tr>
+                <td>LLM_ROUTER_PROVIDER_MONITOR_INTERVAL_SECONDS</td>
+                <td>Models provider health check interval (in seconds)</td>
+                <td>5 second</td>
+            </tr>
         </table>
 
         <h3 style="color: var(--fg); margin-top: 2.5rem;">Model Configuration (JSON)</h3>
