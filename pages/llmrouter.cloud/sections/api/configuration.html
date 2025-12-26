@@ -174,7 +174,27 @@
                 </td>
                 <td>-</td>
             </tr>
+            <tr>
+                <td>LLM_ROUTER_SERVICES_MONITOR_INTERVAL_SECONDS</td>
+                <td>Time interval to check services availability.
+                    Values lower than <code>1</code> will be treated as
+                    <strong>not-use monitor</strong> and monitor will not be started.
+                </td>
+                <td>5 seconds</td>
+            </tr>
             </tbody>
+
+            <tr>
+                <td>LLM_ROUTER_KEEPALIVE_MODEL_MONITOR_INTERVAL_SECONDS</td>
+                <td>Keep alive model monitor time interval (seconds)</td>
+                <td>1 second</td>
+            </tr>
+
+            <tr>
+                <td>LLM_ROUTER_PROVIDER_MONITOR_INTERVAL_SECONDS</td>
+                <td>Models provider health check interval (in seconds)</td>
+                <td>5 second</td>
+            </tr>
         </table>
 
         <h3 style="color: var(--fg); margin-top: 2.5rem;">Model Configuration (JSON)</h3>
