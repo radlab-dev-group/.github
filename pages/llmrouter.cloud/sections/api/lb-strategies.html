@@ -20,13 +20,13 @@
             <div class="strategy-card">
                 <h4>first_available (fa)</h4>
                 <p>
-                    Uses Redis locks to guarantee exclusive access. Useful for stateful backends with session affinity.
+                    Uses Redis to coordinate across multiple workers. Ensures exclusive provider access, guaranteeing that a request is handled immediately by any free provider.
                 </p>
             </div>
             <div class="strategy-card">
                 <h4>first_available_optim</h4>
                 <p>
-                    Like <code>fa</code> aims for efficient routing, additionally remembers the worker where a model was last run.
+                    Enhanced version of <code>fa</code>. Prefers to re-use the host where the model is already loaded, significantly reducing model-loading latency while providing a reliable fallback.
                 </p>
             </div>
         </div>
