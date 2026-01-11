@@ -24,6 +24,7 @@
                     </p>
                     <ul class="feature-list">
                         <li><strong>Pipeline Architecture:</strong> Sequential validation plugins</li>
+                        <li><strong>Bielik-Guard (Sójka):</strong> Advanced safety classifier for Polish (Apache-2.0)</li>
                         <li><strong>NASK Guard:</strong> PL-Guard model integration (CC BY-NC-SA 4.0)</li>
                         <li><strong>Custom Plugins:</strong> Extend via <code>HttpPluginInterface</code></li>
                     </ul>
@@ -37,13 +38,12 @@
                     </div>
                     <div class="terminal-body">
                         <div class="t-comment"># Configure guardrail pipeline</div>
-                        <div><span class="t-cmd">export</span> <span class="t-var">GUARDRAIL_PLUGINS</span>=<span
-                                class="t-str">"nask_guard,custom_filter"</span></div>
-                        <div><span class="t-cmd">export</span> <span class="t-var">NASK_GUARD_HOST</span>=<span
-                                class="t-str">"http://localhost:8080"</span></div>
+                        <div><span class="t-cmd">export</span> <span class="t-var">LLM_ROUTER_FORCE_GUARDRAIL_REQUEST</span>=<span class="t-str">1</span></div>
+                        <div><span class="t-cmd">export</span> <span class="t-var">GUARDRAIL_STRATEGY_PIPELINE_REQUEST</span>=<span
+                                class="t-str">"sojka_guard,nask_guard"</span></div>
                         <br>
-                        <div class="t-comment"># 1. NASK Guard validates content</div>
-                        <div class="t-comment"># 2. Custom filter applies rules</div>
+                        <div class="t-comment"># 1. Sojka Guard validates content (HATE, CRIME etc.)</div>
+                        <div class="t-comment"># 2. NASK Guard applies safety rules</div>
                         <div class="t-comment"># Unsafe content → Request Blocked 🚫</div>
                     </div>
                 </div>
@@ -61,9 +61,9 @@
                         Automatically detects and anonymizes sensitive PII data before transmission to LLM providers.
                     </p>
                     <ul class="feature-list">
-                        <li><strong>FastMasker:</strong> High-performance PII detection (15+ types)</li>
-                        <li><strong>Rule Types:</strong> PESEL, NIP, Emails, Phones, Credit Cards</li>
-                        <li><strong>Validation:</strong> Checksum validation for PL identifiers</li>
+                        <li><strong>FastMasker:</strong> High-performance PII detection (25+ rules)</li>
+                        <li><strong>Rule Types:</strong> PESEL, NIP, KRS, REGON, Emails, NRB, Credit Cards, VIN</li>
+                        <li><strong>Validation:</strong> Checksum validation & GPG encrypted auditing</li>
                     </ul>
                 </div>
 
@@ -74,14 +74,14 @@
                         <div class="dot dot-g"></div>
                     </div>
                     <div class="terminal-body">
-                        <div class="t-comment"># Enable masking pipeline</div>
-                        <div><span class="t-cmd">export</span> <span class="t-var">FORCE_MASKING</span>=<span
+                        <div class="t-comment"># Enable masking with audit</div>
+                        <div><span class="t-cmd">export</span> <span class="t-var">LLM_ROUTER_FORCE_MASKING</span>=<span
                                 class="t-str">1</span></div>
-                        <div><span class="t-cmd">export</span> <span class="t-var">MASKER_PLUGINS</span>=<span
-                                class="t-str">"fast_masker"</span></div>
+                        <div><span class="t-cmd">export</span> <span class="t-var">LLM_ROUTER_MASKING_WITH_AUDIT</span>=<span
+                                class="t-str">1</span></div>
                         <br>
-                        <div class="t-comment"># Input: "PESEL: 44051401359"</div>
-                        <div><span class="t-comment"># Output:</span> "PESEL: <span class="t-var">{{PESEL}}</span>"
+                        <div class="t-comment"># Input: "NIP: 1234567890"</div>
+                        <div><span class="t-comment"># Output:</span> "NIP: <span class="t-var">{{NIP}}</span>"
                         </div>
                     </div>
                 </div>
