@@ -6,13 +6,13 @@
 
 | Task                                                                   | Goal                                                       | Status         |
 |------------------------------------------------------------------------|------------------------------------------------------------|----------------|
-| Finish integration with **LM Studio**                                  | Full support for local models                              | 🔄 in progress |
-| Streamed return of **guardrails**                                      | Response delivered as a stream instead of a single payload | 🔄 in progress |
-| Integration with the native **Anthropic** API                          | Support Anthropic beyond the OpenAI layer                  | 🔄 in progress |
+| Finish integration with **LM Studio**                                  | Full support for local models                              | ✅ done         |
+| Streamed return of **guardrails**                                      | Response delivered as a stream instead of a single payload | ✅ done         |
+| Integration with the native **Anthropic** API                          | Support Anthropic beyond the OpenAI layer                  | ✅ done         |
 | Extend masking rules (EN, US)                                          | Better data protection for English (US) languages          | 🔄 in progress |
 | Add a **guardrails** service for *prompt injection*                    | Detect and block unwanted prompts                          | 🔄 in progress |
 | Update the frontend for **ConfigsManager** and **Anonymizer** (+ chat) | Friendly UI for managing configurations and anonymization  | 🔄 in progress |
-| API support for **RAG‑style** (embeddings)                             | Support for RAG‑type applications for handling embeddings  | 🔄 in progress |
+| API support for **RAG‑style** (embeddings)                             | Support for RAG‑type applications for handling embeddings  | ✅ done         |
 
 ---
 
