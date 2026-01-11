@@ -6,13 +6,13 @@
 
 | Zadanie                                                               | Cel                                                              | Status    |
 |-----------------------------------------------------------------------|------------------------------------------------------------------|-----------|
-| Dokończenie integracji z **LM Studio**                                | Pełna obsługa modeli lokalnych                                   | 🔄 w toku |
-| Strumieniowy zwrot **guardrails**                                     | Odpowiedź zwracana jako strumień, a nie jednorazowo              | 🔄 w toku |
-| Integracja z natywnym API **Anthropic**                               | Obsługa Anthropic poza warstwą OpenAI                            | 🔄 w toku |
+| Dokończenie integracji z **LM Studio**                                | Pełna obsługa modeli lokalnych                                   | ✅ gotowe  |
+| Strumieniowy zwrot **guardrails**                                     | Odpowiedź zwracana jako strumień, a nie jednorazowo              | ✅ gotowe  |
+| Integracja z natywnym API **Anthropic**                               | Obsługa Anthropic poza warstwą OpenAI                            | ✅ gotowe  |
 | Rozszerzenie reguł maskowania (EN, US)                                | Lepsza ochrona danych w językach angielskim i amerykańskim       | 🔄 w toku |
 | Dodanie serwisu **guardrails** typu *prompt injection*                | Wykrywanie i blokowanie niepożądanych promptów                   | 🔄 w toku |
 | Uaktualnienie frontendu **ConfigsManager** i **Anonimizera** (+ chat) | Przyjazny interfejs do zarządzania konfiguracjami i anonimizacją | 🔄 w toku |
-| Obsługa API **RAG‑style** (embeddings)                                | Wsparcie dla aplikacji typu RAG do obsługi embeddingów           | 🔄 w toku |
+| Obsługa API **RAG‑style** (embeddings)                                | Wsparcie dla aplikacji typu RAG do obsługi embeddingów           | ✅ gotowe  |
 
 ---
 
