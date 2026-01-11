@@ -2,13 +2,13 @@
 
 Ten poziom aktualnie się dzieje, kolejne funkcjonalności są na bieżąco aktualizowane
 
-- Dokończyć integrację z LM Studio
-- Odpowiedź z guardrails zwracana jako strumień dla strumienia
-- Integracja z natywnym api Anthropic (aktualnie możliwa integracja przez standard OpenAI)
+- ✅ Dokończyć integrację z LM Studio
+- ✅ Odpowiedź z guardrails zwracana jako strumień dla strumienia
+- ✅ Integracja z natywnym api Anthropic (aktualnie możliwa integracja przez standard OpenAI)
 - Rozszerzenie reguł maskowania (EN, US)
 - Dodanie serwisu dla guardrails typu prompt injection
 - Uaktualnić frontend dla ConfigsManagera oraz Anonimizera (+chat)
-- Obsługa API do aplikacji RAG-style (embeddings)
+- ✅ Obsługa API do aplikacji RAG-style (embeddings)
 
 ---
 
