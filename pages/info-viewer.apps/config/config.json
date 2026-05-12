@@ -1,0 +1,6 @@
+{
+  "news_browser": {
+    "host": "http://192.168.100.79:8567",
+    "endpoint": "api/public/articles_summary_of_day"
+  }
+}

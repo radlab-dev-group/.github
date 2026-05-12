@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block title %}{{ date_obj.strftime('%d %B %Y') }}{% endblock %}
+
+{% block content %}
+<div class="container max-w-xl mt-4">
+    <!-- Date header -->
+    <div class="text-center mb-5">
+        <a href="/" class="text-muted text-decoration-none mb-3 d-inline-block">
+            <i class="bi bi-arrow-left me-1"></i> Powrót do wyboru daty
+        </a>
+        <button class="btn btn-sm btn-outline-secondary ms-2" id="toggleTheme" title="Motyw"><i class="bi bi-moon-stars"></i></button>
+        <h1 class="display-5 fw-bold newspaper-title">
+            {{ date_obj.strftime('%d %B %Y') }}
+        </h1>
+        <p class="lead text-muted">Podsumowanie wiadomości</p>
+    </div>
+
+    <div id="dateNewspaperGrid" class="newspaper-grid">
+        <!-- Cluster cards will be injected here via JS -->
+    </div>
+
+    <div class="text-center py-5" id="dateEmptySection" style="display:none;"><i class="bi bi-inbox display-1 text-muted"></i><p class="mt-3 text-muted fs-5">Brak wyników na wybrany dzień.</p></div>
+    <div class="text-center py-5" id="dateLoading" style="display:none;">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+        <p class="mt-3 text-muted">Ładowanie...</p>
+    </div>
+
+    <!-- Scroll to top -->
+    <button class="scroll-top-btn" id="scrollTopBtn" title="Powrót na górę"><i class="bi bi-chevron-up"></i></button>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', async () => {
+        const dateStr = "{{ date_str }}";
+        await loadDateSummary(dateStr, 'dateNewspaperGrid');
+
+        const params = new URLSearchParams(window.location.search);
+        const topicIdx = params.get('topic');
+        if (topicIdx !== null) {
+            const card = document.querySelector(`.cluster-card[data-idx="${topicIdx}"]`);
+            if (card) {
+                card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                card.style.boxShadow = '0 0 0 3px var(--accent)';
+                setTimeout(() => { card.style.boxShadow = ''; }, 3000);
+            }
+        }
+    });
+</script>
+{% endblock %}
