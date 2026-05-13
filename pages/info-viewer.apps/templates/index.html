@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+
+{% block title %}Dzienniki{% endblock %}
+
+{% block content %}
+<!-- Top bar -->
+<div class="date-bar">
+    <div class="container">
+        <div class="date-bar-inner">
+            <div class="d-flex align-items-center gap-3 flex-wrap">
+                <span class="date-bar-label fw-bold"><i class="bi bi-calendar3 me-1"></i>Wybierz datę</span>
+                <div class="d-flex align-items-center gap-2">
+                    <button class="btn btn-sm btn-outline-secondary date-nav-btn" id="prevDay" title="Poprzedni dzień"><i class="bi bi-chevron-left"></i></button>
+                    <input type="date" class="form-control form-control-sm date-bar-input" id="datePicker" value="{{ yesterday }}" min="2024-01-01" max="{{ today }}">
+                    <button class="btn btn-sm btn-outline-secondary date-nav-btn" id="nextDay" title="Następny dzień"><i class="bi bi-chevron-right"></i></button>
+                </div>
+            </div>
+            <div class="date-bar-tools ms-auto">
+                <button class="btn btn-sm btn-outline-secondary" id="toggleTheme" title="Tryb ciemny"><i class="bi bi-moon-stars"></i></button>
+                <button class="btn btn-sm btn-outline-secondary" id="toggleBookmarks" title="Zapisane"><i class="bi bi-bookmark"></i></button>
+                <button class="btn btn-sm btn-outline-secondary" id="toggleCompare" title="Porównaj dni"><i class="bi bi-arrow-left-right"></i></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Quick date shortcuts — styled frame -->
+<div class="container mt-3">
+    <div class="quick-dates-frame">
+        <div class="d-flex align-items-center gap-3">
+            <span class="quick-dates-label"><i class="bi bi-lightning-fill me-1"></i><strong>Szybki wybór</strong></span>
+            <div class="quick-dates-line"></div>
+            <div class="d-flex gap-2 flex-wrap" id="quickDates"></div>
+        </div>
+    </div>
+</div>
+
+<!-- Compact Day Stats Bar -->
+<div class="container" id="statsSection" style="display:none; visibility:hidden;">
+    <div class="stats-bar">
+        <div class="stats-bar-inner">
+            <span class="stats-bar-icon"><i class="bi bi-bar-chart-line"></i></span>
+            <span class="stats-bar-title">Podsumowanie dnia</span>
+            <span class="stats-bar-divider"></span>
+            <span class="stats-bar-item"><strong id="statArticles">—</strong> <small>artykułów</small></span>
+            <span class="stats-bar-item"><strong id="statClusters">—</strong> <small>tematów</small></span>
+            <span class="stats-bar-item"><span id="statPolarity">—</span></span>
+            <span class="stats-bar-item" id="statDomains">—</span>
+            <span class="stats-bar-item" id="statLangs">—</span>
+        </div>
+        <div id="sentimentBar" class="sentiment-bar-wrap"></div>
+    </div>
+</div>
+
+<div class="container mt-3">
+    <div class="text-center py-5" id="loadingSection" style="display:none;">
+        <div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div>
+        <p class="mt-3 text-muted">Ładowanie wiadomości...</p>
+    </div>
+    <div class="alert alert-danger text-center" id="errorBox" style="display:none;"></div>
+    <div class="text-center py-5" id="emptySection" style="display:none;">
+        <i class="bi bi-inbox display-1 text-muted"></i>
+        <p class="mt-3 text-muted fs-5" id="emptyMsg">Brak wyników na wybrany dzień.</p>
+    </div>
+</div>
+
+
+<!-- Main content — full width -->
+<div class="container mt-3" id="mainGrid" style="display:none;">
+    <!-- Results header -->
+    <div class="d-flex align-items-center justify-content-between mb-3">
+        <h2 class="section-title mb-0"><span id="resultsDate" class="fw-bold"></span></h2>
+        <div class="d-flex gap-2 align-items-center">
+        </div>
+    </div>
+
+    <!-- Filters bar -->
+    <div class="filters-bar">
+        <div class="filters-bar-inner">
+            <div class="filter-group">
+                <div class="filter-section-label"><i class="bi bi-funnel me-1"></i>Filtry</div>
+                <div class="filter-search-wrapper">
+                    <i class="bi bi-search search-icon"></i>
+                    <input type="text" class="form-control form-control-sm" id="searchInput" placeholder="Szukaj w artykułach...">
+                </div>
+            </div>
+            <div class="filter-group filter-group-sentiment">
+                <div class="filter-section-label">Sentyment</div>
+                <div class="d-flex gap-1 flex-wrap">
+                    <button class="btn btn-sm sentiment-btn active" data-sentiment="all"><i class="bi bi-circle me-1" style="font-size:0.6rem"></i>Wszystkie</button>
+                    <button class="btn btn-sm sentiment-btn" data-sentiment="positive"><i class="bi bi-hand-thumbs-up me-1" style="font-size:0.7rem"></i>Pozytywne</button>
+                    <button class="btn btn-sm sentiment-btn" data-sentiment="negative"><i class="bi bi-hand-thumbs-down me-1" style="font-size:0.7rem"></i>Negatywne</button>
+                    <button class="btn btn-sm sentiment-btn" data-sentiment="ambivalent"><i class="bi bi-dash me-1" style="font-size:0.6rem"></i>Neutralne</button>
+                </div>
+                <span id="visibleCount" class="badge bg-secondary ms-2" style="font-size:0.7rem;white-space:nowrap;"></span>
+            </div>
+        </div>
+    </div>
+
+    <div id="newspaperGrid" class="newspaper-grid"></div>
+</div>
+
+<!-- Bookmarks panel -->
+<div class="bookmarks-overlay" id="bookmarksOverlay" style="display:none;">
+    <div class="bookmarks-panel">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="mb-0 fw-bold"><i class="bi bi-bookmark-star me-2"></i>Zapisane tematy</h5>
+            <button class="btn btn-sm btn-outline-secondary" id="closeBookmarks"><i class="bi bi-x-lg"></i></button>
+        </div>
+        <div id="bookmarksFullList" class="bookmark-full-list"></div>
+    </div>
+</div>
+
+<!-- Compare panel -->
+<div class="compare-overlay" id="compareOverlay" style="display:none;">
+    <div class="compare-panel">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="mb-0 fw-bold"><i class="bi bi-arrow-left-right me-2"></i>Porównaj dni</h5>
+            <button class="btn btn-sm btn-outline-secondary" id="closeCompare"><i class="bi bi-x-lg"></i></button>
+        </div>
+        <div class="row g-3">
+            <div class="col-6">
+                <label class="form-label fw-bold" style="font-size:0.8rem;">Dzień 1</label>
+                <input type="date" class="form-control form-control-sm compare-date-input" id="compareDate1">
+                <div id="compareResult1" class="compare-result"></div>
+            </div>
+            <div class="col-6">
+                <label class="form-label fw-bold" style="font-size:0.8rem;">Dzień 2</label>
+                <input type="date" class="form-control form-control-sm compare-date-input" id="compareDate2">
+                <div id="compareResult2" class="compare-result"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Scroll to top -->
+<button class="scroll-top-btn" id="scrollTopBtn" title="Powrót na górę"><i class="bi bi-chevron-up"></i></button>
+{% endblock %}
