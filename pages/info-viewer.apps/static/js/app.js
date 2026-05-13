@@ -160,13 +160,13 @@ function renderClusterCard(cluster, idx, dateStr) {
     const remaining = sources.length - displayUrls.length;
     if (displayUrls.length > 0) {
         const items = displayUrls.map(u => {
-            let host = u; try { host = new URL(u).hostname; } catch {}
-            return `<li><a href="${escapeHtml(u)}" target="_blank" rel="noopener">${escapeHtml(host)}</a></li>`;
+            return `<li><a href="${escapeHtml(u)}" target="_blank" rel="noopener">${escapeHtml(u)}</a></li>`;
         }).join('');
         sourcesHtml = `
             <div class="cluster-sources-header"><i class="bi bi-link-45deg me-1"></i>Źródła: ${sources.length} (z ${domainCount} domen)</div>
             <ul class="cluster-sources-list" id="srcList_${idx}">${items}</ul>
-            ${remaining > 0 ? `<button class="btn btn-sm btn-link source-expand-btn" data-cluster-idx="${idx}" data-remaining="${remaining}" style="padding:0;font-size:0.78rem;color:var(--accent-light);">Pokaż wszystkie źródła (${remaining} więcej)</button>` : ''}`;
+            ${remaining > 0 ? `<button class="btn btn-sm btn-link source-expand-btn" data-cluster-idx="${idx}" data-remaining="${remaining}" style="padding:0;font-size:0.78rem;color:var(--accent-light);">Pokaż wszystkie źródła (${remaining} więcej)</button>` : ''}
+            <button class="btn btn-sm btn-link source-collapse-btn" data-cluster-idx="${idx}" style="padding:0;font-size:0.78rem;color:var(--ink-muted);display:none;">Ukryj źródła</button>`;
     }
 
     let simHtml = '';
@@ -657,23 +657,45 @@ async function loadDateSummary(dateStr, gridId) {
 /* ====== Event initializers ====== */
 function initSourceExpand() {
     document.addEventListener('click', (e) => {
-        const btn = e.target.closest('.source-expand-btn');
-        if (!btn) return;
-        const clusterIdx = parseInt(btn.dataset.clusterIdx);
-        const remaining = parseInt(btn.dataset.remaining);
-        if (!clusterIdx && clusterIdx !== 0) return;
-        const allUrls = allClusters[clusterIdx]?.news_urls || [];
-        const displayCount = Math.min(6, allUrls.length);
-        const remainingUrls = allUrls.slice(displayCount, displayCount + remaining);
-        const listId = `srcList_${clusterIdx}`;
-        const list = document.getElementById(listId);
-        if (!list || remainingUrls.length === 0) return;
-        const items = remainingUrls.map(u => {
-            let host = u; try { host = new URL(u).hostname; } catch {}
-            return `<li><a href="${escapeHtml(u)}" target="_blank" rel="noopener">${escapeHtml(host)}</a></li>`;
-        }).join('');
-        list.insertAdjacentHTML('beforeend', items);
-        btn.style.display = 'none';
+        const expandBtn = e.target.closest('.source-expand-btn');
+        if (expandBtn) {
+            const clusterIdx = parseInt(expandBtn.dataset.clusterIdx);
+            if (isNaN(clusterIdx)) return;
+            const remaining = parseInt(expandBtn.dataset.remaining);
+            const allUrls = allClusters[clusterIdx]?.news_urls || [];
+            const displayCount = Math.min(6, allUrls.length);
+            const remainingUrls = allUrls.slice(displayCount, displayCount + remaining);
+            const listId = `srcList_${clusterIdx}`;
+            const list = document.getElementById(listId);
+            if (!list || remainingUrls.length === 0) return;
+            const items = remainingUrls.map(u => {
+                return `<li><a href="${escapeHtml(u)}" target="_blank" rel="noopener">${escapeHtml(u)}</a></li>`;
+            }).join('');
+            list.insertAdjacentHTML('beforeend', items);
+            expandBtn.style.display = 'none';
+            const collapseBtn = document.querySelector(`button.source-collapse-btn[data-cluster-idx="${clusterIdx}"]`);
+            if (collapseBtn) collapseBtn.style.display = '';
+            return;
+        }
+        const cbtn = e.target.closest('.source-collapse-btn');
+        if (!cbtn) return;
+        const clusterIdx2 = parseInt(cbtn.dataset.clusterIdx);
+        if (isNaN(clusterIdx2)) return;
+        const listId2 = `srcList_${clusterIdx2}`;
+        const list2 = document.getElementById(listId2);
+        if (!list2) return;
+        const allUrls2 = allClusters[clusterIdx2]?.news_urls || [];
+        const initialCount = Math.min(6, allUrls2.length);
+        if (list2.children.length <= initialCount) return;
+        const itemsToKeep = [];
+        while (list2.firstChild && itemsToKeep.length < initialCount) {
+            itemsToKeep.push(list2.removeChild(list2.firstChild));
+        }
+        list2.innerHTML = '';
+        itemsToKeep.forEach(li => list2.appendChild(li));
+        cbtn.style.display = 'none';
+        const expandBtn2 = document.querySelector(`button.source-expand-btn[data-cluster-idx="${clusterIdx2}"]`);
+        if (expandBtn2) expandBtn2.style.display = '';
     });
 }
 

@@ -1020,6 +1020,15 @@ body {
 .cluster-sources-list li { margin-bottom: 0.2rem; }
 .cluster-sources-list li a { color: var(--accent-light); text-decoration: none; transition: color 0.2s; }
 .cluster-sources-list li a:hover { color: var(--accent); text-decoration: underline; }
+.source-collapse-btn {
+    font-size: 0.78rem;
+    color: var(--ink-muted);
+    padding: 0;
+    margin-top: 0.25rem;
+}
+.source-collapse-btn:hover {
+    color: var(--accent);
+}
 .cluster-meta-item {
     display: inline-flex;
     align-items: center;
