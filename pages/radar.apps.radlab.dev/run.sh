@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # ================================================================
-# Info Viewer — Przeglądarka informacji
+# Radar Informacji
 # Uruchomienie aplikacji Flask
 # ================================================================
 set -euo pipefail
@@ -20,7 +20,7 @@ fi
 
 # --- Wyświetl informację ---
 echo "================================================="
-echo " Info Viewer — Przeglądarka informacji"
+echo " Radar Informacji"
 echo "================================================="
 echo " Port:       ${PORT}"
 echo " Debug:      ${FLASK_DEBUG}"

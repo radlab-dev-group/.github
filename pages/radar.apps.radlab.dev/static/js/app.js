@@ -1,5 +1,5 @@
 /**
- * Info Viewer — Przeglądarka informacji
+ * Radar Informacji
  */
 
 const API = {
@@ -937,7 +937,7 @@ function initExport() {
             const blob = new Blob([md], { type: 'text/markdown' });
             const a = document.createElement('a');
             a.href = URL.createObjectURL(blob);
-            a.download = `info-viewer-${date.replace(/ /g, '-')}.md`;
+            a.download = `radar-informacji-${date.replace(/ /g, '-')}.md`;
             a.click();
             URL.revokeObjectURL(a.href);
         }

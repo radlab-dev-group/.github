@@ -1,4 +1,4 @@
-**Info Viewer — Information Browser**
+**Radar Informacji**
 
 A professional web application for browsing and analyzing news from a specific day. Data is fetched from the RADLAB
 backend via an internal API.
@@ -6,7 +6,7 @@ backend via an internal API.
 ## Structure
 
 ```
-info_viewer/
+radar/
 ├── app.py              # Main Flask application (API + pages)
 ├── run.sh              # Startup script
 ├── requirements.txt    # Python dependencies

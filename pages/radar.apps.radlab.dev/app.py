@@ -1,5 +1,5 @@
 """
-Info Viewer — Przeglądarka informacji
+Radar Informacji — Przeglądarka informacji
 Flask application that serves as a bridge to the external news aggregation API.
 
 Komunikacja z backendem RADLAB jest zgodna z implementacją z official/
@@ -162,7 +162,7 @@ def _compute_daily_stats(summaries: list) -> dict:
 def api_status():
     """Health-check / info endpoint."""
     return jsonify({
-        "service": "info-viewer",
+        "service": "radar-informacji",
         "version": "1.0.0",
         "api_host": api_config["host"],
         "api_endpoint": api_config["endpoint"],
