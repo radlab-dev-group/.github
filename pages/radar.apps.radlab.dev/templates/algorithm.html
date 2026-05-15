@@ -25,7 +25,7 @@
             <h2 class="section-title mb-0" style="font-size:1.2rem;">Pobieranie wiadomości</h2>
         </div>
         <p>
-            Codziennie system pobiera wiadomości ze stron internetowych. Dla każdego artykułu stosuje model językowy <strong>google/gemma-3-12b-it</strong> (lokalnie uruchomiony, <a href="https://huggingface.co/google/gemma-3-12b-it" target="_blank" rel="noopener">Hugging Face</a>) do wygenerowania podsumowania w języku polskim. Rezultatem jest zestaw sformatowanych artykułów wraz z metadanymi (język, PLI, polaryzacja, źródło, URL).
+            Codziennie system pobiera wiadomości ze stron internetowych. Dla każdego artykułu stosuje model językowy <strong>google/gemma-3-12b-it</strong> (lokalnie uruchomiony, <a href="https://huggingface.co/google/gemma-3-12b-it" target="_blank" rel="noopener">Hugging Face</a>) do wygenerowania podsumowania w języku polskim. Polaryzację (sentyment) detektuje model <strong>radlab/polarity-3c</strong> (<a href="https://huggingface.co/radlab/polarity-3c" target="_blank" rel="noopener">Hugging Face</a>). Rezultatem jest zestaw sformatowanych artykułów wraz z metadanymi (język, PLI, polaryzacja, źródło, URL).
         </p>
     </div>
 
@@ -61,7 +61,7 @@
                 </tr>
                 <tr>
                     <td><code>metadata.polarity_3c</code></td>
-                    <td>Polaryzacja w 3 klasach: <code>positive</code>, <code>negative</code>, <code>ambivalent</code></td>
+                    <td>Polaryzacja w 3 klasach: <code>positive</code>, <code>negative</code>, <code>ambivalent</code> (model <a href="https://huggingface.co/radlab/polarity-3c" target="_blank" rel="noopener">radlab/polarity-3c</a>)</td>
                 </tr>
                 <tr>
                     <td><code>metadata.source</code></td>
@@ -80,7 +80,7 @@
         <div class="d-flex align-items-center gap-3 mb-3">
             <div class="stage-number">3</div>
             <i class="bi bi-diagram-3 stage-icon" style="font-size:1.5rem; color:var(--accent)"></i>
-            <h2 class="section-title mb-0" style="font-size:1.2rem;">Wektorzyzacja (Embedding)</h2>
+            <h2 class="section-title mb-0" style="font-size:1.2rem;">Wektoryzacja (Embedding)</h2>
         </div>
         <p>
             Każdy tekst jest konwertowany na wektor w 512-wymiarowej przestrzeni za pomocą modelu <strong>Sentence-Transformers</strong> (bi-encoder). Przed enkodowaniem teksty są przycinane do 508 tokenów (512 − 4 dla tokenów specjalnych). Encodowanie odbywa się partiami po 500 elementów z L2-normalizacją:
@@ -203,6 +203,7 @@
             <li>Klasterer: <a href="https://github.com/radlab-dev-group/clusterer" target="_blank" rel="noopener">radlab-dev-group/clusterer</a> (HDBSCAN\*, t-SNE/UMAP, Sentence-Transformers)</li>
             <li>Skrypt cron: <code>generate_articles_for_yesterday.py</code></li>
             <li>Embedding: <a href="https://www.sbert.net/" target="_blank" rel="noopener">Sentence-Transformers</a> (bi-encoder, L2-normalizacja)</li>
+            <li>Polaryzacja: <a href="https://huggingface.co/radlab/polarity-3c" target="_blank" rel="noopener">radlab/polarity-3c</a> (3 klasy: positive, negative, ambivalent)</li>
             <li>Model klasterujący: <a href="https://hdbscan.readthedocs.io/" target="_blank" rel="noopener">HDBSCAN\*</a> (Campello et al., 2013)</li>
             <li>Redukcja wymiarowości: <a href="https://scikit-learn.org/stable/modules/manifold.html#tsne" target="_blank" rel="noopener">t-SNE</a> (van der Maaten &amp; Hinton, 2008) / <a href="https://umap-learn.readthedocs.io/" target="_blank" rel="noopener">UMAP</a> (McInnes et al., 2018)</li>
         </ul>
