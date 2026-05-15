@@ -28,6 +28,9 @@
                         <a class="nav-link {% if request.path == '/' %}active{% endif %}" href="/"><i class="bi bi-calendar3 me-1"></i>Dzienniki</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link {% if request.path == '/algorithm' %}active{% endif %}" href="/algorithm"><i class="bi bi-gear me-1"></i>Algorytm</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="https://radlab.dev" target="_blank" rel="noopener">
                             <i class="bi bi-box-arrow-up-right me-1"></i>RADLAB
                         </a>
@@ -46,6 +49,7 @@
             <p class="mb-1"><small>Radar Informacji © 2026</small></p>
             <p class="mb-0"><small>Powered by RADLAB · Aggregacja i klasteryzacja wiadomości</small></p>
             <p class="mb-0"><small class="text-success"><i class="bi bi-shield-check me-1"></i>Strona jest w 100% darmowa, nie wymaga logowania i nigdy nie będzie płatna.</small></p>
+            <p class="mb-0"><small><a href="/algorithm">Algorytm generowania podsumowań</a></small></p>
         </div>
     </footer>
 
