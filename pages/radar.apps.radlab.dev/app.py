@@ -1,5 +1,5 @@
 """
-Info Viewer — Przeglądarka informacji
+Radar Informacji — Przeglądarka informacji
 Flask application that serves as a bridge to the external news aggregation API.
 
 Komunikacja z backendem RADLAB jest zgodna z implementacją z official/
@@ -52,6 +52,7 @@ api_config = build_api_config()
 
 
 # ===================== Helpers =====================
+
 
 def _unwrap_response(raw: dict) -> dict:
     """Rozpakowanie odpowiedzi backendu: {status, body} -> body."""
@@ -134,7 +135,9 @@ def _compute_daily_stats(summaries: list) -> dict:
         }
 
     # Top sources
-    top_sources = sorted(source_overall.items(), key=lambda x: x[1], reverse=True)[:10]
+    top_sources = sorted(source_overall.items(), key=lambda x: x[1], reverse=True)[
+        :10
+    ]
 
     today = datetime.date.today()
     yesterday = today - datetime.timedelta(days=1)
@@ -158,16 +161,19 @@ def _compute_daily_stats(summaries: list) -> dict:
 
 # ===================== API Routes =====================
 
+
 @app.route("/api/status")
 def api_status():
     """Health-check / info endpoint."""
-    return jsonify({
-        "service": "info-viewer",
-        "version": "1.0.0",
-        "api_host": api_config["host"],
-        "api_endpoint": api_config["endpoint"],
-        "timestamp": datetime.datetime.now().isoformat(),
-    })
+    return jsonify(
+        {
+            "service": "radar-informacji",
+            "version": "1.0.0",
+            "api_host": api_config["host"],
+            "api_endpoint": api_config["endpoint"],
+            "timestamp": datetime.datetime.now().isoformat(),
+        }
+    )
 
 
 @app.route("/api/dates")
@@ -200,9 +206,10 @@ def api_summary():
 
     d = _parse_date(date_str)
     if d is None:
-        return jsonify({
-            "error": "Błędny format daty. Użyj YYYY-MM-DD lub DD.MM.YY."
-        }), 400
+        return (
+            jsonify({"error": "Błędny format daty. Użyj YYYY-MM-DD lub DD.MM.YY."}),
+            400,
+        )
 
     try:
         raw_result = _call_backend(form_data={"date": d.isoformat()})
@@ -211,23 +218,28 @@ def api_summary():
 
     summaries = raw_result.get("summaries", []) if raw_result else []
     if not summaries:
-        return jsonify({
-            "date": d.isoformat(),
-            "summaries": [],
-            "stats": None,
-            "message": "Brak podsumowań dla tej daty.",
-        })
+        return jsonify(
+            {
+                "date": d.isoformat(),
+                "summaries": [],
+                "stats": None,
+                "message": "Brak podsumowań dla tej daty.",
+            }
+        )
 
     stats = _compute_daily_stats(summaries)
 
-    return jsonify({
-        "date": d.isoformat(),
-        "summaries": summaries,
-        "stats": stats,
-    })
+    return jsonify(
+        {
+            "date": d.isoformat(),
+            "summaries": summaries,
+            "stats": stats,
+        }
+    )
 
 
 # ===================== Page Routes =====================
+
 
 @app.route("/")
 def index():
@@ -254,6 +266,12 @@ def show_date(date_str):
         date_obj=d,
         api_host=api_config["host"],
     )
+
+
+@app.route("/algorithm")
+def algorithm():
+    """Podstrona z opisem algorytmu generowania podsumowań."""
+    return render_template("algorithm.html")
 
 
 if __name__ == "__main__":

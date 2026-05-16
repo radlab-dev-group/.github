@@ -1,4 +1,4 @@
-/* === Info Viewer — Newspaper Style === */
+/* === Radar Informacji — Newspaper Style === */
 
 :root {
     --paper-bg: #faf6ee;
@@ -753,6 +753,122 @@ body {
 }
 .cluster-card.sim-day-card {
     margin-bottom: 12px;
+}
+
+/* ====== Algorithm page ====== */
+.algo-hero h1 {
+    font-family: var(--serif);
+    font-weight: 900;
+    font-size: 2.2rem;
+    color: var(--ink);
+    letter-spacing: -0.5px;
+    line-height: 1.15;
+    padding-bottom: 0.75rem;
+    border-bottom: 3px solid var(--accent);
+    position: relative;
+}
+.algo-hero h1::after {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, var(--paper-border), transparent);
+}
+
+.algo-pipeline-flow {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: var(--ink-muted);
+    text-align: center;
+    line-height: 1.8;
+    background: var(--paper-bg-alt);
+    border: 1px solid var(--paper-border);
+    padding: 1rem;
+    border-radius: 2px;
+    overflow-x: auto;
+}
+
+.algo-stage {
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--paper-border);
+}
+.algo-stage:last-child {
+    border-bottom: none;
+}
+
+.stage-number {
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: white;
+    font-family: var(--serif);
+    font-weight: 700;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.stage-icon {
+    color: var(--accent);
+}
+
+.algo-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0.75rem 0;
+    font-size: 0.85rem;
+    border: 1px solid var(--paper-border);
+    border-radius: 2px;
+    overflow: hidden;
+}
+.algo-table th {
+    background: var(--paper-bg-alt);
+    font-family: var(--body);
+    font-weight: 600;
+    font-size: 0.82rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 0.5rem 0.75rem;
+    border-bottom: 1.5px solid var(--paper-border);
+    text-align: left;
+}
+.algo-table td {
+    border-top: 1px solid var(--paper-border);
+    padding: 0.45rem 0.75rem;
+}
+.algo-table td:first-child {
+    font-family: var(--mono);
+    font-size: 0.8rem;
+    white-space: nowrap;
+    color: var(--accent);
+}
+.algo-table code {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    background: var(--paper-bg-alt);
+    padding: 0.1em 0.35em;
+    border-radius: 3px;
+    border: 1px solid var(--paper-border);
+}
+
+[data-bs-theme="dark"] .algo-table {
+    background: #1c1a17;
+}
+[data-bs-theme="dark"] .algo-table th {
+    background: #242120;
+    border-bottom-color: var(--paper-border);
+}
+[data-bs-theme="dark"] .algo-table td {
+    border-top-color: var(--paper-border);
+}
+[data-bs-theme="dark"] .algo-table td:first-child {
+    color: var(--accent-light);
 }
 
 /* ====== Hot topic cards ====== */

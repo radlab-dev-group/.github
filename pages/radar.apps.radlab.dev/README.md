@@ -1,12 +1,11 @@
-**Info Viewer — Information Browser**
+**Radar Informacji**
 
-A professional web application for browsing and analyzing news from a specific day. Data is fetched from the RADLAB
-backend via an internal API.
+A professional web application for browsing and analyzing news from a specific day. Data is fetched from the RADLAB backend via an internal API.
 
 ## Structure
 
 ```
-info_viewer/
+radar/
 ├── app.py              # Main Flask application (API + pages)
 ├── run.sh              # Startup script
 ├── requirements.txt    # Python dependencies
@@ -15,7 +14,8 @@ info_viewer/
 ├── templates/
 │   ├── base.html       # Base template (navigation, footer)
 │   ├── index.html      # Home page (date selector)
-│   └── date.html       # Page dedicated to a specific date
+│   ├── date.html       # Page dedicated to a specific date
+│   └── algorithm.html  # Technical algorithm description
 └── static/
     ├── css/
     │   └── style.css   # Newspaper‑style CSS
@@ -57,15 +57,23 @@ In `config/config.json`:
 ## Environment Variables
 
 | Variable      | Default | Description                    |
-|---------------|---------|--------------------------------|
+|------|---------|----|
 | `PORT`        | `5100`  | Flask server port              |
 | `FLASK_DEBUG` | `0`     | Debug mode flag                |
 | `CONFIG_PATH` | path    | Path to the configuration file |
 
+## Page Routes
+
+| Endpoint                        | Description                                 |
+|------                            |----|
+| `/`                             | Home page — date selector                  |
+| `/date/YYYY-MM-DD`              | Page dedicated to a specific date          |
+| `/algorithm`                    | Technical algorithm description            |
+
 ## Internal API
 
-| Endpoint                           | Description                                |
-|------------------------------------|--------------------------------------------|
+| Endpoint                           | Description                                 |
+|------                               |----|
 | `GET /api/status`                  | Service status                             |
 | `GET /api/dates`                   | Available dates with summaries             |
 | `GET /api/summary?date=YYYY-MM-DD` | Retrieve the news summary for a given date |

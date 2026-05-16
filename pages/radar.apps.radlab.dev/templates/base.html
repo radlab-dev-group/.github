@@ -3,20 +3,28 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{% block title %}Przeglądarka Informacji{% endblock %} — Info Viewer</title>
+    <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='img/favicon.svg') }}">
+    <link rel="apple-touch-icon" href="{{ url_for('static', filename='img/favicon.svg') }}">
+    <title>{% block title %}Radar Informacji{% endblock %}</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Source+Sans+3:wght@300;400;600;700&family=EB+Garamond:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
     {% block extra_head %}{% endblock %}
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+    <script>
+    window.MathJax = {
+        tex: { inlineMath: [['\\(', '\\)'], ['$', '$']] },
+        startup: { typeset: true }
+    };
+    </script>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg bg-paper border-bottom-0">
         <div class="container">
             <a class="navbar-brand" href="/">
                 <i class="bi bi-newspaper me-2"></i>
-                <span class="brand-title">Info Viewer</span>
-                <small class="brand-subtitle">Przeglądarka informacji</small>
+                <span class="brand-title">Radar Informacji</span>
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
                 <span class="navbar-toggler-icon"></span>
@@ -24,7 +32,10 @@
             <div class="collapse navbar-collapse" id="mainNav">
                 <ul class="navbar-nav ms-auto gap-2">
                     <li class="nav-item">
-                        <a class="nav-link {% if request.path == '/' %}active{% endif %}" href="/"><i class="bi bi-calendar3 me-1"></i>Dzienniki</a>
+                        <a class="nav-link {% if request.path == '/' %}active{% endif %}" href="/"><i class="bi bi-calendar3 me-1"></i>Radar</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.path == '/algorithm' %}active{% endif %}" href="/algorithm"><i class="bi bi-gear me-1"></i>Algorytm</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="https://radlab.dev" target="_blank" rel="noopener">
@@ -42,8 +53,10 @@
 
     <footer class="page-footer">
         <div class="container text-center">
-            <p class="mb-1"><small>Info Viewer — Przeglądarka informacji © 2026</small></p>
+            <p class="mb-1"><small>Radar Informacji © 2026</small></p>
             <p class="mb-0"><small>Powered by RADLAB · Aggregacja i klasteryzacja wiadomości</small></p>
+            <p class="mb-0"><small class="text-success"><i class="bi bi-shield-check me-1"></i>Strona jest w 100% darmowa, nie wymaga logowania i nigdy nie będzie płatna.</small></p>
+            <p class="mb-0"><small><a href="/algorithm">Algorytm generowania podsumowań</a></small></p>
         </div>
     </footer>
 

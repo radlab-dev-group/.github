@@ -1,0 +1,230 @@
+{% extends "base.html" %}
+
+{% block title %}Algorytm{% endblock %}
+
+{% block content %}
+<div class="container max-w-lg mt-4">
+    <!-- Hero -->
+    <div class="text-center mb-5">
+        <h1 class="display-5 fw-bold newspaper-title">Algorytm generowania podsumowań</h1>
+        <p class="lead text-muted">Jak Radar Informacji agreguje, klasyfikuje i podsumowuje wiadomości z sieci</p>
+    </div>
+
+    <!-- Pipeline flow -->
+    <div class="mb-5">
+        <div class="text-center" style="font-family:var(--mono); font-size:0.78rem; color:var(--ink-muted); line-height:1.8; background:var(--paper-bg-alt); border:1px solid var(--paper-border); padding:1rem; border-radius:2px; overflow-x:auto;">
+            [News DB] → [JSONL] → [Embedding] → [t-SNE/UMAP] → [HDBSCAN] → [GenAI Labels] → [GenAI Articles]
+        </div>
+    </div>
+
+    <!-- Stage 1 -->
+    <div class="mb-5">
+        <div class="d-flex align-items-center gap-3 mb-3">
+            <div class="stage-number">1</div>
+            <i class="bi bi-download stage-icon" style="font-size:1.5rem; color:var(--accent)"></i>
+            <h2 class="section-title mb-0" style="font-size:1.2rem;">Pobieranie wiadomości</h2>
+        </div>
+        <p>
+            Codziennie system pobiera wiadomości ze stron internetowych. Dla każdego artykułu stosuje model językowy <strong>google/gemma-3-12b-it</strong> (lokalnie uruchomiony, <a href="https://huggingface.co/google/gemma-3-12b-it" target="_blank" rel="noopener">Hugging Face</a>) do wygenerowania podsumowania w języku polskim. Polaryzację (sentyment) detektuje model <strong>radlab/polarity-3c</strong> (<a href="https://huggingface.co/radlab/polarity-3c" target="_blank" rel="noopener">Hugging Face</a>). Rezultatem jest zestaw sformatowanych artykułów wraz z metadanymi (język, PLI, polaryzacja, źródło, URL).
+        </p>
+    </div>
+
+    <!-- Stage 2 -->
+    <div class="mb-5">
+        <div class="d-flex align-items-center gap-3 mb-3">
+            <div class="stage-number">2</div>
+            <i class="bi bi-file-earmark-text stage-icon" style="font-size:1.5rem; color:var(--accent)"></i>
+            <h2 class="section-title mb-0" style="font-size:1.2rem;">Eksport do formatu JSONL</h2>
+        </div>
+        <p>
+            Pobrane artykuły są konwertowane do formatu JSONL — jedna linia na artykuł z dwoma głównymi polami: tekstem artykułu oraz metadanymi.
+        </p>
+        <table class="algo-table">
+            <thead>
+                <tr>
+                    <th style="width:140px;">Pole</th>
+                    <th>Opis</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>text</code></td>
+                    <td>Podsumowanie artykułu wygenerowane przez model LLM</td>
+                </tr>
+                <tr>
+                    <td><code>metadata.language</code></td>
+                    <td>Język rozpoznany dla artykułu</td>
+                </tr>
+                <tr>
+                    <td><code>metadata.pli_value</code></td>
+                    <td>Wartość Plain Language Index (PLI) — indeks prostego języka</td>
+                </tr>
+                <tr>
+                    <td><code>metadata.polarity_3c</code></td>
+                    <td>Polaryzacja w 3 klasach: <code>positive</code>, <code>negative</code>, <code>ambivalent</code> (model <a href="https://huggingface.co/radlab/polarity-3c" target="_blank" rel="noopener">radlab/polarity-3c</a>)</td>
+                </tr>
+                <tr>
+                    <td><code>metadata.source</code></td>
+                    <td>URL głównej strony (domena źródłowa)</td>
+                </tr>
+                <tr>
+                    <td><code>metadata.news_url</code></td>
+                    <td>Bezpośredni URL artykułu</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Stage 3 -->
+    <div class="mb-5">
+        <div class="d-flex align-items-center gap-3 mb-3">
+            <div class="stage-number">3</div>
+            <i class="bi bi-diagram-3 stage-icon" style="font-size:1.5rem; color:var(--accent)"></i>
+            <h2 class="section-title mb-0" style="font-size:1.2rem;">Wektoryzacja (Embedding)</h2>
+        </div>
+        <p>
+            Każdy tekst jest konwertowany na wektor w 512-wymiarowej przestrzeni za pomocą modelu <strong>Sentence-Transformers</strong> (bi-encoder). Przed enkodowaniem teksty są przycinane do 508 tokenów (512 − 4 dla tokenów specjalnych). Encodowanie odbywa się partiami po 500 elementów z L2-normalizacją:
+        </p>
+        <div style="text-align:center; font-family:var(--mono); font-size:0.85rem; padding:0.75rem; background:var(--paper-bg-alt); border:1px solid var(--paper-border); border-radius:2px;">
+            \(\vec{v}' = \frac{\vec{v}}{\|\vec{v}\|_2}\)
+        </div>
+    </div>
+
+    <!-- Stage 4 -->
+    <div class="mb-5">
+        <div class="d-flex align-items-center gap-3 mb-3">
+            <div class="stage-number">4</div>
+            <i class="bi bi-arrows-angle-expand stage-icon" style="font-size:1.5rem; color:var(--accent)"></i>
+            <h2 class="section-title mb-0" style="font-size:1.2rem;">Redukcja wymiarowości</h2>
+        </div>
+        <p>
+            Wysokowywymiarowe wektory są redukowane do 2 wymiarów przy użyciu <strong>t-SNE</strong> (t-Distributed Stochastic Neighbor Embedding) z optymalizatorem Barnes-Hut lub alternatywnie <strong>UMAP</strong>. Redukcja umożliwia wizualizację i efektywniejsze klasteryzowanie w niskowymiarowej przestrzeni.
+        </p>
+        <table class="algo-table">
+            <thead>
+                <tr><th>Parametr</th><th>Wartość</th></tr>
+            </thead>
+            <tbody>
+                <tr><td><code>device</code></td><td><code>cuda</code> (GPU)</td></tr>
+                <tr><td><code>embedder_path</code></td><td><code>article-bi-encoder-20240901</code></td></tr>
+                <tr><td><code>reduction</code></td><td><code>tsne</code> (Barnes-Hut)</td></tr>
+                <tr><td><code>reducer_sim_metric</code></td><td><code>cosine</code></td></tr>
+                <tr><td><code>use_reduced_dataset</code></td><td><code>true</code> (klasteryzacja na zredukowanych wektorach 2D)</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Stage 5 -->
+    <div class="mb-5">
+        <div class="d-flex align-items-center gap-3 mb-3">
+            <div class="stage-number">5</div>
+            <i class="bi bi-diagram stage-icon" style="font-size:1.5rem; color:var(--accent)"></i>
+            <h2 class="section-title mb-0" style="font-size:1.2rem;">Klasteryzacja HDBSCAN*</h2>
+        </div>
+        <p>
+            Na zredukowanych wektorach uruchamiany jest algorytm <strong>HDBSCAN</strong> (Hierarchical Density-Based Spatial Clustering). System testuje 32 konfiguracje parametrów — od <code>min_cluster_size=5</code> do <code>60</code> — i wybiera najlepszą kombinację hiperparametrów klastrowania metodą <em>elbow selection</em>:
+        </p>
+        <ol>
+            <li>Odrzuca wyniki z liczbą klastrów spoza zakresu <code>[min=25, opt=35, max=45]</code></li>
+            <li>Wśród pozostałych wybiera najbliższy <code>opt_cluster_count</code> (35)</li>
+            <li>W przypadku remisu — preferuje wynik z mniejszą liczbą punktów outlierowych (label <code>-1</code>)</li>
+        </ol>
+        <table class="algo-table">
+            <thead>
+                <tr><th>Parametr</th><th>Wartość</th></tr>
+            </thead>
+            <tbody>
+                <tr><td><code>method</code></td><td><code>hdbscan</code></td></tr>
+                <tr><td><code>metric</code></td><td><code>euclidean</code></td></tr>
+                <tr><td><code>min_samples</code></td><td><code>1</code></td></tr>
+                <tr><td><code>min_cluster_size</code></td><td><code>5–60</code> (32 wartości)</td></tr>
+                <tr><td><code>n_runs_per_param</code></td><td><code>2</code></td></tr>
+                <tr><td><code>min_cluster_count</code></td><td><code>25</code></td></tr>
+                <tr><td><code>opt_cluster_count</code></td><td><code>35</code></td></tr>
+                <tr><td><code>max_cluster_count</code></td><td><code>45</code></td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Stage 6 -->
+    <div class="mb-5">
+        <div class="d-flex align-items-center gap-3 mb-3">
+            <div class="stage-number">6</div>
+            <i class="bi bi-chat-square-text stage-icon" style="font-size:1.5rem; color:var(--accent)"></i>
+            <h2 class="section-title mb-0" style="font-size:1.2rem;">Generowanie etykiet (Label Generation)</h2>
+        </div>
+        <p>
+            Dla każdego klastra wygenerowana zostaje etykieta (tytuł) za pomocą modelu GenAI (LLM). Do generowania zostaje przekazana reprezentatywna próba newsów dla danej grupy. Model rozpoznaje wspólny temat i generuje krótki, zwięzły tytuł w języku polskim.
+        </p>
+    </div>
+
+    <!-- Stage 7 -->
+    <div class="mb-5">
+        <div class="d-flex align-items-center gap-3 mb-3">
+            <div class="stage-number">7</div>
+            <i class="bi bi-pencil-square stage-icon" style="font-size:1.5rem; color:var(--accent)"></i>
+            <h2 class="section-title mb-0" style="font-size:1.2rem;">Generowanie artykułów podsumowujących</h2>
+        </div>
+        <p>
+            Dla każdego klastra generowany jest artykuł podsumowujący — syntetyczny tekst łączący informacje z wielu źródeł. Proces obejmuje:
+        </p>
+        <ol>
+            <li>Przekazanie do modelu GenAI losowej próbki tekstów z klastra</li>
+            <li>Generowanie syntetycznego artykułu (typ. ~700 znaków)</li>
+            <li>Weryfikacja poprawności (check_spelling = true)</li>
+        </ol>
+        <p>
+            Każdy artykuł podsumowujący jest oznaczony metadanymi: dominantą polaryzacji (sentyment), liczbą artykułów, domeny źródłowe oraz wartość PLI.
+        </p>
+    </div>
+
+    <!-- Stage 8 -->
+    <div class="mb-5">
+        <div class="d-flex align-items-center gap-3 mb-3">
+            <div class="stage-number">8</div>
+            <i class="bi bi-arrow-left-right stage-icon" style="font-size:1.5rem; color:var(--accent)"></i>
+            <h2 class="section-title mb-0" style="font-size:1.2rem;">Obliczanie podobnych dni (Similar Days)</h2>
+        </div>
+        <p>
+            Aby pokazać, które dni były podobne do bieżącego, system porównuje podsumowania klastrów między dniami za pomocą <strong>cosine similarity</strong> na wektorach wygenerowanych modelem <code>article-bi-encoder-20240901</code>. Dla każdego klastra znajduje <strong>top-4</strong> najbardziej podobnych klastrów z poprzedniego/następnego dnia:
+        </p>
+        <div style="text-align:center; font-family:var(--mono); font-size:0.85rem; padding:0.75rem; background:var(--paper-bg-alt); border:1px solid var(--paper-border); border-radius:2px;">
+            \(\text{sim}(\vec{a}, \vec{b}) = \frac{\vec{a} \cdot \vec{b}}{\|\vec{a}\| \|\vec{b}\|} = \frac{\sum_{i=1}^{n} a_i b_i}{\sqrt{\sum_{i=1}^{n} a_i^2} \sqrt{\sum_{i=1}^{n} b_i^2}}\)
+        </div>
+        <p>
+            Wzór oblicza kąt między dwoma wektorami — wynik 1 oznacza identyczny kierunek (maksymalna podobność), 0 — ortogonalność (brak podobieństwa).
+        </p>
+    </div>
+
+    <!-- Architecture note -->
+    <div class="mt-5 p-3" style="background:var(--paper-bg-alt); border-left:3px solid var(--accent); border-radius:0 4px 4px 0;">
+        <h5 class="mb-2"><i class="bi bi-info-circle me-2"></i>Źródła implementacji</h5>
+        <ul class="mb-0" style="font-size:0.85rem;">
+            <li>Klasterer: <a href="https://github.com/radlab-dev-group/clusterer" target="_blank" rel="noopener">radlab-dev-group/clusterer</a> (HDBSCAN\*, t-SNE/UMAP, Sentence-Transformers)</li>
+            <li>Skrypt cron: <code>generate_articles_for_yesterday.py</code> (<a href="https://github.com/radlab-dev-group/radlab-playground-creator" target="_blank" rel="noopener">radlab-dev-group/radlab-playground-creator</a>)</li>
+            <li>Embedding: <a href="https://www.sbert.net/" target="_blank" rel="noopener">Sentence-Transformers</a> (bi-encoder, L2-normalizacja)</li>
+            <li>Polaryzacja: <a href="https://huggingface.co/radlab/polarity-3c" target="_blank" rel="noopener">radlab/polarity-3c</a> (3 klasy: positive, negative, ambivalent)</li>
+            <li>Model klasterujący: <a href="https://hdbscan.readthedocs.io/" target="_blank" rel="noopener">HDBSCAN\*</a> (Campello et al., 2013)</li>
+            <li>Redukcja wymiarowości: <a href="https://scikit-learn.org/stable/modules/manifold.html#tsne" target="_blank" rel="noopener">t-SNE</a> (van der Maaten &amp; Hinton, 2008) / <a href="https://umap-learn.readthedocs.io/" target="_blank" rel="noopener">UMAP</a> (McInnes et al., 2018)</li>
+        </ul>
+    </div>
+
+    <button class="scroll-top-btn" id="scrollTopBtn" title="Powrót na górę"><i class="bi bi-chevron-up"></i></button>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    // Scroll to top button
+    const btn = document.getElementById('scrollTopBtn');
+    if (!btn) return;
+    window.addEventListener('scroll', () => {
+        btn.classList.toggle('visible', window.scrollY > 400);
+    }, { passive: true });
+    btn.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+});
+</script>
+{% endblock %}
