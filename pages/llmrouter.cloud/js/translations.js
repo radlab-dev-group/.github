@@ -159,25 +159,26 @@ export const translations = {
     // ROADMAP SECTION
     'roadmap.title': 'Mapa Drogowa Projektu',
     'roadmap.subtitle': 'Od lokalnego srodowiska deweloperskiego po rozproszona infrastrukture. <br><a href="https://github.com/radlab-dev-group/.github/tree/main/pages/llmrouter.cloud/roadmap" target="_blank" style="color:var(--accent); text-decoration:underline;">Zobacz szczegolowa roadmapa na GitHub</a>.',
+    'roadmap.show_more': 'Pokaż więcej',
+    'roadmap.show_less': 'Pokaż mniej',
 
     // Level 1
-    'roadmap.level1.badge': 'Poziom 1: Dev / Test',
+    'roadmap.level1.badge': 'Poziom 1: Gotowe',
     'roadmap.level1.title': 'Fundamenty',
-    'roadmap.level1.desc': 'Aktualny cel: Wdrażanie kluczowych integracji i stabilizacja platformy.',
-    'roadmap.level1.item1': '<strong>✅ Integracje:</strong> Pelne wsparcie dla vLLM, Ollama, LM Studio, llama.cpp, OpenAI, Anthropic, Google.',
-    'roadmap.level1.item2': '<strong>✅ Streaming:</strong> Filtrowanie Guardrails dla odpowiedzi strumieniowych + Cache-Control headers.',
-    'roadmap.level1.item3': '<strong>✅ Monitoring:</strong> KeepAliveMonitor, ProviderMonitor, ServicesMonitor + Prometheus.',
-    'roadmap.level1.item4': '<strong>✅ Security:</strong> 15+ reguł PII masking, GPG auditing, Bielik-Guard (Sójka), NASK Guard.',
-    'roadmap.level1.item5': '<strong>✅ Plugins:</strong> Architektura pipeline\'ów (Masker/Guardrail/Utils), semantic_routing, langchain_rag.',
-    'roadmap.level1.item6': '<strong>✅ Monitoring:</strong> KeepAliveMonitor, ProviderMonitor, ServicesMonitor + Prometheus.',
-    'roadmap.level1.item7': '<strong>✅ UI:</strong> Config Manager z wersjonowaniem, Anonymizer chat z FastMasker/GenAI.',
-    'roadmap.level1.item8': '<strong>✅ Docker:</strong> Oficjalne obrazy (quay.io/radlab/llm-router), non-root container.',
-    'roadmap.level1.item9': '<strong>📌 API:</strong> /v1/messages (Anthropic), /v1/chat/completions, SSE streaming, OpenAI-compatible.',
+    'roadmap.level1.desc': 'Pomyślnie wdrożono podstawową infrastrukturę i integracje.',
+    'roadmap.level1.item1': '<strong>Integracje:</strong> Pelne wsparcie dla vLLM, Ollama, LM Studio, llama.cpp, OpenAI, Anthropic, Google.',
+    'roadmap.level1.item2': '<strong>Streaming:</strong> Filtrowanie Guardrails dla odpowiedzi strumieniowych + Cache-Control headers.',
+    'roadmap.level1.item3': '<strong>Monitoring:</strong> KeepAliveMonitor, ProviderMonitor, ServicesMonitor + Prometheus.',
+    'roadmap.level1.item4': '<strong>Security:</strong> 15+ reguł PII masking, GPG auditing, Bielik-Guard (Sójka), NASK Guard.',
+    'roadmap.level1.item5': '<strong>Plugins:</strong> Architektura pipeline’ów (Masker/Guardrail/Utils), semantic_routing, langchain_rag.',
+    'roadmap.level1.item7': '<strong>UI:</strong> Config Manager z wersjonowaniem, Anonymizer chat z FastMasker/GenAI.',
+    'roadmap.level1.item8': '<strong>Docker:</strong> Oficjalne obrazy (quay.io/radlab/llm-router), non-root container.',
+    'roadmap.level1.item9': '<strong>API:</strong> /v1/messages (Anthropic), /v1/chat/completions, SSE streaming, OpenAI-compatible.',
 
     // Level 2
     'roadmap.level2.badge': 'Poziom 2: Produkcja',
     'roadmap.level2.title': 'Ekosystem',
-    'roadmap.level2.desc': 'Budowa systemu rozproszonego gotowego na wysokie obciazenia.',
+    'roadmap.level2.desc': 'Obecny priorytet: System rozproszony gotowy na duże obciążenia.',
     'roadmap.level2.item1': '<strong>Kafka:</strong> Asynchroniczne kolejkowanie ządań i komunikacja.',
     'roadmap.level2.item2': '<strong>Skalowalnosc:</strong> Logika auto-scalingu dla specyficznych zadań.',
     'roadmap.level2.item3': '<strong>Agenci:</strong> Natywna integracja z lokalnymi systemami agentowymi.',
@@ -396,11 +397,13 @@ export const translations = {
     // ROADMAP SECTION
     'roadmap.title': 'Project Roadmap',
     'roadmap.subtitle': 'From local development to distributed production infrastructure. <br><a href="https://github.com/radlab-dev-group/.github/tree/main/pages/llmrouter.cloud/roadmap" target="_blank" style="color:var(--accent); text-decoration:underline;">View detailed roadmap on GitHub</a>.',
+    'roadmap.show_more': 'Show More',
+    'roadmap.show_less': 'Show Less',
 
     // Level 1
-    'roadmap.level1.badge': 'Level 1: Dev / Test',
+    'roadmap.level1.badge': 'Level 1: Done',
     'roadmap.level1.title': 'Foundation',
-    'roadmap.level1.desc': 'Current focus: Core integrations and platform stabilization.',
+    'roadmap.level1.desc': 'Successfully established core infrastructure and integrations.',
     'roadmap.level1.item1': '<strong>Integrations:</strong> Full support for vLLM, Ollama, LM Studio, llama.cpp, OpenAI, Anthropic, Google.',
     'roadmap.level1.item2': '<strong>Streaming:</strong> Guardrails for streamed responses + Cache-Control headers.',
     'roadmap.level1.item3': '<strong>Monitoring:</strong> KeepAliveMonitor, ProviderMonitor, ServicesMonitor + Prometheus.',
@@ -414,7 +417,7 @@ export const translations = {
     // Level 2
     'roadmap.level2.badge': 'Level 2: Production',
     'roadmap.level2.title': 'Ecosystem',
-    'roadmap.level2.desc': 'Transforming the router into a distributed system for high-load environments.',
+    'roadmap.level2.desc': 'Current focus: Distributed system ready for high-load environments.',
     'roadmap.level2.item1': '<strong>Kafka:</strong> Async task queuing and communication mechanisms.',
     'roadmap.level2.item2': '<strong>Scalability:</strong> Auto-scaling logic for specific task loads.',
     'roadmap.level2.item3': '<strong>Agents:</strong> Native integration with local agentic systems.',

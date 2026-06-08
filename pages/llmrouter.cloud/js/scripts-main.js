@@ -118,6 +118,34 @@ function initScrollFeatures() {
   updateScroll();
 }
 
+function initRoadmapToggle() {
+  document.body.addEventListener('click', (event) => {
+    const btn = event.target.closest('.btn-show-more');
+    if (!btn) return;
+
+    const card = btn.closest('.step-card');
+    const moreList = card.querySelector('.step-list-more');
+    if (!moreList) return;
+
+    const isExpanded = moreList.classList.toggle('expanded');
+    
+    // Update button text using i18n keys
+    btn.setAttribute('data-i18n', isExpanded ? 'roadmap.show_less' : 'roadmap.show_more');
+    
+    // Trigger i18n update for the button
+    if (window.i18n && typeof window.i18n.updatePage === 'function') {
+      window.i18n.updatePage();
+    } else if (i18n && typeof i18n.updatePage === 'function') {
+      i18n.updatePage();
+    }
+    
+    // Smooth scroll to button if collapsing
+    if (!isExpanded) {
+      btn.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+  });
+}
+
 Promise.all(sections.map(s => loadSection(s.selector, s.url)))
   .catch(err => {
     console.error('Error while loading section:', err);
@@ -127,5 +155,6 @@ Promise.all(sections.map(s => loadSection(s.selector, s.url)))
     initMenuToggle();
     initLanguageToggle();
     initScrollFeatures();
+    initRoadmapToggle();
     setTimeout(initRouterAnimation, 100);
   });

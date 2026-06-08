@@ -2090,14 +2090,23 @@ footer {
     left: 10%; /* Zaczyna się w połowie pierwszej kolumny */
     right: 10%; /* Kończy się w połowie ostatniej */
     height: 2px;
-    background: linear-gradient(90deg,
-        var(--accent) 0%,
-        rgba(34, 197, 94, 0.5) 40%,
-        rgba(234, 179, 8, 0.5) 70%,
-        rgba(168, 85, 247, 0.5) 100%
-    );
+    background: rgba(148, 163, 184, 0.1);
     z-index: 0;
-    opacity: 0.4;
+}
+
+.roadmap-line::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 33%; /* Pokazuje postęp do drugiego kroku (Level 2 Active) */
+    height: 100%;
+    background: linear-gradient(90deg, 
+        var(--accent-alt) 0%, 
+        var(--accent) 100%
+    );
+    box-shadow: 0 0 10px var(--accent);
+    transition: width 1s ease;
 }
 
 /* --- INDIVIDUAL STEP --- */
@@ -2119,6 +2128,29 @@ footer {
     z-index: 2; /* Nad linią */
     position: relative;
     transition: all 0.3s ease;
+}
+
+.step.completed .step-marker {
+    border-color: var(--accent-alt); /* Green */
+    background: var(--accent-alt);
+    box-shadow: 0 0 15px rgba(34, 197, 94, 0.4);
+}
+
+.marker-check {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 10px;
+    font-weight: bold;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.step.completed .marker-check {
+    opacity: 1;
 }
 
 .step.active .step-marker {
@@ -2145,6 +2177,8 @@ footer {
 /* --- CARD STYLE --- */
 .step-card {
     flex-grow: 1;
+    display: flex;
+    flex-direction: column;
     background: rgba(2, 8, 23, 0.6);
     border: 1px solid rgba(148, 163, 184, 0.15);
     border-radius: var(--radius-md);
@@ -2163,6 +2197,12 @@ footer {
 }
 
 /* Active Card Highlight */
+.step.completed .step-card {
+    border-color: rgba(34, 197, 94, 0.3);
+    background: radial-gradient(circle at top left, rgba(34, 197, 94, 0.05), transparent 70%),
+                rgba(2, 8, 23, 0.6);
+}
+
 .step.active .step-card {
     border-color: rgba(56, 189, 248, 0.4);
     background: radial-gradient(circle at top left, rgba(56, 189, 248, 0.08), transparent 70%),
@@ -2198,6 +2238,12 @@ footer {
     color: var(--accent);
     background: rgba(56, 189, 248, 0.1);
     border-color: rgba(56, 189, 248, 0.25);
+}
+
+.badge-completed {
+    color: var(--accent-alt);
+    background: rgba(34, 197, 94, 0.1);
+    border-color: rgba(34, 197, 94, 0.25);
 }
 
 .badge-planned {
@@ -2239,13 +2285,14 @@ footer {
     margin: 0;
     border-top: 1px solid rgba(148, 163, 184, 0.1);
     padding-top: 1rem;
+    flex-grow: 1; /* Pycha listę do dołu lub rozciąga ją, by wypełnić kartę */
 }
 
 .step-list li {
     font-size: 0.95rem;
     color: rgba(229, 231, 235, 0.85);
     margin-bottom: 0.6rem;
-    padding-left: 1rem;
+    padding-left: 1.25rem; /* Zwiększono z 1rem */
     position: relative;
     line-height: 1.4;
 }
@@ -2257,13 +2304,13 @@ footer {
     color: var(--muted);
     font-weight: bold;
     font-size: 1rem;
-    line-height: 1rem;
+    line-height: 1.4; /* Dopasowane do line-height li */
     top: 0;
 }
 
 /* Kolorowanie strzałek listy zależnie od etapu */
+.step.completed .step-list li::before { color: var(--accent-alt); }
 .step.active .step-list li::before { color: var(--accent); }
-.step:nth-child(3) .step-list li::before { color: var(--accent-alt); }
 .step:nth-child(4) .step-list li::before { color: var(--warning); }
 .step:nth-child(5) .step-list li::before { color: #a855f7; }
 
@@ -2291,14 +2338,17 @@ footer {
         bottom: 0;
         left: 28px; /* Pozycja linii w pionie */
         right: auto;
-        background: linear-gradient(to bottom,
-            var(--accent) 0%,
-            rgba(34, 197, 94, 0.5) 40%,
-            rgba(234, 179, 8, 0.5) 70%,
-            rgba(168, 85, 247, 0.5) 100%
+        background: rgba(148, 163, 184, 0.1);
+    }
+
+    .roadmap-line::after {
+        width: 100%;
+        height: 33%; /* Postęp pionowy */
+        background: linear-gradient(to bottom, 
+            var(--accent-alt) 0%, 
+            var(--accent) 100%
         );
-        mask-image: linear-gradient(to bottom, black 85%, transparent 100%);
-        -webkit-mask-image: linear-gradient(to bottom, black 85%, transparent 100%);
+        box-shadow: 0 0 10px var(--accent);
     }
 
     /* Pojedynczy krok - zmiana orientacji */
@@ -2342,7 +2392,7 @@ footer {
 
     /* Przesuwamy linię i kropki bliżej lewej krawędzi, by zyskać miejsce na tekst */
     .roadmap-line {
-        left: 16px;
+        display: none; /* Ukrywamy poziomą linię na mobile */
     }
 
     .step-marker {
@@ -2788,4 +2838,34 @@ footer {
     .monitoring-grid {
         gap: 1rem;
     }
+}
+
+
+/* --- COLLAPSIBLE LIST --- */
+.step-list-more {
+    display: none;
+    flex-direction: column;
+}
+
+.step-list-more.expanded {
+    display: flex;
+}
+
+.btn-show-more {
+    background: transparent;
+    border: 1px solid rgba(56, 189, 248, 0.3);
+    color: var(--accent);
+    padding: 0.4rem 1rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.85rem;
+    cursor: pointer;
+    margin-top: 1rem;
+    transition: all 0.3s ease;
+    align-self: flex-start;
+}
+
+.btn-show-more:hover {
+    background: rgba(56, 189, 248, 0.1);
+    border-color: var(--accent);
+    box-shadow: 0 0 10px rgba(56, 189, 248, 0.2);
 }
