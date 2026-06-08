@@ -4,7 +4,7 @@
         <div class="roadmap-header">
             <h2 class="section-title" data-i18n="roadmap.title">Project Roadmap</h2>
             <p class="section-subtitle" data-i18n="roadmap.subtitle" data-i18n-html="true">
-                From local development to distributed blockchain-verified infrastructure.
+                From local development to distributed production infrastructure.
                 <a href="https://github.com/radlab-dev-group/.github/tree/main/pages/llmrouter.cloud/roadmap"
                    target="_blank">View detailed roadmap</a>.
             </p>
@@ -29,17 +29,32 @@
                         Current focus: Core integrations and stabilization.
                     </p>
                     <ul class="step-list">
-                        <li data-i18n="roadmap.level1.item1" data-i18n-html="true"><strong>Integrations:</strong> LM
+                        <li data-i18n="roadmap.level1.item1" data-i18n-html="true"><strong>✅ Integrations:</strong> LM
                             Studio & Anthropic native support.
                         </li>
-                        <li data-i18n="roadmap.level1.item2" data-i18n-html="true"><strong>Streaming:</strong>
-                            Guardrails for streamed responses.
+                        <li data-i18n="roadmap.level1.item2" data-i18n-html="true"><strong>✅ Streaming:</strong>
+                            Guardrails for streamed responses + Cache-Control headers.
                         </li>
-                        <li data-i18n="roadmap.level1.item3" data-i18n-html="true"><strong>Features:</strong> RAG API
-                            (embeddings) & Prompt Injection detection.
+                        <li data-i18n="roadmap.level1.item3" data-i18n-html="true"><strong>✅ Monitoring:</strong>
+                            Prometheus integration with KeepAlive, Provider & Services monitoring.
                         </li>
-                        <li data-i18n="roadmap.level1.item4" data-i18n-html="true"><strong>UI:</strong> Enhanced
-                            ConfigsManager & Anonymizer chat.
+                        <li data-i18n="roadmap.level1.item4" data-i18n-html="true"><strong>✅ Security:</strong>
+                            15+ PII masking rules, GPG auditing, Bielik-Guard (Sojka), NASK Guard.
+                        </li>
+                        <li data-i18n="roadmap.level1.item5" data-i18n-html="true"><strong>✅ Plugins:</strong>
+                            Pipeline architecture (Masker/Guardrail/Utils), semantic_routing, langchain_rag.
+                        </li>
+                        <li data-i18n="roadmap.level1.item6" data-i18n-html="true"><strong>✅ Monitoring:</strong>
+                            KeepAliveMonitor, ProviderMonitor, ServicesMonitor + Prometheus.
+                        </li>
+                        <li data-i18n="roadmap.level1.item7" data-i18n-html="true"><strong>✅ UI:</strong>
+                            Enhanced ConfigsManager with versioning & Anonymizer chat.
+                        </li>
+                        <li data-i18n="roadmap.level1.item8" data-i18n-html="true"><strong>✅ Docker:</strong>
+                            Official images (quay.io/radlab/llm-router), non-root container.
+                        </li>
+                        <li data-i18n="roadmap.level1.item9" data-i18n-html="true"><strong>📌 API:</strong>
+                            /v1/messages (Anthropic), SSE streaming, OpenAI-compatible endpoints.
                         </li>
                     </ul>
                 </div>

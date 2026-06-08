@@ -13,6 +13,7 @@
             <div>
                 <h3 class="col-title"><span style="color: #3b82f6;">01.</span> Execution Stack</h3>
                 <div class="stack-wrapper">
+
                     <!-- Bus Line -->
                     <div class="system-bus"></div>
 
@@ -44,6 +45,19 @@
                     <div class="layer-card l-purple">
                         <div class="layer-node"></div>
                         <div class="layer-header-row">
+                            <span class="layer-title">Plugin Pipeline</span>
+                            <span class="layer-file">plugins/*</span>
+                        </div>
+                        <div class="layer-desc">
+                            Three extensible pipelines: MaskerPipeline, GuardrailPipeline, UtilsPipeline.
+                            Each plugin implements HttpPluginInterface.
+                        </div>
+                    </div>
+
+                    <!-- Layer 4 -->
+                    <div class="layer-card l-purple">
+                        <div class="layer-node"></div>
+                        <div class="layer-header-row">
                             <span class="layer-title">Endpoint Logic</span>
                             <span class="layer-file">endpoints/*</span>
                         </div>
@@ -52,8 +66,8 @@
                         </div>
                     </div>
 
-                    <!-- Layer 4 -->
-                    <div class="layer-card l-purple">
+                    <!-- Layer 5 -->
+                    <div class="layer-card l-green">
                         <div class="layer-node"></div>
                         <div class="layer-header-row">
                             <span class="layer-title">Load Balancing</span>
@@ -61,10 +75,11 @@
                         </div>
                         <div class="layer-desc">
                             Strategy pattern implementation (Weighted, Round-Robin) via ProviderChooser.
+                            Balanced, weighted, first_available, first_available_optim strategies.
                         </div>
                     </div>
 
-                    <!-- Layer 5 -->
+                    <!-- Layer 6 -->
                     <div class="layer-card l-green">
                         <div class="layer-node"></div>
                         <div class="layer-header-row">
@@ -73,10 +88,11 @@
                         </div>
                         <div class="layer-desc">
                             Resolves abstract model names to concrete API providers and configurations.
+                            Supports OpenAI, Ollama, vLLM, LM Studio, llama.cpp, Anthropic, Google.
                         </div>
                     </div>
 
-                    <!-- Layer 6 -->
+                    <!-- Layer 7 -->
                     <div class="layer-card l-green">
                         <div class="layer-node"></div>
                         <div class="layer-header-row">
@@ -84,7 +100,19 @@
                             <span class="layer-file">httprequest.py</span>
                         </div>
                         <div class="layer-desc">
-                            Low-level execution handling, retries, streaming response management.
+                            Low-level execution handling, retries with exponential backoff, streaming response management with SSE.
+                        </div>
+                    </div>
+
+                    <!-- Layer 8 -->
+                    <div class="layer-card l-yellow">
+                        <div class="layer-node"></div>
+                        <div class="layer-header-row">
+                            <span class="layer-title">Monitoring</span>
+                            <span class="layer-file">monitoring/*</span>
+                        </div>
+                        <div class="layer-desc">
+                            KeepAliveMonitor, ProviderMonitor, ServicesMonitor — Redis-backed health tracking and Prometheus metrics.
                         </div>
                     </div>
                 </div>
@@ -147,6 +175,33 @@
                         </div>
                         <div class="chip-body">
                             Routes requests based on API type (OpenAI vs Ollama vs vLLM formats).
+                        </div>
+                    </div>
+
+                    <div class="chip-card">
+                        <div class="chip-header">
+                            <span class="chip-icon">🔒</span> MaskerPipeline
+                        </div>
+                        <div class="chip-body">
+                            Detects and masks PII data (PESEL, NIP, emails, etc.) with 25+ rules and GPG auditing.
+                        </div>
+                    </div>
+
+                    <div class="chip-card">
+                        <div class="chip-header">
+                            <span class="chip-icon">🛡️</span> GuardrailPipeline
+                        </div>
+                        <div class="chip-body">
+                            Content safety validation pipeline with Bielik-Guard (Sojka) and NASK Guard integration.
+                        </div>
+                    </div>
+
+                    <div class="chip-card">
+                        <div class="chip-header">
+                            <span class="chip-icon">🔧</span> UtilsPipeline
+                        </div>
+                        <div class="chip-body">
+                            Utility plugins: semantic_routing, langchain_rag, translate, generate_questions.
                         </div>
                     </div>
 

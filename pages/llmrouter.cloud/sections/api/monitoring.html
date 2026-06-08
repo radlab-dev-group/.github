@@ -1,8 +1,55 @@
 <section class="tech-section" id="monitoring">
     <div class="container">
         <h2 class="section-title">Monitoring & Metrics</h2>
-        <p class="section-subtitle">Prometheus integration for observability</p>
+        <p class="section-subtitle">Built-in monitoring system and Prometheus integration</p>
 
+        <h3 style="color: var(--fg); margin-top: 2rem;">Monitoring Components</h3>
+
+        <div class="monitoring-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+            <div class="monitor-card">
+                <div class="monitor-header">
+                    <span class="monitor-icon" style="color: #38bdf8;">🫀</span>
+                    <h4>KeepAliveMonitor</h4>
+                </div>
+                <p>Periodically pings model endpoints to keep them warm. Eliminates cold-start latency.</p>
+                <ul>
+                    <li>Configurable ping interval</li>
+                    <li>Per-model endpoint tracking</li>
+                    <li>Redis-backed host registration</li>
+                    <li>Reduces first-request latency by ~10-30s</li>
+                </ul>
+            </div>
+
+            <div class="monitor-card">
+                <div class="monitor-header">
+                    <span class="monitor-icon" style="color: #fb923c;">🏥</span>
+                    <h4>ProviderMonitor</h4>
+                </div>
+                <p>Continuously probes model provider endpoints to track availability.</p>
+                <ul>
+                    <li>Automatic health checking</li>
+                    <li>Redis-backed availability cache</li>
+                    <li>Fast failover to healthy providers</li>
+                    <li>Circuit breaker pattern</li>
+                </ul>
+            </div>
+
+            <div class="monitor-card">
+                <div class="monitor-header">
+                    <span class="monitor-icon" style="color: #a78bfa;">📡</span>
+                    <h4>ServicesMonitor</h4>
+                </div>
+                <p>Monitors external guardrail and security services (Sojka-Guard, NASK Guard).</p>
+                <ul>
+                    <li>External service health checks</li>
+                    <li>Guardrail pipeline readiness</li>
+                    <li>Redis-synced availability</li>
+                    <li>Automatic pipeline switching</li>
+                </ul>
+            </div>
+        </div>
+
+        <h3 style="color: var(--fg); margin-top: 2rem;">Prometheus Integration</h3>
         <div class="key-feature-box">
             <h3>When LLM_ROUTER_USE_PROMETHEUS=1</h3>
             <ul>
@@ -11,6 +58,8 @@
                 <li><strong>Latency histograms</strong> for response time distribution</li>
                 <li><strong>In-progress gauges</strong> for concurrent requests</li>
                 <li><strong>Error counters</strong> for failure tracking</li>
+                <li><strong>Provider status</strong> gauge for health tracking</li>
+                <li><strong>KeepAlive status</strong> for model readiness</li>
             </ul>
         </div>
 
@@ -24,10 +73,11 @@ scrape_configs:
     scrape_interval: 15s</code></pre>
         </div>
 
+        <h3 style="color: var(--fg); margin-top: 2rem;">Auditor</h3>
         <div class="key-feature-box">
-            <h3>Auditor Overview</h3>
+            <h3>AnyRequestAuditor</h3>
             <ul>
-                <li><strong>AnyRequestAuditor</strong> records audit logs for masking and guardrail operations.</li>
+                <li>Records audit logs for masking and guardrail operations.</li>
                 <li>Logs contain endpoint name, audit type, timestamps, and payload snapshots.</li>
                 <li>Configured via environment variables <code>MASKING_WITH_AUDIT</code> and <code>GUARDRAIL_WITH_AUDIT_REQUEST/RESPONSE</code>.
                 </li>
@@ -41,6 +91,5 @@ scrape_configs:
     "end": {"timestamp": 1730281235.001, "payload": {...}}
 }</code></pre>
         </div>
-
     </div>
 </section>

@@ -1,5 +1,4 @@
 import { i18n } from './i18n.js';
-//import { initRouterAnimation } from './scripts-router-animation.js';
 
 const sections = [
   { selector: '#header',         url: 'sections/main/header.html' },
@@ -9,12 +8,13 @@ const sections = [
   { selector: '#features',       url: 'sections/main/features.html' },
   { selector: '#security',       url: 'sections/main/security.html' },
   { selector: '#performance',    url: 'sections/main/performance.html' },
+  { selector: '#ecosystem',      url: 'sections/main/ecosystem.html' },
+  { selector: '#monitoring',     url: 'sections/main/monitoring.html' },
   { selector: '#use-cases',      url: 'sections/main/use-cases.html' },
   { selector: '#roadmap',        url: 'sections/main/roadmap.html' },
   { selector: '#open-source',    url: 'sections/main/open-source.html' },
   { selector: '#footer',         url: 'sections/main/footer.html' },
 ];
-
 
 async function loadSection(selector, url) {
   const container = document.querySelector(selector);
@@ -49,6 +49,13 @@ function initMenuToggle() {
   });
 
   nav.addEventListener("click", (event) => {
+    const dropdownTrigger = event.target.closest(".dropdown-trigger");
+    if (dropdownTrigger) {
+      const dropdown = dropdownTrigger.closest(".nav-dropdown");
+      dropdown.classList.toggle("is-open");
+      return;
+    }
+
     if (event.target.closest("a") && nav.classList.contains("is-open")) {
       nav.classList.remove("is-open");
       toggle.classList.remove("is-open");
@@ -79,14 +86,10 @@ function initLanguageToggle() {
     updateToggleButton();
   });
 
-  // Update button text on language change
   window.addEventListener('languageChanged', updateToggleButton);
-
-  // Initial update
   updateToggleButton();
 }
 
-// Initialize scroll indicator and back‑to‑top button
 function initScrollFeatures() {
   const progressBar = document.getElementById('scroll-progress');
   const backToTopBtn = document.getElementById('back-to-top');
@@ -99,7 +102,6 @@ function initScrollFeatures() {
     const scrolled = (scrollTop / docHeight) * 100;
     progressBar.style.height = `${scrolled}%`;
 
-    // Show button after scrolling down 200px
     if (scrollTop > 200) {
       backToTopBtn.classList.add('show');
     } else {
@@ -107,30 +109,23 @@ function initScrollFeatures() {
     }
   };
 
-  // Smooth scroll to top when button is clicked
   backToTopBtn.addEventListener('click', (e) => {
     e.preventDefault();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 
   window.addEventListener('scroll', updateScroll);
-  // Initialise on load
   updateScroll();
 }
 
-// Run after all sections are loaded
 Promise.all(sections.map(s => loadSection(s.selector, s.url)))
   .catch(err => {
     console.error('Error while loading section:', err);
   })
   .finally(() => {
-    // Initialize i18n after sections are loaded
     i18n.init();
-
     initMenuToggle();
     initLanguageToggle();
     initScrollFeatures();
-
-    // Initialize router animation after DOM is fully loaded
     setTimeout(initRouterAnimation, 100);
   });

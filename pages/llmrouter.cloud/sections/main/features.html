@@ -2,7 +2,7 @@
     <div class="container">
         <h2 class="section-title" data-i18n="features.title">Comprehensive LLM Infrastructure Management</h2>
         <p class="section-subtitle" data-i18n="features.subtitle" data-i18n-html="true">
-            <strong>Complete</strong> platform for managing <strong>local LLM deployments (vLLM, Ollama, LM Studio) and
+            <strong>Complete</strong> platform for managing <strong>local LLM deployments (vLLM, Ollama, LM Studio, llama.cpp) and
             optionally cloud providers</strong> at any scale. Unified management with production-grade security and
             observability. Open-source architecture enables customization and community-driven enhancements. <strong>Run
             your models locally</strong> with full control over your infrastructure.
@@ -13,32 +13,28 @@
                 <div class="feature-icon">🔒</div>
                 <h3 data-i18n="features.protection.title">Built‑in Data Protection</h3>
                 <p data-i18n="features.protection.desc" data-i18n-html="true">
-                    The platform masks sensitive data (national IDs, tax numbers, emails, account numbers,
-                    IP addresses, etc.) and runs guard‑rail checks before forwarding requests to LLM
-                    providers. Both masking and guard‑rail stages emit tamper‑evident audit logs, giving
-                    full traceability while staying GDPR and SOC2 compliant.
+                    Automatic detection and masking of sensitive data (PESEL, NIP, KRS, REGON, emails, IP addresses, etc.) followed by guard‑rail checks before forwarding requests to LLM providers. Both the masking and guard‑rail stages generate tamper‑evident, GPG‑encrypted audit logs.
                 </p>
             </div>
 
             <div class="feature-card">
                 <div class="feature-icon">⚖️</div>
-                <h3 data-i18n="features.loadbalancing.title">Flexible Load Balancing</h3>
+                <h3 data-i18n="features.loadbalancing.title">Intelligent Load Balancing</h3>
                 <p data-i18n="features.loadbalancing.desc" data-i18n-html="true">
                     Four configurable load balancing strategies:
                     <code>balanced</code>,
                     <code>weighted</code>,
                     <code>first_available</code>,
-                    <code>first_available_optim</code>.
-                    Optimize resource utilization and ensure high availability for any deployment size.
+                    <code>first_available_optim</code> (re‑use host).
+                    Optimize resource utilization and minimize latency with intelligent provider selection.
                 </p>
             </div>
 
             <div class="feature-card">
                 <div class="feature-icon">🔀</div>
                 <h3 data-i18n="features.routing.title">Unified Local & Cloud Routing</h3>
-                <p data-i18n="features.routing.desc">
-                    Single REST API supporting local providers (Ollama, vLLM, LM Studio) and cloud services (OpenAI,
-                    Anthropic, etc.).
+                <p data-i18n="features.routing.desc" data-i18n-html="true">
+                    Single REST API supporting local providers (Ollama, vLLM, LM Studio, llama.cpp) and cloud services (OpenAI, Anthropic, Google).
                     Automatic protocol conversion, seamless switching between local and cloud providers, and intelligent
                     load distribution across all endpoints.
                 </p>
@@ -47,7 +43,7 @@
             <div class="feature-card">
                 <div class="feature-icon">📊</div>
                 <h3 data-i18n="features.monitoring.title">Full Observability</h3>
-                <p data-i18n="features.monitoring.desc">
+                <p data-i18n="features.monitoring.desc" data-i18n-html="true">
                     Native Prometheus integration delivering real-time metrics: request rates, latency percentiles,
                     error rates per provider, and health checks.
                     Complete visibility through Grafana dashboards with automatic service discovery and alerting.
@@ -57,33 +53,41 @@
             <div class="feature-card">
                 <div class="feature-icon">🚀</div>
                 <h3 data-i18n="features.performance.title">High Performance</h3>
-                <p data-i18n="features.performance.desc">
-                    Streaming responses, connection pooling, Redis broker for distributed deployments.
-                    Optimized for minimal latency and maximum throughput across various deployment scenarios.</p>
+                <p data-i18n="features.performance.desc" data-i18n-html="true">
+                    Streaming responses with SSE support, connection pooling, Redis broker for distributed deployments.
+                    Optimized for minimal latency and maximum throughput across various deployment scenarios.
+                    <strong>Keep‑Alive system</strong> ensures models are warmed up and ready.
+                </p>
             </div>
 
             <div class="feature-card">
                 <div class="feature-icon">🔧</div>
                 <h3 data-i18n="features.config.title">Easy Deployment</h3>
-                <p data-i18n="features.config.desc">Infrastructure-as-code configuration via JSON and environment
-                    variables. Docker and Kubernetes ready with official images. Deploy in minutes with flexible
-                    configuration options for any environment.</p>
+                <p data-i18n="features.config.desc" data-i18n-html="true">
+                    Infrastructure-as-code configuration via JSON and environment variables.
+                    Docker and Kubernetes ready with official images (<strong>quay.io/radlab/llm-router</strong>).
+                    Deploy in minutes with flexible configuration options for any environment.
+                </p>
             </div>
 
             <div class="feature-card">
-                <div class="feature-icon">🛠️</div>
-                <h3 data-i18n="features.endpoints.title">Extensible Endpoints</h3>
-                <p data-i18n="features.endpoints.desc">
-                    Ready-to-use endpoints for RAG pipelines, question generation, translation,
-                    and other common AI workflows. Easily extensible for custom use cases.
+                <div class="feature-icon">🔌</div>
+                <h3 data-i18n="features.plugin.title">Plugin System Architecture</h3>
+                <p data-i18n="features.plugin.desc" data-i18n-html="true">
+                    Modular pipeline architecture: <strong>MaskerPipeline → GuardrailPipeline → UtilsPipeline</strong>.
+                    Each pipeline can be extended with custom plugins implementing <code>HttpPluginInterface</code>.
+                    Includes semantic_routing, langchain_rag, translate, and generate_questions utilities.
                 </p>
             </div>
 
             <div class="feature-card">
                 <div class="feature-icon">⚙️</div>
                 <h3 data-i18n="features.web.title">Management Interfaces</h3>
-                <p data-i18n="features.web.desc">Configuration Manager for centralized infrastructure control and
-                    Anonymizer interface for secure, compliant LLM communication.</p>
+                <p data-i18n="features.web.desc" data-i18n-html="true">
+                    Configuration Manager for centralized infrastructure control and
+                    Anonymizer interface with FastMasker and GenAI-powered text anonymization.
+                    Full versioning support with automatic snapshots.
+                </p>
             </div>
 
         </div>
