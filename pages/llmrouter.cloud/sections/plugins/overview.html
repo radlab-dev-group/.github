@@ -1,0 +1,66 @@
+<section class="tech-section" id="overview" style="background: radial-gradient(ellipse at top, rgba(56, 189, 248, 0.06), transparent 60%), #020617;">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">Plugin Ecosystem Overview</h2>
+            <p class="section-subtitle">
+                Three categories of plugins compose the request processing pipeline:
+                <strong>Guardrails</strong> → <strong>Masking</strong> → <strong>Utils</strong>
+            </p>
+        </div>
+
+        <div class="plugin-categories">
+            <!-- Guardrails -->
+            <div class="plugin-category accent-blue">
+                <div class="category-header">
+                    <div class="icon-box" style="color: #38bdf8;">🛡️</div>
+                    <h3>Guardrails</h3>
+                    <span class="badge badge-blue">Safety Layer</span>
+                </div>
+                <p class="category-desc">
+                    Validates content safety before processing using sequential plugins.
+                    First plugin to report <code>is_safe=False</code> short-circuits the pipeline.
+                </p>
+                <ul class="category-list">
+                    <li><strong>Sojka-Guard (Bielik-Guard):</strong> Advanced Polish safety classifier (hate, violence, self-harm)</li>
+                    <li><strong>NASK Guard:</strong> NASK-PIB rule-based safety checking</li>
+                    <li><strong>Custom Plugins:</strong> Extend via <code>HttpPluginInterface</code></li>
+                </ul>
+            </div>
+
+            <!-- Masking -->
+            <div class="plugin-category accent-purple">
+                <div class="category-header">
+                    <div class="icon-box" style="color: #c084fc;">🔒</div>
+                    <h3>Masking</h3>
+                    <span class="badge badge-purple">Privacy Layer</span>
+                </div>
+                <p class="category-desc">
+                    Automatically detects and anonymizes sensitive PII data before transmission
+                    to LLM providers or external services.
+                </p>
+                <ul class="category-list">
+                    <li><strong>FastMasker:</strong> 25+ Polish identification rules (KRS, NIP, PESEL, REGON, etc.)</li>
+                    <li><strong>Checksum Validation:</strong> Official algorithms minimize false positives</li>
+                    <li><strong>PII Classification:</strong> Context-aware NER model for unknown formats</li>
+                </ul>
+            </div>
+
+            <!-- Utils -->
+            <div class="plugin-category accent-green">
+                <div class="category-header">
+                    <div class="icon-box" style="color: #4ade80;">🔧</div>
+                    <h3>Utils</h3>
+                    <span class="badge badge-green">Utility Plugins</span>
+                </div>
+                <p class="category-desc">
+                    Ready-to-use plugins for common AI workflows: semantic routing, RAG, translation, and more.
+                </p>
+                <ul class="category-list">
+                    <li><strong>semantic_routing:</strong> Context-aware model selection via weighted keywords</li>
+                    <li><strong>langchain_rag:</strong> FAISS-based retrieval with LangChain integration</li>
+                    <li><strong>translate:</strong> Batch translation with configurable target languages</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>

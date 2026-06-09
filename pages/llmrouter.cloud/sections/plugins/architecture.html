@@ -1,0 +1,115 @@
+<section class="tech-section" id="architecture" style="background: radial-gradient(ellipse at top, rgba(139, 92, 246, 0.06), transparent 60%), #020617;">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">Plugin Architecture</h2>
+            <p class="section-subtitle">
+                Three repositories, each with a distinct role — unified by the plugin pipeline interface.
+            </p>
+        </div>
+
+        <!-- Top: llm-router (the orchestrator) -->
+        <div class="arch-flow">
+            <div class="arch-flow-node arch-flow-core">
+                <div class="arch-flow-icon">⬡</div>
+                <div class="arch-flow-title">llm-router</div>
+                <div class="arch-flow-desc">
+                    Core API Gateway — orchestrates the plugin pipelines, manages providers,
+                    load balancing, and health monitoring.
+                </div>
+                <div class="arch-flow-tags">
+                    <span>API Gateway</span>
+                    <span>Load Balancing</span>
+                    <span>Health Checks</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Arrow down -->
+        <div class="arch-flow-arrow-line">
+            <span class="arch-flow-arrow-icon">↓</span>
+        </div>
+
+        <!-- Bottom: 3 equal columns -->
+        <div class="arch-flow-bottom">
+            <!-- Plugins -->
+            <div class="arch-flow-column arch-plugins">
+                <div class="arch-flow-col-header">
+                    <div class="arch-flow-icon arch-plugins-icon">🧩</div>
+                    <div class="arch-flow-title arch-plugins-title">llm-router-plugins</div>
+                </div>
+                <div class="arch-flow-col-section">
+                    <h4>🛡️ Guardrails</h4>
+                    <ul>
+                        <li>• Sojka-Guard (Bielik-Guard)</li>
+                        <li>• NASK Guard</li>
+                        <li>• HttpPluginInterface</li>
+                    </ul>
+                </div>
+                <div class="arch-flow-col-section">
+                    <h4>🔒 Masking</h4>
+                    <ul>
+                        <li>• FastMasker (25+ rules)</li>
+                        <li>• Polish ID formats</li>
+                        <li>• PII Classification</li>
+                    </ul>
+                </div>
+                <div class="arch-flow-col-section">
+                    <h4>🔧 Utils</h4>
+                    <ul>
+                        <li>• semantic_routing</li>
+                        <li>• langchain_rag</li>
+                        <li>• translate</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Services -->
+            <div class="arch-flow-column arch-services">
+                <div class="arch-flow-col-header">
+                    <div class="arch-flow-icon arch-services-icon">⚙️</div>
+                    <div class="arch-flow-title arch-services-title">llm-router-services</div>
+                </div>
+                <div class="arch-flow-col-section">
+                    <h4>🛡️ Guardrails API</h4>
+                    <ul>
+                        <li>• NASK-PIB Flask service</li>
+                        <li>• Sojka-Guard service</li>
+                        <li>• Dynamic route registration</li>
+                    </ul>
+                </div>
+                <div class="arch-flow-col-section">
+                    <h4>🔒 Maskers API</h4>
+                    <ul>
+                        <li>• PIIMasker (token-class)</li>
+                        <li>• In-memory cache</li>
+                        <li>• GPU/CPU support</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- API -->
+            <div class="arch-flow-column arch-api">
+                <div class="arch-flow-col-header">
+                    <div class="arch-flow-icon arch-api-icon">◆</div>
+                    <div class="arch-flow-title arch-api-title">llm-router-api</div>
+                </div>
+                <div class="arch-flow-col-section">
+                    <h4>📡 Endpoints</h4>
+                    <ul>
+                        <li>• /v1/chat/completions</li>
+                        <li>• /v1/models</li>
+                        <li>• OpenAI-compatible</li>
+                    </ul>
+                </div>
+                <div class="arch-flow-col-section">
+                    <h4>🔌 Plugin Registry</h4>
+                    <ul>
+                        <li>• Automatic discovery</li>
+                        <li>• Pipeline orchestration</li>
+                        <li>• Graceful degradation</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
