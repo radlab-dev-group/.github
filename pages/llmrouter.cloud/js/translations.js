@@ -445,7 +445,7 @@ export const translations = {
     'ecosystem.utils.feat4': 'JSONL ↔ XLSX conversion',
 
     // Monitoring
-    'monitoring.title': 'Monitoring & Health',
+    'monitoring.title': 'Monitoring & Zdrowie',
     'monitoring.subtitle': 'Built-in monitoring system ensuring reliability, observability, and proactive infrastructure management.',
     'monitoring.prometheus.title': 'Prometheus Integration',
     'monitoring.prometheus.subtitle': 'Enable with <code>LLM_ROUTER_USE_PROMETHEUS=1</code> for real-time metrics:',
