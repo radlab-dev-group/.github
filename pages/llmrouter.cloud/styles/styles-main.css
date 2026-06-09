@@ -1401,6 +1401,18 @@ header {
     margin-top: 0.15rem;
 }
 
+/* Router feature cards - new row */
+
+.stat-card.router-feature .stat-number {
+    font-size: 2rem;
+}
+
+.stat-card.router-feature .stat-label {
+    font-size: 0.82rem;
+    color: rgba(148, 163, 184, 0.7);
+    font-style: italic;
+}
+
 /* USE CASES */
 
 .use-cases {

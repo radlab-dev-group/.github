@@ -99,6 +99,12 @@ export const translations = {
     'performance.stat5.label': 'Pipeline Guardrails',
     'performance.stat6.number': '✓',
     'performance.stat6.label': 'Pipeline Utilsów',
+    'performance.stat7.number': '⟳',
+    'performance.stat7.label': 'Streaming Responses',
+    'performance.stat8.number': '◉',
+    'performance.stat8.label': 'Health Monitoring',
+    'performance.stat9.number': '◈',
+    'performance.stat9.label': 'Prometheus Metrics',
 
     // Ecosystem
     'ecosystem.title': 'Ekosystem LLM Router',
@@ -391,6 +397,12 @@ export const translations = {
     'performance.stat5.label': 'Guardrail Pipelines',
     'performance.stat6.number': '✓',
     'performance.stat6.label': 'Utility Pipelines',
+    'performance.stat7.number': '⟳',
+    'performance.stat7.label': 'Streaming Responses',
+    'performance.stat8.number': '◉',
+    'performance.stat8.label': 'Health Monitoring',
+    'performance.stat9.number': '◈',
+    'performance.stat9.label': 'Prometheus Metrics',
 
     // Ecosystem
     'ecosystem.title': 'LLM Router Ecosystem',
