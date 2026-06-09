@@ -28,11 +28,17 @@
             <div class="endpoint-desc">List OpenAI-compatible models</div>
         </div>
         <div class="endpoint-card">
+            <span class="endpoint-method get">GET</span>
+            <span class="endpoint-path">/v1/models</span>
+            <div class="endpoint-desc">List vLLM/OpenAI-compatible models</div>
+        </div>
+        <div class="endpoint-card">
             <span class="endpoint-method post">POST</span>
             <span class="endpoint-path">/api/v0/models</span>
             <div class="endpoint-desc">List LM Studio models</div>
         </div>
 
+        <h3 style="margin-top: 2rem; color: var(--fg);">Chat & Completions</h3>
         <div class="endpoint-card">
             <span class="endpoint-method post">POST</span>
             <span class="endpoint-path">/api/chat</span>
@@ -54,16 +60,21 @@
         <div class="endpoint-card">
             <span class="endpoint-method post">POST</span>
             <span class="endpoint-path">/v1/chat/completions</span>
-            <div class="endpoint-desc">vLLM like chat completion</div>
+            <div class="endpoint-desc">vLLM/OpenAI-compatible chat completion</div>
         </div>
 
         <div class="endpoint-card">
             <span class="endpoint-method post">POST</span>
             <span class="endpoint-path">/v1/RESPONSES</span>
-            <div class="endpoint-desc">OpenAI like responses</div>
+            <div class="endpoint-desc">OpenAI-like responses endpoint</div>
         </div>
 
-        <h3 style="margin-top: 2rem; color: var(--fg);">Chat & Completions (Built-in)</h3>
+        <div class="endpoint-card">
+            <span class="endpoint-method post">POST</span>
+            <span class="endpoint-path">/v1/messages</span>
+            <div class="endpoint-desc">Anthropic Claude-style messages completion (Anthropic-compatible)</div>
+        </div>
+
         <div class="endpoint-card">
             <span class="endpoint-method post">POST</span>
             <span class="endpoint-path">/api/conversation_with_model</span>
@@ -105,6 +116,22 @@
             <span class="endpoint-method post">POST</span>
             <span class="endpoint-path">/api/create_full_article_from_texts</span>
             <div class="endpoint-desc">Generate full article from multiple texts</div>
+        </div>
+
+        <h3 style="margin-top: 2rem; color: var(--fg);">Embeddings</h3>
+        <div class="endpoint-card">
+            <span class="endpoint-method post">POST</span>
+            <span class="endpoint-path">/v1/embeddings</span>
+            <div class="endpoint-desc">Generate text embeddings (OpenAI-compatible)</div>
+        </div>
+
+        <!-- Streaming note -->
+        <div class="streaming-note" style="background: rgba(56, 189, 248, 0.08); border-left: 3px solid #38bdf8; padding: 1rem 1.5rem; margin-top: 2rem; border-radius: 0 8px 8px 0;">
+            <h4 style="margin: 0 0 0.5rem 0; color: #38bdf8;">📡 Streaming Support</h4>
+            <p style="margin: 0; color: #94a3b8;">
+                Set <code>stream=true</code> in request body to receive Server-Sent Events (SSE) responses.
+                Streaming responses include proper <code>Cache-Control</code>, <code>Pragma</code>, <code>Expires</code> and <code>Vary</code> headers.
+            </p>
         </div>
 
         <div class="code-block" data-lang="python">

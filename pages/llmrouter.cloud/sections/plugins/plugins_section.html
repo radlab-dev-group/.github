@@ -1,0 +1,112 @@
+<section class="tech-section" id="plugins" style="background: radial-gradient(ellipse at top, rgba(192, 132, 252, 0.06), transparent 60%), #020617;">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">Plugin Types</h2>
+            <p class="section-subtitle">
+                Three categories of plugins — each with a unified <code>PluginInterface</code> and <code>apply(payload)</code> method.
+            </p>
+        </div>
+
+        <div class="plugin-grid">
+            <!-- Guardrail Plugins -->
+            <div class="plugin-card accent-blue">
+                <div class="card-header">
+                    <div class="icon-box" style="color: #38bdf8;">🛡️</div>
+                    <span class="badge badge-blue">Guardrails</span>
+                </div>
+                <div>
+                    <h3 class="card-title">Content Safety</h3>
+                    <p class="card-desc">
+                        Validates incoming payloads against safety policies. Returns <code>(is_safe, details)</code>.
+                    </p>
+                    <ul class="feature-list">
+                        <li><strong>Sojka-Guard:</strong> Bielik-Guard model (Apache-2.0) for Polish content</li>
+                        <li><strong>NASK Guard:</strong> NASK-PIB rule-based classifier (CC BY-NC-SA 4.0)</li>
+                        <li><strong>Pipeline:</strong> Sequential — first failure rejects the request</li>
+                    </ul>
+                </div>
+                <div class="terminal">
+                    <div class="terminal-header">
+                        <div class="dot dot-r"></div>
+                        <div class="dot dot-y"></div>
+                        <div class="dot dot-g"></div>
+                    </div>
+                    <div class="terminal-body">
+                        <div class="t-comment"># Pipeline config</div>
+                        <div><span class="t-cmd">export</span> <span class="t-var">GUARDRAIL_STRATEGY_PIPELINE_REQUEST</span>=<span
+       class="t-str">"sojka_guard,nask_guard"</span></div>
+                        <br>
+                        <div class="t-comment"># Returns: (False, {"label": "hate", "score": 0.71})</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Masker Plugins -->
+            <div class="plugin-card accent-purple">
+                <div class="card-header">
+                    <div class="icon-box" style="color: #c084fc;">🔒</div>
+                    <span class="badge badge-purple">Maskers</span>
+                </div>
+                <div>
+                    <h3 class="card-title">PII Anonymization</h3>
+                    <p class="card-desc">
+                        Detects and replaces sensitive PII spans with placeholders like <code>{{NIP}}</code>, <code>{{PESEL}}</code>.
+                    </p>
+                    <ul class="feature-list">
+                        <li><strong>FastMasker:</strong> 25+ Polish ID formats with checksum validation</li>
+                        <li><strong>PII Classifier:</strong> NER model for context-aware detection</li>
+                        <li><strong>Validation:</strong> Official checksums minimize false positives</li>
+                    </ul>
+                </div>
+                <div class="terminal">
+                    <div class="terminal-header">
+                        <div class="dot dot-r"></div>
+                        <div class="dot dot-y"></div>
+                        <div class="dot dot-g"></div>
+                    </div>
+                    <div class="terminal-body">
+                        <div class="t-comment"># Input</div>
+                        <div><span class="t-str">"NIP: 525-012-34-56"</span></div>
+                        <br>
+                        <div class="t-comment"># Output</div>
+                        <div><span class="t-str">"NIP: <span class="t-var">{{NIP}}</span>"</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Utility Plugins -->
+            <div class="plugin-card accent-green">
+                <div class="card-header">
+                    <div class="icon-box" style="color: #4ade80;">🔧</div>
+                    <span class="badge badge-green">Utils</span>
+                </div>
+                <div>
+                    <h3 class="card-title">Utility Plugins</h3>
+                    <p class="card-desc">
+                        Enhance payloads with semantic routing, RAG, translation, and more.
+                    </p>
+                    <ul class="feature-list">
+                        <li><strong>semantic_routing:</strong> Keyword-based model selection</li>
+                        <li><strong>langchain_rag:</strong> FAISS vector store for document retrieval</li>
+                        <li><strong>translate:</strong> Batch translation with configurable languages</li>
+                    </ul>
+                </div>
+                <div class="terminal">
+                    <div class="terminal-header">
+                        <div class="dot dot-r"></div>
+                        <div class="dot dot-y"></div>
+                        <div class="dot dot-g"></div>
+                    </div>
+                    <div class="terminal-body">
+                        <div class="t-comment"># Enable utility plugins</div>
+                        <div><span class="t-cmd">export</span> <span class="t-var">UTIL_PLUGINS</span>=<span
+       class="t-str">"semantic_routing,langchain_rag"</span></div>
+                        <br>
+                        <div class="t-comment"># Semantic routing auto-selects</div>
+                        <div class="t-comment"># optimal provider based on context</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

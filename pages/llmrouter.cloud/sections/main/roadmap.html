@@ -4,7 +4,7 @@
         <div class="roadmap-header">
             <h2 class="section-title" data-i18n="roadmap.title">Project Roadmap</h2>
             <p class="section-subtitle" data-i18n="roadmap.subtitle" data-i18n-html="true">
-                From local development to distributed blockchain-verified infrastructure.
+                From local development to distributed production infrastructure.
                 <a href="https://github.com/radlab-dev-group/.github/tree/main/pages/llmrouter.cloud/roadmap"
                    target="_blank">View detailed roadmap</a>.
             </p>
@@ -17,44 +17,60 @@
             <div class="roadmap-line"></div>
 
             <!-- LEVEL 1: DEV / TEST -->
-            <div class="step active">
+            <div class="step completed">
                 <div class="step-marker">
                     <div class="marker-dot"></div>
-                    <div class="marker-pulse"></div>
+                    <div class="marker-check">✓</div>
                 </div>
                 <div class="step-card">
-                    <div class="card-badge badge-active" data-i18n="roadmap.level1.badge">Level 1: Dev / Test</div>
+                    <div class="card-badge badge-completed" data-i18n="roadmap.level1.badge">Level 1: Done</div>
                     <h3 data-i18n="roadmap.level1.title">Foundation</h3>
                     <p class="step-desc" data-i18n="roadmap.level1.desc">
-                        Current focus: Core integrations and stabilization.
+                        Successfully established core infrastructure and integrations.
                     </p>
                     <ul class="step-list">
                         <li data-i18n="roadmap.level1.item1" data-i18n-html="true"><strong>Integrations:</strong> LM
                             Studio & Anthropic native support.
                         </li>
                         <li data-i18n="roadmap.level1.item2" data-i18n-html="true"><strong>Streaming:</strong>
-                            Guardrails for streamed responses.
+                            Guardrails for streamed responses + Cache-Control headers.
                         </li>
-                        <li data-i18n="roadmap.level1.item3" data-i18n-html="true"><strong>Features:</strong> RAG API
-                            (embeddings) & Prompt Injection detection.
+                        <li data-i18n="roadmap.level1.item3" data-i18n-html="true"><strong>Monitoring:</strong>
+                            Prometheus integration with KeepAlive, Provider & Services monitoring.
                         </li>
-                        <li data-i18n="roadmap.level1.item4" data-i18n-html="true"><strong>UI:</strong> Enhanced
-                            ConfigsManager & Anonymizer chat.
-                        </li>
+                        <div class="step-list-more">
+                            <li data-i18n="roadmap.level1.item4" data-i18n-html="true"><strong>Security:</strong>
+                                15+ PII masking rules, GPG auditing, Bielik-Guard (Sojka), NASK Guard.
+                            </li>
+                            <li data-i18n="roadmap.level1.item5" data-i18n-html="true"><strong>Plugins:</strong>
+                                Pipeline architecture (Masker/Guardrail/Utils), semantic_routing, langchain_rag.
+                            </li>
+                            <li data-i18n="roadmap.level1.item7" data-i18n-html="true"><strong>UI:</strong>
+                                Enhanced ConfigsManager with versioning & Anonymizer chat.
+                            </li>
+                            <li data-i18n="roadmap.level1.item8" data-i18n-html="true"><strong>Docker:</strong>
+                                Official images (quay.io/radlab/llm-router), non-root container.
+                            </li>
+                            <li data-i18n="roadmap.level1.item9" data-i18n-html="true"><strong>API:</strong>
+                                /v1/messages (Anthropic), SSE streaming, OpenAI-compatible endpoints.
+                            </li>
+                        </div>
                     </ul>
+                    <button class="btn-show-more" data-i18n="roadmap.show_more">Show More</button>
                 </div>
             </div>
 
             <!-- LEVEL 2: PROD -->
-            <div class="step">
+            <div class="step active">
                 <div class="step-marker">
                     <div class="marker-dot"></div>
+                    <div class="marker-pulse"></div>
                 </div>
                 <div class="step-card">
-                    <div class="card-badge badge-planned" data-i18n="roadmap.level2.badge">Level 2: Production</div>
+                    <div class="card-badge badge-active" data-i18n="roadmap.level2.badge">Level 2: Production</div>
                     <h3 data-i18n="roadmap.level2.title">Ecosystem</h3>
                     <p class="step-desc" data-i18n="roadmap.level2.desc">
-                        Distributed system ready for high-load environments.
+                        Current focus: Distributed system ready for high-load environments.
                     </p>
                     <ul class="step-list">
                         <li data-i18n="roadmap.level2.item1" data-i18n-html="true"><strong>Kafka:</strong> Async task

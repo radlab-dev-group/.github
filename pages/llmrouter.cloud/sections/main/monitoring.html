@@ -1,0 +1,85 @@
+<section class="monitoring" id="monitoring" style="background: radial-gradient(ellipse at bottom, rgba(74, 222, 128, 0.06), transparent 60%), #020617;">
+    <div class="container">
+        <h2 class="section-title" data-i18n="monitoring.title">Monitorowanie i Health</h2>
+        <p class="section-subtitle" data-i18n="monitoring.subtitle">
+            Wbudowany system monitorowania zapewniający niezawodność, obserwowalność i proaktywne zarządzanie infrastrukturą.
+        </p>
+
+        <div class="monitoring-grid">
+            <!-- KeepAliveMonitor -->
+            <div class="monitor-card">
+                <div class="monitor-icon" style="color: #38bdf8;">🫀</div>
+                <h3 data-i18n="monitoring.keepalive.title">KeepAliveMonitor</h3>
+                <p class="monitor-desc" data-i18n="monitoring.keepalive.desc">
+                    Periodically pings model endpoints to keep them warm. Eliminates cold-start latency for large models.
+                </p>
+                <ul class="monitor-features">
+                    <li data-i18n="monitoring.keepalive.feature1">Configurable ping interval</li>
+                    <li data-i18n="monitoring.keepalive.feature2">Per-model endpoint tracking</li>
+                    <li data-i18n="monitoring.keepalive.feature3">Automatic host registration in Redis</li>
+                    <li data-i18n="monitoring.keepalive.feature4">Reduces first-request latency by ~10-30s</li>
+                </ul>
+                <div class="monitor-code">
+                    <pre><code>LLM_ROUTER_KEEPALIVE_MODEL_MONITOR_INTERVAL_SECONDS=10</code></pre>
+                </div>
+            </div>
+
+            <!-- ProviderMonitor -->
+            <div class="monitor-card">
+                <div class="monitor-icon" style="color: #fb923c;">🏥</div>
+                <h3 data-i18n="monitoring.provider.title">ProviderMonitor</h3>
+                <p class="monitor-desc" data-i18n="monitoring.provider.desc">
+                    Continuously probes model provider endpoints to track availability. Integrates with the
+                    <code>first_available</code> load balancing strategy.
+                </p>
+                <ul class="monitor-features">
+                    <li data-i18n="monitoring.provider.feature1">Automatic health checking</li>
+                    <li data-i18n="monitoring.provider.feature2">Redis-backed availability cache</li>
+                    <li data-i18n="monitoring.provider.feature3">Fast failover to healthy providers</li>
+                    <li data-i18n="monitoring.provider.feature4">Circuit breaker pattern</li>
+                </ul>
+                <div class="monitor-code">
+                    <pre><code>LLM_ROUTER_PROVIDER_MONITOR_INTERVAL_SECONDS=5</code></pre>
+                </div>
+            </div>
+
+            <!-- ServicesMonitor -->
+            <div class="monitor-card">
+                <div class="monitor-icon" style="color: #a78bfa;">📡</div>
+                <h3 data-i18n="monitoring.services.title">ServicesMonitor</h3>
+                <p class="monitor-desc" data-i18n="monitoring.services.desc">
+                    Monitors external guardrail and security services (e.g. Sojka-Guard, NASK Guard).
+                    Ensures the security pipeline is fully operational.
+                </p>
+                <ul class="monitor-features">
+                    <li data-i18n="monitoring.services.feature1">External service health checks</li>
+                    <li data-i18n="monitoring.services.feature2">Guardrail pipeline readiness</li>
+                    <li data-i18n="monitoring.services.feature3">Redis-synced availability</li>
+                    <li data-i18n="monitoring.services.feature4">Automatic pipeline switching</li>
+                </ul>
+                <div class="monitor-code">
+                    <pre><code>LLM_ROUTER_SERVICES_MONITOR_INTERVAL_SECONDS=5</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Prometheus -->
+        <div class="prometheus-section">
+            <div class="promo-card">
+                <div class="promo-icon">📊</div>
+                <div class="promo-content">
+                    <h3 data-i18n="monitoring.prometheus.title">Prometheus Integration</h3>
+                    <p data-i18n="monitoring.prometheus.subtitle">Włącz <code>LLM_ROUTER_USE_PROMETHEUS=1</code>, aby uzyskać metryki w czasie rzeczywistym:</p>
+                    <div class="promo-metrics">
+                        <div class="metric-tag"><span>●</span> request_rate</div>
+                        <div class="metric-tag"><span>●</span> request_latency</div>
+                        <div class="metric-tag"><span>●</span> error_rate</div>
+                        <div class="metric-tag"><span>●</span> provider_status</div>
+                        <div class="metric-tag"><span>●</span> keepalive_status</div>
+                        <div class="metric-tag"><span>●</span> model_latency</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

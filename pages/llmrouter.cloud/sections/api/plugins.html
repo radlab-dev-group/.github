@@ -5,7 +5,7 @@
     <div class="plugin-container">
         <div class="section-header">
             <h2 class="section-title">Plugins & Security</h2>
-            <p class="section-subtitle">Extendable pipeline architecture for safety and privacy</p>
+            <p class="section-subtitle">Extendable pipeline architecture for safety, privacy, and utility</p>
         </div>
 
         <div class="plugin-grid">
@@ -24,7 +24,7 @@
                     </p>
                     <ul class="feature-list">
                         <li><strong>Pipeline Architecture:</strong> Sequential validation plugins</li>
-                        <li><strong>Bielik-Guard (Sójka):</strong> Advanced safety classifier for Polish (Apache-2.0)</li>
+                        <li><strong>Bielik-Guard (Sojka):</strong> Advanced safety classifier for Polish (Apache-2.0)</li>
                         <li><strong>NASK Guard:</strong> PL-Guard model integration (CC BY-NC-SA 4.0)</li>
                         <li><strong>Custom Plugins:</strong> Extend via <code>HttpPluginInterface</code></li>
                     </ul>
@@ -40,7 +40,7 @@
                         <div class="t-comment"># Configure guardrail pipeline</div>
                         <div><span class="t-cmd">export</span> <span class="t-var">LLM_ROUTER_FORCE_GUARDRAIL_REQUEST</span>=<span class="t-str">1</span></div>
                         <div><span class="t-cmd">export</span> <span class="t-var">GUARDRAIL_STRATEGY_PIPELINE_REQUEST</span>=<span
-                                class="t-str">"sojka_guard,nask_guard"</span></div>
+       class="t-str">"sojka_guard,nask_guard"</span></div>
                         <br>
                         <div class="t-comment"># 1. Sojka Guard validates content (HATE, CRIME etc.)</div>
                         <div class="t-comment"># 2. NASK Guard applies safety rules</div>
@@ -76,9 +76,9 @@
                     <div class="terminal-body">
                         <div class="t-comment"># Enable masking with audit</div>
                         <div><span class="t-cmd">export</span> <span class="t-var">LLM_ROUTER_FORCE_MASKING</span>=<span
-                                class="t-str">1</span></div>
+       class="t-str">1</span></div>
                         <div><span class="t-cmd">export</span> <span class="t-var">LLM_ROUTER_MASKING_WITH_AUDIT</span>=<span
-                                class="t-str">1</span></div>
+       class="t-str">1</span></div>
                         <br>
                         <div class="t-comment"># Input: "NIP: 1234567890"</div>
                         <div><span class="t-comment"># Output:</span> "NIP: <span class="t-var">{{NIP}}</span>"
@@ -87,21 +87,58 @@
                 </div>
             </div>
 
-            <!-- 3. Architecture -->
+            <!-- 3. Utilities Pipeline -->
             <div class="plugin-card accent-green">
                 <div class="card-header">
                     <div class="icon-box" style="color: #4ade80;">🔧</div>
-                    <span class="badge badge-green">Developers</span>
+                    <span class="badge badge-green">Utility Plugins</span>
+                </div>
+                <div>
+                    <h3 class="card-title">Utils Pipeline</h3>
+                    <p class="card-desc">
+                        Ready-to-use utility plugins for common AI workflows: semantic routing, RAG, translation, and question generation.
+                    </p>
+                    <ul class="feature-list">
+                        <li><strong>semantic_routing:</strong> Context-aware routing to optimal providers</li>
+                        <li><strong>langchain_rag:</strong> RAG with LangChain and FAISS integration</li>
+                        <li><strong>translate:</strong> Batch translation with configurable target languages</li>
+                        <li><strong>generate_questions:</strong> Auto-generate questions from input texts</li>
+                    </ul>
+                </div>
+
+                <div class="terminal">
+                    <div class="terminal-header">
+                        <div class="dot dot-r"></div>
+                        <div class="dot dot-y"></div>
+                        <div class="dot dot-g"></div>
+                    </div>
+                    <div class="terminal-body">
+                        <div class="t-comment"># Enable utility plugins</div>
+                        <div><span class="t-cmd">export</span> <span class="t-var">UTIL_PLUGINS</span>=<span
+       class="t-str">"semantic_routing,langchain_rag,translate"</span></div>
+                        <br>
+                        <div class="t-comment"># Semantic routing auto-selects</div>
+                        <div class="t-comment"># the best provider based on context</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. Plugin Architecture -->
+            <div class="plugin-card accent-orange">
+                <div class="card-header">
+                    <div class="icon-box" style="color: #fb923c;">⚙️</div>
+                    <span class="badge badge-orange">Framework</span>
                 </div>
                 <div>
                     <h3 class="card-title">Plugin Architecture</h3>
                     <p class="card-desc">
-                        Unified interface for both Guardrails and Maskers. Easily extend the system with your own logic.
+                        Unified interface for Guardrails, Maskers, and Utils. Easily extend the system with your own logic.
                     </p>
                     <ul class="feature-list">
                         <li><strong>PluginInterface:</strong> Base class with <code>apply(payload)</code></li>
                         <li><strong>Registry Pattern:</strong> Automatic discovery & registration</li>
                         <li><strong>Graceful Degradation:</strong> Safe error handling for plugins</li>
+                        <li><strong>Three Pipelines:</strong> Masker → Guardrail → Utils (sequential)</li>
                     </ul>
                 </div>
 
@@ -117,49 +154,10 @@
                         <div style="padding-left: 1rem;">name = <span class="t-str">"my_guard"</span></div>
                         <br>
                         <div style="padding-left: 1rem;"><span class="t-py-kw">def</span> <span
-                                class="t-py-cls">apply</span>(self, payload):
+       class="t-py-cls">apply</span>(self, payload):
                         </div>
                         <div style="padding-left: 2rem;">is_safe = check(payload)</div>
                         <div style="padding-left: 2rem;"><span class="t-py-kw">return</span> is_safe, {}</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 4. Configuration -->
-            <div class="plugin-card accent-orange">
-                <div class="card-header">
-                    <div class="icon-box" style="color: #fb923c;">⚙️</div>
-                    <span class="badge badge-orange">DevOps</span>
-                </div>
-                <div>
-                    <h3 class="card-title">Configuration</h3>
-                    <p class="card-desc">
-                        Full 12-factor app compliance. Everything is configured via environment variables for flexible
-                        deployment.
-                    </p>
-                    <ul class="feature-list">
-                        <li><strong>Env Vars:</strong> No code changes required</li>
-                        <li><strong>Flexible Order:</strong> Define plugin sequence via strings</li>
-                        <li><strong>Per-Endpoint:</strong> Toggle security rules for specific routes</li>
-                    </ul>
-                </div>
-
-                <div class="terminal">
-                    <div class="terminal-header">
-                        <div class="dot dot-r"></div>
-                        <div class="dot dot-y"></div>
-                        <div class="dot dot-g"></div>
-                    </div>
-                    <div class="terminal-body">
-                        <div class="t-comment"># Full security config example</div>
-                        <div><span class="t-cmd">export</span> <span class="t-var">GUARDRAIL_PLUGINS</span>=<span
-                                class="t-str">"nask_guard"</span></div>
-                        <div><span class="t-cmd">export</span> <span class="t-var">FORCE_MASKING</span>=<span
-                                class="t-str">1</span></div>
-                        <div><span class="t-cmd">export</span> <span class="t-var">MASKER_PLUGINS</span>=<span
-                                class="t-str">"fast_masker"</span></div>
-                        <br>
-                        <div class="t-comment"># 1. Validate -> 2. Mask -> 3. Send</div>
                     </div>
                 </div>
             </div>

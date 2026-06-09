@@ -1,0 +1,116 @@
+<section class="tech-section" id="services" style="background: radial-gradient(ellipse at top, rgba(56, 189, 248, 0.06), transparent 60%), #020617;">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">Services & Integration</h2>
+            <p class="section-subtitle">
+                Standalone Flask services expose ML models as HTTP endpoints, wired dynamically via environment variables.
+            </p>
+        </div>
+
+        <div class="services-grid">
+            <!-- Guardrails API -->
+            <div class="service-card" data-accent="blue">
+                <div class="card-top">
+                    <div class="card-icon-box">
+                        <span class="card-icon">🛡️</span>
+                    </div>
+                    <div class="card-title-area">
+                        <h3 class="card-title">Guardrails API</h3>
+                        <span class="card-repo">llm-router-services</span>
+                    </div>
+                </div>
+                <p class="card-text">
+                    Unified Flask app exposing guardrail endpoints. Routes are dynamically registered based on
+                    <code>*_ENABLED</code> environment variables.
+                </p>
+                <div class="card-section">
+                    <h4 class="card-section-title">Endpoints</h4>
+                    <div class="endpoint-list">
+                        <div class="endpoint-row">
+                            <span class="method-badge method-post">POST</span>
+                            <code class="endpoint-url">/api/guardrails/nask_guard</code>
+                            <span class="endpoint-note">NASK-PIB safety check</span>
+                        </div>
+                        <div class="endpoint-row">
+                            <span class="method-badge method-post">POST</span>
+                            <code class="endpoint-url">/api/guardrails/sojka_guard</code>
+                            <span class="endpoint-note">Sojka safety check</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-code">
+                    <div class="code-label"># Enable NASK Guard</div>
+                    <code>export LLM_ROUTER_NASK_PIB_GUARD_ENABLED=1</code>
+                    <br>
+                    <code>./run_services.sh</code>
+                </div>
+            </div>
+
+            <!-- Maskers API -->
+            <div class="service-card" data-accent="purple">
+                <div class="card-top">
+                    <div class="card-icon-box">
+                        <span class="card-icon">🔒</span>
+                    </div>
+                    <div class="card-title-area">
+                        <h3 class="card-title">Maskers API</h3>
+                        <span class="card-repo">llm-router-services</span>
+                    </div>
+                </div>
+                <p class="card-text">
+                    Token-classification based PII anonymizer with in-memory caching.
+                    Loads models once at startup, serves over HTTP.
+                </p>
+                <div class="card-section">
+                    <h4 class="card-section-title">Endpoints</h4>
+                    <div class="endpoint-list">
+                        <div class="endpoint-row">
+                            <span class="method-badge method-post">POST</span>
+                            <code class="endpoint-url">/api/maskers/pii_masker</code>
+                            <span class="endpoint-note">PII detection & redaction</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-code">
+                    <div class="code-label"># Payload (array of texts supported)</div>
+                    <code>{&quot;payload&quot;: &quot;NIP: 1234567890&quot;}</code>
+                    <br>
+                    <div class="code-label"># → anonymized + mappings</div>
+                </div>
+            </div>
+
+            <!-- Plugin Registry -->
+            <div class="service-card" data-accent="green">
+                <div class="card-top">
+                    <div class="card-icon-box">
+                        <span class="card-icon">🧩</span>
+                    </div>
+                    <div class="card-title-area">
+                        <h3 class="card-title">Plugin Registry</h3>
+                        <span class="card-repo">llm-router-plugins</span>
+                    </div>
+                </div>
+                <p class="card-text">
+                    Central registry pattern for lazy plugin discovery and pipeline orchestration.
+                    Three independent registries: Masker, Guardrail, and Utils.
+                </p>
+                <div class="card-section">
+                    <h4 class="card-section-title">Features</h4>
+                    <div class="feature-list">
+                        <div class="feature-row">✓ Automatic discovery via <code>register()</code></div>
+                        <div class="feature-row">✓ Pipeline instantiation by identifier</div>
+                        <div class="feature-row">✓ Graceful error handling per plugin</div>
+                        <div class="feature-row">✓ Environment-driven activation</div>
+                    </div>
+                </div>
+                <div class="card-code">
+                    <code><span class="kw">class</span> <span class="cls">MyGuard</span>(HttpPluginInterface):</code>
+                    <code style="padding-left: 1.5rem;">name = <span class="str">&quot;my_guard&quot;</span></code>
+                    <br>
+                    <code style="padding-left: 1.5rem;"><span class="kw">def</span> <span class="cls">apply</span>(self, payload):</code>
+                    <code style="padding-left: 3rem;"><span class="kw">return</span> <span class="bool">True</span>, {}</code>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

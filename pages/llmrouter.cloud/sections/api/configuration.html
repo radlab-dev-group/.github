@@ -129,21 +129,6 @@
                 <td>Ordered list of guardrail strategies (request).</td>
                 <td>-</td>
             </tr>
-            <!--            <tr>-->
-            <!--                <td>LLM_ROUTER_FORCE_GUARDRAIL_RESPONSE</td>-->
-            <!--                <td>Force guardrail evaluation on every response before user receives the result.</td>-->
-            <!--                <td>False</td>-->
-            <!--            </tr>-->
-            <!--            <tr>-->
-            <!--                <td>LLM_ROUTER_GUARDRAIL_WITH_AUDIT_RESPONSE</td>-->
-            <!--                <td>Audits all guardrail decisions (response).</td>-->
-            <!--                <td>False</td>-->
-            <!--            </tr>-->
-            <!--            <tr>-->
-            <!--                <td>GUARDRAIL_STRATEGY_PIPELINE_RESPONSE</td>-->
-            <!--                <td>Ordered list of guardrail strategies (response).</td>-->
-            <!--                <td>-</td>-->
-            <!--            </tr>-->
             <tr>
                 <td>LLM_ROUTER_FORCE_MASKING</td>
                 <td>Each request payload will be fully masked.</td>
@@ -161,40 +146,60 @@
             </tr>
             <tr>
                 <td>LLM_ROUTER_GUARDRAIL_NASK_GUARD_HOST</td>
-                <td>Host and port address with the <code>naskguard</code>
-                    service running, <strong>NOTE!</strong> Read
-                    the plugin license before using the proposed model!
-                </td>
+                <td>Host and port address with the <code>naskguard</code> service running.</td>
                 <td>-</td>
             </tr>
             <tr>
                 <td>LLM_ROUTER_GUARDRAIL_SOJKA_GUARD_HOST</td>
-                <td>Host and port address with the <code>sojkaguard</code>
-                    service running.
-                </td>
+                <td>Host and port address with the <code>sojkaguard</code> service running.</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td>LLM_ROUTER_DEFAULT_EP_LANGUAGE</td>
+                <td>Default language parameter for supported endpoints.</td>
+                <td>en</td>
+            </tr>
+            <tr>
+                <td>LLM_ROUTER_DEFAULT_PROVIDER_MODEL</td>
+                <td>Default model used when none specified in request.</td>
                 <td>-</td>
             </tr>
             <tr>
                 <td>LLM_ROUTER_SERVICES_MONITOR_INTERVAL_SECONDS</td>
-                <td>Time interval to check services availability.
-                    Values lower than <code>1</code> will be treated as
-                    <strong>not-use monitor</strong> and monitor will not be started.
-                </td>
+                <td>Time interval to check services availability. Values lower than <code>1</code> disable monitoring.</td>
                 <td>5 seconds</td>
             </tr>
-            </tbody>
-
             <tr>
                 <td>LLM_ROUTER_KEEPALIVE_MODEL_MONITOR_INTERVAL_SECONDS</td>
                 <td>Keep alive model monitor time interval (seconds)</td>
                 <td>1 second</td>
             </tr>
-
             <tr>
                 <td>LLM_ROUTER_PROVIDER_MONITOR_INTERVAL_SECONDS</td>
                 <td>Models provider health check interval (in seconds)</td>
                 <td>5 second</td>
             </tr>
+            <tr>
+                <td>LLM_ROUTER_PLUGINS</td>
+                <td>Comma-separated list of enabled plugins (guardrails, maskers, utils).</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td>GUARDRAIL_PLUGINS</td>
+                <td>Specific guardrail plugins to enable.</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td>MASKER_PLUGINS</td>
+                <td>Specific masker plugins to enable.</td>
+                <td>fast_masker</td>
+            </tr>
+            <tr>
+                <td>UTIL_PLUGINS</td>
+                <td>Specific utility plugins to enable.</td>
+                <td>-</td>
+            </tr>
+            </tbody>
         </table>
 
         <h3 style="color: var(--fg); margin-top: 2.5rem;">Model Configuration (JSON)</h3>
