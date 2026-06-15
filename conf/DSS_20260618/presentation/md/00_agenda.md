@@ -1,4 +1,6 @@
-## Agenda (10:20 - 11:35 => 75 min, 65 min prezentacja + 10 min pytania)
+# Agenda
+
+(10:20 - 11:35 => 75 min, 65 min prezentacja + 10 min pytania)
 
 1. Wstęp - czego dotyczy tutorial? Korzyść dla uczestników (~2 min)
 
