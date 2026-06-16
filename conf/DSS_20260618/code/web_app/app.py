@@ -1,13 +1,15 @@
 import torch
+import os
 import numpy as np
+
+from sqlalchemy import func
 from transformers import AutoModelForSequenceClassification, AutoTokenizer
 from flask import Flask, render_template, request, jsonify, current_app
-from sqlalchemy import func
-import os
-from conf.DSS_20260618.code.web_app.models import db, Example, Annotation
+
+from code.web_app.models import db, Example, Annotation
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = f"sqlite:///{os.path.abspath('conf/DSS_20260618/code/web_app/data.db')}"
+app.config['SQLALCHEMY_DATABASE_URI'] = f"sqlite:///code/instance/data.db"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
 
@@ -17,7 +19,7 @@ TOKENIZERS = {}
 
 MODEL_PATHS = {
     "Polarity Model (Cross-Encoder)": "conf/DSS_20260618/output/polarity-model",
-    "Polish RoBERTa (Base)": "radlab/polish-roberta-base-sentiment"
+    # "Polish RoBERTa (Base)": "radlab/polish-roberta-base-sentiment"
 }
 
 def get_model(model_name):

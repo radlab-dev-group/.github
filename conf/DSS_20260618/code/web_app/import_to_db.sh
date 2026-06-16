@@ -18,7 +18,7 @@ echo "Importowanie danych z $IFILE do bazy data.db..."
 #
 export PYTHONPATH=$PYTHONPATH:$PROJECT_ROOT
 
-/usr/bin/python3.10 "code/web_app/import_data.py" \
+python3 "code/web_app/import_data.py" \
     --jsonl "$IFILE"
 
 echo "Import zakończony."
