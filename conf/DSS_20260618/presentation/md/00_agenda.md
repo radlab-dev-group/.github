@@ -1,11 +1,12 @@
 # Agenda
 
+W pliku [README](../../code/README.md) znajduje się opis skryptów wykorzystanych do przygotowania datasetu,
+na którym prowadzony jest tutorial.
+
 (10:20 - 11:35 => 75 min, 65 min prezentacja + 10 min pytania)
 
 1. [Wstęp - czego dotyczy tutorial? Korzyść dla uczestników (~2 min)](./01_wstep.md)
 
-W pliku [README](../../code/README.md) znajduje się opis skryptów wykorzystanych do przygotowania datasetu,
-na którym prowadzony jest tutorial.
 
 2. [Część teoretyczno-praktyczna (~25 + 5 min)](./02_teoria_i_praktyka.md)
    1. Augementacja, labelowanie
