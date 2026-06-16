@@ -127,3 +127,56 @@ python3 code/training/train_polarity_model.py \
 | `--wandb-project`   | `polar-twitteremo`                                                        | Nazwa projektu W&B                                   |
 | `--wandb-entity`    | `None`                                                                    | Entitet / team W&B                                   |
 | `--output-dir`      | `output/polarity-model`                                                   | Katalog zapisu modelu                                |
+
+---
+
+# 4. code/augmentation/convert_genai_to_training
+
+Konwertuje dane wyjściowe z `genai-classifier` na format akceptowany przez trenera modelu.
+Mapuje etykiety tekstowe (Pozytywna, Negatywna, Neutralna) na kolumny binarne oraz zapewnia
+obecność wymaganych pól (np. emocje) z domyślnymi wartościami.
+
+## Użycie z wiersza poleceń
+
+```bash
+python3 code/augmentation/convert_genai_to_training.py \
+    path/to/genai_output_clean_labels.jsonl \
+    path/to/training_format_output.jsonl
+```
+
+---
+
+# 5. code/web_app
+
+Aplikacja webowa (Flask) do wizualnej oceny działania modelu polaryzacji oraz ręcznej anotacji danych.
+Pozwala na porównanie predykcji modelu z opinią użytkownika i zapisywanie wyników w bazie SQLite.
+
+## Funkcje
+
+- Losowanie przykładów z bazy danych.
+- Automatyczna predykcja wybranym modelem (Transformers).
+- Interfejs do zapisywania ocen użytkownika.
+
+## Instalacja i uruchomienie
+
+Wymagany Python 3.10+.
+
+```bash
+# Uruchomienie aplikacji
+./conf/DSS_20260618/code/web_app/run_app.sh
+```
+
+## Import danych
+
+Aby zaimportować dane z formatu JSONL do bazy danych aplikacji:
+
+```bash
+./conf/DSS_20260618/code/web_app/import_to_db.sh path/to/data.jsonl
+```
+
+## Struktura plików aplikacji
+
+- `app.py`: Główny serwer Flask i logika predykcji.
+- `models.py`: Definicje tabel bazy danych (SQLAlchemy).
+- `import_data.py`: Skrypt do zasilania bazy danych z plików JSONL.
+- `templates/index.html`: Interfejs użytkownika (Bootstrap + JS).
