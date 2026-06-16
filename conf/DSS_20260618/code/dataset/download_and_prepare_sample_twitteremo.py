@@ -152,8 +152,10 @@ def download_and_prepare_valid(
 
     rows = list(subset)
 
-    print(f"[valid] Sampled {num_samples} examples out of {total} "
-          f"({len(used_indices)} taken by train, {len(available)} available).")
+    print(
+        f"[valid] Sampled {num_samples} examples out of {total} "
+        f"({len(used_indices)} taken by train, {len(available)} available)."
+    )
 
     _write_jsonl(rows, output_path)
     print(f"[valid] Written to '{output_path}'.")
@@ -196,7 +198,7 @@ def main(argv: list[str] | None = None) -> int:
         type=int,
         default=0,
         help="Number of random examples for validation -- disjoint set "
-             "from train (default: 0 = no validation)",
+        "from train (default: 0 = no validation)",
     )
     parser.add_argument(
         "--output-valid",
@@ -225,7 +227,9 @@ def main(argv: list[str] | None = None) -> int:
         if args.num_samples_valid > 0:
             rng = random.Random(args.seed)
             ds = load_dataset(
-                args.dataset, split=args.split, trust_remote_code=True,
+                args.dataset,
+                split=args.split,
+                trust_remote_code=True,
             )
             train_indices = set(rng.sample(range(len(ds)), args.num_samples))
 

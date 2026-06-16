@@ -24,7 +24,11 @@ import matplotlib.pyplot as plt
 
 
 CLASSES = ["negatywny", "pozytywny", "neutralny"]
-LABELS = {"negatywny": "Negatywny", "pozytywny": "Pozytywny", "neutralny": "Neutralny"}
+LABELS = {
+    "negatywny": "Negatywny",
+    "pozytywny": "Pozytywny",
+    "neutralny": "Neutralny",
+}
 COLORS = {"negatywny": "#d9534f", "pozytywny": "#5cb85c", "neutralny": "#f0ad4e"}
 
 
@@ -168,13 +172,17 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument(
         "--train",
         type=Path,
-        default=Path("resources/dataset/twitteremo/clarinpl-twitteremo-train-sample-5k.jsonl"),
+        default=Path(
+            "resources/dataset/twitteremo/clarinpl-twitteremo-train-sample-5k.jsonl"
+        ),
         help="Path to train JSONL file",
     )
     parser.add_argument(
         "--valid",
         type=Path,
-        default=Path("resources/dataset/twitteremo/clarinpl-twitteremo-valid-sample-500.jsonl"),
+        default=Path(
+            "resources/dataset/twitteremo/clarinpl-twitteremo-valid-sample-500.jsonl"
+        ),
         help="Path to validation JSONL file",
     )
     parser.add_argument(
