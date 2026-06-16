@@ -15,12 +15,12 @@ Usage:
         --seed 42
 """
 
-import argparse
+import sys
 import json
 import random
-import sys
-from pathlib import Path
+import argparse
 
+from pathlib import Path
 from datasets import load_dataset
 
 
