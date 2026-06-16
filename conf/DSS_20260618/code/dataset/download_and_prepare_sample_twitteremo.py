@@ -6,14 +6,13 @@ examples, and writes them to a JSONL file.
 
 Usage:
 
-    python3 dataset/download_and_prepare_sample_twitteremo.py \\
+    python3 code/dataset/download_and_prepare_sample_twitteremo.py \\
         --dataset clarin-pl/twitteremo \\
         --num-samples 5000 \\
-        --output clarinpl-twitteremo-train-sample-5k.jsonl \\
         --num-samples-valid 500 \\
-        --output-valid clarinpl-twitteremo-valid-sample-500.jsonl \\
+        --output resources/dataset/twitteremo/clarinpl-twitteremo-train-sample-5k.jsonl \\
+        --output-valid resources/dataset/twitteremo/twitteremo/clarinpl-twitteremo-valid-sample-500.jsonl \\
         --seed 42
-
 """
 
 import argparse
