@@ -1,7 +1,7 @@
 # 1. code/dataset/download_and_prepare_sample_twitteremo
 
 Pobiera losowy podzbiór przykładów z datasetu `clarin-pl/twitteremo`
-na HuggingFace Hub i zapisuje je do pliku JSONL.
+na [HuggingFace Hub](https://huggingface.co/datasets/clarin-pl/twitteremo) i zapisuje je do pliku JSONL.
 
 ## Instalacja
 
