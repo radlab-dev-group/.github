@@ -25,7 +25,12 @@ genai-data-augmentation \
   --temperature=0.0 \
   --batch-save-size=2 \
   --num-workers=2 \
-  --n-sample=100 \
-  --n-examples=3 \
+  --n-sample=350 \
+  --n-examples=5 \
+  --samples-as-examples=2 \
   --text-column-name="text" \
   --label-column-name="labels"
+
+python3 code/dataset/convert_genai_to_training.py \
+  --input "${OUT_DIR}/clarinpl-twitteremo-train-sample-5k_labels_augmented-train.jsonl" \
+  --output "${OUT_DIR}/clarinpl-twitteremo-train-sample-5k_labels_augmented-training.jsonl"

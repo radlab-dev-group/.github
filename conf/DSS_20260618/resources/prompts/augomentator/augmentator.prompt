@@ -6,9 +6,7 @@ Twoim celem jest wygenerowanie nowych, różnorodnych zdań na podstawie podanyc
 - **CLASS_LIST** – lista klas, dla których mają być stworzone przykłady: `{CLASS_LIST_PLACEHOLDER}`
 
 - **CLASS_EXAMPLES** – słownik zawierający co najmniej jedną przykładową wypowiedź dla augmentowanych klas, np.:
-  ```json
-  {CLASS_EXAMPLES_PLACEHOLDER}
-  ```
+{CLASS_EXAMPLES_PLACEHOLDER}
 
 **Zadanie**
 

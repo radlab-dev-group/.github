@@ -12,8 +12,11 @@ def convert_genai_to_training(input_path: Path, output_path: Path):
     """
     label_map = {
         "Pozytywna": "pozytywny",
+        "pozytywny": "pozytywny",
         "Negatywna": "negatywny",
-        "Neutralna": "neutralny"
+        "negatywny": "negatywny",
+        "Neutralna": "neutralny",
+        "neutralny": "neutralny",
     }
     
     all_labels = ["pozytywny", "negatywny", "neutralny"]
