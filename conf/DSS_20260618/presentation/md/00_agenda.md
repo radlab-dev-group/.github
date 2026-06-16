@@ -7,7 +7,6 @@ na którym prowadzony jest tutorial.
 
 1. [Wstęp - czego dotyczy tutorial? Korzyść dla uczestników (~2 min)](./01_wstep.md)
 
-
 2. [Część teoretyczno-praktyczna (~25 + 5 min)](./02_teoria_i_praktyka.md)
    1. Augementacja, labelowanie
    2. Klasyfikacja, Generowanie
