@@ -25,7 +25,7 @@ import wandb
 from datasets import Dataset as HFDataset
 from matplotlib import pyplot as plt
 from PIL import Image as PILImage
-from sklearn.metrics import accuracy_score, confusion_matrix, f1_score, precision_recall_fscore_support
+from sklearn.metrics import accuracy_score, confusion_matrix, precision_recall_fscore_support
 from transformers import (
     AutoModelForSequenceClassification,
     AutoTokenizer,
@@ -287,7 +287,7 @@ class ModelConfig:
     model_name: str = "radlab/polish-cross-encoder"
     num_epochs: int = 5
     batch_size: int = 32
-    learning_rate: float = 2e-5
+    learning_rate: float = 1e-5
     max_length: int = 128
     wandb_project: str = "polar-twitteremo"
     wandb_entity: str | None = None
@@ -433,6 +433,10 @@ def run(cfg: ModelConfig) -> Path:
             learning_rate=cfg.learning_rate,
             warmup_ratio=cfg.warmup_ratio,
             weight_decay=cfg.weight_decay,
+            gradient_accumulation_steps=2,
+            max_grad_norm=1.0,
+            lr_scheduler_type="cosine",
+            adam_epsilon=1e-6,
             logging_dir=str(cfg.output_dir / "logs"),
             logging_steps=max(1, min(50, len(train_ds) // (cfg.batch_size * 10))),
             logging_first_step=True,
@@ -546,8 +550,8 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument(
         "--learning-rate",
         type=float,
-        default=2e-5,
-        help="Learning rate (default: 2e-5)",
+        default=1e-5,
+        help="Learning rate (default: 1e-5)",
     )
     parser.add_argument(
         "--max-length",
