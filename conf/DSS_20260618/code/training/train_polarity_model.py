@@ -34,6 +34,7 @@ from transformers import (
     TrainerCallback,
     TrainingArguments,
     Trainer,
+    set_seed,
 )
 
 
@@ -294,6 +295,7 @@ class ModelConfig:
     output_dir: Path = field(default_factory=lambda: Path("output/polarity-model"))
     warmup_ratio: float = 0.1
     weight_decay: float = 0.01
+    seed: int = 42
 
 
 def run(cfg: ModelConfig) -> Path:
@@ -309,6 +311,9 @@ def run(cfg: ModelConfig) -> Path:
     Path
         Path to the saved model directory.
     """
+    # --- Reproducibility ---
+    set_seed(cfg.seed)
+
     # --- Tokenizer & datasets ---
     tokenizer = AutoTokenizer.from_pretrained(cfg.model_name)
     train_ds = _load_and_tokenize(cfg.train_path, tokenizer, cfg.max_length)
@@ -447,6 +452,7 @@ def run(cfg: ModelConfig) -> Path:
             metric_for_best_model="f1_macro",
             report_to=[],
             fp16=False,  # disabled to avoid CUDA issues on some setups
+            seed=cfg.seed,
         ),
         train_dataset=train_ds,
         eval_dataset=valid_ds,
@@ -575,6 +581,12 @@ def main(argv: list[str] | None = None) -> int:
         default=Path("output/polarity-model"),
         help="Directory to save the trained model (default: output/polarity-model)",
     )
+    parser.add_argument(
+        "--seed",
+        type=int,
+        default=42,
+        help="Random seed for reproducibility (default: 42)",
+    )
     args = parser.parse_args(argv)
 
     try:
@@ -596,6 +608,7 @@ def main(argv: list[str] | None = None) -> int:
             wandb_project=args.wandb_project,
             wandb_entity=args.wandb_entity,
             output_dir=args.output_dir,
+            seed=args.seed,
         )
         model_path = run(cfg)
         print(f"\nDone. Model saved to: {model_path}")
