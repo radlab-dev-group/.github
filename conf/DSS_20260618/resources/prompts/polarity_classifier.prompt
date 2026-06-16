@@ -37,7 +37,4 @@ json
 }
 ```
 
-**Instrukcja użycia**
-- Podaj jedynie tekst (np. tweet) jako wejście.
-- Model/anotator analizuje tekst według powyższych reguł.
-- Zwróć wynik w dokładnie określonym formacie JSON – **bez żadnego dodatkowego tekstu przed lub po**.
+Zwróć wynik w dokładnie określonym formacie JSON – **bez żadnego dodatkowego tekstu przed lub po**.
