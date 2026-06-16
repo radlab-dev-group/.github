@@ -10,7 +10,7 @@ mkdir -p "${OUT_DIR}"
 
 genai-classifier \
   --dataset-dir="${DATASET_DIR}" \
-  --prompts-dir=resources/prompts \
+  --prompts-dir=resources/prompts/classifier \
   --output-dir=${OUT_DIR} \
   --llm-router-url="${LLM_ROUTER_HOST}" \
   --model-name="${LLM_ROUTER_MODEL}" \
