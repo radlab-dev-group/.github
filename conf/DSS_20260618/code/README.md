@@ -1,4 +1,4 @@
-# 1. dataset — download_and_prepare_sample_twitteremo
+# 1. code/dataset/download_and_prepare_sample_twitteremo
 
 Pobiera losowy podzbiór przykładów z datasetu `clarin-pl/twitteremo`
 na HuggingFace Hub i zapisuje je do pliku JSONL.
@@ -48,7 +48,7 @@ python3 dataset/download_and_prepare_sample.py \
 
 ---
 
-# 2. dataset — visualize_class_distribution
+# 2. code/dataset/visualize_class_distribution
 
 Wizualizuje rozkład klas `negatywny`, `pozytywny` i `neutralny`
 w plikach JSONL (train / valid) jako wykres słupkowy PNG.
@@ -79,3 +79,51 @@ python3 code/dataset/visualize_class_distribution.py \
 | `--train`  | `resources/dataset/twitteremo/clarinpl-twitteremo-train-sample-5k.jsonl`  | Ścieżka do pliku train JSONL |
 | `--valid`  | `resources/dataset/twitteremo/clarinpl-twitteremo-valid-sample-500.jsonl` | Ścieżka do pliku valid JSONL |
 | `--output` | `resources/dataset/twitteremo/class_distribution.png`                     | Ścieżka wyjściowa obrazu PNG |
+
+---
+
+# 3. code/training/train_polarity_model
+
+Trenuje klasyfikator polaryzacji tekstu (pozytywny / negatywny / neutralny)
+na próbkach z twitteremo przy użyciu modelu base (domyślnie `radlab/polish-cross-encoder`)
+oraz loguje metryki do Weights & Biases.
+
+## Instalacja
+
+```bash
+pip install torch transformers wandb scikit-learn
+```
+
+## Użycie z wiersza poleceń
+
+```bash
+# Domyślne parametry
+python3 code/training/train_polarity_model.py
+
+# Pełna konfiguracja
+python3 code/training/train_polarity_model.py \
+    --train resources/dataset/twitteremo/clarinpl-twitteremo-train-sample-5k.jsonl \
+    --valid resources/dataset/twitteremo/clarinpl-twitteremo-valid-sample-500.jsonl \
+    --base-model-path radlab/polish-cross-encoder \
+    --num-epochs 5 \
+    --batch-size 32 \
+    --learning-rate 2e-5 \
+    --wandb-project polar-twitteremo \
+    --wandb-entity radlab \
+    --output-dir /mnt/local/models/dss-2026-06/polarity-model/twitter-emo-sample-5k
+```
+
+## Parametry
+
+| Parametr            | Domyślna wartość                                                          | Opis                                                 |
+|---------------------|---------------------------------------------------------------------------|------------------------------------------------------|
+| `--train`           | `resources/dataset/twitteremo/clarinpl-twitteremo-train-sample-5k.jsonl`  | Ścieżka do pliku train JSONL                         |
+| `--valid`           | `resources/dataset/twitteremo/clarinpl-twitteremo-valid-sample-500.jsonl` | Ścieżka do pliku valid JSONL                         |
+| `--base-model-path` | `radlab/polish-cross-encoder`                                             | Nazwa lub ścieżka do modelu bazowego (cross-encoder) |
+| `--num-epochs`      | `5`                                                                       | Liczba epok treningu                                 |
+| `--batch-size`      | `32`                                                                      | Rozmiar batcha                                       |
+| `--learning-rate`   | `2e-5`                                                                    | Learning rate                                        |
+| `--max-length`      | `128`                                                                     | Max długość sekwencji                                |
+| `--wandb-project`   | `polar-twitteremo`                                                        | Nazwa projektu W&B                                   |
+| `--wandb-entity`    | `None`                                                                    | Entitet / team W&B                                   |
+| `--output-dir`      | `output/polarity-model`                                                   | Katalog zapisu modelu                                |

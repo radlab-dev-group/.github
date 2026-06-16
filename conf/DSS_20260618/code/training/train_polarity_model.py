@@ -353,43 +353,72 @@ def run(cfg: ModelConfig) -> Path:
     class _MetricsCallback(TrainerCallback):
         """Log training loss, eval metrics, and confusion-matrix heatmap."""
 
+        def __init__(self):
+            super().__init__()
+            self._last_step = -1
+            self._buffer = {}
+
+        def _flush(self):
+            if self._buffer and self._last_step >= 0:
+                wandb.log(self._buffer, step=self._last_step)
+                self._buffer = {}
+
         def on_log(self, args: TrainingArguments, state, control, **kwargs):
             logs = kwargs.get("logs")
             if not logs or not wandb.run:
                 return
-            # Prefix logs that are not already prefixed
-            prefixed_logs = {}
+
+            if state.global_step != self._last_step:
+                self._flush()
+                self._last_step = state.global_step
+
+            # Unify metric names to ensure history is correctly tracked in W&B
             for k, v in logs.items():
                 if k.startswith("eval_"):
-                    # This comes from the Trainer's internal evaluation call
-                    prefixed_logs[k.replace("eval_", "eval/")] = v
+                    # Map eval_accuracy -> eval/accuracy
+                    self._buffer[k.replace("eval_", "eval/")] = v
                 elif k == "loss":
-                    prefixed_logs["train/loss"] = v
+                    # Intermediate training loss
+                    self._buffer["train/loss"] = v
+                elif k == "train_loss":
+                    # Final total loss - map to the same key as intermediate for a single curve
+                    self._buffer["train/loss"] = v
+                elif k == "learning_rate":
+                    self._buffer["train/learning_rate"] = v
+                elif k == "epoch":
+                    self._buffer["train/epoch"] = v
+                elif k.startswith("train_"):
+                    # Other final metrics: train_runtime, train_samples_per_second, etc.
+                    self._buffer[k.replace("train_", "train/")] = v
                 else:
-                    prefixed_logs[f"train/{k}"] = v
-            wandb.log(prefixed_logs, step=state.global_step)
+                    # Catch-all: prefix with train/ if not already prefixed
+                    if "/" not in k:
+                        self._buffer[f"train/{k}"] = v
+                    else:
+                        self._buffer[k] = v
 
         def on_evaluate(self, args, state, control, **kwargs):
             if not wandb.run:
                 return
-            
+
+            if state.global_step != self._last_step:
+                self._flush()
+                self._last_step = state.global_step
+
             # Confusion matrix
             trainer = kwargs.get("trainer")
             if trainer is None or trainer.eval_dataset is None:
                 return
-            
+
             output = trainer.predict(trainer.eval_dataset)
             preds = np.argmax(output.predictions, axis=1)
-            
-            wandb.log(
-                {"eval/confusion_matrix":
-                 _cm_heatmap_image(preds, output.label_ids, "eval")},
-                step=state.global_step,
+
+            self._buffer["eval/confusion_matrix"] = _cm_heatmap_image(
+                preds, output.label_ids, "eval"
             )
 
         def on_train_end(self, args, state, control, **kwargs):
-            # No-op since we log final metrics manually after trainer.train()
-            pass
+            self._flush()
 
     # --- Trainer ---
     # report_to=[] disables the built-in WandbCallback (which would call
@@ -405,7 +434,8 @@ def run(cfg: ModelConfig) -> Path:
             warmup_ratio=cfg.warmup_ratio,
             weight_decay=cfg.weight_decay,
             logging_dir=str(cfg.output_dir / "logs"),
-            logging_steps=min(100, max(1, len(train_ds) // cfg.batch_size)),
+            logging_steps=max(1, min(50, len(train_ds) // (cfg.batch_size * 10))),
+            logging_first_step=True,
             eval_strategy="epoch",
             save_strategy="epoch",
             save_total_limit=2,
@@ -426,20 +456,25 @@ def run(cfg: ModelConfig) -> Path:
     train_result = trainer.train()
 
     # --- Eval + classification report on the best model ---
+    # We disable the callback during the final manual evaluation to avoid
+    # double logging or conflicting with the final manual wandb.log.
+    trainer.pop_callback(_MetricsCallback)
+    
     pred_results = trainer.predict(valid_ds)
     eval_metrics = pred_results.metrics
     
-    # Prefix metrics with 'eval/final_' for better visibility in W&B
+    # Use unified metric names consistent with the callback
     final_metrics = {}
     for k, v in eval_metrics.items():
-        new_key = k.replace("test_", "eval/final_")
-        if not new_key.startswith("eval/"):
-            new_key = f"eval/final_{new_key}"
+        # Remove prefixes like 'test_' or 'eval_' and use 'eval/'
+        new_key = k.replace("test_", "").replace("eval_", "")
+        if "/" not in new_key:
+            new_key = f"eval/{new_key}"
         final_metrics[new_key] = v
 
     # Add CM for best model
     preds = np.argmax(pred_results.predictions, axis=1)
-    final_metrics["eval/final_confusion_matrix"] = _cm_heatmap_image(
+    final_metrics["eval/confusion_matrix"] = _cm_heatmap_image(
         preds, pred_results.label_ids, "best_model"
     )
     
