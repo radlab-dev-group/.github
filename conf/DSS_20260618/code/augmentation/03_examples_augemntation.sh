@@ -25,6 +25,7 @@ genai-data-augmentation \
   --temperature=0.0 \
   --batch-save-size=2 \
   --num-workers=2 \
-  --n-sample=0 \
+  --n-sample=100 \
+  --n-examples=3 \
   --text-column-name="text" \
   --label-column-name="labels"
