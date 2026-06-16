@@ -1,0 +1,97 @@
+import torch
+import numpy as np
+from transformers import AutoModelForSequenceClassification, AutoTokenizer
+from flask import Flask, render_template, request, jsonify, current_app
+from sqlalchemy import func
+import os
+from conf.DSS_20260618.code.web_app.models import db, Example, Annotation
+
+app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = f"sqlite:///{os.path.abspath('conf/DSS_20260618/code/web_app/data.db')}"
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db.init_app(app)
+
+# Cache for loaded models
+MODELS = {}
+TOKENIZERS = {}
+
+MODEL_PATHS = {
+    "Polarity Model (Cross-Encoder)": "conf/DSS_20260618/output/polarity-model",
+    "Polish RoBERTa (Base)": "radlab/polish-roberta-base-sentiment"
+}
+
+def get_model(model_name):
+    path = MODEL_PATHS.get(model_name)
+    if not path:
+        return None, None
+    
+    if model_name not in MODELS:
+        try:
+            MODELS[model_name] = AutoModelForSequenceClassification.from_pretrained(path)
+            TOKENIZERS[model_name] = AutoTokenizer.from_pretrained(path)
+            MODELS[model_name].eval()
+        except Exception as e:
+            print(f"Error loading model {model_name}: {e}")
+            return None, None
+            
+    return MODELS[model_name], TOKENIZERS[model_name]
+
+@app.route('/')
+def index():
+    return render_template('index.html', models=list(MODEL_PATHS.keys()))
+
+@app.route('/get_example', methods=['GET'])
+def get_example():
+    model_name = request.args.get('model_name')
+    if not model_name:
+        return jsonify({"error": "No model selected"}), 400
+    
+    # Get random example
+    example = Example.query.order_by(func.random()).first()
+    if not example:
+        return jsonify({"error": "No examples in database"}), 404
+    
+    # Automatic annotation with selected model
+    model, tokenizer = get_model(model_name)
+    model_label = "unknown"
+    if model and tokenizer:
+        inputs = tokenizer(example.text, return_tensors="pt", truncation=True, max_length=128)
+        with torch.no_grad():
+            outputs = model(**inputs)
+            probs = torch.nn.functional.softmax(outputs.logits, dim=-1)
+            prediction = torch.argmax(probs, dim=-1).item()
+            
+            # Map prediction to label names (assuming 0: neutralny, 1: negatywny, 2: pozytywny as per trainer)
+            mapping = {0: "neutralny", 1: "negatywny", 2: "pozytywny"}
+            model_label = mapping.get(prediction, "unknown")
+
+    return jsonify({
+        "id": example.id,
+        "text": example.text,
+        "model_label": model_label,
+        "model_name": model_name
+    })
+
+@app.route('/save_annotation', methods=['POST'])
+def save_annotation():
+    data = request.json
+    example_id = data.get('example_id')
+    user_label = data.get('user_label')
+    model_label = data.get('model_label')
+    model_name = data.get('model_name')
+    
+    annotation = Annotation(
+        example_id=example_id,
+        user_label=user_label,
+        model_label=model_label,
+        model_name=model_name
+    )
+    db.session.add(annotation)
+    db.session.commit()
+    
+    return jsonify({"status": "success"})
+
+if __name__ == '__main__':
+    # Ensure templates folder exists
+    os.makedirs('conf/DSS_20260618/code/web_app/templates', exist_ok=True)
+    app.run(host='0.0.0.0', port=5000)
