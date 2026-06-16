@@ -19,3 +19,7 @@ genai-classifier \
   --num-workers=2 \
   --n-sample=0 \
   --text-column-name="tekst"
+
+python3 code/dataset/convert_genai_to_training.py \
+  --input "${OUT_DIR}/clarinpl-twitteremo-train-sample-5k_clean_labels.jsonl" \
+  --output "${OUT_DIR}/clarinpl-twitteremo-train-sample-5k_training.jsonl"
