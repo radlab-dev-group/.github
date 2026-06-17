@@ -75,22 +75,30 @@ def get_example():
     # Automatic annotation with selected model
     model, tokenizer = get_model(model_name)
     model_label = "unknown"
+    error_message = None
+    
     if model and tokenizer:
-        inputs = tokenizer(example.text, return_tensors="pt", truncation=True, max_length=128).to(DEVICE)
-        with torch.no_grad():
-            outputs = model(**inputs)
-            probs = torch.nn.functional.softmax(outputs.logits, dim=-1)
-            prediction = torch.argmax(probs, dim=-1).item()
-            
-            # Map prediction to label names (assuming 0: neutralny, 1: negatywny, 2: pozytywny as per trainer)
-            mapping = {0: "neutralny", 1: "negatywny", 2: "pozytywny"}
-            model_label = mapping.get(prediction, "unknown")
+        try:
+            inputs = tokenizer(example.text, return_tensors="pt", truncation=True, max_length=128).to(DEVICE)
+            with torch.no_grad():
+                outputs = model(**inputs)
+                probs = torch.nn.functional.softmax(outputs.logits, dim=-1)
+                prediction = torch.argmax(probs, dim=-1).item()
+                
+                # Map prediction to label names (assuming 0: neutralny, 1: negatywny, 2: pozytywny as per trainer)
+                mapping = {0: "neutralny", 1: "negatywny", 2: "pozytywny"}
+                model_label = mapping.get(prediction, "unknown")
+        except Exception as e:
+            error_message = f"Błąd podczas inferencji: {e}"
+    else:
+        error_message = f"Nie można załadować modelu '{model_name}'. Wybierz inny model z listy, aby dokonać oceny."
 
     return jsonify({
         "id": example.id,
         "text": example.text,
         "model_label": model_label,
-        "model_name": model_name
+        "model_name": model_name,
+        "error": error_message
     })
 
 @app.route('/save_annotation', methods=['POST'])

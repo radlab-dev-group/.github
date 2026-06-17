@@ -34,6 +34,8 @@
         <div id="exampleCard" class="card p-4 d-none">
             <div class="example-text" id="textContainer"></div>
             
+            <div id="modelErrorAlert" class="alert alert-danger d-none" role="alert"></div>
+
             <div class="mb-4">
                 <strong>Automatyczna anotacja (<span id="modelNameDisplay"></span>):</strong>
                 <span id="modelLabelBadge" class="badge label-badge"></span>
@@ -41,7 +43,7 @@
 
             <div class="mb-3">
                 <strong>Twoja ocena:</strong>
-                <div class="mt-2">
+                <div id="userButtons" class="mt-2">
                     <button class="btn btn-outline-success user-label-btn" data-label="pozytywny">Pozytywny</button>
                     <button class="btn btn-outline-secondary user-label-btn" data-label="neutralny">Neutralny</button>
                     <button class="btn btn-outline-danger user-label-btn" data-label="negatywny">Negatywny</button>
@@ -83,7 +85,11 @@
             const res = await fetch(`/get_example?model_name=${encodeURIComponent(modelName)}`);
             const data = await res.json();
             
-            if (data.error) {
+            const errorAlert = document.getElementById('modelErrorAlert');
+            const userButtons = document.getElementById('userButtons').querySelectorAll('button');
+            const badge = document.getElementById('modelLabelBadge');
+
+            if (data.error && !data.id) {
                 alert(data.error);
                 return;
             }
@@ -92,9 +98,18 @@
             document.getElementById('textContainer').innerText = data.text;
             document.getElementById('modelNameDisplay').innerText = data.model_name;
             
-            const badge = document.getElementById('modelLabelBadge');
-            badge.innerText = data.model_label;
-            badge.className = 'badge label-badge ' + getBadgeClass(data.model_label);
+            if (data.error) {
+                errorAlert.innerText = data.error;
+                errorAlert.classList.remove('d-none');
+                badge.innerText = 'BŁĄD';
+                badge.className = 'badge label-badge bg-dark';
+                userButtons.forEach(btn => btn.disabled = true);
+            } else {
+                errorAlert.classList.add('d-none');
+                badge.innerText = data.model_label;
+                badge.className = 'badge label-badge ' + getBadgeClass(data.model_label);
+                userButtons.forEach(btn => btn.disabled = false);
+            }
             
             document.getElementById('exampleCard').classList.remove('d-none');
             updateStats();
