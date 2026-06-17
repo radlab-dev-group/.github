@@ -59,9 +59,10 @@ curl -fsSL https://ollama.com/install.sh | sh
 ollama serve &
 ```
 
-### Pobranie i uruchomienie modeli (Bielik oraz PLLuM)
+### Pobranie i uruchomienie modeli (Bielik, PLLuM oraz gpt-oss)
 
-Bielik jest dostępny bezpośrednio w oficjalnej bibliotece Ollama. PLLuM można uruchomić, korzystając z repozytoriów na
+Bielik oraz gpt-oss są dostępne bezpośrednio w oficjalnej bibliotece Ollama. PLLuM można uruchomić, korzystając z
+repozytoriów na
 Hugging Face:
 
 ```bash
@@ -70,6 +71,9 @@ ollama run SpeakLeash/bielik-minitron-7B-v3.0-instruct
 
 # Model PLLuM (poprzez bibliotekę Hugging Face - GGUF)
 ollama run hf.co/bartowski/Llama-PLLuM-70B-chat-2512-GGUF:Q4_K_M
+
+# Model gpt-oss (duży model 120B od OpenAI, wymaga ok. 65 GB pamięci lub np 3x24GB)
+ollama run gpt-oss:120b
 ```
 
 ### Instalacja (macOS)
@@ -161,7 +165,7 @@ huggingface-cli download <model-repo> --include "*.gguf*" --local-dir models/
 | **Łatwość konfiguracji** |     Średnia     |         Łatwa         |         Trudna          |
 | **Wydajność (GPU)**      |  Bardzo wysoka  |        Wysoka         |         Wysoka          |
 | **Wydajność (CPU)**      |      Brak       |         Dobra         |      Bardzo dobra       |
-| **Dla modeli 70B+**      |  ✅ (multi-GPU)  | ⚠️ (wymaga GGUF/RAM)  |  ⚠️ (wymaga GGUF/RAM)   |
+| **Dla modeli 120B+**     |  ✅ (multi-GPU)  | ⚠️ (wymaga GGUF/RAM)  |  ⚠️ (wymaga GGUF/RAM)   |
 
 ---
 

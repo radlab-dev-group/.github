@@ -11,9 +11,9 @@ Poniższa tabela przedstawia wymagania dla każdego z kroków tutorialu.
 | Komponent  | Minimalne             | Zalecane                   | Uwagi                                                                                          |
 |------------|-----------------------|----------------------------|------------------------------------------------------------------------------------------------|
 | **CPU**    | 4 rdzenie             | 8+ rdzeni                  | Przy labelowaniu/augmentacji batchowej wielowątkowej więcej rdzeni = szybciej                  |
-| **RAM**    | 16 GB                 | 32 GB+                     | Przy modelach 7B (Bielik) wystarczy 16GB, dla 70B (PLLuM) zalecane 64GB+ (jeśli bez GPU)       |
-| **Dysk**   | 50 GB wolnego miejsca | 200 GB+                    | Bielik (5-8 GB), PLLuM (40-140 GB). Modele, venvy i datasety szybko zajmują miejsce            |
-| **GPU**    | Nieobowiązkowe        | NVIDIA GPU z 24-80 GB VRAM | Bielik: 8GB VRAM (np. RTX 3060/4060). PLLuM: min. 48GB (np. A6000) dla Q4 lub 2x80GB dla FP16  |
+| **RAM**    | 16 GB                 | 32-128 GB+                 | 7B: 16GB, 70B: 64GB+, 120B: 96GB+ (zalecane przy braku GPU)                                    |
+| **Dysk**   | 50 GB wolnego miejsca | 250 GB+                    | Bielik (~5GB), PLLuM (~40GB), gpt-oss (~65GB). Modele i datasety zajmują dużo miejsca          |
+| **GPU**    | Nieobowiązkowe        | NVIDIA GPU z 24-80 GB VRAM | Bielik: 8GB, PLLuM: 48GB+ (Q4), gpt-oss: 80GB (lub multi-GPU)                                  |
 | **System** | Linux / macOS 13+     | Linux (Ubuntu 22.04+)      | Linux jest platformą docelową; macOS z Apple Silicon działa dla Ollama/llama.cpp, ale VLLM nie |
 
 ---
