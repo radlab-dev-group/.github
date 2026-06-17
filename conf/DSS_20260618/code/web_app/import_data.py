@@ -1,7 +1,7 @@
 import json
 import argparse
 from pathlib import Path
-from web_app.models import create_app, db, Example
+from code.web_app.models import create_app, db, Example
 
 def import_data(jsonl_path, db_path):
     app = create_app(db_path)
