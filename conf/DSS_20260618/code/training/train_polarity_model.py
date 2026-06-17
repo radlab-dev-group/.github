@@ -7,7 +7,7 @@ Usage:
     python3 code/training/train_polarity_model.py \\
         --train resources/dataset/twitteremo/clarinpl-twitteremo-train-sample-5k.jsonl \\
         --valid resources/dataset/twitteremo/clarinpl-twitteremo-valid-sample-500.jsonl \\
-        --base-model-path radlab/polish-cross-encoder \\
+        --base-model-path allegro/herbert-base-cased \\
         --wandb-project polar-twitteremo \\
         --output-dir /mnt/local/models/dss-2026-06/polarity-model/twitter-emo-sample-5k
 """
@@ -285,7 +285,7 @@ class ModelConfig:
 
     train_path: Path
     valid_path: Path
-    model_name: str = "radlab/polish-cross-encoder"
+    model_name: str = "allegro/herbert-base-cased"
     num_epochs: int = 5
     batch_size: int = 32
     learning_rate: float = 1e-5
@@ -538,8 +538,8 @@ def main(argv: list[str] | None = None) -> int:
     )
     parser.add_argument(
         "--base-model-path",
-        default="radlab/polish-cross-encoder",
-        help="Base model name or path for the cross-encoder (default: radlab/polish-cross-encoder)",
+        default="allegro/herbert-base-cased",
+        help="Base model name or path for the cross-encoder (default: allegro/herbert-base-cased)",
     )
     parser.add_argument(
         "--num-epochs",
