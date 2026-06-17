@@ -151,32 +151,36 @@ def get_stats():
         # Get all annotations for this model
         model_annotations = Annotation.query.filter_by(model_name=model_name).all()
         model_total = len(model_annotations)
-        
+
         if model_total > 0:
             correct = 0
             for ann in model_annotations:
                 # Count distribution
                 label = ann.model_label
                 model_distribution[label] = model_distribution.get(label, 0) + 1
-                
+
                 # Count correct predictions
                 if ann.user_label == ann.model_label:
                     correct += 1
-            
+
             accuracy = (correct / model_total) * 100
 
     # Progress stats: annotated vs total
     total_examples = Example.query.count()
-    annotated_examples = db.session.query(func.count(func.distinct(Annotation.example_id))).scalar()
+    annotated_examples = db.session.query(
+        func.count(func.distinct(Annotation.example_id))
+    ).scalar()
 
-    return jsonify({
-        "distribution": distribution, 
-        "accuracy": accuracy, 
-        "model_distribution": model_distribution,
-        "model_total": model_total,
-        "total_examples": total_examples,
-        "annotated_examples": annotated_examples
-    })
+    return jsonify(
+        {
+            "distribution": distribution,
+            "accuracy": accuracy,
+            "model_distribution": model_distribution,
+            "model_total": model_total,
+            "total_examples": total_examples,
+            "annotated_examples": annotated_examples,
+        }
+    )
 
 
 if __name__ == "__main__":
