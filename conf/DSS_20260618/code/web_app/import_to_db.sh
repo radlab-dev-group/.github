@@ -1,7 +1,9 @@
 #!/bin/bash
 
 # Skrypt do importu danych z pliku JSONL do bazy danych aplikacji webowej.
-# Przykład użycia: ./import_to_db.sh resources/dataset/twitteremo/genailabelled/clarinpl-twitteremo-train-sample-5k_training.jsonl
+# Przykład użycia: ./code/web_app/import_to_db.sh resources/dataset/twitteremo/genailabelled/clarinpl-twitteremo-train-sample-5k_training.jsonl
+# Uruchomienie z katalogu projektu (./):
+#   bash code/web_app/import_to_db.sh path/to/data.jsonl
 
 IFILE=$1
 
@@ -10,15 +12,10 @@ if [ -z "$IFILE" ]; then
     exit 1
 fi
 
-# Ścieżka do bazy danych (absolutna dla pewności)
-#DB_PATH="${`pwd`}/code/web_app/data.db"
-PROJECT_ROOT="code"
+echo "Importowanie danych z $IFILE do bazy instance/data.db..."
 
-echo "Importowanie danych z $IFILE do bazy data.db..."
-#
-export PYTHONPATH=$PYTHONPATH:$PROJECT_ROOT
+export PYTHONPATH="$PYTHONPATH:$(pwd)"
 
-python3 "code/web_app/import_data.py" \
-    --jsonl "$IFILE"
+python3 "code/web_app/import_data.py" --jsonl "$IFILE"
 
 echo "Import zakończony."

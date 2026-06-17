@@ -4,6 +4,12 @@ from pathlib import Path
 
 db = SQLAlchemy()
 
+# Resolve database path relative to this file's location
+_WEB_APP_DIR = Path(__file__).resolve().parent
+_PROJECT_ROOT = _WEB_APP_DIR.parent.parent
+INSTANCE_DIR = _PROJECT_ROOT / "instance"
+INSTANCE_DIR.mkdir(parents=True, exist_ok=True)
+
 class Example(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     text = db.Column(db.Text, nullable=False)
@@ -17,9 +23,11 @@ class Annotation(db.Model):
     user_label = db.Column(db.String(50))
     timestamp = db.Column(db.DateTime, server_default=db.func.now())
 
-def create_app(db_path="sqlite:///data.db"):
+def create_app(db_path=None):
+    if db_path is None:
+        db_path = f"sqlite:///{INSTANCE_DIR / 'data.db'}"
+    
     app = Flask(__name__)
-    app.config['SQLALCHEMY_DATABASE_DATA_PATH'] = db_path
     app.config['SQLALCHEMY_DATABASE_URI'] = db_path
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     

@@ -1,15 +1,30 @@
 import torch
 import os
+import sys
 import numpy as np
+
+from pathlib import Path
 
 from sqlalchemy import func
 from transformers import AutoModelForSequenceClassification, AutoTokenizer
 from flask import Flask, render_template, request, jsonify, current_app
 
+# Resolve paths relative to this file's location
+APP_DIR = Path(__file__).resolve().parent  # code/web_app
+PROJECT_ROOT = APP_DIR.parent.parent      # conf/DSS_20260618
+INSTANCE_DIR = PROJECT_ROOT / "instance"  # instance/
+INSTANCE_DIR.mkdir(parents=True, exist_ok=True)
+
+# Database path relative to instance/ directory
+DB_PATH = INSTANCE_DIR / "data.db"
+
+# Template path relative to this script
+TEMPLATE_DIR = APP_DIR / "templates"
+
 from code.web_app.models import db, Example, Annotation
 
-app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = f"sqlite:///code/instance/data.db"
+app = Flask(__name__, template_folder=str(TEMPLATE_DIR))
+app.config['SQLALCHEMY_DATABASE_URI'] = f"sqlite:///{DB_PATH}"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
 
@@ -18,7 +33,7 @@ MODELS = {}
 TOKENIZERS = {}
 
 MODEL_PATHS = {
-    "Polarity Model (Cross-Encoder)": "conf/DSS_20260618/output/polarity-model",
+    "Polarity Model (Cross-Encoder)": str(PROJECT_ROOT / "output/polarity-model"),
     # "Polish RoBERTa (Base)": "radlab/polish-roberta-base-sentiment"
 }
 
@@ -94,6 +109,4 @@ def save_annotation():
     return jsonify({"status": "success"})
 
 if __name__ == '__main__':
-    # Ensure templates folder exists
-    os.makedirs('conf/DSS_20260618/code/web_app/templates', exist_ok=True)
     app.run(host='0.0.0.0', port=5000)

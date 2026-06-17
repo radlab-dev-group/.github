@@ -27,8 +27,19 @@ def import_data(jsonl_path, db_path):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--jsonl", required=True)
-    parser.add_argument("--db", default="sqlite:///data.db")
+    parser.add_argument("--jsonl", required=True, help="Ścieżka do pliku JSONL")
+    parser.add_argument("--db", default=None, help="Ścieżka do bazy (domyślnie instance/data.db)")
     args = parser.parse_args()
     
-    import_data(args.jsonl, args.db)
+    import os
+    from pathlib import Path
+    
+    # Resolve database path relative to instance/ directory
+    if args.db is None:
+        script_dir = Path(__file__).resolve().parent
+        project_root = script_dir.parent.parent
+        db_path = f"sqlite:///{project_root / 'instance' / 'data.db'}"
+    else:
+        db_path = args.db
+    
+    import_data(args.jsonl, db_path)
