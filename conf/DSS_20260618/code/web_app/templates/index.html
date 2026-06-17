@@ -19,6 +19,16 @@
 <body>
     <div class="container">
         <h2 class="text-center mb-4">Ocena Modelu Polaryzacji</h2>
+
+        <div class="mb-4">
+            <div class="d-flex justify-content-between mb-1">
+                <span class="text-muted small">Postęp anotacji: <span id="progressText">0/0</span></span>
+                <span id="progressPercent" class="text-muted small">0%</span>
+            </div>
+            <div class="progress" style="height: 10px;">
+                <div id="overallProgressBar" class="progress-bar bg-success" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+        </div>
         
         <div class="card p-4 mb-4">
             <div class="mb-3">
@@ -170,6 +180,23 @@
             // Update Charts
             updateChart('distributionChart', statsChart, data.distribution, (newChart) => statsChart = newChart);
             updateModelBarChart(data.model_distribution);
+
+            // Update Overall Progress
+            updateOverallProgress(data.annotated_examples, data.total_examples);
+        }
+
+        function updateOverallProgress(annotated, total) {
+            const progressText = document.getElementById('progressText');
+            const progressPercent = document.getElementById('progressPercent');
+            const progressBar = document.getElementById('overallProgressBar');
+            
+            if (total > 0) {
+                const percent = (annotated / total * 100).toFixed(1);
+                progressText.innerText = `${annotated} / ${total}`;
+                progressPercent.innerText = `${percent}%`;
+                progressBar.style.width = `${percent}%`;
+                progressBar.setAttribute('aria-valuenow', percent);
+            }
         }
 
         function updateModelBarChart(distribution) {

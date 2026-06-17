@@ -165,11 +165,17 @@ def get_stats():
             
             accuracy = (correct / model_total) * 100
 
+    # Progress stats: annotated vs total
+    total_examples = Example.query.count()
+    annotated_examples = db.session.query(func.count(func.distinct(Annotation.example_id))).scalar()
+
     return jsonify({
         "distribution": distribution, 
         "accuracy": accuracy, 
         "model_distribution": model_distribution,
-        "model_total": model_total
+        "model_total": model_total,
+        "total_examples": total_examples,
+        "annotated_examples": annotated_examples
     })
 
 
