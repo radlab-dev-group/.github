@@ -21,12 +21,3 @@ Prezentacja składa się z następujących sekcji:
 4. **Technikalia** — sprzęt, instalacja, LLM router, labelowanie, augmentacja
 5. **Wnioski** — podsumowanie i wnioski
 6. **Uczenie** — szczegóły procesu uczenia modelu
-
-## Generowanie PowerPoint
-
-Pierwsza wersja PowerPoint została wygenerowana na podstawie plików Markdown:
-
-```bash
-cd pptx
-python generate_pptx_from_md_dss2026.py
-```
