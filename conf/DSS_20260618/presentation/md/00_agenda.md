@@ -9,10 +9,10 @@ na którym prowadzony jest tutorial.
 
 2. [Część teoretyczno-praktyczna (~25 + 5 min)](02_00_teoria_i_praktyka.md)
    1. [Augementacja, labelowanie](02_01_augmentacja_i_labelowanie.md)
-   2. Klasyfikacja, Generowanie
-   3. Human In The Loop, Active Learning
-   4. Połaczenie kroków 1-3 w pętlę.
-   5. Anotacja (~5 min)
+   2. [Klasyfikacja, Generowanie](02_02_klasyfikacja_a_generowanie.md)
+   3. [Human In The Loop, Active Learning](02_03_hitl_al.md)
+   4. [Połaczenie kroków 1-3 w pętlę](02_04_hitl_al_loop_ml.md)
+   5. [Anotacja live (~5 min)](https://dss2026.radlab.dev/)
 
 3. [Część techniczna (~25 min)](./03_technikalia.md)
    1. Wymagania sprzętowo-systemowe
