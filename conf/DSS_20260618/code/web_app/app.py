@@ -33,8 +33,8 @@ MODELS = {}
 TOKENIZERS = {}
 
 MODEL_PATHS = {
-    "Polarity Model (Cross-Encoder)": str(PROJECT_ROOT / "output/polarity-model"),
-    # "Polish RoBERTa (Base)": "radlab/polish-roberta-base-sentiment"
+    "twitter-emo-sample-5k-manual": "/mnt/local/models/dss-2026-06/polarity-model/twitter-emo-sample-5k-manual",
+    "5k-manual+1.7k-augmented": "/mnt/local/models/dss-2026-06/polarity-model/twitter-emo-sample-5k-manual-1_7k-augmented",
 }
 
 def get_model(model_name):
