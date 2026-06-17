@@ -6,7 +6,8 @@ Powrót do [agendy](00_agenda.md).
 
 ## Czym jest LLM Router?
 
-[LLM Router](https://llm-router.cloud/) to **open-source AI Gateway** (w całości na Apache 2.0) 
+[LLM Router](https://llm-router.cloud/) to **open-source AI Gateway** 
+(w całości na [Apache 2.0](https://github.com/radlab-dev-group/llm-router)) 
 dodający warstwę pośredniczącą między aplikacją a dostawcą LLM.
 W czasie rzeczywistym kontroluje ruch, dystrybuuje obciążenie względem providerów konkretnego modelu
 oraz umożliwia analizę wchodzących i wychodzących zapytań pod kątem bezpieczeństwa (maskowanie, anonimizacja, treści
