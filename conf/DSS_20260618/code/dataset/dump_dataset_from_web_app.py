@@ -38,13 +38,23 @@ ALGORITHM OPIS WYBORU PRZYKŁADU DO DUMPA:
 
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 MODEL_PATH = "/mnt/local/models/dss-2026-06/polarity-model/twitter-emo-sample-5k-manual-1_7k-augmented"
-DEFAULT_OUTPUT_FILE = PROJECT_ROOT / "resources" / "dataset" / "twitteremo" / "active_learning" / "active_learning_dump.jsonl"
+DEFAULT_OUTPUT_FILE = (
+    PROJECT_ROOT
+    / "resources"
+    / "dataset"
+    / "twitteremo"
+    / "active_learning"
+    / "active_learning_dump.jsonl"
+)
+
 
 def load_model(model_name):
     if model_name and Path(model_name).exists():
         try:
             print(f"Loading model from {model_name} on {DEVICE}...")
-            model = AutoModelForSequenceClassification.from_pretrained(model_name).to(DEVICE)
+            model = AutoModelForSequenceClassification.from_pretrained(
+                model_name
+            ).to(DEVICE)
             tokenizer = AutoTokenizer.from_pretrained(model_name)
             model.eval()
             return model, tokenizer
@@ -52,8 +62,11 @@ def load_model(model_name):
             print(f"Warning: Could not load model from {model_name}: {e}")
     print("Cannot found model")
 
+
 def predict(text, model, tokenizer):
-    inputs = tokenizer(text, return_tensors="pt", truncation=True, max_length=128).to(DEVICE)
+    inputs = tokenizer(
+        text, return_tensors="pt", truncation=True, max_length=128
+    ).to(DEVICE)
     with torch.no_grad():
         outputs = model(**inputs)
         probs = torch.nn.functional.softmax(outputs.logits, dim=-1)
@@ -62,33 +75,45 @@ def predict(text, model, tokenizer):
         mapping = {0: "neutralny", 1: "negatywny", 2: "pozytywny"}
         return mapping.get(prediction, "unknown")
 
+
 def dump_dataset(model_path=None, output_path=None):
     app = create_app()
     model, tokenizer = load_model(model_path)
-    
+
     if output_path is None:
         output_path = DEFAULT_OUTPUT_FILE
-    
+
     output_path = Path(output_path)
     output_path.parent.mkdir(parents=True, exist_ok=True)
-    
+
     classes = ["pozytywny", "negatywny", "neutralny"]
-    emotions = ["radość", "smutek", "zaufanie", "wstręt", "strach", "gniew", "przeczuwanie", "zdziwienie", "ambiwalentny", "sarkazm"]
-    
+    emotions = [
+        "radość",
+        "smutek",
+        "zaufanie",
+        "wstręt",
+        "strach",
+        "gniew",
+        "przeczuwanie",
+        "zdziwienie",
+        "ambiwalentny",
+        "sarkazm",
+    ]
+
     with app.app_context():
         examples = Example.query.all()
         print(f"Found {len(examples)} examples to process.")
-        
+
         manual_count = 0
         model_count = 0
-        
-        with open(output_path, 'w', encoding='utf-8') as f:
+
+        with open(output_path, "w", encoding="utf-8") as f:
             for ex in tqdm(examples, desc="Dumping dataset"):
                 annotations = Annotation.query.filter_by(example_id=ex.id).all()
                 user_labels = [a.user_label for a in annotations if a.user_label]
-                
+
                 final_label = None
-                
+
                 if not user_labels:
                     # Case 1: No manual annotation
                     final_label = predict(ex.text, model, tokenizer)
@@ -102,8 +127,11 @@ def dump_dataset(model_path=None, output_path=None):
                     manual_count += 1
                     counts = Counter(user_labels)
                     most_common = counts.most_common()
-                    
-                    if len(most_common) > 1 and most_common[0][1] == most_common[1][1]:
+
+                    if (
+                        len(most_common) > 1
+                        and most_common[0][1] == most_common[1][1]
+                    ):
                         # Case 2.2.a: Tie (50-50 or similar)
                         model_label = predict(ex.text, model, tokenizer)
                         # Add model's vote to the pool and re-evaluate
@@ -111,27 +139,35 @@ def dump_dataset(model_path=None, output_path=None):
                         final_label = Counter(user_labels).most_common(1)[0][0]
                     else:
                         final_label = most_common[0][0]
-                
+
                 # Build result object
                 result = {"text": ex.text}
                 for cls in classes:
                     result[cls] = 1 if cls == final_label else 0
                 for emo in emotions:
                     result[emo] = 0
-                
+
                 f.write(json.dumps(result, ensure_ascii=False) + "\n")
-                
+
     print(f"\nExport finished. Saved to {output_path}")
     print(f"Summary statistics:")
     print(f"  - Total examples: {len(examples)}")
     print(f"  - Manual annotations used: {manual_count}")
     print(f"  - Model predictions used: {model_count}")
 
+
 if __name__ == "__main__":
     import argparse
+
     parser = argparse.ArgumentParser()
-    parser.add_argument("--model-path", default=MODEL_PATH, help="Path to the model for predictions")
-    parser.add_argument("--output-path", default=str(DEFAULT_OUTPUT_FILE), help="Path to the output JSONL file")
+    parser.add_argument(
+        "--model-path", default=MODEL_PATH, help="Path to the model for predictions"
+    )
+    parser.add_argument(
+        "--output-path",
+        default=str(DEFAULT_OUTPUT_FILE),
+        help="Path to the output JSONL file",
+    )
     args = parser.parse_args()
-    
+
     dump_dataset(args.model_path, args.output_path)

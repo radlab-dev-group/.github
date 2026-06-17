@@ -25,7 +25,11 @@ import wandb
 from datasets import Dataset as HFDataset
 from matplotlib import pyplot as plt
 from PIL import Image as PILImage
-from sklearn.metrics import accuracy_score, confusion_matrix, precision_recall_fscore_support
+from sklearn.metrics import (
+    accuracy_score,
+    confusion_matrix,
+    precision_recall_fscore_support,
+)
 from transformers import (
     AutoModelForSequenceClassification,
     AutoTokenizer,
@@ -51,6 +55,7 @@ NUM_LABELS = len(LABEL_NAMES)
 # Metrics
 # ---------------------------------------------------------------------------
 
+
 def _compute_metrics(p: EvalPrediction) -> Dict[str, float]:
     """Compute accuracy and macro F1 from evaluation predictions.
 
@@ -66,31 +71,31 @@ def _compute_metrics(p: EvalPrediction) -> Dict[str, float]:
     """
     preds = np.argmax(p.predictions, axis=1)
     labels = p.label_ids
-    
+
     # Global metrics
     acc = accuracy_score(labels, preds)
     precision_macro, recall_macro, f1_macro, _ = precision_recall_fscore_support(
         labels, preds, average="macro", zero_division=0
     )
-    
+
     metrics = {
         "accuracy": acc,
         "f1_macro": f1_macro,
         "precision_macro": precision_macro,
         "recall_macro": recall_macro,
     }
-    
+
     # Per-class metrics
     precision, recall, f1, support = precision_recall_fscore_support(
         labels, preds, average=None, labels=list(range(NUM_LABELS)), zero_division=0
     )
-    
+
     for i, label_name in LABEL_MAP.items():
         metrics[f"f1_{label_name}"] = f1[i]
         metrics[f"precision_{label_name}"] = precision[i]
         metrics[f"recall_{label_name}"] = recall[i]
         metrics[f"support_{label_name}"] = int(support[i])
-        
+
     return metrics
 
 
@@ -98,8 +103,10 @@ def _compute_metrics(p: EvalPrediction) -> Dict[str, float]:
 # W&B helpers
 # ---------------------------------------------------------------------------
 
-def _cm_heatmap_image(preds: np.ndarray, true_labels: np.ndarray,
-                      tag: str) -> wandb.Image:
+
+def _cm_heatmap_image(
+    preds: np.ndarray, true_labels: np.ndarray, tag: str
+) -> wandb.Image:
     """Render a confusion-matrix heatmap as a ``wandb.Image`` via matplotlib.
 
     Uses ``"viridis"`` colormap and a white figure background so the heatmap
@@ -113,10 +120,12 @@ def _cm_heatmap_image(preds: np.ndarray, true_labels: np.ndarray,
     im = ax.imshow(cm, interpolation="nearest", cmap="viridis", norm=norm)
     ax.figure.colorbar(im, ax=ax, fraction=0.046)
 
-    ax.set(xticks=list(range(NUM_LABELS)),
-           xticklabels=LABEL_NAMES,
-           yticks=list(range(NUM_LABELS)),
-           yticklabels=LABEL_NAMES)
+    ax.set(
+        xticks=list(range(NUM_LABELS)),
+        xticklabels=LABEL_NAMES,
+        yticks=list(range(NUM_LABELS)),
+        yticklabels=LABEL_NAMES,
+    )
     ax.set_ylabel("true label")
     ax.set_xlabel("predicted label")
     ax.set_title(f"Confusion matrix ({tag})")
@@ -124,9 +133,14 @@ def _cm_heatmap_image(preds: np.ndarray, true_labels: np.ndarray,
     for i in range(NUM_LABELS):
         for j in range(NUM_LABELS):
             val = cm[i, j]
-            ax.text(j, i, str(int(val)),
-                    ha="center", va="center",
-                    color="white" if norm(val) > 0.5 else "black")
+            ax.text(
+                j,
+                i,
+                str(int(val)),
+                ha="center",
+                va="center",
+                color="white" if norm(val) > 0.5 else "black",
+            )
 
     buf = io.BytesIO()
     fig.savefig(buf, format="png", bbox_inches="tight", dpi=150)
@@ -139,6 +153,7 @@ def _cm_heatmap_image(preds: np.ndarray, true_labels: np.ndarray,
 # ---------------------------------------------------------------------------
 # Data loading
 # ---------------------------------------------------------------------------
+
 
 def _load_samples(path: Path) -> HFDataset:
     """Load samples from a JSONL file into a HuggingFace Dataset.
@@ -175,7 +190,11 @@ def _to_label(obj: dict) -> int | None:
         Class index (0=neutralny, 1=negatywny, 2=pozytywny) or
         ``None`` when all labels are zero.
     """
-    p, n, ne = obj.get("pozytywny", 0), obj.get("negatywny", 0), obj.get("neutralny", 0)
+    p, n, ne = (
+        obj.get("pozytywny", 0),
+        obj.get("negatywny", 0),
+        obj.get("neutralny", 0),
+    )
     if n == 1:
         return 1
     if p == 1:
@@ -238,7 +257,9 @@ def _token_collate(
         Batched tensors with ``input_ids``, ``attention_mask``, ``labels``.
     """
     input_ids = torch.stack([torch.tensor(f["input_ids"]) for f in features])
-    attention_mask = torch.stack([torch.tensor(f["attention_mask"]) for f in features])
+    attention_mask = torch.stack(
+        [torch.tensor(f["attention_mask"]) for f in features]
+    )
     labels = torch.tensor([f["label"] for f in features])
     return {
         "input_ids": input_ids,
@@ -250,6 +271,7 @@ def _token_collate(
 # ---------------------------------------------------------------------------
 # Training
 # ---------------------------------------------------------------------------
+
 
 @dataclass
 class ModelConfig:
@@ -342,17 +364,20 @@ def run(cfg: ModelConfig) -> Path:
     # --- W&B (fully manual — no Trainer WandbCallback, no report_to) ---
     wandb.init(project=cfg.wandb_project, entity=cfg.wandb_entity)
     # Log config so project name / params are visible in W&B
-    wandb.config.update({
-        "wandb_project": cfg.wandb_project,
-        "wandb_entity": cfg.wandb_entity,
-        "model_name": cfg.model_name,
-        "num_epochs": cfg.num_epochs,
-        "batch_size": cfg.batch_size,
-        "learning_rate": cfg.learning_rate,
-        "max_length": cfg.max_length,
-        "warmup_ratio": cfg.warmup_ratio,
-        "weight_decay": cfg.weight_decay,
-    }, allow_val_change=True)
+    wandb.config.update(
+        {
+            "wandb_project": cfg.wandb_project,
+            "wandb_entity": cfg.wandb_entity,
+            "model_name": cfg.model_name,
+            "num_epochs": cfg.num_epochs,
+            "batch_size": cfg.batch_size,
+            "learning_rate": cfg.learning_rate,
+            "max_length": cfg.max_length,
+            "warmup_ratio": cfg.warmup_ratio,
+            "weight_decay": cfg.weight_decay,
+        },
+        allow_val_change=True,
+    )
 
     # --- Callback that logs loss / eval / cm ---
     class _MetricsCallback(TrainerCallback):
@@ -469,10 +494,10 @@ def run(cfg: ModelConfig) -> Path:
     # We disable the callback during the final manual evaluation to avoid
     # double logging or conflicting with the final manual wandb.log.
     trainer.pop_callback(_MetricsCallback)
-    
+
     pred_results = trainer.predict(valid_ds)
     eval_metrics = pred_results.metrics
-    
+
     # Use unified metric names consistent with the callback
     final_metrics = {}
     for k, v in eval_metrics.items():
@@ -487,14 +512,20 @@ def run(cfg: ModelConfig) -> Path:
     final_metrics["eval/confusion_matrix"] = _cm_heatmap_image(
         preds, pred_results.label_ids, "best_model"
     )
-    
+
     wandb.log(final_metrics, step=train_result.global_step)
 
     # Log also a summary of final metrics for easy access
-    wandb.run.summary.update({
-        "final_accuracy": eval_metrics.get("test_accuracy", eval_metrics.get("accuracy")),
-        "final_f1_macro": eval_metrics.get("test_f1_macro", eval_metrics.get("f1_macro")),
-    })
+    wandb.run.summary.update(
+        {
+            "final_accuracy": eval_metrics.get(
+                "test_accuracy", eval_metrics.get("accuracy")
+            ),
+            "final_f1_macro": eval_metrics.get(
+                "test_f1_macro", eval_metrics.get("f1_macro")
+            ),
+        }
+    )
 
     wandb.finish()
 
@@ -503,14 +534,17 @@ def run(cfg: ModelConfig) -> Path:
     trainer.save_model(str(cfg.output_dir))
     tokenizer.save_pretrained(str(cfg.output_dir))
     best_f1 = eval_metrics.get("test_f1_macro", eval_metrics.get("f1_macro", 0.0))
-    print(f"\nDone. Best model saved to: {cfg.output_dir} "
-          f"(eval_f1_macro={best_f1:.4f})")
+    print(
+        f"\nDone. Best model saved to: {cfg.output_dir} "
+        f"(eval_f1_macro={best_f1:.4f})"
+    )
     return cfg.output_dir
 
 
 # ---------------------------------------------------------------------------
 # CLI
 # ---------------------------------------------------------------------------
+
 
 def main(argv: list[str] | None = None) -> int:
     """CLI entry point."""
