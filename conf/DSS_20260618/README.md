@@ -4,6 +4,7 @@
 
 - Link do strony: [klik](https://dss2026.radlab.dev/)
 - Link do agendy/opisu procesu: [klik](presentation/md/00_agenda.md)
+- Link do prezentacji: [pptx](presentation/pptx/DSS_2026_Tutorial.pptx), [pdf](presentation/pptx/DSS_2026_Tutorial.pdf)
 
 ---
 
