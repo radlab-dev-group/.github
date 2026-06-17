@@ -32,6 +32,9 @@ db.init_app(app)
 MODELS = {}
 TOKENIZERS = {}
 
+DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+print(f"Using device: {DEVICE}")
+
 MODEL_PATHS = {
     "twitter-emo-sample-5k-manual": "/mnt/local/models/dss-2026-06/polarity-model/twitter-emo-sample-5k-manual",
     "5k-manual+1.7k-augmented": "/mnt/local/models/dss-2026-06/polarity-model/twitter-emo-sample-5k-manual-1_7k-augmented",
@@ -44,7 +47,7 @@ def get_model(model_name):
     
     if model_name not in MODELS:
         try:
-            MODELS[model_name] = AutoModelForSequenceClassification.from_pretrained(path)
+            MODELS[model_name] = AutoModelForSequenceClassification.from_pretrained(path).to(DEVICE)
             TOKENIZERS[model_name] = AutoTokenizer.from_pretrained(path)
             MODELS[model_name].eval()
         except Exception as e:
@@ -72,7 +75,7 @@ def get_example():
     model, tokenizer = get_model(model_name)
     model_label = "unknown"
     if model and tokenizer:
-        inputs = tokenizer(example.text, return_tensors="pt", truncation=True, max_length=128)
+        inputs = tokenizer(example.text, return_tensors="pt", truncation=True, max_length=128).to(DEVICE)
         with torch.no_grad():
             outputs = model(**inputs)
             probs = torch.nn.functional.softmax(outputs.logits, dim=-1)
