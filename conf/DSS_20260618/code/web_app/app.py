@@ -108,5 +108,29 @@ def save_annotation():
     
     return jsonify({"status": "success"})
 
+@app.route('/get_stats', methods=['GET'])
+def get_stats():
+    model_name = request.args.get('model_name')
+    
+    # Class distribution from user labels
+    dist_query = db.session.query(Annotation.user_label, func.count(Annotation.id)).group_by(Annotation.user_label).all()
+    distribution = {label: count for label, count in dist_query}
+    
+    # Model accuracy if model_name is provided
+    accuracy = None
+    if model_name:
+        total = Annotation.query.filter_by(model_name=model_name).count()
+        if total > 0:
+            correct = Annotation.query.filter_by(
+                model_name=model_name,
+                user_label=Annotation.model_label
+            ).count()
+            accuracy = (correct / total) * 100
+
+    return jsonify({
+        "distribution": distribution,
+        "accuracy": accuracy
+    })
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)

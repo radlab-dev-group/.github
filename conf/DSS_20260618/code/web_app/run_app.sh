@@ -11,4 +11,4 @@ echo "Uruchamianie aplikacji webowej..."
 export PYTHONPATH=$PYTHONPATH:$PROJECT_ROOT
 
 # Uruchomienie aplikacji przy użyciu Python 3.10 (z obsługą sqlite3)
-python3 "$APP_DIR/app.py"
+CUDA_VISIBLE_DEVICES=0 python3 "$APP_DIR/app.py"

@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ocena Modelu Polaryzacji</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body { background-color: #f8f9fa; }
         .container { max-width: 800px; margin-top: 50px; }
@@ -46,12 +47,35 @@
                 </div>
             </div>
         </div>
+
+        <div class="row mt-4">
+            <div class="col-md-6">
+                <div class="card p-3 h-100">
+                    <h5 class="text-center">Rozkład klas (Użytkownik)</h5>
+                    <canvas id="distributionChart"></canvas>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card p-3 h-100">
+                    <h5 class="text-center">Zgodność modelu</h5>
+                    <div class="d-flex flex-column justify-content-center align-items-center h-100">
+                        <div id="accuracyDisplay" class="display-4 text-primary">--%</div>
+                        <div class="text-muted mt-2" id="accuracyModelName">wybierz model</div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
         let currentExample = null;
+        let statsChart = null;
 
         document.getElementById('nextBtn').addEventListener('click', loadExample);
+        document.getElementById('modelSelect').addEventListener('change', updateStats);
+
+        // Load stats on startup
+        window.addEventListener('load', updateStats);
 
         async function loadExample() {
             const modelName = document.getElementById('modelSelect').value;
@@ -72,6 +96,56 @@
             badge.className = 'badge label-badge ' + getBadgeClass(data.model_label);
             
             document.getElementById('exampleCard').classList.remove('d-none');
+            updateStats();
+        }
+
+        async function updateStats() {
+            const modelName = document.getElementById('modelSelect').value;
+            const res = await fetch(`/get_stats?model_name=${encodeURIComponent(modelName)}`);
+            const data = await res.json();
+
+            // Update Accuracy
+            const accDisp = document.getElementById('accuracyDisplay');
+            const accModel = document.getElementById('accuracyModelName');
+            if (data.accuracy !== null) {
+                accDisp.innerText = data.accuracy.toFixed(1) + '%';
+                accModel.innerText = modelName;
+            } else {
+                accDisp.innerText = '--%';
+                accModel.innerText = 'brak ocen dla tego modelu';
+            }
+
+            // Update Chart
+            updateChart(data.distribution);
+        }
+
+        function updateChart(distribution) {
+            const ctx = document.getElementById('distributionChart').getContext('2d');
+            const labels = ['pozytywny', 'neutralny', 'negatywny'];
+            const counts = labels.map(l => distribution[l] || 0);
+            const colors = ['#198754', '#6c757d', '#dc3545'];
+
+            if (statsChart) {
+                statsChart.data.datasets[0].data = counts;
+                statsChart.update();
+            } else {
+                statsChart = new Chart(ctx, {
+                    type: 'pie',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            data: counts,
+                            backgroundColor: colors
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: { position: 'bottom' }
+                        }
+                    }
+                });
+            }
         }
 
         function getBadgeClass(label) {
