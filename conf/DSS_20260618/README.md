@@ -1,5 +1,7 @@
 # DSS 2026 — Augmentacja danych uczących dla modeli klasyfikacyjnych z wykorzystaniem lokalnych LLMów
 
+Link do strony: [klik](https://dss2026.radlab.dev/)
+
 Projekt przygotowany w ramach Tutorials DSS 2026, dotyczący augmentacji zbioru treningowego.
 W przykładach wykorzystan został `clarin-pl/twitteremo`, który augmentowany był za pomocą lokalnych LLMów (GPT-oss
 120B). Dane ręcznie przygotowane (CLARIN-PL), wzbogacone o dane augmentowane wykorzystane zostały do trenowania
