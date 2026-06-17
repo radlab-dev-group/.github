@@ -7,8 +7,8 @@ na którym prowadzony jest tutorial.
 
 1. [Wstęp - czego dotyczy tutorial? Korzyść dla uczestników (~2 min)](./01_wstep.md)
 
-2. [Część teoretyczno-praktyczna (~25 + 5 min)](./02_teoria_i_praktyka.md)
-   1. Augementacja, labelowanie
+2. [Część teoretyczno-praktyczna (~25 + 5 min)](02_00_teoria_i_praktyka.md)
+   1. [Augementacja, labelowanie](02_01_augmentacja_i_labelowanie.md)
    2. Klasyfikacja, Generowanie
    3. Human In The Loop, Active Learning
    4. Połaczenie kroków 1-3 w pętlę.
