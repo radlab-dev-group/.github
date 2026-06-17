@@ -44,14 +44,3 @@ genai-data-augmentation \
 python3 code/dataset/convert_genai_to_training.py \
   --input "${OUT_DIR_AUGMENTED}/clarinpl-twitteremo-train-sample-5k_labels_augmented-train.jsonl" \
   --output "${OUT_DIR_AUGMENTED}/clarinpl-twitteremo-train-sample-5k_labels_augmented-training.jsonl"
-
-# Dołączanie zbioru augmentowanego do ręcznego
-cat \
-  "${OUT_DIR_AUGMENTED}/clarinpl-twitteremo-train-sample-5k_labels_augmented-training.jsonl" \
-  "${DATA_DIR}/clarinpl-twitteremo-train-sample-5k.jsonl" | sed 's/"text"/"tekst"/g' | shuf > "${OUT_MERGED_JSONL}"
-
-# Rozkład klas po łączeniu
-python3 code/dataset/visualize_class_distribution.py \
-  --train "${OUT_MERGED_JSONL}" \
-  --valid resources/dataset/twitteremo/clarinpl-twitteremo-valid-sample-500.jsonl \
-  --output "${OUT_MERGED_PNG}"
