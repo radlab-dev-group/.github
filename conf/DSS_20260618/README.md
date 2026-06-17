@@ -24,7 +24,7 @@ klasyfikatora polaryzacji emocjonalnej (polaryzacja: pozytywny / negatywny / neu
   1.7k) z modelem bazowym `allegro/herbert-base-cased`.
 - **Web App**: Interfejs wizualnej oceny predykcji modelu z możliwością ręcznej anotacji.
 
-## Pipeline zbioru danych
+## Pipeline procesu (dane, labelowanie, augmentacja, uczenie)
 
 ```
 0. Przygotowanie datasetu bazowego (00_prepare_base_dataset.sh)
@@ -51,7 +51,7 @@ klasyfikatora polaryzacji emocjonalnej (polaryzacja: pozytywny / negatywny / neu
    Import augmentowanych przykładów do bazy SQLite do wizualnej oceny
 
 6. Uruchomienie web app (06_run_web_app.sh)
-   → Wizualna ocena + ręczna anotacja; dane z bazy zalewane do datasetu
+   → Wizualna ocena + ręczna anotacja; dane z bazy załadowane do aplikacji
 
 7. Zrzut z web app i finetuning (07_web_app_dump_data_and_run_training.sh)
    Zrzut decyzji użytkowników z bazy Flask, merge z danymi augmentowanymi, ponowny trening
