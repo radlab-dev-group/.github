@@ -1,1 +1,19 @@
+# Web app
 flask_sqlalchemy
+flask
+
+# ML / training
+torch
+transformers
+datasets
+scikit-learn
+
+# Visualization
+matplotlib
+Pillow
+
+# Weights & Biases
+wandb
+
+# Numerics
+numpy
