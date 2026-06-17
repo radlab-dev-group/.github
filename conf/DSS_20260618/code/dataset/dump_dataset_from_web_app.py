@@ -6,6 +6,7 @@ from pathlib import Path
 from sqlalchemy import func
 from transformers import AutoModelForSequenceClassification, AutoTokenizer
 from collections import Counter
+from tqdm import tqdm
 
 # Dodanie katalogu głównego projektu do ścieżki, aby móc importować modele bazy danych
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
@@ -78,8 +79,11 @@ def dump_dataset(model_path=None, output_path=None):
         examples = Example.query.all()
         print(f"Found {len(examples)} examples to process.")
         
+        manual_count = 0
+        model_count = 0
+        
         with open(output_path, 'w', encoding='utf-8') as f:
-            for ex in examples:
+            for ex in tqdm(examples, desc="Dumping dataset"):
                 annotations = Annotation.query.filter_by(example_id=ex.id).all()
                 user_labels = [a.user_label for a in annotations if a.user_label]
                 
@@ -88,11 +92,14 @@ def dump_dataset(model_path=None, output_path=None):
                 if not user_labels:
                     # Case 1: No manual annotation
                     final_label = predict(ex.text, model, tokenizer)
+                    model_count += 1
                 elif len(user_labels) == 1:
                     # Case 2.1: One manual annotation
                     final_label = user_labels[0]
+                    manual_count += 1
                 else:
                     # Case 2.2: Multiple annotations
+                    manual_count += 1
                     counts = Counter(user_labels)
                     most_common = counts.most_common()
                     
@@ -114,7 +121,11 @@ def dump_dataset(model_path=None, output_path=None):
                 
                 f.write(json.dumps(result, ensure_ascii=False) + "\n")
                 
-    print(f"Export finished. Saved to {output_path}")
+    print(f"\nExport finished. Saved to {output_path}")
+    print(f"Summary statistics:")
+    print(f"  - Total examples: {len(examples)}")
+    print(f"  - Manual annotations used: {manual_count}")
+    print(f"  - Model predictions used: {model_count}")
 
 if __name__ == "__main__":
     import argparse
