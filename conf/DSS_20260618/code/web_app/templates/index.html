@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ocena Modelu Polaryzacji</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body { background-color: #f8f9fa; }
+        .container { max-width: 800px; margin-top: 50px; }
+        .card { box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .example-text { font-size: 1.25rem; margin-bottom: 20px; min-height: 100px; }
+        .label-badge { font-size: 1rem; }
+        #distributionChart, #modelDistributionChart { max-height: 250px; }
+        .stats-card { min-height: 380px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2 class="text-center mb-4">Ocena Modelu Polaryzacji</h2>
+
+        <div class="mb-4">
+            <div class="d-flex justify-content-between mb-1">
+                <span class="text-muted small">Postęp anotacji: <span id="progressText">0/0</span></span>
+                <span id="progressPercent" class="text-muted small">0%</span>
+            </div>
+            <div class="progress" style="height: 10px;">
+                <div id="overallProgressBar" class="progress-bar bg-success" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+        </div>
+        
+        <div class="card p-4 mb-4">
+            <div class="mb-3">
+                <label for="modelSelect" class="form-label">Wybierz model do automatycznej anotacji:</label>
+                <select id="modelSelect" class="form-select">
+                    {% for model in models %}
+                    <option value="{{ model }}">{{ model }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button id="nextBtn" class="btn btn-primary w-100">Losuj przykład</button>
+        </div>
+
+        <div id="exampleCard" class="card p-4 d-none">
+            <div class="example-text" id="textContainer"></div>
+            
+            <div id="modelErrorAlert" class="alert alert-danger d-none" role="alert"></div>
+
+            <div class="mb-4">
+                <strong>Automatyczna anotacja (<span id="modelNameDisplay"></span>):</strong>
+                <span id="modelLabelBadge" class="badge label-badge"></span>
+            </div>
+
+            <div class="mb-3">
+                <strong>Twoja ocena:</strong>
+                <div id="userButtons" class="mt-2">
+                    <button class="btn btn-outline-success user-label-btn" data-label="pozytywny">Pozytywny</button>
+                    <button class="btn btn-outline-secondary user-label-btn" data-label="neutralny">Neutralny</button>
+                    <button class="btn btn-outline-danger user-label-btn" data-label="negatywny">Negatywny</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-md-6">
+                <div class="card p-3 stats-card">
+                    <h5 class="text-center">Rozkład (Użytkownik)</h5>
+                    <canvas id="distributionChart"></canvas>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card p-3 stats-card">
+                    <h5 class="text-center">Zgodność i Rozkład Modelu</h5>
+                    <div class="d-flex flex-column align-items-center h-100">
+                        <div id="accuracyDisplay" class="display-4 text-primary">--%</div>
+                        <div class="progress w-75 mb-2" style="height: 20px;">
+                            <div id="accuracyProgressBar" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                        <div class="text-muted small" id="accuracyModelName">wybierz model</div>
+                        <div class="badge bg-info mt-2" id="sampleCount">Próbki: 0</div>
+                        
+                        <div class="w-100 mt-3" style="flex-grow: 1; min-height: 150px;">
+                            <canvas id="modelBarChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="container mt-5 mb-4 text-center">
+        <hr>
+        <p class="text-muted small">
+            Aplikacja powstała w ramach <strong>DSS2026 Ścieżki Tutorials</strong>.<br>
+            Repozytorium do Tutoriala: <a href="https://github.com/radlab-dev-group/.github/tree/doc/dss2026/conf/DSS_20260618" target="_blank">github.com/radlab-dev-group/.../DSS_20260618</a>
+        </p>
+    </footer>
+
+    <script>
+        let currentExample = null;
+        let statsChart = null;
+        let modelBarChartObj = null;
+
+        document.getElementById('nextBtn').addEventListener('click', loadExample);
+        document.getElementById('modelSelect').addEventListener('change', updateStats);
+
+        // Load stats on startup
+        window.addEventListener('load', updateStats);
+
+        async function loadExample() {
+            const modelName = document.getElementById('modelSelect').value;
+            const res = await fetch(`/get_example?model_name=${encodeURIComponent(modelName)}`);
+            const data = await res.json();
+            
+            const errorAlert = document.getElementById('modelErrorAlert');
+            const userButtons = document.getElementById('userButtons').querySelectorAll('button');
+            const badge = document.getElementById('modelLabelBadge');
+
+            if (data.error && !data.id) {
+                alert(data.error);
+                return;
+            }
+
+            currentExample = data;
+            document.getElementById('textContainer').innerText = data.text;
+            document.getElementById('modelNameDisplay').innerText = data.model_name;
+            
+            if (data.error) {
+                errorAlert.innerText = data.error;
+                errorAlert.classList.remove('d-none');
+                badge.innerText = 'BŁĄD';
+                badge.className = 'badge label-badge bg-dark';
+                userButtons.forEach(btn => btn.disabled = true);
+            } else {
+                errorAlert.classList.add('d-none');
+                badge.innerText = data.model_label;
+                badge.className = 'badge label-badge ' + getBadgeClass(data.model_label);
+                userButtons.forEach(btn => btn.disabled = false);
+            }
+            
+            document.getElementById('exampleCard').classList.remove('d-none');
+            updateStats();
+        }
+
+        async function updateStats() {
+            const modelName = document.getElementById('modelSelect').value;
+            const res = await fetch(`/get_stats?model_name=${encodeURIComponent(modelName)}`);
+            const data = await res.json();
+
+            // Update Accuracy and Count
+            const accDisp = document.getElementById('accuracyDisplay');
+            const accModel = document.getElementById('accuracyModelName');
+            const sampleCount = document.getElementById('sampleCount');
+            const accBar = document.getElementById('accuracyProgressBar');
+            
+            if (data.accuracy !== null) {
+                const accVal = data.accuracy.toFixed(1);
+                accDisp.innerText = accVal + '%';
+                accModel.innerText = modelName;
+                sampleCount.innerText = 'Próbki: ' + data.model_total;
+                
+                accBar.style.width = accVal + '%';
+                accBar.setAttribute('aria-valuenow', accVal);
+                accBar.innerText = accVal + '%';
+                
+                // Change color based on accuracy
+                if (data.accuracy >= 80) accBar.className = 'progress-bar bg-success';
+                else if (data.accuracy >= 50) accBar.className = 'progress-bar bg-info';
+                else accBar.className = 'progress-bar bg-warning';
+            } else {
+                accDisp.innerText = '--%';
+                accModel.innerText = 'brak ocen dla tego modelu';
+                sampleCount.innerText = 'Próbki: 0';
+                accBar.style.width = '0%';
+                accBar.innerText = '';
+                accBar.className = 'progress-bar bg-secondary';
+            }
+
+            // Update Charts
+            updateChart('distributionChart', statsChart, data.distribution, (newChart) => statsChart = newChart);
+            updateModelBarChart(data.model_distribution);
+
+            // Update Overall Progress
+            updateOverallProgress(data.annotated_examples, data.total_examples);
+        }
+
+        function updateOverallProgress(annotated, total) {
+            const progressText = document.getElementById('progressText');
+            const progressPercent = document.getElementById('progressPercent');
+            const progressBar = document.getElementById('overallProgressBar');
+            
+            if (total > 0) {
+                const percent = (annotated / total * 100).toFixed(1);
+                progressText.innerText = `${annotated} / ${total}`;
+                progressPercent.innerText = `${percent}%`;
+                progressBar.style.width = `${percent}%`;
+                progressBar.setAttribute('aria-valuenow', percent);
+            }
+        }
+
+        function updateModelBarChart(distribution) {
+            const ctx = document.getElementById('modelBarChart').getContext('2d');
+            const labels = ['pozytywny', 'neutralny', 'negatywny'];
+            const counts = labels.map(l => distribution[l] || 0);
+            const colors = ['#198754', '#6c757d', '#dc3545'];
+
+            if (modelBarChartObj) {
+                modelBarChartObj.data.datasets[0].data = counts;
+                modelBarChartObj.update();
+            } else {
+                modelBarChartObj = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Liczba predykcji',
+                            data: counts,
+                            backgroundColor: colors,
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        indexAxis: 'y',
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { display: false }
+                        },
+                        scales: {
+                            x: { beginAtZero: true, ticks: { stepSize: 1 } }
+                        }
+                    }
+                });
+            }
+        }
+
+        function updateChart(canvasId, chartObj, distribution, setChart) {
+            const ctx = document.getElementById(canvasId).getContext('2d');
+            const labels = ['pozytywny', 'neutralny', 'negatywny'];
+            const counts = labels.map(l => distribution[l] || 0);
+            const colors = ['#198754', '#6c757d', '#dc3545'];
+
+            if (chartObj) {
+                chartObj.data.datasets[0].data = counts;
+                chartObj.update();
+            } else {
+                const newChart = new Chart(ctx, {
+                    type: 'pie',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            data: counts,
+                            backgroundColor: colors
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { position: 'bottom' }
+                        }
+                    }
+                });
+                setChart(newChart);
+            }
+        }
+
+        function getBadgeClass(label) {
+            if (label === 'pozytywny') return 'bg-success';
+            if (label === 'negatywny') return 'bg-danger';
+            if (label === 'neutralny') return 'bg-secondary';
+            return 'bg-dark';
+        }
+
+        document.querySelectorAll('.user-label-btn').forEach(btn => {
+            btn.addEventListener('click', async () => {
+                const userLabel = btn.getAttribute('data-label');
+                const res = await fetch('/save_annotation', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        example_id: currentExample.id,
+                        user_label: userLabel,
+                        model_label: currentExample.model_label,
+                        model_name: currentExample.model_name
+                    })
+                });
+                
+                if (res.ok) {
+                    loadExample();
+                } else {
+                    alert('Błąd podczas zapisywania');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
