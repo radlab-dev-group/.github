@@ -49,7 +49,6 @@ klasyfikatora polaryzacji emocjonalnej (polaryzacja: pozytywny / negatywny / neu
 | [code/augmentation/](code/augmentation/)         | Skrypty augmentacji: labelowanie LLM, selekcja klas, generowanie |
 | [code/web_app/](code/web_app/)                   | Flask app: wizualna ocena + anotacja modelu                      |
 | [instance/](instance/)                           | Baza SQLite (Flask web app)                                      |
-| [output/polarity-model/](output/polarity-model/) | Zapisane checkpointy i model fine-tunowany                       |
 | [presentation/md/](presentation/md/)             | Slajdy prezentacji (markdown)                                    |
 | [presentation/pptx/](presentation/pptx/)         | Szablon PowerPoint prezentacji                                   |
 | [presentation/imgs/](presentation/imgs/)         | Obrazki do prezentacji                                           |

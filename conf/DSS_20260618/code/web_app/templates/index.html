@@ -12,7 +12,8 @@
         .card { box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
         .example-text { font-size: 1.25rem; margin-bottom: 20px; min-height: 100px; }
         .label-badge { font-size: 1rem; }
-        #distributionChart { max-height: 300px; }
+        #distributionChart, #modelDistributionChart { max-height: 250px; }
+        .stats-card { min-height: 380px; }
     </style>
 </head>
 <body>
@@ -53,26 +54,43 @@
 
         <div class="row mt-4">
             <div class="col-md-6">
-                <div class="card p-3 h-100">
-                    <h5 class="text-center">Rozkład klas (Użytkownik)</h5>
+                <div class="card p-3 stats-card">
+                    <h5 class="text-center">Rozkład (Użytkownik)</h5>
                     <canvas id="distributionChart"></canvas>
                 </div>
             </div>
             <div class="col-md-6">
-                <div class="card p-3 h-100">
-                    <h5 class="text-center">Zgodność modelu</h5>
-                    <div class="d-flex flex-column justify-content-center align-items-center h-100">
+                <div class="card p-3 stats-card">
+                    <h5 class="text-center">Zgodność i Rozkład Modelu</h5>
+                    <div class="d-flex flex-column align-items-center h-100">
                         <div id="accuracyDisplay" class="display-4 text-primary">--%</div>
-                        <div class="text-muted mt-2" id="accuracyModelName">wybierz model</div>
+                        <div class="progress w-75 mb-2" style="height: 20px;">
+                            <div id="accuracyProgressBar" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                        <div class="text-muted small" id="accuracyModelName">wybierz model</div>
+                        <div class="badge bg-info mt-2" id="sampleCount">Próbki: 0</div>
+                        
+                        <div class="w-100 mt-3" style="flex-grow: 1; min-height: 150px;">
+                            <canvas id="modelBarChart"></canvas>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
+    <footer class="container mt-5 mb-4 text-center">
+        <hr>
+        <p class="text-muted small">
+            Aplikacja powstała w ramach <strong>DSS2026 Ścieżki Tutorials</strong>.<br>
+            Repozytorium do Tutoriala: <a href="https://github.com/radlab-dev-group/.github/tree/doc/dss2026/conf/DSS_20260618" target="_blank">github.com/radlab-dev-group/.../DSS_20260618</a>
+        </p>
+    </footer>
+
     <script>
         let currentExample = null;
         let statsChart = null;
+        let modelBarChartObj = null;
 
         document.getElementById('nextBtn').addEventListener('click', loadExample);
         document.getElementById('modelSelect').addEventListener('change', updateStats);
@@ -120,32 +138,87 @@
             const res = await fetch(`/get_stats?model_name=${encodeURIComponent(modelName)}`);
             const data = await res.json();
 
-            // Update Accuracy
+            // Update Accuracy and Count
             const accDisp = document.getElementById('accuracyDisplay');
             const accModel = document.getElementById('accuracyModelName');
+            const sampleCount = document.getElementById('sampleCount');
+            const accBar = document.getElementById('accuracyProgressBar');
+            
             if (data.accuracy !== null) {
-                accDisp.innerText = data.accuracy.toFixed(1) + '%';
+                const accVal = data.accuracy.toFixed(1);
+                accDisp.innerText = accVal + '%';
                 accModel.innerText = modelName;
+                sampleCount.innerText = 'Próbki: ' + data.model_total;
+                
+                accBar.style.width = accVal + '%';
+                accBar.setAttribute('aria-valuenow', accVal);
+                accBar.innerText = accVal + '%';
+                
+                // Change color based on accuracy
+                if (data.accuracy >= 80) accBar.className = 'progress-bar bg-success';
+                else if (data.accuracy >= 50) accBar.className = 'progress-bar bg-info';
+                else accBar.className = 'progress-bar bg-warning';
             } else {
                 accDisp.innerText = '--%';
                 accModel.innerText = 'brak ocen dla tego modelu';
+                sampleCount.innerText = 'Próbki: 0';
+                accBar.style.width = '0%';
+                accBar.innerText = '';
+                accBar.className = 'progress-bar bg-secondary';
             }
 
-            // Update Chart
-            updateChart(data.distribution);
+            // Update Charts
+            updateChart('distributionChart', statsChart, data.distribution, (newChart) => statsChart = newChart);
+            updateModelBarChart(data.model_distribution);
         }
 
-        function updateChart(distribution) {
-            const ctx = document.getElementById('distributionChart').getContext('2d');
+        function updateModelBarChart(distribution) {
+            const ctx = document.getElementById('modelBarChart').getContext('2d');
             const labels = ['pozytywny', 'neutralny', 'negatywny'];
             const counts = labels.map(l => distribution[l] || 0);
             const colors = ['#198754', '#6c757d', '#dc3545'];
 
-            if (statsChart) {
-                statsChart.data.datasets[0].data = counts;
-                statsChart.update();
+            if (modelBarChartObj) {
+                modelBarChartObj.data.datasets[0].data = counts;
+                modelBarChartObj.update();
             } else {
-                statsChart = new Chart(ctx, {
+                modelBarChartObj = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Liczba predykcji',
+                            data: counts,
+                            backgroundColor: colors,
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        indexAxis: 'y',
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { display: false }
+                        },
+                        scales: {
+                            x: { beginAtZero: true, ticks: { stepSize: 1 } }
+                        }
+                    }
+                });
+            }
+        }
+
+        function updateChart(canvasId, chartObj, distribution, setChart) {
+            const ctx = document.getElementById(canvasId).getContext('2d');
+            const labels = ['pozytywny', 'neutralny', 'negatywny'];
+            const counts = labels.map(l => distribution[l] || 0);
+            const colors = ['#198754', '#6c757d', '#dc3545'];
+
+            if (chartObj) {
+                chartObj.data.datasets[0].data = counts;
+                chartObj.update();
+            } else {
+                const newChart = new Chart(ctx, {
                     type: 'pie',
                     data: {
                         labels: labels,
@@ -156,11 +229,13 @@
                     },
                     options: {
                         responsive: true,
+                        maintainAspectRatio: false,
                         plugins: {
                             legend: { position: 'bottom' }
                         }
                     }
                 });
+                setChart(newChart);
             }
         }
 

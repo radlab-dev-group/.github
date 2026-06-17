@@ -143,17 +143,34 @@ def get_stats():
     )
     distribution = {label: count for label, count in dist_query}
 
-    # Model accuracy if model_name is provided
+    # Model accuracy and model distribution if model_name is provided
     accuracy = None
+    model_distribution = {}
+    model_total = 0
     if model_name:
-        total = Annotation.query.filter_by(model_name=model_name).count()
-        if total > 0:
-            correct = Annotation.query.filter_by(
-                model_name=model_name, user_label=Annotation.model_label
-            ).count()
-            accuracy = (correct / total) * 100
+        # Get all annotations for this model
+        model_annotations = Annotation.query.filter_by(model_name=model_name).all()
+        model_total = len(model_annotations)
+        
+        if model_total > 0:
+            correct = 0
+            for ann in model_annotations:
+                # Count distribution
+                label = ann.model_label
+                model_distribution[label] = model_distribution.get(label, 0) + 1
+                
+                # Count correct predictions
+                if ann.user_label == ann.model_label:
+                    correct += 1
+            
+            accuracy = (correct / model_total) * 100
 
-    return jsonify({"distribution": distribution, "accuracy": accuracy})
+    return jsonify({
+        "distribution": distribution, 
+        "accuracy": accuracy, 
+        "model_distribution": model_distribution,
+        "model_total": model_total
+    })
 
 
 if __name__ == "__main__":
