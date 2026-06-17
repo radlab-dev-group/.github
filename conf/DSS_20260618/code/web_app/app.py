@@ -38,6 +38,7 @@ print(f"Using device: {DEVICE}")
 MODEL_PATHS = {
     "twitter-emo-sample-5k-manual": "/mnt/local/models/dss-2026-06/polarity-model/twitter-emo-sample-5k-manual",
     "5k-manual+1.7k-augmented": "/mnt/local/models/dss-2026-06/polarity-model/twitter-emo-sample-5k-manual-1_7k-augmented",
+    "5k-m+1.7k-aug+al-live": "/mnt/local/models/dss-2026-06/polarity-model/twitter-emo-sample-5k-manual-1_7k-augmented_active_learning",
 }
 
 def get_model(model_name):
