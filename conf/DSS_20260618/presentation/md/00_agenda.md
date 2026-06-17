@@ -14,12 +14,12 @@ na którym prowadzony jest tutorial.
    4. [Połaczenie kroków 1-3 w pętlę](02_04_hitl_al_loop_ml.md)
    5. [Anotacja live (~5 min)](https://dss2026.radlab.dev/)
 
-3. [Część techniczna (~25 min)](./03_technikalia.md)
-   1. Wymagania sprzętowo-systemowe
-   2. Instalacja lokalnych vendorów (vllm, ollama, llama.cpp)
-   3. Instalacją llm-routera
-   4. Labelowanie za pomocą utilsów
-   5. Augmentacja za pomocą utilsów
+3. [Część techniczna (~25 min)](03_00_technikalia.md)
+   1. [Wymagania sprzętowo-systemowe](./03_01_sprzet_system.md)
+   2. [Instalacja lokalnych vendorów](./03_02_instalacja_vendorow.md)
+   3. [Instalacja i konfiguracja llm-routera](./03_03_llm_router.md)
+   4. [Labelowanie za pomocą utilsów](./03_04_labelowanie.md)
+   5. [Augmentacja za pomocą utilsów](./03_05_augmentacja.md)
 
 4. [Podsumowanie i wnioski (~10 min)](./04_wnioski.md)
    1. Automatyczna ocena modelu po HIL/AL (podgląd w WB)
