@@ -1,5 +1,7 @@
 # Augmentacja i labelowanie danych
 
+Powrót do [agendy](00_agenda.md).
+
 ---
 
 ## Augmentacja danych
@@ -70,3 +72,7 @@ Trzeba jednak pamiętać, że etykiety nadane przez LLM są tylko propozycjami. 
 zwłaszcza przy tekstach ironicznych, niejednoznacznych, pozbawionych kontekstu albo zawierających slang. 
 
 > LLM nie zastępuje całkowicie człowieka w anotowaniu danych. Przyspiesza przygotowanie etykiet, a człowiek koncentruje się na kontroli jakości, poprawianiu błędów i rozstrzyganiu przypadków trudnych.
+
+---
+
+Powrót do [agendy](00_agenda.md).
