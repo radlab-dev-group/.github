@@ -61,6 +61,9 @@ ollama serve &
 
 ### Pobranie i uruchomienie modeli (Bielik, PLLuM oraz gpt-oss)
 
+Szczegółowy przewodnik od A - Z do instalacji Bielika (`speakleash/Bielik-11B-v2.3-Instruct`) : 
+[KLIK](https://github.com/radlab-dev-group/llm-router/blob/main/examples/quickstart/speakleash-bielik-11b-v2_3-Instruct/README.md)
+
 Bielik oraz gpt-oss są dostępne bezpośrednio w oficjalnej bibliotece Ollama. PLLuM można uruchomić, korzystając z
 repozytoriów na
 Hugging Face:
