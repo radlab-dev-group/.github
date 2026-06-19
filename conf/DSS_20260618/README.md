@@ -76,7 +76,24 @@ klasyfikatora polaryzacji emocjonalnej (polaryzacja: pozytywny / negatywny / neu
 | [resources/dataset/](resources/dataset/) | Dataset samples (JSONL), augmented data, wizualizacje            |
 | [resources/prompts/](resources/prompts/) | Prompty dla LLM (klasyfikator + augmentator)                     |
 
-## Wymagania
+## Bazy danych (instance/)
+
+W katalogu `instance/` znajdują się pliki SQLite wykorzystywane przez Flask web app:
+
+| Plik                   | Opis                                                                                                                                                                                   |
+|------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `data.db`              | Baza czysta — zawiera **~1750 przykładów do anotacji** (dane augmentowane załadowane z `05_import_data_to_web.sh`). **Nie posiada ręcznych anotacji** — jest punktem wyjścia do oceny. |
+| `data.db.live-session` | Baza **z anotacjami po sesji live tutorialu** z 18.06.2026 (DSS Tutorials). Zawiera decyzje użytkowników z live session.                                                               |
+
+### Załadowanie bazy z sesji live tutorialu
+
+Aby przywrócić stan z live session, wystarczy przekopiować plik:
+
+```bash
+cp instance/data.db.live-session instance/data.db
+```
+
+Spowoduje to nadpisanie pustej bazy `data.db` stanem z sesji — web app wyświetli już gotowe anotacje z tutorialu.
 
 ```bash
 pip install -r requirements.txt
