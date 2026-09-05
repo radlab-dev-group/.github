@@ -33,5 +33,5 @@ echo ""
 
 # --- Uruchom Flask ---
 cd "$SCRIPT_DIR"
-# --debug "$FLASK_DEBUG"
-python3 -m flask --app app run --host 0.0.0.0 --port "$PORT"
+#python3 -m flask --app app run --host 0.0.0.0 --port "$PORT"
+gunicorn -w 4 -b 0.0.0.0:$PORT app:app
