@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>llmrouterweb · v0.2.2 · llm-router docs</title>
+<meta name="description" content="llmrouterweb is the web interface component of the llm-router project. It provides a Flask‑based UI for managing LLM model configurations, users, and version history. - User Management – Admins can create, edit, block/unblock users and…">
+<meta name="theme-color" content="#05070a">
+<meta property="og:type" content="article">
+<meta property="og:title" content="llmrouterweb · v0.2.2 · llm-router docs">
+<meta property="og:description" content="llmrouterweb is the web interface component of the llm-router project. It provides a Flask‑based UI for managing LLM model configurations, users, and version history. - User Management – Admins can create, edit, block/unblock users and…">
+<meta name="docs-version" content="0.2.2">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2305070a'/%3E%3Cpath d='M8 22V10M8 16h9M17 10v12M17 13h7M17 19h7' stroke='%2300e59b' stroke-width='2' stroke-linecap='round' fill='none'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="../../assets/docs.css">
+<link rel="stylesheet" href="../../assets/pygments.css">
+<script src="../../assets/docs.js" defer></script>
+</head>
+<body class="page" data-version="0.2.2" data-search="../search.json" data-latest="1.0.6">
+<a class="skip" href="#main">skip to content</a>
+<header class="topbar">
+<div class="topbar-inner">
+<button class="burger" id="burger" aria-label="Toggle documentation menu" aria-expanded="false" aria-controls="sidebar">&#9776;</button>
+<a class="brand" href="../../.."><svg width="21" height="21" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="7" fill="#0b1119" stroke="#1a232e"/><path d="M8 22V10M8 16h9M17 10v12M17 13h7M17 19h7" stroke="#00e59b" stroke-width="2" stroke-linecap="round" fill="none"/></svg><span>llm<span class="dash">-</span>router</span><span class="brand-docs">/docs</span></a>
+<div class="topbar-right">
+<form class="search" id="search" role="search" autocomplete="off">
+<span class="search-icon" aria-hidden="true">&#8981;</span>
+<input id="q" type="search" placeholder="search this version" aria-label="Search documentation" role="combobox" aria-expanded="false" aria-controls="results" aria-autocomplete="list">
+<kbd>/</kbd>
+<div class="results" id="results" role="listbox" aria-label="Search results" hidden></div>
+</form>
+<label class="vselect">
+<span class="sr-only">Documentation version</span>
+<select id="versions" aria-label="Documentation version"><option value="../../1.0.6/index.html">1.0.6  · latest</option>
+<option value="../../1.0.5/index.html">1.0.5</option>
+<option value="../../1.0.4/index.html">1.0.4</option>
+<option value="../../1.0.3/index.html">1.0.3</option>
+<option value="../../1.0.1/index.html">1.0.1</option>
+<option value="../../1.0.0/index.html">1.0.0</option>
+<option value="../../0.9.6/index.html">0.9.6</option>
+<option value="../../0.9.5/index.html">0.9.5</option>
+<option value="../../0.9.4/index.html">0.9.4</option>
+<option value="../../0.9.2/index.html">0.9.2</option>
+<option value="../../0.9.1/index.html">0.9.1</option>
+<option value="../../0.9.0/index.html">0.9.0</option>
+<option value="../../0.8.0/index.html">0.8.0</option>
+<option value="../../0.7.0/index.html">0.7.0</option>
+<option value="../../0.6.9/index.html">0.6.9</option>
+<option value="../../0.6.8/index.html">0.6.8</option>
+<option value="../../0.6.7/index.html">0.6.7</option>
+<option value="../../0.6.6/index.html">0.6.6</option>
+<option value="../../0.6.5/index.html">0.6.5</option>
+<option value="../../0.6.4/index.html">0.6.4</option>
+<option value="../../0.6.3/index.html">0.6.3</option>
+<option value="../../0.6.2/index.html">0.6.2</option>
+<option value="../../0.6.1/index.html">0.6.1</option>
+<option value="../../0.6.0/index.html">0.6.0</option>
+<option value="../../0.5.2/index.html">0.5.2</option>
+<option value="../../0.5.1/index.html">0.5.1</option>
+<option value="../../0.5.0/index.html">0.5.0</option>
+<option value="../../0.4.6/index.html">0.4.6</option>
+<option value="../../0.4.5/index.html">0.4.5</option>
+<option value="../../0.4.4/index.html">0.4.4</option>
+<option value="../../0.4.3/index.html">0.4.3</option>
+<option value="../../0.4.2/index.html">0.4.2</option>
+<option value="../../0.4.1/index.html">0.4.1</option>
+<option value="../../0.4.0/index.html">0.4.0</option>
+<option value="../../0.3.1/index.html">0.3.1</option>
+<option value="../../0.3.0/index.html">0.3.0</option>
+<option value="../../0.2.3/llm-router-web/index.html">0.2.3</option>
+<option value="index.html" selected>0.2.2</option>
+<option value="../../0.2.1/llm-router-web/index.html">0.2.1</option>
+<option value="../../0.2.0/index.html">0.2.0</option>
+<option value="../../0.1.1/index.html">0.1.1</option>
+<option value="../../0.1.0/index.html">0.1.0</option></select>
+</label>
+<a class="iconbtn" href="https://github.com/radlab-dev-group/llm-router" aria-label="Repository on GitHub" title="Repository on GitHub"><svg width="17" height="17" viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8a8 8 0 0 0 5.47 7.59c.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.46-.53.42-.02.72.39.82.55.48.81 1.25.94 1.56.73.2-.27.6-.94.94-1.13-.01-.2-.05-.82-.14-.98-.6.1-1.22.2-1.87.2-1.9 0-3.62-1.13-3.62-3.53 0-.78.28-1.42.74-1.92-.07-.18-.32-.91.07-1.9 0 0 .6-.19 1.97.74a6.8 6.8 0 0 1 3.58 0c1.37-.93 1.97-.74 1.97-.74.39.99.14 1.72.07 1.9.46.5.74 1.14.74 1.92 0 2.41-1.47 3.53-3.87 3.72.3.26.57.77.57 1.56 0 1.13-.012.04-.01 2.32 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg></a>
+</div>
+</div>
+</header>
+<div class="scrim" id="scrim" hidden></div>
+<div class="shell">
+<aside class="sidebar" id="sidebar"><div class="side-head"><span class="side-v mono">v0.2.2</span><span class="side-tag old">archived</span></div><a class="side-hub" href="../index.html">documentation index</a><nav class="nav-tree" aria-label="Documentation"><section class="nav-sec"><h2 class="nav-sec-title"><a href="../overview.html">Getting started</a></h2><ul><li><a href="../overview.html">Overview</a></li><li><a href="../install.html">Instalacja zależności</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../llm-router-api/index.html">REST API</a></h2><ul><li><a href="../llm-router-api/index.html">REST API reference</a></li><li><a href="../llm-router-api/endpoints/readme-pl.html">Jak tworzyć endpointy w llm-proxy-api – przewodnik</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../llm-router-lib/index.html">Python library</a></h2><ul><li><a href="../llm-router-lib/index.html">llm‑router-LIB — Python client library</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="index.html">Web UI (archived)</a></h2><ul><li><a href="index.html" class="active">llmrouterweb</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../changelog.html">Release notes</a></h2><ul><li><a href="../changelog.html">Changelog</a></li></ul></section></nav><div class="side-foot"><a href="../../..">&larr;&nbsp;landing page</a><a class="mono" href="../search.json">search.json</a></div></aside>
+<main class="main" id="main"><nav class="crumbs" aria-label="Breadcrumb">
+<a href="../../..">llm-router</a><span class="sep">/</span><a href="../index.html">docs</a><span class="sep">/</span><a href="index.html">Web UI (archived)</a><span class="sep">/</span><em>llmrouterweb</em>
+</nav>
+<article class="prose"><h1 id="llmrouterweb">llmrouterweb<a class="headerlink" href="#llmrouterweb" title="link to this section">#</a></h1>
+<p><strong>llm_router_web</strong> is the web interface component of the **<a href="https://github.com/radlab-dev-group/llm-router"> target="_blank" rel="noopener noreferrer"llm-router</a>
+** project.<br />
+It provides a Flask‑based UI for managing LLM model configurations, users, and version history.</p>
+<h2 id="features">Features<a class="headerlink" href="#features" title="link to this section">#</a></h2>
+<ul>
+<li><strong>User Management</strong> – Admins can create, edit, block/unblock users and assign roles (<code>admin</code> / <code>user</code>).</li>
+<li><strong>Configuration CRUD</strong> – Create, import, edit, view, export, activate and delete model configurations.</li>
+<li><strong>Model &amp; Provider Management</strong> – Add/remove models, manage multiple providers per model, reorder providers via
+  drag‑and‑drop.</li>
+<li><strong>Versioning</strong> – Automatic snapshot of each change; view history and restore previous versions.</li>
+<li><strong>Theme Switching</strong> – Light / dark UI themes toggled client‑side.</li>
+<li><strong>Responsive UI</strong> – Built with HTML, CSS, HTMX and Alpine.js for a smooth, single‑page‑like experience.</li>
+</ul>
+<hr />
+<h2 id="installation">Installation<a class="headerlink" href="#installation" title="link to this section">#</a></h2>
+<p>The project uses <strong>Python 3.10.6</strong> and <strong>virtualenv</strong>.</p>
+<p>```shell script</p>
+<h1 id="clone-the-repository">Clone the repository<a class="headerlink" href="#clone-the-repository" title="link to this section">#</a></h1>
+<p>git clone https://github.com/radlab-dev-group/llm-router.git
+cd llm-router/llm_router_web</p>
+<h1 id="create-and-activate-a-virtual-environment">Create and activate a virtual environment<a class="headerlink" href="#create-and-activate-a-virtual-environment" title="link to this section">#</a></h1>
+<p>python3 -m venv venv
+source venv/bin/activate</p>
+<h1 id="install-dependencies">Install dependencies<a class="headerlink" href="#install-dependencies" title="link to this section">#</a></h1>
+<p>pip install -r requirements.txt</p>
+<div class="codehilite"><pre><span></span><code>&gt; **Note:** The only required packages are listed in `requirements.txt` (`flask` and `flask_sqlalchemy`). All other
+&gt; libraries are part of the broader `llm-router` repository.
+
+---
+
+## Running the Application
+
+```shell script
+# Start the Flask development server
+python app.py
+</code></pre></div>
+
+<p>The UI will be available at <code>http://localhost:8081</code>.<br />
+The first run will redirect you to a <strong>setup</strong> page where you must create an initial admin user.</p>
+<h3 id="environment-variables">Environment variables<a class="headerlink" href="#environment-variables" title="link to this section">#</a></h3>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FLASK_SECRET_KEY</code></td>
+<td>Secret key for session signing</td>
+<td><code>change-me-local</code></td>
+</tr>
+<tr>
+<td><code>DATABASE_URL</code></td>
+<td>SQLAlchemy database URL (SQLite by default)</td>
+<td><code>sqlite:///configs.db</code></td>
+</tr>
+<tr>
+<td><code>FLASK_ENV</code></td>
+<td>Set to <code>production</code> for HTTPS scheme handling</td>
+<td>–</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="configuration">Configuration<a class="headerlink" href="#configuration" title="link to this section">#</a></h2>
+<p>All Flask configuration is performed in <code>web/__init__.py</code> via <code>create_app()</code>.<br />
+Key settings:</p>
+<ul>
+<li><code>SQLALCHEMY_DATABASE_URI</code> – points to the SQLite DB (<code>configs.db</code>) unless overridden.</li>
+<li><code>SQLALCHEMY_TRACK_MODIFICATIONS</code> – disabled for performance.</li>
+<li><code>PREFERRED_URL_SCHEME</code> – set to <code>https</code> when <code>FLASK_ENV=production</code>.</li>
+</ul>
+<p>The database schema is automatically created on first launch. If the <code>order</code> column is missing from the <code>provider</code>
+table (e.g., after a schema change), the helper <code>_ensure_provider_order_column()</code> adds it on startup.</p>
+<hr />
+<h2 id="endpoints-overview">Endpoints Overview<a class="headerlink" href="#endpoints-overview" title="link to this section">#</a></h2>
+<table>
+<thead>
+<tr>
+<th>URL</th>
+<th>Methods</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/setup</code></td>
+<td>GET, POST</td>
+<td>One‑time admin creation (first run).</td>
+</tr>
+<tr>
+<td><code>/login</code></td>
+<td>GET, POST</td>
+<td>User authentication.</td>
+</tr>
+<tr>
+<td><code>/logout</code></td>
+<td>GET</td>
+<td>End session.</td>
+</tr>
+<tr>
+<td><code>/admin/users</code></td>
+<td>GET, POST</td>
+<td>List users / add new user (admin only).</td>
+</tr>
+<tr>
+<td><code>/admin/users/&lt;id&gt;/edit</code></td>
+<td>POST</td>
+<td>Edit role or password (admin only).</td>
+</tr>
+<tr>
+<td><code>/admin/users/&lt;id&gt;/toggle_block</code></td>
+<td>POST</td>
+<td>Block / unblock a user (admin only).</td>
+</tr>
+<tr>
+<td><code>/</code></td>
+<td>GET</td>
+<td>Dashboard – list of user’s configs.</td>
+</tr>
+<tr>
+<td><code>/configs</code></td>
+<td>GET</td>
+<td>Same as dashboard (alternative view).</td>
+</tr>
+<tr>
+<td><code>/configs/new</code></td>
+<td>GET, POST</td>
+<td>Create a new empty configuration.</td>
+</tr>
+<tr>
+<td><code>/configs/import</code></td>
+<td>GET, POST</td>
+<td>Import configuration from JSON file or text.</td>
+</tr>
+<tr>
+<td><code>/configs/&lt;id&gt;</code></td>
+<td>GET</td>
+<td>Preview configuration (JSON view).</td>
+</tr>
+<tr>
+<td><code>/configs/&lt;id&gt;/export</code></td>
+<td>GET</td>
+<td>Download configuration as <code>models-config.json</code>.</td>
+</tr>
+<tr>
+<td><code>/configs/&lt;id&gt;/edit</code></td>
+<td>GET, POST</td>
+<td>Edit active models, rename config, add providers, etc.</td>
+</tr>
+<tr>
+<td><code>/configs/&lt;id&gt;/models/add</code></td>
+<td>POST</td>
+<td>Add a new model to a configuration.</td>
+</tr>
+<tr>
+<td><code>/models/&lt;id&gt;/delete</code></td>
+<td>POST</td>
+<td>Delete a model.</td>
+</tr>
+<tr>
+<td><code>/models/&lt;id&gt;/providers/add</code></td>
+<td>POST</td>
+<td>Add a provider (JSON payload).</td>
+</tr>
+<tr>
+<td><code>/models/&lt;id&gt;/providers/reorder</code></td>
+<td>POST</td>
+<td>Reorder providers (drag‑and‑drop).</td>
+</tr>
+<tr>
+<td><code>/providers/&lt;id&gt;/update</code></td>
+<td>POST</td>
+<td>Update provider fields (JSON payload).</td>
+</tr>
+<tr>
+<td><code>/providers/&lt;id&gt;/delete</code></td>
+<td>POST</td>
+<td>Delete a provider.</td>
+</tr>
+<tr>
+<td><code>/configs/&lt;id&gt;/activate</code></td>
+<td>POST</td>
+<td>Mark a configuration as the default for the user.</td>
+</tr>
+<tr>
+<td><code>/configs/&lt;id&gt;/delete</code></td>
+<td>POST</td>
+<td>Delete a configuration.</td>
+</tr>
+<tr>
+<td><code>/configs/&lt;id&gt;/versions</code></td>
+<td>GET</td>
+<td>List version history (JSON).</td>
+</tr>
+<tr>
+<td><code>/configs/&lt;id&gt;/versions/&lt;ver&gt;/restore</code></td>
+<td>POST</td>
+<td>Restore a previous version.</td>
+</tr>
+<tr>
+<td><code>/check_host</code></td>
+<td>POST</td>
+<td>Verify reachability of an API host (used by the UI).</td>
+</tr>
+</tbody>
+</table>
+<p>All routes are protected by session‑based authentication. Admin‑only routes require the <code>admin</code> role.</p>
+<hr />
+<h2 id="development">Development<a class="headerlink" href="#development" title="link to this section">#</a></h2>
+<h3 id="code-structure">Code structure<a class="headerlink" href="#code-structure" title="link to this section">#</a></h3>
+<div class="codehilite"><pre><span></span><code>llm_router_web/
+├─ web/
+│  ├─ static/        # CSS files (dark/light themes)
+│  ├─ templates/    # Jinja2 HTML templates
+│  ├─ __init__.py   # Flask app factory
+│  ├─ constants.py
+│  ├─ models.py     # SQLAlchemy models
+│  ├─ routes.py     # All view functions &amp; API endpoints
+│  └─ utils.py      # Helper utilities (JSON export, snapshots, DB migration)
+├─ app.py            # Entry point (creates the Flask app)
+└─ requirements.txt
+</code></pre></div>
+
+<h3 id="adding-new-features">Adding new features<a class="headerlink" href="#adding-new-features" title="link to this section">#</a></h3>
+<ol>
+<li><strong>Routes</strong> – Add view functions to <code>web/routes.py</code> and register them on the <code>bp</code> blueprint.</li>
+<li><strong>Templates</strong> – Place new Jinja2 files in <code>web/templates/</code>.</li>
+<li><strong>Static assets</strong> – Add CSS/JS files to <code>web/static/</code> and reference them via <code>url_for('static', filename='…')</code>.</li>
+<li><strong>Database changes</strong> – Extend <code>web/models.py</code> and, if needed, modify <code>_ensure_provider_order_column()</code> to handle
+   migrations for SQLite.</li>
+</ol>
+<h3 id="testing">Testing<a class="headerlink" href="#testing" title="link to this section">#</a></h3>
+<p>The repository includes <code>pytest</code> in the installed packages. Write unit tests under a <code>tests/</code> directory and run:</p>
+<p><code>shell script
+pytest</code></p>
+<hr />
+<h2 id="license">License<a class="headerlink" href="#license" title="link to this section">#</a></h2>
+<p><code>llm_router_web</code> is released under the same license as the parent <strong>llm-router</strong> project (see the repository’s LICENSE
+file).</p></article>
+<nav class="pager" aria-label="Previous and next page"></nav>
+<footer class="doc-meta">
+<div class="meta-row"><span class="meta-k">source</span><a class="mono" href="https://github.com/radlab-dev-group/llm-router/blob/v0.2.2/llm_router_web/README.md">llm_router_web/README.md</a></div>
+<div class="meta-row"><span class="meta-k">last commit</span><time datetime="2025-11-10T20:09:26+01:00">2025-11-10</time></div>
+<div class="meta-row"><span class="meta-k">built from</span><span class="mono">v0.2.2&nbsp;@&nbsp;7a20a25</span></div>
+<p class="hint">Generated from the Markdown file in the repository: commit a change and the next build republishes it for every release that contains it.</p>
+</footer>
+<footer class="foot"><div class="foot-inner">
+<span class="mono">llm-router &middot; docs are generated from the repository by <code>tools/build_docs.py</code></span>
+<span class="mono"><a href="https://github.com/radlab-dev-group/llm-router/tree/v0.2.2">0.2.2</a> @ <code>7a20a25</code></span>
+</div></footer>
+</main>
+<aside class="dtoc" id="dtoc"><h2 class="toc-title">on this page</h2><div class="toc-body"><ul><li><a href="#features">Features</a></li><li><a href="#installation">Installation</a><ul><li><a href="#environment-variables">Environment variables</a></li></ul></li><li><a href="#configuration">Configuration</a></li><li><a href="#endpoints-overview">Endpoints Overview</a></li><li><a href="#development">Development</a><ul><li><a href="#code-structure">Code structure</a></li><li><a href="#adding-new-features">Adding new features</a></li><li><a href="#testing">Testing</a></li></ul></li><li><a href="#license">License</a></li></ul></div></aside>
+</div>
+</body>
+</html>
