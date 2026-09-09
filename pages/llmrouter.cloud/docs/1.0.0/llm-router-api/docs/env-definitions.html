@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Environment Variables · v1.0.0 · llm-router docs</title>
+<meta name="description" content="All environment variables share the LLMROUTER prefix. They are loaded from os.environ in llmrouterapi/base/constants.py at import time and validated by StartAppVerificator. When LLMROUTERREDISHOST is set, the router uses Redis for…">
+<meta name="theme-color" content="#05070a">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Environment Variables · v1.0.0 · llm-router docs">
+<meta property="og:description" content="All environment variables share the LLMROUTER prefix. They are loaded from os.environ in llmrouterapi/base/constants.py at import time and validated by StartAppVerificator. When LLMROUTERREDISHOST is set, the router uses Redis for…">
+<meta name="docs-version" content="1.0.0">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2305070a'/%3E%3Cpath d='M8 22V10M8 16h9M17 10v12M17 13h7M17 19h7' stroke='%2300e59b' stroke-width='2' stroke-linecap='round' fill='none'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="../../../assets/docs.css">
+<link rel="stylesheet" href="../../../assets/pygments.css">
+<script src="../../../assets/docs.js" defer></script>
+</head>
+<body class="page" data-version="1.0.0" data-search="../../search.json" data-latest="1.0.6">
+<a class="skip" href="#main">skip to content</a>
+<header class="topbar">
+<div class="topbar-inner">
+<button class="burger" id="burger" aria-label="Toggle documentation menu" aria-expanded="false" aria-controls="sidebar">&#9776;</button>
+<a class="brand" href="../../../.."><svg width="21" height="21" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="7" fill="#0b1119" stroke="#1a232e"/><path d="M8 22V10M8 16h9M17 10v12M17 13h7M17 19h7" stroke="#00e59b" stroke-width="2" stroke-linecap="round" fill="none"/></svg><span>llm<span class="dash">-</span>router</span><span class="brand-docs">/docs</span></a>
+<div class="topbar-right">
+<form class="search" id="search" role="search" autocomplete="off">
+<span class="search-icon" aria-hidden="true">&#8981;</span>
+<input id="q" type="search" placeholder="search this version" aria-label="Search documentation" role="combobox" aria-expanded="false" aria-controls="results" aria-autocomplete="list">
+<kbd>/</kbd>
+<div class="results" id="results" role="listbox" aria-label="Search results" hidden></div>
+</form>
+<label class="vselect">
+<span class="sr-only">Documentation version</span>
+<select id="versions" aria-label="Documentation version"><option value="../../../1.0.6/llm-router-api/docs/env-definitions.html">1.0.6  · latest</option>
+<option value="../../../1.0.5/llm-router-api/docs/env-definitions.html">1.0.5</option>
+<option value="../../../1.0.4/llm-router-api/docs/env-definitions.html">1.0.4</option>
+<option value="../../../1.0.3/llm-router-api/docs/env-definitions.html">1.0.3</option>
+<option value="../../../1.0.1/llm-router-api/docs/env-definitions.html">1.0.1</option>
+<option value="env-definitions.html" selected>1.0.0</option>
+<option value="../../../0.9.6/llm-router-api/docs/env-definitions.html">0.9.6</option>
+<option value="../../../0.9.5/llm-router-api/docs/env-definitions.html">0.9.5</option>
+<option value="../../../0.9.4/llm-router-api/docs/env-definitions.html">0.9.4</option>
+<option value="../../../0.9.2/index.html">0.9.2</option>
+<option value="../../../0.9.1/index.html">0.9.1</option>
+<option value="../../../0.9.0/index.html">0.9.0</option>
+<option value="../../../0.8.0/index.html">0.8.0</option>
+<option value="../../../0.7.0/index.html">0.7.0</option>
+<option value="../../../0.6.9/index.html">0.6.9</option>
+<option value="../../../0.6.8/index.html">0.6.8</option>
+<option value="../../../0.6.7/index.html">0.6.7</option>
+<option value="../../../0.6.6/index.html">0.6.6</option>
+<option value="../../../0.6.5/index.html">0.6.5</option>
+<option value="../../../0.6.4/index.html">0.6.4</option>
+<option value="../../../0.6.3/index.html">0.6.3</option>
+<option value="../../../0.6.2/index.html">0.6.2</option>
+<option value="../../../0.6.1/index.html">0.6.1</option>
+<option value="../../../0.6.0/index.html">0.6.0</option>
+<option value="../../../0.5.2/index.html">0.5.2</option>
+<option value="../../../0.5.1/index.html">0.5.1</option>
+<option value="../../../0.5.0/index.html">0.5.0</option>
+<option value="../../../0.4.6/index.html">0.4.6</option>
+<option value="../../../0.4.5/index.html">0.4.5</option>
+<option value="../../../0.4.4/index.html">0.4.4</option>
+<option value="../../../0.4.3/index.html">0.4.3</option>
+<option value="../../../0.4.2/index.html">0.4.2</option>
+<option value="../../../0.4.1/index.html">0.4.1</option>
+<option value="../../../0.4.0/index.html">0.4.0</option>
+<option value="../../../0.3.1/index.html">0.3.1</option>
+<option value="../../../0.3.0/index.html">0.3.0</option>
+<option value="../../../0.2.3/index.html">0.2.3</option>
+<option value="../../../0.2.2/index.html">0.2.2</option>
+<option value="../../../0.2.1/index.html">0.2.1</option>
+<option value="../../../0.2.0/index.html">0.2.0</option>
+<option value="../../../0.1.1/index.html">0.1.1</option>
+<option value="../../../0.1.0/index.html">0.1.0</option></select>
+</label>
+<a class="iconbtn" href="https://github.com/radlab-dev-group/llm-router" aria-label="Repository on GitHub" title="Repository on GitHub"><svg width="17" height="17" viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8a8 8 0 0 0 5.47 7.59c.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.46-.53.42-.02.72.39.82.55.48.81 1.25.94 1.56.73.2-.27.6-.94.94-1.13-.01-.2-.05-.82-.14-.98-.6.1-1.22.2-1.87.2-1.9 0-3.62-1.13-3.62-3.53 0-.78.28-1.42.74-1.92-.07-.18-.32-.91.07-1.9 0 0 .6-.19 1.97.74a6.8 6.8 0 0 1 3.58 0c1.37-.93 1.97-.74 1.97-.74.39.99.14 1.72.07 1.9.46.5.74 1.14.74 1.92 0 2.41-1.47 3.53-3.87 3.72.3.26.57.77.57 1.56 0 1.13-.012.04-.01 2.32 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg></a>
+</div>
+</div>
+</header>
+<div class="scrim" id="scrim" hidden></div>
+<div class="shell">
+<aside class="sidebar" id="sidebar"><div class="side-head"><span class="side-v mono">v1.0.0</span><span class="side-tag old">archived</span></div><a class="side-hub" href="../../index.html">documentation index</a><nav class="nav-tree" aria-label="Documentation"><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../overview.html">Getting started</a></h2><ul><li><a href="../../overview.html">Overview</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="env-definitions.html">Configuration</a></h2><ul><li><a href="env-definitions.html" class="active">Environment Variables</a></li><li><a href="models-config.html">Models configuration description (JSON)</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="keepalive.html">Routing &amp; resilience</a></h2><ul><li><a href="keepalive.html">Keep‑Alive Utility Overview</a></li><li><a href="lb-strategies.html">Load Balancing Strategies</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../core/auditor/index.html">Security &amp; auditing</a></h2><ul><li><a href="../core/auditor/index.html">Auditing subsystem – llm-router</a></li><li><a href="authentication.html">Authentication &amp; Authorization</a></li><li><a href="rate-limiting.html">Rate Limiting</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="routing-metrics.html">Observability</a></h2><ul><li><a href="routing-metrics.html">Router Prometheus Metrics</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../index.html">REST API</a></h2><ul><li><a href="../index.html">REST API reference</a></li><li><a href="../endpoints/index.html">Endpoints Overview</a></li><li><a href="endpoint-dev.html">Endpoint Development Guide</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../llm-router-cli/index.html">CLI</a></h2><ul><li><a href="../../llm-router-cli/index.html">llm-router CLI — Command Reference</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../llm-router-lib/index.html">Python library</a></h2><ul><li><a href="../../llm-router-lib/index.html">llmrouterlib</a></li><li><a href="../../llm-router-lib/response-models.html">Response models</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../helm-charts/index.html">Deployment</a></h2><ul><li><a href="../../helm-charts/index.html">LLM‑Router Helm Chart</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../examples/index.html">Examples</a></h2><ul><li><a href="../../examples/index.html">Integration Examples with LLM Router</a></li><li><a href="../../examples/quickstart/index.html">Full Stack with Local Models</a></li><li><a href="../../examples/readme-llamaindex.html">Using LlamaIndex with Local Models via the LLM‑Router</a></li><li><a href="../../examples/quickstart/google-gemma3-12b-it/vllm.html">vLLM + google/gemma‑3‑12b‑it – Quick‑Start Guide (Ubuntu)</a></li><li><a href="../../examples/quickstart/speakleash-bielik-11b-v2-3-instruct/vllm.html">vLLM + speakleash/Bielik-11B-v2.3-Instruct – Przewodnik Szybkiego Startu (Ubuntu)</a></li><li><a href="../../examples/quickstart/speakleash-bielik-11b-v2-3-instruct/index.html">🚀 Przewodnik Szybkiego Startu dla speakleash/Bielik-11B-v2.3-Instruct z vLLM &amp; LLM‑Router</a></li><li><a href="../../examples/quickstart/google-gemma3-12b-it/index.html">🚀 Quick‑Start Guide for google/gemma-3-12b‑it with vLLM &amp; LLM‑Router</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../changelog.html">Release notes</a></h2><ul><li><a href="../../changelog.html">Changelog</a></li></ul></section></nav><div class="side-foot"><a href="../../../..">&larr;&nbsp;landing page</a><a class="mono" href="../../search.json">search.json</a></div></aside>
+<main class="main" id="main"><nav class="crumbs" aria-label="Breadcrumb">
+<a href="../../../..">llm-router</a><span class="sep">/</span><a href="../../index.html">docs</a><span class="sep">/</span><a href="env-definitions.html">Configuration</a><span class="sep">/</span><em>Environment Variables</em>
+</nav>
+<article class="prose"><h1 id="environment-variables">Environment Variables<a class="headerlink" href="#environment-variables" title="link to this section">#</a></h1>
+<p>All environment variables share the <code>LLM_ROUTER_</code> prefix. They are loaded from <code>os.environ</code> in <a href="https://github.com/radlab-dev-group/llm-router/blob/v1.0.0/llm_router_api/base/constants.py"> target="_blank" rel="noopener noreferrer"
+<code>llm_router_api/base/constants.py</code></a> at import time and validated by
+<code>_StartAppVerificator</code>.</p>
+<hr />
+<h2 id="core-variables">Core variables<a class="headerlink" href="#core-variables" title="link to this section">#</a></h2>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>LLM_ROUTER_PROMPTS_DIR</code></td>
+<td><code>resources/prompts</code></td>
+<td>Directory containing predefined system prompts.</td>
+</tr>
+<tr>
+<td><code>LLM_ROUTER_MODELS_CONFIG</code></td>
+<td><code>resources/configs/models-config.json</code></td>
+<td>Path to the models configuration JSON file.</td>
+</tr>
+<tr>
+<td><code>LLM_ROUTER_DEFAULT_EP_LANGUAGE</code></td>
+<td><code>pl</code></td>
+<td>Default language for endpoint prompts (fallback).</td>
+</tr>
+<tr>
+<td><code>LLM_ROUTER_TIMEOUT</code></td>
+<td><code>0</code></td>
+<td>Timeout (seconds) for llm-router API calls.</td>
+</tr>
+<tr>
+<td><code>LLM_ROUTER_EXTERNAL_TIMEOUT</code></td>
+<td><code>300</code></td>
+<td>Timeout (seconds) for external model API calls.</td>
+</tr>
+<tr>
+<td><code>LLM_ROUTER_MAX_REQUEST_BODY_SIZE</code></td>
+<td><code>10485760</code> (10 MB)</td>
+<td>Maximum request body size in bytes; oversized payloads get HTTP 413.</td>
+</tr>
+<tr>
+<td><code>LLM_ROUTER_LOG_FILENAME</code></td>
+<td><code>llm-router.log</code></td>
+<td>Name of the log file.</td>
+</tr>
+<tr>
+<td><code>LLM_ROUTER_LOG_LEVEL</code></td>
+<td><code>INFO</code></td>
+<td>Logging level (e.g. INFO, DEBUG).</td>
+</tr>
+<tr>
+<td><code>LLM_ROUTER_LOG_TO_FILE</code></td>
+<td><code>false</code></td>
+<td>Also write logs to the log file (in addition to console).</td>
+</tr>
+<tr>
+<td><code>LLM_ROUTER_LOG_MAX_BYTES</code></td>
+<td><code>52428800</code> (50 MB)</td>
+<td>Rotate the log file once it reaches this size in bytes (applied when <code>LLM_ROUTER_LOG_TO_FILE</code> is set).</td>
+</tr>
+<tr>
+<td><code>LLM_ROUTER_LOG_BACKUP_COUNT</code></td>
+<td><code>5</code></td>
+<td>Maximum number of rotated log files to keep, <code>&lt;name&gt;.1</code> … <code>&lt;name&gt;.N</code>.</td>
+</tr>
+<tr>
+<td><code>LLM_ROUTER_EP_PREFIX</code></td>
+<td><code>/api</code></td>
+<td>Prefix for all API endpoints.</td>
+</tr>
+<tr>
+<td><code>LLM_ROUTER_MINIMUM</code></td>
+<td><code>False</code></td>
+<td>Run service in proxy-only mode.</td>
+</tr>
+<tr>
+<td><code>LLM_ROUTER_IN_DEBUG</code></td>
+<td><code>False</code></td>
+<td>Run server in debug mode; also forces log level to DEBUG.</td>
+</tr>
+<tr>
+<td><code>LLM_ROUTER_BALANCE_STRATEGY</code></td>
+<td><code>balanced</code></td>
+<td>Load-balancing strategy: <code>balanced</code>, <code>weighted</code>, <code>dynamic_weighted</code>, <code>first_available</code>, <code>first_available_optim</code>.</td>
+</tr>
+<tr>
+<td><code>LLM_ROUTER_SERVER_TYPE</code></td>
+<td><code>flask</code></td>
+<td>Server implementation: flask, gunicorn, waitress.</td>
+</tr>
+<tr>
+<td><code>LLM_ROUTER_SERVER_PORT</code></td>
+<td><code>8080</code></td>
+<td>Port on which the server listens.</td>
+</tr>
+<tr>
+<td><code>LLM_ROUTER_SERVER_HOST</code></td>
+<td><code>localhost</code></td>
+<td>Host address for the server.</td>
+</tr>
+<tr>
+<td><code>LLM_ROUTER_SERVER_WORKERS_COUNT</code></td>
+<td><code>2</code></td>
+<td>Number of workers (for servers that support them).</td>
+</tr>
+<tr>
+<td><code>LLM_ROUTER_SERVER_THREADS_COUNT</code></td>
+<td><code>8</code></td>
+<td>Number of worker threads (for servers that support them).</td>
+</tr>
+<tr>
+<td><code>LLM_ROUTER_SERVER_WORKER_CLASS</code></td>
+<td><code>None</code></td>
+<td>Worker class for servers that support it (e.g. gevent).</td>
+</tr>
+<tr>
+<td><code>LLM_ROUTER_USE_PROMETHEUS</code></td>
+<td><code>False</code></td>
+<td>Enable Prometheus metrics collection (<code>/metrics</code> endpoint).</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>See also <code>PROMETHEUS_MULTIPROC_DIR</code> for the directory where Prometheus multiprocess worker data files are stored.</p>
+</blockquote>
+<hr />
+<h2 id="redis-variables">Redis variables<a class="headerlink" href="#redis-variables" title="link to this section">#</a></h2>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>LLM_ROUTER_REDIS_HOST</code></td>
+<td><em>(empty)</em></td>
+<td>Redis host for load-balancing state and provider availability.</td>
+</tr>
+<tr>
+<td><code>LLM_ROUTER_REDIS_PORT</code></td>
+<td><code>6379</code></td>
+<td>Redis port.</td>
+</tr>
+<tr>
+<td><code>LLM_ROUTER_REDIS_DB</code></td>
+<td><code>0</code></td>
+<td>Redis database number.</td>
+</tr>
+<tr>
+<td><code>LLM_ROUTER_REDIS_PASSWORD</code></td>
+<td><em>(empty)</em></td>
+<td>Redis password.</td>
+</tr>
+<tr>
+<td><code>LLM_ROUTER_REDIS_PROTOCOL</code></td>
+<td><code>3</code></td>
+<td>Redis protocol version (RESP2 = <code>2</code>, RESP3 = <code>3</code>).</td>
+</tr>
+</tbody>
+</table>
+<p>When <code>LLM_ROUTER_REDIS_HOST</code> is set, the router uses Redis for load-balancing state and provider availability tracking.</p>
+<hr />
+<h2 id="masking-guardrail-variables">Masking &amp; Guardrail variables<a class="headerlink" href="#masking-guardrail-variables" title="link to this section">#</a></h2>
+<h3 id="payload-masking">Payload masking<a class="headerlink" href="#payload-masking" title="link to this section">#</a></h3>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>LLM_ROUTER_FORCE_MASKING</code></td>
+<td><code>False</code></td>
+<td>Enable masking of every endpoint's payload before provider call.</td>
+</tr>
+<tr>
+<td><code>LLM_ROUTER_MASKING_STRATEGY_PIPELINE</code></td>
+<td><em>(empty)</em></td>
+<td>Comma-separated list of masker plugins (e.g. <code>fast_masker,pii_masker</code>).</td>
+</tr>
+<tr>
+<td><code>LLM_ROUTER_MASKING_WITH_AUDIT</code></td>
+<td><code>False</code></td>
+<td>Record each masking operation in the audit log.</td>
+</tr>
+<tr>
+<td><code>LLM_ROUTER_MASKER_PII_HOST</code></td>
+<td><em>(empty)</em></td>
+<td>Host URL of the remote ML-based <code>pii_masker</code> service. Must be set when using <code>pii_masker</code> in a pipeline.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="request-guardrails">Request guardrails<a class="headerlink" href="#request-guardrails" title="link to this section">#</a></h3>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>LLM_ROUTER_FORCE_GUARDRAIL_REQUEST</code></td>
+<td><code>False</code></td>
+<td>Force guardrail evaluation on every request.</td>
+</tr>
+<tr>
+<td><code>LLM_ROUTER_GUARDRAIL_WITH_AUDIT_REQUEST</code></td>
+<td><code>False</code></td>
+<td>Audit all guardrail decisions for requests.</td>
+</tr>
+<tr>
+<td><code>LLM_ROUTER_GUARDRAIL_STRATEGY_PIPELINE_REQUEST</code></td>
+<td><em>(empty)</em></td>
+<td>Comma-separated list of guardrail strategies (request).</td>
+</tr>
+<tr>
+<td><code>LLM_ROUTER_GUARDRAIL_NASK_GUARD_HOST</code></td>
+<td><em>(empty)</em></td>
+<td>Host URL of the remote <code>nask_guard</code> service (HerBERT‑PL‑Guard, NASK‑PIB). Must be set when using <code>nask_guard</code> in a pipeline.</td>
+</tr>
+<tr>
+<td><code>LLM_ROUTER_GUARDRAIL_SOJKA_GUARD_HOST</code></td>
+<td><em>(empty)</em></td>
+<td>Host URL of the remote <code>sojka_guard</code> service (Bielik‑Guard). Must be set when using <code>sojka_guard</code> in a pipeline.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="response-guardrails">Response guardrails<a class="headerlink" href="#response-guardrails" title="link to this section">#</a></h3>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>LLM_ROUTER_FORCE_GUARDRAIL_RESPONSE</code></td>
+<td><code>False</code></td>
+<td>Force guardrail evaluation on every response.</td>
+</tr>
+<tr>
+<td><code>LLM_ROUTER_GUARDRAIL_WITH_AUDIT_RESPONSE</code></td>
+<td><code>False</code></td>
+<td>Audit all guardrail decisions for responses.</td>
+</tr>
+<tr>
+<td><code>LLM_ROUTER_GUARDRAIL_STRATEGY_PIPELINE_RESPONSE</code></td>
+<td><em>(empty)</em></td>
+<td>Comma-separated list of guardrail strategies (response).</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="semantic-biencoder-routing-variables">Semantic BiEncoder Routing variables<a class="headerlink" href="#semantic-biencoder-routing-variables" title="link to this section">#</a></h2>
+<p>Requires the <code>llm-router-plugins</code> package. When <code>LLM_ROUTER_UTILS_PLUGINS_PIPELINE</code> includes
+<code>semantic_biencoder_routing</code>, these variables configure the plugin:</p>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>LLM_ROUTER_ROUTING_SEMANTIC_BIENCODER_CONFIG</code></td>
+<td><em>(empty)</em></td>
+<td>Config source of truth — raw JSON string or file path. Falls back to bundled <code>semantic_biencoder.json</code>. Individual env vars below override loaded config values only when explicitly set.</td>
+</tr>
+<tr>
+<td><code>LLM_ROUTER_ROUTING_SEMANTIC_BIENCODER_MODEL</code></td>
+<td><em>(empty)</em></td>
+<td>Override the embedding model name or local path.</td>
+</tr>
+<tr>
+<td><code>LLM_ROUTER_ROUTING_SEMANTIC_BIENCODER_TARGETS</code></td>
+<td><em>(empty)</em></td>
+<td>Pipe-separated list of target names (overrides all targets).</td>
+</tr>
+<tr>
+<td><code>LLM_ROUTER_ROUTING_SEMANTIC_BIENCODER_CHUNK_SIZE</code></td>
+<td><em>(empty)</em></td>
+<td>Token chunk size for embedding.</td>
+</tr>
+<tr>
+<td><code>LLM_ROUTER_ROUTING_SEMANTIC_BIENCODER_CHUNK_OVERLAP</code></td>
+<td><em>(empty)</em></td>
+<td>Token overlap between consecutive chunks.</td>
+</tr>
+<tr>
+<td><code>LLM_ROUTER_ROUTING_SEMANTIC_BIENCODER_PERSIST_DIR</code></td>
+<td><em>(empty)</em></td>
+<td>Directory for FAISS index + docstore persistence (<code>index.faiss</code>, <code>docstore.pkl</code>).</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="langchainrag-variables">LangChainRAG variables<a class="headerlink" href="#langchainrag-variables" title="link to this section">#</a></h2>
+<p>Requires the <code>llm-router-plugins</code> package. When <code>LLM_ROUTER_UTILS_PLUGINS_PIPELINE</code> includes <code>langchain_rag</code>, these
+variables configure the RAG plugin:</p>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>LLM_ROUTER_LANGCHAIN_RAG_COLLECTION</code></td>
+<td><em>(empty)</em></td>
+<td>Vector store collection name (required when langchain_rag is used).</td>
+</tr>
+<tr>
+<td><code>LLM_ROUTER_LANGCHAIN_RAG_EMBEDDER</code></td>
+<td><em>(empty)</em></td>
+<td>Path to the embedding model (e.g. <code>/mnt/data2/llms/models/community/google/embeddinggemma-300m</code>).</td>
+</tr>
+<tr>
+<td><code>LLM_ROUTER_LANGCHAIN_RAG_DEVICE</code></td>
+<td><code>cpu</code></td>
+<td>Compute device for the embedding model (<code>cpu</code>, <code>cuda:0</code>, …).</td>
+</tr>
+<tr>
+<td><code>LLM_ROUTER_LANGCHAIN_RAG_CHUNK_SIZE</code></td>
+<td><em>(empty)</em></td>
+<td>Chunk size for document splitting (required when langchain_rag is used).</td>
+</tr>
+<tr>
+<td><code>LLM_ROUTER_LANGCHAIN_RAG_CHUNK_OVERLAP</code></td>
+<td><em>(empty)</em></td>
+<td>Overlap between consecutive chunks (required when langchain_rag is used).</td>
+</tr>
+<tr>
+<td><code>LLM_ROUTER_LANGCHAIN_RAG_PERSIST_DIR</code></td>
+<td><em>(empty)</em></td>
+<td>Directory for LangChainRAG index persistence.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="utils-plugins-variables">Utils plugins variables<a class="headerlink" href="#utils-plugins-variables" title="link to this section">#</a></h2>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>LLM_ROUTER_UTILS_PLUGINS_PIPELINE</code></td>
+<td><em>(empty)</em></td>
+<td>Comma-separated list of utility plugins to apply (e.g. <code>simple_semantic_routing,langchain_rag</code>).</td>
+</tr>
+</tbody>
+</table>
+<p>Available plugins: <code>simple_semantic_routing</code>, <code>semantic_biencoder_routing</code>, <code>langchain_rag</code>. Each plugin has additional
+configuration documented above.</p>
+<hr />
+<h2 id="authentication-variables">Authentication variables<a class="headerlink" href="#authentication-variables" title="link to this section">#</a></h2>
+<h3 id="core-switch">Core switch<a class="headerlink" href="#core-switch" title="link to this section">#</a></h3>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>LLM_ROUTER_AUTH_ENABLED</code></td>
+<td><code>false</code></td>
+<td>Master switch — "true" enables all authentication.</td>
+</tr>
+<tr>
+<td><code>LLM_ROUTER_AUTH_KEY_STORE</code></td>
+<td><code>memory</code></td>
+<td>Key store backend: vault, redis, or memory.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="memory-store">Memory store<a class="headerlink" href="#memory-store" title="link to this section">#</a></h3>
+<p>Seed file path (hardcoded): <code>${HOME}/.llm-router/configs/auth/memory-keys.json</code></p>
+<h3 id="vault-settings">Vault settings<a class="headerlink" href="#vault-settings" title="link to this section">#</a></h3>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>LLM_ROUTER_AUTH_VAULT_ADDR</code></td>
+<td><em>(empty)</em></td>
+<td>HashiCorp Vault server URL (e.g. <code>https://vault.example.com</code>).</td>
+</tr>
+<tr>
+<td><code>LLM_ROUTER_AUTH_VAULT_PATH</code></td>
+<td><code>secret/data/llm-router/api-keys</code></td>
+<td>KV v2 mount path for key storage.</td>
+</tr>
+<tr>
+<td><code>LLM_ROUTER_AUTH_VAULT_AUTH_METHOD</code></td>
+<td><code>kubernetes</code></td>
+<td>Auth method: kubernetes, approle, or token.</td>
+</tr>
+<tr>
+<td><code>LLM_ROUTER_AUTH_VAULT_ROLE_ID</code></td>
+<td><em>(empty)</em></td>
+<td>AppRole role ID (or K8s SA token).</td>
+</tr>
+<tr>
+<td><code>LLM_ROUTER_AUTH_VAULT_SECRET_ID</code></td>
+<td><em>(empty)</em></td>
+<td>AppRole secret ID.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="redis-cache-for-keys">Redis cache for keys<a class="headerlink" href="#redis-cache-for-keys" title="link to this section">#</a></h3>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>LLM_ROUTER_AUTH_KEY_CACHE_TTL</code></td>
+<td><code>300</code></td>
+<td>Key cache TTL in seconds.</td>
+</tr>
+<tr>
+<td><code>LLM_ROUTER_AUTH_KEY_CACHE_JITTER</code></td>
+<td><code>60</code></td>
+<td>Random jitter to prevent cache stampede.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="auth-redis-separate-from-general-redis">Auth Redis (separate from general REDIS)<a class="headerlink" href="#auth-redis-separate-from-general-redis" title="link to this section">#</a></h3>
+<p>Auth-specific Redis connection used by the key store and rate limiter:</p>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>LLM_ROUTER_AUTH_REDIS_HOST</code></td>
+<td><em>(empty)</em></td>
+<td>Auth Redis host.</td>
+</tr>
+<tr>
+<td><code>LLM_ROUTER_AUTH_REDIS_PORT</code></td>
+<td><code>6379</code></td>
+<td>Auth Redis port.</td>
+</tr>
+<tr>
+<td><code>LLM_ROUTER_AUTH_REDIS_DB</code></td>
+<td><code>0</code></td>
+<td>Auth Redis database number.</td>
+</tr>
+<tr>
+<td><code>LLM_ROUTER_AUTH_REDIS_PASSWORD</code></td>
+<td><em>(empty)</em></td>
+<td>Auth Redis password.</td>
+</tr>
+<tr>
+<td><code>LLM_ROUTER_AUTH_REDIS_PROTOCOL</code></td>
+<td><code>3</code></td>
+<td>Auth Redis protocol version (RESP2 = <code>2</code>, RESP3 = <code>3</code>).</td>
+</tr>
+</tbody>
+</table>
+<h3 id="rate-limiting">Rate limiting<a class="headerlink" href="#rate-limiting" title="link to this section">#</a></h3>
+<p>Rate limiting is always applied when authentication is enabled:</p>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>LLM_ROUTER_AUTH_DEFAULT_RATE_LIMIT</code></td>
+<td><code>60</code></td>
+<td>Default rate limit (requests per minute). Rate limiting is always active when authentication is enabled — there is no separate toggle.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="public-endpoints">Public endpoints<a class="headerlink" href="#public-endpoints" title="link to this section">#</a></h3>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>LLM_ROUTER_AUTH_PUBLIC_ENDPOINTS</code></td>
+<td><code>/health,/metrics</code></td>
+<td>Comma-separated paths that bypass authentication.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="hardening">Hardening<a class="headerlink" href="#hardening" title="link to this section">#</a></h3>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>LLM_ROUTER_TRUSTED_PROXIES</code></td>
+<td><em>(empty)</em></td>
+<td>Comma-separated IPs/CIDRs of trusted proxies. Only a direct peer listed here may supply <code>X-Forwarded-For</code>; otherwise the header is ignored (anti-spoofing for rate-limit/IP checks).</td>
+</tr>
+<tr>
+<td><code>LLM_ROUTER_AUTH_FAILURE_LIMIT</code></td>
+<td><code>20</code></td>
+<td>Max failed-authentication attempts (missing/invalid key) per client IP per window before a <code>429</code> lockout. <code>0</code> disables the lockout.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="key-generation">Key generation<a class="headerlink" href="#key-generation" title="link to this section">#</a></h3>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>LLM_ROUTER_AUTH_KEY_PREFIX</code></td>
+<td><code>sk-litm</code></td>
+<td>Key prefix (like LiteLLM/OpenAI format).</td>
+</tr>
+<tr>
+<td><code>LLM_ROUTER_AUTH_KEY_LENGTH</code></td>
+<td><code>48</code></td>
+<td>Entropy bytes for key generation (produces 64-char key).</td>
+</tr>
+</tbody>
+</table>
+<h3 id="key-rotation">Key rotation<a class="headerlink" href="#key-rotation" title="link to this section">#</a></h3>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>LLM_ROUTER_AUTH_ROTATION_GRACE_PERIOD</code></td>
+<td><code>3600</code></td>
+<td>Old keys remain valid this many seconds after rotation.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="audit">Audit<a class="headerlink" href="#audit" title="link to this section">#</a></h3>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>LLM_ROUTER_AUTH_AUDIT</code></td>
+<td><em>(empty)</em></td>
+<td>Record auth events in the audit log.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="monitoring-intervals">Monitoring intervals<a class="headerlink" href="#monitoring-intervals" title="link to this section">#</a></h2>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>LLM_ROUTER_SERVICES_MONITOR_INTERVAL_SECONDS</code></td>
+<td><code>5</code></td>
+<td>Seconds between llm-router-services checks.</td>
+</tr>
+<tr>
+<td><code>LLM_ROUTER_KEEPALIVE_MODEL_MONITOR_INTERVAL_SECONDS</code></td>
+<td><code>1</code></td>
+<td>Interval (seconds) for model keepalive check.</td>
+</tr>
+<tr>
+<td><code>LLM_ROUTER_PROVIDER_MONITOR_INTERVAL_SECONDS</code></td>
+<td><code>5</code></td>
+<td>Seconds between next checks of models providers.</td>
+</tr>
+<tr>
+<td><code>LLM_ROUTER_PROVIDER_MONITOR_PING_TIMEOUT_SECONDS</code></td>
+<td><code>5</code></td>
+<td>Per-provider health-check ping timeout (seconds). Busy LLM hosts (e.g. Ollama serving a large model) may need more than 2 s to accept a new connection.</td>
+</tr>
+<tr>
+<td><code>LLM_ROUTER_PROVIDER_MONITOR_MAX_CONSECUTIVE_FAILURES</code></td>
+<td><code>2</code></td>
+<td>Number of <em>consecutive</em> failed pings required before a provider is marked unavailable (hysteresis, prevents a single slow ping from removing a live provider).</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="programmatic-source">Programmatic source<a class="headerlink" href="#programmatic-source" title="link to this section">#</a></h2>
+<p>The definitive list of all runtime environment variables is in the source code: <a href="https://github.com/radlab-dev-group/llm-router/blob/v1.0.0/llm_router_api/base/constants.py"> target="_blank" rel="noopener noreferrer"
+<code>llm_router_api/base/constants.py</code></a>. Each constant is loaded from <code>os.environ</code> with a
+documented default and validated at import time.</p></article>
+<nav class="pager" aria-label="Previous and next page"><a class="next" href="models-config.html"><span class="dir">next &rarr;</span><span class="pt">Models configuration description (JSON)</span></a></nav>
+<footer class="doc-meta">
+<div class="meta-row"><span class="meta-k">source</span><a class="mono" href="https://github.com/radlab-dev-group/llm-router/blob/v1.0.0/llm_router_api/docs/ENV_DEFINITIONS.md">llm_router_api/docs/ENV_DEFINITIONS.md</a></div>
+<div class="meta-row"><span class="meta-k">last commit</span><time datetime="2026-08-31T19:40:58+02:00">2026-08-31</time></div>
+<div class="meta-row"><span class="meta-k">built from</span><span class="mono">v1.0.0&nbsp;@&nbsp;1684f73</span></div>
+<p class="hint">Generated from the Markdown file in the repository: commit a change and the next build republishes it for every release that contains it.</p>
+</footer>
+<footer class="foot"><div class="foot-inner">
+<span class="mono">llm-router &middot; docs are generated from the repository by <code>tools/build_docs.py</code></span>
+<span class="mono"><a href="https://github.com/radlab-dev-group/llm-router/tree/v1.0.0">1.0.0</a> @ <code>1684f73</code></span>
+</div></footer>
+</main>
+<aside class="dtoc" id="dtoc"><h2 class="toc-title">on this page</h2><div class="toc-body"><ul><li><a href="#core-variables">Core variables</a></li><li><a href="#redis-variables">Redis variables</a></li><li><a href="#masking-guardrail-variables">Masking &amp;amp; Guardrail variables</a><ul><li><a href="#payload-masking">Payload masking</a></li><li><a href="#request-guardrails">Request guardrails</a></li><li><a href="#response-guardrails">Response guardrails</a></li></ul></li><li><a href="#semantic-biencoder-routing-variables">Semantic BiEncoder Routing variables</a></li><li><a href="#langchainrag-variables">LangChainRAG variables</a></li><li><a href="#utils-plugins-variables">Utils plugins variables</a></li><li><a href="#authentication-variables">Authentication variables</a><ul><li><a href="#core-switch">Core switch</a></li><li><a href="#memory-store">Memory store</a></li><li><a href="#vault-settings">Vault settings</a></li><li><a href="#redis-cache-for-keys">Redis cache for keys</a></li><li><a href="#auth-redis-separate-from-general-redis">Auth Redis (separate from general REDIS)</a></li><li><a href="#rate-limiting">Rate limiting</a></li><li><a href="#public-endpoints">Public endpoints</a></li><li><a href="#hardening">Hardening</a></li><li><a href="#key-generation">Key generation</a></li><li><a href="#key-rotation">Key rotation</a></li><li><a href="#audit">Audit</a></li></ul></li><li><a href="#monitoring-intervals">Monitoring intervals</a></li><li><a href="#programmatic-source">Programmatic source</a></li></ul></div></aside>
+</div>
+</body>
+</html>

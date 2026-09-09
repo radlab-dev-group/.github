@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jak tworzyć endpointy w llm-proxy-api – przewodnik · v0.2.2 · llm-router docs</title>
+<meta name="description" content="Poniżej zebrano kluczowe informacje o tym, jak definiować i konfigurować endpointy (EP) na podstawie klas z endpoints., z odniesieniem do logiki wykonywania w endpointi.EndpointWithHttpRequestI.runep(...). Uwzględniono też role…">
+<meta name="theme-color" content="#05070a">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Jak tworzyć endpointy w llm-proxy-api – przewodnik · v0.2.2 · llm-router docs">
+<meta property="og:description" content="Poniżej zebrano kluczowe informacje o tym, jak definiować i konfigurować endpointy (EP) na podstawie klas z endpoints., z odniesieniem do logiki wykonywania w endpointi.EndpointWithHttpRequestI.runep(...). Uwzględniono też role…">
+<meta name="docs-version" content="0.2.2">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2305070a'/%3E%3Cpath d='M8 22V10M8 16h9M17 10v12M17 13h7M17 19h7' stroke='%2300e59b' stroke-width='2' stroke-linecap='round' fill='none'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="../../../assets/docs.css">
+<link rel="stylesheet" href="../../../assets/pygments.css">
+<script src="../../../assets/docs.js" defer></script>
+</head>
+<body class="page" data-version="0.2.2" data-search="../../search.json" data-latest="1.0.6">
+<a class="skip" href="#main">skip to content</a>
+<header class="topbar">
+<div class="topbar-inner">
+<button class="burger" id="burger" aria-label="Toggle documentation menu" aria-expanded="false" aria-controls="sidebar">&#9776;</button>
+<a class="brand" href="../../../.."><svg width="21" height="21" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="7" fill="#0b1119" stroke="#1a232e"/><path d="M8 22V10M8 16h9M17 10v12M17 13h7M17 19h7" stroke="#00e59b" stroke-width="2" stroke-linecap="round" fill="none"/></svg><span>llm<span class="dash">-</span>router</span><span class="brand-docs">/docs</span></a>
+<div class="topbar-right">
+<form class="search" id="search" role="search" autocomplete="off">
+<span class="search-icon" aria-hidden="true">&#8981;</span>
+<input id="q" type="search" placeholder="search this version" aria-label="Search documentation" role="combobox" aria-expanded="false" aria-controls="results" aria-autocomplete="list">
+<kbd>/</kbd>
+<div class="results" id="results" role="listbox" aria-label="Search results" hidden></div>
+</form>
+<label class="vselect">
+<span class="sr-only">Documentation version</span>
+<select id="versions" aria-label="Documentation version"><option value="../../../1.0.6/index.html">1.0.6  · latest</option>
+<option value="../../../1.0.5/index.html">1.0.5</option>
+<option value="../../../1.0.4/index.html">1.0.4</option>
+<option value="../../../1.0.3/index.html">1.0.3</option>
+<option value="../../../1.0.1/index.html">1.0.1</option>
+<option value="../../../1.0.0/index.html">1.0.0</option>
+<option value="../../../0.9.6/llm-router-api/endpoints/readme-pl.html">0.9.6</option>
+<option value="../../../0.9.5/llm-router-api/endpoints/readme-pl.html">0.9.5</option>
+<option value="../../../0.9.4/llm-router-api/endpoints/readme-pl.html">0.9.4</option>
+<option value="../../../0.9.2/llm-router-api/endpoints/readme-pl.html">0.9.2</option>
+<option value="../../../0.9.1/llm-router-api/endpoints/readme-pl.html">0.9.1</option>
+<option value="../../../0.9.0/llm-router-api/endpoints/readme-pl.html">0.9.0</option>
+<option value="../../../0.8.0/llm-router-api/endpoints/readme-pl.html">0.8.0</option>
+<option value="../../../0.7.0/llm-router-api/endpoints/readme-pl.html">0.7.0</option>
+<option value="../../../0.6.9/llm-router-api/endpoints/readme-pl.html">0.6.9</option>
+<option value="../../../0.6.8/llm-router-api/endpoints/readme-pl.html">0.6.8</option>
+<option value="../../../0.6.7/llm-router-api/endpoints/readme-pl.html">0.6.7</option>
+<option value="../../../0.6.6/llm-router-api/endpoints/readme-pl.html">0.6.6</option>
+<option value="../../../0.6.5/llm-router-api/endpoints/readme-pl.html">0.6.5</option>
+<option value="../../../0.6.4/llm-router-api/endpoints/readme-pl.html">0.6.4</option>
+<option value="../../../0.6.3/llm-router-api/endpoints/readme-pl.html">0.6.3</option>
+<option value="../../../0.6.2/llm-router-api/endpoints/readme-pl.html">0.6.2</option>
+<option value="../../../0.6.1/llm-router-api/endpoints/readme-pl.html">0.6.1</option>
+<option value="../../../0.6.0/llm-router-api/endpoints/readme-pl.html">0.6.0</option>
+<option value="../../../0.5.2/llm-router-api/endpoints/readme-pl.html">0.5.2</option>
+<option value="../../../0.5.1/llm-router-api/endpoints/readme-pl.html">0.5.1</option>
+<option value="../../../0.5.0/llm-router-api/endpoints/readme-pl.html">0.5.0</option>
+<option value="../../../0.4.6/llm-router-api/endpoints/readme-pl.html">0.4.6</option>
+<option value="../../../0.4.5/llm-router-api/endpoints/readme-pl.html">0.4.5</option>
+<option value="../../../0.4.4/llm-router-api/endpoints/readme-pl.html">0.4.4</option>
+<option value="../../../0.4.3/llm-router-api/endpoints/readme-pl.html">0.4.3</option>
+<option value="../../../0.4.2/llm-router-api/endpoints/readme-pl.html">0.4.2</option>
+<option value="../../../0.4.1/llm-router-api/endpoints/readme-pl.html">0.4.1</option>
+<option value="../../../0.4.0/llm-router-api/endpoints/readme-pl.html">0.4.0</option>
+<option value="../../../0.3.1/llm-router-api/endpoints/readme-pl.html">0.3.1</option>
+<option value="../../../0.3.0/llm-router-api/endpoints/readme-pl.html">0.3.0</option>
+<option value="../../../0.2.3/llm-router-api/endpoints/readme-pl.html">0.2.3</option>
+<option value="readme-pl.html" selected>0.2.2</option>
+<option value="../../../0.2.1/llm-router-api/endpoints/readme-pl.html">0.2.1</option>
+<option value="../../../0.2.0/llm-router-api/endpoints/readme-pl.html">0.2.0</option>
+<option value="../../../0.1.1/llm-router-api/endpoints/readme-pl.html">0.1.1</option>
+<option value="../../../0.1.0/llm-router-api/endpoints/readme-pl.html">0.1.0</option></select>
+</label>
+<a class="iconbtn" href="https://github.com/radlab-dev-group/llm-router" aria-label="Repository on GitHub" title="Repository on GitHub"><svg width="17" height="17" viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8a8 8 0 0 0 5.47 7.59c.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.46-.53.42-.02.72.39.82.55.48.81 1.25.94 1.56.73.2-.27.6-.94.94-1.13-.01-.2-.05-.82-.14-.98-.6.1-1.22.2-1.87.2-1.9 0-3.62-1.13-3.62-3.53 0-.78.28-1.42.74-1.92-.07-.18-.32-.91.07-1.9 0 0 .6-.19 1.97.74a6.8 6.8 0 0 1 3.58 0c1.37-.93 1.97-.74 1.97-.74.39.99.14 1.72.07 1.9.46.5.74 1.14.74 1.92 0 2.41-1.47 3.53-3.87 3.72.3.26.57.77.57 1.56 0 1.13-.012.04-.01 2.32 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg></a>
+</div>
+</div>
+</header>
+<div class="scrim" id="scrim" hidden></div>
+<div class="shell">
+<aside class="sidebar" id="sidebar"><div class="side-head"><span class="side-v mono">v0.2.2</span><span class="side-tag old">archived</span></div><a class="side-hub" href="../../index.html">documentation index</a><nav class="nav-tree" aria-label="Documentation"><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../overview.html">Getting started</a></h2><ul><li><a href="../../overview.html">Overview</a></li><li><a href="../../install.html">Instalacja zależności</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="../index.html">REST API</a></h2><ul><li><a href="../index.html">REST API reference</a></li><li><a href="readme-pl.html" class="active">Jak tworzyć endpointy w llm-proxy-api – przewodnik</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../llm-router-lib/index.html">Python library</a></h2><ul><li><a href="../../llm-router-lib/index.html">llm‑router-LIB — Python client library</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../llm-router-web/index.html">Web UI (archived)</a></h2><ul><li><a href="../../llm-router-web/index.html">llmrouterweb</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../changelog.html">Release notes</a></h2><ul><li><a href="../../changelog.html">Changelog</a></li></ul></section></nav><div class="side-foot"><a href="../../../..">&larr;&nbsp;landing page</a><a class="mono" href="../../search.json">search.json</a></div></aside>
+<main class="main" id="main"><nav class="crumbs" aria-label="Breadcrumb">
+<a href="../../../..">llm-router</a><span class="sep">/</span><a href="../../index.html">docs</a><span class="sep">/</span><a href="../index.html">REST API</a><span class="sep">/</span><em>Jak tworzyć endpointy w llm-proxy-api – przewodnik</em>
+</nav>
+<article class="prose"><h1 id="jak-tworzyc-endpointy-w-llm-proxy-api-przewodnik">Jak tworzyć endpointy w llm-proxy-api – przewodnik<a class="headerlink" href="#jak-tworzyc-endpointy-w-llm-proxy-api-przewodnik" title="link to this section">#</a></h1>
+<p>Poniżej zebrano kluczowe informacje o tym, jak definiować i konfigurować endpointy (EP) na podstawie klas z <code>endpoints.*</code>, z odniesieniem do logiki wykonywania w <code>endpoint_i.EndpointWithHttpRequestI.run_ep(...)</code>. Uwzględniono też role atrybutów/stałych takich jak <code>self._map_prompt</code>, <code>self._prompt_str_postfix</code>, <code>_prepare_response_function</code>, <code>_prompt_str_force</code>, <code>SYSTEM_PROMPT_NAME</code>, <code>REQUIRED_ARGS</code>, <code>OPTIONAL_ARGS</code> oraz parametry konstruktora.</p>
+<p>1) Hierarchia i warianty bazowe
+- EndpointI: baza dla EP (gdy serwis nie działa jako proxy). Definiuje ogólne API i walidację argumentów, ale nie implementuje run_ep.
+- EndpointWithHttpRequestI: rozszerza EndpointI o wysyłkę żądań HTTP do zewnętrznego LLM. Ma pełną implementację run_ep, obsługę streamingu i wstrzykiwania promptu systemowego.
+- PassthroughI: dziedziczy z EndpointWithHttpRequestI i domyślnie “przepuszcza” payload (prepare_payload zwraca parametry bez zmian). Użyteczne dla OpenAI‑kompatybilnych EP, gdzie chcemy prosto forwardować żądania.</p>
+<p>Dlaczego w openai.py dziedziczymy z PassthroughI?
+- Bo endpointy OpenAI‑kompatybilne często wymagają minimalnej logiki – wystarczy przekazać dalej to, co przyszło. PassthroughI upraszcza implementację (brak wymuszonych argumentów, brak system promptu, gotowy run_ep proxy).</p>
+<p>2) Cykl wykonania – co robi run_ep w EndpointWithHttpRequestI
+W dużym skrócie:
+- Inicjalizacja zegara i wyzerowanie atrybutów promptu: <code>_map_prompt</code>, <code>_prompt_str_force</code>, <code>_prompt_str_postfix</code>.
+- Wywołanie prepare_payload(params): tu podklasa ma przekształcić wejście do formatu, jaki rozumie backend (np. ułożyć messages, przepisać model_name → model, ustawić stream itp.). Jeśli zwróci strukturę z <code>"status": False</code>, run_ep zwróci ją bez dalszego przetwarzania.
+- Jeśli ustawiono direct_return=True, zwracany jest wynik prepare_payload bez proxy.
+- Tryb “simple proxy”: jeżeli klasa nie definiuje REQUIRED_ARGS (pusta lista) – traktujemy EP jako bezpośredni proxy do odpowiednika po stronie modelu. Wtedy:
+  - <code>_set_model</code> wybiera model na podstawie pól z MODEL_NAME_PARAMS.
+  - Jeżeli typ API modelu jest zgodny z typami EP (<code>api_types</code>), payload jest przekazywany dalej do odpowiedniego URL (z opcjonalnym stream).
+- Jeżeli to nie simple proxy:
+  - <code>_resolve_prompt_name(...)</code> przygotowuje system prompt (opisane w pkt 3).
+  - <code>__dispatch_external_api_model(params)</code> ustawia <code>_api_model</code> na podstawie nazwy modelu.
+  - Wyznaczamy docelowy URL przez <code>ApiTypesDispatcher</code> (np. chat_ep dla danego <code>api_type</code>).
+  - Obsługa stream=False/True (w tym wariancie streaming może być ograniczony – komunikat o braku wsparcia).
+  - <code>_call_http_request(...)</code> wykonuje POST/GET do hosta modelu, składając finalny payload (w tym system message, jeśli jest).</p>
+<p>Dodatkowe ścieżki:
+- <code>call_for_each_user_msg=True</code>: dla zadań wielotekstowych – wysyłamy osobne żądanie dla każdej wiadomości użytkownika, a wynik agregujemy przez <code>_prepare_response_function</code>.</p>
+<p>3) System prompt i modyfikacje treści – jak działają pola
+- SYSTEM_PROMPT_NAME: słownik { "pl": prompt_id, "en": prompt_id }. W prepare_payload ustawiasz wymagania EP, a run_ep w <code>_resolve_prompt_name</code>:
+  - wybiera język z parametru LANGUAGE_PARAM (z defaultem DEFAULT_EP_LANGUAGE),
+  - pobiera treść promptu systemowego przez <code>PromptHandler</code> jeśli zdefiniowano nazwę,
+  - stosuje <code>_map_prompt</code> – słownik zamian {placeholder: tekst}, np. wstrzyknięcie liczby pytań, treści zapytania użytkownika,
+  - dokleja <code>_prompt_str_postfix</code> na końcu system promptu (np. dodatkowa instrukcja),
+  - jeśli <code>_prompt_str_force</code> jest ustawione – nadpisuje całą treść system promptu (pomija nazwę/system prompt z plików).
+Efekt: jeśli <code>_prompt_str</code> ostatecznie jest zbudowany, to zostaje dodany do messages jako pierwszy element: {"role": "system", "content": self._prompt_str}.</p>
+<p>Kiedy to ustawiać?
+- W prepare_payload:
+  - self._map_prompt: gdy chcesz w promptach z zasobów podmienić znaczniki (np. ##QUESTION_NUM_STR##).
+  - self._prompt_str_postfix: gdy EP potrzebuje dokleić końcową uwagę/regułę do system promptu.
+  - self._prompt_str_force: gdy chcesz zignorować pliki system promptów i podać treść wprost (np. gdy przychodzi z parametru system_prompt).</p>
+<p>Wpływ na wykonanie EP:
+- To, co zbudujesz jako <code>_prompt_str</code>, zostanie dołączone jako system message do każdej prośby HTTP (chyba że <code>call_for_each_user_msg</code> → wtedy system message łączony jest każdorazowo z pojedynczym user message).</p>
+<p>4) Funkcje/hooki
+- <code>_prepare_response_function</code>: opcjonalny hook do post‑przetwarzania odpowiedzi HTTP:
+  - Jeśli ustawiony i wywołujemy pojedyncze żądanie – zostanie użyty do transformacji <code>Response</code> na docelowy obiekt (zamiast response.json()).
+  - Jeśli <code>call_for_each_user_msg=True</code>, MUSI być ustawiony – wtedy dostaje listę Response oraz listę treści wejściowych i zwraca końcową strukturę odpowiedzi złożoną z wielu wyników.
+Wpływ: pozwala kontrolować format odpowiedzi (np. spłaszczyć choices → content, policzyć czas generacji, zmapować odpowiedzi do oryginalnych tekstów itp.).</p>
+<p>5) Walidacja parametrów – REQUIRED_ARGS i OPTIONAL_ARGS
+- REQUIRED_ARGS: lista nazw parametrów wymaganych przez EP. Dekorator/walidacja wywoła <code>_check_required_params</code>, co skutkuje błędem 400 przy brakach. Jeśli lista jest pusta, EP może pracować w trybie simple proxy (opis wyżej).
+- OPTIONAL_ARGS: lista parametrów opcjonalnych – semantyczna informacja/konwencja, przydatna w walidatorach/modelach danych (wbudowane EP korzystają z Pydanticowych modeli w prepare_payload).</p>
+<p>Wpływ: ustalenie REQUIRED_ARGS bezpośrednio wpływa na ścieżkę run_ep – pusta lista aktywuje logikę “simple proxy”.</p>
+<p>6) Parametry konstruktora EP – co ustawiają i jaki mają wpływ
+Konstruktor (sumarycznie z EndpointI i EndpointWithHttpRequestI):</p>
+<ul>
+<li>ep_name: ścieżka URL dla EP. Rejestrator dołoży prefix (chyba że wyłączysz).</li>
+<li>api_types: lista typów API (np. ["openai", "ollama", "builtin"]). Używane do:</li>
+<li>walidacji wsparcia (musi przecinać się z globalnym API_TYPES),</li>
+<li>prostego proxy (gdy typ modelu == typ EP).</li>
+<li>method: "GET" lub "POST". Wpływa na sposób ekstrakcji parametrów i wysyłkę requests.get/post.</li>
+<li>logger_level, logger_file_name: konfiguracja logowania tego EP.</li>
+<li>prompt_handler: potrzebny, jeśli używasz SYSTEM_PROMPT_NAME i chcesz ładować prompty z zasobów.</li>
+<li>model_handler: wymagany do mapowania nazw modeli na konfigurację hosta/typ API/nazwę modelu. Bez niego EP proxy nie wybierze poprawnie backendu.</li>
+<li>dont_add_api_prefix: True → endpoint rejestrowany bez globalnego prefixu (np. chcemy wystawić “/” lub “/models” bez “/api”). Wpływa na finalny adres.</li>
+<li>direct_return: True → run_ep zwróci wynik prepare_payload bez proxy (przydatne dla EP, które same generują odpowiedź lub zwracają dane lokalne).</li>
+<li>timeout (EndpointWithHttpRequestI): limit czasu dla requests do backendów.</li>
+<li>call_for_each_user_msg: True → rozbija messages na osobne żądania dla każdej wiadomości “user” i łączy wynik przez <code>_prepare_response_function</code>.</li>
+</ul>
+<p>7) Jak dodać nowy endpoint – kroki
+- Wybierz bazę:
+  - Gdy chcesz tylko forwardować (OpenAI‑like) → dziedzicz z PassthroughI.
+  - Gdy potrzebujesz przetwarzania (walidacji, budowy promptów, mapowania pól) → dziedzicz z EndpointWithHttpRequestI.
+- Ustal wartości klasowe:
+  - REQUIRED_ARGS i OPTIONAL_ARGS (lista lub None).
+  - SYSTEM_PROMPT_NAME: {"pl": "...", "en": "..."} lub None.
+- Zaimplementuj prepare_payload(self, params):
+  - Wykonaj walidację i transformację wejścia (np. Pydantic).
+  - Ustaw pola promptu, jeśli potrzebne: self._map_prompt, self._prompt_str_postfix, self._prompt_str_force.
+  - Zbuduj payload pod backend:
+    - Ustal "model" (często z "model_name"),
+    - Ustal "messages" (z system promptem doda się automatycznie),
+    - Obsłuż "stream" (True/False).
+  - Jeśli EP ma działać jako stała odpowiedź lub jako lokalny handler – ustaw self.direct_return=True i zwróć gotowy obiekt (str/dict).
+- Jeśli chcesz per‑wiadomość użytkownika (batch na wielu tekstach):
+  - Ustaw w konstruktorze call_for_each_user_msg=True.
+  - Zdefiniuj self._prepare_response_function – funkcję, która z listy odpowiedzi i listy treści zbuduje końcowy wynik.
+- Skonstruuj klasę EP z parametrami:
+  - ep_name, method, api_types, dont_add_api_prefix, direct_return, timeout.
+- Autorejestracja:
+  - Klasa zostanie znaleziona i zainstancjonowana przez autoloader (o ile konstruktor pasuje do wzorca bez‑argumentowego z przekazywanymi dependency – patrz autoloader) lub z konfiguracji. Alternatywnie możesz dodać ją do listy rejestracji ręcznie.
+- Po uruchomieniu, rejestrator Flask’a zarejestruje trasę zgodnie z ep_name i add_api_prefix.</p>
+<p>8) Najczęstsze wzorce użycia
+- Prosty proxy OpenAI:
+  - Dziedzicz z PassthroughI, REQUIRED_ARGS=None, SYSTEM_PROMPT_NAME=None.
+  - prepare_payload nie robi nic (zwraca params).
+  - api_types zawiera typy zgodne z backendami, które chcesz wspierać.
+- EP z wbudowanym promptem systemowym:
+  - Dziedzicz z EndpointWithHttpRequestI.
+  - Ustal SYSTEM_PROMPT_NAME (pl/en).
+  - W prepare_payload ustaw mapowania/self._prompt_str_postfix/force wg potrzeb, przebuduj “messages” i “model”.
+  - Jeśli chcesz wielokrotne wywołania – call_for_each_user_msg=True i ustaw <code>_prepare_response_function</code>.</p>
+<p>9) Szybkie wyjaśnienie wymienionych pól
+- self._map_prompt: mapowanie placeholderów w treści promptu systemowego; wpływa na finalny “system content”.
+- self._prompt_str_postfix: tekst doklejany na końcu system promptu; rozszerza instrukcje.
+- self._prepare_response_function: hak do post‑przetwarzania odpowiedzi HTTP (pojedynczej lub wielu); decyduje o finalnym kształcie JSON.
+- self._prompt_str_force: pozwala całkowicie nadpisać system prompt (np. gdy klient przysłał własny).
+- SYSTEM_PROMPT_NAME: nazwy promptów per język; determinuje, co <code>_resolve_prompt_name</code> pobierze z repozytorium promptów.
+- REQUIRED_ARGS: jeśli puste → EP może pracować jako simple proxy; jeśli niepuste → brak tych argumentów da błąd i wyłączy tryb proxy.
+- OPTIONAL_ARGS: informacyjne – pomocne przy modelach danych/validacji.</p>
+<p>10) Dodatkowe uwagi praktyczne
+- Streaming:
+  - Jeśli payload ma "stream": True i EP działa jako simple proxy – run_ep przełączy się na tryb strumieniowania i zwróci iterator NDJSON.
+  - W trybie niestandardowym (nie simple proxy) streaming może być ograniczony – zwróć odpowiedni komunikat lub zaimplementuj <code>_call_http_request_stream</code>.
+- Prefix URL:
+  - dont_add_api_prefix=True → wystawiasz endpoint bez globalnego prefiksu (np. “/”, “/models”).
+- Modele:
+  - <code>_set_model</code> i <code>__dispatch_external_api_model</code> wymagają obecności jednego z kluczy z MODEL_NAME_PARAMS (np. “model”, “model_name”, zależnie od konfiguracji). Upewnij się, że prepare_payload ujednolica to do “model” przed wywołaniem requests.</p>
+<h2 id="propozycja-ep-batchfilesummaries-podsumowania-plikow-z-listy">Propozycja EP: BatchFileSummaries – podsumowania plików z listy<a class="headerlink" href="#propozycja-ep-batchfilesummaries-podsumowania-plikow-z-listy" title="link to this section">#</a></h2>
+<p>Cel: przyjmuje listę “plików” (np. już wczytane treści lub krótkie metadane z treścią), przetwarza każdy osobno i zwraca ustrukturyzowane podsumowania + kluczowe punkty. Wspiera per‑wiadomość wywołania (jeden request do modelu na jeden plik) i agreguje wynik.</p>
+<ul>
+<li>Ścieżka: POST /api/batch_file_summaries</li>
+<li>Dziedziczenie: EndpointWithHttpRequestI</li>
+<li>API types: ["builtin"] (lub inne, których używacie)</li>
+<li>REQUIRED_ARGS:</li>
+<li>model_name: str</li>
+<li>language: "pl" | "en"</li>
+<li>files: List[ { "name": str, "content": str } ]</li>
+<li>OPTIONAL_ARGS:</li>
+<li>stream: bool = False</li>
+<li>max_points: int = 5</li>
+<li>style_hint: Optional[str] (np. “zwięźle, bez marketingu”)</li>
+</ul>
+<p>Prompt (system): dwa warianty językowe, zapisane jako szablon z placeholderami:
+- pl (SYSTEM_PROMPT_NAME["pl"] = "builtin/system/pl/batch-file-summaries"):
+  Jesteś asystentem do analizy dokumentów. Dla KAŻDEGO wejściowego dokumentu zrób:
+  1) 3–5 zdań podsumowania.
+  2) Wypunktuj maksymalnie ##MAX_POINTS## kluczowych informacji.
+  3) Styl: ##STYLE_HINT##.
+  Odpowiadaj precyzyjnie i operuj tylko na przekazanej treści.
+- en (SYSTEM_PROMPT_NAME["en"] = "builtin/system/en/batch-file-summaries"):
+  You are a document analysis assistant. For EACH input document:
+  1) Provide a 3–5 sentence summary.
+  2) Bullet up to ##MAX_POINTS## key points.
+  3) Style: ##STYLE_HINT##.
+  Be precise and rely only on the provided content.</p>
+<p>Wykorzystanie hooków:
+- call_for_each_user_msg=True – każdy plik → osobne “messages” → osobny call.
+- self._map_prompt:
+  - "##MAX_POINTS##" ← wartość max_points,
+  - "##STYLE_HINT##" ← style_hint lub “neutralny”/“neutral”.
+- self._prepare_response_function – agreguje listę odpowiedzi w strukturę: [{name, summary, key_points: []}, …].</p>
+<p>Schemat payloadu wejściowego (przykład):
+{
+  "model_name": "google/gemma-3-12b-it",
+  "language": "pl",
+  "files": [
+    {"name": "umowa_1.txt", "content": "…"},
+    {"name": "raport_q2.pdf", "content": "…"}
+  ],
+  "max_points": 5,
+  "style_hint": "zwięźle i rzeczowo",
+  "stream": false
+}</p>
+<p>Schemat odpowiedzi (przykład):
+{
+  "response": [
+    {
+      "name": "umowa_1.txt",
+      "summary": "…",
+      "key_points": ["…", "…"]
+    },
+    {
+      "name": "raport_q2.pdf",
+      "summary": "…",
+      "key_points": ["…", "…"]
+    }
+  ],
+  "generation_time": 1.234
+}</p>
+<p>Implementacja – klasa EP (skrót):</p>
+<ul>
+<li>Konstruktor:</li>
+<li>ep_name="batch_file_summaries"</li>
+<li>api_types=["builtin"]</li>
+<li>method="POST"</li>
+<li>call_for_each_user_msg=True</li>
+<li>SYSTEM_PROMPT_NAME ustawione jak wyżej</li>
+<li>prepare_payload:</li>
+<li>Walidacja pól (model_name, language, files).</li>
+<li>self._map_prompt z MAX_POINTS/STYLE_HINT.</li>
+<li>Zbuduj messages = [{"role": "user", "content": file["content"]} dla każdego pliku] – ważne: to lista wiadomości USER, jedna na plik (bo call_for_each_user_msg).</li>
+<li>Zachowaj równolegle listę nazw plików (do agregacji).</li>
+<li>Ustaw model = model_name, stream domyślnie False.</li>
+<li>_prepare_response_function(responses, contents):</li>
+<li>Każdy response → wyciągnij “message.content”.</li>
+<li>Prosta heurystyka: rozdziel treść na “summary” i “key points” (np. szukając pierwszej listy wypunktowanej po podsumowaniu); lub przyjąć, że model zwróci sekcję “Podsumowanie:” i “Kluczowe punkty:”.</li>
+<li>Złącz z oryginalnymi nazwami plików (paruj po indeksie).</li>
+</ul>
+<p>Minimalny prompt user (per plik), który model otrzyma:
+Treść dokumentu:
+<content></p>
+<p>Instrukcja (wynika z system promptu).</p>
+<p>Wariant bez plików binarnych
+- Endpoint zakłada, że “files” zawiera już tekst (np. OCR/ekstrakcja wcześniej).
+- Jeśli w przyszłości dojdzie upload, należy dodać warstwę ekstrakcji tekstu przed wywołaniami LLM (poza tym EP).</p>
+<hr />
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Optional</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">Field</span><span class="p">,</span> <span class="n">validator</span>
+
+<span class="c1"># Wymagane i opcjonalne argumenty dla EP</span>
+<span class="n">BFS_REQ</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"model_name"</span><span class="p">,</span> <span class="s2">"language"</span><span class="p">,</span> <span class="s2">"files"</span><span class="p">]</span>
+<span class="n">BFS_OPT</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"stream"</span><span class="p">,</span> <span class="s2">"max_points"</span><span class="p">,</span> <span class="s2">"style_hint"</span><span class="p">]</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">BatchFileInput</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">"Nazwa pliku (np. raport.pdf)"</span><span class="p">)</span>
+    <span class="n">content</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">"Tekstowa treść pliku"</span><span class="p">)</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">BatchFileSummariesModel</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">language</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">"Kod języka: 'pl' lub 'en'"</span><span class="p">)</span>
+    <span class="n">files</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">BatchFileInput</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">"Lista plików do przetworzenia"</span><span class="p">)</span>
+    <span class="n">stream</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">max_points</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span>
+    <span class="n">style_hint</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="nd">@validator</span><span class="p">(</span><span class="s2">"language"</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_lang_check</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="p">(</span><span class="n">v</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">v</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">"pl"</span><span class="p">,</span> <span class="s2">"en"</span><span class="p">}:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"language must be 'pl' or 'en'"</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">v</span>
+
+    <span class="nd">@validator</span><span class="p">(</span><span class="s2">"max_points"</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_points_check</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">v</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"max_points must be &gt; 0"</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">v</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">List</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">rdl_ml_utils.handlers.prompt_handler</span><span class="w"> </span><span class="kn">import</span> <span class="n">PromptHandler</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">llm_router_api.core.decorators</span><span class="w"> </span><span class="kn">import</span> <span class="n">EP</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">llm_router_api.base.model_handler</span><span class="w"> </span><span class="kn">import</span> <span class="n">ModelHandler</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">llm_router_api.base.constants</span><span class="w"> </span><span class="kn">import</span> <span class="n">REST_API_LOG_LEVEL</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">llm_router_api.endpoints.endpoint_i</span><span class="w"> </span><span class="kn">import</span> <span class="n">EndpointWithHttpRequestI</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">llm_router_lib.data_models</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">BatchFileSummariesModel</span><span class="p">,</span>
+    <span class="n">BFS_REQ</span><span class="p">,</span>
+    <span class="n">BFS_OPT</span><span class="p">,</span>
+<span class="p">)</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">BatchFileSummariesHandler</span><span class="p">(</span><span class="n">EndpointWithHttpRequestI</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    POST /api/batch_file_summaries</span>
+
+<span class="sd">    Przetwarza listę plików (każdy jako osobny user message) i zwraca</span>
+<span class="sd">    listę podsumowań oraz kluczowych punktów.</span>
+<span class="sd">    """</span>
+
+    <span class="n">REQUIRED_ARGS</span> <span class="o">=</span> <span class="n">BFS_REQ</span>
+    <span class="n">OPTIONAL_ARGS</span> <span class="o">=</span> <span class="n">BFS_OPT</span>
+    <span class="n">SYSTEM_PROMPT_NAME</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">"pl"</span><span class="p">:</span> <span class="s2">"builtin/system/pl/batch-file-summaries"</span><span class="p">,</span>
+        <span class="s2">"en"</span><span class="p">:</span> <span class="s2">"builtin/system/en/batch-file-summaries"</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">logger_file_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">logger_level</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">REST_API_LOG_LEVEL</span><span class="p">,</span>
+            <span class="n">prompt_handler</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">PromptHandler</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">model_handler</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ModelHandler</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">ep_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"batch_file_summaries"</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">ep_name</span><span class="o">=</span><span class="n">ep_name</span><span class="p">,</span>
+            <span class="n">api_types</span><span class="o">=</span><span class="p">[</span><span class="s2">"builtin"</span><span class="p">],</span>
+            <span class="n">method</span><span class="o">=</span><span class="s2">"POST"</span><span class="p">,</span>
+            <span class="n">logger_level</span><span class="o">=</span><span class="n">logger_level</span><span class="p">,</span>
+            <span class="n">logger_file_name</span><span class="o">=</span><span class="n">logger_file_name</span><span class="p">,</span>
+            <span class="n">prompt_handler</span><span class="o">=</span><span class="n">prompt_handler</span><span class="p">,</span>
+            <span class="n">model_handler</span><span class="o">=</span><span class="n">model_handler</span><span class="p">,</span>
+            <span class="n">dont_add_api_prefix</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">direct_return</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">call_for_each_user_msg</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Hook do agregacji wyników per plik</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_prepare_response_function</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__prepare_response_function</span>
+
+        <span class="c1"># bufor nazw plików (indeksy zgodne z kolejnością messages[user])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__file_names</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="nd">@EP</span><span class="o">.</span><span class="n">require_params</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">prepare_payload</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Buduje payload do backendu:</span>
+<span class="sd">        - mapuje model_name -&gt; model</span>
+<span class="sd">        - przygotowuje messages: każdy plik jako osobny user message</span>
+<span class="sd">        - ustawia mapowania do promptu systemowego (max_points, style_hint)</span>
+<span class="sd">        """</span>
+        <span class="n">options</span> <span class="o">=</span> <span class="n">BatchFileSummariesModel</span><span class="p">(</span><span class="o">**</span><span class="p">(</span><span class="n">params</span> <span class="ow">or</span> <span class="p">{}))</span>
+        <span class="n">payload</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">model_dump</span><span class="p">()</span>
+
+        <span class="c1"># mapowania do promptu</span>
+        <span class="n">style_hint</span> <span class="o">=</span> <span class="p">(</span><span class="n">payload</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"style_hint"</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_map_prompt</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">"##MAX_POINTS##"</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">payload</span><span class="p">[</span><span class="s2">"max_points"</span><span class="p">]),</span>
+            <span class="s2">"##STYLE_HINT##"</span><span class="p">:</span> <span class="p">(</span>
+                <span class="n">style_hint</span> <span class="k">if</span> <span class="n">style_hint</span> <span class="k">else</span> <span class="p">(</span><span class="s2">"neutralny"</span> <span class="k">if</span> <span class="n">payload</span><span class="p">[</span><span class="s2">"language"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"pl"</span> <span class="k">else</span> <span class="s2">"neutral"</span><span class="p">)),</span>
+        <span class="p">}</span>
+
+        <span class="c1"># przygotuj user messages (po jednym na plik)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__file_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span><span class="p">[</span><span class="s2">"name"</span><span class="p">]</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">payload</span><span class="p">[</span><span class="s2">"files"</span><span class="p">]]</span>
+        <span class="n">messages</span> <span class="o">=</span> <span class="p">[{</span><span class="s2">"role"</span><span class="p">:</span> <span class="s2">"user"</span><span class="p">,</span> <span class="s2">"content"</span><span class="p">:</span> <span class="n">f</span><span class="p">[</span><span class="s2">"content"</span><span class="p">]}</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">payload</span><span class="p">[</span><span class="s2">"files"</span><span class="p">]]</span>
+
+        <span class="c1"># finalny payload do calla</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">"model"</span><span class="p">:</span> <span class="n">payload</span><span class="p">[</span><span class="s2">"model_name"</span><span class="p">],</span>
+            <span class="s2">"stream"</span><span class="p">:</span> <span class="nb">bool</span><span class="p">(</span><span class="n">payload</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"stream"</span><span class="p">,</span> <span class="kc">False</span><span class="p">)),</span>
+            <span class="s2">"messages"</span><span class="p">:</span> <span class="n">messages</span><span class="p">,</span>
+            <span class="c1"># dodatkowe parametry modelu można tu dodać, jeśli wymagane</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">out</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">__prepare_response_function</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">responses</span><span class="p">,</span> <span class="n">contents</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Agregacja odpowiedzi z wielu wywołań (per user message).</span>
+<span class="sd">        responses: List[requests.Response]</span>
+<span class="sd">        contents: List[str] -&gt; tu to zawartość plików (kolejność == messages)</span>
+<span class="sd">        """</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">responses</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">contents</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__file_names</span><span class="p">)</span>
+
+        <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">response</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">responses</span><span class="p">):</span>
+            <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_choices_from_response</span><span class="p">(</span><span class="n">response</span><span class="o">=</span><span class="n">response</span><span class="p">)</span>
+            <span class="n">parsed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__parse_summary_and_points</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+            <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="p">{</span>
+                    <span class="s2">"name"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">__file_names</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
+                    <span class="s2">"summary"</span><span class="p">:</span> <span class="n">parsed</span><span class="p">[</span><span class="s2">"summary"</span><span class="p">],</span>
+                    <span class="s2">"key_points"</span><span class="p">:</span> <span class="n">parsed</span><span class="p">[</span><span class="s2">"key_points"</span><span class="p">],</span>
+                <span class="p">}</span>
+            <span class="p">)</span>
+
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">"response"</span><span class="p">:</span> <span class="n">result</span><span class="p">,</span>
+            <span class="s2">"generation_time"</span><span class="p">:</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_start_time</span><span class="p">,</span>
+        <span class="p">}</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__parse_summary_and_points</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Prosta heurystyka: zakładamy format:</span>
+<span class="sd">        Podsumowanie:/Summary:</span>
+<span class="sd">        ...</span>
+<span class="sd">        Kluczowe punkty:/Key points:</span>
+<span class="sd">        - ...</span>
+<span class="sd">        - ...</span>
+<span class="sd">        Jeśli model zwróci inaczej, zwracamy całość jako summary.</span>
+<span class="sd">        """</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">text</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">{</span><span class="s2">"summary"</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span> <span class="s2">"key_points"</span><span class="p">:</span> <span class="p">[]}</span>
+
+        <span class="n">t</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="n">lower</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+
+        <span class="c1"># Znaczniki sekcji w PL/EN</span>
+        <span class="n">markers</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="p">(</span><span class="s2">"podsumowanie:"</span><span class="p">,</span> <span class="s2">"kluczowe punkty:"</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">"summary:"</span><span class="p">,</span> <span class="s2">"key points:"</span><span class="p">),</span>
+        <span class="p">]</span>
+
+        <span class="k">for</span> <span class="n">sum_m</span><span class="p">,</span> <span class="n">pts_m</span> <span class="ow">in</span> <span class="n">markers</span><span class="p">:</span>
+            <span class="n">i_sum</span> <span class="o">=</span> <span class="n">lower</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">sum_m</span><span class="p">)</span>
+            <span class="n">i_pts</span> <span class="o">=</span> <span class="n">lower</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">pts_m</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">i_sum</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span> <span class="ow">and</span> <span class="n">i_pts</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span> <span class="ow">and</span> <span class="n">i_sum</span> <span class="o">&lt;</span> <span class="n">i_pts</span><span class="p">:</span>
+                <span class="n">sum_part</span> <span class="o">=</span> <span class="n">t</span><span class="p">[</span><span class="n">i_sum</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">sum_m</span><span class="p">):</span> <span class="n">i_pts</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                <span class="n">pts_part</span> <span class="o">=</span> <span class="n">t</span><span class="p">[</span><span class="n">i_pts</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">pts_m</span><span class="p">):]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                <span class="n">key_points</span> <span class="o">=</span> <span class="p">[</span>
+                    <span class="n">p</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">" -•</span><span class="se">\t</span><span class="s2">"</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                    <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">pts_part</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()</span>
+                    <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                <span class="p">]</span>
+                <span class="c1"># odfiltruj puste/wstępne wiersze</span>
+                <span class="n">key_points</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">key_points</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">p</span><span class="p">)]</span>
+                <span class="k">return</span> <span class="p">{</span><span class="s2">"summary"</span><span class="p">:</span> <span class="n">sum_part</span><span class="p">,</span> <span class="s2">"key_points"</span><span class="p">:</span> <span class="n">key_points</span><span class="p">}</span>
+
+        <span class="c1"># fallback – całość jako summary</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s2">"summary"</span><span class="p">:</span> <span class="n">t</span><span class="p">,</span> <span class="s2">"key_points"</span><span class="p">:</span> <span class="p">[]}</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code>Jesteś asystentem do analizy dokumentów. Dla KAŻDEGO wejściowego dokumentu wykonujesz:
+1) Podsumowanie w 3–5 zdaniach.
+2) Wypunktowanie maksymalnie ##MAX_POINTS## kluczowych informacji.
+3) Styl: ##STYLE_HINT##.
+
+Instrukcje:
+- Odpowiadaj precyzyjnie i tylko na podstawie dostarczonej treści.
+- Wynik formatuj sekcjami:
+Podsumowanie:
+&lt;tu wstaw podsumowanie&gt;
+
+Kluczowe punkty:
+- punkt 1
+- punkt 2
+- ...
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code>You are a document analysis assistant. For EACH input document, produce:
+1) A 3–5 sentence summary.
+2) Up to ##MAX_POINTS## key points in bullets.
+3) Style: ##STYLE_HINT##.
+
+Instructions:
+- Be precise and rely only on the provided content.
+- Format the result using sections:
+Summary:
+&lt;put the summary here&gt;
+
+Key points:
+- point 1
+- point 2
+- ...
+</code></pre></div></article>
+<nav class="pager" aria-label="Previous and next page"><a class="prev" href="../index.html"><span class="dir">&larr; previous</span><span class="pt">REST API reference</span></a></nav>
+<footer class="doc-meta">
+<div class="meta-row"><span class="meta-k">source</span><a class="mono" href="https://github.com/radlab-dev-group/llm-router/blob/v0.2.2/llm_router_api/endpoints/README-pl.md">llm_router_api/endpoints/README-pl.md</a></div>
+<div class="meta-row"><span class="meta-k">last commit</span><time datetime="2025-11-10T20:09:26+01:00">2025-11-10</time></div>
+<div class="meta-row"><span class="meta-k">built from</span><span class="mono">v0.2.2&nbsp;@&nbsp;7a20a25</span></div>
+<p class="hint">Generated from the Markdown file in the repository: commit a change and the next build republishes it for every release that contains it.</p>
+</footer>
+<footer class="foot"><div class="foot-inner">
+<span class="mono">llm-router &middot; docs are generated from the repository by <code>tools/build_docs.py</code></span>
+<span class="mono"><a href="https://github.com/radlab-dev-group/llm-router/tree/v0.2.2">0.2.2</a> @ <code>7a20a25</code></span>
+</div></footer>
+</main>
+<aside class="dtoc" id="dtoc"><h2 class="toc-title">on this page</h2><div class="toc-body"><ul><li><a href="#propozycja-ep-batchfilesummaries-podsumowania-plikow-z-listy">Propozycja EP: BatchFileSummaries – podsumowania plików z listy</a></li></ul></div></aside>
+</div>
+</body>
+</html>

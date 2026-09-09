@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rate Limiting · v0.9.4 · llm-router docs</title>
+<meta name="description" content="Sliding-window rate limiting backed by Redis sorted sets. Prevents API abuse, controls load on downstream LLM providers, and protects against brute-force key enumeration. The rate limiter uses a sliding window approach — unlike…">
+<meta name="theme-color" content="#05070a">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Rate Limiting · v0.9.4 · llm-router docs">
+<meta property="og:description" content="Sliding-window rate limiting backed by Redis sorted sets. Prevents API abuse, controls load on downstream LLM providers, and protects against brute-force key enumeration. The rate limiter uses a sliding window approach — unlike…">
+<meta name="docs-version" content="0.9.4">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2305070a'/%3E%3Cpath d='M8 22V10M8 16h9M17 10v12M17 13h7M17 19h7' stroke='%2300e59b' stroke-width='2' stroke-linecap='round' fill='none'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="../../../assets/docs.css">
+<link rel="stylesheet" href="../../../assets/pygments.css">
+<script src="../../../assets/docs.js" defer></script>
+</head>
+<body class="page" data-version="0.9.4" data-search="../../search.json" data-latest="1.0.6">
+<a class="skip" href="#main">skip to content</a>
+<header class="topbar">
+<div class="topbar-inner">
+<button class="burger" id="burger" aria-label="Toggle documentation menu" aria-expanded="false" aria-controls="sidebar">&#9776;</button>
+<a class="brand" href="../../../.."><svg width="21" height="21" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="7" fill="#0b1119" stroke="#1a232e"/><path d="M8 22V10M8 16h9M17 10v12M17 13h7M17 19h7" stroke="#00e59b" stroke-width="2" stroke-linecap="round" fill="none"/></svg><span>llm<span class="dash">-</span>router</span><span class="brand-docs">/docs</span></a>
+<div class="topbar-right">
+<form class="search" id="search" role="search" autocomplete="off">
+<span class="search-icon" aria-hidden="true">&#8981;</span>
+<input id="q" type="search" placeholder="search this version" aria-label="Search documentation" role="combobox" aria-expanded="false" aria-controls="results" aria-autocomplete="list">
+<kbd>/</kbd>
+<div class="results" id="results" role="listbox" aria-label="Search results" hidden></div>
+</form>
+<label class="vselect">
+<span class="sr-only">Documentation version</span>
+<select id="versions" aria-label="Documentation version"><option value="../../../1.0.6/llm-router-api/docs/rate-limiting.html">1.0.6  · latest</option>
+<option value="../../../1.0.5/llm-router-api/docs/rate-limiting.html">1.0.5</option>
+<option value="../../../1.0.4/llm-router-api/docs/rate-limiting.html">1.0.4</option>
+<option value="../../../1.0.3/llm-router-api/docs/rate-limiting.html">1.0.3</option>
+<option value="../../../1.0.1/llm-router-api/docs/rate-limiting.html">1.0.1</option>
+<option value="../../../1.0.0/llm-router-api/docs/rate-limiting.html">1.0.0</option>
+<option value="../../../0.9.6/llm-router-api/docs/rate-limiting.html">0.9.6</option>
+<option value="../../../0.9.5/llm-router-api/docs/rate-limiting.html">0.9.5</option>
+<option value="rate-limiting.html" selected>0.9.4</option>
+<option value="../../../0.9.2/index.html">0.9.2</option>
+<option value="../../../0.9.1/index.html">0.9.1</option>
+<option value="../../../0.9.0/index.html">0.9.0</option>
+<option value="../../../0.8.0/index.html">0.8.0</option>
+<option value="../../../0.7.0/index.html">0.7.0</option>
+<option value="../../../0.6.9/index.html">0.6.9</option>
+<option value="../../../0.6.8/index.html">0.6.8</option>
+<option value="../../../0.6.7/index.html">0.6.7</option>
+<option value="../../../0.6.6/index.html">0.6.6</option>
+<option value="../../../0.6.5/index.html">0.6.5</option>
+<option value="../../../0.6.4/index.html">0.6.4</option>
+<option value="../../../0.6.3/index.html">0.6.3</option>
+<option value="../../../0.6.2/index.html">0.6.2</option>
+<option value="../../../0.6.1/index.html">0.6.1</option>
+<option value="../../../0.6.0/index.html">0.6.0</option>
+<option value="../../../0.5.2/index.html">0.5.2</option>
+<option value="../../../0.5.1/index.html">0.5.1</option>
+<option value="../../../0.5.0/index.html">0.5.0</option>
+<option value="../../../0.4.6/index.html">0.4.6</option>
+<option value="../../../0.4.5/index.html">0.4.5</option>
+<option value="../../../0.4.4/index.html">0.4.4</option>
+<option value="../../../0.4.3/index.html">0.4.3</option>
+<option value="../../../0.4.2/index.html">0.4.2</option>
+<option value="../../../0.4.1/index.html">0.4.1</option>
+<option value="../../../0.4.0/index.html">0.4.0</option>
+<option value="../../../0.3.1/index.html">0.3.1</option>
+<option value="../../../0.3.0/index.html">0.3.0</option>
+<option value="../../../0.2.3/index.html">0.2.3</option>
+<option value="../../../0.2.2/index.html">0.2.2</option>
+<option value="../../../0.2.1/index.html">0.2.1</option>
+<option value="../../../0.2.0/index.html">0.2.0</option>
+<option value="../../../0.1.1/index.html">0.1.1</option>
+<option value="../../../0.1.0/index.html">0.1.0</option></select>
+</label>
+<a class="iconbtn" href="https://github.com/radlab-dev-group/llm-router" aria-label="Repository on GitHub" title="Repository on GitHub"><svg width="17" height="17" viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8a8 8 0 0 0 5.47 7.59c.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.46-.53.42-.02.72.39.82.55.48.81 1.25.94 1.56.73.2-.27.6-.94.94-1.13-.01-.2-.05-.82-.14-.98-.6.1-1.22.2-1.87.2-1.9 0-3.62-1.13-3.62-3.53 0-.78.28-1.42.74-1.92-.07-.18-.32-.91.07-1.9 0 0 .6-.19 1.97.74a6.8 6.8 0 0 1 3.58 0c1.37-.93 1.97-.74 1.97-.74.39.99.14 1.72.07 1.9.46.5.74 1.14.74 1.92 0 2.41-1.47 3.53-3.87 3.72.3.26.57.77.57 1.56 0 1.13-.012.04-.01 2.32 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg></a>
+</div>
+</div>
+</header>
+<div class="scrim" id="scrim" hidden></div>
+<div class="shell">
+<aside class="sidebar" id="sidebar"><div class="side-head"><span class="side-v mono">v0.9.4</span><span class="side-tag old">archived</span></div><a class="side-hub" href="../../index.html">documentation index</a><nav class="nav-tree" aria-label="Documentation"><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../overview.html">Getting started</a></h2><ul><li><a href="../../overview.html">Overview</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="env-definitions.html">Configuration</a></h2><ul><li><a href="env-definitions.html">Environment Variables</a></li><li><a href="models-config.html">Models configuration description (JSON)</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="keepalive.html">Routing &amp; resilience</a></h2><ul><li><a href="keepalive.html">Keep‑Alive Utility Overview</a></li><li><a href="lb-strategies.html">Load Balancing Strategies</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="../core/auditor/index.html">Security &amp; auditing</a></h2><ul><li><a href="../core/auditor/index.html">Auditing subsystem – llm-router</a></li><li><a href="authentication.html">Authentication &amp; Authorization</a></li><li><a href="rate-limiting.html" class="active">Rate Limiting</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="routing-metrics.html">Observability</a></h2><ul><li><a href="routing-metrics.html">Router Prometheus Metrics</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../index.html">REST API</a></h2><ul><li><a href="../index.html">REST API reference</a></li><li><a href="../endpoints/index.html">Endpoints Overview</a></li><li><a href="../endpoints/readme-pl.html">Jak tworzyć endpointy w llm-proxy-api – przewodnik</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../llm-router-cli/index.html">CLI</a></h2><ul><li><a href="../../llm-router-cli/index.html">llm-router CLI — Command Reference</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../llm-router-lib/index.html">Python library</a></h2><ul><li><a href="../../llm-router-lib/index.html">llmrouterlib</a></li><li><a href="../../llm-router-lib/response-models.html">Response models</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../helm-charts/index.html">Deployment</a></h2><ul><li><a href="../../helm-charts/index.html">LLM‑Router Helm Chart</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../examples/index.html">Examples</a></h2><ul><li><a href="../../examples/index.html">Integration Examples with LLM Router</a></li><li><a href="../../examples/quickstart/index.html">Full Stack with Local Models</a></li><li><a href="../../examples/readme-llamaindex.html">Using LlamaIndex with Local Models via the LLM‑Router</a></li><li><a href="../../examples/quickstart/google-gemma3-12b-it/vllm.html">vLLM + google/gemma‑3‑12b‑it – Quick‑Start Guide (Ubuntu)</a></li><li><a href="../../examples/quickstart/speakleash-bielik-11b-v2-3-instruct/vllm.html">vLLM + speakleash/Bielik-11B-v2.3-Instruct – Przewodnik Szybkiego Startu (Ubuntu)</a></li><li><a href="../../examples/quickstart/speakleash-bielik-11b-v2-3-instruct/index.html">🚀 Przewodnik Szybkiego Startu dla speakleash/Bielik-11B-v2.3-Instruct z vLLM &amp; LLM‑Router</a></li><li><a href="../../examples/quickstart/google-gemma3-12b-it/index.html">🚀 Quick‑Start Guide for google/gemma-3-12b‑it with vLLM &amp; LLM‑Router</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../changelog.html">Release notes</a></h2><ul><li><a href="../../changelog.html">Changelog</a></li></ul></section></nav><div class="side-foot"><a href="../../../..">&larr;&nbsp;landing page</a><a class="mono" href="../../search.json">search.json</a></div></aside>
+<main class="main" id="main"><nav class="crumbs" aria-label="Breadcrumb">
+<a href="../../../..">llm-router</a><span class="sep">/</span><a href="../../index.html">docs</a><span class="sep">/</span><a href="../core/auditor/index.html">Security &amp; auditing</a><span class="sep">/</span><em>Rate Limiting</em>
+</nav>
+<article class="prose"><h1 id="rate-limiting">Rate Limiting<a class="headerlink" href="#rate-limiting" title="link to this section">#</a></h1>
+<p>Sliding-window rate limiting backed by Redis sorted sets. Prevents API abuse, controls load on downstream LLM providers,
+and protects against brute-force key enumeration.</p>
+<hr />
+<h2 id="how-it-works">How It Works<a class="headerlink" href="#how-it-works" title="link to this section">#</a></h2>
+<h3 id="sliding-window-algorithm">Sliding Window Algorithm<a class="headerlink" href="#sliding-window-algorithm" title="link to this section">#</a></h3>
+<p>The rate limiter uses a <strong>sliding window</strong> approach — unlike fixed-window counters, there are no boundary spikes. Each
+request timestamp is stored as a member score in a Redis sorted set, and entries older than the window are purged on
+every check.</p>
+<div class="codehilite"><pre><span></span><code>Time → ──────────────────────────────────────────▶
+       │&lt;────── WINDOW (60s) ──────▶│
+       ▼                             ▼
+       │  ◉ ◉ ◉ ◉ ◉ ◉ ◉ ◉         │
+       │ ◉ ◉ ◉ ◉ ◉ ◉ ◉ ◉ ◉ ◉      │
+       │                            │
+       ←─ remaining slots ────────→
+</code></pre></div>
+
+<ul>
+<li><strong>Precision:</strong> per-request, no fixed-boundary artifacts</li>
+<li><strong>Memory:</strong> O (requests per key+IP) — old entries are automatically purged</li>
+<li><strong>Durability:</strong> Redis persistence (RDB/AOF) protects against server restart</li>
+</ul>
+<h3 id="key-ip-binning">Key + IP Binning<a class="headerlink" href="#key-ip-binning" title="link to this section">#</a></h3>
+<p>Rate limits are enforced <strong>per API key + client IP</strong>. This means:</p>
+<ul>
+<li>Each API key gets its own independent quota</li>
+<li>Multiple IPs sharing the same key share that key's quota</li>
+<li>A malicious IP hitting a leaked key can exhaust its quota (mitigated by IP-level monitoring)</li>
+</ul>
+<h3 id="bucket-naming">Bucket Naming<a class="headerlink" href="#bucket-naming" title="link to this section">#</a></h3>
+<div class="codehilite"><pre><span></span><code>auth:ratelimit:{key_id}:{ip}
+</code></pre></div>
+
+<p>Example: <code>auth:ratelimit:dev-a1b2c3d3:192.168.1.100</code></p>
+<h3 id="client-ip-resolution-anti-spoofing">Client IP Resolution (anti-spoofing)<a class="headerlink" href="#client-ip-resolution-anti-spoofing" title="link to this section">#</a></h3>
+<p>The client IP is the <strong>direct peer</strong> (<code>remote_addr</code>) by default. The
+<code>X-Forwarded-For</code> header is attacker-controlled and is honoured <strong>only</strong> when the direct peer is a configured trusted
+proxy (<code>LLM_ROUTER_TRUSTED_PROXIES</code>, IP or CIDR); in that case the <em>right-most</em> XFF entry is used (proxies append, not
+prepend). Without this gate, a client could rotate <code>X-Forwarded-For</code> to obtain a fresh rate-limit bucket per request.</p>
+<div class="codehilite"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">LLM_ROUTER_TRUSTED_PROXIES</span><span class="o">=</span><span class="s2">"10.0.0.1,192.168.0.0/24"</span><span class="w">  </span><span class="c1"># your LB / reverse proxy</span>
+</code></pre></div>
+
+<h3 id="failed-authentication-lockout">Failed-Authentication Lockout<a class="headerlink" href="#failed-authentication-lockout" title="link to this section">#</a></h3>
+<p>Failed attempts (missing or invalid key) never reach the key-scoped limiter, so they are throttled separately in a
+dedicated per-IP bucket (<code>auth:ratelimit:__auth_fail__:{ip}</code>) with the
+<code>LLM_ROUTER_AUTH_FAILURE_LIMIT</code> budget (default <code>20</code>/window; <code>0</code> disables). Once exceeded, the client receives <code>429</code> —
+protecting the key-lookup path from brute-force / DoS.</p>
+<hr />
+<h2 id="configuration">Configuration<a class="headerlink" href="#configuration" title="link to this section">#</a></h2>
+<h3 id="environment-variables">Environment Variables<a class="headerlink" href="#environment-variables" title="link to this section">#</a></h3>
+<p>All rate-limiting environment variables are documented in <strong><a href="env-definitions.html">ENV_DEFINITIONS.md</a> → Authentication
+section (Rate limiting subsection)</strong>.</p>
+<h3 id="enabling-rate-limiting">Enabling Rate Limiting<a class="headerlink" href="#enabling-rate-limiting" title="link to this section">#</a></h3>
+<p>Rate limiting is applied <strong>automatically</strong> when authentication is enabled — there is no separate toggle. Just enable
+auth and configure the default rate limit:</p>
+<div class="codehilite"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">LLM_ROUTER_AUTH_ENABLED</span><span class="o">=</span><span class="nb">true</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">LLM_ROUTER_AUTH_DEFAULT_RATE_LIMIT</span><span class="o">=</span><span class="m">60</span><span class="w">  </span><span class="c1"># 60 requests per minute per key (default)</span>
+python<span class="w"> </span>-m<span class="w"> </span>llm_router_api.rest_api
+</code></pre></div>
+
+<hr />
+<h2 id="response-behavior">Response Behavior<a class="headerlink" href="#response-behavior" title="link to this section">#</a></h2>
+<p>When a request exceeds the rate limit, the router returns:</p>
+<table>
+<thead>
+<tr>
+<th>HTTP Status</th>
+<th>Header</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>429 Too Many Requests</code></td>
+<td><code>Retry-After</code></td>
+<td>Seconds until the oldest request in the window expires</td>
+</tr>
+</tbody>
+</table>
+<p>Example:</p>
+<div class="codehilite"><pre><span></span><code>HTTP/1.1 429 Too Many Requests
+Retry-After: 35
+
+{"error": {"message": "Rate limit exceeded. Please retry later.", "type": "rate_limit_error", "code": 429, "retry_after": 35}}
+</code></pre></div>
+
+<p>The <code>Retry-After</code> value is calculated from the oldest entry still in the window — this tells the client exactly when it
+can retry.</p>
+<hr />
+<h2 id="architecture">Architecture<a class="headerlink" href="#architecture" title="link to this section">#</a></h2>
+<div class="codehilite"><pre><span></span><code>Client Request → AuthMiddleware
+               → get_auth_result()
+               → RedisRateLimiter.is_allowed(key_id, ip, limit)
+               → → Redis sorted set operations (zremrangebyscore, zcard, zadd, expire)
+               → RateLimitResult(allowed, remaining, retry_after)
+               → If denied: HTTP 429
+               → If allowed: continue to endpoint
+</code></pre></div>
+
+<h3 id="ratelimitresult-dataclass"><code>RateLimitResult</code> Dataclass<a class="headerlink" href="#ratelimitresult-dataclass" title="link to this section">#</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="nd">@dataclass</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">RateLimitResult</span><span class="p">:</span>
+    <span class="n">allowed</span><span class="p">:</span> <span class="nb">bool</span>  <span class="c1"># Whether the request is within the limit</span>
+    <span class="n">remaining</span><span class="p">:</span> <span class="nb">int</span>  <span class="c1"># Remaining requests in the current window</span>
+    <span class="n">retry_after</span><span class="p">:</span> <span class="nb">int</span>  <span class="c1"># Seconds until the oldest request expires (0 if allowed)</span>
+</code></pre></div>
+
+<h3 id="redisratelimiter-class"><code>RedisRateLimiter</code> Class<a class="headerlink" href="#redisratelimiter-class" title="link to this section">#</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">RedisRateLimiter</span><span class="p">:</span>
+    <span class="n">PREFIX</span> <span class="o">=</span> <span class="s2">"auth:ratelimit"</span>
+    <span class="n">WINDOW</span> <span class="o">=</span> <span class="mi">60</span>  <span class="c1"># seconds</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">redis_client</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">redis</span><span class="o">.</span><span class="n">Redis</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">redis_host</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">redis_port</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">6379</span><span class="p">,</span>
+            <span class="n">redis_db</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="n">redis_password</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">window</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">60</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_allowed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">ip</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">RateLimitResult</span>
+</code></pre></div>
+
+<hr />
+<h2 id="prometheus-metrics">Prometheus Metrics<a class="headerlink" href="#prometheus-metrics" title="link to this section">#</a></h2>
+<p>When <code>LLM_ROUTER_USE_PROMETHEUS=true</code>, the rate limiter exposes:</p>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Type</th>
+<th>Labels</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>rate_limit_exceeded_total</code></td>
+<td>Counter</td>
+<td><code>key_id</code>, <code>endpoint</code></td>
+<td>Total rate limit events</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="rate-limit-strategy-by-use-case">Rate Limit Strategy by Use Case<a class="headerlink" href="#rate-limit-strategy-by-use-case" title="link to this section">#</a></h2>
+<h3 id="per-user-quotas-default">Per-User Quotas (Default)<a class="headerlink" href="#per-user-quotas-default" title="link to this section">#</a></h3>
+<p>Each API key gets the policy's <code>rate_limit</code> in requests per minute — the default is <strong>60 rpm</strong> when no per-key or
+per-policy override exists. This value is set directly on the resolved <code>EndpointPolicy</code>, not via an environment
+variable.</p>
+<p><strong>Recommended values:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Use Case</th>
+<th>Rate Limit (req/min)</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Internal tools</td>
+<td>120–300</td>
+<td>Higher for development</td>
+</tr>
+<tr>
+<td>Production apps</td>
+<td>60</td>
+<td>1 req/sec standard</td>
+</tr>
+<tr>
+<td>Batch processing</td>
+<td>30</td>
+<td>0.5 req/sec to avoid provider limits</td>
+</tr>
+<tr>
+<td>User-facing APIs</td>
+<td>30–60</td>
+<td>Vary by user tier</td>
+</tr>
+</tbody>
+</table>
+<h3 id="tiered-rate-limiting-policy-based">Tiered Rate Limiting (Policy-Based)<a class="headerlink" href="#tiered-rate-limiting-policy-based" title="link to this section">#</a></h3>
+<p>Higher-tier users can get increased limits via policy override — either inline in the seed file or via CLI presets:</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Developer tier (default, hardcoded 60 rpm when no per-key override exists)</span>
+
+<span class="c1"># Admin tier (per-key override in seed file):</span>
+<span class="c1">#   "policy_override": { "rate_limit": 300 }</span>
+
+<span class="c1"># Or via CLI preset:</span>
+llm-router<span class="w"> </span>auth<span class="w"> </span>rate-limit<span class="w"> </span>apply<span class="w"> </span>key-id<span class="w"> </span>--preset<span class="w"> </span>enterprise
+</code></pre></div>
+
+<hr />
+<h2 id="redis-requirements">Redis Requirements<a class="headerlink" href="#redis-requirements" title="link to this section">#</a></h2>
+<p><strong>Redis is always required</strong> when authentication is enabled (rate limiting has no separate toggle — it is applied
+unconditionally once auth is active). The rate limiter stores state in Redis sorted sets and uses the <strong>Auth Redis</strong>
+connection (<code>LLM_ROUTER_AUTH_REDIS_*</code>), which is independent from general Redis (<code>LLM_ROUTER_REDIS_*</code>):</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Auth Redis for both key store AND rate limiting</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">LLM_ROUTER_AUTH_REDIS_HOST</span><span class="o">=</span><span class="m">127</span>.0.0.1
+<span class="nb">export</span><span class="w"> </span><span class="nv">LLM_ROUTER_AUTH_REDIS_PORT</span><span class="o">=</span><span class="m">6379</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">LLM_ROUTER_AUTH_REDIS_DB</span><span class="o">=</span><span class="m">0</span>
+<span class="c1"># export LLM_ROUTER_AUTH_REDIS_PASSWORD=secret  # if Redis requires auth</span>
+<span class="c1"># export LLM_ROUTER_AUTH_REDIS_PROTOCOL=3  # RESP3 (default) or 2 (RESP2)</span>
+</code></pre></div>
+
+<p>If using <code>memory</code> as the key store, <code>LLM_ROUTER_AUTH_REDIS_HOST</code> must still be set for rate limiting to work.</p>
+<ul>
+<li><strong>Memory usage:</strong> ~100 bytes per entry (score + member + set overhead)</li>
+<li><strong>At 60 req/min per key:</strong> ~60 entries per bucket × ~100 bytes = ~6 KB per key</li>
+<li><strong>At 1000 keys:</strong> ~6 MB total</li>
+</ul>
+<h3 id="redis-persistence">Redis Persistence<a class="headerlink" href="#redis-persistence" title="link to this section">#</a></h3>
+<p>For production, enable Redis persistence to protect rate limit state:</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># RDB snapshots (recommended)</span>
+save<span class="w"> </span><span class="m">900</span><span class="w"> </span><span class="m">1</span>
+save<span class="w"> </span><span class="m">300</span><span class="w"> </span><span class="m">10</span>
+save<span class="w"> </span><span class="m">60</span><span class="w"> </span><span class="m">10000</span>
+
+<span class="c1"># Or AOF (more durable but higher I/O)</span>
+appendonly<span class="w"> </span>yes
+appendfsync<span class="w"> </span>everysec
+</code></pre></div>
+
+<hr />
+<h2 id="comparison-with-fixed-window">Comparison with Fixed-Window<a class="headerlink" href="#comparison-with-fixed-window" title="link to this section">#</a></h2>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Sliding Window (current)</th>
+<th>Fixed Window</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Boundary spikes</td>
+<td>❌ No</td>
+<td>✅ Yes</td>
+</tr>
+<tr>
+<td>Precision</td>
+<td>Per-request</td>
+<td>Per-window</td>
+</tr>
+<tr>
+<td>Memory</td>
+<td>O(entries)</td>
+<td>O(windows)</td>
+</tr>
+<tr>
+<td>Burst protection</td>
+<td>✅ Excellent</td>
+<td>⚠️ Can allow 2× limit at boundary</td>
+</tr>
+</tbody>
+</table>
+<h3 id="why-sliding-window">Why Sliding Window?<a class="headerlink" href="#why-sliding-window" title="link to this section">#</a></h3>
+<ol>
+<li><strong>No boundary spikes:</strong> A user at 00:59 and 01:01 sees a full window in fixed-window; sliding window sees the true
+   request rate</li>
+<li><strong>Better burst protection:</strong> Truly limits sustained abuse, not just window-averaged abuse</li>
+<li><strong>Predictable behavior:</strong> <code>Retry-After</code> is accurate because it's based on the oldest actual entry</li>
+</ol>
+<hr />
+<h2 id="best-practices">Best Practices<a class="headerlink" href="#best-practices" title="link to this section">#</a></h2>
+<h3 id="1-always-enable-rate-limiting-in-production">1. Always Enable Rate Limiting in Production<a class="headerlink" href="#1-always-enable-rate-limiting-in-production" title="link to this section">#</a></h3>
+<p>Rate limiting has no separate toggle — it is applied automatically when authentication is enabled:</p>
+<div class="codehilite"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">LLM_ROUTER_AUTH_ENABLED</span><span class="o">=</span><span class="nb">true</span>
+</code></pre></div>
+
+<p>Without it, a leaked API key allows unlimited requests to your downstream providers.</p>
+<h3 id="2-set-up-auth-redis-connection">2. Set up auth Redis connection<a class="headerlink" href="#2-set-up-auth-redis-connection" title="link to this section">#</a></h3>
+<p>Rate limiting <strong>requires</strong> a working Auth Redis connection regardless of key store type (because the rate limiter
+manages its own sorted sets):</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># When using redis for keys — same connection serves both purposes:</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">LLM_ROUTER_AUTH_KEY_STORE</span><span class="o">=</span>redis
+<span class="nb">export</span><span class="w"> </span><span class="nv">LLM_ROUTER_AUTH_REDIS_HOST</span><span class="o">=</span><span class="m">127</span>.0.0.1
+</code></pre></div>
+
+<p>When using <code>memory</code> store for keys, <code>LLM_ROUTER_AUTH_REDIS_HOST</code> must still be set so the rate limiter can connect.</p>
+<h3 id="3-monitor-rate-limit-events">3. Monitor Rate Limit Events<a class="headerlink" href="#3-monitor-rate-limit-events" title="link to this section">#</a></h3>
+<p>Check Prometheus:</p>
+<div class="codehilite"><pre><span></span><code>sum(rate(rate_limit_exceeded_total[5m])) by (key_id)
+</code></pre></div>
+
+<p>High rates indicate:</p>
+<ul>
+<li>Leaked API keys (immediate rotation required)</li>
+<li>Misconfigured clients (exponential backoff needed)</li>
+<li>Intentional abuse (block the key)</li>
+</ul>
+<h3 id="4-set-graceful-limits">4. Set Graceful Limits<a class="headerlink" href="#4-set-graceful-limits" title="link to this section">#</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Generous for dev, strict for prod</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">LLM_ROUTER_AUTH_DEFAULT_RATE_LIMIT</span><span class="o">=</span><span class="m">60</span><span class="w">  </span><span class="c1"># prod: 1 req/sec</span>
+</code></pre></div>
+
+<h3 id="5-use-public-endpoints-for-health-checks">5. Use Public Endpoints for Health Checks<a class="headerlink" href="#5-use-public-endpoints-for-health-checks" title="link to this section">#</a></h3>
+<p>Health checks should not count against rate limits:</p>
+<div class="codehilite"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">LLM_ROUTER_AUTH_PUBLIC_ENDPOINTS</span><span class="o">=</span><span class="s2">"/ping,/version,/models,/,/health"</span>
+</code></pre></div>
+
+<hr />
+<h2 id="migration-from-no-auth-default-rate">Migration from No-Auth / Default Rate<a class="headerlink" href="#migration-from-no-auth-default-rate" title="link to this section">#</a></h2>
+<p>Rate limiting is applied automatically once authentication is enabled. To enable it with a custom default:</p>
+<div class="codehilite"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">LLM_ROUTER_AUTH_ENABLED</span><span class="o">=</span><span class="nb">true</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">LLM_ROUTER_AUTH_DEFAULT_RATE_LIMIT</span><span class="o">=</span><span class="m">60</span><span class="w">  </span><span class="c1"># adjust as needed</span>
+</code></pre></div>
+
+<p><strong>Expected impact:</strong></p>
+<ul>
+<li>Clients must implement retry logic with exponential backoff</li>
+<li>Monitor Prometheus for 429 responses in the first 24 hours</li>
+<li>Adjust <code>LLM_ROUTER_AUTH_DEFAULT_RATE_LIMIT</code> based on observed needs</li>
+</ul>
+<hr />
+<h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="link to this section">#</a></h2>
+<h3 id="why-am-i-getting-429s-immediately">"Why am I getting 429s immediately?"<a class="headerlink" href="#why-am-i-getting-429s-immediately" title="link to this section">#</a></h3>
+<ol>
+<li>Check if the key has been rotated (old key may have accumulated requests)</li>
+<li>Verify the rate limit value: <code>LLM_ROUTER_AUTH_DEFAULT_RATE_LIMIT</code></li>
+<li>Check Prometheus for rate limit events: <code>rate_limit_exceeded_total</code></li>
+</ol>
+<h3 id="rate-limit-is-too-strictloose">"Rate limit is too strict/loose"<a class="headerlink" href="#rate-limit-is-too-strictloose" title="link to this section">#</a></h3>
+<ul>
+<li><strong>Too strict:</strong> Increase <code>LLM_ROUTER_AUTH_DEFAULT_RATE_LIMIT</code></li>
+<li><strong>Too loose:</strong> Decrease the value or add per-key overrides via seed file</li>
+</ul>
+<h3 id="clients-arent-respecting-retry-after">"Clients aren't respecting Retry-After"<a class="headerlink" href="#clients-arent-respecting-retry-after" title="link to this section">#</a></h3>
+<p>Most HTTP clients support automatic retry with <code>Retry-After</code>. Check your client library:</p>
+<ul>
+<li><strong>Python <code>requests</code>:</strong> Use <code>tenacity</code> or <code>backoff</code> library</li>
+<li><strong>Go <code>http.Client</code>:</strong> Implement retry logic with <code>Retry-After</code> header</li>
+<li><strong>JavaScript <code>fetch</code>:</strong> Parse <code>Retry-After</code> header and use <code>setTimeout</code></li>
+</ul>
+<hr />
+<h2 id="rate-limit-presets">Rate Limit Presets<a class="headerlink" href="#rate-limit-presets" title="link to this section">#</a></h2>
+<p>The CLI ships with predefined rate-limit presets (loadable via <code>llm-router auth rate-limit list</code>). They are stored in
+<code>~/.llm-router/configs/rate_limiting-policies.json</code> or the package default at
+<code>resources/configs/rate_limiting-policies.json</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Preset</th>
+<th>RPM</th>
+<th>Daily Limit</th>
+<th>Per-Second</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>free</code></td>
+<td>10</td>
+<td>—</td>
+<td>—</td>
+<td>Free tier — limited usage for testing</td>
+</tr>
+<tr>
+<td><code>basic</code></td>
+<td>60</td>
+<td>—</td>
+<td>—</td>
+<td>Standard (1 req/sec)</td>
+</tr>
+<tr>
+<td><code>pro</code></td>
+<td>120</td>
+<td>—</td>
+<td>—</td>
+<td>Pro tier (2 req/sec)</td>
+</tr>
+<tr>
+<td><code>enterprise</code></td>
+<td>500</td>
+<td>—</td>
+<td>—</td>
+<td>High throughput (8 req/sec)</td>
+</tr>
+<tr>
+<td><code>burst</code></td>
+<td>200</td>
+<td>—</td>
+<td>—</td>
+<td>Short bursts — elevated temporary limit</td>
+</tr>
+<tr>
+<td><code>daily-10</code></td>
+<td>—</td>
+<td>10</td>
+<td>—</td>
+<td>Daily cap of 10 requests</td>
+</tr>
+<tr>
+<td><code>daily-100</code></td>
+<td>—</td>
+<td>100</td>
+<td>—</td>
+<td>Daily cap of 100 requests</td>
+</tr>
+<tr>
+<td><code>daily-1000</code></td>
+<td>—</td>
+<td>1000</td>
+<td>—</td>
+<td>Moderate batch processing</td>
+</tr>
+<tr>
+<td><code>daily-5000</code></td>
+<td>—</td>
+<td>5000</td>
+<td>—</td>
+<td>Regular batch processing</td>
+</tr>
+<tr>
+<td><code>hourly-60</code></td>
+<td>1</td>
+<td>—</td>
+<td>—</td>
+<td>Hourly cap of 60 requests (1/min)</td>
+</tr>
+<tr>
+<td><code>per-second-1</code></td>
+<td>60</td>
+<td>—</td>
+<td>1</td>
+<td>Steady pace: 1 req/sec</td>
+</tr>
+<tr>
+<td><code>per-second-5</code></td>
+<td>300</td>
+<td>—</td>
+<td>5</td>
+<td>Intensive access: 5 req/sec</td>
+</tr>
+<tr>
+<td><code>internal-tool</code></td>
+<td>300</td>
+<td>—</td>
+<td>—</td>
+<td>Internal tools — elevated limits</td>
+</tr>
+</tbody>
+</table>
+<p>Apply a preset to an existing key:</p>
+<div class="codehilite"><pre><span></span><code>llm-router<span class="w"> </span>auth<span class="w"> </span>rate-limit<span class="w"> </span>apply<span class="w"> </span>key-id<span class="w"> </span>--preset<span class="w"> </span>pro
+</code></pre></div>
+
+<p>Remove the override (revert to the default policy rate limit):</p>
+<div class="codehilite"><pre><span></span><code>llm-router<span class="w"> </span>auth<span class="w"> </span>rate-limit<span class="w"> </span>remove<span class="w"> </span>key-id
+</code></pre></div>
+
+<hr />
+<h2 id="see-also">See Also<a class="headerlink" href="#see-also" title="link to this section">#</a></h2>
+<ul>
+<li><strong><a href="authentication.html">Authentication documentation</a></strong> — full auth setup, key management, and seed files</li>
+<li><strong><a href="authentication.html#prometheus-metrics">Prometheus metrics</a></strong> — monitor rate limits and auth events</li>
+</ul></article>
+<nav class="pager" aria-label="Previous and next page"><a class="prev" href="authentication.html"><span class="dir">&larr; previous</span><span class="pt">Authentication &amp; Authorization</span></a></nav>
+<footer class="doc-meta">
+<div class="meta-row"><span class="meta-k">source</span><a class="mono" href="https://github.com/radlab-dev-group/llm-router/blob/v0.9.4/llm_router_api/docs/RATE_LIMITING.md">llm_router_api/docs/RATE_LIMITING.md</a></div>
+<div class="meta-row"><span class="meta-k">last commit</span><time datetime="2026-08-29T15:19:07+02:00">2026-08-29</time></div>
+<div class="meta-row"><span class="meta-k">built from</span><span class="mono">v0.9.4&nbsp;@&nbsp;40488c4</span></div>
+<p class="hint">Generated from the Markdown file in the repository: commit a change and the next build republishes it for every release that contains it.</p>
+</footer>
+<footer class="foot"><div class="foot-inner">
+<span class="mono">llm-router &middot; docs are generated from the repository by <code>tools/build_docs.py</code></span>
+<span class="mono"><a href="https://github.com/radlab-dev-group/llm-router/tree/v0.9.4">0.9.4</a> @ <code>40488c4</code></span>
+</div></footer>
+</main>
+<aside class="dtoc" id="dtoc"><h2 class="toc-title">on this page</h2><div class="toc-body"><ul><li><a href="#how-it-works">How It Works</a><ul><li><a href="#sliding-window-algorithm">Sliding Window Algorithm</a></li><li><a href="#key-ip-binning">Key + IP Binning</a></li><li><a href="#bucket-naming">Bucket Naming</a></li><li><a href="#client-ip-resolution-anti-spoofing">Client IP Resolution (anti-spoofing)</a></li><li><a href="#failed-authentication-lockout">Failed-Authentication Lockout</a></li></ul></li><li><a href="#configuration">Configuration</a><ul><li><a href="#environment-variables">Environment Variables</a></li><li><a href="#enabling-rate-limiting">Enabling Rate Limiting</a></li></ul></li><li><a href="#response-behavior">Response Behavior</a></li><li><a href="#architecture">Architecture</a><ul><li><a href="#ratelimitresult-dataclass">RateLimitResult Dataclass</a></li><li><a href="#redisratelimiter-class">RedisRateLimiter Class</a></li></ul></li><li><a href="#prometheus-metrics">Prometheus Metrics</a></li><li><a href="#rate-limit-strategy-by-use-case">Rate Limit Strategy by Use Case</a><ul><li><a href="#per-user-quotas-default">Per-User Quotas (Default)</a></li><li><a href="#tiered-rate-limiting-policy-based">Tiered Rate Limiting (Policy-Based)</a></li></ul></li><li><a href="#redis-requirements">Redis Requirements</a><ul><li><a href="#redis-persistence">Redis Persistence</a></li></ul></li><li><a href="#comparison-with-fixed-window">Comparison with Fixed-Window</a><ul><li><a href="#why-sliding-window">Why Sliding Window?</a></li></ul></li><li><a href="#best-practices">Best Practices</a><ul><li><a href="#1-always-enable-rate-limiting-in-production">1. Always Enable Rate Limiting in Production</a></li><li><a href="#2-set-up-auth-redis-connection">2. Set up auth Redis connection</a></li><li><a href="#3-monitor-rate-limit-events">3. Monitor Rate Limit Events</a></li><li><a href="#4-set-graceful-limits">4. Set Graceful Limits</a></li><li><a href="#5-use-public-endpoints-for-health-checks">5. Use Public Endpoints for Health Checks</a></li></ul></li><li><a href="#migration-from-no-auth-default-rate">Migration from No-Auth / Default Rate</a></li><li><a href="#troubleshooting">Troubleshooting</a><ul><li><a href="#why-am-i-getting-429s-immediately">&quot;Why am I getting 429s immediately?&quot;</a></li><li><a href="#rate-limit-is-too-strictloose">&quot;Rate limit is too strict/loose&quot;</a></li><li><a href="#clients-arent-respecting-retry-after">&quot;Clients aren&#x27;t respecting Retry-After&quot;</a></li></ul></li><li><a href="#rate-limit-presets">Rate Limit Presets</a></li><li><a href="#see-also">See Also</a></li></ul></div></aside>
+</div>
+</body>
+</html>

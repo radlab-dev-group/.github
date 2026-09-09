@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>llm-router docs · v0.2.2</title>
+<meta name="description" content="Documentation for llm-router: OpenAI-compatible gateway, PII masking, guardrails, load balancing, rate limiting, audit logs and Prometheus metrics.">
+<meta name="theme-color" content="#05070a">
+<meta property="og:type" content="article">
+<meta property="og:title" content="llm-router docs · v0.2.2">
+<meta property="og:description" content="Documentation for llm-router: OpenAI-compatible gateway, PII masking, guardrails, load balancing, rate limiting, audit logs and Prometheus metrics.">
+<meta name="docs-version" content="0.2.2">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2305070a'/%3E%3Cpath d='M8 22V10M8 16h9M17 10v12M17 13h7M17 19h7' stroke='%2300e59b' stroke-width='2' stroke-linecap='round' fill='none'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="../assets/docs.css">
+<link rel="stylesheet" href="../assets/pygments.css">
+<script src="../assets/docs.js" defer></script>
+</head>
+<body class="hub" data-version="0.2.2" data-search="search.json" data-latest="1.0.6">
+<a class="skip" href="#main">skip to content</a>
+<header class="topbar">
+<div class="topbar-inner">
+<button class="burger" id="burger" aria-label="Toggle documentation menu" aria-expanded="false" aria-controls="sidebar">&#9776;</button>
+<a class="brand" href="../.."><svg width="21" height="21" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="7" fill="#0b1119" stroke="#1a232e"/><path d="M8 22V10M8 16h9M17 10v12M17 13h7M17 19h7" stroke="#00e59b" stroke-width="2" stroke-linecap="round" fill="none"/></svg><span>llm<span class="dash">-</span>router</span><span class="brand-docs">/docs</span></a>
+<div class="topbar-right">
+<form class="search" id="search" role="search" autocomplete="off">
+<span class="search-icon" aria-hidden="true">&#8981;</span>
+<input id="q" type="search" placeholder="search this version" aria-label="Search documentation" role="combobox" aria-expanded="false" aria-controls="results" aria-autocomplete="list">
+<kbd>/</kbd>
+<div class="results" id="results" role="listbox" aria-label="Search results" hidden></div>
+</form>
+<label class="vselect">
+<span class="sr-only">Documentation version</span>
+<select id="versions" aria-label="Documentation version"><option value="../1.0.6/index.html">1.0.6  · latest</option>
+<option value="../1.0.5/index.html">1.0.5</option>
+<option value="../1.0.4/index.html">1.0.4</option>
+<option value="../1.0.3/index.html">1.0.3</option>
+<option value="../1.0.1/index.html">1.0.1</option>
+<option value="../1.0.0/index.html">1.0.0</option>
+<option value="../0.9.6/index.html">0.9.6</option>
+<option value="../0.9.5/index.html">0.9.5</option>
+<option value="../0.9.4/index.html">0.9.4</option>
+<option value="../0.9.2/index.html">0.9.2</option>
+<option value="../0.9.1/index.html">0.9.1</option>
+<option value="../0.9.0/index.html">0.9.0</option>
+<option value="../0.8.0/index.html">0.8.0</option>
+<option value="../0.7.0/index.html">0.7.0</option>
+<option value="../0.6.9/index.html">0.6.9</option>
+<option value="../0.6.8/index.html">0.6.8</option>
+<option value="../0.6.7/index.html">0.6.7</option>
+<option value="../0.6.6/index.html">0.6.6</option>
+<option value="../0.6.5/index.html">0.6.5</option>
+<option value="../0.6.4/index.html">0.6.4</option>
+<option value="../0.6.3/index.html">0.6.3</option>
+<option value="../0.6.2/index.html">0.6.2</option>
+<option value="../0.6.1/index.html">0.6.1</option>
+<option value="../0.6.0/index.html">0.6.0</option>
+<option value="../0.5.2/index.html">0.5.2</option>
+<option value="../0.5.1/index.html">0.5.1</option>
+<option value="../0.5.0/index.html">0.5.0</option>
+<option value="../0.4.6/index.html">0.4.6</option>
+<option value="../0.4.5/index.html">0.4.5</option>
+<option value="../0.4.4/index.html">0.4.4</option>
+<option value="../0.4.3/index.html">0.4.3</option>
+<option value="../0.4.2/index.html">0.4.2</option>
+<option value="../0.4.1/index.html">0.4.1</option>
+<option value="../0.4.0/index.html">0.4.0</option>
+<option value="../0.3.1/index.html">0.3.1</option>
+<option value="../0.3.0/index.html">0.3.0</option>
+<option value="../0.2.3/index.html">0.2.3</option>
+<option value="index.html" selected>0.2.2</option>
+<option value="../0.2.1/index.html">0.2.1</option>
+<option value="../0.2.0/index.html">0.2.0</option>
+<option value="../0.1.1/index.html">0.1.1</option>
+<option value="../0.1.0/index.html">0.1.0</option></select>
+</label>
+<a class="iconbtn" href="https://github.com/radlab-dev-group/llm-router" aria-label="Repository on GitHub" title="Repository on GitHub"><svg width="17" height="17" viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8a8 8 0 0 0 5.47 7.59c.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.46-.53.42-.02.72.39.82.55.48.81 1.25.94 1.56.73.2-.27.6-.94.94-1.13-.01-.2-.05-.82-.14-.98-.6.1-1.22.2-1.87.2-1.9 0-3.62-1.13-3.62-3.53 0-.78.28-1.42.74-1.92-.07-.18-.32-.91.07-1.9 0 0 .6-.19 1.97.74a6.8 6.8 0 0 1 3.58 0c1.37-.93 1.97-.74 1.97-.74.39.99.14 1.72.07 1.9.46.5.74 1.14.74 1.92 0 2.41-1.47 3.53-3.87 3.72.3.26.57.77.57 1.56 0 1.13-.012.04-.01 2.32 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg></a>
+</div>
+</div>
+</header>
+<div class="scrim" id="scrim" hidden></div>
+<div class="shell">
+<aside class="sidebar" id="sidebar"><div class="side-head"><span class="side-v mono">v0.2.2</span><span class="side-tag old">archived</span></div><a class="side-hub" href="index.html">documentation index</a><nav class="nav-tree" aria-label="Documentation"><section class="nav-sec open"><h2 class="nav-sec-title"><a href="overview.html">Getting started</a></h2><ul><li><a href="overview.html">Overview</a></li><li><a href="install.html">Instalacja zależności</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="llm-router-api/index.html">REST API</a></h2><ul><li><a href="llm-router-api/index.html">REST API reference</a></li><li><a href="llm-router-api/endpoints/readme-pl.html">Jak tworzyć endpointy w llm-proxy-api – przewodnik</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="llm-router-lib/index.html">Python library</a></h2><ul><li><a href="llm-router-lib/index.html">llm‑router-LIB — Python client library</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="llm-router-web/index.html">Web UI (archived)</a></h2><ul><li><a href="llm-router-web/index.html">llmrouterweb</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="changelog.html">Release notes</a></h2><ul><li><a href="changelog.html">Changelog</a></li></ul></section></nav><div class="side-foot"><a href="../..">&larr;&nbsp;landing page</a><a class="mono" href="search.json">search.json</a></div></aside>
+<main class="main" id="main"><section class="hub-hero">
+<p class="eyebrow mono">archived documentation</p>
+<h1>llm-router docs</h1>
+<p class="lede">Self-hosted AI gateway -- operator documentation</p>
+<p class="vline"><span class="vchip mono">v0.2.2</span><span class="vmeta">released 2025-11-10 &middot; 7 pages &middot; 5 sections &middot; built from <code>v0.2.2</code> built from <code>v0.2.2</code> @ <code>7a20a25</code></span></p>
+<div class="hub-actions"><a class="btn primary" href="overview.html">start with the overview</a><a class="btn primary" href="index.html#sections">browse 7 documents</a><a class="btn ghost" href="changelog.html">release notes</a><a class="btn ghost" href="https://github.com/radlab-dev-group/llm-router">repository</a></div>
+</section>
+<div class="hub-grid">
+<section class="sec-cards" id="sections"><article class="sec-card">
+<h2><a href="overview.html">Getting started</a></h2>
+<p>Install the gateway and get a first completion through the router.</p>
+<ul><li><a href="overview.html">Overview</a></li><li><a href="install.html">Instalacja zależności</a></li></ul>
+
+</article><article class="sec-card">
+<h2><a href="llm-router-api/index.html">REST API</a></h2>
+<p>Endpoint catalogue and the guide for adding your own endpoints.</p>
+<ul><li><a href="llm-router-api/index.html">REST API reference</a></li><li><a href="llm-router-api/endpoints/readme-pl.html">Jak tworzyć endpointy w llm-proxy-api – przewodnik</a></li></ul>
+
+</article><article class="sec-card">
+<h2><a href="llm-router-lib/index.html">Python library</a></h2>
+<p>Embed the router in your own code with llm_router_lib.</p>
+<ul><li><a href="llm-router-lib/index.html">llm‑router-LIB — Python client library</a></li></ul>
+
+</article><article class="sec-card">
+<h2><a href="llm-router-web/index.html">Web UI (archived)</a></h2>
+<p>Configuration and anonymizer panels shipped before the CLI rewrite.</p>
+<ul><li><a href="llm-router-web/index.html">llmrouterweb</a></li></ul>
+
+</article><article class="sec-card">
+<h2><a href="changelog.html">Release notes</a></h2>
+<p>What changed in every released version.</p>
+<ul><li><a href="changelog.html">Changelog</a></li></ul>
+
+</article></section>
+<aside class="hub-side"><div class="box"><h2>this release</h2><dl><dt>version</dt><dd class="mono">0.2.2</dd><dt>released</dt><dd class="mono">2025-11-10</dd><dt>ref</dt><dd class="mono">v0.2.2</dd><dt>commit</dt><dd class="mono">7a20a25</dd><dt>documents</dt><dd class="mono">7</dd></dl></div><div class="box"><h2>all versions</h2><p class="tiny">Older releases keep the documentation of their own branch of the repository.</p><ul class="vlist" id="versions-list"><li class="vrow latest"><a href="../1.0.6/index.html">v1.0.6</a><span class="mono">2026-09-08</span><em>latest</em></li><li class="vrow"><a href="../1.0.5/index.html">v1.0.5</a><span class="mono">2026-09-06</span></li><li class="vrow"><a href="../1.0.4/index.html">v1.0.4</a><span class="mono">2026-09-06</span></li><li class="vrow"><a href="../1.0.3/index.html">v1.0.3</a><span class="mono">2026-09-04</span></li><li class="vrow"><a href="../1.0.1/index.html">v1.0.1</a><span class="mono">2026-09-01</span></li><li class="vrow"><a href="../1.0.0/index.html">v1.0.0</a><span class="mono">2026-08-31</span></li><li class="vrow"><a href="../0.9.6/index.html">v0.9.6</a><span class="mono">2026-08-31</span></li><li class="vrow"><a href="../0.9.5/index.html">v0.9.5</a><span class="mono">2026-08-30</span></li><li class="vrow"><a href="../0.9.4/index.html">v0.9.4</a><span class="mono">2026-08-29</span></li><li class="vrow"><a href="../0.9.2/index.html">v0.9.2</a><span class="mono">2026-08-29</span></li><li class="vrow"><a href="../0.9.1/index.html">v0.9.1</a><span class="mono">2026-08-28</span></li><li class="vrow"><a href="../0.9.0/index.html">v0.9.0</a><span class="mono">2026-08-26</span></li><li class="vrow"><a href="../0.8.0/index.html">v0.8.0</a><span class="mono">2026-08-24</span></li><li class="vrow"><a href="../0.7.0/index.html">v0.7.0</a><span class="mono">2026-08-18</span></li><li class="vrow"><a href="../0.6.9/index.html">v0.6.9</a><span class="mono">2026-08-17</span></li><li class="vrow"><a href="../0.6.8/index.html">v0.6.8</a><span class="mono">2026-07-28</span></li><li class="vrow"><a href="../0.6.7/index.html">v0.6.7</a><span class="mono">2026-07-27</span></li><li class="vrow"><a href="../0.6.6/index.html">v0.6.6</a><span class="mono">2026-07-27</span></li><li class="vrow"><a href="../0.6.5/index.html">v0.6.5</a><span class="mono">2026-07-27</span></li><li class="vrow"><a href="../0.6.4/index.html">v0.6.4</a><span class="mono">2026-07-08</span></li><li class="vrow"><a href="../0.6.3/index.html">v0.6.3</a><span class="mono">2026-07-07</span></li><li class="vrow"><a href="../0.6.2/index.html">v0.6.2</a><span class="mono">2026-07-02</span></li><li class="vrow"><a href="../0.6.1/index.html">v0.6.1</a><span class="mono">2026-06-30</span></li><li class="vrow"><a href="../0.6.0/index.html">v0.6.0</a><span class="mono">2026-06-30</span></li><li class="vrow"><a href="../0.5.2/index.html">v0.5.2</a><span class="mono">2026-06-22</span></li><li class="vrow"><a href="../0.5.1/index.html">v0.5.1</a><span class="mono">2026-06-08</span></li><li class="vrow"><a href="../0.5.0/index.html">v0.5.0</a><span class="mono">2026-05-11</span></li><li class="vrow"><a href="../0.4.6/index.html">v0.4.6</a><span class="mono">2026-01-10</span></li><li class="vrow"><a href="../0.4.5/index.html">v0.4.5</a><span class="mono">2026-01-10</span></li><li class="vrow"><a href="../0.4.4/index.html">v0.4.4</a><span class="mono">2025-12-31</span></li><li class="vrow"><a href="../0.4.3/index.html">v0.4.3</a><span class="mono">2025-12-23</span></li><li class="vrow"><a href="../0.4.2/index.html">v0.4.2</a><span class="mono">2025-12-13</span></li><li class="vrow"><a href="../0.4.1/index.html">v0.4.1</a><span class="mono">2025-12-05</span></li><li class="vrow"><a href="../0.4.0/index.html">v0.4.0</a><span class="mono">2025-11-28</span></li><li class="vrow"><a href="../0.3.1/index.html">v0.3.1</a><span class="mono">2025-11-23</span></li><li class="vrow"><a href="../0.3.0/index.html">v0.3.0</a><span class="mono">2025-11-17</span></li><li class="vrow"><a href="../0.2.3/index.html">v0.2.3</a><span class="mono">2025-11-13</span></li><li class="vrow current"><a href="index.html">v0.2.2</a><span class="mono">2025-11-10</span></li><li class="vrow"><a href="../0.2.1/index.html">v0.2.1</a><span class="mono">2025-11-10</span></li><li class="vrow"><a href="../0.2.0/index.html">v0.2.0</a><span class="mono">2025-10-28</span></li><li class="vrow"><a href="../0.1.1/index.html">v0.1.1</a><span class="mono">2025-10-15</span></li><li class="vrow"><a href="../0.1.0/index.html">v0.1.0</a><span class="mono">2025-10-14</span></li></ul></div><div class="box note"><h2>how this works</h2><p>Every page here is rendered from a Markdown file committed in the repository. Nothing is copied by hand: the builder discovers <code>*.md</code> files, groups them with <code>tools/docs.toml</code> and archives the result per release tag.</p></div></aside>
+</div>
+<footer class="foot"><div class="foot-inner">
+<span class="mono">llm-router &middot; docs are generated from the repository by <code>tools/build_docs.py</code></span>
+<span class="mono"><a href="https://github.com/radlab-dev-group/llm-router/tree/v0.2.2">0.2.2</a> @ <code>7a20a25</code></span>
+</div></footer>
+</main>
+<aside class="dtoc" id="dtoc"><h2 class="toc-title">versions</h2><div class="toc-body"><p class="tiny">v0.2.2 &middot; 7 documents</p></div></aside>
+</div>
+</body>
+</html>
