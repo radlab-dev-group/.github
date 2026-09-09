@@ -1,0 +1,220 @@
+# ---------------------------------------------------------------------------
+# Documentation site configuration (tools/build_docs.py).
+#
+# Everything under /docs is generated from the Markdown files that live in this
+# repository -- there is no separate copy of the documentation to maintain.
+#
+#   python3 tools/build_docs.py                  # docs for the version in .version
+#   python3 tools/build_docs.py --all-versions    # every release tag + current
+#   python3 tools/build_docs.py --dry-run         # show what would be published
+#   python3 tools/build_docs.py --serve           # build + http://localhost:8000
+#
+# Adding a new document: commit the .md file. That is all -- files that do not
+# match any [[sections]] pattern below land in the "Other docs" section, so
+# nothing can silently disappear from the site. Use [[pages]] to pick a nicer
+# title/summary/position.
+# ---------------------------------------------------------------------------
+
+[site]
+title = "llm-router docs"
+tagline = "Self-hosted AI gateway -- operator documentation"
+description = "Documentation for llm-router: OpenAI-compatible gateway, PII masking, guardrails, load balancing, rate limiting, audit logs and Prometheus metrics."
+repo_url = "https://github.com/radlab-dev-group/llm-router"
+# Used to build canonical links; leave empty when the site is not published.
+site_url = ""
+# Shown as the "back to the landing page" target.
+home_url = "../"
+
+[discover]
+# Which Markdown files become documentation pages.
+include = ["**/*.md"]
+# Paths that are never published. Patterns are path aware globs matched against
+# repo relative paths: "*" stops at "/", "**" spans directories, "?" is one char.
+exclude = [
+  ".git/**",
+  ".github/**",
+  ".venv*/**",
+  "venv/**",
+  "site/**",
+  "landing/**",
+  "node_modules/**",
+  "**/__pycache__/**",
+  "**/node_modules/**",
+  ".pytest_cache/**",
+  "**/.pytest_cache/**",
+]
+# Where unmatched files go, so a brand new doc is still published.
+fallback_section = "other"
+
+# ---------------------------------------------------------------------------
+# Navigation sections, evaluated in order; the first matching glob wins.
+# ---------------------------------------------------------------------------
+
+[[sections]]
+id = "getting-started"
+title = "Getting started"
+summary = "Install the gateway and get a first completion through the router."
+match = ["README.md", "install.md", "llm_router_api/docs/INSTALLATION.md"]
+
+[[sections]]
+id = "configuration"
+title = "Configuration"
+summary = "Environment variables and the models.json routing configuration."
+match = [
+  "llm_router_api/docs/ENV_DEFINITIONS.md",
+  "llm_router_api/docs/MODELS_CONFIG.md",
+]
+
+[[sections]]
+id = "routing"
+title = "Routing & resilience"
+summary = "Load balancing strategies, failover and connection keep-alive."
+match = [
+  "llm_router_api/docs/LB_STRATEGIES.md",
+  "llm_router_api/docs/KEEPALIVE.md",
+]
+
+[[sections]]
+id = "security"
+title = "Security & auditing"
+summary = "Authentication, authorization, rate limiting and the GPG audit trail."
+match = [
+  "**/AUTHENTICATION.md",
+  "**/RATE_LIMITING.md",
+  "**/auditor/**",
+]
+
+[[sections]]
+id = "observability"
+title = "Observability"
+summary = "Prometheus metrics exposed by the router and how to scrape them."
+match = ["**/ROUTING_METRICS.md", "resources/**"]
+
+[[sections]]
+id = "rest-api"
+title = "REST API"
+summary = "Endpoint catalogue and the guide for adding your own endpoints."
+match = [
+  "llm_router_api/README.md",
+  "llm_router_api/endpoints/**",
+  "llm_router_api/docs/ENDPOINT_DEV.md",
+  # older releases kept their docs directly in llm_router_api/
+  "llm_router_api/*.md",
+]
+
+[[sections]]
+id = "cli"
+title = "CLI"
+summary = "llm-router command line reference: server lifecycle, models, utilities."
+match = ["llm_router_cli/**"]
+
+[[sections]]
+id = "library"
+title = "Python library"
+summary = "Embed the router in your own code with llm_router_lib."
+match = ["llm_router_lib/**"]
+
+[[sections]]
+id = "deployment"
+title = "Deployment"
+summary = "Helm chart, container image and the runtime knobs that matter in production."
+match = ["helm_charts/**", "docker/**", "scripts/**"]
+
+[[sections]]
+id = "examples"
+title = "Examples"
+summary = "Runnable stacks: vLLM, Ollama, LangChain, LlamaIndex and client SDKs."
+match = ["examples/**"]
+
+[[sections]]
+id = "website"
+title = "Website & tooling"
+summary = "How this site, its builder and the Pages pipeline work -- for contributors."
+match = ["tools/**"]
+
+# Retired subsystems: the sections stay empty for current releases and only
+# show up when an older version of the documentation is opened.
+
+[[sections]]
+id = "web-ui"
+title = "Web UI (archived)"
+summary = "Configuration and anonymizer panels shipped before the CLI rewrite."
+match = ["llm_router_web/**"]
+
+[[sections]]
+id = "plugins"
+title = "Masker plugins (archived)"
+summary = "Standalone masking plugins from the early 0.x releases."
+match = ["llm_router_plugins/**"]
+
+[[sections]]
+id = "changelog"
+title = "Release notes"
+summary = "What changed in every released version."
+match = ["CHANGELOG.md", "**/CHANGELOG.md"]
+
+[[sections]]
+id = "localized"
+title = "Localized docs (archived)"
+summary = "Translated documents kept for older releases."
+match = ["**/*-pl.md", "**/*-en.md"]
+
+[[sections]]
+id = "other"
+title = "Other docs"
+summary = "Markdown files without an explicit section -- edit tools/docs.toml to regroup them."
+match = ["**/*.md"]
+
+# ---------------------------------------------------------------------------
+# Per document overrides. `path` is repo-relative and case sensitive.
+# ---------------------------------------------------------------------------
+
+[[pages]]
+path = "README.md"
+title = "Overview"
+out = "overview.html"
+order = 10
+summary = "What llm-router is: one OpenAI-compatible endpoint in front of every model you run, locally or in the cloud."
+
+[[pages]]
+path = "llm_router_api/docs/INSTALLATION.md"
+order = 20
+
+[[pages]]
+path = "CHANGELOG.md"
+title = "Changelog"
+out = "changelog.html"
+adapter = "changelog"
+order = 10
+
+[[pages]]
+path = "llm_router_api/docs/ENV_DEFINITIONS.md"
+order = 10
+
+[[pages]]
+path = "llm_router_api/README.md"
+title = "REST API reference"
+order = 10
+
+[[pages]]
+path = "llm_router_api/endpoints/README.md"
+order = 20
+
+[[pages]]
+path = "llm_router_cli/README.md"
+order = 10
+
+[[pages]]
+path = "llm_router_lib/README.md"
+order = 10
+
+[[pages]]
+path = "examples/README.md"
+order = 10
+
+[[pages]]
+path = "tools/README.md"
+title = "Documentation site"
+out = "website.html"
+order = 10
+summary = "The generator behind /docs: discovery, per-release archives, search, theme and the Pages pipeline."

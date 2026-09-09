@@ -1,0 +1,5 @@
+# Dependencies for tools/build_docs.py (the documentation site builder).
+# Install:  pip install -r tools/requirements-docs.txt
+# or just run the builder -- it bootstraps .venv-docs/ automatically.
+markdown==3.10.3
+pygments==2.21.0

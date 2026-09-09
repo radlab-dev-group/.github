@@ -1,0 +1,1563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LLM Router — open-source AI gateway for self-hosted LLM infrastructure</title>
+<meta name="description" content="LLM Router is an open-source (Apache-2.0) AI gateway you run in your own infrastructure. One OpenAI-compatible endpoint in front of vLLM, Ollama, LM Studio, OpenAI and Anthropic — with PII masking, guardrails, load balancing, Redis rate limiting, GPG audit logs and Prometheus metrics.">
+<meta name="theme-color" content="#05070a">
+<meta property="og:type" content="website">
+<meta property="og:title" content="LLM Router — one endpoint in front of every LLM you run">
+<meta property="og:description" content="Self-hosted AI gateway: unified REST surface, PII masking, guardrails, 5 load-balancing strategies, Prometheus metrics, Helm chart. Apache-2.0.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2305070a'/%3E%3Cpath d='M8 22V10M8 16h9M17 10v12M17 13h7M17 19h7' stroke='%2300e59b' stroke-width='2' stroke-linecap='round' fill='none'/%3E%3C/svg%3E">
+<style>
+/* ============================================================ tokens */
+:root{
+  --bg:#05070a;
+  --bg-grad:#070b11;
+  --panel:#0a0e14;
+  --panel-2:#0d131a;
+  --line:#1a232e;
+  --line-soft:#131a23;
+  --fg:#c6d3df;
+  --fg-dim:#8492a3;
+  --fg-faint:#5a6778;
+  --mint:#00e59b;
+  --blue:#5aa9ff;
+  --amber:#ffb44a;
+  --purple:#c792ea;
+  --red:#ff6f6f;
+  --mono:ui-monospace,"JetBrains Mono","SFMono-Regular",Menlo,Consolas,"Liberation Mono",monospace;
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --r:10px;
+  --wrap:1180px;
+  --nav-h:58px;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  margin:0;background:var(--bg);color:var(--fg);
+  font-family:var(--sans);font-size:15.5px;line-height:1.65;
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+  overflow-x:hidden;
+}
+body::before{
+  /* engineering grid */
+  content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:
+    linear-gradient(to right,rgba(255,255,255,.028) 1px,transparent 1px),
+    linear-gradient(to bottom,rgba(255,255,255,.028) 1px,transparent 1px);
+  background-size:56px 56px;
+  mask-image:radial-gradient(120% 90% at 50% 0%,#000 25%,transparent 78%);
+  -webkit-mask-image:radial-gradient(120% 90% at 50% 0%,#000 25%,transparent 78%);
+}
+body::after{
+  content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(760px 420px at 12% -6%,rgba(0,229,155,.13),transparent 62%),
+    radial-gradient(680px 400px at 92% 4%,rgba(90,169,255,.10),transparent 60%);
+}
+main,header,footer{position:relative;z-index:1}
+a{color:var(--blue);text-decoration:none}
+a:hover{text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1px}
+h1,h2,h3,h4,.mono{font-family:var(--mono)}
+h1,h2,h3{letter-spacing:-.025em;line-height:1.12;font-weight:600;margin:0}
+p{margin:0}
+.wrap{width:100%;max-width:var(--wrap);margin:0 auto;padding:0 24px}
+section{padding:92px 0;border-top:1px solid var(--line-soft)}
+section[id]{scroll-margin-top:calc(var(--nav-h) + 14px)}
+
+/* ============================================================ nav */
+.nav{position:sticky;top:0;z-index:60;height:var(--nav-h);
+  background:rgba(5,7,10,.78);backdrop-filter:blur(14px) saturate(150%);
+  border-bottom:1px solid var(--line);}
+.nav-inner{height:100%;display:flex;align-items:center;gap:26px}
+.brand{display:flex;align-items:center;gap:10px;color:var(--fg);font-family:var(--mono);
+  font-weight:600;font-size:15px;letter-spacing:-.02em}
+.brand:hover{text-decoration:none}
+.brand svg{display:block;flex:0 0 auto}
+.brand .slash{color:var(--mint)}
+.nav-links{display:flex;align-items:center;gap:2px;margin-left:8px}
+.nav-links a{font-family:var(--mono);font-size:12.5px;color:var(--fg-dim);
+  padding:6px 10px;border-radius:6px;transition:color .15s,background .15s}
+.nav-links a:hover{color:var(--fg);background:rgba(255,255,255,.045);text-decoration:none}
+.nav-links a.active{color:var(--mint)}
+.nav-right{margin-left:auto;display:flex;align-items:center;gap:10px}
+.chip{font-family:var(--mono);font-size:11.5px;padding:3px 8px;border-radius:999px;
+  border:1px solid var(--line);color:var(--fg-dim);white-space:nowrap}
+.chip-live{border-color:rgba(0,229,155,.35);color:var(--mint);background:rgba(0,229,155,.07)}
+.btn{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:13px;
+  padding:8px 14px;border-radius:8px;border:1px solid var(--line);color:var(--fg);
+  background:var(--panel-2);cursor:pointer;transition:.16s;white-space:nowrap}
+.btn:hover{border-color:#2b3a4a;background:#121a23;text-decoration:none;color:#fff}
+.btn-primary{background:var(--mint);border-color:var(--mint);color:#032018;font-weight:600}
+.btn-primary:hover{background:#26ffb4;border-color:#26ffb4;color:#02170f}
+.burger{display:none;background:none;border:1px solid var(--line);border-radius:8px;
+  width:36px;height:34px;color:var(--fg);cursor:pointer;font-size:15px;line-height:1}
+
+/* ============================================================ hero */
+.hero{padding:82px 0 76px;border-top:0;overflow:hidden}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1.03fr) minmax(0,1fr);gap:52px;align-items:center}
+.eyebrow{display:inline-flex;align-items:center;gap:9px;font-family:var(--mono);font-size:11.5px;
+  text-transform:uppercase;letter-spacing:.19em;color:var(--fg-dim);
+  border:1px solid var(--line);background:rgba(10,14,20,.7);padding:5px 11px;border-radius:999px}
+.pulse{width:6px;height:6px;border-radius:50%;background:var(--mint);box-shadow:0 0 0 0 rgba(0,229,155,.55);
+  animation:pulse 2.4s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(0,229,155,.5)}70%{box-shadow:0 0 0 8px rgba(0,229,155,0)}100%{box-shadow:0 0 0 0 rgba(0,229,155,0)}}
+.hero h1{font-size:clamp(2.15rem,4.4vw,3.5rem);margin:22px 0 0}
+.hero h1 .hl{color:var(--mint)}
+.hero h1 .caret{display:inline-block;width:.5em;height:.92em;background:var(--mint);
+  margin-left:.08em;vertical-align:-.06em;animation:blink 1.15s steps(1) infinite}
+@keyframes blink{0%,49%{opacity:1}50%,100%{opacity:0}}
+.lede{margin-top:20px;font-size:16.5px;color:var(--fg-dim);max-width:60ch}
+.lede b{color:var(--fg);font-weight:600}
+.install{margin-top:28px;display:flex;align-items:center;gap:10px;background:var(--panel);
+  border:1px solid var(--line);border-radius:10px;padding:11px 12px;font-family:var(--mono);
+  font-size:13.5px;max-width:min(520px,100%);overflow:hidden}
+.install[data-copy]{cursor:pointer;transition:border-color .15s,background .15s}
+.install[data-copy]:hover{border-color:#2f4053;background:#121a23}
+.install[data-copy].ok{border-color:rgba(0,229,155,.45);background:rgba(0,229,155,.06)}
+.install .okmsg{margin-left:auto;flex:0 0 auto;color:var(--mint);font-size:11px;opacity:0;transition:opacity .15s}
+.install[data-copy].ok .okmsg{opacity:1}
+.install .pfx{color:var(--mint)}
+.install code{color:#e6f0f8;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0;flex:1 1 auto}
+.cta-row{display:flex;flex-wrap:wrap;gap:11px;margin-top:18px}
+/* keep grid/flex children shrinkable: long metric names, env vars and PromQL
+   must never widen a column (they scroll or wrap instead) */
+.grid>*,.split>*,.eco>*,.hero-grid>*,.dep-grid>*,.stats-grid>*,.foot-grid>*,.cta-row>*{min-width:0}
+.panel h3,.panel .hint,ul.ticks li,.dep .d,.card p,.eco-row .ds,.lede,.stat .k{overflow-wrap:anywhere}
+.badges{list-style:none;display:flex;flex-wrap:wrap;gap:7px;margin:26px 0 0;padding:0}
+.badges li{font-family:var(--mono);font-size:11.5px;color:var(--fg-faint);
+  border:1px solid var(--line-soft);background:rgba(255,255,255,.02);padding:3px 8px;border-radius:6px}
+.badges li b{color:var(--fg-dim);font-weight:500}
+
+/* ============================================================ terminal */
+.term{background:#070a0e;border:1px solid var(--line);border-radius:12px;
+  box-shadow:0 26px 70px -28px rgba(0,0,0,.95),0 0 0 1px rgba(0,229,155,.05);overflow:hidden}
+.term-bar{display:flex;align-items:center;gap:8px;padding:9px 13px;background:#0b0f15;
+  border-bottom:1px solid var(--line)}
+.tl{width:9px;height:9px;border-radius:50%;background:#2a3542}
+.tl.r{background:#e5544b}.tl.y{background:#d9a441}.tl.g{background:#4fa85c}
+.term-title{margin-left:6px;font-family:var(--mono);font-size:11.5px;color:var(--fg-faint)}
+.term-body{padding:16px 16px 18px;font-family:var(--mono);font-size:12.6px;line-height:1.72;
+  color:#a9b8c8;overflow-x:auto}
+.term-body .l{white-space:pre}
+.c-cmd{color:#e9f2fa}.c-p{color:var(--mint)}.c-o{color:#8d9dae}.c-k{color:var(--blue)}
+.c-s{color:var(--mint)}.c-w{color:var(--amber)}.c-m{color:#5f6d7d}.c-pu{color:var(--purple)}
+.c-red{color:var(--red)}
+
+/* ============================================================ stats */
+.stats{border-top:1px solid var(--line-soft);border-bottom:1px solid var(--line-soft);
+  background:linear-gradient(180deg,rgba(10,14,20,.85),rgba(5,7,10,.4));padding:0}
+.stats-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr))}
+.stat{padding:24px 20px;border-left:1px solid var(--line-soft)}
+.stat:first-child{border-left:0}
+.stat .n{font-family:var(--mono);font-size:25px;color:#eaf2fa;letter-spacing:-.03em;line-height:1.2}
+.stat .n span{color:var(--mint);font-size:16px}
+.stat .k{font-family:var(--mono);font-size:10.8px;text-transform:uppercase;letter-spacing:.13em;
+  color:var(--fg-faint);margin-top:6px}
+
+/* ============================================================ section head */
+.sec-head{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin-bottom:10px}
+.sec-num{font-family:var(--mono);font-size:11.5px;color:var(--mint);letter-spacing:.14em}
+.sec-head h2{font-size:clamp(1.45rem,2.5vw,1.95rem)}
+.sec-sub{color:var(--fg-dim);max-width:78ch;font-size:15.5px}
+.sec-sub code{font-family:var(--mono);font-size:.9em;color:var(--mint)}
+.kv{color:var(--fg)}
+
+/* ============================================================ pipeline */
+.pipe{margin-top:34px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:26px 22px}
+.pipe-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:11px}
+.pipe-hint{font-family:var(--mono);font-size:10.5px;color:var(--fg-faint);letter-spacing:.13em;white-space:nowrap}
+.pipe-scroll{position:relative}
+.pipe-scroll::after{content:"";position:absolute;right:0;top:0;width:74px;height:calc(100% - 10px);
+  pointer-events:none;background:linear-gradient(270deg,var(--panel) 5%,rgba(10,14,20,0) 100%)}
+.pipe-row{display:flex;align-items:stretch;gap:0;overflow-x:auto;padding-bottom:6px;
+  scrollbar-width:thin;scrollbar-color:#22303d transparent}
+.pipe-row::-webkit-scrollbar{height:6px}
+.pipe-row::-webkit-scrollbar-track{background:transparent}
+.pipe-row::-webkit-scrollbar-thumb{background:#22303d;border-radius:6px}
+.pipe-row::-webkit-scrollbar-thumb:hover{background:#2f4052}
+.node{flex:1 0 152px;min-width:152px;border:1px solid var(--line);border-radius:9px;background:var(--panel-2);
+  padding:13px 13px 14px;position:relative;transition:.2s}
+.node:hover{border-color:#2c3d4e;transform:translateY(-2px)}
+.node .idx{font-family:var(--mono);font-size:10px;color:var(--fg-faint);letter-spacing:.12em}
+.node .nm{font-family:var(--mono);font-size:12.4px;color:#e6eff7;margin-top:5px;letter-spacing:-.01em}
+.node .ds{font-size:12px;color:var(--fg-faint);margin-top:6px;line-height:1.5}
+.node.accent{border-color:rgba(0,229,155,.34);background:rgba(0,229,155,.055)}
+.node.accent2{border-color:rgba(90,169,255,.32);background:rgba(90,169,255,.05)}
+.node.accent3{border-color:rgba(199,146,234,.3);background:rgba(199,146,234,.05)}
+.arrow{flex:0 0 34px;display:flex;align-items:center;justify-content:center;color:#33475a;
+  font-family:var(--mono);font-size:15px}
+.wire{position:relative;height:2px;background:var(--line);margin:20px 0 6px;border-radius:2px;overflow:hidden}
+.wire i{position:absolute;top:-1px;width:90px;height:4px;border-radius:4px;
+  background:linear-gradient(90deg,transparent,var(--mint),transparent);animation:travel 3.6s linear infinite}
+@keyframes travel{from{transform:translateX(-100px)}to{transform:translateX(1400px)}}
+.pipe-foot{display:flex;flex-wrap:wrap;gap:18px;margin-top:20px;padding-top:18px;border-top:1px dashed var(--line)}
+.pipe-foot div{font-family:var(--mono);font-size:12px;color:var(--fg-faint);min-width:0;overflow-wrap:anywhere}
+.pipe-foot b{color:var(--fg-dim);font-weight:500}
+
+/* ============================================================ features */
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:34px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:20px 20px 22px;
+  position:relative;overflow:hidden;transition:.2s}
+.card::before{content:"";position:absolute;left:0;top:0;width:100%;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(0,229,155,.5),transparent);opacity:0;transition:.25s}
+.card:hover{border-color:#26323f;background:var(--panel-2);transform:translateY(-3px)}
+.card:hover::before{opacity:1}
+.card .ico{width:30px;height:30px;border-radius:8px;border:1px solid var(--line);
+  display:grid;place-items:center;background:#0f151d;color:var(--mint);margin-bottom:14px}
+.card h3{font-size:14.6px;color:#e8f1f9;letter-spacing:-.01em}
+.card p{margin-top:9px;font-size:13.6px;color:var(--fg-dim);line-height:1.62}
+.card p code{font-family:var(--mono);font-size:12px;color:var(--blue);background:rgba(90,169,255,.08);
+  padding:1px 5px;border-radius:4px;border:1px solid rgba(90,169,255,.13)}
+.tagrow{display:flex;flex-wrap:wrap;gap:5px;margin-top:14px}
+.tagrow span{font-family:var(--mono);font-size:10.8px;color:var(--fg-faint);border:1px solid var(--line-soft);
+  background:rgba(255,255,255,.022);padding:2px 6px;border-radius:5px}
+.tagrow span.on{color:var(--mint);border-color:rgba(0,229,155,.28);background:rgba(0,229,155,.06)}
+.tagrow span.gd{color:var(--amber);border-color:rgba(255,180,74,.26);background:rgba(255,180,74,.06)}
+.pu{color:var(--purple)}
+/* ============================================================ code blocks */
+.code{margin-top:16px;background:#070a0e;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.code-bar{display:flex;align-items:center;gap:10px;padding:7px 8px 7px 13px;background:#0b0f15;
+  border-bottom:1px solid var(--line)}
+.code-file{font-family:var(--mono);font-size:11.5px;color:var(--fg-faint);white-space:nowrap;
+  overflow:hidden;text-overflow:ellipsis}
+.copy{margin-left:auto;flex:0 0 auto;font-family:var(--mono);font-size:11px;color:var(--fg-dim);
+  background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:6px;padding:3px 9px;
+  cursor:pointer;transition:.15s}
+.copy:hover{color:#fff;border-color:#2f4053;background:#121a23}
+.copy.ok{color:var(--mint);border-color:rgba(0,229,155,.4)}
+.code pre{margin:0;padding:15px 16px;font-family:var(--mono);font-size:12.6px;line-height:1.72;
+  color:#b7c5d4;overflow-x:auto}
+.code pre::-webkit-scrollbar{height:8px}
+.code pre::-webkit-scrollbar-thumb{background:#1e2833;border-radius:8px}
+.term-body,.tbl-wrap,.prom{scrollbar-width:thin;scrollbar-color:#1e2833 transparent}
+.term-body::-webkit-scrollbar,.tbl-wrap::-webkit-scrollbar,.prom::-webkit-scrollbar{width:8px;height:8px}
+.term-body::-webkit-scrollbar-thumb,.tbl-wrap::-webkit-scrollbar-thumb,.prom::-webkit-scrollbar-thumb{
+  background:#1e2833;border-radius:8px}
+.term-body::-webkit-scrollbar-track,.tbl-wrap::-webkit-scrollbar-track,.prom::-webkit-scrollbar-track{background:transparent}
+.k-cm{color:#5f6d7d}.k-kw{color:var(--purple)}.k-str{color:var(--mint)}.k-num{color:var(--amber)}
+.k-key{color:var(--blue)}.k-flag{color:var(--amber)}.k-dim{color:#4d5a69}
+/* ============================================================ tabs */
+.tabs{display:flex;flex-wrap:wrap;gap:4px;margin-top:32px;border:1px solid var(--line);border-bottom:0;
+  border-radius:10px 10px 0 0;background:var(--panel);padding:6px}
+.tab{font-family:var(--mono);font-size:12.3px;color:var(--fg-dim);background:transparent;
+  border:1px solid transparent;padding:7px 12px;border-radius:7px;cursor:pointer;transition:.15s;white-space:nowrap}
+.tab:hover{color:var(--fg);background:rgba(255,255,255,.04)}
+.tab.on{color:var(--mint);background:rgba(0,229,155,.08);border-color:rgba(0,229,155,.26)}
+.tabpane{border:1px solid var(--line);border-top:0;border-radius:0 0 10px 10px;background:var(--panel);display:none}
+.tabpane.on{display:block}
+.tabpane .code{margin-top:0;border:0;border-radius:0;background:transparent}
+.tabpane .code-bar{background:rgba(255,255,255,.018);border-bottom:1px solid var(--line-soft)}
+.tabpane .code pre{padding:18px 16px}
+/* ============================================================ tables */
+.tbl-wrap{margin-top:32px;border:1px solid var(--line);border-radius:12px;overflow-x:auto;background:var(--panel)}
+table.tbl{width:100%;border-collapse:collapse;min-width:880px}
+.tbl th{text-align:left;font-family:var(--mono);font-size:10.6px;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--fg-faint);padding:12px 16px;background:#0b1017;border-bottom:1px solid var(--line);
+  white-space:nowrap;font-weight:500}
+.tbl td{padding:14px 16px;border-bottom:1px solid var(--line-soft);font-size:13.5px;color:var(--fg-dim);vertical-align:top}
+.tbl tr:last-child td{border-bottom:0}
+.tbl tr:hover td{background:rgba(255,255,255,.017)}
+.tbl td.name{font-family:var(--mono);font-size:12.7px;color:#e6eff7;white-space:nowrap}
+.tbl td.mono{font-family:var(--mono);font-size:12.3px;color:var(--blue)}
+.pill{display:inline-block;font-family:var(--mono);font-size:10.5px;padding:2px 7px;border-radius:999px;
+  border:1px solid var(--line);color:var(--fg-faint);white-space:nowrap}
+.pill.mint{color:var(--mint);border-color:rgba(0,229,155,.3);background:rgba(0,229,155,.06)}
+.pill.blue{color:var(--blue);border-color:rgba(90,169,255,.3);background:rgba(90,169,255,.06)}
+.pill.amber{color:var(--amber);border-color:rgba(255,180,74,.3);background:rgba(255,180,74,.06)}
+/* ============================================================ panels */
+.split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;margin-top:32px;align-items:start}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:22px}
+.panel h3{font-size:14.4px;color:#e8f1f9;display:flex;align-items:center;gap:9px}
+.panel h3 .mono-i{font-family:var(--mono);font-size:12px;color:var(--mint)}
+.panel .hint{margin-top:9px;font-size:13.3px;color:var(--fg-faint);line-height:1.62}
+ul.ticks{list-style:none;margin:16px 0 0;padding:0;display:grid;gap:10px}
+ul.ticks li{position:relative;padding-left:22px;font-size:13.6px;color:var(--fg-dim);line-height:1.6}
+ul.ticks li::before{content:"\2713";position:absolute;left:0;top:0;color:var(--mint);font-family:var(--mono);font-size:11.5px}
+ul.ticks li b{color:#dce7f1;font-weight:600}
+.panel code,.sec-sub code,ul.ticks li code{font-family:var(--mono);font-size:12.2px;color:var(--blue);
+  background:rgba(90,169,255,.08);padding:1px 5px;border-radius:4px;border:1px solid rgba(90,169,255,.13)}
+/* ============================================================ prometheus */
+.prom{margin-top:14px;background:#070a0e;border:1px solid var(--line);border-left:2px solid var(--mint);
+  border-radius:0 8px 8px 0;padding:12px 14px;font-family:var(--mono);font-size:12.1px;
+  color:#9fb3c6;overflow-x:auto;white-space:pre;line-height:1.8}
+.prom b{color:var(--mint);font-weight:500}.prom i{color:var(--purple);font-style:normal}
+.prom u{color:var(--amber);text-decoration:none}.prom s{color:#5f6d7d;text-decoration:none}
+/* ============================================================ deploy */
+.dep-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:32px}
+.dep{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:20px;
+  display:flex;flex-direction:column;min-width:0;overflow:hidden}
+.dep .t{font-family:var(--mono);font-size:13px;color:#e8f1f9;display:flex;align-items:center;gap:8px}
+.dep .d{font-size:12.9px;color:var(--fg-faint);margin-top:8px;line-height:1.6;flex:1}
+.dep .code{margin-top:14px}
+.dep .code pre{font-size:11.9px;padding:13px 14px}
+/* ============================================================ ecosystem */
+.eco{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 28px;margin-top:28px}
+.eco-row{display:flex;align-items:baseline;gap:12px;padding:11px 0;border-bottom:1px solid var(--line-soft)}
+.eco-row .nm{font-family:var(--mono);font-size:12.7px;color:#dfeaf5;flex:0 0 auto}
+.eco-row .ds{font-size:12.7px;color:var(--fg-faint);flex:1;min-width:0}
+.eco-row .pt{font-family:var(--mono);font-size:11.4px;color:var(--mint);flex:0 0 auto}
+/* ============================================================ cta + footer */
+.cta-band{padding:78px 0;border-top:1px solid var(--line-soft);
+  background:radial-gradient(700px 270px at 50% 0%,rgba(0,229,155,.10),transparent 70%)}
+.cta-band .inner{max-width:820px;margin:0 auto;text-align:center}
+.cta-band h2{font-size:clamp(1.55rem,3vw,2.25rem)}
+.cta-band .lede{margin:16px auto 0}
+.cta-band .cta-row{justify-content:center;margin-top:26px}
+.cta-band .install{margin:26px auto 0}
+.foot{border-top:1px solid var(--line);padding:38px 0 46px;background:#04060a}
+.foot-grid{display:flex;flex-wrap:wrap;gap:34px;justify-content:space-between;align-items:flex-start}
+.foot h4{font-family:var(--mono);font-size:10.6px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--fg-faint);margin:0 0 12px;font-weight:500}
+.foot ul{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.foot ul a{font-size:13px;color:var(--fg-dim)}
+.foot .fine{margin-top:32px;padding-top:22px;border-top:1px solid var(--line-soft);display:flex;
+  flex-wrap:wrap;gap:14px;justify-content:space-between;font-family:var(--mono);font-size:11.4px;color:var(--fg-faint)}
+/* ============================================================ motion */
+.reveal{opacity:0;transform:translateY(14px);transition:opacity .55s ease,transform .55s ease}
+.reveal.in{opacity:1;transform:none}
+.prog{position:fixed;top:0;left:0;height:2px;width:0;z-index:70;
+  background:linear-gradient(90deg,var(--mint),var(--blue))}
+/* ============================================================ responsive */
+@media (max-width:1080px){
+  .grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .dep-grid{grid-template-columns:1fr}
+  .stats-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .stat{border-top:1px solid var(--line-soft)}
+  .stat:nth-child(-n+3){border-top:0}
+  .stat:nth-child(3n+1){border-left:0}
+  .eco{grid-template-columns:1fr}
+  .nav-links{display:none;position:absolute;top:var(--nav-h);left:0;right:0;flex-direction:column;
+    align-items:stretch;gap:2px;background:#070b11;border-bottom:1px solid var(--line);
+    padding:12px 20px 16px;margin:0}
+  .nav-links.open{display:flex}
+  .nav-links a{font-size:13.5px;padding:10px 8px}
+  .burger{display:block}
+  .nav-right .chip{display:none}
+}
+@media (max-width:900px){
+  .hero{padding:54px 0 58px}
+  .hero-grid{grid-template-columns:1fr;gap:36px}
+  .split{grid-template-columns:1fr}
+  section{padding:68px 0}
+}
+@media (max-width:640px){
+  body{font-size:15px}
+  .grid{grid-template-columns:1fr}
+  .stats-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .stat{border-top:1px solid var(--line-soft)}
+  .stat:nth-child(odd){border-left:0}
+  .stat:nth-child(-n+2){border-top:0}
+  .nav-right .btn.ghost{display:none}
+  .hero h1{font-size:1.95rem}
+  .pipe{padding:18px 14px}
+  section{padding:58px 0}
+  .cta-band{padding:62px 0}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .reveal{opacity:1;transform:none;transition:none}
+  .wire i,.pulse,.caret{animation:none}
+  *{transition-duration:.01ms !important}
+}
+</style>
+</head>
+<body>
+<div class="prog" id="prog"></div>
+
+<header class="nav">
+  <div class="wrap nav-inner">
+    <a class="brand" href="#top">
+      <svg width="22" height="22" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="7" fill="#0b1119" stroke="#1a232e"/><path d="M8 22V10M8 16h9M17 10v12M17 13h7M17 19h7" stroke="#00e59b" stroke-width="2" stroke-linecap="round" fill="none"/></svg>
+      <span>llm<span class="slash">-</span>router</span>
+    </a>
+    <nav class="nav-links" id="navlinks">
+      <a href="#pipeline">pipeline</a>
+      <a href="#features">features</a>
+      <a href="#config">config</a>
+      <a href="#balancing">balancing</a>
+      <a href="#security">security</a>
+      <a href="#metrics">metrics</a>
+      <a href="#deploy">deploy</a>
+      <a href="docs/">docs</a>
+    </nav>
+    <div class="nav-right">
+      <span class="chip chip-live">v1.0.6 · Apache-2.0</span>
+      <a class="btn ghost" href="https://github.com/radlab-dev-group/llm-router" rel="noopener">GitHub</a>
+      <a class="btn btn-primary" href="#deploy">Deploy</a>
+      <button class="burger" id="burger" aria-label="Toggle navigation" aria-expanded="false">&#9776;</button>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+
+<!-- ============================================================ hero -->
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow"><i class="pulse"></i> self-hosted ai gateway</span>
+      <h1>One endpoint in&nbsp;front of <span class="hl">every LLM</span> you run<span class="caret"></span></h1>
+      <p class="lede">
+        LLM Router sits between your services and your models — <b>vLLM</b>, <b>Ollama</b>, <b>LM Studio</b>,
+        <b>OpenAI-compatible</b> APIs and <b>Anthropic</b> — behind a single OpenAI-compatible REST surface.
+        Auth, sliding-window rate limits, PII masking, guardrails, load balancing and Prometheus metrics
+        run <b>in your infrastructure</b>, so prompts never take a detour through someone else's cloud.
+      </p>
+      <div class="install" data-copy='pip install "radlab-llm-router[api]"'>
+        <span class="pfx">$</span><code>pip install "radlab-llm-router[api]"</code><span class="okmsg">copied</span>
+      </div>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="#config">Get a router in 60s</a>
+        <a class="btn ghost" href="#pipeline">Read the request path</a>
+        <a class="btn ghost" href="https://pypi.org/project/radlab-llm-router/" rel="noopener">PyPI</a>
+      </div>
+      <ul class="badges">
+        <li><b>python</b> &ge; 3.10</li>
+        <li><b>image</b> quay.io/radlab/llm-router</li>
+        <li><b>helm</b> chart included</li>
+        <li><b>no</b> vendor lock-in</li>
+        <li><b>zero</b> telemetry</li>
+      </ul>
+    </div>
+
+    <div class="term" aria-label="Terminal session">
+      <div class="term-bar">
+        <span class="tl r"></span><span class="tl y"></span><span class="tl g"></span>
+        <span class="term-title">ops@bastion: ~/infra/llm-router</span>
+      </div>
+      <div class="term-body">
+<div class="l"><span class="c-p">$</span> <span class="c-cmd">pip install "radlab-llm-router[api,metrics]"</span></div>
+<div class="l"><span class="c-s">&check;&nbsp;</span><span class="c-o">installed llm-router <b>1.0.6</b> · console script <span class="c-k">llm-router</span></span></div>
+<div class="l">&nbsp;</div>
+<div class="l"><span class="c-p">$</span> <span class="c-cmd">llm-router config</span></div>
+<div class="l"><span class="c-s">&check;&nbsp;</span><span class="c-o">discovered <b>ollama</b>&nbsp;&nbsp;&nbsp;&nbsp;http://localhost:11434 &nbsp;<span class="c-m">(3 models)</span></span></div>
+<div class="l"><span class="c-s">&check;&nbsp;</span><span class="c-o">discovered <b>vllm</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;http://10.0.4.21:8000 <span class="c-m">(1 model)</span></span></div>
+<div class="l"><span class="c-w">&dash;&nbsp;</span><span class="c-o">wrote models-config.json <span class="c-m">— review before prod</span></span></div>
+<div class="l">&nbsp;</div>
+<div class="l"><span class="c-p">$</span> <span class="c-cmd">llm-router server start</span></div>
+<div class="l"><span class="c-s">&check;&nbsp;All good</span></div>
+<div class="l"><span class="c-s">&bull;&nbsp;</span><span class="c-o">Server is running (gunicorn, 4 workers)</span></div>
+<div class="l">&nbsp;</div>
+<div class="l"><span class="c-m">&nbsp;&nbsp;Details</span></div>
+<div class="l"><span class="c-m">&nbsp;&nbsp;&nbsp;&nbsp;PID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="c-o">41207</span></div>
+<div class="l"><span class="c-m">&nbsp;&nbsp;&nbsp;&nbsp;Server&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="c-o">gunicorn</span></div>
+<div class="l"><span class="c-m">&nbsp;&nbsp;&nbsp;&nbsp;Host&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="c-o">0.0.0.0:8080</span></div>
+<div class="l"><span class="c-m">&nbsp;&nbsp;&nbsp;&nbsp;Models config&nbsp;&nbsp;&nbsp;</span><span class="c-o">/srv/models-config.json</span></div>
+<div class="l"><span class="c-m">&nbsp;&nbsp;&nbsp;&nbsp;Log&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="c-o">~/.llm-router/server.log</span></div>
+<div class="l">&nbsp;</div>
+<div class="l"><span class="c-p">$</span> <span class="c-cmd">curl -s localhost:8080/api/ping</span></div>
+<div class="l"><span class="c-o">{<span class="c-k">"status"</span>: <span class="c-s">"ok"</span>} &nbsp;<span class="c-m">HTTP/1.1 200 OK</span></span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ stats -->
+<div class="stats">
+  <div class="wrap stats-grid">
+    <div class="stat"><div class="n">5</div><div class="k">provider types</div></div>
+    <div class="stat"><div class="n">5</div><div class="k">LB strategies</div></div>
+    <div class="stat"><div class="n">30<span>+</span></div><div class="k">PII rule types</div></div>
+    <div class="stat"><div class="n">25<span>+</span></div><div class="k">REST endpoints</div></div>
+    <div class="stat"><div class="n">~80</div><div class="k">env vars</div></div>
+    <div class="stat"><div class="n">100<span>%</span></div><div class="k">self-hosted</div></div>
+  </div>
+</div>
+
+<svg style="display:none" aria-hidden="true">
+  <symbol id="i-api" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 9 4.5 12l4 3M15.5 9l4 3-4 3M13.5 6.5l-3 11"/></symbol>
+  <symbol id="i-key" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="9" r="3.4"/><path d="M11.6 11.6 20 20M17.5 17.5l2.5-2.5"/></symbol>
+  <symbol id="i-gauge" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 18a8 8 0 1 1 16 0"/><path d="M12 18l4.6-5.2"/><circle cx="12" cy="18" r="1.1"/></symbol>
+  <symbol id="i-mask" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12s3.6-6 9-6 9 6 9 6-3.6 6-9 6-9-6-9-6z"/><path d="M4.5 4.5l15 15"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v6c0 4.2-2.9 7.6-7 9-4.1-1.4-7-4.8-7-9V6z"/><path d="M9.2 12.2l1.9 2 3.7-4"/></symbol>
+  <symbol id="i-route" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="2.2"/><circle cx="6" cy="18" r="2.2"/><path d="M8.2 6H14a4 4 0 0 1 0 8H8M8.2 18H14a3 3 0 0 0 3-3v-1"/></symbol>
+  <symbol id="i-lb" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v5M12 9H5.5v4M12 9h6.5v4"/><rect x="3" y="13.5" width="5" height="5" rx="1.2"/><rect x="9.5" y="13.5" width="5" height="5" rx="1.2"/><rect x="16" y="13.5" width="5" height="5" rx="1.2"/></symbol>
+  <symbol id="i-chart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V11M9.5 20V5M15 20v-7M20.5 20V9"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10V7.5a4 4 0 0 1 8 0V10M12 14v2.5"/></symbol>
+  <symbol id="i-terminal" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 10l3 2.5L7 15M12.5 15.5H17"/></symbol>
+  <symbol id="i-box" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/><path d="M4 7.6l8 4.5 8-4.5M12 12.1V21"/></symbol>
+  <symbol id="i-wheel" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="2.6"/><path d="M12 4v4.4M12 15.6V20M4 12h4.4M15.6 12H20"/></symbol>
+  <symbol id="i-plug" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3v4.5M15 3v4.5M6 7.5h12V12a6 6 0 0 1-12 0z"/><path d="M12 18v3"/></symbol>
+  <symbol id="i-file" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/></symbol>
+  <symbol id="i-cpu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="7" width="10" height="10" rx="2"/><path d="M10 3v4M14 3v4M10 17v4M14 17v4M3 10h4M3 14h4M17 10h4M17 14h4"/></symbol>
+</svg>
+
+<!-- ============================================================ 01 pipeline -->
+<section id="pipeline">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="sec-num">01 / REQUEST PATH</span>
+    </div>
+    <h2 class="reveal">Deterministic pipeline, not a&nbsp;proxy pile-up</h2>
+    <p class="sec-sub reveal" style="margin-top:12px">
+      Every request walks the same ordered path. Each stage is a registry-backed plugin with a tiny
+      <code>apply()</code>, so you can drop a stage, add your own, or reorder the pipeline without
+      touching application code. <code>EndpointAutoLoader</code> discovers <code>EndpointI</code>
+      implementations at startup — new routes appear with no wiring.
+    </p>
+
+    <div class="pipe reveal">
+      <div class="pipe-top"><span></span><span class="pipe-hint">7 STAGES &middot; SCROLL &rarr;</span></div>
+      <div class="pipe-scroll">
+      <div class="pipe-row">
+        <div class="node">
+          <div class="idx">INBOUND</div><div class="nm">client</div>
+          <div class="ds">OpenAI SDK, curl, LangChain, LlamaIndex, your service</div>
+        </div>
+        <div class="arrow">&rarr;</div>
+        <div class="node accent">
+          <div class="idx">MIDDLEWARE</div><div class="nm">AuthMiddleware</div>
+          <div class="ds">Bearer key &rarr; key store &rarr; permission engine &rarr; rate limiter</div>
+        </div>
+        <div class="arrow">&rarr;</div>
+        <div class="node accent2">
+          <div class="idx">STAGE 1</div><div class="nm">MaskerPipeline</div>
+          <div class="ds">fast_masker regex, then pii_masker ML token classifier</div>
+        </div>
+        <div class="arrow">&rarr;</div>
+        <div class="node accent3">
+          <div class="idx">STAGE 2</div><div class="nm">GuardrailPipeline</div>
+          <div class="ds">classifier check &rarr; pass or block with 4xx</div>
+        </div>
+        <div class="arrow">&rarr;</div>
+        <div class="node">
+          <div class="idx">STAGE 3</div><div class="nm">UtilsPipeline</div>
+          <div class="ds">RAG enrichment, built-in tasks, custom endpoints</div>
+        </div>
+        <div class="arrow">&rarr;</div>
+        <div class="node accent">
+          <div class="idx">RESOLVE</div><div class="nm">load_balancer</div>
+          <div class="ds">strategy pick, provider lease, retry &amp; failover</div>
+        </div>
+        <div class="arrow">&rarr;</div>
+        <div class="node">
+          <div class="idx">UPSTREAM</div><div class="nm">model provider</div>
+          <div class="ds">vLLM, Ollama, LM Studio, OpenAI-compatible, Anthropic</div>
+        </div>
+      </div>
+      </div>
+      <div class="wire"><i></i></div>
+      <div class="pipe-foot">
+        <div><b>plugin registry</b> — opt in per stage via env</div>
+        <div><b>reload</b> — llm-router server reload</div>
+        <div><b>every stage</b> — llm_router_pipeline_stage_total{stage,result}</div>
+        <div><b>fail closed</b> — guardrail block never reaches a provider</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ 02 features -->
+<section id="features">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="sec-num">02 / FEATURES</span></div>
+    <h2 class="reveal">The boring infrastructure you&nbsp;needed anyway</h2>
+    <p class="sec-sub reveal" style="margin-top:12px">
+      Everything below is off by default until you switch it on with an env var or a config file.
+      No sidecar, no external control plane, no phone home.
+    </p>
+
+    <div class="grid">
+      <article class="card reveal">
+        <div class="ico"><svg width="16" height="16"><use href="#i-api"/></svg></div>
+        <h3>One OpenAI-compatible surface</h3>
+        <p>Point existing clients at the router and keep them there: <code>/v1/chat/completions</code>,
+        <code>/v1/responses</code>, <code>/v1/embeddings</code> plus native <code>/v1/messages</code>
+        for Anthropic. SSE streaming honors the <code>stream</code> flag with correct cache headers.</p>
+        <div class="tagrow"><span class="on">openai</span><span class="on">anthropic</span><span>vllm</span><span>ollama</span><span>lm studio</span></div>
+      </article>
+
+      <article class="card reveal">
+        <div class="ico"><svg width="16" height="16"><use href="#i-key"/></svg></div>
+        <h3>Keys, policies, permissions</h3>
+        <p>Issue scoped keys as <code>sk-llmr-live-&lt;base62&gt;</code> against a memory, Redis or Vault
+        backing store. Rotate, disable and delete from the CLI; map keys to endpoint permissions
+        in the permission engine.</p>
+        <div class="tagrow"><span>memory</span><span class="on">redis</span><span>vault</span><span>rotate</span></div>
+      </article>
+
+      <article class="card reveal">
+        <div class="ico"><svg width="16" height="16"><use href="#i-gauge"/></svg></div>
+        <h3>Sliding-window rate limiting</h3>
+        <p>Redis sorted-set windows tracked per key and client IP, so bursts get smoothed instead of
+        punished. 429 responses carry <code>Retry-After</code>; <code>X-Forwarded-For</code> is only
+        trusted from <code>LLM_ROUTER_TRUSTED_PROXIES</code>.</p>
+        <div class="tagrow"><span class="on">redis zset</span><span>per key+ip</span><span>retry-after</span></div>
+      </article>
+
+      <article class="card reveal">
+        <div class="ico"><svg width="16" height="16"><use href="#i-mask"/></svg></div>
+        <h3>PII masking, two tiers</h3>
+        <p><code>fast_masker</code> applies 30+ regex rule types — email, IP, phone, IBAN-ish amounts,
+        JWTs, and Polish identifiers such as PESEL, NIP, KRS, REGON. <code>pii_masker</code> adds a
+        remote ML token classifier with an in-memory cache.</p>
+        <div class="tagrow"><span class="on">regex</span><span class="on">ml classifier</span><span>cached</span></div>
+      </article>
+
+      <article class="card reveal">
+        <div class="ico"><svg width="16" height="16"><use href="#i-shield"/></svg></div>
+        <h3>Guardrails before spend</h3>
+        <p>Run <code>nask_guard</code> (HerBERT-PL-Guard) or <code>sojka_guard</code> (Bielik-Guard-0.1B)
+        in front of the model call, so blocked prompts never burn GPU time or land in an upstream
+        provider's logs. Force it globally with <code>LLM_ROUTER_FORCE_GUARDRAIL_REQUEST=1</code>.</p>
+        <div class="tagrow"><span class="gd">pass | block</span><span>herbert</span><span>bielik</span></div>
+      </article>
+
+      <article class="card reveal">
+        <div class="ico"><svg width="16" height="16"><use href="#i-route"/></svg></div>
+        <h3>Semantic routing on <code>model:"auto"</code></h3>
+        <p>Send <code>"model": "auto"</code> and let <code>simple_semantic_routing</code> judge intent
+        and complexity, or use <code>semantic_biencoder_routing</code> with EmbeddingGemma-300m and a
+        FAISS <code>IndexFlatIP</code> index over your model cards.</p>
+        <div class="tagrow"><span>faiss</span><span>intent</span><span>complexity</span><span class="on">index persists</span></div>
+      </article>
+
+      <article class="card reveal">
+        <div class="ico"><svg width="16" height="16"><use href="#i-lb"/></svg></div>
+        <h3>Five load-balancing strategies</h3>
+        <p>From in-memory <code>balanced</code> to latency-aware <code>dynamic_weighted</code>, down to
+        Redis-backed <code>first_available</code> with exclusive leases when a model must be pinned to
+        one worker. Shared state across replicas where it matters.</p>
+        <div class="tagrow"><span>balanced</span><span>weighted</span><span>dynamic</span><span class="on">redis lease</span></div>
+      </article>
+
+      <article class="card reveal">
+        <div class="ico"><svg width="16" height="16"><use href="#i-chart"/></svg></div>
+        <h3>Prometheus, already wired</h3>
+        <p>Set <code>LLM_ROUTER_USE_PROMETHEUS=1</code> and scrape <code>/api/metrics</code>: provider
+        calls, latency histograms, errors, retries, token counters and per-stage pipeline results.
+        A Grafana dashboard JSON ships in the image.</p>
+        <div class="tagrow"><span class="on">/api/metrics</span><span>histograms</span><span>grafana json</span></div>
+      </article>
+
+      <article class="card reveal">
+        <div class="ico"><svg width="16" height="16"><use href="#i-plug"/></svg></div>
+        <h3>Extend, don't fork</h3>
+        <p>Maskers, guardrails, routers and endpoints are registered plugins. Subclass, implement
+        <code>apply()</code>, ship it in <code>llm-router-plugins</code>, and the loader picks it up.
+        Typed SDK in <code>llm-router-lib</code>; integration boilerplates for LangChain, LlamaIndex,
+        Haystack and LiteLLM.</p>
+        <div class="tagrow"><span class="on">plugin registry</span><span>apache-2.0</span></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ 03 config -->
+<section id="config">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="sec-num">03 / CONFIG</span>
+    </div>
+    <h2 class="reveal">One JSON file, one env file.<br>That's the whole control plane.</h2>
+    <p class="sec-sub reveal" style="margin-top:12px">
+      Providers live in <code>models-config.json</code> — point <code>LLM_ROUTER_MODELS_CONFIG</code>
+      at it, mount it read-only, and reload the process. Behaviour lives in ~80
+      <code>LLM_ROUTER_*</code> variables, all documented in <code>ENV_DEFINITIONS.md</code> and all
+      settable from a plain env file, systemd unit or ConfigMap. No database to migrate, no admin
+      SaaS to trust.
+    </p>
+
+    <div class="tabs reveal" role="tablist" aria-label="Configuration examples">
+      <button class="tab on" id="tab-cfg" type="button" data-tab="cfg" role="tab" aria-selected="true" aria-controls="pane-cfg">models-config.json</button>
+      <button class="tab" id="tab-req" type="button" data-tab="req" role="tab" aria-selected="false" aria-controls="pane-req">one request</button>
+      <button class="tab" id="tab-env" type="button" data-tab="env" role="tab" aria-selected="false" aria-controls="pane-env">.env pipeline</button>
+      <button class="tab" id="tab-keys" type="button" data-tab="keys" role="tab" aria-selected="false" aria-controls="pane-keys">keys &amp; limits</button>
+    </div>
+
+    <div class="tabpane on reveal" id="pane-cfg" data-pane="cfg" role="tabpanel" aria-labelledby="tab-cfg">
+      <div class="code">
+        <div class="code-bar"><span class="code-file">/srv/llm-router/models-config.json &mdash; groups &rarr; model &rarr; providers[]</span>
+          <button class="copy" type="button">copy</button></div>
+<pre>{
+  <span class="k-key">"google_models"</span>: {
+    <span class="k-key">"google/gemma-3-27b-it"</span>: {
+      <span class="k-key">"providers"</span>: [
+        {
+          <span class="k-key">"id"</span>: <span class="k-str">"gemma27b-vllm-node-01:8000"</span>,
+          <span class="k-key">"api_host"</span>: <span class="k-str">"http://10.0.4.21:8000/"</span>,
+          <span class="k-key">"api_token"</span>: <span class="k-str">""</span>,
+          <span class="k-key">"api_type"</span>: <span class="k-str">"vllm"</span>,
+          <span class="k-key">"input_size"</span>: <span class="k-num">56000</span>,
+          <span class="k-key">"weight"</span>: <span class="k-num">2.0</span>,
+          <span class="k-key">"tool_calling"</span>: <span class="k-kw">true</span>
+        },
+        {
+          <span class="k-key">"id"</span>: <span class="k-str">"gemma27b-ollama-lab"</span>,
+          <span class="k-key">"api_host"</span>: <span class="k-str">"http://localhost:11434"</span>,
+          <span class="k-key">"api_type"</span>: <span class="k-str">"ollama"</span>,
+          <span class="k-key">"model_path"</span>: <span class="k-str">"gemma3:27b"</span>,
+          <span class="k-key">"keep_alive"</span>: <span class="k-str">"10m"</span>,
+          <span class="k-key">"weight"</span>: <span class="k-num">1.0</span>
+        }
+      ]
+    }
+  },
+  <span class="k-key">"openai_models"</span>: {
+    <span class="k-key">"gpt-4o-mini"</span>: {
+      <span class="k-key">"providers"</span>: [
+        { <span class="k-key">"id"</span>: <span class="k-str">"openai-eu"</span>, <span class="k-key">"api_host"</span>: <span class="k-str">"https://api.openai.com/v1"</span>,
+          <span class="k-key">"api_token"</span>: <span class="k-str">"${OPENAI_API_KEY}"</span>, <span class="k-key">"api_type"</span>: <span class="k-str">"openai"</span> }
+      ]
+    }
+  },
+  <span class="k-key">"active_models"</span>: { <span class="k-key">"google_models"</span>: [<span class="k-str">"google/gemma-3-27b-it"</span>] },
+  <span class="k-key">"providers_sleep"</span>: <span class="k-num">3</span>
+}</pre>
+      </div>
+    </div>
+
+    <div class="tabpane reveal" id="pane-req" data-pane="req" role="tabpanel" aria-labelledby="tab-req">
+      <div class="code">
+        <div class="code-bar"><span class="code-file">drop-in for any OpenAI-compatible client &mdash; stream defaults to true</span>
+          <button class="copy" type="button">copy</button></div>
+<pre><span class="c-p">$</span> curl -s https://llm.internal:8080/v1/chat/completions \
+    -H <span class="k-str">"Authorization: Bearer sk-llmr-live-8fQ2...</span>" \
+    -H <span class="k-str">"Content-Type: application/json"</span> \
+    -d <span class="k-str">'{
+      "model": "auto",
+      "messages": [{"role": "user", "content": "Summarise this incident report"}],
+      "stream": true
+    }'</span>
+
+<span class="k-cm"># data: {"choices":[{"delta":{"content":"The outage"}}]}   &larr; SSE, chunked</span>
+<span class="k-cm"># model "auto"    &rarr; semantic routing picks the provider for you</span>
+<span class="k-cm"># "gpt-4o-mini"   &rarr; resolved via models-config.json + LB strategy</span>
+<span class="k-cm"># /api/chat/completions, /chat/completions, /v1/messages,</span>
+<span class="k-cm"># /responses, /v1/responses, /embeddings, /api/embed &mdash; same handler</span></pre>
+      </div>
+    </div>
+
+    <div class="tabpane reveal" id="pane-env" data-pane="env" role="tabpanel" aria-labelledby="tab-env">
+      <div class="code">
+        <div class="code-bar"><span class="code-file">/etc/llm-router/router.env &mdash; ordered pipeline, opt-in stages</span>
+          <button class="copy" type="button">copy</button></div>
+<pre><span class="k-cm"># request pipeline: applied left to right</span>
+<span class="k-key">LLM_ROUTER_MASKING_STRATEGY_PIPELINE</span>=<span class="k-str">"fast_masker,pii_masker"</span>
+<span class="k-key">LLM_ROUTER_GUARDRAIL_STRATEGY_PIPELINE</span>=<span class="k-str">"nask_guard"</span>
+<span class="k-key">LLM_ROUTER_ROUTING_STRATEGY</span>=<span class="k-str">"semantic_biencoder_routing"</span>
+<span class="k-key">LLM_ROUTER_LOAD_BALANCING_STRATEGY</span>=<span class="k-str">"balanced"</span>
+
+<span class="k-cm"># force policy even when the client asks not to (fail closed)</span>
+<span class="k-key">LLM_ROUTER_FORCE_MASKING</span>=<span class="k-num">1</span>
+<span class="k-key">LLM_ROUTER_FORCE_GUARDRAIL_REQUEST</span>=<span class="k-num">1</span>
+<span class="k-key">LLM_ROUTER_MASKING_WITH_AUDIT</span>=<span class="k-num">1</span>
+
+<span class="k-cm"># process &amp; observability</span>
+<span class="k-key">LLM_ROUTER_MODELS_CONFIG</span>=<span class="k-str">"/srv/llm-router/models-config.json"</span>
+<span class="k-key">LLM_ROUTER_SERVER_TYPE</span>=<span class="k-str">"gunicorn"</span>
+<span class="k-key">LLM_ROUTER_SERVER_WORKERS_COUNT</span>=<span class="k-num">4</span>
+<span class="k-key">LLM_ROUTER_USE_PROMETHEUS</span>=<span class="k-num">1</span>
+<span class="k-key">LLM_ROUTER_TRUSTED_PROXIES</span>=<span class="k-str">"10.0.0.0/8"</span></pre>
+      </div>
+    </div>
+
+    <div class="tabpane reveal" id="pane-keys" data-pane="keys" role="tabpanel" aria-labelledby="tab-keys">
+      <div class="code">
+        <div class="code-bar"><span class="code-file">llm-router auth &mdash; issue keys, bind policies, cap the blast radius</span>
+          <button class="copy" type="button">copy</button></div>
+<pre><span class="c-p">$</span> llm-router auth key generate --name payments-svc --policy internal-only
+<span class="c-s">&check;</span> key-id <span class="k-key">key-3f9a1c72</span>  token <span class="k-str">sk-llmr-live-8fQ2d7Xk...</span>
+<span class="c-w">&dash;</span> store <span class="k-key">redis</span> &middot; shown once &middot; hash at rest
+
+<span class="c-p">$</span> llm-router auth rate-limit apply --key key-3f9a1c72 \
+      --requests 60 --window 60 --burst 10
+<span class="c-s">&check;</span> bucket <span class="k-key">auth:ratelimit:key-3f9a1c72:{ip}</span> &rarr; sliding window
+
+<span class="c-p">$</span> llm-router auth key list
+<span class="c-o">key-3f9a1c72  payments-svc   enabled   models: gemma-3-27b, gpt-4o-mini</span>
+<span class="c-o">key-91bc0d45  batch-etl      disabled  rotated 2026-08-14</span>
+
+<span class="c-p">$</span> llm-router auth key rotate --id key-91bc0d45   <span class="k-cm"># grace overlap, no downtime</span></pre>
+      </div>
+    </div>
+
+    <p class="sec-sub reveal" style="margin-top:22px;font-size:13.4px">
+      Auth is <code>LLM_ROUTER_AUTH_ENABLED=false</code> by default for the happy path on a private
+      network; <code>/ping</code>, <code>/version</code>, <code>/models</code> and <code>/</code>
+      stay public when you switch it on.
+    </p>
+  </div>
+</section>
+
+<!-- ============================================================ 04 balancing -->
+<section id="balancing">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="sec-num">04 / LOAD BALANCING</span>
+    </div>
+    <h2 class="reveal">Pick a strategy, not a religion</h2>
+    <p class="sec-sub reveal" style="margin-top:12px">
+      Five strategies ship in the core. The difference is where state lives and how hard it pins a
+      provider &mdash; from cheap in-memory counters on a single box to Redis leases that hold an
+      exclusive grip on a GPU-backed replica. Switch with one env var.
+    </p>
+
+    <div class="tbl-wrap reveal">
+      <table class="tbl">
+        <thead>
+          <tr><th>strategy</th><th>state backend</th><th>behaviour</th><th>use it when</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="name">balanced <span class="pill mint">default</span></td>
+            <td class="mono">in-process counters</td>
+            <td>Round-robins active providers by concurrent request count; fails over on upstream error.</td>
+            <td>Stateless single replica, homogeneous GPUs.</td>
+          </tr>
+          <tr>
+            <td class="name">weighted</td>
+            <td class="mono">config <code>weight</code></td>
+            <td>Static ratios from <code>models-config.json</code> &mdash; send 2&times; traffic to the 8&times;GPU node.</td>
+            <td>Known capacity differences between nodes.</td>
+          </tr>
+          <tr>
+            <td class="name">dynamic_weighted <span class="pill amber">beta</span></td>
+            <td class="mono">in-process + latency</td>
+            <td>Re-weights providers as latency and error signals drift; slow nodes lose share automatically.</td>
+            <td>Mixed hardware, noisy neighbours, shared clusters.</td>
+          </tr>
+          <tr>
+            <td class="name">first_available</td>
+            <td class="mono">Redis exclusive lease</td>
+            <td>One worker holds a provider at a time; everyone else moves on. No cold-cache thrash.</td>
+            <td>Huge weights, KV-cache warm-up, one-process-per-GPU.</td>
+          </tr>
+          <tr>
+            <td class="name">first_available_optim</td>
+            <td class="mono">Redis <code>:last_host</code></td>
+            <td>Same lease plus <code>:hosts</code> / <code>:occupancy</code> keys so replicas agree without re-scanning. Falls back to <code>first_available</code>.</td>
+            <td>Many replicas, chatty provider sets.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="split reveal">
+      <div class="panel">
+        <h3><span class="mono-i">$</span> Retry, failover, budgets</h3>
+        <p class="hint">
+          Upstream 5xx and timeouts are retried against the next provider in the resolved set.
+          <code>providers_sleep</code> spaces the attempts, <code>llm_router_retry_total</code> and
+          <code>llm_router_retry_exhausted_total</code> tell you when a model is genuinely out of
+          capacity rather than briefly grumpy.
+        </p>
+        <div class="tagrow">
+          <span class="on">per-provider retry</span><span>exhaustion counter</span><span>config sleep</span>
+        </div>
+      </div>
+      <div class="panel">
+        <h3><span class="mono-i">;</span> Redis is optional, not required</h3>
+        <p class="hint">
+          Everything runs on <code>memory</code> stores until you need cross-replica state. Flip
+          <code>redis.enabled</code> in the Helm chart (Bitnami subchart) or point at your own
+          instance, and leases, rate-limit buckets and the key store move over.
+          <code>vault</code> is available for key storage too.
+        </p>
+        <div class="tagrow"><span>memory</span><span class="on">redis</span><span>vault</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ 05 security -->
+<section id="security">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="sec-num">05 / SECURITY &amp; COMPLIANCE</span>
+    </div>
+    <h2 class="reveal">Redact before you route,<br>log what you can prove</h2>
+    <p class="sec-sub reveal" style="margin-top:12px">
+      Two stages sit in front of every upstream call, and both fail closed. Nothing leaves the
+      process that you did not explicitly allow, and the audit trail is encrypted at rest with GPG
+      so a leaked log volume is not a data breach.
+    </p>
+
+    <div class="split reveal">
+      <div class="panel">
+        <h3><span class="mono-i">01</span> PII masking</h3>
+        <p class="hint">
+          <code>fast_masker</code> runs 30+ regex rule types synchronously; <code>pii_masker</code>
+          adds a remote ML token classifier with a cache for the things regex never catches.
+        </p>
+        <ul class="ticks">
+          <li><b>Deterministic rules</b> &mdash; e-mail, IBAN, credit card, phone, MAC, IPv4/IPv6, JWT</li>
+          <li><b>PL paperwork</b> &mdash; PESEL, NIP, KRS, REGON, ID number, driving licence</li>
+          <li><b>ML pass</b> &mdash; names, addresses and free-text identifiers, cached per text</li>
+          <li><b>Reversible</b> &mdash; <code>masking_with_audit</code> keeps the mapping for response un-masking</li>
+        </ul>
+        <div class="tagrow"><span class="on">fast_masker</span><span class="on">pii_masker</span><span>custom rules</span><span class="gd">force_masking</span></div>
+      </div>
+
+      <div class="panel">
+        <h3><span class="mono-i">02</span> Guardrails</h3>
+        <p class="hint">
+          Local classifier models screen the request before a provider is ever contacted. A blocked
+          request returns a 4xx and the prompt never leaves the cluster.
+        </p>
+        <ul class="ticks">
+          <li><b>nask_guard</b> &mdash; HerBERT-PL-Guard, Polish + English harmfulness</li>
+          <li><b>sojka_guard</b> &mdash; Bielik-Guard-0.1B, small enough to run on CPU</li>
+          <li><b>Fail closed</b> &mdash; <code>force_guardrail_request</code> overrides the client</li>
+          <li><b>Your own</b> &mdash; subclass the guardrail base and register it</li>
+        </ul>
+        <div class="tagrow"><span class="on">herbert-pl-guard</span><span class="on">bielik-guard</span><span class="gd">block &rarr; 4xx</span></div>
+      </div>
+
+      <div class="panel">
+        <h3><span class="mono-i">03</span> Audit trail, encrypted</h3>
+        <p class="hint">
+          Masking and guardrail decisions are written as GPG-encrypted entries under
+          <code>logs/auditor/</code>. Key material is generated and exported by
+          <code>gen_and_export_gpg.sh</code>; review with <code>decrypt_auditor_logs.sh</code>.
+        </p>
+        <ul class="ticks">
+          <li><b>Who</b> &mdash; key id, source IP, timestamp</li>
+          <li><b>What</b> &mdash; stage, result, rule or classifier that fired</li>
+          <li><b>At rest</b> &mdash; asymmetric encryption, no plaintext on disk</li>
+        </ul>
+        <div class="code">
+          <div class="code-bar"><span class="code-file">logs/auditor/</span><button class="copy" type="button">copy</button></div>
+<pre>2026-09-09/audit-03.gpg   <span class="k-cm"># 4.1k &middot; encrypted</span>
+$ <span class="k-str">./scripts/decrypt_auditor_logs.sh</span> 2026-09-09</pre>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h3><span class="mono-i">04</span> Boring, auditable defaults</h3>
+        <p class="hint">
+          Defence in depth for the parts that usually leak: error bodies, container user, and
+          outbound traffic.
+        </p>
+        <ul class="ticks">
+          <li><b><code>sanitize_error_message()</code></b> strips IPs, hostnames, ports, URLs and stack traces from every response &mdash; detail stays in server logs</li>
+          <li><b>Non-root image</b> &mdash; <code>python:3.14-slim-trixie</code>, uid/gid 5000, read-only friendly</li>
+          <li><b>No telemetry</b> &mdash; the router makes no outbound calls except to providers you configure</li>
+          <li><b>Proxy-aware</b> &mdash; <code>LLM_ROUTER_TRUSTED_PROXIES</code> controls who may set <code>X-Forwarded-For</code></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ 06 metrics -->
+<section id="metrics">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="sec-num">06 / OBSERVABILITY</span>
+    </div>
+    <h2 class="reveal">Scrape one path. Alert on everything.</h2>
+    <p class="sec-sub reveal" style="margin-top:12px">
+      Turn on <code>LLM_ROUTER_USE_PROMETHEUS=1</code> and <code>/api/metrics</code> exposes counters,
+      histograms and per-stage pipeline results in text format. Multiprocess mode is wired for
+      gunicorn via <code>PROMETHEUS_MULTIPROC_DIR</code>
+      (<code>~/.llm-router/metrics/prometheus/multiproc</code> by default), and a Grafana dashboard
+      JSON ships in the repo at
+      <code>resources/configs/prometheus/grafana-llm-router-dashboard-v1.json</code>.
+    </p>
+
+    <div class="tbl-wrap reveal">
+      <table class="tbl">
+        <thead><tr><th>metric</th><th>type</th><th>what it tells you</th></tr></thead>
+        <tbody>
+          <tr><td class="name">llm_router_provider_calls_total</td><td class="mono">counter</td><td>Traffic split per provider and model &mdash; is the LB actually balancing?</td></tr>
+          <tr><td class="name">llm_router_provider_latency_seconds</td><td class="mono">histogram</td><td>Upstream time in buckets: p50 for capacity review, p95/p99 for the SLO.</td></tr>
+          <tr><td class="name">llm_router_provider_error_total</td><td class="mono">counter</td><td>Upstream failures by provider &mdash; page on ratio, not on absolute count.</td></tr>
+          <tr><td class="name">llm_router_lb_strategy_selected_total</td><td class="mono">counter</td><td>Which provider each strategy chose, and when a strategy was changed at runtime.</td></tr>
+          <tr><td class="name">llm_router_pipeline_stage_total{stage,result}</td><td class="mono">counter</td><td><code>guardrail_request</code> pass|block, <code>masking</code> applied|skipped, <code>request_received</code>, <code>provider_resolved</code>.</td></tr>
+          <tr><td class="name">llm_router_retry_total<br>llm_router_retry_exhausted_total</td><td class="mono">counter</td><td>Failover pressure vs. hard capacity loss &mdash; the difference between flaky and full.</td></tr>
+          <tr><td class="name">llm_router_tokens_total{direction}</td><td class="mono">counter</td><td>Prompt and completion tokens &mdash; cost attribution per service or key.</td></tr>
+          <tr><td class="name">llm_router_response_format_total<br>llm_router_payload_conversion_total</td><td class="mono">counter</td><td>Schema compatibility across <code>openai</code> / <code>vllm</code> / <code>ollama</code> dialects.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="split reveal">
+      <div class="panel">
+        <h3><span class="mono-i">P95</span> Latency by provider</h3>
+        <div class="prom"><b>histogram_quantile</b>(<u>0.95</u>,
+  <b>sum</b> <b>by</b> (le, provider) (
+    <b>rate</b>(llm_router_provider_latency_seconds_bucket[<u>5m</u>)
+  ))</div>
+        <h3 style="margin-top:22px"><span class="mono-i">ERR</span> Error ratio</h3>
+        <div class="prom"><b>sum</b>(<b>rate</b>(llm_router_provider_error_total[<u>5m</u>]))
+  / <b>sum</b>(<b>rate</b>(llm_router_provider_calls_total[<u>5m</u>]))
+  &gt; <u>0.02</u>  <s># page: 2% of traffic failing</s></div>
+      </div>
+
+      <div class="panel">
+        <h3><span class="mono-i">GUARD</span> Block rate</h3>
+        <div class="prom"><b>sum</b> <b>by</b> (result) (
+  <b>rate</b>(llm_router_pipeline_stage_total
+    {stage=<i>"guardrail_request"</i>}[<u>15m</u>])
+)</div>
+        <h3 style="margin-top:22px"><span class="mono-i">IO</span> Tokens per minute</h3>
+        <div class="prom"><b>sum</b> <b>by</b> (direction) (
+  <b>rate</b>(llm_router_tokens_total[<u>1m</u>)
+) * <u>60</u></div>
+        <p class="hint" style="margin-top:16px">
+          <code>/api/metrics</code> requires Redis for the router-level metrics store; the Prometheus
+          exposition itself is served from the process.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ 07 cli -->
+<section id="cli">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="sec-num">07 / OPS SURFACE</span>
+    </div>
+    <h2 class="reveal">One console script, no web console required</h2>
+    <p class="sec-sub reveal" style="margin-top:12px">
+      <code>llm-router</code> does everything the Config Manager UI does, so it fits in a
+      <code>Run</code> block, an Ansible task or a Friday-night SSH session. Tab completion included.
+    </p>
+
+    <div class="term reveal" aria-label="CLI session">
+      <div class="term-bar">
+        <span class="tl r"></span><span class="tl y"></span><span class="tl g"></span>
+        <span class="term-title">deploy@router-01: /srv/llm-router</span>
+      </div>
+      <div class="term-body">
+<div class="l"><span class="c-p">$</span> <span class="c-cmd">llm-router config</span>                              <span class="c-m"># auto-discover local providers</span></div>
+<div class="l"><span class="c-p">$</span> <span class="c-cmd">llm-router server status</span></div>
+<div class="l"><span class="c-s">&bull;&nbsp;</span><span class="c-o">Server is running (gunicorn, 4 workers) &middot; pid <b>41207</b></span></div>
+<div class="l"><span class="c-p">$</span> <span class="c-cmd">llm-router server reload</span>                       <span class="c-m"># pick up models-config.json</span></div>
+<div class="l"><span class="c-p">$</span> <span class="c-cmd">llm-router server log -f</span>                        <span class="c-m"># ~/.llm-router/server.log</span></div>
+<div class="l">&nbsp;</div>
+<div class="l"><span class="c-p">$</span> <span class="c-cmd">llm-router auth policy list</span></div>
+<div class="l"><span class="c-o">internal-only   models: gemma-3-27b        masking: <span class="c-s">required</span>  guardrail: <span class="c-s">required</span></span></div>
+<div class="l"><span class="c-o">partner-ex      models: gpt-4o-mini        masking: <span class="c-s">required</span>  guardrail: <span class="c-w">request</span></span></div>
+<div class="l">&nbsp;</div>
+<div class="l"><span class="c-p">$</span> <span class="c-cmd">llm-router anonymizer run --text ./incidents/*.md</span>  <span class="c-m"># batch redaction</span></div>
+<div class="l"><span class="c-p">$</span> <span class="c-cmd">llm-router util translate --llm-router-url http://localhost:8080 ...</span></div>
+<div class="l"><span class="c-p">$</span> <span class="c-cmd">llm-router completion zsh &gt; ~/.zsh/completions/_llm-router</span></div>
+      </div>
+    </div>
+
+    <ul class="ticks reveal" style="margin-top:24px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));display:grid">
+      <li><b>auth</b> &mdash; key generate | list | delete | disable | enable | rotate, policy, rate-limit</li>
+      <li><b>config</b> &mdash; scan the host for Ollama / vLLM and emit a config</li>
+      <li><b>server</b> &mdash; start | stop | reload | status | log</li>
+      <li><b>anonymizer</b> &mdash; run the masking pipeline over local text</li>
+      <li><b>util</b> &mdash; translate, genai-classifier, data augmentation via the router</li>
+      <li><b>completion</b> &mdash; bash and zsh</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============================================================ deploy -->
+<section id="deploy">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="sec-num">08 / DEPLOY</span>
+    </div>
+    <h2 class="reveal">Container, Helm chart or a bare port &mdash;<br>no control plane to babysit</h2>
+    <p class="sec-sub reveal" style="margin-top:12px">
+      Everything the router needs is one JSON file and a handful of env vars. The state it shares
+      across replicas lives in Redis, so you can scale the deployment the same way you scale any
+      other stateless Flask service.
+    </p>
+
+    <div class="dep-grid">
+      <div class="dep reveal">
+        <div class="t"><svg width="16" height="16" aria-hidden="true"><use href="#i-box"/></svg> docker</div>
+        <div class="d">
+          <code>python:3.14-slim-trixie</code>, runs as a non-root
+          <b>uid/gid&nbsp;5000</b>, listens on <b>8080</b>. Config goes in via
+          <code>LLM_ROUTER_MODELS_CONFIG</code>.
+        </div>
+        <div class="code">
+          <div class="code-bar"><span class="code-file">one container, no sidecars</span>
+            <button class="copy" type="button">copy</button></div>
+<pre><span class="c-p">$</span> docker run -d <span class="k-flag">-p</span> 5555:8080 <span class="k-flag">\</span>
+    <span class="k-flag">-v</span> $PWD/models-config.json:/srv/models.json:ro <span class="k-flag">\</span>
+    <span class="k-flag">-e</span> LLM_ROUTER_MODELS_CONFIG=/srv/models.json <span class="k-flag">\</span>
+    quay.io/radlab/llm-router:rc1
+
+<span class="c-p">$</span> curl localhost:5555/version
+<span class="c-o">{&quot;version&quot;: <span class="c-s">&quot;1.0.6&quot;</span>}</span></pre>
+        </div>
+      </div>
+
+      <div class="dep reveal">
+        <div class="t"><svg width="16" height="16" aria-hidden="true"><use href="#i-wheel"/></svg> helm</div>
+        <div class="d">
+          Chart in-repo (<code>appVersion 1.0.6</code>), Deployment + Service + Ingress +
+          HPA, readiness on <code>/</code>, Bitnami <code>redis</code> 23.2.12 subchart
+          behind <code>redis.enabled</code>.
+        </div>
+        <div class="code">
+          <div class="code-bar"><span class="code-file">helm_charts/llm-router</span>
+            <button class="copy" type="button">copy</button></div>
+<pre><span class="c-p">$</span> helm upgrade --install my-llm-router <span class="k-str">./helm_charts/llm-router</span> <span class="k-flag">\</span>
+     --namespace my-namespace --create-namespace <span class="k-flag">\</span>
+     --set redis.enabled=true
+
+<span class="k-cm"># models ship from files/models-config.json;</span>
+<span class="k-cm"># edit values.yaml and upgrade again &mdash;</span>
+<span class="k-cm"># config lives in source control, not in a UI</span></pre>
+        </div>
+      </div>
+
+      <div class="dep reveal">
+        <div class="t"><svg width="16" height="16" aria-hidden="true"><use href="#i-terminal"/></svg> bare metal</div>
+        <div class="d">
+          Prefork <b>gunicorn</b> (4 workers by default) under systemd. Optional extras keep the
+          base install lean: <code>[api]</code>, <code>[metrics]</code>,
+          <code>[vault]</code>.
+        </div>
+        <div class="code">
+          <div class="code-bar"><span class="code-file">run-rest-api-gunicorn.sh</span>
+            <button class="copy" type="button">copy</button></div>
+<pre><span class="c-p">$</span> pip install <span class="k-str">&quot;radlab-llm-router[api,metrics]&quot;</span>
+
+<span class="k-kw">export</span> LLM_ROUTER_SERVER_TYPE=<span class="k-str">gunicorn</span>
+<span class="k-kw">export</span> LLM_ROUTER_SERVER_WORKERS_COUNT=<span class="k-num">4</span>
+<span class="k-kw">export</span> LLM_ROUTER_MODELS_CONFIG=<span class="k-str">/srv/llm-router/models.json</span>
+<span class="k-cm"># host 0.0.0.0, port 8080</span>
+<span class="c-p">$</span> ./run-rest-api-gunicorn.sh</pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="split">
+      <div class="panel reveal">
+        <h3><span class="mono-i">[probe]</span> Probes, timeouts, failure budget</h3>
+        <p class="hint">
+          <code>/ping</code>, <code>/health</code>, <code>/version</code>,
+          <code>/models</code> and <code>/metrics</code> are in
+          <code>public_endpoints</code> &mdash; probes never need an API key, even with
+          <code>LLM_ROUTER_AUTH_ENABLED=true</code>.
+        </p>
+        <ul class="ticks">
+          <li><code>LLM_ROUTER_PROVIDER_MONITOR_PING_TIMEOUT_SECONDS</code> &mdash; per-provider ping budget</li>
+          <li><b>max_consecutive_failures = 2</b> &mdash; one slow reply never ejects a saturated GPU replica</li>
+          <li><code>LLM_ROUTER_TIMEOUT</code> and <code>LLM_ROUTER_EXTERNAL_TIMEOUT</code> (300s) &mdash; patience set per hop</li>
+          <li>Dead providers are removed from rotation, then re-admitted by the monitor on their own</li>
+        </ul>
+      </div>
+
+      <div class="panel reveal">
+        <h3><span class="mono-i">[scale]</span> Workers, replicas and Redis</h3>
+        <p class="hint">
+          Redis holds API keys, sliding-window rate limits and exclusive provider leases, so every
+          replica sees the same fleet state. No sticky sessions on your LB.
+        </p>
+        <ul class="ticks">
+          <li><code>PROMETHEUS_MULTIPROC_DIR</code> is set for you &mdash; mount an <code>emptyDir</code>/tmpfs so counters survive worker restarts</li>
+          <li>Chart's <code>redis.enabled=false</code> and bring your own instance or cluster</li>
+          <li>Auth, keys and policy definitions are shared state &mdash; rotate a key once, every worker agrees</li>
+          <li><code>/metrics</code> is unauthenticated by design: scrape it, and keep it inside your network policy</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ ecosystem -->
+<section id="ecosystem">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="sec-num">09 / ECOSYSTEM</span>
+    </div>
+    <h2 class="reveal">Seven repos, one wire format</h2>
+    <p class="sec-sub reveal" style="margin-top:12px">
+      The gateway is split so you only install what you actually run. Core library, REST surface and
+      SDK ship in this repo; the UIs, plugins and guardrail services are separate deployables that
+      talk to the same endpoints.
+    </p>
+
+    <div class="eco reveal">
+      <a class="eco-row" href="https://github.com/radlab-dev-group/llm-router" rel="noopener">
+        <span class="nm">llm-router</span>
+        <span class="ds">core gateway &mdash; unified REST proxy, config management, CLI</span>
+        <span class="pt">this repo</span>
+      </a>
+      <a class="eco-row" href="https://github.com/radlab-dev-group/llm-router" rel="noopener">
+        <span class="nm">llm_router_api</span>
+        <span class="ds">Flask proxy: balancing, health checks, streaming, metrics</span>
+        <span class="pt">subdirectory</span>
+      </a>
+      <a class="eco-row" href="https://github.com/radlab-dev-group/llm-router" rel="noopener">
+        <span class="nm">llm_router_lib</span>
+        <span class="ds">typed Python SDK: retries, token handling, exception hierarchy</span>
+        <span class="pt">subdirectory</span>
+      </a>
+      <a class="eco-row" href="https://github.com/radlab-dev-group/llm-router-web" rel="noopener">
+        <span class="nm">llm-router-web</span>
+        <span class="ds">Flask UIs &mdash; Config Manager and Anonymizer</span>
+        <span class="pt">:8081 / :8082</span>
+      </a>
+      <a class="eco-row" href="https://github.com/radlab-dev-group/llm-router-plugins" rel="noopener">
+        <span class="nm">llm-router-plugins</span>
+        <span class="ds">maskers, guardrails, semantic routing, RAG plugins</span>
+        <span class="pt">pluggable</span>
+      </a>
+      <a class="eco-row" href="https://github.com/radlab-dev-group/llm-router-services" rel="noopener">
+        <span class="nm">llm-router-services</span>
+        <span class="ds">HTTP backends for plugins &mdash; NASK-PIB/Sojka guardrails, PII masker</span>
+        <span class="pt">services</span>
+      </a>
+      <a class="eco-row" href="https://github.com/radlab-dev-group/llm-router-utils" rel="noopener">
+        <span class="nm">llm-router-utils</span>
+        <span class="ds">batch translation, GenAI classification, ready-made deploy configs</span>
+        <span class="pt">cli</span>
+      </a>
+      <a class="eco-row" href="https://pypi.org/project/radlab-llm-router/" rel="noopener">
+        <span class="nm">radlab-llm-router</span>
+        <span class="ds">PyPI package &mdash; <code>[api]</code> <code>[metrics]</code> <code>[vault]</code></span>
+        <span class="pt">pip</span>
+      </a>
+    </div>
+
+    <div class="split">
+      <div class="panel reveal">
+        <h3><span class="mono-i">&larr;</span> Clients that just work</h3>
+        <p class="hint">
+          It speaks the OpenAI wire format, so existing client code changes base URL and key
+          &mdash; nothing else. Runnable scripts live in <code>examples/</code>.
+        </p>
+        <div class="tagrow">
+          <span class="on">OpenAI SDK</span><span class="on">LangChain</span><span class="on">LlamaIndex</span>
+          <span class="on">LiteLLM</span><span class="on">Haystack</span><span>embeddings</span><span>streaming</span>
+        </div>
+      </div>
+
+      <div class="panel reveal">
+        <h3><span class="mono-i">&rarr;</span> Backends behind it</h3>
+        <p class="hint">
+          One <code>api_type</code> field per provider. Self-hosted and commercial endpoints can
+          sit in the same model group and share a balancing strategy.
+        </p>
+        <div class="tagrow">
+          <span class="on">vLLM</span><span class="on">Ollama</span><span class="on">LM Studio</span>
+          <span class="on">OpenAI-compatible</span><span class="gd">Anthropic</span><span>local GGUF</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ cta -->
+<section class="cta-band">
+  <div class="wrap inner">
+    <h2 class="reveal">Point your client at <span style="color:var(--mint)">localhost:8080</span></h2>
+    <p class="lede reveal">
+      Apache-2.0, no accounts, no phone-home. Install it, write one JSON file, and your prompts stop
+      taking a detour through someone else's cloud.
+    </p>
+    <div class="install reveal" data-copy='pip install "radlab-llm-router[api]"'>
+      <span class="pfx">$</span><code>pip install "radlab-llm-router[api]"</code><span class="okmsg">copied</span>
+    </div>
+    <div class="cta-row reveal">
+      <a class="btn btn-primary" href="#config">Config reference</a>
+      <a class="btn ghost" href="https://github.com/radlab-dev-group/llm-router" rel="noopener">GitHub</a>
+      <a class="btn ghost" href="https://pypi.org/project/radlab-llm-router/" rel="noopener">PyPI</a>
+      <a class="btn ghost" href="docs/">Docs</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ footer -->
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <a class="brand" href="#top">
+          <svg width="22" height="22" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="7" fill="#0b1119" stroke="#1a232e"/><path d="M8 22V10M8 16h9M17 10v12M17 13h7M17 19h7" stroke="#00e59b" stroke-width="2" stroke-linecap="round" fill="none"/></svg>
+          <span>llm<span class="slash">-</span>router</span>
+        </a>
+        <p class="fine" style="margin-top:14px;max-width:26ch;border:0;padding:0">
+          Self-hosted AI gateway for teams that run their own inference.
+        </p>
+      </div>
+      <div>
+        <h4>Project</h4>
+        <ul>
+          <li><a href="https://github.com/radlab-dev-group/llm-router" rel="noopener">Repository</a></li>
+          <li><a href="https://github.com/radlab-dev-group/llm-router/blob/master/CHANGELOG.md" rel="noopener">Changelog</a></li>
+          <li><a href="https://pypi.org/project/radlab-llm-router/" rel="noopener">PyPI package</a></li>
+          <li><a href="docs/">Documentation</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Deploy</h4>
+        <ul>
+          <li><a href="https://github.com/radlab-dev-group/llm-router/tree/master/docker" rel="noopener">Dockerfile</a></li>
+          <li><a href="https://github.com/radlab-dev-group/llm-router/tree/master/helm_charts" rel="noopener">Helm chart</a></li>
+          <li><a href="https://quay.io/radlab/llm-router" rel="noopener">quay.io image</a></li>
+          <li><a href="https://github.com/radlab-dev-group/llm-router/tree/master/examples" rel="noopener">Examples</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Ecosystem</h4>
+        <ul>
+          <li><a href="https://github.com/radlab-dev-group/llm-router-web" rel="noopener">llm-router-web</a></li>
+          <li><a href="https://github.com/radlab-dev-group/llm-router-plugins" rel="noopener">llm-router-plugins</a></li>
+          <li><a href="https://github.com/radlab-dev-group/llm-router-services" rel="noopener">llm-router-services</a></li>
+          <li><a href="https://github.com/radlab-dev-group/llm-router-utils" rel="noopener">llm-router-utils</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Community</h4>
+        <ul>
+          <li><a href="https://github.com/radlab-dev-group/llm-router/issues" rel="noopener">Issues</a></li>
+          <li><a href="https://github.com/radlab-dev-group/llm-router/pulls" rel="noopener">Pull requests</a></li>
+          <li><a href="https://github.com/radlab-dev-group/llm-router/blob/master/LICENSE" rel="noopener">Apache-2.0</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="fine">
+      <span>&copy; 2026 radlab-dev-group &middot; Apache-2.0</span>
+      <span>self-hosted &middot; zero telemetry &middot; python &ge; 3.10</span>
+    </div>
+  </div>
+</footer>
+
+</main>
+
+<script>
+(function () {
+  "use strict";
+
+  var reduceMotion = false;
+  try {
+    reduceMotion = window.matchMedia &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  } catch (err) {
+    reduceMotion = false;
+  }
+
+  /* ---------------------------------------------------------- clipboard */
+  function legacyCopy(text) {
+    var area = document.createElement("textarea");
+    area.value = text;
+    area.setAttribute("readonly", "");
+    area.style.position = "fixed";
+    area.style.top = "-1000px";
+    area.style.opacity = "0";
+    document.body.appendChild(area);
+    area.select();
+    var ok = false;
+    try {
+      ok = document.execCommand("copy");
+    } catch (err) {
+      ok = false;
+    }
+    document.body.removeChild(area);
+    return ok;
+  }
+
+  function copyText(text) {
+    if (!text) {
+      return Promise.resolve(false);
+    }
+    if (navigator.clipboard && window.isSecureContext) {
+      return navigator.clipboard.writeText(text).then(
+        function () { return true; },
+        function () { return legacyCopy(text); }
+      );
+    }
+    return Promise.resolve(legacyCopy(text));
+  }
+
+  function flash(el, label, className) {
+    var cls = className || "ok";
+    var original = el.getAttribute("data-label");
+    if (original === null) {
+      original = el.textContent;
+      el.setAttribute("data-label", original);
+    }
+    el.classList.add(cls);
+    el.textContent = label;
+    window.setTimeout(function () {
+      el.classList.remove(cls);
+      el.textContent = original;
+    }, 1400);
+  }
+
+  function flashSibling(el, label) {
+    var msg = el.querySelector(".okmsg");
+    if (msg) {
+      el.classList.add("ok");
+      window.setTimeout(function () {
+        el.classList.remove("ok");
+      }, 1400);
+    } else {
+      flash(el, label);
+    }
+  }
+
+  /* code-block copy buttons: <button class="copy"> inside .code-bar */
+  var copyButtons = document.querySelectorAll(".copy");
+  Array.prototype.forEach.call(copyButtons, function (btn) {
+    btn.addEventListener("click", function () {
+      var block = btn.closest ? btn.closest(".code") : null;
+      var pre = block ? block.querySelector("pre") : null;
+      if (!pre) {
+        return;
+      }
+      copyText(pre.textContent.replace(/\s+$/, "")).then(function (ok) {
+        if (ok) {
+          flash(btn, "copied");
+        }
+      });
+    });
+  });
+
+  /* whole-command copy: [data-copy] */
+  var copyTargets = document.querySelectorAll("[data-copy]");
+  Array.prototype.forEach.call(copyTargets, function (el) {
+    el.addEventListener("click", function () {
+      copyText(el.getAttribute("data-copy")).then(function (ok) {
+        if (ok) {
+          flashSibling(el, "copied");
+        }
+      });
+    });
+  });
+
+  /* ---------------------------------------------------------------- tabs */
+  var tabs = document.querySelectorAll("[data-tab]");
+  var panes = document.querySelectorAll("[data-pane]");
+  Array.prototype.forEach.call(tabs, function (tab) {
+    tab.addEventListener("click", function () {
+      var name = tab.getAttribute("data-tab");
+      Array.prototype.forEach.call(tabs, function (other) {
+        var selected = other === tab;
+        other.classList.toggle("on", selected);
+        other.setAttribute("aria-selected", selected ? "true" : "false");
+      });
+      Array.prototype.forEach.call(panes, function (pane) {
+        var visible = pane.getAttribute("data-pane") === name;
+        pane.classList.toggle("on", visible);
+        if (visible) {
+          pane.classList.add("in");
+        }
+      });
+    });
+  });
+
+  /* ------------------------------------------------------- reveal on scroll */
+  var revealables = document.querySelectorAll(".reveal");
+  if (reduceMotion || !("IntersectionObserver" in window)) {
+    Array.prototype.forEach.call(revealables, function (el) {
+      el.classList.add("in");
+    });
+  } else {
+    var revealObserver = new IntersectionObserver(function (entries) {
+      Array.prototype.forEach.call(entries, function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("in");
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { rootMargin: "0px 0px -8% 0px", threshold: 0.08 });
+    Array.prototype.forEach.call(revealables, function (el) {
+      revealObserver.observe(el);
+    });
+  }
+
+  /* ------------------------------------------------------------ scrollspy */
+  var navLinks = document.querySelectorAll(".nav-links a[href^='#']");
+  var watched = [];
+  Array.prototype.forEach.call(navLinks, function (link) {
+    var section = document.querySelector(link.getAttribute("href"));
+    if (section && watched.indexOf(section) === -1) {
+      watched.push(section);
+    }
+  });
+
+  function setActive(id) {
+    Array.prototype.forEach.call(navLinks, function (link) {
+      link.classList.toggle("active", link.getAttribute("href") === "#" + id);
+    });
+  }
+
+  if ("IntersectionObserver" in window && watched.length) {
+    var visible = {};
+    var spy = new IntersectionObserver(function (entries) {
+      Array.prototype.forEach.call(entries, function (entry) {
+        visible[entry.target.id] = entry.isIntersecting ? entry.intersectionRatio : 0;
+      });
+      var bestId = "";
+      var bestRatio = 0;
+      watched.forEach(function (section) {
+        var ratio = visible[section.id] || 0;
+        if (ratio > bestRatio) {
+          bestRatio = ratio;
+          bestId = section.id;
+        }
+      });
+      if (bestId) {
+        setActive(bestId);
+      } else {
+        setActive("");
+      }
+    }, { rootMargin: "-15% 0px -55% 0px", threshold: [0, 0.15, 0.4, 0.75, 1] });
+    watched.forEach(function (section) {
+      spy.observe(section);
+    });
+  }
+
+  /* --------------------------------------------------------------- burger */
+  var burger = document.getElementById("burger");
+  var navList = document.getElementById("navlinks");
+  if (burger && navList) {
+    burger.addEventListener("click", function (event) {
+      event.stopPropagation();
+      var open = navList.classList.toggle("open");
+      burger.setAttribute("aria-expanded", open ? "true" : "false");
+    });
+    Array.prototype.forEach.call(navList.querySelectorAll("a"), function (link) {
+      link.addEventListener("click", function () {
+        navList.classList.remove("open");
+        burger.setAttribute("aria-expanded", "false");
+      });
+    });
+    document.addEventListener("click", function (event) {
+      if (navList.classList.contains("open") &&
+          !navList.contains(event.target) && event.target !== burger) {
+        navList.classList.remove("open");
+        burger.setAttribute("aria-expanded", "false");
+      }
+    });
+    document.addEventListener("keydown", function (event) {
+      if (event.key === "Escape" && navList.classList.contains("open")) {
+        navList.classList.remove("open");
+        burger.setAttribute("aria-expanded", "false");
+      }
+    });
+  }
+
+  /* --------------------------------------------------------- scroll bar */
+  var progress = document.getElementById("prog");
+  if (progress) {
+    var ticking = false;
+    var updateProgress = function () {
+      var doc = document.documentElement;
+      var max = doc.scrollHeight - window.innerHeight;
+      var ratio = max > 0 ? (window.pageYOffset || doc.scrollTop) / max : 0;
+      progress.style.width = (Math.max(0, Math.min(1, ratio)) * 100).toFixed(2) + "%";
+      ticking = false;
+    };
+    window.addEventListener("scroll", function () {
+      if (!ticking) {
+        ticking = true;
+        window.requestAnimationFrame(updateProgress);
+      }
+    }, { passive: true });
+    window.addEventListener("resize", updateProgress, { passive: true });
+    updateProgress();
+  }
+})();
+</script>
+</body>
+</html>
