@@ -426,7 +426,7 @@ prefix, e.g. <code>/api/metrics</code>). This endpoint exposes Prometheus‑comp
 any custom counters defined by the application.</p>
 <h4 id="grafana-dashboard-example">📊 Grafana dashboard example<a class="headerlink" href="#grafana-dashboard-example" title="link to this section">#</a></h4>
 <p>A pre-built Grafana dashboard is available in
-<a href="https://github.com/radlab-dev-group/llm-router/blob/fix/cli_module/resources/configs/prometheus/grafana-llm-router-dashboard-v1.json"> target="_blank" rel="noopener noreferrer"
+<a href="https://github.com/radlab-dev-group/llm-router/blob/v1.0.6/resources/configs/prometheus/grafana-llm-router-dashboard-v1.json"> target="_blank" rel="noopener noreferrer"
 <code>resources/configs/prometheus/grafana-llm-router-dashboard-v1.json</code></a>.</p>
 <p>Import steps:</p>
 <ol>
@@ -447,7 +447,7 @@ any custom counters defined by the application.</p>
 <li><strong>Bielik 11B‑v2.3‑Instruct</strong> – <a href="examples/quickstart/speakleash-bielik-11b-v2-3-instruct/index.html">README</a></li>
 </ul>
 <h3 id="5-integration-boilerplates">5️⃣ Integration boilerplates<a class="headerlink" href="#5-integration-boilerplates" title="link to this section">#</a></h3>
-<p>Integration examples for popular LLM libraries (LlamaIndex, LangChain, OpenAI, LiteLLM, Haystack) are in the <a href="https://github.com/radlab-dev-group/llm-router/tree/fix/cli_module/examples"> target="_blank" rel="noopener noreferrer"
+<p>Integration examples for popular LLM libraries (LlamaIndex, LangChain, OpenAI, LiteLLM, Haystack) are in the <a href="https://github.com/radlab-dev-group/llm-router/tree/v1.0.6/examples"> target="_blank" rel="noopener noreferrer"
 <code>examples/</code></a> directory. See <a href="examples/index.html">examples README</a> for details.</p>
 <hr />
 <h2 id="auditing">🔐 Auditing<a class="headerlink" href="#auditing" title="link to this section">#</a></h2>
@@ -482,7 +482,7 @@ anonymizing text. A full command reference is available here:</p>
 addresses, hostnames, URLs, ports, connection strings).</p>
 <p><strong>How it works:</strong></p>
 <ul>
-<li><code>sanitize_error_message()</code> in <a href="https://github.com/radlab-dev-group/llm-router/blob/fix/cli_module/llm_router_api/core/errors.py"> target="_blank" rel="noopener noreferrer"<code>llm_router_api/core/errors.py</code></a> strips URLs, IP
+<li><code>sanitize_error_message()</code> in <a href="https://github.com/radlab-dev-group/llm-router/blob/v1.0.6/llm_router_api/core/errors.py"> target="_blank" rel="noopener noreferrer"<code>llm_router_api/core/errors.py</code></a> strips URLs, IP
   addresses, ports, hostnames, and urllib3/requests exception internals from error strings.</li>
 <li>Applied at every output choke point:<ul>
 <li>HTTP provider errors (<code>httprequest.py</code>)</li>
@@ -913,17 +913,17 @@ to <code>"true"</code> to enforce auth. The <code>_public</code> list (default <
 <h2 id="changelog">📚 Changelog<a class="headerlink" href="#changelog" title="link to this section">#</a></h2>
 <p>See the <a href="changelog.html">CHANGELOG</a> for a complete history of changes.</p>
 <h2 id="license">📜 License<a class="headerlink" href="#license" title="link to this section">#</a></h2>
-<p>See the <a href="https://github.com/radlab-dev-group/llm-router/blob/fix/cli_module/LICENSE"> target="_blank" rel="noopener noreferrer"LICENSE</a> file.</p></article>
+<p>See the <a href="https://github.com/radlab-dev-group/llm-router/blob/v1.0.6/LICENSE"> target="_blank" rel="noopener noreferrer"LICENSE</a> file.</p></article>
 <nav class="pager" aria-label="Previous and next page"><a class="next" href="llm-router-api/docs/installation.html"><span class="dir">next &rarr;</span><span class="pt">Installation</span></a></nav>
 <footer class="doc-meta">
-<div class="meta-row"><span class="meta-k">source</span><a class="mono" href="https://github.com/radlab-dev-group/llm-router/blob/fix/cli_module/README.md">README.md</a></div>
+<div class="meta-row"><span class="meta-k">source</span><a class="mono" href="https://github.com/radlab-dev-group/llm-router/blob/v1.0.6/README.md">README.md</a></div>
 <div class="meta-row"><span class="meta-k">last commit</span><time datetime="2026-09-08T01:21:50+02:00">2026-09-08</time></div>
-<div class="meta-row"><span class="meta-k">built from</span><span class="mono">fix/cli_module&nbsp;@&nbsp;d941dc5</span></div>
+<div class="meta-row"><span class="meta-k">built from</span><span class="mono">v1.0.6&nbsp;@&nbsp;d941dc5</span></div>
 <p class="hint">Generated from the Markdown file in the repository: commit a change and the next build republishes it for every release that contains it.</p>
 </footer>
 <footer class="foot"><div class="foot-inner">
 <span class="mono">llm-router &middot; docs are generated from the repository by <code>tools/build_docs.py</code></span>
-<span class="mono"><a href="https://github.com/radlab-dev-group/llm-router/tree/fix/cli_module">1.0.6</a> @ <code>d941dc5</code></span>
+<span class="mono"><a href="https://github.com/radlab-dev-group/llm-router/tree/v1.0.6">1.0.6</a> @ <code>d941dc5</code></span>
 </div></footer>
 </main>
 <aside class="dtoc" id="dtoc"><h2 class="toc-title">on this page</h2><div class="toc-body"><ul><li><a href="#ecosystem-overview">🌐 Ecosystem Overview</a></li><li><a href="#key-features">✨ Key Features</a></li><li><a href="#plugin-system-architecture">🧩 Plugin System Architecture</a><ul><li><a href="#data-flow">Data flow</a></li><li><a href="#masker-plugins">Masker Plugins</a></li><li><a href="#guardrail-plugins">Guardrail Plugins</a></li><li><a href="#utility-plugins">Utility Plugins</a></li><li><a href="#semantic-biencoder-routing">Semantic BiEncoder Routing</a></li></ul></li><li><a href="#quick-start">📦 Quick Start</a><ul><li><a href="#1-create-activate-a-virtual-environment">1️⃣ Create &amp;amp; activate a virtual environment</a></li><li><a href="#2-install-recommended-from-pypi">2️⃣ Install (recommended: from PyPI)</a></li><li><a href="#3-run-the-rest-api">3️⃣ Run the REST API</a></li><li><a href="#4-quickstart-guides-for-local-models">4️⃣ Quick‑start guides for local models</a></li><li><a href="#5-integration-boilerplates">5️⃣ Integration boilerplates</a></li></ul></li><li><a href="#auditing">🔐 Auditing</a></li><li><a href="#authentication">🔐 Authentication</a></li><li><a href="#rate-limiting">⏱️ Rate Limiting</a></li><li><a href="#cli-reference">🖥️ CLI Reference</a></li><li><a href="#security">🔒 Security</a><ul><li><a href="#error-message-sanitization">🔍 Error message sanitization</a></li></ul></li><li><a href="#docker">📦 Docker</a><ul><li><a href="#kubernetes-helm">Kubernetes (Helm)</a></li></ul></li><li><a href="#configuration">Configuration</a></li><li><a href="#load-balancing-strategies">⚖️ Load Balancing Strategies</a></li><li><a href="#endpoints-overview">🛣️ Endpoints Overview</a><ul><li><a href="#highlights">Highlights</a></li></ul></li><li><a href="#web-applications">🌐 Web Applications</a><ul><li><a href="#config-manager-port-8081">Config Manager (port 8081)</a></li><li><a href="#anonymizer-port-8082">Anonymizer (port 8082)</a></li></ul></li><li><a href="#llm-router-utils">🧰 llm-router-utils</a><ul><li><a href="#cli-tools">CLI Tools</a></li><li><a href="#speakleash-deployment-configs">Speakleash Deployment Configs</a></li></ul></li><li><a href="#configuration-details">⚙️ Configuration Details</a></li><li><a href="#development">🔧 Development</a></li><li><a href="#changelog">📚 Changelog</a></li><li><a href="#license">📜 License</a></li></ul></div></aside>

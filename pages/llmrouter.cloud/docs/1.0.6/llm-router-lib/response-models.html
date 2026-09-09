@@ -90,7 +90,7 @@
 caller side: you had to remember the exact key names, guard against missing fields, and you got no compile‑time or IDE
 help.</p>
 <p>The response models move that contract into the library. Every client method returns a typed Pydantic model that mirrors
-the JSON body the router emits for that endpoint, and the models are defined in one place — <a href="https://github.com/radlab-dev-group/llm-router/blob/fix/cli_module/llm_router_lib/data_models/response.py"> target="_blank" rel="noopener noreferrer"
+the JSON body the router emits for that endpoint, and the models are defined in one place — <a href="https://github.com/radlab-dev-group/llm-router/blob/v1.0.6/llm_router_lib/data_models/response.py"> target="_blank" rel="noopener noreferrer"
 <code>data_models/response.py</code></a> — next to the existing <em>request</em> models (<code>TranslateModel</code>,
 <code>Polarity3cModel</code>, …). Together, request</p>
 <ul>
@@ -533,14 +533,14 @@ partial/<code>status</code>‑wrapped body (<code>{"status": true, "response": �
 </table></article>
 <nav class="pager" aria-label="Previous and next page"><a class="prev" href="index.html"><span class="dir">&larr; previous</span><span class="pt">llmrouterlib</span></a></nav>
 <footer class="doc-meta">
-<div class="meta-row"><span class="meta-k">source</span><a class="mono" href="https://github.com/radlab-dev-group/llm-router/blob/fix/cli_module/llm_router_lib/RESPONSE_MODELS.md">llm_router_lib/RESPONSE_MODELS.md</a></div>
+<div class="meta-row"><span class="meta-k">source</span><a class="mono" href="https://github.com/radlab-dev-group/llm-router/blob/v1.0.6/llm_router_lib/RESPONSE_MODELS.md">llm_router_lib/RESPONSE_MODELS.md</a></div>
 <div class="meta-row"><span class="meta-k">last commit</span><time datetime="2026-08-28T08:32:26+02:00">2026-08-28</time></div>
-<div class="meta-row"><span class="meta-k">built from</span><span class="mono">fix/cli_module&nbsp;@&nbsp;d941dc5</span></div>
+<div class="meta-row"><span class="meta-k">built from</span><span class="mono">v1.0.6&nbsp;@&nbsp;d941dc5</span></div>
 <p class="hint">Generated from the Markdown file in the repository: commit a change and the next build republishes it for every release that contains it.</p>
 </footer>
 <footer class="foot"><div class="foot-inner">
 <span class="mono">llm-router &middot; docs are generated from the repository by <code>tools/build_docs.py</code></span>
-<span class="mono"><a href="https://github.com/radlab-dev-group/llm-router/tree/fix/cli_module">1.0.6</a> @ <code>d941dc5</code></span>
+<span class="mono"><a href="https://github.com/radlab-dev-group/llm-router/tree/v1.0.6">1.0.6</a> @ <code>d941dc5</code></span>
 </div></footer>
 </main>
 <aside class="dtoc" id="dtoc"><h2 class="toc-title">on this page</h2><div class="toc-body"><ul><li><a href="#introduction">Introduction</a></li><li><a href="#where-the-models-live-and-how-to-import-them">📦 Where the models live and how to import them</a></li><li><a href="#client-method-response-model">🗺️ Client method → response model</a></li><li><a href="#class-hierarchy">🧱 Class hierarchy</a></li><li><a href="#model-reference">📚 Model reference</a><ul><li><a href="#health-meta">Health / meta</a></li><li><a href="#conversation">Conversation</a></li><li><a href="#pertext-list-utilities">Per‑text (list) utilities</a></li><li><a href="#singleoutput-utilities">Single‑output utilities</a></li><li><a href="#article-utilities">Article utilities</a></li></ul></li><li><a href="#design-decisions">🎨 Design decisions</a></li><li><a href="#usage-examples">🚀 Usage examples</a><ul><li><a href="#access-fields-typed">Access fields (typed)</a></li><li><a href="#serialize-export">Serialize / export</a></li><li><a href="#roundtrip-validate-a-storedstatuswrapped-body">Round‑trip (validate a stored/status‑wrapped body)</a></li></ul></li><li><a href="#backward-compatibility">🔁 Backward compatibility</a></li><li><a href="#adding-a-new-endpoint-model">➕ Adding a new endpoint model</a></li><li><a href="#testing-notes">✅ Testing notes</a></li><li><a href="#file-map">🧾 File map</a></li></ul></div></aside>

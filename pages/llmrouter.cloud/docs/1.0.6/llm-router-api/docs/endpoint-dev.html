@@ -94,7 +94,7 @@ environment variables — <a href="env-definitions.html"><code>ENV_DEFINITIONS.m
 <hr />
 <h2 id="1-class-hierarchy-and-base-variants">1. Class hierarchy and base variants<a class="headerlink" href="#1-class-hierarchy-and-base-variants" title="link to this section">#</a></h2>
 <p>All endpoint code lives in <code>llm_router_api/endpoints/endpoint_i.py</code> (plus
-<a href="https://github.com/radlab-dev-group/llm-router/blob/fix/cli_module/llm_router_api/endpoints/passthrough.py"> target="_blank" rel="noopener noreferrer"<code>passthrough.py</code></a>). The hierarchy is:</p>
+<a href="https://github.com/radlab-dev-group/llm-router/blob/v1.0.6/llm_router_api/endpoints/passthrough.py"> target="_blank" rel="noopener noreferrer"<code>passthrough.py</code></a>). The hierarchy is:</p>
 <div class="codehilite"><pre><span></span><code>SecureEndpointI                 – security scaffolding (masking, guardrails, audit, metrics)
 └── EndpointI (ABC)             – abstract base: API surface + validation, no run_ep
     └── EndpointWithHttpRequestI (ABC) – full proxy implementation (run_ep, HTTP, streaming)
@@ -880,14 +880,14 @@ aggregates the results.</p>
 </ul></article>
 <nav class="pager" aria-label="Previous and next page"><a class="prev" href="../endpoints/index.html"><span class="dir">&larr; previous</span><span class="pt">Endpoints Overview</span></a></nav>
 <footer class="doc-meta">
-<div class="meta-row"><span class="meta-k">source</span><a class="mono" href="https://github.com/radlab-dev-group/llm-router/blob/fix/cli_module/llm_router_api/docs/ENDPOINT_DEV.md">llm_router_api/docs/ENDPOINT_DEV.md</a></div>
+<div class="meta-row"><span class="meta-k">source</span><a class="mono" href="https://github.com/radlab-dev-group/llm-router/blob/v1.0.6/llm_router_api/docs/ENDPOINT_DEV.md">llm_router_api/docs/ENDPOINT_DEV.md</a></div>
 <div class="meta-row"><span class="meta-k">last commit</span><time datetime="2026-08-31T18:22:50+02:00">2026-08-31</time></div>
-<div class="meta-row"><span class="meta-k">built from</span><span class="mono">fix/cli_module&nbsp;@&nbsp;d941dc5</span></div>
+<div class="meta-row"><span class="meta-k">built from</span><span class="mono">v1.0.6&nbsp;@&nbsp;d941dc5</span></div>
 <p class="hint">Generated from the Markdown file in the repository: commit a change and the next build republishes it for every release that contains it.</p>
 </footer>
 <footer class="foot"><div class="foot-inner">
 <span class="mono">llm-router &middot; docs are generated from the repository by <code>tools/build_docs.py</code></span>
-<span class="mono"><a href="https://github.com/radlab-dev-group/llm-router/tree/fix/cli_module">1.0.6</a> @ <code>d941dc5</code></span>
+<span class="mono"><a href="https://github.com/radlab-dev-group/llm-router/tree/v1.0.6">1.0.6</a> @ <code>d941dc5</code></span>
 </div></footer>
 </main>
 <aside class="dtoc" id="dtoc"><h2 class="toc-title">on this page</h2><div class="toc-body"><ul><li><a href="#1-class-hierarchy-and-base-variants">1. Class hierarchy and base variants</a><ul><li><a href="#endpointi-abstract-base">EndpointI (abstract base)</a></li><li><a href="#endpointwithhttprequesti-proxy-base">EndpointWithHttpRequestI (proxy base)</a></li><li><a href="#passthroughi-passthrough-base">PassthroughI (passthrough base)</a></li></ul></li><li><a href="#2-execution-cycle-what-run_ep-does-in-endpointwithhttprequesti">2. Execution cycle – what run_ep does in EndpointWithHttpRequestI</a></li><li><a href="#3-system-prompt-and-content-overrides-how-the-fields-work">3. System prompt and content overrides – how the fields work</a><ul><li><a href="#system_prompt_name">SYSTEM_PROMPT_NAME</a></li><li><a href="#how-overrides-are-passed-payload-keys-current-mechanism">How overrides are passed – payload keys (current mechanism)</a></li></ul></li><li><a href="#4-hooks-_prepare_response_function">4. Hooks – _prepare_response_function</a></li><li><a href="#5-parameter-validation-required_args-and-optional_args">5. Parameter validation – REQUIRED_ARGS and OPTIONAL_ARGS</a></li><li><a href="#6-endpoint-constructor-parameters-what-they-set">6. Endpoint constructor parameters – what they set</a></li><li><a href="#7-how-to-add-a-new-endpoint-step-by-step">7. How to add a new endpoint – step by step</a></li><li><a href="#8-most-common-usage-patterns">8. Most common usage patterns</a><ul><li><a href="#81-simple-openaicompatible-proxy">8.1 Simple OpenAI‑compatible proxy</a></li><li><a href="#82-endpoint-with-a-builtin-system-prompt">8.2 Endpoint with a built‑in system prompt</a></li><li><a href="#83-local-static-endpoint">8.3 Local / static endpoint</a></li></ul></li><li><a href="#9-quick-field-reference">9. Quick field reference</a></li><li><a href="#10-practical-notes">10. Practical notes</a></li><li><a href="#worked-example-batchfilesummaries-perfile-summaries">Worked example: BatchFileSummaries (per‑file summaries)</a></li><li><a href="#see-also">See Also</a></li></ul></div></aside>

@@ -84,7 +84,7 @@
 <a href="../../../..">llm-router</a><span class="sep">/</span><a href="../../index.html">docs</a><span class="sep">/</span><a href="env-definitions.html">Configuration</a><span class="sep">/</span><em>Environment Variables</em>
 </nav>
 <article class="prose"><h1 id="environment-variables">Environment Variables<a class="headerlink" href="#environment-variables" title="link to this section">#</a></h1>
-<p>All environment variables share the <code>LLM_ROUTER_</code> prefix. They are loaded from <code>os.environ</code> in <a href="https://github.com/radlab-dev-group/llm-router/blob/fix/cli_module/llm_router_api/base/constants.py"> target="_blank" rel="noopener noreferrer"
+<p>All environment variables share the <code>LLM_ROUTER_</code> prefix. They are loaded from <code>os.environ</code> in <a href="https://github.com/radlab-dev-group/llm-router/blob/v1.0.6/llm_router_api/base/constants.py"> target="_blank" rel="noopener noreferrer"
 <code>llm_router_api/base/constants.py</code></a> at import time and validated by
 <code>_StartAppVerificator</code>.</p>
 <hr />
@@ -753,19 +753,19 @@ configuration documented above.</p>
 </table>
 <hr />
 <h2 id="programmatic-source">Programmatic source<a class="headerlink" href="#programmatic-source" title="link to this section">#</a></h2>
-<p>The definitive list of all runtime environment variables is in the source code: <a href="https://github.com/radlab-dev-group/llm-router/blob/fix/cli_module/llm_router_api/base/constants.py"> target="_blank" rel="noopener noreferrer"
+<p>The definitive list of all runtime environment variables is in the source code: <a href="https://github.com/radlab-dev-group/llm-router/blob/v1.0.6/llm_router_api/base/constants.py"> target="_blank" rel="noopener noreferrer"
 <code>llm_router_api/base/constants.py</code></a>. Each constant is loaded from <code>os.environ</code> with a
 documented default and validated at import time.</p></article>
 <nav class="pager" aria-label="Previous and next page"><a class="next" href="models-config.html"><span class="dir">next &rarr;</span><span class="pt">Models configuration description (JSON)</span></a></nav>
 <footer class="doc-meta">
-<div class="meta-row"><span class="meta-k">source</span><a class="mono" href="https://github.com/radlab-dev-group/llm-router/blob/fix/cli_module/llm_router_api/docs/ENV_DEFINITIONS.md">llm_router_api/docs/ENV_DEFINITIONS.md</a></div>
+<div class="meta-row"><span class="meta-k">source</span><a class="mono" href="https://github.com/radlab-dev-group/llm-router/blob/v1.0.6/llm_router_api/docs/ENV_DEFINITIONS.md">llm_router_api/docs/ENV_DEFINITIONS.md</a></div>
 <div class="meta-row"><span class="meta-k">last commit</span><time datetime="2026-09-04T15:34:37+02:00">2026-09-04</time></div>
-<div class="meta-row"><span class="meta-k">built from</span><span class="mono">fix/cli_module&nbsp;@&nbsp;d941dc5</span></div>
+<div class="meta-row"><span class="meta-k">built from</span><span class="mono">v1.0.6&nbsp;@&nbsp;d941dc5</span></div>
 <p class="hint">Generated from the Markdown file in the repository: commit a change and the next build republishes it for every release that contains it.</p>
 </footer>
 <footer class="foot"><div class="foot-inner">
 <span class="mono">llm-router &middot; docs are generated from the repository by <code>tools/build_docs.py</code></span>
-<span class="mono"><a href="https://github.com/radlab-dev-group/llm-router/tree/fix/cli_module">1.0.6</a> @ <code>d941dc5</code></span>
+<span class="mono"><a href="https://github.com/radlab-dev-group/llm-router/tree/v1.0.6">1.0.6</a> @ <code>d941dc5</code></span>
 </div></footer>
 </main>
 <aside class="dtoc" id="dtoc"><h2 class="toc-title">on this page</h2><div class="toc-body"><ul><li><a href="#core-variables">Core variables</a></li><li><a href="#redis-variables">Redis variables</a></li><li><a href="#masking-guardrail-variables">Masking &amp;amp; Guardrail variables</a><ul><li><a href="#payload-masking">Payload masking</a></li><li><a href="#request-guardrails">Request guardrails</a></li><li><a href="#response-guardrails">Response guardrails</a></li></ul></li><li><a href="#semantic-biencoder-routing-variables">Semantic BiEncoder Routing variables</a></li><li><a href="#langchainrag-variables">LangChainRAG variables</a></li><li><a href="#utils-plugins-variables">Utils plugins variables</a></li><li><a href="#authentication-variables">Authentication variables</a><ul><li><a href="#core-switch">Core switch</a></li><li><a href="#memory-store">Memory store</a></li><li><a href="#custom-policies">Custom policies</a></li><li><a href="#vault-settings">Vault settings</a></li><li><a href="#redis-cache-for-keys">Redis cache for keys</a></li><li><a href="#auth-redis-separate-from-general-redis">Auth Redis (separate from general REDIS)</a></li><li><a href="#rate-limiting">Rate limiting</a></li><li><a href="#public-endpoints">Public endpoints</a></li><li><a href="#hardening">Hardening</a></li><li><a href="#key-generation">Key generation</a></li><li><a href="#key-rotation">Key rotation</a></li><li><a href="#audit">Audit</a></li></ul></li><li><a href="#monitoring-intervals">Monitoring intervals</a></li><li><a href="#programmatic-source">Programmatic source</a></li></ul></div></aside>
