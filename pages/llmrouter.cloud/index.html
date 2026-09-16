@@ -5,10 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>LLM Router — open-source AI gateway for self-hosted LLM infrastructure</title>
 <meta name="description" content="LLM Router is an open-source (Apache-2.0) AI gateway you run in your own infrastructure. One OpenAI-compatible endpoint in front of vLLM, Ollama, LM Studio, OpenAI and Anthropic — with PII masking, guardrails, load balancing, Redis rate limiting, GPG audit logs and Prometheus metrics.">
+<meta name="keywords" content="llm router, ai gateway, openai-compatible api, self-hosted llm, vllm router, ollama gateway, lm studio proxy, anthropic proxy, llm load balancing, pii masking, prompt guardrails, redis rate limiting, prometheus llm metrics, gpg audit logging, kubernetes helm chart, python llm sdk, on-premise ai, air-gapped ai deployment, rag enrichment, semantic routing, generative ai infrastructure">
 <meta name="theme-color" content="#05070a">
 <meta property="og:type" content="website">
 <meta property="og:title" content="LLM Router — one endpoint in front of every LLM you run">
 <meta property="og:description" content="Self-hosted AI gateway: unified REST surface, PII masking, guardrails, 5 load-balancing strategies, Prometheus metrics, Helm chart. Apache-2.0.">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="LLM Router — one endpoint in front of every LLM you run">
+<meta name="twitter:description" content="Self-hosted AI gateway: unified REST surface, PII masking, guardrails, 5 load-balancing strategies, Prometheus metrics, Helm chart. Apache-2.0.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2305070a'/%3E%3Cpath d='M8 22V10M8 16h9M17 10v12M17 13h7M17 19h7' stroke='%2300e59b' stroke-width='2' stroke-linecap='round' fill='none'/%3E%3C/svg%3E">
 <style>
 /* ============================================================ tokens */
@@ -1016,7 +1020,10 @@ $ <span class="k-str">./scripts/decrypt_auditor_logs.sh</span> 2026-09-09</pre>
     <h2 class="reveal">One console script, no web console required</h2>
     <p class="sec-sub reveal" style="margin-top:12px">
       <code>llm-router</code> does everything the Config Manager UI does, so it fits in a
-      <code>Run</code> block, an Ansible task or a Friday-night SSH session. Tab completion included.
+      <code>Run</code> block, an Ansible task or a Friday-night SSH session. The same script
+      supervises the server itself &mdash; one <code>default</code> router or many named ones side by
+      side (<code>-i</code>/<code>--instance</code>), each with its own pid file, port, log and
+      <code>config.env</code>. Tab completion included.
     </p>
 
     <div class="term reveal" aria-label="CLI session">
@@ -1026,10 +1033,19 @@ $ <span class="k-str">./scripts/decrypt_auditor_logs.sh</span> 2026-09-09</pre>
       </div>
       <div class="term-body">
 <div class="l"><span class="c-p">$</span> <span class="c-cmd">llm-router config</span>                              <span class="c-m"># auto-discover local providers</span></div>
-<div class="l"><span class="c-p">$</span> <span class="c-cmd">llm-router server status</span></div>
-<div class="l"><span class="c-s">&bull;&nbsp;</span><span class="c-o">Server is running (gunicorn, 4 workers) &middot; pid <b>41207</b></span></div>
-<div class="l"><span class="c-p">$</span> <span class="c-cmd">llm-router server reload</span>                       <span class="c-m"># pick up models-config.json</span></div>
-<div class="l"><span class="c-p">$</span> <span class="c-cmd">llm-router server log -f</span>                        <span class="c-m"># ~/.llm-router/server.log</span></div>
+<div class="l">&nbsp;</div>
+<div class="l"><span class="c-p">$</span> <span class="c-cmd">llm-router server start -i dev --port 8081 --save-config</span>   <span class="c-m"># many routers, one CLI</span></div>
+<div class="l"><span class="c-o">Saved 1 setting(s) to ~/.llm-router/instances/dev/config.env:</span></div>
+<div class="l"><span class="c-o">&nbsp;&nbsp;LLM_ROUTER_SERVER_PORT</span></div>
+<div class="l"><span class="c-p">$</span> <span class="c-cmd">llm-router server start -i prod</span>                   <span class="c-m"># own pid, port, log, config.env</span></div>
+<div class="l"><span class="c-p">$</span> <span class="c-cmd">llm-router server list</span></div>
+<div class="l"><span class="c-o">NAME   STATUS     PID    PORT  SERVER    STARTED</span></div>
+<div class="l"><span class="c-o">dev    <span class="c-s">&bull; running</span>  41207  8081  gunicorn  2026-09-16T19:58:29+0200</span></div>
+<div class="l"><span class="c-o">prod   <span class="c-s">&bull; running</span>  41212  8080  gunicorn  2026-09-16T19:58:31+0200</span></div>
+<div class="l"><span class="c-o">batch  &bull; stopped  -      8082  gunicorn  2026-09-16T18:40:02+0200</span></div>
+<div class="l"><span class="c-p">$</span> <span class="c-cmd">llm-router server reload -i prod</span>                  <span class="c-m"># pick up models-config.json</span></div>
+<div class="l"><span class="c-p">$</span> <span class="c-cmd">llm-router server log -i dev</span>                      <span class="c-m"># follow that instance's log</span></div>
+<div class="l"><span class="c-p">$</span> <span class="c-cmd">llm-router server stop --all</span>                      <span class="c-m"># every instance at once</span></div>
 <div class="l">&nbsp;</div>
 <div class="l"><span class="c-p">$</span> <span class="c-cmd">llm-router auth policy list</span></div>
 <div class="l"><span class="c-o">internal-only   models: gemma-3-27b        masking: <span class="c-s">required</span>  guardrail: <span class="c-s">required</span></span></div>
@@ -1044,7 +1060,15 @@ $ <span class="k-str">./scripts/decrypt_auditor_logs.sh</span> 2026-09-09</pre>
     <ul class="ticks reveal" style="margin-top:24px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));display:grid">
       <li><b>auth</b> &mdash; key generate | list | delete | disable | enable | rotate, policy, rate-limit</li>
       <li><b>config</b> &mdash; scan the host for Ollama / vLLM and emit a config</li>
-      <li><b>server</b> &mdash; start | stop | reload | status | log</li>
+      <li><b>server</b> &mdash; start | stop | status | reload | log | list | rm-instance</li>
+      <li><b>-i, --instance</b> &mdash; several routers on one host, state under
+        <code>~/.llm-router/instances/NAME</code>; <code>status --all</code> / <code>stop --all</code>
+        reach every one of them</li>
+      <li><b>--save-config</b> &mdash; store the flags passed on this command line, so the next
+        <code>start -i NAME</code> needs none</li>
+      <li><b>config.env</b> &mdash; per-instance overrides, precedence
+        <code>CLI &gt; config.env &gt; shell &gt; defaults</code>; a port already taken fails before the
+        daemon starts</li>
       <li><b>anonymizer</b> &mdash; run the masking pipeline over local text</li>
       <li><b>util</b> &mdash; translate, genai-classifier, data augmentation via the router</li>
       <li><b>completion</b> &mdash; bash and zsh</li>
@@ -1322,144 +1346,100 @@ $ <span class="k-str">./scripts/decrypt_auditor_logs.sh</span> 2026-09-09</pre>
 </footer>
 
 </main>
+<!-- =============================================================== SEO block
+     Machine-readable supplement to the visible page: factual prose plus
+     JSON-LD structured data. Source of truth is builder/landing/index.html;
+     the docs builder copies it verbatim to the site root (copy_landing()),
+     so edit it there to keep both copies identical. Claims are limited to
+     what the code actually does. -->
 <section style="display:none;" aria-hidden="true">
-    <h1>Enterprise LLM Gateway and AI Router for DevOps MLOps Teams</h1>
-    <p>Enterprise-grade Large Language Model router, AI gateway, LLM load balancer, generative AI infrastructure, MLOps
-        platform, DevOps AI orchestration, multi-provider LLM management, AI model routing, language model proxy, OpenAI
-        proxy, Ollama gateway, vLLM router, enterprise AI security, PII data anonymization, GDPR compliant AI, SOC2 LLM
-        infrastructure, on-premise AI deployment, self-hosted language models, Kubernetes LLM deployment, Docker AI
-        containers, AI cost optimization, token usage monitoring, LLM observability platform, Prometheus AI metrics,
-        GenAI compliance framework, healthcare AI security, financial services LLM, HIPAA compliant AI router,
-        multi-tenant LLM platform, AI traffic management, intelligent request routing, failover LLM strategy, high
-        availability AI infrastructure, zero-downtime AI deployment, production LLM orchestration, cloud-agnostic AI
-        gateway, hybrid cloud LLM router, air-gapped AI deployment, private LLM infrastructure, secure AI proxy, data
-        residency compliance, prompt injection protection, sensitive data masking, real-time AI anonymization,
-        enterprise prompt management, AI request auditing, LLM cost allocation, department AI usage tracking,
-        centralized AI governance, model versioning control, A/B testing LLM models, canary AI deployments, blue-green
-        LLM strategy, circuit breaker AI patterns, rate limiting AI requests, backpressure handling AI, streaming AI
-        responses, Server-Sent Events LLM, WebSocket AI streaming, async AI processing, Redis LLM caching, distributed
-        AI architecture, microservices LLM integration, service mesh AI compatibility, API gateway LLM features, reverse
-        proxy AI capabilities, load balancing algorithms AI, weighted round-robin LLM, least connections AI routing,
-        consistent hashing LLM, health check AI endpoints, graceful degradation AI, fault tolerance LLM systems,
-        disaster recovery AI, business continuity LLM, SLA management AI infrastructure, uptime monitoring LLM, incident
-        response AI automation, runbook automation LLM, infrastructure as code AI, Terraform LLM deployment, Ansible AI
-        configuration, GitOps LLM workflows, CI/CD AI integration, Jenkins LLM pipelines, GitHub Actions AI automation,
-        ArgoCD LLM deployment, automated AI testing, integration testing LLM, performance testing AI endpoints, load
-        testing language models, chaos engineering AI, reliability testing LLM, security scanning AI code, vulnerability
-        assessment LLM, penetration testing AI infrastructure, compliance auditing LLM, OWASP AI security, secrets
-        management LLM, API key rotation AI, certificate management LLM, TLS encryption AI traffic, mTLS authentication
-        LLM, OAuth2 AI integration, SAML SSO LLM access, RBAC AI permissions, policy enforcement LLM, OPA integration
-        AI, service account management LLM, audit logging AI requests, SIEM integration LLM, log aggregation AI
-        infrastructure, distributed tracing LLM, OpenTelemetry AI observability, Jaeger tracing LLM, Zipkin AI
-        monitoring, APM integration LLM, custom metrics AI, business metrics LLM tracking, SLO definition AI services,
-        error budget LLM management, alerting rules AI infrastructure, PagerDuty LLM integration, Slack AI
-        notifications, webhook alerting LLM, escalation policies AI incidents, on-call rotation LLM support,
-        documentation AI architecture, technical specifications LLM, API documentation AI endpoints, SDK generation LLM,
-        client libraries AI integration, code examples LLM usage, best practices AI deployment, architecture patterns
-        LLM, reference implementations AI, proof of concept LLM, pilot deployment AI, production rollout LLM strategy,
-        migration planning AI infrastructure, legacy system integration LLM, brownfield AI deployment, greenfield LLM
-        projects, modernization AI strategy, digital transformation LLM, AI center of excellence, machine learning
-        operations platform, artificial intelligence infrastructure management, natural language processing gateway,
-        conversational AI router, chatbot infrastructure platform, virtual assistant orchestration, intelligent
-        automation AI, cognitive services gateway, neural network deployment platform, deep learning model router,
-        foundation model infrastructure, large scale AI deployment, petabyte AI processing, GPU cluster management LLM,
-        TPU orchestration AI, edge AI deployment LLM, federated learning infrastructure, transfer learning platform,
-        few-shot learning AI, zero-shot inference LLM, prompt engineering platform, context window optimization, token
-        efficiency AI, batch processing LLM, parallel inference AI, model quantization deployment, compression
-        algorithms LLM, optimization techniques AI inference, latency reduction strategies, throughput maximization AI,
-        cost per token optimization, billing management LLM, chargeback AI services, showback ML costs, budget alerts AI
-        spending, forecast AI expenses, ROI tracking LLM investment, TCO analysis AI infrastructure, vendor comparison
-        LLM providers, multi-cloud AI strategy, cloud cost optimization LLM, reserved instances AI, spot instances LLM
-        workloads, autoscaling AI infrastructure, horizontal scaling LLM, vertical scaling AI resources, capacity
-        planning LLM, resource allocation AI, quota management LLM, namespace isolation AI, tenant separation LLM, data
-        isolation AI workloads, network segmentation LLM, firewall rules AI traffic, WAF integration LLM, DDoS
-        protection AI endpoints, CDN integration LLM responses, edge caching AI, global load balancing LLM, geo-routing
-        AI requests, latency-based routing LLM, proximity routing AI users, disaster recovery regions LLM, multi-region
-        deployment AI, active-active AI infrastructure, active-passive LLM configuration, backup strategies AI data,
-        snapshot management LLM state, state management AI applications, session persistence LLM, sticky sessions AI
-        routing, connection pooling LLM, keep-alive optimization AI, HTTP/2 support LLM, gRPC AI integration, protocol
-        buffer LLM, REST API AI compatibility, GraphQL LLM support, WebSocket AI connections, long polling LLM,
-        event-driven AI architecture, message queue LLM integration, Kafka AI streaming, RabbitMQ LLM messages, NATS AI
-        pub-sub, event sourcing LLM, CQRS pattern AI, saga pattern LLM orchestration, compensation logic AI, idempotency
-        AI operations, exactly-once processing LLM, at-least-once delivery AI, retry logic LLM requests, exponential
-        backoff AI, jitter algorithms LLM, timeout configuration AI, deadline propagation LLM, context cancellation AI,
-        graceful shutdown LLM services, zero downtime deployments AI, rolling updates LLM, immutable infrastructure AI,
-        container orchestration LLM, Kubernetes native AI, Helm charts LLM deployment, Kustomize AI configuration,
-        operators AI automation, custom resources LLM, admission controllers AI, mutating webhooks LLM, validating
-        webhooks AI policies, pod security standards LLM, network policies AI isolation, service mesh integration LLM,
-        Istio AI traffic management, Linkerd LLM observability, Consul AI service discovery, etcd LLM configuration,
-        Vault secrets AI, external secrets LLM, sealed secrets AI encryption, encryption at rest LLM, encryption in
-        transit AI, key management service LLM, HSM integration AI, FIPS compliance LLM, FedRAMP AI infrastructure, PCI
-        DSS LLM compliance, ISO 27001 AI certification, SOC 2 Type II LLM audit, GDPR Article 25 AI compliance, privacy
-        by design LLM, data minimization AI, purpose limitation LLM processing, storage limitation AI data, accuracy
-        requirements LLM, integrity AI processing, confidentiality LLM data, availability AI services, accountability AI
-        governance, data protection impact assessment LLM, legitimate interest AI processing, consent management LLM,
-        data subject rights AI, right to erasure LLM, right to portability AI data, right to rectification LLM,
-        automated decision making AI, profiling prevention LLM, bias detection AI models, fairness metrics LLM,
-        explainability AI decisions, interpretability LLM outputs, model cards AI documentation, datasheets AI datasets,
-        responsible AI framework, ethical AI guidelines, trustworthy AI principles, transparent AI operations, human
-        oversight LLM, human-in-the-loop AI, active learning LLM, continuous learning AI models, model retraining
-        pipelines, drift detection LLM, performance degradation AI, model monitoring LLM production, feature store AI,
-        training data management LLM, dataset versioning AI, experiment tracking LLM, hyperparameter tuning AI, model
-        registry LLM, artifact management AI, model serving infrastructure, inference optimization LLM, batch inference
-        AI, online inference LLM, real-time predictions AI, streaming inference LLM, edge inference AI devices, mobile
-        AI deployment, browser-based LLM, WebAssembly AI models, ONNX runtime LLM, TensorRT optimization AI, OpenVINO
-        inference LLM, CoreML deployment AI, TFLite models LLM, model conversion AI formats, cross-platform LLM
-        deployment, polyglot AI systems, language interoperability LLM, API versioning AI, backward compatibility LLM,
-        forward compatibility AI, deprecation policy LLM, sunset timeline AI features, migration guides LLM, upgrade
-        procedures AI, rollback strategies LLM, canary analysis AI, progressive delivery LLM, feature flags AI, toggle
-        management LLM, experimentation platform AI, statistical significance LLM, confidence intervals AI metrics,
-        hypothesis testing LLM, causal inference AI, attribution modeling LLM, conversion tracking AI, funnel analysis
-        LLM usage, cohort analysis AI adoption, retention metrics LLM, churn prediction AI users, usage analytics LLM,
-        behavioral analytics AI, product analytics LLM platform, business intelligence AI, data warehouse LLM
-        integration, data lake AI architecture, lakehouse LLM analytics, real-time analytics AI, batch analytics LLM,
-        OLAP AI queries, OLTP LLM operations, data pipeline orchestration, ETL processes AI, ELT workflows LLM, data
-        transformation AI, data quality LLM, data validation AI rules, schema evolution LLM, data lineage AI tracking,
-        data catalog LLM, metadata management AI, data governance LLM platform, master data management AI, reference
-        data LLM, dimensional modeling AI, fact tables LLM, star schema AI warehouse, snowflake schema LLM, data mart AI
-        departments, self-service analytics LLM, embedded analytics AI, white-label LLM solutions, multi-tenant SaaS AI,
-        B2B LLM platform, B2C AI applications, B2B2C LLM marketplace, API monetization AI, usage-based pricing LLM,
-        tiered pricing AI services, freemium model LLM, enterprise licensing AI, volume discounts LLM, commitment
-        discounts AI, pay-as-you-go LLM, reserved capacity AI, spot pricing LLM, auction-based AI pricing, dynamic
-        pricing LLM algorithms, demand forecasting AI, capacity reservation LLM, oversubscription AI resources, bin
-        packing algorithms LLM, scheduling optimization AI, priority queues LLM, fair share scheduling AI, preemption
-        policies LLM, resource quotas AI namespaces, limit ranges LLM pods, quality of service AI, guaranteed QoS LLM,
-        burstable AI workloads, best effort LLM tasks, background jobs AI, cron jobs LLM, scheduled tasks AI, workflow
-        orchestration LLM, DAG execution AI, Airflow integration LLM, Prefect AI workflows, Temporal LLM orchestration,
-        step functions AI, durable execution LLM, saga orchestrator AI, process automation LLM, robotic process
-        automation AI, intelligent document processing LLM, optical character recognition AI, natural language
-        understanding LLM, named entity recognition AI, information extraction LLM, text classification AI, sentiment
-        analysis LLM, topic modeling AI, document clustering LLM, semantic search AI, vector database LLM, embedding
-        models AI, similarity search LLM, nearest neighbor AI, approximate nearest neighbor LLM, HNSW algorithm AI,
-        FAISS integration LLM, Milvus vector database, Pinecone AI search, Weaviate LLM store, Qdrant vector AI,
-        ChromaDB LLM embeddings, retrieval augmented generation, RAG pipeline AI, context retrieval LLM, semantic
-        caching AI, prompt caching LLM, response caching AI, cache invalidation LLM, TTL management AI cache, cache
-        warming LLM, predictive caching AI, edge caching LLM, distributed cache AI, cache coherence LLM, cache
-        consistency AI, eventual consistency LLM, strong consistency AI, linearizability LLM operations, serializability
-        AI transactions, ACID properties LLM, BASE properties AI, CAP theorem LLM tradeoffs, partition tolerance AI,
-        network partition handling LLM, split-brain prevention AI, quorum-based decisions LLM, consensus algorithms AI,
-        Raft protocol LLM, Paxos algorithm AI, leader election LLM, distributed coordination AI, distributed locks LLM,
-        distributed transactions AI, two-phase commit LLM, three-phase commit AI, saga pattern distributed LLM,
-        event-driven distributed AI, choreography LLM services, orchestration AI services, bounded context LLM,
-        domain-driven design AI, aggregate pattern LLM, repository pattern AI, unit of work LLM, specification pattern
-        AI, factory pattern LLM, builder pattern AI objects, singleton pattern LLM, prototype pattern AI, adapter
-        pattern LLM integration, facade pattern AI, proxy pattern LLM, decorator pattern AI, composite pattern LLM,
-        bridge pattern AI, flyweight pattern LLM, chain of responsibility AI, command pattern LLM, interpreter pattern
-        AI, iterator pattern LLM, mediator pattern AI, memento pattern LLM state, observer pattern AI, state pattern
-        LLM, strategy pattern AI algorithms, template method LLM, visitor pattern AI, dependency injection LLM,
-        inversion of control AI, service locator LLM, repository abstraction AI, clean architecture LLM, hexagonal
-        architecture AI, onion architecture LLM, ports and adapters AI, CQRS architecture LLM, event sourcing AI,
-        microservices patterns LLM, strangler fig pattern AI, anti-corruption layer LLM, backend for frontend AI, API
-        gateway pattern LLM, service mesh pattern AI, sidecar pattern LLM, ambassador pattern AI, adapter sidecar LLM,
-        init container pattern AI, multi-container pod LLM, daemonset pattern AI, statefulset LLM, deployment strategies
-        AI, canary deployment LLM, blue-green deployment AI, rolling deployment LLM, recreate deployment AI, shadow
-        deployment LLM, A/B testing deployment AI, traffic splitting LLM, header-based routing AI, cookie-based routing
-        LLM, geolocation routing AI, device-based routing LLM, user agent routing AI, IP-based routing LLM, domain-based
-        routing AI, path-based routing LLM, host-based routing AI, port-based routing LLM, protocol-based routing AI,
-        method-based routing LLM, content-based routing AI</p>
-    <meta name="keywords"
-          content="enterprise llm router, ai gateway, mlops platform, devops ai infrastructure, llm load balancer, openai proxy, ollama gateway, enterprise ai security, on-premise ai deployment, kubernetes llm, docker ai containers, llm observability, genai compliance, healthcare ai security, financial services llm, multi-tenant llm, high availability ai, production llm orchestration, secure ai proxy, data anonymization, gdpr compliant ai, soc2 llm, hipaa ai router, prometheus ai metrics, real-time ai anonymization, centralized ai governance, llm cost optimization">
+  <h2>LLM Router &mdash; open-source AI gateway, LLM router and load balancer you self-host</h2>
+  <p>
+    LLM Router is an open-source (Apache-2.0) AI gateway written in Python that sits between your
+    applications and every large language model you run or rent. One OpenAI-compatible REST surface
+    fronts vLLM, Ollama, LM Studio, Anthropic and any other OpenAI-compatible upstream, so an OpenAI
+    SDK, <code>curl</code>, LangChain or LlamaIndex client keeps working when a workload moves from a
+    hosted API to your own GPUs. Deploy it on-premises, in a VPC, in an air-gapped cluster or in a
+    Kubernetes namespace &mdash; the process ships no telemetry and needs no external control plane.
+  </p>
+  <p>
+    Routing is a deterministic pipeline instead of a proxy pile-up. Authentication middleware resolves
+    a bearer API key from a memory, Redis or Vault key store, evaluates an auth policy and applies
+    Redis sliding-window rate limits. The <b>MaskerPipeline</b> redacts personally identifiable
+    information before a prompt can reach a provider: a regex masker with over 30 rule types
+    (PESEL, NIP, KRS and REGON included, for Polish data-residency work) plus an optional machine
+    learning token classifier. The <b>GuardrailPipeline</b> then consults prompt-safety classifiers
+    (NASK-PIB HerBERT-PL-Guard, SpeakLeash Bielik-Guard) and fails closed, so a rejected prompt never
+    reaches an upstream. The <b>UtilsPipeline</b> adds FAISS retrieval-augmented generation context
+    and semantic model selection for <code>model: "auto"</code> requests.
+  </p>
+  <p>
+    Five load-balancing strategies spread traffic across replicas: <code>balanced</code> round-robin on
+    concurrent requests, <code>weighted</code> ratios from <code>models-config.json</code>,
+    <code>dynamic_weighted</code> latency-aware re-weighting, and <code>first_available</code> with
+    <code>first_available_optim</code>, which hold an exclusive Redis lease on a GPU-backed provider so
+    its KV cache stays warm. Health checks, per-provider retry and failover cover the node that fell
+    over, and answers come back as server-sent events or as a single aggregated payload.
+  </p>
+  <p>
+    One <code>llm-router</code> console script supervises the gateway: start, stop, reload, status and
+    tail the log of a server, run several named instances side by side on a single host &mdash; each with
+    its own state directory, port and <code>config.env</code> &mdash; generate and rotate API keys and
+    discover configuration. Observability is Prometheus text format plus a router-level
+    <code>/api/metrics</code> endpoint: provider latency histograms, per-pipeline-stage results, retry
+    exhaustion and prompt/completion token counters. Audit logs are encrypted at rest with GPG. Ship it
+    with the included non-root Dockerfile or the Helm chart, and call it from Python with the typed
+    <code>radlab-llm-router</code> SDK.
+  </p>
+  <ul>
+    <li>OpenAI-compatible <code>/v1/chat/completions</code>, <code>/v1/completions</code>,
+      <code>/v1/responses</code>, <code>/v1/embeddings</code> and <code>/v1/messages</code> endpoints</li>
+    <li>PII masking, prompt guardrails and GPG-encrypted audit trails for compliance-minded teams</li>
+    <li>API key management, auth policies and Redis-backed rate limiting and load-balancing state</li>
+    <li>Multi-instance CLI supervision, Prometheus metrics, Grafana dashboard, Docker image, Helm chart</li>
+  </ul>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "#radlab-dev-group",
+      "name": "radlab-dev-group",
+      "url": "https://github.com/radlab-dev-group"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "name": "LLM Router",
+      "alternateName": "llm-router",
+      "description": "Open-source AI gateway and LLM router: one OpenAI-compatible endpoint in front of vLLM, Ollama, LM Studio, Anthropic and any OpenAI-compatible upstream, with PII masking, guardrails, five load-balancing strategies, Redis rate limiting, Prometheus metrics and GPG-encrypted audit logs.",
+      "applicationCategory": "DeveloperApplication",
+      "applicationSubCategory": "AI gateway and LLM load balancer",
+      "programmingLanguage": "Python",
+      "runtimePlatform": "Python >= 3.10",
+      "operatingSystem": "Linux, macOS",
+      "softwareVersion": "1.0.7",
+      "license": "https://spdx.org/licenses/Apache-2.0",
+      "codeRepository": "https://github.com/radlab-dev-group/llm-router",
+      "downloadUrl": "https://pypi.org/project/radlab-llm-router/",
+      "publisher": { "@id": "#radlab-dev-group" },
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+      "featureList": [
+        "OpenAI-compatible chat, completions, responses, embeddings and Anthropic messages endpoints",
+        "Provider adapters for vLLM, Ollama, LM Studio, Anthropic and OpenAI-compatible APIs",
+        "Five load-balancing strategies with health checks, per-provider retry and failover",
+        "PII masking pipelines and prompt guardrails that fail closed",
+        "API key management, auth policies and Redis sliding-window rate limiting",
+        "Prometheus metrics, Grafana dashboard and GPG-encrypted audit logs",
+        "Multi-instance CLI server supervision with per-instance config.env",
+        "Non-root Docker image and Helm chart for Kubernetes deployment"
+      ]
+    }
+  ]
+}
+  </script>
 </section>
+
 <script>
 (function () {
   "use strict";
