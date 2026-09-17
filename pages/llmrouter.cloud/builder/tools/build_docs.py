@@ -346,6 +346,11 @@ def current_release() -> Release:
             prerelease=is_prerelease(version),
         )
     branch = git("rev-parse", "--abbrev-ref", "HEAD").strip()
+    if branch == "HEAD":
+        branch = (
+            git("describe", "--tags", "--exact-match", "HEAD", check=False).strip()
+            or "HEAD"
+        )
     sha = git("rev-parse", "--short", "HEAD").strip()
     date = git("log", "-1", "--format=%cI", "HEAD").strip()
     return Release(
