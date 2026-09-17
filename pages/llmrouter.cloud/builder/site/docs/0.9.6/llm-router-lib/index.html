@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>llmrouterlib · v0.9.6 · llm-router docs</title>
+<meta name="description" content="llmrouterlib bundles Pydantic data‑model definitions and a thin, opinionated client wrapper for the LLM‑Router service. - The data models live in llmrouterlib/datamodels and describe every request payload the router accepts. - The client…">
+<meta name="theme-color" content="#05070a">
+<meta property="og:type" content="article">
+<meta property="og:title" content="llmrouterlib · v0.9.6 · llm-router docs">
+<meta property="og:description" content="llmrouterlib bundles Pydantic data‑model definitions and a thin, opinionated client wrapper for the LLM‑Router service. - The data models live in llmrouterlib/datamodels and describe every request payload the router accepts. - The client…">
+<meta name="docs-version" content="0.9.6">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2305070a'/%3E%3Cpath d='M8 22V10M8 16h9M17 10v12M17 13h7M17 19h7' stroke='%2300e59b' stroke-width='2' stroke-linecap='round' fill='none'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="../../assets/docs.css">
+<link rel="stylesheet" href="../../assets/pygments.css">
+<script src="../../assets/docs.js" defer></script>
+</head>
+<body class="page" data-version="0.9.6" data-search="../search.json" data-latest="1.0.7">
+<a class="skip" href="#main">skip to content</a>
+<header class="topbar">
+<div class="topbar-inner">
+<button class="burger" id="burger" aria-label="Toggle documentation menu" aria-expanded="false" aria-controls="sidebar">&#9776;</button>
+<a class="brand" href="../../.."><svg width="21" height="21" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="7" fill="#0b1119" stroke="#1a232e"/><path d="M8 22V10M8 16h9M17 10v12M17 13h7M17 19h7" stroke="#00e59b" stroke-width="2" stroke-linecap="round" fill="none"/></svg><span>llm<span class="dash">-</span>router</span><span class="brand-docs">/docs</span></a>
+<div class="topbar-right">
+<form class="search" id="search" role="search" autocomplete="off">
+<span class="search-icon" aria-hidden="true">&#8981;</span>
+<input id="q" type="search" placeholder="search this version" aria-label="Search documentation" role="combobox" aria-expanded="false" aria-controls="results" aria-autocomplete="list">
+<kbd>/</kbd>
+<div class="results" id="results" role="listbox" aria-label="Search results" hidden></div>
+</form>
+<label class="vselect">
+<span class="sr-only">Documentation version</span>
+<select id="versions" aria-label="Documentation version"><option value="../../1.0.7/llm-router-lib/index.html">1.0.7  · latest</option>
+<option value="../../1.0.6/llm-router-lib/index.html">1.0.6</option>
+<option value="../../1.0.5/llm-router-lib/index.html">1.0.5</option>
+<option value="../../1.0.4/llm-router-lib/index.html">1.0.4</option>
+<option value="../../1.0.3/llm-router-lib/index.html">1.0.3</option>
+<option value="../../1.0.1/llm-router-lib/index.html">1.0.1</option>
+<option value="../../1.0.0/llm-router-lib/index.html">1.0.0</option>
+<option value="index.html" selected>0.9.6</option>
+<option value="../../0.9.5/llm-router-lib/index.html">0.9.5</option>
+<option value="../../0.9.4/llm-router-lib/index.html">0.9.4</option>
+<option value="../../0.9.2/llm-router-lib/index.html">0.9.2</option>
+<option value="../../0.9.1/llm-router-lib/index.html">0.9.1</option>
+<option value="../../0.9.0/llm-router-lib/index.html">0.9.0</option>
+<option value="../../0.8.0/llm-router-lib/index.html">0.8.0</option>
+<option value="../../0.7.0/llm-router-lib/index.html">0.7.0</option>
+<option value="../../0.6.9/llm-router-lib/index.html">0.6.9</option>
+<option value="../../0.6.8/llm-router-lib/index.html">0.6.8</option>
+<option value="../../0.6.7/llm-router-lib/index.html">0.6.7</option>
+<option value="../../0.6.6/llm-router-lib/index.html">0.6.6</option>
+<option value="../../0.6.5/llm-router-lib/index.html">0.6.5</option>
+<option value="../../0.6.4/llm-router-lib/index.html">0.6.4</option>
+<option value="../../0.6.3/llm-router-lib/index.html">0.6.3</option>
+<option value="../../0.6.2/llm-router-lib/index.html">0.6.2</option>
+<option value="../../0.6.1/llm-router-lib/index.html">0.6.1</option>
+<option value="../../0.6.0/llm-router-lib/index.html">0.6.0</option>
+<option value="../../0.5.2/llm-router-lib/index.html">0.5.2</option>
+<option value="../../0.5.1/llm-router-lib/index.html">0.5.1</option>
+<option value="../../0.5.0/llm-router-lib/index.html">0.5.0</option>
+<option value="../../0.4.6/llm-router-lib/index.html">0.4.6</option>
+<option value="../../0.4.5/llm-router-lib/index.html">0.4.5</option>
+<option value="../../0.4.4/llm-router-lib/index.html">0.4.4</option>
+<option value="../../0.4.3/llm-router-lib/index.html">0.4.3</option>
+<option value="../../0.4.2/llm-router-lib/index.html">0.4.2</option>
+<option value="../../0.4.1/llm-router-lib/index.html">0.4.1</option>
+<option value="../../0.4.0/llm-router-lib/index.html">0.4.0</option>
+<option value="../../0.3.1/llm-router-lib/index.html">0.3.1</option>
+<option value="../../0.3.0/llm-router-lib/index.html">0.3.0</option>
+<option value="../../0.2.3/llm-router-lib/index.html">0.2.3</option>
+<option value="../../0.2.2/llm-router-lib/index.html">0.2.2</option>
+<option value="../../0.2.1/llm-router-lib/index.html">0.2.1</option>
+<option value="../../0.2.0/index.html">0.2.0</option>
+<option value="../../0.1.1/index.html">0.1.1</option>
+<option value="../../0.1.0/index.html">0.1.0</option></select>
+</label>
+<a class="iconbtn" href="https://github.com/radlab-dev-group/llm-router" aria-label="Repository on GitHub" title="Repository on GitHub"><svg width="17" height="17" viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8a8 8 0 0 0 5.47 7.59c.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.46-.53.42-.02.72.39.82.55.48.81 1.25.94 1.56.73.2-.27.6-.94.94-1.13-.01-.2-.05-.82-.14-.98-.6.1-1.22.2-1.87.2-1.9 0-3.62-1.13-3.62-3.53 0-.78.28-1.42.74-1.92-.07-.18-.32-.91.07-1.9 0 0 .6-.19 1.97.74a6.8 6.8 0 0 1 3.58 0c1.37-.93 1.97-.74 1.97-.74.39.99.14 1.72.07 1.9.46.5.74 1.14.74 1.92 0 2.41-1.47 3.53-3.87 3.72.3.26.57.77.57 1.56 0 1.13-.012.04-.01 2.32 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg></a>
+</div>
+</div>
+</header>
+<div class="scrim" id="scrim" hidden></div>
+<div class="shell">
+<aside class="sidebar" id="sidebar"><div class="side-head"><span class="side-v mono">v0.9.6</span><span class="side-tag old">archived</span></div><a class="side-hub" href="../index.html">documentation index</a><nav class="nav-tree" aria-label="Documentation"><section class="nav-sec"><h2 class="nav-sec-title"><a href="../overview.html">Getting started</a></h2><ul><li><a href="../overview.html">Overview</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../llm-router-api/docs/env-definitions.html">Configuration</a></h2><ul><li><a href="../llm-router-api/docs/env-definitions.html">Environment Variables</a></li><li><a href="../llm-router-api/docs/models-config.html">Models configuration description (JSON)</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../llm-router-api/docs/keepalive.html">Routing &amp; resilience</a></h2><ul><li><a href="../llm-router-api/docs/keepalive.html">Keep‑Alive Utility Overview</a></li><li><a href="../llm-router-api/docs/lb-strategies.html">Load Balancing Strategies</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../llm-router-api/core/auditor/index.html">Security &amp; auditing</a></h2><ul><li><a href="../llm-router-api/core/auditor/index.html">Auditing subsystem – llm-router</a></li><li><a href="../llm-router-api/docs/authentication.html">Authentication &amp; Authorization</a></li><li><a href="../llm-router-api/docs/rate-limiting.html">Rate Limiting</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../llm-router-api/docs/routing-metrics.html">Observability</a></h2><ul><li><a href="../llm-router-api/docs/routing-metrics.html">Router Prometheus Metrics</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../llm-router-api/index.html">REST API</a></h2><ul><li><a href="../llm-router-api/index.html">REST API reference</a></li><li><a href="../llm-router-api/endpoints/index.html">Endpoints Overview</a></li><li><a href="../llm-router-api/endpoints/readme-pl.html">Jak tworzyć endpointy w llm-proxy-api – przewodnik</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../llm-router-cli/index.html">CLI</a></h2><ul><li><a href="../llm-router-cli/index.html">llm-router CLI — Command Reference</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="index.html">Python library</a></h2><ul><li><a href="index.html" class="active">llmrouterlib</a></li><li><a href="response-models.html">Response models</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../helm-charts/index.html">Deployment</a></h2><ul><li><a href="../helm-charts/index.html">LLM‑Router Helm Chart</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../examples/index.html">Examples</a></h2><ul><li><a href="../examples/index.html">Integration Examples with LLM Router</a></li><li><a href="../examples/quickstart/index.html">Full Stack with Local Models</a></li><li><a href="../examples/readme-llamaindex.html">Using LlamaIndex with Local Models via the LLM‑Router</a></li><li><a href="../examples/quickstart/google-gemma3-12b-it/vllm.html">vLLM + google/gemma‑3‑12b‑it – Quick‑Start Guide (Ubuntu)</a></li><li><a href="../examples/quickstart/speakleash-bielik-11b-v2-3-instruct/vllm.html">vLLM + speakleash/Bielik-11B-v2.3-Instruct – Przewodnik Szybkiego Startu (Ubuntu)</a></li><li><a href="../examples/quickstart/speakleash-bielik-11b-v2-3-instruct/index.html">🚀 Przewodnik Szybkiego Startu dla speakleash/Bielik-11B-v2.3-Instruct z vLLM &amp; LLM‑Router</a></li><li><a href="../examples/quickstart/google-gemma3-12b-it/index.html">🚀 Quick‑Start Guide for google/gemma-3-12b‑it with vLLM &amp; LLM‑Router</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../changelog.html">Release notes</a></h2><ul><li><a href="../changelog.html">Changelog</a></li></ul></section></nav><div class="side-foot"><a href="../../..">&larr;&nbsp;landing page</a><a class="mono" href="../search.json">search.json</a></div></aside>
+<main class="main" id="main"><nav class="crumbs" aria-label="Breadcrumb">
+<a href="../../..">llm-router</a><span class="sep">/</span><a href="../index.html">docs</a><span class="sep">/</span><a href="index.html">Python library</a><span class="sep">/</span><em>llmrouterlib</em>
+</nav>
+<article class="prose"><h1 id="llmrouterlib">llmrouterlib<a class="headerlink" href="#llmrouterlib" title="link to this section">#</a></h1>
+<h2 id="overview">Overview<a class="headerlink" href="#overview" title="link to this section">#</a></h2>
+<p><code>llm_router_lib</code> bundles <strong>Pydantic data‑model definitions</strong> <strong>and</strong> a <strong>thin, opinionated client wrapper</strong> for the
+LLM‑Router service.</p>
+<ul>
+<li>The <strong>data models</strong> live in <code>llm_router_lib/data_models</code> and describe every request payload the router accepts.</li>
+<li>The <strong>client</strong> (<code>LLMRouterClient</code>) offers a high‑level, Pythonic API that hides HTTP details, retries, and error
+  handling.</li>
+<li>Low‑level <strong>service classes</strong> (<code>ConversationWithModelService</code>, <code>ExtendedConversationWithModelService</code>,
+  <code>TranslateService</code>,
+  <code>GenerativeAnswerService</code>, health services) perform the actual HTTP calls and can be used directly when finer‑grained
+  control is required.</li>
+<li><code>HttpRequester</code> (in <code>utils/http.py</code>) is a small wrapper around <code>requests</code> that adds logging, configurable retries, and
+  unified error translation.</li>
+<li>A dedicated <strong>exception hierarchy</strong> (<code>exceptions.py</code>) maps HTTP errors to meaningful Python exceptions.</li>
+</ul>
+<p>In short, <code>llm_router_lib</code> provides <strong>both</strong> the contract (the “schema”) <strong>and</strong> a convenient client to consume the
+router service.</p>
+<h2 id="installation">Installation<a class="headerlink" href="#installation" title="link to this section">#</a></h2>
+<p>The library targets <strong>Python 3.10.6</strong> and uses a <code>virtualenv</code>. Install it in editable mode for development:</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Clone the repository (if you haven&#39;t already)</span>
+
+git<span class="w"> </span>clone<span class="w"> </span>https://github.com/radlab-dev-group/llm-router.git
+<span class="nb">cd</span><span class="w"> </span>llm-router/llm_router_lib
+
+<span class="c1"># Create and activate a virtual environment</span>
+
+python3<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>.venv
+<span class="nb">source</span><span class="w"> </span>.venv/bin/activate
+
+<span class="c1"># Install the package and its dependencies</span>
+
+pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.
+</code></pre></div>
+
+<p>All runtime dependencies (<code>requests</code>, <code>pydantic</code>, plus the packages listed in <code>requirements.txt</code>) are declared in the
+project’s <code>requirements.txt</code>.</p>
+<h2 id="quick-start">Quick start<a class="headerlink" href="#quick-start" title="link to this section">#</a></h2>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">llm_router_lib</span> <span class="kn">import</span> <span class="n">LLMRouterClient</span>
+
+<span class="c1"># Initialise the client – point it at the router’s host (do **not** include the `/api` prefix)</span>
+
+<span class="n">client</span> <span class="o">=</span> <span class="n">LLMRouterClient</span><span class="p">(</span>
+    <span class="n">api</span><span class="o">=</span><span class="s2">&quot;http://localhost:8080&quot;</span><span class="p">,</span>  <span class="c1"># router host URL</span>
+    <span class="n">token</span><span class="o">=</span><span class="s2">&quot;YOUR_ROUTER_TOKEN&quot;</span><span class="p">,</span>  <span class="c1"># optional, if router requires auth</span>
+<span class="p">)</span>
+
+<span class="c1"># Call the standard conversation endpoint with named keyword arguments –</span>
+<span class="c1"># the client builds the Pydantic request model for you.</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">conversation_with_model</span><span class="p">(</span>
+    <span class="n">user_last_statement</span><span class="o">=</span><span class="s2">&quot;Hello, how are you?&quot;</span><span class="p">,</span>
+    <span class="n">model</span><span class="o">=</span><span class="s2">&quot;google/gemma-3-12b-it&quot;</span><span class="p">,</span>
+    <span class="n">temperature</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span>
+    <span class="n">max_new_tokens</span><span class="o">=</span><span class="mi">128</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># response is a typed `ConversationResponse` model:</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">response</span><span class="p">)</span>  <span class="c1"># → the assistant&#39;s reply text</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">generation_time</span><span class="p">)</span>  <span class="c1"># → seconds taken by the server</span>
+</code></pre></div>
+
+<p>You can also pass a ready‑made <code>pydantic</code> request model via the <code>payload</code>
+keyword (all endpoint parameters are keyword‑only – there are no positional arguments):</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">llm_router_lib.data_models.builtin_chat</span> <span class="kn">import</span> <span class="n">ConversationWithModelRequest</span>
+
+<span class="n">payload</span> <span class="o">=</span> <span class="n">ConversationWithModelRequest</span><span class="p">(</span>
+    <span class="n">model_name</span><span class="o">=</span><span class="s2">&quot;google/gemma-3-12b-it&quot;</span><span class="p">,</span>
+    <span class="n">user_last_statement</span><span class="o">=</span><span class="s2">&quot;Hello, how are you?&quot;</span><span class="p">,</span>
+    <span class="n">temperature</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span>
+    <span class="n">max_new_tokens</span><span class="o">=</span><span class="mi">128</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">conversation_with_model</span><span class="p">(</span><span class="n">payload</span><span class="o">=</span><span class="n">payload</span><span class="p">)</span>
+</code></pre></div>
+
+<blockquote>
+<p><strong>Note:</strong> raw <code>dict</code> payloads are no longer accepted – passing a <code>dict</code> as
+<code>payload</code> raises <code>TypeError</code>. Build the matching Pydantic model explicitly
+(e.g. <code>ConversationWithModelRequest(**dict_payload)</code>) or use the named
+keyword arguments. Calling a generation method with neither <code>payload</code> nor
+enough named arguments raises <code>NoArgsAndNoPayloadError</code>.</p>
+</blockquote>
+<h2 id="data-models">Data models<a class="headerlink" href="#data-models" title="link to this section">#</a></h2>
+<p>All request payloads are defined in <code>llm_router_lib/data_models</code>.<br />
+A common base class supplies shared options:</p>
+<div class="codehilite"><pre><span></span><code><span class="k">class</span> <span class="nc">BaseModelOptions</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Options shared across many endpoint models.&quot;&quot;&quot;</span>
+    <span class="n">mask_payload</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">masker_pipeline</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+</code></pre></div>
+
+<h3 id="conversation-models">Conversation models<a class="headerlink" href="#conversation-models" title="link to this section">#</a></h3>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th>Required fields</th>
+<th>Optional / extra fields</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ConversationWithModelRequest</code></td>
+<td><code>model_name</code>, <code>user_last_statement</code></td>
+<td><code>temperature</code>, <code>max_new_tokens</code>, <code>historical_messages</code>, …</td>
+</tr>
+<tr>
+<td><code>ExtendedConversationWithModelRequest</code></td>
+<td>All of the above + <code>system_prompt</code></td>
+<td>–</td>
+</tr>
+</tbody>
+</table>
+<h3 id="utility-models-selected-examples">Utility models (selected examples)<a class="headerlink" href="#utility-models-selected-examples" title="link to this section">#</a></h3>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th>Required fields</th>
+<th>Optional fields (generation parameters)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GenerateQuestionsModel</code></td>
+<td><code>texts</code> + <code>model_name</code></td>
+<td><code>number_of_questions</code>, generation opts</td>
+</tr>
+<tr>
+<td><code>GenerateArticleFromTextModel</code></td>
+<td><code>text</code> + <code>model_name</code></td>
+<td>generation opts</td>
+</tr>
+<tr>
+<td><code>TranslateModel</code></td>
+<td><code>texts</code> + <code>model_name</code></td>
+<td>generation opts</td>
+</tr>
+<tr>
+<td><code>GenerativeAnswerModel</code></td>
+<td><code>question_str</code>, <code>texts</code> + <code>model_name</code></td>
+<td><code>doc_name_in_answer</code>, <code>question_prompt</code>, <code>system_prompt</code>, generation opts</td>
+</tr>
+<tr>
+<td><code>OpenAIChatModel</code> (OpenAI‑compatible)</td>
+<td><code>model</code>, <code>messages</code></td>
+<td><code>stream</code>, <code>keep_alive</code>, <code>language</code>, <code>options</code></td>
+</tr>
+<tr>
+<td><code>SimplifyTextModel</code></td>
+<td><code>texts</code>, <code>model_name</code></td>
+<td>generation opts</td>
+</tr>
+<tr>
+<td><code>CreateFullArticleFromTextsModel</code></td>
+<td><code>user_query</code>, <code>texts</code>, <code>model_name</code></td>
+<td><code>article_type</code>, generation opts</td>
+</tr>
+<tr>
+<td><code>GenerateLabelModel</code></td>
+<td><code>texts</code> + <code>model_name</code></td>
+<td>generation opts</td>
+</tr>
+</tbody>
+</table>
+<p><em>(All utility models inherit from <code>BaseModelOptions</code> and therefore share the <code>mask_payload</code> and <code>masker_pipeline</code>
+flags.)</em></p>
+<h2 id="services-lowlevel-wrappers">Services (low‑level wrappers)<a class="headerlink" href="#services-lowlevel-wrappers" title="link to this section">#</a></h2>
+<p>If you need direct access to the HTTP layer, the library exposes a set of service classes in <code>llm_router_lib/services</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Service class</th>
+<th>Endpoint (relative to <code>api</code>)</th>
+<th>Payload model (if any)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ConversationWithModelService</code></td>
+<td><code>/api/conversation_with_model</code></td>
+<td><code>ConversationWithModelRequest</code></td>
+</tr>
+<tr>
+<td><code>ExtendedConversationWithModelService</code></td>
+<td><code>/api/extended_conversation_with_model</code></td>
+<td><code>ExtendedConversationWithModelRequest</code></td>
+</tr>
+<tr>
+<td><code>TranslateService</code></td>
+<td><code>/api/translate</code></td>
+<td><code>TranslateModel</code></td>
+</tr>
+<tr>
+<td><code>SimplifyTextService</code></td>
+<td><code>/api/simplify_text</code></td>
+<td><code>SimplifyTextModel</code></td>
+</tr>
+<tr>
+<td><code>GenerativeAnswerService</code></td>
+<td><code>/api/generative_answer</code></td>
+<td><code>GenerativeAnswerModel</code></td>
+</tr>
+<tr>
+<td><code>GenerateQuestionsService</code></td>
+<td><code>/api/generate_questions</code></td>
+<td><code>GenerateQuestionsModel</code></td>
+</tr>
+<tr>
+<td><code>GenerateLabelService</code></td>
+<td><code>/api/generate_label</code></td>
+<td><code>GenerateLabelModel</code></td>
+</tr>
+<tr>
+<td><code>PingService</code></td>
+<td><code>/api/ping</code></td>
+<td><em>none</em></td>
+</tr>
+<tr>
+<td><code>VersionService</code></td>
+<td><code>/api/version</code></td>
+<td><em>none</em></td>
+</tr>
+</tbody>
+</table>
+<p>These services inherit from <code>BaseConversationServiceInterface</code>, which provides <code>call_post</code> and <code>call_get</code> helpers that
+perform JSON parsing and raise the library‑specific exceptions on failure.</p>
+<h3 id="example-using-a-service-directly">Example: using a service directly<a class="headerlink" href="#example-using-a-service-directly" title="link to this section">#</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">llm_router_lib.services.conversation</span> <span class="kn">import</span> <span class="n">ConversationWithModelService</span>
+<span class="kn">from</span> <span class="nn">llm_router_lib.utils.http</span> <span class="kn">import</span> <span class="n">HttpRequester</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+
+<span class="n">http</span> <span class="o">=</span> <span class="n">HttpRequester</span><span class="p">(</span><span class="n">base_url</span><span class="o">=</span><span class="s2">&quot;http://localhost:8080&quot;</span><span class="p">,</span> <span class="n">token</span><span class="o">=</span><span class="s2">&quot;...&quot;</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;demo&quot;</span><span class="p">)</span>
+
+<span class="n">service</span> <span class="o">=</span> <span class="n">ConversationWithModelService</span><span class="p">(</span><span class="n">http</span><span class="p">,</span> <span class="n">logger</span><span class="p">)</span>
+<span class="n">payload</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;model_name&quot;</span><span class="p">:</span> <span class="s2">&quot;google/gemma-3-12b-it&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;user_last_statement&quot;</span><span class="p">:</span> <span class="s2">&quot;Hi!&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">service</span><span class="o">.</span><span class="n">call_post</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+</code></pre></div>
+
+<h2 id="thin-client-wrapper-llmrouterclient">Thin client wrapper (<code>LLMRouterClient</code>)<a class="headerlink" href="#thin-client-wrapper-llmrouterclient" title="link to this section">#</a></h2>
+<p><code>LLMRouterClient</code> aggregates the low‑level services and exposes a concise, high‑level API:</p>
+<p>Every endpoint method shares <strong>one keyword‑only calling contract</strong>: pass a pre‑built Pydantic request model via
+<code>payload=…</code>, <strong>or</strong> pass the named domain arguments (plus <code>model</code> and optional <code>temperature</code> / <code>max_new_tokens</code>) and the
+client builds the request model for you. Raw <code>dict</code> payloads are rejected (<code>TypeError</code>); generation defaults come from
+the Pydantic models. Calling a generation method with neither <code>payload</code> nor enough named arguments raises
+<code>NoArgsAndNoPayloadError</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Endpoint</th>
+<th>Domain arguments (all keyword‑only)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>conversation_with_model(...)</code></td>
+<td><code>POST /api/conversation_with_model</code></td>
+<td><code>user_last_statement</code>, <code>historical_messages</code>, <code>model</code>, <code>temperature</code>, <code>max_new_tokens</code></td>
+</tr>
+<tr>
+<td><code>extended_conversation_with_model(...)</code></td>
+<td><code>POST /api/extended_conversation_with_model</code></td>
+<td><code>user_last_statement</code>, <code>historical_messages</code>, <code>system_prompt</code>, <code>model</code>, <code>temperature</code>, <code>max_new_tokens</code></td>
+</tr>
+<tr>
+<td><code>polarity_3c(...)</code></td>
+<td><code>POST /api/polarity_3c</code></td>
+<td><code>texts</code>, <code>model</code>, <code>temperature</code>, <code>max_new_tokens</code></td>
+</tr>
+<tr>
+<td><code>translate(...)</code></td>
+<td><code>POST /api/translate</code></td>
+<td><code>texts</code>, <code>model</code>, <code>temperature</code>, <code>max_new_tokens</code></td>
+</tr>
+<tr>
+<td><code>simplify_text(...)</code></td>
+<td><code>POST /api/simplify_text</code></td>
+<td><code>texts</code>, <code>model</code>, <code>temperature</code>, <code>max_new_tokens</code></td>
+</tr>
+<tr>
+<td><code>generative_answer(...)</code></td>
+<td><code>POST /api/generative_answer</code></td>
+<td><code>texts</code>, <code>question_str</code>, <code>model</code>, <code>temperature</code>, <code>max_new_tokens</code></td>
+</tr>
+<tr>
+<td><code>generate_article_from_text(...)</code></td>
+<td><code>POST /api/generate_article_from_text</code></td>
+<td><code>text</code>, <code>model</code>, <code>temperature</code>, <code>max_new_tokens</code></td>
+</tr>
+<tr>
+<td><code>generate_article_from_texts(...)</code></td>
+<td><code>POST /api/generate_article_from_texts</code></td>
+<td><code>texts</code>, <code>model</code>, <code>temperature</code>, <code>max_new_tokens</code></td>
+</tr>
+<tr>
+<td><code>create_full_article_from_texts(...)</code></td>
+<td><code>POST /api/create_full_article_from_texts</code></td>
+<td><code>user_query</code>, <code>texts</code>, <code>article_type</code>, <code>model</code>, <code>temperature</code>, <code>max_new_tokens</code></td>
+</tr>
+<tr>
+<td><code>generate_questions(...)</code></td>
+<td><code>POST /api/generate_questions</code></td>
+<td><code>texts</code>, <code>number_of_questions</code>, <code>model</code>, <code>temperature</code>, <code>max_new_tokens</code></td>
+</tr>
+<tr>
+<td><code>generate_label(...)</code></td>
+<td><code>POST /api/generate_label</code></td>
+<td><code>texts</code>, <code>model</code>, <code>temperature</code>, <code>max_new_tokens</code></td>
+</tr>
+<tr>
+<td><code>ping()</code></td>
+<td><code>GET /api/ping</code></td>
+<td>– (health‑check endpoint)</td>
+</tr>
+<tr>
+<td><code>version()</code></td>
+<td><code>GET /api/version</code></td>
+<td>– (router version information)</td>
+</tr>
+<tr>
+<td><code>models()</code></td>
+<td><code>GET /v1/models</code></td>
+<td>– (available model list; use <code>.ids</code> / <code>.data</code>)</td>
+</tr>
+</tbody>
+</table>
+<p>Every method above also accepts <code>payload=&lt;RequestModel&gt;</code> as the alternative to the named arguments (e.g.
+<code>translate(payload=TranslateModel(...))</code>).</p>
+<p>All methods return a <strong>typed response model</strong> (a Pydantic <code>BaseModel</code>) validated from the JSON body — see
+<a href="response-models.html"><code>RESPONSE_MODELS.md</code></a> for the full reference and the method→model mapping. Call
+<code>.model_dump()</code> on the result to get the plain <code>dict</code> back. Errors from the underlying HTTP layer are translated into
+the following exceptions (defined in <code>exceptions.py</code>):</p>
+<ul>
+<li><code>LLMRouterError</code> – base class for all library‑specific errors.</li>
+<li><code>AuthenticationError</code> – HTTP 401/403 (invalid or missing token).</li>
+<li><code>RateLimitError</code> – HTTP 429 (too many requests).</li>
+<li><code>ValidationError</code> – HTTP 400 (malformed payload).</li>
+<li><code>NoArgsAndNoPayloadError</code> – client‑side validation: raised when a generation method is called without <code>payload</code> and
+  without enough named arguments.</li>
+</ul>
+<p>:::tip <strong>Field naming across models</strong></p>
+<p>Models for the built‑in generative endpoints use <code>model_name</code> as the field key (e.g.
+<code>ConversationWithModelRequest</code>). The OpenAI‑compatible endpoint model uses <code>model</code> instead, to match the official
+OpenAI API schema:</p>
+<table>
+<thead>
+<tr>
+<th>Model class</th>
+<th>Key for model identifier</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ConversationWithModelRequest</code></td>
+<td><code>model_name</code></td>
+</tr>
+<tr>
+<td><code>OpenAIChatModel</code></td>
+<td><code>model</code></td>
+</tr>
+</tbody>
+</table>
+<p>:::</p>
+<p>:::tip <strong>Context manager support</strong></p>
+<p>All public types (<code>LLMRouterClient</code>, <code>HttpRequester</code>) implement <code>__enter__</code> / <code>__exit__</code>, so they can be used with
+the
+<code>with</code> statement to guarantee resource cleanup:</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">llm_router_lib</span> <span class="kn">import</span> <span class="n">LLMRouterClient</span>
+
+<span class="k">with</span> <span class="n">LLMRouterClient</span><span class="p">(</span><span class="n">api</span><span class="o">=</span><span class="s2">&quot;http://localhost:8080&quot;</span><span class="p">,</span> <span class="n">token</span><span class="o">=</span><span class="s2">&quot;...&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">client</span><span class="p">:</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">conversation_with_model</span><span class="p">(</span>  <span class="c1"># session closed automatically</span>
+        <span class="n">user_last_statement</span><span class="o">=</span><span class="s2">&quot;Hi!&quot;</span><span class="p">,</span>
+        <span class="n">model</span><span class="o">=</span><span class="s2">&quot;google/gemma-3-12b-it&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+</code></pre></div>
+
+<p>:::</p>
+<h2 id="utilities">Utilities<a class="headerlink" href="#utilities" title="link to this section">#</a></h2>
+<ul>
+<li>
+<p><strong><code>utils/http.py</code> – <code>HttpRequester</code></strong><br />
+  Handles URL construction, bearer‑token injection, configurable retries (via <code>urllib3.Retry</code>), and unified error
+  mapping. It returns the raw <code>requests.Response</code> after validation.</p>
+</li>
+<li>
+<p><strong><code>exceptions.py</code></strong> – centralised exception definitions (see above).</p>
+</li>
+</ul>
+<h2 id="development-testing">Development &amp; testing<a class="headerlink" href="#development-testing" title="link to this section">#</a></h2>
+<p>The repository includes a small test harness under <code>llm_router_lib/tests</code>. Example usage:</p>
+<div class="codehilite"><pre><span></span><code>python<span class="w"> </span>-m<span class="w"> </span>llm_router_lib.tests.llm_router_client
+</code></pre></div>
+
+<p>This script spins up a <code>LLMRouterClient</code> instance and runs a suite of end‑to‑end tests covering conversation, extended
+conversation, translation, generative answering, and health checks.</p></article>
+<nav class="pager" aria-label="Previous and next page"><a class="next" href="response-models.html"><span class="dir">next &rarr;</span><span class="pt">Response models</span></a></nav>
+<footer class="doc-meta">
+<div class="meta-row"><span class="meta-k">source</span><a class="mono" href="https://github.com/radlab-dev-group/llm-router/blob/v0.9.6/llm_router_lib/README.md">llm_router_lib/README.md</a></div>
+<div class="meta-row"><span class="meta-k">last commit</span><time datetime="2026-08-31T08:29:03+02:00">2026-08-31</time></div>
+<div class="meta-row"><span class="meta-k">built from</span><span class="mono">v0.9.6&nbsp;@&nbsp;ab3e739</span></div>
+<p class="hint">Generated from the Markdown file in the repository: commit a change and the next build republishes it for every release that contains it.</p>
+</footer>
+<footer class="foot"><div class="foot-inner">
+<span class="mono">llm-router &middot; docs are generated from the repository by <code>tools/build_docs.py</code></span>
+<span class="mono"><a href="https://github.com/radlab-dev-group/llm-router/tree/v0.9.6">0.9.6</a> @ <code>ab3e739</code></span>
+</div></footer>
+</main>
+<aside class="dtoc" id="dtoc"><h2 class="toc-title">on this page</h2><div class="toc-body"><ul><li><a href="#overview">Overview</a></li><li><a href="#installation">Installation</a></li><li><a href="#quick-start">Quick start</a></li><li><a href="#data-models">Data models</a><ul><li><a href="#conversation-models">Conversation models</a></li><li><a href="#utility-models-selected-examples">Utility models (selected examples)</a></li></ul></li><li><a href="#services-lowlevel-wrappers">Services (low‑level wrappers)</a><ul><li><a href="#example-using-a-service-directly">Example: using a service directly</a></li></ul></li><li><a href="#thin-client-wrapper-llmrouterclient">Thin client wrapper (LLMRouterClient)</a></li><li><a href="#utilities">Utilities</a></li><li><a href="#development-testing">Development &amp;amp; testing</a></li></ul></div></aside>
+</div>
+</body>
+</html>

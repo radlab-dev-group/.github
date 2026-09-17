@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Using LlamaIndex with Local Models via the LLM‑Router · v0.4.2 · llm-router docs</title>
+<meta name="description" content="LlamaIndex’s OpenAI wrapper expects OpenAI‑style model names (e.g. gpt-3.5-turbo, gpt-4). When you want to run local models (Gemma, Ollama, vLLM, etc.) behind an LLM‑Router, the router must translate those OpenAI names to the actual model…">
+<meta name="theme-color" content="#05070a">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Using LlamaIndex with Local Models via the LLM‑Router · v0.4.2 · llm-router docs">
+<meta property="og:description" content="LlamaIndex’s OpenAI wrapper expects OpenAI‑style model names (e.g. gpt-3.5-turbo, gpt-4). When you want to run local models (Gemma, Ollama, vLLM, etc.) behind an LLM‑Router, the router must translate those OpenAI names to the actual model…">
+<meta name="docs-version" content="0.4.2">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2305070a'/%3E%3Cpath d='M8 22V10M8 16h9M17 10v12M17 13h7M17 19h7' stroke='%2300e59b' stroke-width='2' stroke-linecap='round' fill='none'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="../../assets/docs.css">
+<link rel="stylesheet" href="../../assets/pygments.css">
+<script src="../../assets/docs.js" defer></script>
+</head>
+<body class="page" data-version="0.4.2" data-search="../search.json" data-latest="1.0.7">
+<a class="skip" href="#main">skip to content</a>
+<header class="topbar">
+<div class="topbar-inner">
+<button class="burger" id="burger" aria-label="Toggle documentation menu" aria-expanded="false" aria-controls="sidebar">&#9776;</button>
+<a class="brand" href="../../.."><svg width="21" height="21" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="7" fill="#0b1119" stroke="#1a232e"/><path d="M8 22V10M8 16h9M17 10v12M17 13h7M17 19h7" stroke="#00e59b" stroke-width="2" stroke-linecap="round" fill="none"/></svg><span>llm<span class="dash">-</span>router</span><span class="brand-docs">/docs</span></a>
+<div class="topbar-right">
+<form class="search" id="search" role="search" autocomplete="off">
+<span class="search-icon" aria-hidden="true">&#8981;</span>
+<input id="q" type="search" placeholder="search this version" aria-label="Search documentation" role="combobox" aria-expanded="false" aria-controls="results" aria-autocomplete="list">
+<kbd>/</kbd>
+<div class="results" id="results" role="listbox" aria-label="Search results" hidden></div>
+</form>
+<label class="vselect">
+<span class="sr-only">Documentation version</span>
+<select id="versions" aria-label="Documentation version"><option value="../../1.0.7/examples/readme-llamaindex.html">1.0.7  · latest</option>
+<option value="../../1.0.6/examples/readme-llamaindex.html">1.0.6</option>
+<option value="../../1.0.5/examples/readme-llamaindex.html">1.0.5</option>
+<option value="../../1.0.4/examples/readme-llamaindex.html">1.0.4</option>
+<option value="../../1.0.3/examples/readme-llamaindex.html">1.0.3</option>
+<option value="../../1.0.1/examples/readme-llamaindex.html">1.0.1</option>
+<option value="../../1.0.0/examples/readme-llamaindex.html">1.0.0</option>
+<option value="../../0.9.6/examples/readme-llamaindex.html">0.9.6</option>
+<option value="../../0.9.5/examples/readme-llamaindex.html">0.9.5</option>
+<option value="../../0.9.4/examples/readme-llamaindex.html">0.9.4</option>
+<option value="../../0.9.2/examples/readme-llamaindex.html">0.9.2</option>
+<option value="../../0.9.1/examples/readme-llamaindex.html">0.9.1</option>
+<option value="../../0.9.0/examples/readme-llamaindex.html">0.9.0</option>
+<option value="../../0.8.0/examples/readme-llamaindex.html">0.8.0</option>
+<option value="../../0.7.0/examples/readme-llamaindex.html">0.7.0</option>
+<option value="../../0.6.9/examples/readme-llamaindex.html">0.6.9</option>
+<option value="../../0.6.8/examples/readme-llamaindex.html">0.6.8</option>
+<option value="../../0.6.7/examples/readme-llamaindex.html">0.6.7</option>
+<option value="../../0.6.6/examples/readme-llamaindex.html">0.6.6</option>
+<option value="../../0.6.5/examples/readme-llamaindex.html">0.6.5</option>
+<option value="../../0.6.4/examples/readme-llamaindex.html">0.6.4</option>
+<option value="../../0.6.3/examples/readme-llamaindex.html">0.6.3</option>
+<option value="../../0.6.2/examples/readme-llamaindex.html">0.6.2</option>
+<option value="../../0.6.1/examples/readme-llamaindex.html">0.6.1</option>
+<option value="../../0.6.0/examples/readme-llamaindex.html">0.6.0</option>
+<option value="../../0.5.2/examples/readme-llamaindex.html">0.5.2</option>
+<option value="../../0.5.1/examples/readme-llamaindex.html">0.5.1</option>
+<option value="../../0.5.0/examples/readme-llamaindex.html">0.5.0</option>
+<option value="../../0.4.6/examples/readme-llamaindex.html">0.4.6</option>
+<option value="../../0.4.5/examples/readme-llamaindex.html">0.4.5</option>
+<option value="../../0.4.4/examples/readme-llamaindex.html">0.4.4</option>
+<option value="../../0.4.3/examples/readme-llamaindex.html">0.4.3</option>
+<option value="readme-llamaindex.html" selected>0.4.2</option>
+<option value="../../0.4.1/examples/readme-llamaindex.html">0.4.1</option>
+<option value="../../0.4.0/examples/readme-llamaindex.html">0.4.0</option>
+<option value="../../0.3.1/index.html">0.3.1</option>
+<option value="../../0.3.0/index.html">0.3.0</option>
+<option value="../../0.2.3/index.html">0.2.3</option>
+<option value="../../0.2.2/index.html">0.2.2</option>
+<option value="../../0.2.1/index.html">0.2.1</option>
+<option value="../../0.2.0/index.html">0.2.0</option>
+<option value="../../0.1.1/index.html">0.1.1</option>
+<option value="../../0.1.0/index.html">0.1.0</option></select>
+</label>
+<a class="iconbtn" href="https://github.com/radlab-dev-group/llm-router" aria-label="Repository on GitHub" title="Repository on GitHub"><svg width="17" height="17" viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8a8 8 0 0 0 5.47 7.59c.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.46-.53.42-.02.72.39.82.55.48.81 1.25.94 1.56.73.2-.27.6-.94.94-1.13-.01-.2-.05-.82-.14-.98-.6.1-1.22.2-1.87.2-1.9 0-3.62-1.13-3.62-3.53 0-.78.28-1.42.74-1.92-.07-.18-.32-.91.07-1.9 0 0 .6-.19 1.97.74a6.8 6.8 0 0 1 3.58 0c1.37-.93 1.97-.74 1.97-.74.39.99.14 1.72.07 1.9.46.5.74 1.14.74 1.92 0 2.41-1.47 3.53-3.87 3.72.3.26.57.77.57 1.56 0 1.13-.012.04-.01 2.32 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg></a>
+</div>
+</div>
+</header>
+<div class="scrim" id="scrim" hidden></div>
+<div class="shell">
+<aside class="sidebar" id="sidebar"><div class="side-head"><span class="side-v mono">v0.4.2</span><span class="side-tag old">archived</span></div><a class="side-hub" href="../index.html">documentation index</a><nav class="nav-tree" aria-label="Documentation"><section class="nav-sec"><h2 class="nav-sec-title"><a href="../overview.html">Getting started</a></h2><ul><li><a href="../overview.html">Overview</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../llm-router-api/core/auditor/index.html">Security &amp; auditing</a></h2><ul><li><a href="../llm-router-api/core/auditor/index.html">Auditing subsystem – llm-router</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../llm-router-api/index.html">REST API</a></h2><ul><li><a href="../llm-router-api/index.html">REST API reference</a></li><li><a href="../llm-router-api/endpoints/index.html">Endpoints Overview</a></li><li><a href="../llm-router-api/endpoints/readme-pl.html">Jak tworzyć endpointy w llm-proxy-api – przewodnik</a></li><li><a href="../llm-router-api/keepalive.html">Keep‑Alive Utility Overview</a></li><li><a href="../llm-router-api/lb-strategies.html">Load Balancing Strategies</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../llm-router-lib/index.html">Python library</a></h2><ul><li><a href="../llm-router-lib/index.html">llmrouterlib</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="index.html">Examples</a></h2><ul><li><a href="index.html">Integration Examples with LLM Router</a></li><li><a href="quickstart/index.html">Full Stack with Local Models</a></li><li><a href="readme-llamaindex.html" class="active">Using LlamaIndex with Local Models via the LLM‑Router</a></li><li><a href="quickstart/google-gemma3-12b-it/vllm.html">vLLM + google/gemma‑3‑12b‑it – Quick‑Start Guide (Ubuntu)</a></li><li><a href="quickstart/speakleash-bielik-11b-v2-3-instruct/vllm.html">vLLM + speakleash/Bielik-11B-v2.3-Instruct – Przewodnik Szybkiego Startu (Ubuntu)</a></li><li><a href="quickstart/speakleash-bielik-11b-v2-3-instruct/index.html">🚀 Przewodnik Szybkiego Startu dla speakleash/Bielik-11B-v2.3-Instruct z vLLM &amp; LLM‑Router</a></li><li><a href="quickstart/google-gemma3-12b-it/index.html">🚀 Quick‑Start Guide for google/gemma-3-12b‑it with vLLM &amp; LLM‑Router</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../changelog.html">Release notes</a></h2><ul><li><a href="../changelog.html">Changelog</a></li></ul></section></nav><div class="side-foot"><a href="../../..">&larr;&nbsp;landing page</a><a class="mono" href="../search.json">search.json</a></div></aside>
+<main class="main" id="main"><nav class="crumbs" aria-label="Breadcrumb">
+<a href="../../..">llm-router</a><span class="sep">/</span><a href="../index.html">docs</a><span class="sep">/</span><a href="index.html">Examples</a><span class="sep">/</span><em>Using LlamaIndex with Local Models via the LLM‑Router</em>
+</nav>
+<article class="prose"><h1 id="using-llamaindex-with-local-models-via-the-llmrouter">Using LlamaIndex with Local Models via the LLM‑Router<a class="headerlink" href="#using-llamaindex-with-local-models-via-the-llmrouter" title="link to this section">#</a></h1>
+<p>LlamaIndex’s <code>OpenAI</code> wrapper expects <strong>OpenAI‑style model names</strong> (e.g. <code>gpt-3.5-turbo</code>, <code>gpt-4</code>).<br />
+When you want to run <em>local</em> models (Gemma, Ollama, vLLM, etc.) behind an LLM‑Router, the router must translate those
+OpenAI names to the actual model identifiers used by the local providers.</p>
+<h3 id="why-the-mapping-is-required">Why the mapping is required<a class="headerlink" href="#why-the-mapping-is-required" title="link to this section">#</a></h3>
+<ul>
+<li><strong>LlamaIndex</strong> validates the model name against a known list of OpenAI models to decide whether the call is a chat
+  request, to obtain context‑window size, etc.</li>
+<li>If the wrapper receives a name it does not recognise (e.g. <code>google/gemma-3-12b-it</code>), it raises a <code>ValueError</code> like:</li>
+</ul>
+<div class="codehilite"><pre><span></span><code>ValueError: Unknown model &#39;google/gemma-3-12b-it&#39;. Please provide a valid OpenAI model name …
+</code></pre></div>
+
+<ul>
+<li>By keeping the <em>OpenAI name</em> in the request and letting the router forward the request to the appropriate backend, you
+  get the best of both worlds: LlamaIndex works unchanged, and the traffic is routed to your local model.</li>
+</ul>
+<h3 id="router-configuration">Router configuration<a class="headerlink" href="#router-configuration" title="link to this section">#</a></h3>
+<p>The router’s configuration must contain a <strong>section that lists OpenAI model names</strong> (<code>openai_models</code>).<br />
+Each entry defines one or more <em>providers</em> that actually serve the model.<br />
+The key points are:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong><code>id</code></strong></td>
+<td>Arbitrary identifier for the provider instance.</td>
+</tr>
+<tr>
+<td><strong><code>api_host</code></strong></td>
+<td>URL where the provider’s inference server is reachable.</td>
+</tr>
+<tr>
+<td><strong><code>api_type</code></strong></td>
+<td>The protocol the provider uses (<code>vllm</code>, <code>ollama</code>, …).</td>
+</tr>
+<tr>
+<td><strong><code>model_path</code></strong></td>
+<td><strong>The <em>local</em> model identifier</strong> (e.g. <code>google/gemma-3-12b-it</code>).</td>
+</tr>
+<tr>
+<td><strong><code>weight</code></strong></td>
+<td>Relative load‑balancing weight when several providers are listed.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="example-snippet">Example snippet<a class="headerlink" href="#example-snippet" title="link to this section">#</a></h4>
+<div class="codehilite"><pre><span></span><code><span class="nt">&quot;openai_models&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="err">(...)</span>
+
+<span class="w">    </span><span class="nt">&quot;gpt-3.5-turbo&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;providers&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;gpt_35_turbo-gemma3_12b-vllm-71:7000&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;api_host&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;http://192.168.100.71:7000/&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;api_token&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;api_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;vllm&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;input_size&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">4096</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;model_path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;google/gemma-3-12b-it&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;weight&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">1.0</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;gpt_35_turbo-gemma3_12b-vllm-71:7001&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;api_host&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;http://192.168.100.71:7001/&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;api_token&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;api_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;vllm&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;input_size&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">4096</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;model_path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;google/gemma-3-12b-it&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;weight&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">1.0</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">]</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;gpt-4&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;providers&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;gpt-4-gpt-oss-20b-ollama-66:11434&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;api_host&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;http://192.168.100.66:11434&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;api_token&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;api_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ollama&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;input_size&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">256000</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;model_path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;gpt-oss:120b&quot;</span>
+<span class="w">                </span><span class="p">}</span>
+<span class="w">        </span><span class="p">]</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">},</span>
+
+<span class="err">...</span>
+
+<span class="nt">&quot;active_models&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;openai_models&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="s2">&quot;gpt-3.5-turbo&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;gpt-4&quot;</span>
+
+<span class="w">        </span><span class="err">...</span>
+<span class="w">    </span><span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<h3 id="how-it-works-endtoend">How it works end‑to‑end<a class="headerlink" href="#how-it-works-endtoend" title="link to this section">#</a></h3>
+<ol>
+<li><strong>LlamaIndex code</strong> creates an <code>OpenAI</code> client with a model name that the wrapper knows, e.g.:</li>
+</ol>
+<div class="codehilite"><pre><span></span><code><span class="n">llm</span> <span class="o">=</span> <span class="n">OpenAI</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s2">&quot;gpt-3.5-turbo&quot;</span><span class="p">,</span> <span class="n">api_base</span><span class="o">=</span><span class="s2">&quot;http://localhost:8080&quot;</span><span class="p">,</span> <span class="n">api_key</span><span class="o">=</span><span class="s2">&quot;not-needed&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<ol>
+<li>The request is sent to the <strong>router</strong> (<code>api_base</code>).</li>
+<li>The router looks up <code>"gpt-3.5-turbo"</code> in <code>openai_models</code>, selects a provider, and forwards the request to the
+   provider’s <code>api_host</code>.</li>
+<li>The provider receives the request with <code>model_path="google/gemma-3-12b-it"</code> (or <code>"gpt-oss:120b"</code> for <code>gpt-4</code>) and
+   runs the <em>local</em> model.</li>
+<li>The response travels back through the router to LlamaIndex, which treats it exactly like an OpenAI response.</li>
+</ol>
+<h3 id="checklist-for-a-working-setup">Checklist for a working setup<a class="headerlink" href="#checklist-for-a-working-setup" title="link to this section">#</a></h3>
+<ul>
+<li><strong>Router is running</strong> and reachable at the URL you pass to <code>api_base</code>.</li>
+<li><strong><code>openai_models</code> section</strong> contains all OpenAI names you intend to use from LlamaIndex.</li>
+<li>Each OpenAI name maps to at least one provider with the correct <code>model_path</code>.</li>
+<li>The <strong><code>active_models.openai_models</code></strong> list includes the names you want to expose (otherwise the router will ignore
+  them).</li>
+<li>Local model servers (vLLM, Ollama, etc.) are up and listening on the <code>api_host</code> URLs specified.</li>
+</ul>
+<h3 id="tldr">TL;DR<a class="headerlink" href="#tldr" title="link to this section">#</a></h3>
+<p>*Keep the model names you give to LlamaIndex identical to the OpenAI names defined in the router configuration. The
+router will translate those names to the real local model identifiers (<code>model_path</code>). This mapping is the only thing
+needed for LlamaIndex to work seamlessly with any self�</p></article>
+<nav class="pager" aria-label="Previous and next page"><a class="prev" href="quickstart/index.html"><span class="dir">&larr; previous</span><span class="pt">Full Stack with Local Models</span></a><a class="next" href="quickstart/google-gemma3-12b-it/vllm.html"><span class="dir">next &rarr;</span><span class="pt">vLLM + google/gemma‑3‑12b‑it – Quick‑Start Guide (Ubuntu)</span></a></nav>
+<footer class="doc-meta">
+<div class="meta-row"><span class="meta-k">source</span><a class="mono" href="https://github.com/radlab-dev-group/llm-router/blob/v0.4.2/examples/README_LLAMAINDEX.md">examples/README_LLAMAINDEX.md</a></div>
+<div class="meta-row"><span class="meta-k">last commit</span><time datetime="2025-12-13T04:18:06+01:00">2025-12-13</time></div>
+<div class="meta-row"><span class="meta-k">built from</span><span class="mono">v0.4.2&nbsp;@&nbsp;38ce174</span></div>
+<p class="hint">Generated from the Markdown file in the repository: commit a change and the next build republishes it for every release that contains it.</p>
+</footer>
+<footer class="foot"><div class="foot-inner">
+<span class="mono">llm-router &middot; docs are generated from the repository by <code>tools/build_docs.py</code></span>
+<span class="mono"><a href="https://github.com/radlab-dev-group/llm-router/tree/v0.4.2">0.4.2</a> @ <code>38ce174</code></span>
+</div></footer>
+</main>
+<aside class="dtoc" id="dtoc"><h2 class="toc-title">on this page</h2><div class="toc-body"><ul><li><a href="#why-the-mapping-is-required">Why the mapping is required</a></li><li><a href="#router-configuration">Router configuration</a></li><li><a href="#how-it-works-endtoend">How it works end‑to‑end</a></li><li><a href="#checklist-for-a-working-setup">Checklist for a working setup</a></li><li><a href="#tldr">TL;DR</a></li></ul></div></aside>
+</div>
+</body>
+</html>

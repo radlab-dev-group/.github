@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>llm-router CLI — Command Reference · v0.6.8 · llm-router docs</title>
+<meta name="description" content="Package: llm-router Entry points: - llm-router — main CLI tool (auth, anonymizer) Output: sk-litm-&lt;base62&gt; key (plaintext shown once at creation). Only available for the memory store. Builtin policies: Available presets: Auto-discovered…">
+<meta name="theme-color" content="#05070a">
+<meta property="og:type" content="article">
+<meta property="og:title" content="llm-router CLI — Command Reference · v0.6.8 · llm-router docs">
+<meta property="og:description" content="Package: llm-router Entry points: - llm-router — main CLI tool (auth, anonymizer) Output: sk-litm-&lt;base62&gt; key (plaintext shown once at creation). Only available for the memory store. Builtin policies: Available presets: Auto-discovered…">
+<meta name="docs-version" content="0.6.8">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2305070a'/%3E%3Cpath d='M8 22V10M8 16h9M17 10v12M17 13h7M17 19h7' stroke='%2300e59b' stroke-width='2' stroke-linecap='round' fill='none'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="../../assets/docs.css">
+<link rel="stylesheet" href="../../assets/pygments.css">
+<script src="../../assets/docs.js" defer></script>
+</head>
+<body class="page" data-version="0.6.8" data-search="../search.json" data-latest="1.0.7">
+<a class="skip" href="#main">skip to content</a>
+<header class="topbar">
+<div class="topbar-inner">
+<button class="burger" id="burger" aria-label="Toggle documentation menu" aria-expanded="false" aria-controls="sidebar">&#9776;</button>
+<a class="brand" href="../../.."><svg width="21" height="21" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="7" fill="#0b1119" stroke="#1a232e"/><path d="M8 22V10M8 16h9M17 10v12M17 13h7M17 19h7" stroke="#00e59b" stroke-width="2" stroke-linecap="round" fill="none"/></svg><span>llm<span class="dash">-</span>router</span><span class="brand-docs">/docs</span></a>
+<div class="topbar-right">
+<form class="search" id="search" role="search" autocomplete="off">
+<span class="search-icon" aria-hidden="true">&#8981;</span>
+<input id="q" type="search" placeholder="search this version" aria-label="Search documentation" role="combobox" aria-expanded="false" aria-controls="results" aria-autocomplete="list">
+<kbd>/</kbd>
+<div class="results" id="results" role="listbox" aria-label="Search results" hidden></div>
+</form>
+<label class="vselect">
+<span class="sr-only">Documentation version</span>
+<select id="versions" aria-label="Documentation version"><option value="../../1.0.7/llm-router-cli/index.html">1.0.7  · latest</option>
+<option value="../../1.0.6/llm-router-cli/index.html">1.0.6</option>
+<option value="../../1.0.5/llm-router-cli/index.html">1.0.5</option>
+<option value="../../1.0.4/llm-router-cli/index.html">1.0.4</option>
+<option value="../../1.0.3/llm-router-cli/index.html">1.0.3</option>
+<option value="../../1.0.1/llm-router-cli/index.html">1.0.1</option>
+<option value="../../1.0.0/llm-router-cli/index.html">1.0.0</option>
+<option value="../../0.9.6/llm-router-cli/index.html">0.9.6</option>
+<option value="../../0.9.5/llm-router-cli/index.html">0.9.5</option>
+<option value="../../0.9.4/llm-router-cli/index.html">0.9.4</option>
+<option value="../../0.9.2/llm-router-cli/index.html">0.9.2</option>
+<option value="../../0.9.1/llm-router-cli/index.html">0.9.1</option>
+<option value="../../0.9.0/llm-router-cli/index.html">0.9.0</option>
+<option value="../../0.8.0/llm-router-cli/index.html">0.8.0</option>
+<option value="../../0.7.0/llm-router-cli/index.html">0.7.0</option>
+<option value="../../0.6.9/llm-router-cli/index.html">0.6.9</option>
+<option value="index.html" selected>0.6.8</option>
+<option value="../../0.6.7/llm-router-cli/index.html">0.6.7</option>
+<option value="../../0.6.6/llm-router-cli/index.html">0.6.6</option>
+<option value="../../0.6.5/llm-router-cli/index.html">0.6.5</option>
+<option value="../../0.6.4/llm-router-cli/index.html">0.6.4</option>
+<option value="../../0.6.3/llm-router-cli/index.html">0.6.3</option>
+<option value="../../0.6.2/llm-router-cli/index.html">0.6.2</option>
+<option value="../../0.6.1/llm-router-cli/index.html">0.6.1</option>
+<option value="../../0.6.0/llm-router-cli/index.html">0.6.0</option>
+<option value="../../0.5.2/index.html">0.5.2</option>
+<option value="../../0.5.1/index.html">0.5.1</option>
+<option value="../../0.5.0/index.html">0.5.0</option>
+<option value="../../0.4.6/index.html">0.4.6</option>
+<option value="../../0.4.5/index.html">0.4.5</option>
+<option value="../../0.4.4/index.html">0.4.4</option>
+<option value="../../0.4.3/index.html">0.4.3</option>
+<option value="../../0.4.2/index.html">0.4.2</option>
+<option value="../../0.4.1/index.html">0.4.1</option>
+<option value="../../0.4.0/index.html">0.4.0</option>
+<option value="../../0.3.1/index.html">0.3.1</option>
+<option value="../../0.3.0/index.html">0.3.0</option>
+<option value="../../0.2.3/index.html">0.2.3</option>
+<option value="../../0.2.2/index.html">0.2.2</option>
+<option value="../../0.2.1/index.html">0.2.1</option>
+<option value="../../0.2.0/index.html">0.2.0</option>
+<option value="../../0.1.1/index.html">0.1.1</option>
+<option value="../../0.1.0/index.html">0.1.0</option></select>
+</label>
+<a class="iconbtn" href="https://github.com/radlab-dev-group/llm-router" aria-label="Repository on GitHub" title="Repository on GitHub"><svg width="17" height="17" viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8a8 8 0 0 0 5.47 7.59c.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.46-.53.42-.02.72.39.82.55.48.81 1.25.94 1.56.73.2-.27.6-.94.94-1.13-.01-.2-.05-.82-.14-.98-.6.1-1.22.2-1.87.2-1.9 0-3.62-1.13-3.62-3.53 0-.78.28-1.42.74-1.92-.07-.18-.32-.91.07-1.9 0 0 .6-.19 1.97.74a6.8 6.8 0 0 1 3.58 0c1.37-.93 1.97-.74 1.97-.74.39.99.14 1.72.07 1.9.46.5.74 1.14.74 1.92 0 2.41-1.47 3.53-3.87 3.72.3.26.57.77.57 1.56 0 1.13-.012.04-.01 2.32 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg></a>
+</div>
+</div>
+</header>
+<div class="scrim" id="scrim" hidden></div>
+<div class="shell">
+<aside class="sidebar" id="sidebar"><div class="side-head"><span class="side-v mono">v0.6.8</span><span class="side-tag old">archived</span></div><a class="side-hub" href="../index.html">documentation index</a><nav class="nav-tree" aria-label="Documentation"><section class="nav-sec"><h2 class="nav-sec-title"><a href="../overview.html">Getting started</a></h2><ul><li><a href="../overview.html">Overview</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../llm-router-api/core/auditor/index.html">Security &amp; auditing</a></h2><ul><li><a href="../llm-router-api/core/auditor/index.html">Auditing subsystem – llm-router</a></li><li><a href="../llm-router-api/authentication.html">Authentication &amp; Authorization</a></li><li><a href="../llm-router-api/rate-limiting.html">Rate Limiting</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../llm-router-api/routing-metrics.html">Observability</a></h2><ul><li><a href="../llm-router-api/routing-metrics.html">Router Prometheus Metrics</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../llm-router-api/index.html">REST API</a></h2><ul><li><a href="../llm-router-api/index.html">REST API reference</a></li><li><a href="../llm-router-api/endpoints/index.html">Endpoints Overview</a></li><li><a href="../llm-router-api/env-definitions.html">Environment Variables</a></li><li><a href="../llm-router-api/endpoints/readme-pl.html">Jak tworzyć endpointy w llm-proxy-api – przewodnik</a></li><li><a href="../llm-router-api/keepalive.html">Keep‑Alive Utility Overview</a></li><li><a href="../llm-router-api/lb-strategies.html">Load Balancing Strategies</a></li><li><a href="../llm-router-api/models-config.html">Models configuration description (JSON)</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="index.html">CLI</a></h2><ul><li><a href="index.html" class="active">llm-router CLI — Command Reference</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../llm-router-lib/index.html">Python library</a></h2><ul><li><a href="../llm-router-lib/index.html">llmrouterlib</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../helm-charts/index.html">Deployment</a></h2><ul><li><a href="../helm-charts/index.html">LLM‑Router Helm Chart</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../examples/index.html">Examples</a></h2><ul><li><a href="../examples/index.html">Integration Examples with LLM Router</a></li><li><a href="../examples/quickstart/index.html">Full Stack with Local Models</a></li><li><a href="../examples/readme-llamaindex.html">Using LlamaIndex with Local Models via the LLM‑Router</a></li><li><a href="../examples/quickstart/google-gemma3-12b-it/vllm.html">vLLM + google/gemma‑3‑12b‑it – Quick‑Start Guide (Ubuntu)</a></li><li><a href="../examples/quickstart/speakleash-bielik-11b-v2-3-instruct/vllm.html">vLLM + speakleash/Bielik-11B-v2.3-Instruct – Przewodnik Szybkiego Startu (Ubuntu)</a></li><li><a href="../examples/quickstart/speakleash-bielik-11b-v2-3-instruct/index.html">🚀 Przewodnik Szybkiego Startu dla speakleash/Bielik-11B-v2.3-Instruct z vLLM &amp; LLM‑Router</a></li><li><a href="../examples/quickstart/google-gemma3-12b-it/index.html">🚀 Quick‑Start Guide for google/gemma-3-12b‑it with vLLM &amp; LLM‑Router</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../changelog.html">Release notes</a></h2><ul><li><a href="../changelog.html">Changelog</a></li></ul></section></nav><div class="side-foot"><a href="../../..">&larr;&nbsp;landing page</a><a class="mono" href="../search.json">search.json</a></div></aside>
+<main class="main" id="main"><nav class="crumbs" aria-label="Breadcrumb">
+<a href="../../..">llm-router</a><span class="sep">/</span><a href="../index.html">docs</a><span class="sep">/</span><a href="index.html">CLI</a><span class="sep">/</span><em>llm-router CLI — Command Reference</em>
+</nav>
+<article class="prose"><h1 id="llm-router-cli-command-reference">llm-router CLI — Command Reference<a class="headerlink" href="#llm-router-cli-command-reference" title="link to this section">#</a></h1>
+<p><strong>Package:</strong> <code>llm-router</code>
+<strong>Entry points:</strong></p>
+<ul>
+<li><code>llm-router</code> — main CLI tool (auth, anonymizer)</li>
+</ul>
+<hr />
+<h2 id="quick-start">Quick Start<a class="headerlink" href="#quick-start" title="link to this section">#</a></h2>
+<div class="codehilite"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>llm-router<span class="o">[</span>api<span class="o">]</span>
+llm-router<span class="w"> </span>--help
+llm-router<span class="w"> </span>--version
+</code></pre></div>
+
+<hr />
+<h2 id="top-level-commands">Top-Level Commands<a class="headerlink" href="#top-level-commands" title="link to this section">#</a></h2>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>auth</code></td>
+<td>Manage API keys, policies, and rate limiting</td>
+</tr>
+<tr>
+<td><code>config</code></td>
+<td>Auto-discover local providers &amp; merge configs</td>
+</tr>
+<tr>
+<td><code>anonymizer run</code></td>
+<td>Anonymize text using a selectable algorithm</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="llm-router-auth-api-key-authentication-management"><code>llm-router auth</code> — API Key &amp; Authentication Management<a class="headerlink" href="#llm-router-auth-api-key-authentication-management" title="link to this section">#</a></h2>
+<h3 id="command-tree">Command Tree<a class="headerlink" href="#command-tree" title="link to this section">#</a></h3>
+<div class="codehilite"><pre><span></span><code>llm-router auth key &lt;command&gt;          # API key lifecycle
+llm-router auth policy &lt;command&gt;       # Policy management
+llm-router auth rate-limit &lt;command&gt;   # Per-key rate limit overrides
+</code></pre></div>
+
+<h3 id="shared-flags-all-subcommands">Shared Flags (all subcommands)<a class="headerlink" href="#shared-flags-all-subcommands" title="link to this section">#</a></h3>
+<table>
+<thead>
+<tr>
+<th>Flag</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--store &lt;backend&gt;</code></td>
+<td><code>memory</code></td>
+<td>Key store: <code>memory</code>, <code>redis</code>, or <code>vault</code></td>
+</tr>
+<tr>
+<td><code>--auth-redis-host</code></td>
+<td><em>(empty)</em></td>
+<td>Auth Redis host</td>
+</tr>
+<tr>
+<td><code>--auth-redis-port</code></td>
+<td><code>6379</code></td>
+<td>Auth Redis port</td>
+</tr>
+<tr>
+<td><code>--auth-redis-db</code></td>
+<td><code>0</code></td>
+<td>Auth Redis database number</td>
+</tr>
+<tr>
+<td><code>--auth-redis-password</code></td>
+<td>—</td>
+<td>Auth Redis password</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Note:</strong> These auth-specific Redis flags are separate from general <code>LLM_ROUTER_REDIS_*</code> env vars.</p>
+</blockquote>
+<hr />
+<h3 id="key-management-llm-router-auth-key-command">Key Management: <code>llm-router auth key &lt;command&gt;</code><a class="headerlink" href="#key-management-llm-router-auth-key-command" title="link to this section">#</a></h3>
+<h4 id="generate-create-a-new-api-key"><code>generate</code> — Create a new API key<a class="headerlink" href="#generate-create-a-new-api-key" title="link to this section">#</a></h4>
+<div class="codehilite"><pre><span></span><code>llm-router<span class="w"> </span>auth<span class="w"> </span>key<span class="w"> </span>generate<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--policy<span class="w"> </span>developer<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--expires<span class="w"> </span><span class="m">1750000000</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--store<span class="w"> </span>memory
+</code></pre></div>
+
+<table>
+<thead>
+<tr>
+<th>Flag</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--policy</code></td>
+<td><code>developer</code></td>
+<td>Policy name to assign</td>
+</tr>
+<tr>
+<td><code>--expires</code></td>
+<td><code>None</code></td>
+<td>Expiry (Unix timestamp or <code>None</code>)</td>
+</tr>
+<tr>
+<td><code>--output</code></td>
+<td><em>(stdout)</em></td>
+<td>Output file path</td>
+</tr>
+</tbody>
+</table>
+<p>Output: <code>sk-litm-&lt;base62&gt;</code> key (plaintext shown <strong>once</strong> at creation).</p>
+<h4 id="list-list-all-api-keys"><code>list</code> — List all API keys<a class="headerlink" href="#list-list-all-api-keys" title="link to this section">#</a></h4>
+<div class="codehilite"><pre><span></span><code>llm-router<span class="w"> </span>auth<span class="w"> </span>key<span class="w"> </span>list<span class="w"> </span>--store<span class="w"> </span>memory<span class="w"> </span><span class="o">[</span>--reveal<span class="o">]</span><span class="w"> </span><span class="o">[</span>--json<span class="o">]</span>
+</code></pre></div>
+
+<table>
+<thead>
+<tr>
+<th>Flag</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--json</code></td>
+<td><code>false</code></td>
+<td>Output in JSON format</td>
+</tr>
+<tr>
+<td><code>--reveal</code></td>
+<td><code>false</code></td>
+<td>Show plaintext keys (memory store only)</td>
+</tr>
+</tbody>
+</table>
+<h4 id="delete-key-id-delete-a-key-permanently"><code>delete &lt;key-id&gt;</code> — Delete a key permanently<a class="headerlink" href="#delete-key-id-delete-a-key-permanently" title="link to this section">#</a></h4>
+<div class="codehilite"><pre><span></span><code>llm-router<span class="w"> </span>auth<span class="w"> </span>key<span class="w"> </span>delete<span class="w"> </span>&lt;key-id&gt;<span class="w"> </span>--store<span class="w"> </span>memory
+</code></pre></div>
+
+<h4 id="disable-key-id-deactivate-without-deleting"><code>disable &lt;key-id&gt;</code> — Deactivate without deleting<a class="headerlink" href="#disable-key-id-deactivate-without-deleting" title="link to this section">#</a></h4>
+<div class="codehilite"><pre><span></span><code>llm-router<span class="w"> </span>auth<span class="w"> </span>key<span class="w"> </span>disable<span class="w"> </span>&lt;key-id&gt;<span class="w"> </span><span class="o">[</span>--store<span class="w"> </span>memory<span class="o">]</span>
+</code></pre></div>
+
+<h4 id="enable-key-id-re-activate-a-disabled-key"><code>enable &lt;key-id&gt;</code> — Re-activate a disabled key<a class="headerlink" href="#enable-key-id-re-activate-a-disabled-key" title="link to this section">#</a></h4>
+<div class="codehilite"><pre><span></span><code>llm-router<span class="w"> </span>auth<span class="w"> </span>key<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>&lt;key-id&gt;<span class="w"> </span><span class="o">[</span>--store<span class="w"> </span>memory<span class="o">]</span>
+</code></pre></div>
+
+<h4 id="rotate-key-id-generate-a-replacement-key"><code>rotate &lt;key-id&gt;</code> — Generate a replacement key<a class="headerlink" href="#rotate-key-id-generate-a-replacement-key" title="link to this section">#</a></h4>
+<div class="codehilite"><pre><span></span><code>llm-router<span class="w"> </span>auth<span class="w"> </span>key<span class="w"> </span>rotate<span class="w"> </span>&lt;key-id&gt;<span class="w"> </span>--grace<span class="w"> </span><span class="m">3600</span><span class="w"> </span><span class="o">[</span>--store<span class="w"> </span>memory<span class="o">]</span>
+</code></pre></div>
+
+<table>
+<thead>
+<tr>
+<th>Flag</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--grace</code></td>
+<td><code>3600</code></td>
+<td>Grace period in seconds (old key stays valid)</td>
+</tr>
+</tbody>
+</table>
+<h4 id="reveal-key-id-show-plaintext-key"><code>reveal &lt;key-id&gt;</code> — Show plaintext key<a class="headerlink" href="#reveal-key-id-show-plaintext-key" title="link to this section">#</a></h4>
+<div class="codehilite"><pre><span></span><code>llm-router<span class="w"> </span>auth<span class="w"> </span>key<span class="w"> </span>reveal<span class="w"> </span>&lt;key-id&gt;<span class="w"> </span><span class="o">[</span>--store<span class="w"> </span>memory<span class="o">]</span>
+</code></pre></div>
+
+<p>Only available for the <strong>memory</strong> store.</p>
+<hr />
+<h3 id="policy-management-llm-router-auth-policy-command">Policy Management: <code>llm-router auth policy &lt;command&gt;</code><a class="headerlink" href="#policy-management-llm-router-auth-policy-command" title="link to this section">#</a></h3>
+<h4 id="list-list-builtin-policies"><code>list</code> — List builtin policies<a class="headerlink" href="#list-list-builtin-policies" title="link to this section">#</a></h4>
+<div class="codehilite"><pre><span></span><code>llm-router<span class="w"> </span>auth<span class="w"> </span>policy<span class="w"> </span>list
+</code></pre></div>
+
+<p><strong>Builtin policies:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Policy</th>
+<th>Access</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>developer</code></td>
+<td>All</td>
+<td>Full access to all endpoints</td>
+</tr>
+<tr>
+<td><code>admin</code></td>
+<td>All</td>
+<td>Admin access</td>
+</tr>
+<tr>
+<td><code>chat</code></td>
+<td>Chat</td>
+<td>Chat completion endpoints</td>
+</tr>
+<tr>
+<td><code>embedding</code></td>
+<td>Embedding</td>
+<td>Embedding endpoints</td>
+</tr>
+<tr>
+<td><code>anthropic</code></td>
+<td>Anthropic</td>
+<td>Anthropic messages endpoint</td>
+</tr>
+<tr>
+<td><code>ollama</code></td>
+<td>Ollama</td>
+<td>Ollama endpoints</td>
+</tr>
+<tr>
+<td><code>builtin</code></td>
+<td>All builtin</td>
+<td>Built-in endpoints (translate, etc.)</td>
+</tr>
+</tbody>
+</table>
+<h4 id="create-name-json-policy-register-a-custom-policy"><code>create &lt;name&gt; &lt;json-policy&gt;</code> — Register a custom policy<a class="headerlink" href="#create-name-json-policy-register-a-custom-policy" title="link to this section">#</a></h4>
+<div class="codehilite"><pre><span></span><code>llm-router<span class="w"> </span>auth<span class="w"> </span>policy<span class="w"> </span>create<span class="w"> </span>my-team<span class="w"> </span><span class="s1">&#39;{</span>
+<span class="s1">  &quot;can_access&quot;: true,</span>
+<span class="s1">  &quot;rate_limit&quot;: 120,</span>
+<span class="s1">  &quot;model_whitelist&quot;: [&quot;gpt-4&quot;, &quot;llama-3&quot;]</span>
+<span class="s1">}&#39;</span><span class="w"> </span>--store<span class="w"> </span>memory
+</code></pre></div>
+
+<hr />
+<h3 id="rate-limit-overrides-llm-router-auth-rate-limit-command">Rate Limit Overrides: <code>llm-router auth rate-limit &lt;command&gt;</code><a class="headerlink" href="#rate-limit-overrides-llm-router-auth-rate-limit-command" title="link to this section">#</a></h3>
+<blockquote>
+<p><strong>Note:</strong> Rate limiting is always active when authentication is enabled. These commands manage <strong>per-key overrides</strong>
+on top of the default policy rate limit (60 rpm).</p>
+</blockquote>
+<h4 id="list-show-available-presets"><code>list</code> — Show available presets<a class="headerlink" href="#list-show-available-presets" title="link to this section">#</a></h4>
+<div class="codehilite"><pre><span></span><code>llm-router<span class="w"> </span>auth<span class="w"> </span>rate-limit<span class="w"> </span>list
+</code></pre></div>
+
+<h4 id="apply-key-id-preset-name-set-a-per-key-rate-limit-via-preset"><code>apply &lt;key-id&gt; --preset &lt;name&gt;</code> — Set a per-key rate limit via preset<a class="headerlink" href="#apply-key-id-preset-name-set-a-per-key-rate-limit-via-preset" title="link to this section">#</a></h4>
+<div class="codehilite"><pre><span></span><code>llm-router<span class="w"> </span>auth<span class="w"> </span>rate-limit<span class="w"> </span>apply<span class="w"> </span>&lt;key-id&gt;<span class="w"> </span>--preset<span class="w"> </span>pro<span class="w"> </span>--store<span class="w"> </span>memory
+</code></pre></div>
+
+<p><strong>Available presets:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Preset</th>
+<th>RPM</th>
+<th>Daily Limit</th>
+<th>Per-Second</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>free</code></td>
+<td>10</td>
+<td>—</td>
+<td>—</td>
+<td>Free tier</td>
+</tr>
+<tr>
+<td><code>basic</code></td>
+<td>60</td>
+<td>—</td>
+<td>—</td>
+<td>Standard (1 req/sec)</td>
+</tr>
+<tr>
+<td><code>pro</code></td>
+<td>120</td>
+<td>—</td>
+<td>—</td>
+<td>Pro (2 req/sec)</td>
+</tr>
+<tr>
+<td><code>enterprise</code></td>
+<td>500</td>
+<td>—</td>
+<td>—</td>
+<td>High throughput (8 req/sec)</td>
+</tr>
+<tr>
+<td><code>burst</code></td>
+<td>200</td>
+<td>—</td>
+<td>—</td>
+<td>Short burst limit</td>
+</tr>
+<tr>
+<td><code>daily-10</code></td>
+<td>—</td>
+<td>10</td>
+<td>—</td>
+<td>Daily cap of 10 requests</td>
+</tr>
+<tr>
+<td><code>daily-100</code></td>
+<td>—</td>
+<td>100</td>
+<td>—</td>
+<td>Daily cap of 100 requests</td>
+</tr>
+<tr>
+<td><code>daily-1000</code></td>
+<td>—</td>
+<td>1000</td>
+<td>—</td>
+<td>Moderate batch processing</td>
+</tr>
+<tr>
+<td><code>daily-5000</code></td>
+<td>—</td>
+<td>5000</td>
+<td>—</td>
+<td>Regular batch processing</td>
+</tr>
+<tr>
+<td><code>hourly-60</code></td>
+<td>1</td>
+<td>—</td>
+<td>—</td>
+<td>Hourly cap of 60 requests</td>
+</tr>
+<tr>
+<td><code>per-second-1</code></td>
+<td>60</td>
+<td>—</td>
+<td>1</td>
+<td>Steady pace: 1 req/sec</td>
+</tr>
+<tr>
+<td><code>per-second-5</code></td>
+<td>300</td>
+<td>—</td>
+<td>5</td>
+<td>Intensive: 5 req/sec</td>
+</tr>
+<tr>
+<td><code>internal-tool</code></td>
+<td>300</td>
+<td>—</td>
+<td>—</td>
+<td>Internal tools (elevated limits)</td>
+</tr>
+</tbody>
+</table>
+<h4 id="remove-key-id-revert-to-default-policy-rate-limit"><code>remove &lt;key-id&gt;</code> — Revert to default policy rate limit<a class="headerlink" href="#remove-key-id-revert-to-default-policy-rate-limit" title="link to this section">#</a></h4>
+<div class="codehilite"><pre><span></span><code>llm-router<span class="w"> </span>auth<span class="w"> </span>rate-limit<span class="w"> </span>remove<span class="w"> </span>&lt;key-id&gt;<span class="w"> </span><span class="o">[</span>--store<span class="w"> </span>memory<span class="o">]</span>
+</code></pre></div>
+
+<hr />
+<h2 id="llm-router-config-provider-discovery-config-merging"><code>llm-router config</code> — Provider Discovery &amp; Config Merging<a class="headerlink" href="#llm-router-config-provider-discovery-config-merging" title="link to this section">#</a></h2>
+<h3 id="command-tree_1">Command Tree<a class="headerlink" href="#command-tree_1" title="link to this section">#</a></h3>
+<div class="codehilite"><pre><span></span><code>llm-router config discover &lt;host...&gt; [-o FILE] [--all-ports] [--no-active]  # Auto-discover providers
+llm-router config merge &lt;configs...&gt; [-o FILE]                              # Merge multiple configs
+</code></pre></div>
+
+<h3 id="discover-scan-hosts-for-local-llm-servers"><code>discover</code> — Scan hosts for local LLM servers<a class="headerlink" href="#discover-scan-hosts-for-local-llm-servers" title="link to this section">#</a></h3>
+<div class="codehilite"><pre><span></span><code>llm-router<span class="w"> </span>config<span class="w"> </span>discover<span class="w"> </span>localhost<span class="w"> </span>-o<span class="w"> </span>models-config.json
+llm-router<span class="w"> </span>config<span class="w"> </span>discover<span class="w"> </span>localhost<span class="w"> </span><span class="m">192</span>.168.1.50<span class="w"> </span>--all-ports
+llm-router<span class="w"> </span>config<span class="w"> </span>discover<span class="w"> </span><span class="s2">&quot;10.0.0.1:8080&quot;</span><span class="w"> </span><span class="s2">&quot;ollama.local:11434&quot;</span>
+</code></pre></div>
+
+<table>
+<thead>
+<tr>
+<th>Flag</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>&lt;hosts&gt;</code></td>
+<td><em>(required)</em></td>
+<td>One or more hosts to scan (supports <code>host:port</code>)</td>
+</tr>
+<tr>
+<td><code>-o, --output-config-file</code></td>
+<td><em>(stdout)</em></td>
+<td>Output path for generated config</td>
+</tr>
+<tr>
+<td><code>--all-ports</code></td>
+<td><code>false</code></td>
+<td>Check all known ports even if first one is reachable</td>
+</tr>
+<tr>
+<td><code>--no-active</code></td>
+<td><code>false</code></td>
+<td>Skip writing the active_models section</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Note on port scanning:</strong> When you pass <code>host:port</code> (e.g. <code>"192.168.100.66:9090"</code>), the scanner checks that exact
+port first for each provider type (Ollama, vLLM, LM Studio, llama.cpp, KoboldCpp, TabbyAPI). If no models are found on
+the explicit port, it continues
+scanning the <strong>default ports</strong> for every discovered provider. To restrict scanning to only the explicit port (without
+fallback), use <code>--all-ports</code> in combination with specifying all known ports explicitly.</p>
+</blockquote>
+<p><strong>Auto-discovered providers:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Provider</th>
+<th>Default Ports</th>
+<th>Health Endpoint</th>
+<th>Models Endpoint</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Ollama</td>
+<td>11434, 18765</td>
+<td><code>/</code></td>
+<td><code>/api/tags</code></td>
+</tr>
+<tr>
+<td>vLLM</td>
+<td>8000, 7000</td>
+<td><code>/health</code></td>
+<td><code>/v1/models</code></td>
+</tr>
+<tr>
+<td>LM Studio</td>
+<td>1234, 1235</td>
+<td><code>/</code></td>
+<td><code>/v1/models</code></td>
+</tr>
+<tr>
+<td>llama.cpp</td>
+<td>8080</td>
+<td><code>/health</code></td>
+<td><code>/v1/models</code></td>
+</tr>
+<tr>
+<td>KoboldCpp</td>
+<td>5001</td>
+<td><code>/</code></td>
+<td><code>/api/v1/models</code></td>
+</tr>
+<tr>
+<td>TabbyAPI</td>
+<td>8080</td>
+<td><code>/health</code></td>
+<td><code>/v1/models</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="merge-merge-multiple-models-configjson-files"><code>merge</code> — Merge multiple models-config.json files<a class="headerlink" href="#merge-merge-multiple-models-configjson-files" title="link to this section">#</a></h3>
+<div class="codehilite"><pre><span></span><code>llm-router<span class="w"> </span>config<span class="w"> </span>merge<span class="w"> </span>base.json<span class="w"> </span>override.json<span class="w"> </span>-o<span class="w"> </span>merged-config.json
+</code></pre></div>
+
+<p>Merges provider entries recursively (overlay wins on conflict), unions <code>active_models</code>, and deduplicates providers
+by <code>api_host</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Flag</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>&lt;configs&gt;</code></td>
+<td><em>(required)</em></td>
+<td>Input config files to merge</td>
+</tr>
+<tr>
+<td><code>-o, --output-config-file</code></td>
+<td><em>(stdout)</em></td>
+<td>Output path for merged config</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="llm-router-anonymizer-run-text-anonymization"><code>llm-router anonymizer run</code> — Text Anonymization<a class="headerlink" href="#llm-router-anonymizer-run-text-anonymization" title="link to this section">#</a></h2>
+<div class="codehilite"><pre><span></span><code>llm-router<span class="w"> </span>anonymizer<span class="w"> </span>run<span class="w"> </span>--algorithm<span class="w"> </span>fast_masker<span class="w"> </span><span class="o">[</span>input_file<span class="o">]</span><span class="w"> </span>-o<span class="w"> </span>output_file<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--disable-phone<span class="w"> </span>--disable-url<span class="w"> </span>--disable-ip<span class="w"> </span>--disable-pesel<span class="w"> </span>--disable-email
+</code></pre></div>
+
+<table>
+<thead>
+<tr>
+<th>Flag</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--algorithm</code></td>
+<td><em>(req)</em></td>
+<td><code>fast_masker</code> or <code>pii</code></td>
+</tr>
+<tr>
+<td><code>[input_file]</code></td>
+<td>stdin</td>
+<td>Input file (or STDIN if omitted)</td>
+</tr>
+<tr>
+<td><code>-o, --output</code></td>
+<td>stdout</td>
+<td>Output file path</td>
+</tr>
+<tr>
+<td><code>--disable-phone</code></td>
+<td><code>false</code></td>
+<td>Skip phone number anonymization</td>
+</tr>
+<tr>
+<td><code>--disable-url</code></td>
+<td><code>false</code></td>
+<td>Skip URL anonymization</td>
+</tr>
+<tr>
+<td><code>--disable-ip</code></td>
+<td><code>false</code></td>
+<td>Skip IP address anonymization</td>
+</tr>
+<tr>
+<td><code>--disable-pesel</code></td>
+<td><code>false</code></td>
+<td>Skip PESEL anonymization</td>
+</tr>
+<tr>
+<td><code>--disable-email</code></td>
+<td><code>false</code></td>
+<td>Skip email anonymization</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="seed-file-memory-store">Seed File (Memory Store)<a class="headerlink" href="#seed-file-memory-store" title="link to this section">#</a></h2>
+<p>When <code>--store memory</code>, keys are persisted to a seed file:</p>
+<div class="codehilite"><pre><span></span><code>~/.llm-router/configs/auth/memory-keys.json
+</code></pre></div>
+
+<p>After every <code>generate</code>, <code>delete</code>, <code>disable</code>, <code>enable</code>, or <code>rotate</code> operation the CLI automatically updates the seed
+file. The router reads this file on startup and after each request, so changes are visible without restart.</p>
+<h3 id="seed-file-format-apikeyrecord-fields">Seed File Format (ApiKeyRecord fields)<a class="headerlink" href="#seed-file-format-apikeyrecord-fields" title="link to this section">#</a></h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>key_id</code></td>
+<td><code>str</code></td>
+<td>Unique identifier for this key</td>
+</tr>
+<tr>
+<td><code>key_plain</code></td>
+<td><code>str</code></td>
+<td>The plaintext API key</td>
+</tr>
+<tr>
+<td><code>key_prefix</code></td>
+<td><code>str</code></td>
+<td>First 7 characters of the plaintext (auto-generated if omitted)</td>
+</tr>
+<tr>
+<td><code>policy_name</code></td>
+<td><code>str</code></td>
+<td>Default policy name</td>
+</tr>
+<tr>
+<td><code>policy_override</code></td>
+<td><code>dict</code></td>
+<td>Inline override (e.g. <code>{"rate_limit": 300}</code>)</td>
+</tr>
+<tr>
+<td><code>is_active</code></td>
+<td><code>bool</code></td>
+<td>Whether the key is currently valid</td>
+</tr>
+<tr>
+<td><code>expires_at</code></td>
+<td><code>float\|null</code></td>
+<td>Expiry timestamp</td>
+</tr>
+<tr>
+<td><code>created_at</code></td>
+<td><code>float</code></td>
+<td>Unix creation timestamp</td>
+</tr>
+<tr>
+<td><code>last_used_at</code></td>
+<td><code>float\|null</code></td>
+<td>Last successful authentication time</td>
+</tr>
+<tr>
+<td><code>rotate_at</code></td>
+<td><code>float\|null</code></td>
+<td>Scheduled rotation time</td>
+</tr>
+<tr>
+<td><code>grace_until</code></td>
+<td><code>float\|null</code></td>
+<td>Key remains valid until this time after rotation</td>
+</tr>
+<tr>
+<td><code>metadata</code></td>
+<td><code>dict</code></td>
+<td>Arbitrary metadata</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="key-format">Key Format<a class="headerlink" href="#key-format" title="link to this section">#</a></h2>
+<p>All generated keys follow the <code>sk-litm-&lt;base62&gt;</code> format:</p>
+<div class="codehilite"><pre><span></span><code>sk-litm-aBcDeFgHiJkLmNoPqRsTuVwXyZ0123456789abcdefABCDEF123456789
+</code></pre></div>
+
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Prefix</td>
+<td><code>sk-litm-</code> (configurable via <code>LLM_ROUTER_AUTH_KEY_PREFIX</code>)</td>
+</tr>
+<tr>
+<td>Entropy</td>
+<td>48 bytes cryptographically random (<code>secrets.token_bytes</code>)</td>
+</tr>
+<tr>
+<td>Charset</td>
+<td>base62 (<code>a-zA-Z0-9</code>)</td>
+</tr>
+<tr>
+<td>Total length</td>
+<td>≥55 chars (prefix + min 48 base62 characters)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="see-also">See Also<a class="headerlink" href="#see-also" title="link to this section">#</a></h2>
+<ul>
+<li><strong><a href="../llm-router-api/authentication.html">Authentication docs</a></strong> — full auth architecture, seed files, deployment
+  options</li>
+<li><strong><a href="../llm-router-api/rate-limiting.html">Rate Limiting docs</a></strong> — sliding-window algorithm, monitoring, presets</li>
+</ul></article>
+<nav class="pager" aria-label="Previous and next page"></nav>
+<footer class="doc-meta">
+<div class="meta-row"><span class="meta-k">source</span><a class="mono" href="https://github.com/radlab-dev-group/llm-router/blob/v0.6.8/llm_router_cli/README.md">llm_router_cli/README.md</a></div>
+<div class="meta-row"><span class="meta-k">last commit</span><time datetime="2026-07-28T21:32:43+02:00">2026-07-28</time></div>
+<div class="meta-row"><span class="meta-k">built from</span><span class="mono">v0.6.8&nbsp;@&nbsp;0576e1e</span></div>
+<p class="hint">Generated from the Markdown file in the repository: commit a change and the next build republishes it for every release that contains it.</p>
+</footer>
+<footer class="foot"><div class="foot-inner">
+<span class="mono">llm-router &middot; docs are generated from the repository by <code>tools/build_docs.py</code></span>
+<span class="mono"><a href="https://github.com/radlab-dev-group/llm-router/tree/v0.6.8">0.6.8</a> @ <code>0576e1e</code></span>
+</div></footer>
+</main>
+<aside class="dtoc" id="dtoc"><h2 class="toc-title">on this page</h2><div class="toc-body"><ul><li><a href="#quick-start">Quick Start</a></li><li><a href="#top-level-commands">Top-Level Commands</a></li><li><a href="#llm-router-auth-api-key-authentication-management">llm-router auth — API Key &amp;amp; Authentication Management</a><ul><li><a href="#command-tree">Command Tree</a></li><li><a href="#shared-flags-all-subcommands">Shared Flags (all subcommands)</a></li><li><a href="#key-management-llm-router-auth-key-command">Key Management: llm-router auth key &amp;lt;command&amp;gt;</a></li><li><a href="#policy-management-llm-router-auth-policy-command">Policy Management: llm-router auth policy &amp;lt;command&amp;gt;</a></li><li><a href="#rate-limit-overrides-llm-router-auth-rate-limit-command">Rate Limit Overrides: llm-router auth rate-limit &amp;lt;command&amp;gt;</a></li></ul></li><li><a href="#llm-router-config-provider-discovery-config-merging">llm-router config — Provider Discovery &amp;amp; Config Merging</a><ul><li><a href="#command-tree_1">Command Tree</a></li><li><a href="#discover-scan-hosts-for-local-llm-servers">discover — Scan hosts for local LLM servers</a></li><li><a href="#merge-merge-multiple-models-configjson-files">merge — Merge multiple models-config.json files</a></li></ul></li><li><a href="#llm-router-anonymizer-run-text-anonymization">llm-router anonymizer run — Text Anonymization</a></li><li><a href="#seed-file-memory-store">Seed File (Memory Store)</a><ul><li><a href="#seed-file-format-apikeyrecord-fields">Seed File Format (ApiKeyRecord fields)</a></li></ul></li><li><a href="#key-format">Key Format</a></li><li><a href="#see-also">See Also</a></li></ul></div></aside>
+</div>
+</body>
+</html>

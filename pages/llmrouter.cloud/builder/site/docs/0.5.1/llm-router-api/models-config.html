@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Models configuration description (JSON) · v0.5.1 · llm-router docs</title>
+<meta name="description" content="This document explains the model configuration used by the LLM Router. It describes the JSON schema that drives ModelHandler and ApiModelConfig, clarifies each field, and provides a ready‑to‑use example (models-config.json). Having a…">
+<meta name="theme-color" content="#05070a">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Models configuration description (JSON) · v0.5.1 · llm-router docs">
+<meta property="og:description" content="This document explains the model configuration used by the LLM Router. It describes the JSON schema that drives ModelHandler and ApiModelConfig, clarifies each field, and provides a ready‑to‑use example (models-config.json). Having a…">
+<meta name="docs-version" content="0.5.1">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2305070a'/%3E%3Cpath d='M8 22V10M8 16h9M17 10v12M17 13h7M17 19h7' stroke='%2300e59b' stroke-width='2' stroke-linecap='round' fill='none'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="../../assets/docs.css">
+<link rel="stylesheet" href="../../assets/pygments.css">
+<script src="../../assets/docs.js" defer></script>
+</head>
+<body class="page" data-version="0.5.1" data-search="../search.json" data-latest="1.0.7">
+<a class="skip" href="#main">skip to content</a>
+<header class="topbar">
+<div class="topbar-inner">
+<button class="burger" id="burger" aria-label="Toggle documentation menu" aria-expanded="false" aria-controls="sidebar">&#9776;</button>
+<a class="brand" href="../../.."><svg width="21" height="21" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="7" fill="#0b1119" stroke="#1a232e"/><path d="M8 22V10M8 16h9M17 10v12M17 13h7M17 19h7" stroke="#00e59b" stroke-width="2" stroke-linecap="round" fill="none"/></svg><span>llm<span class="dash">-</span>router</span><span class="brand-docs">/docs</span></a>
+<div class="topbar-right">
+<form class="search" id="search" role="search" autocomplete="off">
+<span class="search-icon" aria-hidden="true">&#8981;</span>
+<input id="q" type="search" placeholder="search this version" aria-label="Search documentation" role="combobox" aria-expanded="false" aria-controls="results" aria-autocomplete="list">
+<kbd>/</kbd>
+<div class="results" id="results" role="listbox" aria-label="Search results" hidden></div>
+</form>
+<label class="vselect">
+<span class="sr-only">Documentation version</span>
+<select id="versions" aria-label="Documentation version"><option value="../../1.0.7/index.html">1.0.7  · latest</option>
+<option value="../../1.0.6/index.html">1.0.6</option>
+<option value="../../1.0.5/index.html">1.0.5</option>
+<option value="../../1.0.4/index.html">1.0.4</option>
+<option value="../../1.0.3/index.html">1.0.3</option>
+<option value="../../1.0.1/index.html">1.0.1</option>
+<option value="../../1.0.0/index.html">1.0.0</option>
+<option value="../../0.9.6/index.html">0.9.6</option>
+<option value="../../0.9.5/index.html">0.9.5</option>
+<option value="../../0.9.4/index.html">0.9.4</option>
+<option value="../../0.9.2/llm-router-api/models-config.html">0.9.2</option>
+<option value="../../0.9.1/llm-router-api/models-config.html">0.9.1</option>
+<option value="../../0.9.0/llm-router-api/models-config.html">0.9.0</option>
+<option value="../../0.8.0/llm-router-api/models-config.html">0.8.0</option>
+<option value="../../0.7.0/llm-router-api/models-config.html">0.7.0</option>
+<option value="../../0.6.9/llm-router-api/models-config.html">0.6.9</option>
+<option value="../../0.6.8/llm-router-api/models-config.html">0.6.8</option>
+<option value="../../0.6.7/llm-router-api/models-config.html">0.6.7</option>
+<option value="../../0.6.6/llm-router-api/models-config.html">0.6.6</option>
+<option value="../../0.6.5/llm-router-api/models-config.html">0.6.5</option>
+<option value="../../0.6.4/llm-router-api/models-config.html">0.6.4</option>
+<option value="../../0.6.3/llm-router-api/models-config.html">0.6.3</option>
+<option value="../../0.6.2/llm-router-api/models-config.html">0.6.2</option>
+<option value="../../0.6.1/llm-router-api/models-config.html">0.6.1</option>
+<option value="../../0.6.0/llm-router-api/models-config.html">0.6.0</option>
+<option value="../../0.5.2/llm-router-api/models-config.html">0.5.2</option>
+<option value="models-config.html" selected>0.5.1</option>
+<option value="../../0.5.0/llm-router-api/models-config.html">0.5.0</option>
+<option value="../../0.4.6/llm-router-api/models-config.html">0.4.6</option>
+<option value="../../0.4.5/llm-router-api/models-config.html">0.4.5</option>
+<option value="../../0.4.4/llm-router-api/models-config.html">0.4.4</option>
+<option value="../../0.4.3/llm-router-api/models-config.html">0.4.3</option>
+<option value="../../0.4.2/index.html">0.4.2</option>
+<option value="../../0.4.1/index.html">0.4.1</option>
+<option value="../../0.4.0/index.html">0.4.0</option>
+<option value="../../0.3.1/index.html">0.3.1</option>
+<option value="../../0.3.0/index.html">0.3.0</option>
+<option value="../../0.2.3/index.html">0.2.3</option>
+<option value="../../0.2.2/index.html">0.2.2</option>
+<option value="../../0.2.1/index.html">0.2.1</option>
+<option value="../../0.2.0/index.html">0.2.0</option>
+<option value="../../0.1.1/index.html">0.1.1</option>
+<option value="../../0.1.0/index.html">0.1.0</option></select>
+</label>
+<a class="iconbtn" href="https://github.com/radlab-dev-group/llm-router" aria-label="Repository on GitHub" title="Repository on GitHub"><svg width="17" height="17" viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8a8 8 0 0 0 5.47 7.59c.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.46-.53.42-.02.72.39.82.55.48.81 1.25.94 1.56.73.2-.27.6-.94.94-1.13-.01-.2-.05-.82-.14-.98-.6.1-1.22.2-1.87.2-1.9 0-3.62-1.13-3.62-3.53 0-.78.28-1.42.74-1.92-.07-.18-.32-.91.07-1.9 0 0 .6-.19 1.97.74a6.8 6.8 0 0 1 3.58 0c1.37-.93 1.97-.74 1.97-.74.39.99.14 1.72.07 1.9.46.5.74 1.14.74 1.92 0 2.41-1.47 3.53-3.87 3.72.3.26.57.77.57 1.56 0 1.13-.012.04-.01 2.32 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg></a>
+</div>
+</div>
+</header>
+<div class="scrim" id="scrim" hidden></div>
+<div class="shell">
+<aside class="sidebar" id="sidebar"><div class="side-head"><span class="side-v mono">v0.5.1</span><span class="side-tag old">archived</span></div><a class="side-hub" href="../index.html">documentation index</a><nav class="nav-tree" aria-label="Documentation"><section class="nav-sec"><h2 class="nav-sec-title"><a href="../overview.html">Getting started</a></h2><ul><li><a href="../overview.html">Overview</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="core/auditor/index.html">Security &amp; auditing</a></h2><ul><li><a href="core/auditor/index.html">Auditing subsystem – llm-router</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="index.html">REST API</a></h2><ul><li><a href="index.html">REST API reference</a></li><li><a href="endpoints/index.html">Endpoints Overview</a></li><li><a href="endpoints/readme-pl.html">Jak tworzyć endpointy w llm-proxy-api – przewodnik</a></li><li><a href="keepalive.html">Keep‑Alive Utility Overview</a></li><li><a href="lb-strategies.html">Load Balancing Strategies</a></li><li><a href="models-config.html" class="active">Models configuration description (JSON)</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../llm-router-lib/index.html">Python library</a></h2><ul><li><a href="../llm-router-lib/index.html">llmrouterlib</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../helm-charts/index.html">Deployment</a></h2><ul><li><a href="../helm-charts/index.html">LLM‑Router Helm Chart</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../examples/index.html">Examples</a></h2><ul><li><a href="../examples/index.html">Integration Examples with LLM Router</a></li><li><a href="../examples/quickstart/index.html">Full Stack with Local Models</a></li><li><a href="../examples/readme-llamaindex.html">Using LlamaIndex with Local Models via the LLM‑Router</a></li><li><a href="../examples/quickstart/google-gemma3-12b-it/vllm.html">vLLM + google/gemma‑3‑12b‑it – Quick‑Start Guide (Ubuntu)</a></li><li><a href="../examples/quickstart/speakleash-bielik-11b-v2-3-instruct/vllm.html">vLLM + speakleash/Bielik-11B-v2.3-Instruct – Przewodnik Szybkiego Startu (Ubuntu)</a></li><li><a href="../examples/quickstart/speakleash-bielik-11b-v2-3-instruct/index.html">🚀 Przewodnik Szybkiego Startu dla speakleash/Bielik-11B-v2.3-Instruct z vLLM &amp; LLM‑Router</a></li><li><a href="../examples/quickstart/google-gemma3-12b-it/index.html">🚀 Quick‑Start Guide for google/gemma-3-12b‑it with vLLM &amp; LLM‑Router</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../changelog.html">Release notes</a></h2><ul><li><a href="../changelog.html">Changelog</a></li></ul></section></nav><div class="side-foot"><a href="../../..">&larr;&nbsp;landing page</a><a class="mono" href="../search.json">search.json</a></div></aside>
+<main class="main" id="main"><nav class="crumbs" aria-label="Breadcrumb">
+<a href="../../..">llm-router</a><span class="sep">/</span><a href="../index.html">docs</a><span class="sep">/</span><a href="index.html">REST API</a><span class="sep">/</span><em>Models configuration description (JSON)</em>
+</nav>
+<article class="prose"><h1 id="models-configuration-description-json">Models configuration description (JSON)<a class="headerlink" href="#models-configuration-description-json" title="link to this section">#</a></h1>
+<h2 id="purpose">📄 Purpose<a class="headerlink" href="#purpose" title="link to this section">#</a></h2>
+<p>This document explains the <strong>model configuration</strong> used by the LLM Router.<br />
+It describes the JSON schema that drives <strong><code>ModelHandler</code></strong> and <strong><code>ApiModelConfig</code></strong>, clarifies each field, and provides
+a ready‑to‑use example (<code>models-config.json</code>).<br />
+Having a single source of truth for model definitions makes it easy to:</p>
+<ul>
+<li>Add or remove providers for a given model.</li>
+<li>Switch between cloud (OpenAI, Google) and local (vLLM, Ollama) back‑ends.</li>
+<li>Control load‑balancing, keep‑alive, and tool‑calling options per provider.</li>
+<li>Activate only the models you want to expose through the router.</li>
+</ul>
+<hr />
+<h2 id="highlevel-structure">🏗️ High‑level structure<a class="headerlink" href="#highlevel-structure" title="link to this section">#</a></h2>
+<p>```plain text
+{
+  "<model_type>": {               # e.g. "google_models", "openai_models", "qwen_models"
+    "<model_name>": {            # full identifier used by the router, e.g. "google/gemma-3-12b-it"
+      "providers": [ … ],        # primary providers (used for normal traffic)
+      "providers_sleep": [ … ]   # optional low‑priority providers (used when others are busy)
+    },
+    …
+  },
+  "active_models": {              # <strong>required</strong> – tells the router which models are enabled
+    "<model_type>": [ "<model_name>", … ],
+    …
+  }
+}</p>
+<div class="codehilite"><pre><span></span><code>* **Model type** – a top‑level key grouping models that share the same provider‑type logic.
+* **Model name** – the identifier that appears in API calls (`model` field).
+* **`providers`** – a list of dictionaries, each describing a concrete endpoint.
+* **`providers_sleep`** (optional) – “sleeping” providers that are only used when all primary providers are unavailable
+  or overloaded.
+* **`active_models`** – the only place where a model is marked as *active*. If a model is missing here, the router will
+  ignore it even if it is present in the rest of the file.
+
+---  
+
+## 🔎 Detailed field description
+
+### Provider dictionary (items in `providers` / `providers_sleep`)
+
+| Field          | Type                      | Description                                                                                                                         | Example                         |
+|----------------|---------------------------|-------------------------------------------------------------------------------------------------------------------------------------|---------------------------------|
+| `id`           | `str`                     | Unique identifier for the provider instance (used for logging &amp; selection).                                                         | `&quot;gemma3_12b-vllm-71:7000&quot;`     |
+| `api_host`     | `str`                     | Base URL of the provider API (must include protocol, may contain trailing slash).                                                   | `&quot;http://192.168.100.71:7000/&quot;` |
+| `api_token`    | `str`                     | Authentication token; empty string if not required.                                                                                 | `&quot;&quot;`                            |
+| `api_type`     | `str`                     | Type of the backend – determines which concrete `BaseProvider` class is used (`openai`, `vllm`, `ollama`, …).                       | `&quot;vllm&quot;`                        |
+| `input_size`   | `int` (or numeric string) | Maximum context length the provider accepts. The `ApiModel.from_config` helper converts it to `int`.                                | `4096`                          |
+| `model_path`   | `str`                     | Path or name of the model on the provider side (used by Ollama, vLLM, etc.). May be empty for providers that infer it from the URL. | `&quot;gpt-3.5-turbo-0125&quot;`          |
+| `weight`       | `float`                   | Relative weight for **weighted‑random** load‑balancing strategies. Default `1.0`.                                                   | `0.1`                           |
+| `keep_alive`   | `str`                     | Optional keep‑alive duration (e.g. `&quot;35m&quot;`). Empty or `null` means the provider is not kept alive.                                  | `&quot;35m&quot;`                         |
+| `tool_calling` | `bool`                    | Whether the provider supports tool‑calling (function calling).                                                                      | `true`                          |
+| `is_embedding` | `bool`                    | Whether the model is an embedding model (determines use of embedding endpoints).                                                    | `true`                          |
+
+### `active_models` section
+
+```json
+{
+  (...)
+  &quot;active_models&quot;: {
+    &quot;google_models&quot;: [
+      &quot;google/gemma-3-12b-it&quot;,
+      &quot;google/gemini-2.5-flash-lite&quot;
+    ],
+    &quot;openai_models&quot;: [
+      &quot;openai/gpt-3.5-turbo-0125&quot;,
+      &quot;gpt-oss:20b&quot;,
+      &quot;gpt-oss:120b&quot;
+    ],
+    &quot;qwen_models&quot;: [
+      &quot;qwen3-coder:30b&quot;
+    ]
+  }
+}
+</code></pre></div>
+
+<ul>
+<li>The <strong>key</strong> must match a top‑level model type defined elsewhere in the file.</li>
+<li>The <strong>list</strong> contains the exact model names that appear under that type.</li>
+<li>Only the models listed here are loaded by <code>ApiModelConfig._read_active_models()</code> and later exposed by <code>ModelHandler</code>.</li>
+</ul>
+<hr />
+<h2 id="how-modelhandler-uses-the-config">🧩 How <code>ModelHandler</code> uses the config<a class="headerlink" href="#how-modelhandler-uses-the-config" title="link to this section">#</a></h2>
+<ol>
+<li><strong>Construction</strong></li>
+</ol>
+<div class="codehilite"><pre><span></span><code><span class="n">handler</span> <span class="o">=</span> <span class="n">ModelHandler</span><span class="p">(</span>
+    <span class="n">models_config_path</span><span class="o">=</span><span class="s2">&quot;/path/to/models-config.json&quot;</span><span class="p">,</span>
+    <span class="n">provider_chooser</span><span class="o">=</span><span class="n">my_provider_strategy</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<ul>
+<li>
+<p><code>ApiModelConfig</code> reads the file, extracts <code>active_models</code>, and builds <code>models_configs</code> – a dict that maps each active
+  model name to its full configuration (including the <code>providers</code> list).</p>
+</li>
+<li>
+<p><strong>Fetching a provider</strong></p>
+</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="n">api_model</span> <span class="o">=</span> <span class="n">handler</span><span class="o">.</span><span class="n">get_model_provider</span><span class="p">(</span><span class="s2">&quot;google/gemma-3-12b-it&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<ul>
+<li><code>handler.api_model_config.models_configs[model_name]</code> returns the raw dict for the model.</li>
+<li>The <code>ProviderStrategyFacade</code> selects a concrete provider dict (based on the chosen load‑balancing algorithm).</li>
+<li>
+<p><code>ApiModel.from_config()</code> turns that dict into an <code>ApiModel</code> instance – a lightweight object that stores fields like
+  <code>api_host</code>, <code>api_type</code>, <code>keep_alive</code>, etc.</p>
+</li>
+<li>
+<p><strong>Listing active models</strong></p>
+</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="n">active</span> <span class="o">=</span> <span class="n">handler</span><span class="o">.</span><span class="n">list_active_models</span><span class="p">()</span>
+</code></pre></div>
+
+<ul>
+<li>Returns a dict grouped by model type, each entry containing a short, sanitized view of the primary provider (removing
+  secret fields such as <code>api_token</code> and <code>model_path</code>).</li>
+</ul>
+<hr />
+<h2 id="sample-configuration-models-configjson">📦 Sample configuration (<code>models-config.json</code>)<a class="headerlink" href="#sample-configuration-models-configjson" title="link to this section">#</a></h2>
+<p>Below is a trimmed version of the real file located in <code>resources/configs/models-config.json</code>.<br />
+Copy it to your own configuration directory and adjust the values to match your environment.</p>
+<div class="codehilite"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;google_models&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;google/gemma-3-12b-it&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;providers&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;gemma3_12b-vllm-71:7000&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;api_host&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;http://192.168.100.71:7000/&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;api_token&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;api_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;vllm&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;input_size&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">4096</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;model_path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;weight&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">1.0</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;keep_alive&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;tool_calling&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;gemma3_12b-vllm-71:7001&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;api_host&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;http://192.168.100.71:7001/&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;api_token&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;api_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;vllm&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;input_size&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">4096</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;model_path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;weight&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">1.0</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;keep_alive&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;tool_calling&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="p">],</span>
+<span class="w">      </span><span class="nt">&quot;providers_sleep&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;gemma3_12b-vllm-66:7000&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;api_host&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;http://192.168.100.66:7000/&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;api_token&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;api_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;vllm&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;input_size&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">4096</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;model_path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;weight&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.1</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;keep_alive&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;tool_calling&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="cm">/* … more sleeping providers … */</span>
+<span class="w">      </span><span class="p">]</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;google/gemini-2.5-flash-lite&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;providers&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;google_gemini_2_5-flash-lite&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;api_host&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://generativelanguage.googleapis.com/v1beta/openai/&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;api_token&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;YOUR_GOOGLE_API_KEY&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;api_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;openai&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;input_size&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">512000</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;model_path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;gemini-2.5-flash-lite&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;keep_alive&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;tool_calling&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="p">]</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;openai_models&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;openai/gpt-3.5-turbo-0125&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;providers&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;openai-gpt3_5-t-0125&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;api_host&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://api.openai.com&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;api_token&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;YOUR_OPENAI_KEY&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;api_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;openai&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;input_size&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">256000</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;model_path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;gpt-3.5-turbo-0125&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;keep_alive&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;tool_calling&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="p">]</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="cm">/* … other OpenAI/Ollama models … */</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;qwen_models&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;nomic-embed-text&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;providers&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;nomic-embed-text-ollama&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;api_host&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;http://192.168.100.66:11434&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;api_token&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;api_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ollama&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;input_size&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2048</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;is_embedding&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="p">]</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;qwen3-coder:30b&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;providers&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;qwen3-coder-30b-66:11434&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;api_host&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;http://192.168.100.66:11434&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;api_token&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;api_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ollama&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;input_size&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">256000</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;model_path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;keep_alive&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;35m&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;tool_calling&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="cm">/* … second provider … */</span>
+<span class="w">      </span><span class="p">]</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;active_models&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;google_models&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">      </span><span class="s2">&quot;google/gemma-3-12b-it&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="s2">&quot;google/gemini-2.5-flash-lite&quot;</span>
+<span class="w">    </span><span class="p">],</span>
+<span class="w">    </span><span class="nt">&quot;openai_models&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">      </span><span class="s2">&quot;openai/gpt-3.5-turbo-0125&quot;</span>
+<span class="w">    </span><span class="p">],</span>
+<span class="w">    </span><span class="nt">&quot;qwen_models&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">      </span><span class="s2">&quot;qwen3-coder:30b&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="s2">&quot;nomic-embed-text&quot;</span>
+<span class="w">    </span><span class="p">]</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<blockquote>
+<p><strong>Tip:</strong><br />
+<em>Keep the file name configurable through the environment variable <code>LLM_ROUTER_MODELS_CONFIG</code> (the default
+is <code>resources/configs/models-config.json</code>).</em></p>
+</blockquote>
+<hr />
+<h2 id="summary">🎉 Summary<a class="headerlink" href="#summary" title="link to this section">#</a></h2>
+<ul>
+<li><strong><code>models-config.json</code></strong> is the single source of truth for every LLM provider used by the router.</li>
+<li><strong><code>active_models</code></strong> decides which models are exposed.</li>
+<li><strong><code>ModelHandler</code> + <code>ApiModelConfig</code></strong> read the file, pick a provider according to the configured strategy, and hand
+  you a ready‑to‑use <code>ApiModel</code> instance.</li>
+<li>The sample configuration below can be copied and tweaked to fit your own deployment.</li>
+</ul>
+<p>Feel free to edit this file whenever you add new providers or change load‑balancing weights – the router picks up the
+changes on the next start (or after re‑loading the handler in a running process). Happy modeling!</p></article>
+<nav class="pager" aria-label="Previous and next page"><a class="prev" href="lb-strategies.html"><span class="dir">&larr; previous</span><span class="pt">Load Balancing Strategies</span></a></nav>
+<footer class="doc-meta">
+<div class="meta-row"><span class="meta-k">source</span><a class="mono" href="https://github.com/radlab-dev-group/llm-router/blob/v0.5.1/llm_router_api/MODELS_CONFIG.md">llm_router_api/MODELS_CONFIG.md</a></div>
+<div class="meta-row"><span class="meta-k">last commit</span><time datetime="2026-06-08T20:32:47+02:00">2026-06-08</time></div>
+<div class="meta-row"><span class="meta-k">built from</span><span class="mono">v0.5.1&nbsp;@&nbsp;17f6846</span></div>
+<p class="hint">Generated from the Markdown file in the repository: commit a change and the next build republishes it for every release that contains it.</p>
+</footer>
+<footer class="foot"><div class="foot-inner">
+<span class="mono">llm-router &middot; docs are generated from the repository by <code>tools/build_docs.py</code></span>
+<span class="mono"><a href="https://github.com/radlab-dev-group/llm-router/tree/v0.5.1">0.5.1</a> @ <code>17f6846</code></span>
+</div></footer>
+</main>
+<aside class="dtoc" id="dtoc"><h2 class="toc-title">on this page</h2><div class="toc-body"><ul><li><a href="#purpose">📄 Purpose</a></li><li><a href="#highlevel-structure">🏗️ High‑level structure</a></li><li><a href="#how-modelhandler-uses-the-config">🧩 How ModelHandler uses the config</a></li><li><a href="#sample-configuration-models-configjson">📦 Sample configuration (models-config.json)</a></li><li><a href="#summary">🎉 Summary</a></li></ul></div></aside>
+</div>
+</body>
+</html>

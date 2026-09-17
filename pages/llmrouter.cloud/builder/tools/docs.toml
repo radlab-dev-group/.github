@@ -1,13 +1,17 @@
 # ---------------------------------------------------------------------------
 # Documentation site configuration (tools/build_docs.py).
 #
-# Everything under /docs is generated from the Markdown files that live in this
-# repository -- there is no separate copy of the documentation to maintain.
+# Everything under /docs is generated from the Markdown files that live in the
+# source repository (the llm-router checkout) -- there is no separate copy of
+# the documentation to maintain.
 #
-#   python3 tools/build_docs.py                  # docs for the version in .version
-#   python3 tools/build_docs.py --all-versions    # every release tag + current
-#   python3 tools/build_docs.py --dry-run         # show what would be published
-#   python3 tools/build_docs.py --serve           # build + http://localhost:8000
+#   python3 tools/build_docs.py --source /path/to/llm-router          # docs for the version in .version
+#   python3 tools/build_docs.py --source /path/to/llm-router --all-versions  # every release tag + current
+#   python3 tools/build_docs.py --source /path/to/llm-router --dry-run       # show what would be published
+#   python3 tools/build_docs.py --source /path/to/llm-router --serve         # build + http://localhost:8000
+#
+# Without --source the builder falls back to $LLM_ROUTER_DOCS_SOURCE, then to
+# [site] source_repo below, then to this repo (legacy single-repo layout).
 #
 # Adding a new document: commit the .md file. That is all -- files that do not
 # match any [[sections]] pattern below land in the "Other docs" section, so
@@ -24,6 +28,9 @@ repo_url = "https://github.com/radlab-dev-group/llm-router"
 site_url = ""
 # Shown as the "back to the landing page" target.
 home_url = "../"
+# Source repository the docs are generated from (machine specific -- prefer
+# --source or $LLM_ROUTER_DOCS_SOURCE in CI). Uncomment and adapt:
+# source_repo = "/path/to/llm-router"
 
 [discover]
 # Which Markdown files become documentation pages.

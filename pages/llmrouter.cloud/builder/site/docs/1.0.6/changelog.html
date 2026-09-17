@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Changelog · v1.0.6 · llm-router docs</title>
+<meta name="description" content="Initialization, License, setup, interface for each endpoint and sample ping EP. Autoloader of builtin endpoints and for the future implementations. Add base models for api call (module llmproxyrest.datamodels with error.py handling…">
+<meta name="theme-color" content="#05070a">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Changelog · v1.0.6 · llm-router docs">
+<meta property="og:description" content="Initialization, License, setup, interface for each endpoint and sample ping EP. Autoloader of builtin endpoints and for the future implementations. Add base models for api call (module llmproxyrest.datamodels with error.py handling…">
+<meta name="docs-version" content="1.0.6">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2305070a'/%3E%3Cpath d='M8 22V10M8 16h9M17 10v12M17 13h7M17 19h7' stroke='%2300e59b' stroke-width='2' stroke-linecap='round' fill='none'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="../assets/docs.css">
+<link rel="stylesheet" href="../assets/pygments.css">
+<script src="../assets/docs.js" defer></script>
+</head>
+<body class="page page-changelog" data-version="1.0.6" data-search="search.json" data-latest="1.0.7">
+<a class="skip" href="#main">skip to content</a>
+<header class="topbar">
+<div class="topbar-inner">
+<button class="burger" id="burger" aria-label="Toggle documentation menu" aria-expanded="false" aria-controls="sidebar">&#9776;</button>
+<a class="brand" href="../.."><svg width="21" height="21" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="7" fill="#0b1119" stroke="#1a232e"/><path d="M8 22V10M8 16h9M17 10v12M17 13h7M17 19h7" stroke="#00e59b" stroke-width="2" stroke-linecap="round" fill="none"/></svg><span>llm<span class="dash">-</span>router</span><span class="brand-docs">/docs</span></a>
+<div class="topbar-right">
+<form class="search" id="search" role="search" autocomplete="off">
+<span class="search-icon" aria-hidden="true">&#8981;</span>
+<input id="q" type="search" placeholder="search this version" aria-label="Search documentation" role="combobox" aria-expanded="false" aria-controls="results" aria-autocomplete="list">
+<kbd>/</kbd>
+<div class="results" id="results" role="listbox" aria-label="Search results" hidden></div>
+</form>
+<label class="vselect">
+<span class="sr-only">Documentation version</span>
+<select id="versions" aria-label="Documentation version"><option value="../1.0.7/changelog.html">1.0.7  · latest</option>
+<option value="changelog.html" selected>1.0.6</option>
+<option value="../1.0.5/changelog.html">1.0.5</option>
+<option value="../1.0.4/changelog.html">1.0.4</option>
+<option value="../1.0.3/changelog.html">1.0.3</option>
+<option value="../1.0.1/changelog.html">1.0.1</option>
+<option value="../1.0.0/changelog.html">1.0.0</option>
+<option value="../0.9.6/changelog.html">0.9.6</option>
+<option value="../0.9.5/changelog.html">0.9.5</option>
+<option value="../0.9.4/changelog.html">0.9.4</option>
+<option value="../0.9.2/changelog.html">0.9.2</option>
+<option value="../0.9.1/changelog.html">0.9.1</option>
+<option value="../0.9.0/changelog.html">0.9.0</option>
+<option value="../0.8.0/changelog.html">0.8.0</option>
+<option value="../0.7.0/changelog.html">0.7.0</option>
+<option value="../0.6.9/changelog.html">0.6.9</option>
+<option value="../0.6.8/changelog.html">0.6.8</option>
+<option value="../0.6.7/changelog.html">0.6.7</option>
+<option value="../0.6.6/changelog.html">0.6.6</option>
+<option value="../0.6.5/changelog.html">0.6.5</option>
+<option value="../0.6.4/changelog.html">0.6.4</option>
+<option value="../0.6.3/changelog.html">0.6.3</option>
+<option value="../0.6.2/changelog.html">0.6.2</option>
+<option value="../0.6.1/changelog.html">0.6.1</option>
+<option value="../0.6.0/changelog.html">0.6.0</option>
+<option value="../0.5.2/changelog.html">0.5.2</option>
+<option value="../0.5.1/changelog.html">0.5.1</option>
+<option value="../0.5.0/changelog.html">0.5.0</option>
+<option value="../0.4.6/changelog.html">0.4.6</option>
+<option value="../0.4.5/changelog.html">0.4.5</option>
+<option value="../0.4.4/changelog.html">0.4.4</option>
+<option value="../0.4.3/changelog.html">0.4.3</option>
+<option value="../0.4.2/changelog.html">0.4.2</option>
+<option value="../0.4.1/changelog.html">0.4.1</option>
+<option value="../0.4.0/changelog.html">0.4.0</option>
+<option value="../0.3.1/changelog.html">0.3.1</option>
+<option value="../0.3.0/changelog.html">0.3.0</option>
+<option value="../0.2.3/changelog.html">0.2.3</option>
+<option value="../0.2.2/changelog.html">0.2.2</option>
+<option value="../0.2.1/changelog.html">0.2.1</option>
+<option value="../0.2.0/changelog.html">0.2.0</option>
+<option value="../0.1.1/changelog.html">0.1.1</option>
+<option value="../0.1.0/changelog.html">0.1.0</option></select>
+</label>
+<a class="iconbtn" href="https://github.com/radlab-dev-group/llm-router" aria-label="Repository on GitHub" title="Repository on GitHub"><svg width="17" height="17" viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8a8 8 0 0 0 5.47 7.59c.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.46-.53.42-.02.72.39.82.55.48.81 1.25.94 1.56.73.2-.27.6-.94.94-1.13-.01-.2-.05-.82-.14-.98-.6.1-1.22.2-1.87.2-1.9 0-3.62-1.13-3.62-3.53 0-.78.28-1.42.74-1.92-.07-.18-.32-.91.07-1.9 0 0 .6-.19 1.97.74a6.8 6.8 0 0 1 3.58 0c1.37-.93 1.97-.74 1.97-.74.39.99.14 1.72.07 1.9.46.5.74 1.14.74 1.92 0 2.41-1.47 3.53-3.87 3.72.3.26.57.77.57 1.56 0 1.13-.012.04-.01 2.32 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg></a>
+</div>
+</div>
+</header>
+<div class="scrim" id="scrim" hidden></div>
+<div class="shell">
+<aside class="sidebar" id="sidebar"><div class="side-head"><span class="side-v mono">v1.0.6</span><span class="side-tag old">archived</span></div><a class="side-hub" href="index.html">documentation index</a><nav class="nav-tree" aria-label="Documentation"><section class="nav-sec"><h2 class="nav-sec-title"><a href="overview.html">Getting started</a></h2><ul><li><a href="overview.html">Overview</a></li><li><a href="llm-router-api/docs/installation.html">Installation</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="llm-router-api/docs/env-definitions.html">Configuration</a></h2><ul><li><a href="llm-router-api/docs/env-definitions.html">Environment Variables</a></li><li><a href="llm-router-api/docs/models-config.html">Models configuration description (JSON)</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="llm-router-api/docs/keepalive.html">Routing &amp; resilience</a></h2><ul><li><a href="llm-router-api/docs/keepalive.html">Keep‑Alive Utility Overview</a></li><li><a href="llm-router-api/docs/lb-strategies.html">Load Balancing Strategies</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="llm-router-api/core/auditor/index.html">Security &amp; auditing</a></h2><ul><li><a href="llm-router-api/core/auditor/index.html">Auditing subsystem – llm-router</a></li><li><a href="llm-router-api/docs/authentication.html">Authentication &amp; Authorization</a></li><li><a href="llm-router-api/docs/rate-limiting.html">Rate Limiting</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="llm-router-api/docs/routing-metrics.html">Observability</a></h2><ul><li><a href="llm-router-api/docs/routing-metrics.html">Router Prometheus Metrics</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="llm-router-api/index.html">REST API</a></h2><ul><li><a href="llm-router-api/index.html">REST API reference</a></li><li><a href="llm-router-api/endpoints/index.html">Endpoints Overview</a></li><li><a href="llm-router-api/docs/endpoint-dev.html">Endpoint Development Guide</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="llm-router-cli/index.html">CLI</a></h2><ul><li><a href="llm-router-cli/index.html">llm-router CLI — Command Reference</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="llm-router-lib/index.html">Python library</a></h2><ul><li><a href="llm-router-lib/index.html">llmrouterlib</a></li><li><a href="llm-router-lib/response-models.html">Response models</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="helm-charts/index.html">Deployment</a></h2><ul><li><a href="helm-charts/index.html">LLM‑Router Helm Chart</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="examples/index.html">Examples</a></h2><ul><li><a href="examples/index.html">Integration Examples with LLM Router</a></li><li><a href="examples/quickstart/index.html">Full Stack with Local Models</a></li><li><a href="examples/readme-llamaindex.html">Using LlamaIndex with Local Models via the LLM‑Router</a></li><li><a href="examples/quickstart/google-gemma3-12b-it/vllm.html">vLLM + google/gemma‑3‑12b‑it – Quick‑Start Guide (Ubuntu)</a></li><li><a href="examples/quickstart/speakleash-bielik-11b-v2-3-instruct/vllm.html">vLLM + speakleash/Bielik-11B-v2.3-Instruct – Przewodnik Szybkiego Startu (Ubuntu)</a></li><li><a href="examples/quickstart/speakleash-bielik-11b-v2-3-instruct/index.html">🚀 Przewodnik Szybkiego Startu dla speakleash/Bielik-11B-v2.3-Instruct z vLLM &amp; LLM‑Router</a></li><li><a href="examples/quickstart/google-gemma3-12b-it/index.html">🚀 Quick‑Start Guide for google/gemma-3-12b‑it with vLLM &amp; LLM‑Router</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="changelog.html">Release notes</a></h2><ul><li><a href="changelog.html" class="active">Changelog</a></li></ul></section></nav><div class="side-foot"><a href="../..">&larr;&nbsp;landing page</a><a class="mono" href="search.json">search.json</a></div></aside>
+<main class="main" id="main"><nav class="crumbs" aria-label="Breadcrumb">
+<a href="../..">llm-router</a><span class="sep">/</span><a href="index.html">docs</a><span class="sep">/</span><a href="changelog.html">Release notes</a><span class="sep">/</span><em>Changelog</em>
+</nav>
+<article class="prose"><h1 id="changelog">Changelog<a class="headerlink" href="#changelog" title="link to this section">#</a></h1>
+<h2 id="001">0.0.1<a class="headerlink" href="#001" title="link to this section">#</a></h2>
+<p>Initialization, License, setup, interface for each endpoint and sample <code>ping</code> EP. Autoloader of builtin endpoints and for the future implementations.</p>
+<h2 id="002">0.0.2<a class="headerlink" href="#002" title="link to this section">#</a></h2>
+<p>Add base models for api call (module <code>llm_proxy_rest.data_models</code> with <code>error.py</code> handling. Decorators to check required params and to measure the response time.</p>
+<h2 id="003">0.0.3<a class="headerlink" href="#003" title="link to this section">#</a></h2>
+<p>Proper <code>AutoLoading</code> for each found endpoint. Implementation of <code>ApiTypesDispatcher</code>, <code>ApiModelConfig</code>, <code>ModelHandler</code>. Ollama endpoints: <code>/</code>, <code>tags</code>. Added endpoint to full proxy with params. Streaming in case when external api provides stream.</p>
+<h2 id="004">0.0.4<a class="headerlink" href="#004" title="link to this section">#</a></h2>
+<p>All llama-service endpoints are refactored to <code>llm-proxy-api</code>. Refactoring base <code>ep_run</code> method. Proper handling system message, prompt name, model etc.</p>
+<h2 id="010">0.1.0<a class="headerlink" href="#010" title="link to this section">#</a></h2>
+<p>Repository name changed from <code>llm-proxy-api</code> to <code>llm-router</code>. Added class <code>HttpRequestExecutor</code> to handle http requests from <code>EndpointWithHttpRequestI</code>. Handled routing between any models: <code>openai -&gt; ollama</code> and <code>ollama -&gt; openai</code></p>
+<h2 id="011">0.1.1<a class="headerlink" href="#011" title="link to this section">#</a></h2>
+<p>Prometheus metrics logging. Workers/Threads/Workers class is able to set by environments. Streaming fixes. Multi-providers for single model with default-balanced strategy.</p>
+<h2 id="020">0.2.0<a class="headerlink" href="#020" title="link to this section">#</a></h2>
+<p>Add balancing strategies: <code>balanced</code>, <code>weighted</code>, <code>dynamic_weighted</code> and <code>first_available</code> which works for streaming and non streaming requests. Included Prometheus metrics logging via <code>/metrics</code> endpoint. First stage of <code>llm_router_lib</code> library, to simply usage of <code>llm-router-api</code>.</p>
+<h2 id="021">0.2.1<a class="headerlink" href="#021" title="link to this section">#</a></h2>
+<p>Fix stream: OpenAI-&gt;Ollama, Ollama-&gt;OpenAI. Add Redis caching of availability of model providers (when using <code>first_available</code> strategy). Add <code>llm_router_web</code> module with simple flask-based frontend to manage llm-router config files.</p>
+<h2 id="022">0.2.2<a class="headerlink" href="#022" title="link to this section">#</a></h2>
+<p>Update dockerfile and requirements. Fix routing with vLLM.</p>
+<h2 id="023">0.2.3<a class="headerlink" href="#023" title="link to this section">#</a></h2>
+<p>New web configurator: Handling projects, configs for each user separately. First Available strategy is more powerful, a lot of improvements to efficiency.</p>
+<h2 id="024">0.2.4<a class="headerlink" href="#024" title="link to this section">#</a></h2>
+<p>Anonymizer module, integration anonymization with any endpoint (using dynamic payload analysis and full payload anonymisation), dedicated <code>/api/anonymize_text</code> endpoint as memory only anonymization. Whole router may be run in <code>FORCE_ANONYMISATION</code> mode.</p>
+<h2 id="030">0.3.0<a class="headerlink" href="#030" title="link to this section">#</a></h2>
+<p>Anonymization available with three strategies: <code>fast_masker</code>, <code>genai</code>, <code>prov_masker</code>.</p>
+<h2 id="031">0.3.1<a class="headerlink" href="#031" title="link to this section">#</a></h2>
+<p>Refactoring <code>lb.strategies</code> to be more flexible modular. Introduced <code>MaskerPipeline</code> and <code>GuardrailPipeline</code> both configured via env. Removed genai-based masking endpoint.</p>
+<h2 id="040">0.4.0<a class="headerlink" href="#040" title="link to this section">#</a></h2>
+<p>The main repository is divided into dedicated ones: plugins, services, web — separate repositories. Clean up the whole repository. Examples of integration with llamaindex, langchain, openai, litellm and haystack.</p>
+<h2 id="041">0.4.1<a class="headerlink" href="#041" title="link to this section">#</a></h2>
+<p>Audit log is stored using GPG. Add bash script (<code>scripts/gen_and_export_gpg.sh</code> to prepare GPG keys and simple <code>scripts/decrypt_auditor_logs.sh</code> to decrypt encrypted audit logs. Moved core functionality from <code>base</code> to module <code>core</code> module. Quickstart.</p>
+<h2 id="042">0.4.2<a class="headerlink" href="#042" title="link to this section">#</a></h2>
+<p>Fix <code>first_available_optim</code> Strategy. Add KeepAliveMonitor to periodically pings model endpoints to keep them warm.</p>
+<h2 id="043">0.4.3<a class="headerlink" href="#043" title="link to this section">#</a></h2>
+<p>Add custom Prometheus metrices for logging masker/guardrail inidents. Fix OpenAI compatible v1 <code>/models</code> endpoint. Introduce monitors: services and keep alive models. Fixed guardrail retunr in case when streaming.</p>
+<h2 id="044">0.4.4<a class="headerlink" href="#044" title="link to this section">#</a></h2>
+<p>Validate unique provider identifiers. Store all hosts with keep‑alive configured in a Redis. UtilsPlugin pipeline with LangChain based simple RAG plugin (extending context to GenAI with locally built databse). Add handling of <code>v1/response</code> endpoint</p>
+<h2 id="045">0.4.5<a class="headerlink" href="#045" title="link to this section">#</a></h2>
+<p>Fixed sreaming to LMStudio native. Refactor streaming module.</p>
+<h2 id="046">0.4.6<a class="headerlink" href="#046" title="link to this section">#</a></h2>
+<p>Added support for embeddings endpoints across all providers. Extended <code>ApiModel</code> and <code>ApiTypesI</code> with <code>is_embedding</code> flag. Added <code>test_embeddings.py</code> utility for verifying embedding models through the API.</p>
+<h2 id="047">0.4.7<a class="headerlink" href="#047" title="link to this section">#</a></h2>
+<p>Integration with native Anthropic API. Add <code>translate</code>, <code>generative_answer</code> and <code>ping</code> methods to <code>LLMRouterClient</code> (with tests). Refactor <code>LLMRouterCkientServices</code> to use <code>self.model_cls</code>. Add payload converter for vLLM.</p>
+<h2 id="050">0.5.0<a class="headerlink" href="#050" title="link to this section">#</a></h2>
+<p>Integration with PII masker, code refactoring</p>
+<h2 id="051">0.5.1<a class="headerlink" href="#051" title="link to this section">#</a></h2>
+<p>Add <code>/v1/messages</code> endpoint (Claude Agent compatibility), streaming Cache‑Control/Pragma/Expires/Vary headers, mandatory Redis (runtime error on missing connection), non‑root Docker startup, remove <code>ml‑utils</code> dependency, add <code>gnupg</code> to requirements, update default plugin to <code>simple_semantic_routing</code>.</p>
+<h2 id="052">0.5.2<a class="headerlink" href="#052" title="link to this section">#</a></h2>
+<p>Prevent network topology leak in error messages (full details remain in server‑side logs), example <code>models-config.json</code> no longer contains real internal IPs. Introduced <code>LLM_ROUTER_MAX_REQUEST_BODY_SIZE</code> to set the maximum content length. Sanitize all error messages returned to the Client. Local security.</p>
+<h2 id="060">0.6.0<a class="headerlink" href="#060" title="link to this section">#</a></h2>
+<ul>
+<li><strong>Authentication system</strong>: API key-based auth with multi-backend key stores (Memory, Redis, Vault), plaintext and secret-key lookup, enable/disable keys, seed-file persistence.</li>
+<li><strong>Auth CLI</strong>: <code>auth</code> subcommands for managing API keys (create/list/enable/disable/delete) with formatted tabular output and prefix matching.</li>
+<li><strong>Rate limiting</strong>: Per-key rate limiting via token bucket, predefined rate-limiting policies in <code>rate_limiting-policies.json</code>, PolicyEngine accepting dict key records.</li>
+<li><strong>Anonymizer CLI</strong>: Migrated <code>fast_masker</code> to <code>anonymizer</code> CLI with deprecation warning; moved to <code>masker</code> subpackage.</li>
+<li><strong>Infrastructure</strong>: Shared Redis client across stores and cache, dynamic column widths for CLI output, environment variable updates for auth/rate-limiting/audit logging config.</li>
+</ul>
+<h2 id="061">0.6.1<a class="headerlink" href="#061" title="link to this section">#</a></h2>
+<p>Added <code>config</code> CLI command with <code>discover</code> (auto-discover local Ollama/vLLM/LM Studio providers) and <code>merge</code> (deep-merge multiple models-config.json files).</p>
+<h2 id="062">0.6.2<a class="headerlink" href="#062" title="link to this section">#</a></h2>
+<ul>
+<li><strong>CLI</strong>: fix <code>_RATE_LIMIT_COMMANDS</code> <code>NameError</code> in auth CLI (commit <code>2d9e593</code>).</li>
+<li><strong>Core</strong>: extract Prometheus multiprocess dir handling into <code>MetricsHandler.prepare_multiproc_dir()</code> with sane default; add <code>LLM_ROUTER_AUTH_MEMORY_SEED_FILE</code> env var for memory store seed path.</li>
+<li><strong>CLI</strong>: restructure <code>config</code> commands, clean up imports across core modules, add <code>llm_router_client.py</code> test script with predefined model tests.</li>
+</ul>
+<h2 id="063">0.6.3<a class="headerlink" href="#063" title="link to this section">#</a></h2>
+<p><strong>Core</strong>: consolidate streaming mode flags into <code>StreamConversion</code> enum, simplify handler dispatch and fix swapped handler type hints in OpenAI/Ollama endpoints. Simplify error handling and response logic in <code>endpoint_i.py</code>.</p>
+<h2 id="064">0.6.4<a class="headerlink" href="#064" title="link to this section">#</a></h2>
+<p><strong>Refac</strong>: Clear REAME files.</p>
+<h2 id="065">0.6.5<a class="headerlink" href="#065" title="link to this section">#</a></h2>
+<ul>
+<li><strong>CLI discover</strong>: added KoboldCpp and TabbyAPI providers to <code>config discover</code> auto-discovery (now covers 6 local providers: Ollama, vLLM, LM Studio, llama.cpp, KoboldCpp, TabbyAPI).</li>
+<li><strong>Infrastructure</strong>: fixed <code>_scan_and_merge</code> passing <code>best_port</code> as <code>host</code> parameter causing empty config; removed deprecated <code>llm-router-fast-masker</code> entry point and <code>masker</code> module.</li>
+</ul>
+<h2 id="066">0.6.6<a class="headerlink" href="#066" title="link to this section">#</a></h2>
+<ul>
+<li><strong>Auth CLI</strong>: restored working key generation by fixing <code>_handle_key</code> instance method call (<code>cls._handle_key</code> → <code>cls()._handle_key</code>).</li>
+<li><strong>Config CLI</strong>: fixed <code>_do_discover</code>/<code>_do_merge</code> calls to use class methods properly (<code>_do_discover(args)</code> → <code>cls._do_discover(args)</code>). Removed all legacy backward-compatibility shim comments and module-level functions from CLI command modules.</li>
+</ul>
+<h2 id="067">0.6.7<a class="headerlink" href="#067" title="link to this section">#</a></h2>
+<ul>
+<li><strong>Docs</strong>: consolidate environment variable documentation into <code>ENV_DEFINITIONS.md</code>, simplify references across README files, add <code>semantic_biencoder_routing</code> env var details, remove <code>LLM_ROUTER_HOST</code> and update default <code>MASKING_STRATEGY_PIPELINE</code>.</li>
+<li><strong>Chore</strong>: add <code>/metrics</code> endpoint to public endpoints list (<code>LLM_ROUTER_AUTH_PUBLIC_ENDPOINTS</code>) across auth and config modules; bump version to 0.6.7.</li>
+</ul>
+<h2 id="068">0.6.8<a class="headerlink" href="#068" title="link to this section">#</a></h2>
+<ul>
+<li><strong>Feature:</strong> Prometheus router metrics, Grafana dashboard, and <code>/metrics</code> public endpoint for improved observability and visualization.</li>
+<li><strong>Docs</strong>: consolidate env var docs into <code>ENV_DEFINITIONS.md</code>, update docstrings and line wrapping across modules.</li>
+<li><strong>Chore</strong>: expand <code>mypy</code> checks, add <code>types-setuptools</code>.</li>
+</ul>
+<h2 id="069">0.6.9<a class="headerlink" href="#069" title="link to this section">#</a></h2>
+<ul>
+<li><strong>Chore</strong>: update prompts to be more specific.</li>
+<li><strong>Feature:</strong> add <code>prepare_response_function</code> to <code>endpoint_i</code>, add <code>GenerateNewsFromTextService</code>, add <code>default_model</code> parameter to <code>Client</code> to provide fallback model configuration</li>
+</ul>
+<h2 id="070">0.7.0<a class="headerlink" href="#070" title="link to this section">#</a></h2>
+<ul>
+<li><strong>Feature:</strong> add <code>polarity_3c</code> endpoint (<code>/api/polarity_3c</code>) to detect 3-class text polarity (<code>ambivalent</code>, <code>positive</code>, <code>negative</code>) with PL/EN system prompts.</li>
+<li><strong>Lib:</strong> add <code>Polarity3cModel</code>, <code>Polarity3cService</code>, and <code>LLMRouterClient.polarity_3c()</code> method to <code>llm_router_lib</code>.</li>
+<li><strong>Auth &amp; Docs:</strong> register endpoint with <code>builtin</code> policy permission, update endpoint documentation and add comprehensive test suite.</li>
+</ul>
+<h2 id="080">0.8.0<a class="headerlink" href="#080" title="link to this section">#</a></h2>
+<ul>
+<li><strong>Feature:</strong> add endpoints: <code>/api/simplify_text</code>, <code>/api/generate_questions</code>, <code>/api/create_full_article_from_texts</code>, <code>/api/generate_article_from_texts</code>, <code>/api/generate_label</code> with models, services and matching <code>LLMRouterClient</code> methods.</li>
+<li><strong>Auth:</strong> register the new endpoints with the <code>builtin</code> policy permission.</li>
+<li><strong>Fix</strong> <code>_ensure_alternating_roles</code> in <code>endpoint_i</code> to build a valid payload by merging consecutive messages of the same role (joining their contents), folding all <code>system</code> messages into one leading message, and prepending/appending empty <code>user</code> placeholders when the dialogue starts with or ends with an <code>assistant</code> turn.</li>
+</ul>
+<h2 id="090">0.9.0<a class="headerlink" href="#090" title="link to this section">#</a></h2>
+<ul>
+<li><strong>Refactor (dependency direction):</strong> <code>llm_router_lib</code> no longer imports from <code>llm_router_api</code>. The shared <code>DEFAULT_EP_LANGUAGE</code> constant (and the <code>LLM_ROUTER_</code> env prefix) now live in the dependency‑free <code>llm_router_lib.core.constants</code>; <code>llm_router_api.base.constants_base</code> re‑exports them for backward compatibility.</li>
+<li><strong>BREAKING – structural rename anchored on the endpoint URL</strong> (HTTP paths are unchanged). Canonical name = URL without <code>/api/</code>; class/model/service/client‑method/constant names now follow it and legacy aliases are removed: <code>TranslateTexts</code>→<code>Translate</code>, <code>TranslateTextModel</code>→<code>TranslateModel</code>, <code>TranslateTextService</code>→<code>TranslateService</code>; <code>SimplifyTexts</code>→<code>SimplifyText</code>, client <code>simplify_texts()</code>→<code>simplify_text()</code>; <code>GenerateQuestionsFromTexts</code>→<code>GenerateQuestions</code>, <code>GenerateQuestionFromTextsModel</code>→<code>GenerateQuestionsModel</code>, <code>GenerateQuestionsFromTextsService</code>→<code>GenerateQuestionsService</code> (alias <code>GenerateQuestionFromTextsService</code> removed), client <code>generate_questions_from_texts()</code>→<code>generate_questions()</code>, constants <code>GENERATE_Q_*</code>→<code>GENERATE_QUESTIONS_*</code>; <code>GenerateNewsFromTextHandler</code>→<code>GenerateArticleFromText</code>, <code>GenerateNewsFromTextService</code>→<code>GenerateArticleFromTextService</code>, client <code>generate_news_from_text()</code>→<code>generate_article_from_text()</code>, constants <code>GENERATE_ART_*</code>→<code>GENERATE_ARTICLE_FROM_TEXT_*</code>; <code>GenerateArticleFromTexts</code> constants <code>GENERATE_ARTICLES_*</code>→<code>GENERATE_ARTICLE_FROM_TEXTS_*</code>; <code>FullArticleFromTexts</code>→<code>CreateFullArticleFromTexts</code>, <code>CreateArticleFromNewsListModel</code>→<code>CreateFullArticleFromTextsModel</code>, constants <code>FULL_ARTICLE_*</code>→<code>CREATE_FULL_ARTICLE_FROM_TEXTS_*</code>; <code>AnswerBasedOnTheContext</code>→<code>GenerativeAnswer</code>, <code>AnswerBasedOnTheContextModel</code>→<code>GenerativeAnswerModel</code>, constants <code>CONTEXT_ANSWER_*</code>→<code>GENERATIVE_ANSWER_*</code>; <code>GenerativeConversationModel</code>→<code>ConversationWithModelRequest</code>, <code>ExtendedGenerativeConversationModel</code>→<code>ExtendedConversationWithModelRequest</code>, <code>ConversationService</code>→<code>ConversationWithModelService</code>, <code>ExtendedConversationService</code>→<code>ExtendedConversationWithModelService</code>. Class inheritance hierarchy and the auth <code>_ENDPOINT_PERMISSION_MAP</code> (URL‑keyed) are unchanged.</li>
+<li><strong>Refactor (structure only, no behavior change):</strong> shared base <code>TextListUtilityEndpoint</code> for the <code>texts</code> utility endpoints (common <code>prepare_payload</code> — one <code>user</code> message per source text, <code>build_map_prompt</code> hook, per‑text <code>_prepare_response</code> helper); message normalisation moved verbatim into pure functions in <code>llm_router_api/endpoints/message_normalizer.py</code> (thin delegating methods kept on the endpoint class); outbound HTTP dispatch + retry orchestration moved verbatim into <code>llm_router_api/endpoints/http_dispatch.py</code> (<code>HttpDispatch</code>; <code>EndpointWithHttpRequestI.RetryResponse</code> kept as a backward‑compatible alias of <code>http_dispatch.RetryPolicy</code>); <code>run_ep</code> slimmed into a readable orchestrator with extracted sequence helpers (<code>endpoint_i.py</code> reduced from 2123 to ~1810 lines).</li>
+<li><strong>Fix (behavior):</strong> per‑text endpoints now actually return one result per source text — the role normalizer (introduced in 0.8.0 to build valid chat payloads) was applied unconditionally in <code>run_ep</code> and merged the consecutive <code>user</code> messages built by the <code>texts</code> endpoints, so <code>polarity_3c</code>, <code>translate</code>, <code>simplify_text</code> and <code>generate_questions</code> silently returned one merged result; <code>run_ep</code> now skips role normalisation for <code>call_for_each_user_msg=True</code> endpoints (the HTTP executor already dispatches each text as its own <code>[system, user]</code> call), while conversation endpoints (<code>conversation_with_model</code>, <code>extended_conversation_with_model</code>) keep it; client code consuming a single merged entry for those four endpoints must iterate the <code>response</code> list.</li>
+<li><strong>Tests:</strong> regression grid extended to all remaining builtin endpoints; new <code>test_http_dispatch.py</code> (dispatch/retry, late‑binding, <code>RetryResponse</code> alias) and end‑to‑end <code>test_per_text_dispatch.py</code> (per‑text ⇒ one model call per text ⇒ results paired per text; chat endpoint ⇒ consecutive <code>user</code> messages still merged).</li>
+<li><strong>Feature</strong>: Add  log rotation.</li>
+<li><strong>Feature:</strong> add method <code>models()</code> to <code>client.py</code>, add public <code>/health</code> endpoint</li>
+</ul>
+<h2 id="091">0.9.1<a class="headerlink" href="#091" title="link to this section">#</a></h2>
+<ul>
+<li><strong>BREAKING – unified <code>LLMRouterClient</code> calling contract (pre‑1.0):</strong> all 12 endpoint methods (<code>conversation_with_model</code>, <code>extended_conversation_with_model</code>, <code>polarity_3c</code>, <code>translate</code>, <code>simplify_text</code>, <code>generative_answer</code>, <code>generate_article_from_text</code>, <code>generate_article_from_texts</code>, <code>create_full_article_from_texts</code>, <code>generate_questions</code>, <code>generate_label</code>, …) now share one keyword‑only signature: <code>payload</code> (a Pydantic request <strong>model</strong> instance) <strong>or</strong> named domain arguments + <code>model</code> + optional generation options; argument order is fixed (<code>payload</code> → domain fields → <code>model</code> → <code>temperature</code> → <code>max_new_tokens</code>). Raw <code>dict</code> payloads are <strong>removed</strong> – passing a <code>dict</code> as <code>payload</code> raises <code>TypeError</code> (build the matching model explicitly, e.g. <code>MyModel(**payload)</code>). Hard‑coded defaults in signatures (<code>0.2</code>/<code>0.75</code>/<code>256</code>/<code>512</code>/<code>1024</code>/<code>64</code>, <code>number_of_questions=1</code>) are <strong>removed</strong> – generation defaults come exclusively from the Pydantic models (<code>GenerativeOptions</code>); optional parameters default to <code>None</code> so <code>None</code>‑valued kwargs no longer break Pydantic validation (fixes the <code>texts=None</code> bug). <code>conversation_with_model</code> / <code>extended_conversation_with_model</code> gain the same kwargs contract (<code>user_last_statement</code>, <code>historical_messages</code>, <code>system_prompt</code>, <code>model</code>, <code>temperature</code>, <code>max_new_tokens</code>); calling them with neither <code>payload</code> nor <code>user_last_statement</code> now raises <code>NoArgsAndNoPayloadError</code> (previously <code>TypeError</code>). Partial kwargs (required field missing, or no resolvable model name) raise <code>NoArgsAndNoPayloadError</code> instead of a raw Pydantic <code>ValidationError</code>. Type aliases <code>_ConvPayload</code> / <code>_ExtConvPayload</code> removed; Complete numpydoc docstrings added to every endpoint method (previously missing on <code>generative_answer</code> and <code>generate_article_from_text</code>).</li>
+<li><strong>Tests:</strong> new <code>llm_router_lib/tests/test_client_unified_api.py</code> (89 unit tests, <code>python -m unittest</code>); api tests for dict payloads rewritten to assert <code>TypeError</code>, plus new kwargs‑based conversation client tests.</li>
+<li><strong>Style:</strong> unify all type annotations across <code>llm_router_lib</code>, <code>llm_router_api</code> and <code>llm_router_cli</code> to the <code>typing</code> module (<code>Optional[...]</code> instead of <code>X                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              | None</code>, <code>List</code>/<code>Dict</code>/<code>Tuple</code> instead of the built-in <code>list</code>/<code>dict</code>/<code>tuple</code> generics, <code>Union[...]</code> for pure unions) so the codebase is consistent; runtime behaviour is unchanged.</li>
+<li><strong>Docs:</strong> <code>llm_router_lib/README.md</code> and <code>RESPONSE_MODELS.md</code> updated to the keyword‑only calling contract (raw‑<code>dict</code> payloads rejected, previously missing methods documented).</li>
+</ul>
+<h2 id="092">0.9.2<a class="headerlink" href="#092" title="link to this section">#</a></h2>
+<p>Refactor and enhance codebase with type hints, tests, and fixes</p>
+<h2 id="093">0.9.3<a class="headerlink" href="#093" title="link to this section">#</a></h2>
+<ul>
+<li><strong>Tests:</strong> Added unit tests for <code>GPGAuditorLogStorage</code>, <code>AuthMiddleware</code>, and <code>PermissionEngine</code> to cover encryption errors, IP whitelists, token budgets, and custom policies.</li>
+<li><strong>Refactors:</strong> Removed <code>auth key reveal</code> functionality and updated related CLI commands and documentation to align with the enhanced key security model. Introduced <code>LLM_ROUTER_TRUSTED_PROXIES</code> and <code>LLM_ROUTER_AUTH_FAILURE_LIMIT</code> for better handling of proxy trust and authentication failures. Enhanced request authorization logic with a default-deny model, IP whitelists, token budgets, and more refined endpoint-level policies. Improved Lua scripts by ensuring explicit type coercion. Added SHA-256 reverse indexing for O(1) key lookups and improved key handling across memory, Redis, and Vault backends.</li>
+<li><strong>Fixes:</strong> Enforced fatal errors on GPG encryption failures to ensure audit records' integrity. Modified <code>auth_429_response</code> to return an improved JSON error response containing a <code>retry_after</code> field for better clarity.</li>
+</ul>
+<h2 id="094">0.9.4<a class="headerlink" href="#094" title="link to this section">#</a></h2>
+<ul>
+<li><strong>Feature:</strong> add Redis protocol (RESP2/RESP3) support across all Redis-backed modules: new env vars <code>LLM_ROUTER_REDIS_PROTOCOL</code> (default <code>3</code>) and <code>LLM_ROUTER_AUTH_REDIS_PROTOCOL</code> (default <code>3</code>); <code>protocol=</code> is now passed to every <code>redis.Redis</code> client (auth key store, shared client factory, rate limiter, load-balancing strategies, CLI auth command, <code>scripts/check_redis.py</code>); new CLI flag <code>--auth-redis-protocol</code> (<code>2</code>/<code>3</code>, default <code>2</code>) on all <code>llm-router auth</code> subcommands with <code>--store redis</code>.</li>
+<li><strong>Docs:</strong> new protocol env vars and CLI flag documented in <code>ENV_DEFINITIONS.md</code>, <code>AUTHENTICATION.md</code>, <code>RATE_LIMITING.md</code> and <code>llm_router_cli/README.md</code>.</li>
+<li><strong>Refactor:</strong> move llm_router_api docs into <code>llm_router_api/docs/</code>.</li>
+<li><strong>Changelog:</strong> bump version to 0.9.4 (<code>.version</code>, Helm chart <code>appVersion</code>).</li>
+</ul>
+<h2 id="095">0.9.5<a class="headerlink" href="#095" title="link to this section">#</a></h2>
+<ul>
+<li><strong>Fix (correctness):</strong> automatic retry actually works now — non‑OK provider responses (429/500/502/503/504) are retried on a <em>different</em> provider with exponential backoff + jitter (capped, configurable policy in <code>llm_router_api/endpoints/http_dispatch.py</code>); when the retry budget is exhausted the <em>provider's</em> last status code is returned to the client instead of a masked 500; transport errors (connection refused/timeout) are retried the same way; replay safety documented (only reproducible JSON bodies are retried).</li>
+<li><strong>Fix (correctness):</strong> client input errors (missing/invalid params, <code>ValueError</code>/pydantic <code>ValidationError</code>) now return <strong>400</strong> with <code>{"error": {"message": …}}</code> — the Flask registrar is the single owner of the exception→status mapping; real server‑side failures still return 500.</li>
+<li><strong>Fix (correctness):</strong> provider health‑check now treats only 2xx/3xx as <em>available</em> (401/403 → <code>auth_error</code>, 404 → <code>not_found</code>, other 4xx/5xx diagnosed separately); ping path per <code>api_type</code> (vLLM <code>/health</code>, Ollama <code>/api/version</code>, OpenAI‑compatible <code>/v1/models</code>) with fallback probing and auth token forwarding; missing <code>api_type</code> no longer crashes the monitor; new hysteresis — a provider is marked down only after <code>LLM_ROUTER_PROVIDER_MONITOR_MAX_CONSECUTIVE_FAILURES</code> (default 2) <em>consecutive</em> failed pings, one success restores it (a busy host that is slow to accept a new connection but serves keep‑alive traffic no longer drops out of the pool); ping timeout configurable via <code>LLM_ROUTER_PROVIDER_MONITOR_PING_TIMEOUT_SECONDS</code> (default 5.0 s).</li>
+<li><strong>Resilience:</strong> <code>balanced</code>/<code>weighted</code> load‑balancing counters moved to Redis (shared across gunicorn workers, atomic pick‑and‑increment, deterministic weighted sequence) with in‑memory fallback when Redis is unavailable (<code>llm_router_api/core/lb/lb_counters.py</code>).</li>
+<li><strong>Lifecycle:</strong> <code>FlaskEngine</code> exposes an explicit, idempotent <code>start()</code>/<code>stop()</code> + context manager + <code>atexit</code> hook and a SIGTERM/SIGINT shutdown hook in <code>rest_api</code> — gunicorn workers no longer leak the services‑monitor thread (monitor threads are <code>daemon=True</code>).</li>
+<li><strong>Data quality:</strong> <code>/models</code> no longer returns fabricated constants (<code>"type":"vllm"</code>, <code>"state":"not-loaded"</code>, <code>"quantization":"4bit"</code>) — provider‑specific fields come from real per‑provider data or are <code>null</code>.</li>
+<li><strong>Cleanup:</strong> removed dead <code>LLM_ROUTER_AUTH_RATE_LIMIT_ENABLED</code> switch and the broken, unregistered <code>beta/AdaptiveStrategy</code>; unified the Vault key‑store backend on <code>hvac</code> (was non‑installable <code>hvault</code>); <code>setup.py</code> no longer ships test sub‑packages in the wheel and pins the git dependencies to commits; single source of truth for the version (<code>.version</code>) enforced in CI against git tag and Helm <code>appVersion</code>; Helm deployment checksum annotation fixed to reference the real <code>files/models-config.json</code>; <code>requirements*.txt</code> pinned, <code>[build-system]</code> added to <code>pyproject.toml</code>, <code>requirements.lock</code> generated; <code>print()</code> and bare <code>except: pass</code> in production code replaced with logging or intentional comments; <code>llm-router auth</code> CLI rewritten on a single argparse pass (no argv re‑scanning) with working <code>--store vault</code> wiring.</li>
+<li><strong>Tests:</strong> new suites for dispatch retry, 400‑input handling, provider‑monitor (status mapping, fallbacks, hysteresis), engine lifecycle, LB global counters, <code>/models</code> fields, <code>hvac</code> import and the auth CLI — 559 passed, 4 skipped.</li>
+<li><strong>Changelog:</strong> bump version to 0.9.5 (<code>.version</code>, Helm chart <code>appVersion</code>).</li>
+</ul>
+<h2 id="096">0.9.6<a class="headerlink" href="#096" title="link to this section">#</a></h2>
+<p><strong>Fix</strong> LMStudio <code>/api/v0/model</code> returns proper response format.</p>
+<h2 id="100-rc1">1.0.0-rc1<a class="headerlink" href="#100-rc1" title="link to this section">#</a></h2>
+<ul>
+<li><strong>Chore</strong> Bump version to <code>1.0.0-rc1</code>; Change python version from <strong>3.13.9-slim-trixie</strong> to  <strong>3.14-slim-trixie</strong>, <strong>Fix:</strong> remove unused <code>orig_params</code> and <code>reconnect_number</code> from <code>endpoint_i</code> dispatcher.</li>
+<li><strong>Docs:</strong> add <code>ENDPOINT_DEV.md</code> endpoint‑development guide (English version of <code>endpoints/README-pl.md</code>) and register it in <code>site/docs.html</code>; cross‑link it from root and <code>llm_router_api</code> READMEs.</li>
+</ul>
+<h2 id="100">1.0.0<a class="headerlink" href="#100" title="link to this section">#</a></h2>
+<ul>
+<li><strong>Docs:</strong> add "Endpoint Development Guide" to <code>llm_router_api/docs</code> with comprehensive explanations for creating, configuring, and extending REST endpoints, remove old Polish version.</li>
+<li><strong>Chore:</strong> remove unused Docker entrypoint script and Supervisord configuration, update Dockerfile to simplify CMD setup.</li>
+</ul>
+<h2 id="101">1.0.1<a class="headerlink" href="#101" title="link to this section">#</a></h2>
+<p><strong>Chore:</strong> update <code>_ENDPOINT_PERMISSION_MAP</code> to adjust permissions for <code>/api/ping</code> and <code>/api/version</code> endpoints</p>
+<h2 id="102">1.0.2<a class="headerlink" href="#102" title="link to this section">#</a></h2>
+<ul>
+<li><strong>Feat:</strong> add the <code>util</code> subcommands to <code>llm-router</code> — <code>translate</code>, <code>genai-classifier</code> and <code>genai-data-augmentation</code>. These utilities are ported over from the standalone <code>llm-router-utils</code> repository and now run directly through the LLMRouter client.</li>
+<li><strong>Feat:</strong> add opt-in <code>--verbose</code> (DEBUG) logging across the <code>util</code>, <code>auth</code> and <code>config</code> commands, with secrets always masked (<code>***</code>) in the logs.</li>
+<li><strong>Refactor:</strong> extract the shared <code>setup_logging</code>/<code>shorten</code> helpers into <code>llm_router_cli/log_utils.py</code> and reuse the <code>--verbose</code> flag via <code>BaseCommand.add_verbose</code> (no per-command duplication).</li>
+</ul>
+<h2 id="103">1.0.3<a class="headerlink" href="#103" title="link to this section">#</a></h2>
+<ul>
+<li><strong>Features</strong>: Introduced persistent custom authentication policies with JSON support. Enabled file-based caching and improved policy management via CLI.</li>
+<li><strong>Fixes</strong>: Resolved missing package error during <code>__version__</code> lookup. Updated README with clarified flag descriptions and safer examples.</li>
+<li><strong>Refactoring</strong>: Modularized provider discovery and configuration generation. Enhanced flexibility and error handling for CLI policy management. Improved record processing and added warnings for missing fields during tasks.</li>
+<li>Default prefix for the API Auth keys changed to <code>sk-llmr-live</code>.</li>
+<li><strong>Testing</strong>: Increased test coverage for custom policy handling in CLI.</li>
+<li><strong>Documentation</strong>: Added details on using custom auth policies and environment configurations like <code>LLM_ROUTER_AUTH_CUSTOM_POLICIES_FILE</code>.</li>
+</ul>
+<h2 id="104">1.0.4<a class="headerlink" href="#104" title="link to this section">#</a></h2>
+<p><strong>Tests</strong>: Add comprehensive unit tests and coverage configuration. Added unit tests for: (1) <code>LLMRouterClient</code>, CLI commands and helpers; (2) <code>llm_router_api.core.server</code> helper functions; (3) <code>llm_router_api.rest_api</code> CLI arguments and server dispatch logic; (4) Prometheus metrics, auth metrics, and stream converters; (5) Strategies, caching mechanisms, and monitoring functionality; (6) Endpoint handling and API conversions; (7) Constants, error handling, and environment-specific behavior; (8) Multiple endpoints, including <code>Health</code>, <code>Ping</code>, and version utilities. Add <code>Manifest.in</code> and <code>author_email</code> in <code>setup.py</code>. Prepared to PyPi package.</p>
+<h2 id="105">1.0.5<a class="headerlink" href="#105" title="link to this section">#</a></h2>
+<p><strong>Build</strong> for PyPi</p>
+<h2 id="106">1.0.6<a class="headerlink" href="#106" title="link to this section">#</a></h2>
+<ul>
+<li><strong>CLI:</strong> add the <code>server</code> command to <code>llm-router</code> for managing the REST API lifecycle: <strong>start</strong> (background daemon of <code>python -m llm_router_api.rest_api</code>; PID and log files under <code>~/.llm-router/</code>; flags <code>--foreground/--server/--host/--port/--models-config/--debug/--lb-strategy/--default-lang/--auth/--redis-*/--auth-redis-*</code>; env defaults mirroring <code>run-rest-api-gunicorn.sh</code>, with CLI &gt; shell &gt; defaults precedence), <strong>status</strong> (running check, stale PID cleanup, and launch parameters recorded in the <code>&lt;pidfile&gt;.run</code> file: command, server engine, host, port, models config, start time, explicit env overrides); <strong>stop</strong> removes the <code>.run</code> record; new <code>llm-router completion bash                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |zsh</code> command prints a tab‑completion script (commands, sub‑commands and long options) generated from the live CLI tree (install: <code>eval "$(llm-router completion bash)"</code> or <code>source &lt;(llm-router completion zsh)</code>); <strong>log</strong> (colorized <code>tail -f</code>; <code>--lines/--no-follow/--color</code>), <strong>reload</strong> (graceful <code>SIGHUP</code>) and <strong>stop</strong> (<code>SIGTERM</code>; <code>--force</code> goes straight to <code>SIGKILL</code>).</li>
+<li><strong>CLI:</strong> <code>completion bash|zsh</code> gains <code>--install</code> (append the generated completion script to <code>~/.bashrc</code> / <code>~/.zshrc</code>, created if missing, idempotent marker block, optional <code>--file PATH</code> override); <code>server start --foreground</code> now writes the PID file and run record (so <code>server status</code> / <code>server stop</code> work) and removes them on exit; the <code>.run</code> record now snapshots <strong>all</strong> <code>LLM_ROUTER_*</code> environment variables the server was started with (shared <code>ENV_PREFIX</code> from <code>llm_router_lib.core.constants</code>), shown by <code>server status</code>. <code>server status</code> now renders a <strong>colored card</strong> (<code>✓ All good</code> / <code>✗ Not running</code> header + <code>Details</code> and <code>Environment</code> sections, <code>--color auto|always|never</code>, <code>--show-env</code> to reveal the <code>Environment</code> section, hidden by default) and <strong>masks the values</strong> of sensitive <code>LLM_ROUTER_*</code> (passwords, secrets, tokens, API keys) so credentials are never echoed. <code>server status</code> <code>Details</code> now shows a single <code>Log</code> row for the <strong>application log</strong> (from <code>LLM_ROUTER_LOG_FILENAME</code>, default <code>llm-router.log</code> in the CWD; in daemon mode the daemon's stdout/stderr are captured into the same file). <code>completion bash|zsh</code> now covers <strong>every</strong> sub-command nesting level (e.g. <code>auth key generate</code>, <code>anonymizer run</code>, <code>config discover</code>) and all their long options,  <code>server</code> run records now store the <strong>absolute</strong> application log path (<code>app_log_file</code>): when <code>LLM_ROUTER_LOG_FILENAME</code> is a bare file name the path is anchored to the launch CWD, and <code>server status</code> shows it in the <code>Log</code> row. <code>server log</code> now follows the <strong>application log</strong> by default (record's <code>app_log_file</code>, else the shell's <code>LLM_ROUTER_LOG_FILENAME</code>, working in both daemon and <code>--foreground</code> mode); <code>--log-file</code> overrides it (e.g. to tail the daemon's console log <code>~/.llm-router/server.log</code>). <code>server start</code>'s daemon log (<code>--log-file</code>) now follows the user's <code>LLM_ROUTER_LOG_FILENAME</code> (a bare name anchored to the launch CWD) and falls back to <code>~/.llm-router/server.log</code> only when the variable is unset. <code>server status</code> <code>Details</code> now shows the <strong>Models config</strong> as an absolute path: relative paths (e.g. <code>resources/configs/models-config.json</code>) are anchored to the launch CWD and stored in the run record (<code>models_config</code>).</li>
+</ul></article>
+<nav class="pager" aria-label="Previous and next page"></nav>
+<footer class="doc-meta">
+<div class="meta-row"><span class="meta-k">source</span><a class="mono" href="https://github.com/radlab-dev-group/llm-router/blob/v1.0.6/CHANGELOG.md">CHANGELOG.md</a></div>
+<div class="meta-row"><span class="meta-k">last commit</span><time datetime="2026-09-09T11:45:10+02:00">2026-09-09</time></div>
+<div class="meta-row"><span class="meta-k">built from</span><span class="mono">v1.0.6&nbsp;@&nbsp;a66f0fa</span></div>
+<p class="hint">Generated from the Markdown file in the repository: commit a change and the next build republishes it for every release that contains it.</p>
+</footer>
+<footer class="foot"><div class="foot-inner">
+<span class="mono">llm-router &middot; docs are generated from the repository by <code>tools/build_docs.py</code></span>
+<span class="mono"><a href="https://github.com/radlab-dev-group/llm-router/tree/v1.0.6">1.0.6</a> @ <code>a66f0fa</code></span>
+</div></footer>
+</main>
+<aside class="dtoc" id="dtoc"><h2 class="toc-title">on this page</h2><div class="toc-body"><ul><li><a href="#001">0.0.1</a></li><li><a href="#002">0.0.2</a></li><li><a href="#003">0.0.3</a></li><li><a href="#004">0.0.4</a></li><li><a href="#010">0.1.0</a></li><li><a href="#011">0.1.1</a></li><li><a href="#020">0.2.0</a></li><li><a href="#021">0.2.1</a></li><li><a href="#022">0.2.2</a></li><li><a href="#023">0.2.3</a></li><li><a href="#024">0.2.4</a></li><li><a href="#030">0.3.0</a></li><li><a href="#031">0.3.1</a></li><li><a href="#040">0.4.0</a></li><li><a href="#041">0.4.1</a></li><li><a href="#042">0.4.2</a></li><li><a href="#043">0.4.3</a></li><li><a href="#044">0.4.4</a></li><li><a href="#045">0.4.5</a></li><li><a href="#046">0.4.6</a></li><li><a href="#047">0.4.7</a></li><li><a href="#050">0.5.0</a></li><li><a href="#051">0.5.1</a></li><li><a href="#052">0.5.2</a></li><li><a href="#060">0.6.0</a></li><li><a href="#061">0.6.1</a></li><li><a href="#062">0.6.2</a></li><li><a href="#063">0.6.3</a></li><li><a href="#064">0.6.4</a></li><li><a href="#065">0.6.5</a></li><li><a href="#066">0.6.6</a></li><li><a href="#067">0.6.7</a></li><li><a href="#068">0.6.8</a></li><li><a href="#069">0.6.9</a></li><li><a href="#070">0.7.0</a></li><li><a href="#080">0.8.0</a></li><li><a href="#090">0.9.0</a></li><li><a href="#091">0.9.1</a></li><li><a href="#092">0.9.2</a></li><li><a href="#093">0.9.3</a></li><li><a href="#094">0.9.4</a></li><li><a href="#095">0.9.5</a></li><li><a href="#096">0.9.6</a></li><li><a href="#100-rc1">1.0.0-rc1</a></li><li><a href="#100">1.0.0</a></li><li><a href="#101">1.0.1</a></li><li><a href="#102">1.0.2</a></li><li><a href="#103">1.0.3</a></li><li><a href="#104">1.0.4</a></li><li><a href="#105">1.0.5</a></li><li><a href="#106">1.0.6</a></li></ul></div></aside>
+</div>
+</body>
+</html>

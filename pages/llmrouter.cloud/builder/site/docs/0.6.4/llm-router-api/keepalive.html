@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Keep‑Alive Utility Overview · v0.6.4 · llm-router docs</title>
+<meta name="description" content="The keep‑alive subsystem is responsible for periodically “pinging” model endpoints so that they stay warm and ready to serve requests with minimal latency. It consists of two main components: 1. Provider discovery – KeepAlive.findprovider…">
+<meta name="theme-color" content="#05070a">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Keep‑Alive Utility Overview · v0.6.4 · llm-router docs">
+<meta property="og:description" content="The keep‑alive subsystem is responsible for periodically “pinging” model endpoints so that they stay warm and ready to serve requests with minimal latency. It consists of two main components: 1. Provider discovery – KeepAlive.findprovider…">
+<meta name="docs-version" content="0.6.4">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2305070a'/%3E%3Cpath d='M8 22V10M8 16h9M17 10v12M17 13h7M17 19h7' stroke='%2300e59b' stroke-width='2' stroke-linecap='round' fill='none'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="../../assets/docs.css">
+<link rel="stylesheet" href="../../assets/pygments.css">
+<script src="../../assets/docs.js" defer></script>
+</head>
+<body class="page" data-version="0.6.4" data-search="../search.json" data-latest="1.0.7">
+<a class="skip" href="#main">skip to content</a>
+<header class="topbar">
+<div class="topbar-inner">
+<button class="burger" id="burger" aria-label="Toggle documentation menu" aria-expanded="false" aria-controls="sidebar">&#9776;</button>
+<a class="brand" href="../../.."><svg width="21" height="21" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="7" fill="#0b1119" stroke="#1a232e"/><path d="M8 22V10M8 16h9M17 10v12M17 13h7M17 19h7" stroke="#00e59b" stroke-width="2" stroke-linecap="round" fill="none"/></svg><span>llm<span class="dash">-</span>router</span><span class="brand-docs">/docs</span></a>
+<div class="topbar-right">
+<form class="search" id="search" role="search" autocomplete="off">
+<span class="search-icon" aria-hidden="true">&#8981;</span>
+<input id="q" type="search" placeholder="search this version" aria-label="Search documentation" role="combobox" aria-expanded="false" aria-controls="results" aria-autocomplete="list">
+<kbd>/</kbd>
+<div class="results" id="results" role="listbox" aria-label="Search results" hidden></div>
+</form>
+<label class="vselect">
+<span class="sr-only">Documentation version</span>
+<select id="versions" aria-label="Documentation version"><option value="../../1.0.7/index.html">1.0.7  · latest</option>
+<option value="../../1.0.6/index.html">1.0.6</option>
+<option value="../../1.0.5/index.html">1.0.5</option>
+<option value="../../1.0.4/index.html">1.0.4</option>
+<option value="../../1.0.3/index.html">1.0.3</option>
+<option value="../../1.0.1/index.html">1.0.1</option>
+<option value="../../1.0.0/index.html">1.0.0</option>
+<option value="../../0.9.6/index.html">0.9.6</option>
+<option value="../../0.9.5/index.html">0.9.5</option>
+<option value="../../0.9.4/index.html">0.9.4</option>
+<option value="../../0.9.2/llm-router-api/keepalive.html">0.9.2</option>
+<option value="../../0.9.1/llm-router-api/keepalive.html">0.9.1</option>
+<option value="../../0.9.0/llm-router-api/keepalive.html">0.9.0</option>
+<option value="../../0.8.0/llm-router-api/keepalive.html">0.8.0</option>
+<option value="../../0.7.0/llm-router-api/keepalive.html">0.7.0</option>
+<option value="../../0.6.9/llm-router-api/keepalive.html">0.6.9</option>
+<option value="../../0.6.8/llm-router-api/keepalive.html">0.6.8</option>
+<option value="../../0.6.7/llm-router-api/keepalive.html">0.6.7</option>
+<option value="../../0.6.6/llm-router-api/keepalive.html">0.6.6</option>
+<option value="../../0.6.5/llm-router-api/keepalive.html">0.6.5</option>
+<option value="keepalive.html" selected>0.6.4</option>
+<option value="../../0.6.3/llm-router-api/keepalive.html">0.6.3</option>
+<option value="../../0.6.2/llm-router-api/keepalive.html">0.6.2</option>
+<option value="../../0.6.1/llm-router-api/keepalive.html">0.6.1</option>
+<option value="../../0.6.0/llm-router-api/keepalive.html">0.6.0</option>
+<option value="../../0.5.2/llm-router-api/keepalive.html">0.5.2</option>
+<option value="../../0.5.1/llm-router-api/keepalive.html">0.5.1</option>
+<option value="../../0.5.0/llm-router-api/keepalive.html">0.5.0</option>
+<option value="../../0.4.6/llm-router-api/keepalive.html">0.4.6</option>
+<option value="../../0.4.5/llm-router-api/keepalive.html">0.4.5</option>
+<option value="../../0.4.4/llm-router-api/keepalive.html">0.4.4</option>
+<option value="../../0.4.3/llm-router-api/keepalive.html">0.4.3</option>
+<option value="../../0.4.2/llm-router-api/keepalive.html">0.4.2</option>
+<option value="../../0.4.1/index.html">0.4.1</option>
+<option value="../../0.4.0/index.html">0.4.0</option>
+<option value="../../0.3.1/index.html">0.3.1</option>
+<option value="../../0.3.0/index.html">0.3.0</option>
+<option value="../../0.2.3/index.html">0.2.3</option>
+<option value="../../0.2.2/index.html">0.2.2</option>
+<option value="../../0.2.1/index.html">0.2.1</option>
+<option value="../../0.2.0/index.html">0.2.0</option>
+<option value="../../0.1.1/index.html">0.1.1</option>
+<option value="../../0.1.0/index.html">0.1.0</option></select>
+</label>
+<a class="iconbtn" href="https://github.com/radlab-dev-group/llm-router" aria-label="Repository on GitHub" title="Repository on GitHub"><svg width="17" height="17" viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8a8 8 0 0 0 5.47 7.59c.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.46-.53.42-.02.72.39.82.55.48.81 1.25.94 1.56.73.2-.27.6-.94.94-1.13-.01-.2-.05-.82-.14-.98-.6.1-1.22.2-1.87.2-1.9 0-3.62-1.13-3.62-3.53 0-.78.28-1.42.74-1.92-.07-.18-.32-.91.07-1.9 0 0 .6-.19 1.97.74a6.8 6.8 0 0 1 3.58 0c1.37-.93 1.97-.74 1.97-.74.39.99.14 1.72.07 1.9.46.5.74 1.14.74 1.92 0 2.41-1.47 3.53-3.87 3.72.3.26.57.77.57 1.56 0 1.13-.012.04-.01 2.32 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg></a>
+</div>
+</div>
+</header>
+<div class="scrim" id="scrim" hidden></div>
+<div class="shell">
+<aside class="sidebar" id="sidebar"><div class="side-head"><span class="side-v mono">v0.6.4</span><span class="side-tag old">archived</span></div><a class="side-hub" href="../index.html">documentation index</a><nav class="nav-tree" aria-label="Documentation"><section class="nav-sec"><h2 class="nav-sec-title"><a href="../overview.html">Getting started</a></h2><ul><li><a href="../overview.html">Overview</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="core/auditor/index.html">Security &amp; auditing</a></h2><ul><li><a href="core/auditor/index.html">Auditing subsystem – llm-router</a></li><li><a href="authentication.html">Authentication &amp; Authorization</a></li><li><a href="rate-limiting.html">Rate Limiting</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="index.html">REST API</a></h2><ul><li><a href="index.html">REST API reference</a></li><li><a href="endpoints/index.html">Endpoints Overview</a></li><li><a href="endpoints/readme-pl.html">Jak tworzyć endpointy w llm-proxy-api – przewodnik</a></li><li><a href="keepalive.html" class="active">Keep‑Alive Utility Overview</a></li><li><a href="lb-strategies.html">Load Balancing Strategies</a></li><li><a href="models-config.html">Models configuration description (JSON)</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../llm-router-cli/index.html">CLI</a></h2><ul><li><a href="../llm-router-cli/index.html">llm-router CLI — Command Reference</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../llm-router-lib/index.html">Python library</a></h2><ul><li><a href="../llm-router-lib/index.html">llmrouterlib</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../helm-charts/index.html">Deployment</a></h2><ul><li><a href="../helm-charts/index.html">LLM‑Router Helm Chart</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../examples/index.html">Examples</a></h2><ul><li><a href="../examples/index.html">Integration Examples with LLM Router</a></li><li><a href="../examples/quickstart/index.html">Full Stack with Local Models</a></li><li><a href="../examples/readme-llamaindex.html">Using LlamaIndex with Local Models via the LLM‑Router</a></li><li><a href="../examples/quickstart/google-gemma3-12b-it/vllm.html">vLLM + google/gemma‑3‑12b‑it – Quick‑Start Guide (Ubuntu)</a></li><li><a href="../examples/quickstart/speakleash-bielik-11b-v2-3-instruct/vllm.html">vLLM + speakleash/Bielik-11B-v2.3-Instruct – Przewodnik Szybkiego Startu (Ubuntu)</a></li><li><a href="../examples/quickstart/speakleash-bielik-11b-v2-3-instruct/index.html">🚀 Przewodnik Szybkiego Startu dla speakleash/Bielik-11B-v2.3-Instruct z vLLM &amp; LLM‑Router</a></li><li><a href="../examples/quickstart/google-gemma3-12b-it/index.html">🚀 Quick‑Start Guide for google/gemma-3-12b‑it with vLLM &amp; LLM‑Router</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../changelog.html">Release notes</a></h2><ul><li><a href="../changelog.html">Changelog</a></li></ul></section></nav><div class="side-foot"><a href="../../..">&larr;&nbsp;landing page</a><a class="mono" href="../search.json">search.json</a></div></aside>
+<main class="main" id="main"><nav class="crumbs" aria-label="Breadcrumb">
+<a href="../../..">llm-router</a><span class="sep">/</span><a href="../index.html">docs</a><span class="sep">/</span><a href="index.html">REST API</a><span class="sep">/</span><em>Keep‑Alive Utility Overview</em>
+</nav>
+<article class="prose"><h1 id="keepalive-utility-overview">Keep‑Alive Utility Overview<a class="headerlink" href="#keepalive-utility-overview" title="link to this section">#</a></h1>
+<p>The <strong>keep‑alive</strong> subsystem is responsible for periodically “pinging” model endpoints so that they stay warm and ready
+to serve requests with minimal latency.<br />
+It consists of two main components:</p>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Purpose</th>
+<th>Key Methods</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong><code>KeepAlive</code></strong></td>
+<td>Sends a single HTTP request to a model provider. It resolves the correct provider configuration (API type, host, token, model name) and builds the request payload.</td>
+<td><code>send(model_name, host, prompt=None)</code> – performs the HTTP call.</td>
+</tr>
+<tr>
+<td><strong><code>KeepAliveMonitor</code></strong></td>
+<td>Schedules repeated keep‑alive calls for each <code>(model_name, host)</code> pair. It stores scheduling data in Redis, checks host availability, and triggers <code>KeepAlive.send</code> when a provider is due.</td>
+<td><code>record_usage(model_name, host, keep_alive)</code> – registers a provider for periodic pinging.<br><code>start()</code> / <code>stop()</code> – control the background thread.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="how-it-works">How It Works<a class="headerlink" href="#how-it-works" title="link to this section">#</a></h2>
+<ol>
+<li><strong>Provider discovery</strong> – <code>KeepAlive._find_provider</code> looks up the provider configuration for a given model name and
+   host inside the global <code>models_configs</code> dictionary.</li>
+<li><strong>Endpoint resolution</strong> – Depending on the provider’s <code>api_type</code> (<code>vllm</code>, <code>openai</code>, <code>ollama</code>), <code>_endpoint_for</code> builds
+   the correct URL (<code>/v1/chat/completions</code> or <code>/api/chat</code>).</li>
+<li><strong>HTTP request</strong> – A JSON payload containing a short “keep‑alive” prompt (default: <em>“Send an empty message.”</em>) is
+   posted to the endpoint.</li>
+<li><strong>Scheduling</strong> – <code>KeepAliveMonitor</code> stores metadata in Redis:<ul>
+<li>A hash key (<code>keepalive:provider:&lt;model&gt;:&lt;host&gt;</code>) with <code>keep_alive_seconds</code>.</li>
+<li>A sorted‑set (<code>keepalive:providers:next_wakeup</code>) that orders providers by the next scheduled wake‑up timestamp.</li>
+<li>A sorted‑set (<code>keepalive:model:&lt;model_name&gt;:hosts</code>) that tracks all hosts where a model is currently loaded, used
+  for host reuse in optimised strategies.</li>
+</ul>
+</li>
+<li><strong>Background loop</strong> – The monitor thread wakes up every <code>check_interval</code> seconds, fetches due providers, verifies
+   that the host is free (via the optional <code>is_host_free_callback</code>), and invokes <code>KeepAlive.send</code>. After a successful
+   ping, the next wake‑up time is recomputed.</li>
+</ol>
+<h2 id="integration-points">Integration Points<a class="headerlink" href="#integration-points" title="link to this section">#</a></h2>
+<ul>
+<li><strong>Strategy implementations</strong> (e.g., <code>FirstAvailableOptimStrategy</code>) create a <code>KeepAlive</code> instance and pass it to a
+  <code>KeepAliveMonitor</code>.</li>
+<li>When a provider is selected, the strategy calls <code>keep_alive_monitor.record_usage(model_name, host, keep_alive)</code> so the
+  monitor knows to ping that endpoint.</li>
+<li>The monitor runs automatically in the background once <code>start()</code> is called (typically during strategy initialization).</li>
+</ul>
+<h2 id="configuring-keepalive">Configuring Keep‑Alive<a class="headerlink" href="#configuring-keepalive" title="link to this section">#</a></h2>
+<p>Provider configurations live in the global <code>models_configs</code> JSON (see <code>resources/configs/models-config*.json</code>).<br />
+To enable keep‑alive for a specific provider, add a <code>keep_alive</code> field with a duration string:</p>
+<div class="codehilite"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;model_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;gpt‑4&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;providers&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;api_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;openai&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;api_host&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;http://localhost:8000&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;api_token&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;YOUR_TOKEN&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;keep_alive&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2m&quot;</span>
+<span class="w">      </span><span class="c1">// ping every 2 minutes</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>Supported duration units:</p>
+<table>
+<thead>
+<tr>
+<th>Unit</th>
+<th>Suffix</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>seconds</td>
+<td><code>s</code></td>
+<td>e.g., <code>"30s"</code></td>
+</tr>
+<tr>
+<td>minutes</td>
+<td><code>m</code></td>
+<td>e.g., <code>"5m"</code></td>
+</tr>
+<tr>
+<td>hours</td>
+<td><code>h</code></td>
+<td>e.g., <code>"1h"</code></td>
+</tr>
+</tbody>
+</table>
+<p>If the <code>keep_alive</code> field is omitted or falsy, the provider will <strong>not</strong> be scheduled for periodic pings.</p>
+<h2 id="example-usage">Example Usage<a class="headerlink" href="#example-usage" title="link to this section">#</a></h2>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">llm_router_api.core.monitor.keep_alive</span> <span class="kn">import</span> <span class="n">KeepAlive</span>
+<span class="kn">from</span> <span class="nn">llm_router_api.core.monitor.keep_alive_monitor</span> <span class="kn">import</span> <span class="n">KeepAliveMonitor</span>
+
+<span class="c1"># Assume `models_configs` has been loaded from the JSON config files.</span>
+<span class="n">keep_alive</span> <span class="o">=</span> <span class="n">KeepAlive</span><span class="p">(</span><span class="n">models_configs</span><span class="o">=</span><span class="n">models_configs</span><span class="p">)</span>
+
+<span class="n">monitor</span> <span class="o">=</span> <span class="n">KeepAliveMonitor</span><span class="p">(</span>
+    <span class="n">redis_client</span><span class="o">=</span><span class="n">redis_client</span><span class="p">,</span>
+    <span class="n">keep_alive</span><span class="o">=</span><span class="n">keep_alive</span><span class="p">,</span>
+    <span class="n">check_interval</span><span class="o">=</span><span class="mf">10.0</span><span class="p">,</span>  <span class="c1"># check every 10 seconds</span>
+    <span class="n">is_host_free_callback</span><span class="o">=</span><span class="n">my_is_host_free</span><span class="p">,</span>
+    <span class="n">clear_buffers</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>  <span class="c1"># clean old keys on start</span>
+<span class="p">)</span>
+
+<span class="n">monitor</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+
+<span class="c1"># When a provider is selected somewhere in the routing logic:</span>
+<span class="n">monitor</span><span class="o">.</span><span class="n">record_usage</span><span class="p">(</span>
+    <span class="n">model_name</span><span class="o">=</span><span class="s2">&quot;gpt‑4&quot;</span><span class="p">,</span>
+    <span class="n">host</span><span class="o">=</span><span class="s2">&quot;http://localhost:8000&quot;</span><span class="p">,</span>
+    <span class="n">keep_alive</span><span class="o">=</span><span class="s2">&quot;2m&quot;</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<p>The monitor will now ping the <code>gpt‑4</code> endpoint every two minutes, provided the host is not busy with another model.</p>
+<h2 id="logging">Logging<a class="headerlink" href="#logging" title="link to this section">#</a></h2>
+<p>Both <code>KeepAlive</code> and <code>KeepAliveMonitor</code> emit detailed logs at the <code>DEBUG</code> and <code>INFO</code> levels, prefixed with
+<code>[keep-alive]</code>. Adjust your logger configuration to capture these messages for troubleshooting.</p>
+<hr />
+<p><em>Keep‑alive helps maintain low‑latency responses by preventing model containers from idling out. Proper configuration
+and integration with your routing strategy ensure a smooth, responsive LLM service.</em></p></article>
+<nav class="pager" aria-label="Previous and next page"><a class="prev" href="endpoints/readme-pl.html"><span class="dir">&larr; previous</span><span class="pt">Jak tworzyć endpointy w llm-proxy-api – przewodnik</span></a><a class="next" href="lb-strategies.html"><span class="dir">next &rarr;</span><span class="pt">Load Balancing Strategies</span></a></nav>
+<footer class="doc-meta">
+<div class="meta-row"><span class="meta-k">source</span><a class="mono" href="https://github.com/radlab-dev-group/llm-router/blob/v0.6.4/llm_router_api/KEEPALIVE.md">llm_router_api/KEEPALIVE.md</a></div>
+<div class="meta-row"><span class="meta-k">last commit</span><time datetime="2026-07-08T07:04:26+02:00">2026-07-08</time></div>
+<div class="meta-row"><span class="meta-k">built from</span><span class="mono">v0.6.4&nbsp;@&nbsp;27946c4</span></div>
+<p class="hint">Generated from the Markdown file in the repository: commit a change and the next build republishes it for every release that contains it.</p>
+</footer>
+<footer class="foot"><div class="foot-inner">
+<span class="mono">llm-router &middot; docs are generated from the repository by <code>tools/build_docs.py</code></span>
+<span class="mono"><a href="https://github.com/radlab-dev-group/llm-router/tree/v0.6.4">0.6.4</a> @ <code>27946c4</code></span>
+</div></footer>
+</main>
+<aside class="dtoc" id="dtoc"><h2 class="toc-title">on this page</h2><div class="toc-body"><ul><li><a href="#how-it-works">How It Works</a></li><li><a href="#integration-points">Integration Points</a></li><li><a href="#configuring-keepalive">Configuring Keep‑Alive</a></li><li><a href="#example-usage">Example Usage</a></li><li><a href="#logging">Logging</a></li></ul></div></aside>
+</div>
+</body>
+</html>

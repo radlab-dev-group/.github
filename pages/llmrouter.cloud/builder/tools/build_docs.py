@@ -1,14 +1,19 @@
 #!/usr/bin/env python3
-"""Generate the llm-router documentation site from the Markdown files in this repo.
+"""Generate the llm-router documentation site from the Markdown files in the
+source repository (the llm-router checkout).
 
-Every page under ``site/docs`` is derived from a Markdown file that lives in the
-repository, so publishing documentation means committing the ``.md`` file. Pages
-are grouped into the sections declared in ``tools/docs.toml`` and archived per
-release: ``/docs`` always shows the version from ``.version`` and every release
-tag gets a frozen copy of the documentation next to it.
+Every page under ``site/docs`` is derived from a Markdown file that lives in
+that repository, so publishing documentation means committing the ``.md``
+file there. Pages are grouped into the sections declared in
+``tools/docs.toml`` and archived per release: ``/docs`` always shows the
+version from ``.version`` and every release tag gets a frozen copy of the
+documentation next to it.
 
-    python3 tools/build_docs.py                  # version from .version
-    python3 tools/build_docs.py --all-versions   # every tag + the current one
+The source defaults to this repo (legacy single-repo layout); point the
+builder at the llm-router checkout with ``--source``:
+
+    python3 tools/build_docs.py --source /path/to/llm-router
+    python3 tools/build_docs.py --source /path/to/llm-router --all-versions
     python3 tools/build_docs.py --serve          # build, then http://localhost:8000
 """
 
@@ -36,6 +41,10 @@ DEFAULT_OUTPUT = REPO_ROOT / "site"
 THEME_DIR = REPO_ROOT / "tools" / "theme"
 VENV_DIR = REPO_ROOT / ".venv-docs"
 REQUIREMENTS = REPO_ROOT / "tools" / "requirements-docs.txt"
+SOURCE_ENV = "LLM_ROUTER_DOCS_SOURCE"
+# Repository the documentation is generated from; set in main() from
+# --source / $LLM_ROUTER_DOCS_SOURCE / [site] source_repo (default: REPO_ROOT).
+SOURCE_ROOT: Path = REPO_ROOT
 BOOTSTRAP_FLAG = "LLM_ROUTER_DOCS_BOOTSTRAPPED"
 
 DOCS_DIR_NAME = "docs"
@@ -127,6 +136,7 @@ class Config:
     fallback_section: str
     sections: list[Section]
     overrides: dict[str, PageOverride]
+    source_repo: str | None = None
 
     @property
     def title(self) -> str:
@@ -180,14 +190,40 @@ def load_config(path: Path) -> Config:
             adapter=item.get("adapter"),
         )
     discover = raw.get("discover", {})
+    site = raw.get("site", {})
+    source_repo = site.get("source_repo")
     return Config(
-        site=raw.get("site", {}),
+        site=site,
         include=tuple(str(item) for item in discover.get("include", ["**/*.md"])),
         exclude=tuple(str(item) for item in discover.get("exclude", [])),
         fallback_section=str(discover.get("fallback_section", "other")),
         sections=sections,
         overrides=overrides,
+        source_repo=str(source_repo).strip() if source_repo else None,
     )
+
+
+def resolve_source_root(cli_value: Path | None, config: Config) -> Path:
+    """Resolve the source repository.
+
+    Precedence: ``--source`` > ``$LLM_ROUTER_DOCS_SOURCE`` > ``[site]
+    source_repo`` > this repo (legacy layout). Relative paths are resolved
+    against the current working directory.
+    """
+    raw: str | Path | None = cli_value
+    if raw is None:
+        raw = os.environ.get(SOURCE_ENV, "").strip() or None
+    if raw is None and config.source_repo:
+        raw = config.source_repo
+    if raw is None:
+        raw = REPO_ROOT
+    path = Path(raw).expanduser()
+    if not path.is_absolute():
+        path = Path.cwd() / path
+    path = path.resolve()
+    if not path.is_dir():
+        raise SystemExit(f"[docs] source path is not a directory: {path}")
+    return path
 
 
 # --------------------------------------------------------------------------- #
@@ -195,13 +231,18 @@ def load_config(path: Path) -> Config:
 # --------------------------------------------------------------------------- #
 def git(*args: str, check: bool = True) -> str:
     result = subprocess.run(
-        ["git", *args], cwd=REPO_ROOT, capture_output=True, text=True
+        ["git", *args], cwd=SOURCE_ROOT, capture_output=True, text=True
     )
     if check and result.returncode != 0:
         raise SystemExit(
             f"[docs] git {' '.join(args)} failed: {result.stderr.strip()}"
         )
     return result.stdout
+
+
+def git_ok() -> bool:
+    """True when the source root is a git work tree (history/tags available)."""
+    return git("rev-parse", "--git-dir", check=False).strip() != ""
 
 
 def normalize_path(path: str) -> str:
@@ -214,7 +255,7 @@ def normalize_path(path: str) -> str:
 def tracked_files(ref: str) -> list[str]:
     if ref == "":
         paths: list[str] = []
-        for root, dirs, files in os.walk(REPO_ROOT):
+        for root, dirs, files in os.walk(SOURCE_ROOT):
             dirs[:] = sorted(
                 name
                 for name in dirs
@@ -223,7 +264,7 @@ def tracked_files(ref: str) -> list[str]:
             )
             for name in sorted(files):
                 full = Path(root) / name
-                paths.append(str(full.relative_to(REPO_ROOT)))
+                paths.append(str(full.relative_to(SOURCE_ROOT)))
         return paths
     output = git("ls-tree", "-r", "--name-only", "-z", ref)
     return [entry for entry in output.split("\0") if entry]
@@ -231,10 +272,10 @@ def tracked_files(ref: str) -> list[str]:
 
 def read_content(ref: str, source: str) -> str:
     if ref == "":
-        return (REPO_ROOT / source).read_text(encoding="utf-8", errors="replace")
+        return (SOURCE_ROOT / source).read_text(encoding="utf-8", errors="replace")
     result = subprocess.run(
         ["git", "show", f"{ref}:{source}"],
-        cwd=REPO_ROOT,
+        cwd=SOURCE_ROOT,
         capture_output=True,
         encoding="utf-8",
         errors="replace",
@@ -281,13 +322,35 @@ def is_prerelease(version: str) -> bool:
 
 
 def current_release() -> Release:
-    version_file = REPO_ROOT / ".version"
+    version_file = SOURCE_ROOT / ".version"
     version = (
         version_file.read_text(encoding="utf-8").strip()
         if version_file.exists()
         else "0.0.0"
     )
+    if not git_ok():
+        stamp = (
+            datetime.fromtimestamp(
+                version_file.stat().st_mtime, tz=timezone.utc
+            ).isoformat()
+            if version_file.exists()
+            else "unknown"
+        )
+        return Release(
+            version=version,
+            ref=SOURCE_ROOT.name or "source",
+            source="worktree",
+            tag=None,
+            date=stamp,
+            sha="unknown",
+            prerelease=is_prerelease(version),
+        )
     branch = git("rev-parse", "--abbrev-ref", "HEAD").strip()
+    if branch == "HEAD":
+        branch = (
+            git("describe", "--tags", "--exact-match", "HEAD", check=False).strip()
+            or "HEAD"
+        )
     sha = git("rev-parse", "--short", "HEAD").strip()
     date = git("log", "-1", "--format=%cI", "HEAD").strip()
     return Release(
@@ -306,7 +369,8 @@ def collect_releases(
 ) -> list[Release]:
     working = current_release()
     releases = [working]
-    for tag in git("tag").split():
+    tags = git("tag").split() if git_ok() else []
+    for tag in tags:
         version = tag[1:] if tag.startswith("v") else tag
         if version == working.version:
             continue
@@ -1590,14 +1654,26 @@ def resolve_output(value: Path) -> Path:
 
 
 def main(argv: list[str] | None = None) -> int:
+    global SOURCE_ROOT
     parser = argparse.ArgumentParser(
         prog="build_docs.py",
         description=(
-            "Generate the versioned /docs site from Markdown files in this repo."
+            "Generate the versioned /docs site from the Markdown files in the "
+            "source repository (default: this repo)."
         ),
     )
     parser.add_argument("--config", type=Path, default=DEFAULT_CONFIG)
     parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
+    parser.add_argument(
+        "--source",
+        type=Path,
+        default=None,
+        metavar="PATH",
+        help=(
+            "repository the docs are generated from (llm-router checkout); "
+            f"falls back to ${SOURCE_ENV}, [site] source_repo, then this repo"
+        ),
+    )
     parser.add_argument(
         "--all-versions",
         action="store_true",
@@ -1642,6 +1718,7 @@ def main(argv: list[str] | None = None) -> int:
         bootstrap_dependencies(args.quiet)
 
     config = load_config(args.config)
+    SOURCE_ROOT = resolve_source_root(args.source, config)
     output = resolve_output(args.output)
     docs_root = output / DOCS_DIR_NAME
 
@@ -1667,6 +1744,13 @@ def main(argv: list[str] | None = None) -> int:
 
     if not args.quiet:
         prefix = "would write" if args.dry_run else "wrote"
+        worktree = next(
+            release for release in releases if release.source == "worktree"
+        )
+        print(
+            f"[docs] source: {SOURCE_ROOT} "
+            f"(v{worktree.version} from {worktree.ref})"
+        )
         print(f"[docs] {prefix} {written} files into {output}")
         for release in releases:
             print(
