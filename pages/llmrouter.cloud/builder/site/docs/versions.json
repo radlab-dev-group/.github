@@ -1,0 +1,41 @@
+{
+  "updated": "2026-09-17T12:32:05Z",
+  "latest": "1.0.7",
+  "versions": [
+    {
+      "version": "1.0.7",
+      "entry": "1.0.7/index.html",
+      "date": "2026-09-17T14:26:56+02:00",
+      "prerelease": false,
+      "ref": "v1.0.7",
+      "sha": "15dc296",
+      "pages": {
+        "README.md": "overview.html",
+        "llm_router_api/docs/INSTALLATION.md": "llm-router-api/docs/installation.html",
+        "llm_router_api/docs/ENV_DEFINITIONS.md": "llm-router-api/docs/env-definitions.html",
+        "llm_router_api/docs/MODELS_CONFIG.md": "llm-router-api/docs/models-config.html",
+        "llm_router_api/docs/KEEPALIVE.md": "llm-router-api/docs/keepalive.html",
+        "llm_router_api/docs/LB_STRATEGIES.md": "llm-router-api/docs/lb-strategies.html",
+        "llm_router_api/core/auditor/README.md": "llm-router-api/core/auditor/index.html",
+        "llm_router_api/docs/AUTHENTICATION.md": "llm-router-api/docs/authentication.html",
+        "llm_router_api/docs/RATE_LIMITING.md": "llm-router-api/docs/rate-limiting.html",
+        "llm_router_api/docs/ROUTING_METRICS.md": "llm-router-api/docs/routing-metrics.html",
+        "llm_router_api/README.md": "llm-router-api/index.html",
+        "llm_router_api/endpoints/README.md": "llm-router-api/endpoints/index.html",
+        "llm_router_api/docs/ENDPOINT_DEV.md": "llm-router-api/docs/endpoint-dev.html",
+        "llm_router_cli/README.md": "llm-router-cli/index.html",
+        "llm_router_lib/README.md": "llm-router-lib/index.html",
+        "llm_router_lib/RESPONSE_MODELS.md": "llm-router-lib/response-models.html",
+        "helm_charts/README.md": "helm-charts/index.html",
+        "examples/README.md": "examples/index.html",
+        "examples/quickstart/README.md": "examples/quickstart/index.html",
+        "examples/README_LLAMAINDEX.md": "examples/readme-llamaindex.html",
+        "examples/quickstart/google-gemma3-12b-it/VLLM.md": "examples/quickstart/google-gemma3-12b-it/vllm.html",
+        "examples/quickstart/speakleash-bielik-11b-v2_3-Instruct/VLLM.md": "examples/quickstart/speakleash-bielik-11b-v2-3-instruct/vllm.html",
+        "examples/quickstart/speakleash-bielik-11b-v2_3-Instruct/README.md": "examples/quickstart/speakleash-bielik-11b-v2-3-instruct/index.html",
+        "examples/quickstart/google-gemma3-12b-it/README.md": "examples/quickstart/google-gemma3-12b-it/index.html",
+        "CHANGELOG.md": "changelog.html"
+      }
+    }
+  ]
+}
