@@ -15,7 +15,7 @@
 <link rel="stylesheet" href="../../../../assets/pygments.css">
 <script src="../../../../assets/docs.js" defer></script>
 </head>
-<body class="page" data-version="1.0.5" data-search="../../../search.json" data-latest="1.0.6">
+<body class="page" data-version="1.0.5" data-search="../../../search.json" data-latest="1.0.7">
 <a class="skip" href="#main">skip to content</a>
 <header class="topbar">
 <div class="topbar-inner">
@@ -30,7 +30,8 @@
 </form>
 <label class="vselect">
 <span class="sr-only">Documentation version</span>
-<select id="versions" aria-label="Documentation version"><option value="../../../../1.0.6/examples/quickstart/google-gemma3-12b-it/index.html">1.0.6  · latest</option>
+<select id="versions" aria-label="Documentation version"><option value="../../../../1.0.7/examples/quickstart/google-gemma3-12b-it/index.html">1.0.7  · latest</option>
+<option value="../../../../1.0.6/examples/quickstart/google-gemma3-12b-it/index.html">1.0.6</option>
 <option value="index.html" selected>1.0.5</option>
 <option value="../../../../1.0.4/examples/quickstart/google-gemma3-12b-it/index.html">1.0.4</option>
 <option value="../../../../1.0.3/examples/quickstart/google-gemma3-12b-it/index.html">1.0.3</option>
@@ -193,22 +194,22 @@ pip install .[api,metrics]
 <p>The example repository already ships a <a href="https://github.com/radlab-dev-group/llm-router/blob/v1.0.5/examples/quickstart/google-gemma3-12b-it/models-config.json"> target="_blank" rel="noopener noreferrer"<code>models-config.json</code></a> that points to the locally running
 vLLM instance:</p>
 <div class="codehilite"><pre><span></span><code><span class="p">{</span>
-<span class="w">  </span><span class="nt">"google_models"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="nt">"google/gemma-3-12b-it"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">      </span><span class="nt">"providers"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">  </span><span class="nt">&quot;google_models&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;google/gemma-3-12b-it&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;providers&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
 <span class="w">        </span><span class="p">{</span>
-<span class="w">          </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"gemma3_12b-vllm-local:7000"</span><span class="p">,</span>
-<span class="w">          </span><span class="nt">"api_host"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://localhost:7000/"</span><span class="p">,</span>
-<span class="w">          </span><span class="nt">"api_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"vllm"</span><span class="p">,</span>
-<span class="w">          </span><span class="nt">"input_size"</span><span class="p">:</span><span class="w"> </span><span class="mi">56000</span><span class="p">,</span>
-<span class="w">          </span><span class="nt">"weight"</span><span class="p">:</span><span class="w"> </span><span class="mf">1.0</span>
+<span class="w">          </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;gemma3_12b-vllm-local:7000&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;api_host&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;http://localhost:7000/&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;api_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;vllm&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;input_size&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">56000</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;weight&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">1.0</span>
 <span class="w">        </span><span class="p">}</span>
 <span class="w">      </span><span class="p">]</span>
 <span class="w">    </span><span class="p">}</span>
 <span class="w">  </span><span class="p">},</span>
-<span class="w">  </span><span class="nt">"active_models"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="nt">"google_models"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">      </span><span class="s2">"google/gemma-3-12b-it"</span>
+<span class="w">  </span><span class="nt">&quot;active_models&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;google_models&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">      </span><span class="s2">&quot;google/gemma-3-12b-it&quot;</span>
 <span class="w">    </span><span class="p">]</span>
 <span class="w">  </span><span class="p">}</span>
 <span class="p">}</span>
@@ -305,7 +306,7 @@ that explain how each library (LangChain, LlamaIndex, OpenAI SDK, LiteLLM, Hayst
 1. **Set the router address** – export `LLM_ROUTER_HOST` in the environment (or edit `examples/constants.py`) so that
 
 ```python
-HOST = "http://localhost:8080/api"
+HOST = &quot;http://localhost:8080/api&quot;
 </code></pre></div>
 
 <p>matches the URL where you started the router (<code>run-rest-api-gunicorn.sh</code>).</p>

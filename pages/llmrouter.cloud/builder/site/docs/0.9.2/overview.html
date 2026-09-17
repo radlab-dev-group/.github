@@ -15,7 +15,7 @@
 <link rel="stylesheet" href="../assets/pygments.css">
 <script src="../assets/docs.js" defer></script>
 </head>
-<body class="page" data-version="0.9.2" data-search="search.json" data-latest="1.0.6">
+<body class="page" data-version="0.9.2" data-search="search.json" data-latest="1.0.7">
 <a class="skip" href="#main">skip to content</a>
 <header class="topbar">
 <div class="topbar-inner">
@@ -30,7 +30,8 @@
 </form>
 <label class="vselect">
 <span class="sr-only">Documentation version</span>
-<select id="versions" aria-label="Documentation version"><option value="../1.0.6/overview.html">1.0.6  · latest</option>
+<select id="versions" aria-label="Documentation version"><option value="../1.0.7/overview.html">1.0.7  · latest</option>
+<option value="../1.0.6/overview.html">1.0.6</option>
 <option value="../1.0.5/overview.html">1.0.5</option>
 <option value="../1.0.4/overview.html">1.0.4</option>
 <option value="../1.0.3/overview.html">1.0.3</option>
@@ -292,7 +293,7 @@ can be composed in an ordered list to form a pipeline. Pipelines are instantiate
 </table>
 <p>Pipelines are configured via environment variables:</p>
 <div class="codehilite"><pre><span></span><code><span class="c1"># Comma-separated list of masker plugins to apply</span>
-<span class="nb">export</span><span class="w"> </span><span class="nv">LLM_ROUTER_MASKING_STRATEGY_PIPELINE</span><span class="o">=</span><span class="s2">"fast_masker,pii_masker"</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">LLM_ROUTER_MASKING_STRATEGY_PIPELINE</span><span class="o">=</span><span class="s2">&quot;fast_masker,pii_masker&quot;</span>
 
 <span class="c1"># Enable guardrails</span>
 <span class="nb">export</span><span class="w"> </span><span class="nv">LLM_ROUTER_FORCE_GUARDRAIL_REQUEST</span><span class="o">=</span><span class="m">1</span>
@@ -507,20 +508,20 @@ docker<span class="w"> </span>run<span class="w"> </span><span class="se">\</spa
 <span class="w">  </span>-e<span class="w"> </span><span class="nv">LLM_ROUTER_TIMEOUT</span><span class="o">=</span><span class="m">500</span><span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>-e<span class="w"> </span><span class="nv">LLM_ROUTER_IN_DEBUG</span><span class="o">=</span><span class="m">1</span><span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>-e<span class="w"> </span><span class="nv">LLM_ROUTER_MINIMUM</span><span class="o">=</span><span class="m">1</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>-e<span class="w"> </span><span class="nv">LLM_ROUTER_EP_PREFIX</span><span class="o">=</span><span class="s2">"/api"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-e<span class="w"> </span><span class="nv">LLM_ROUTER_EP_PREFIX</span><span class="o">=</span><span class="s2">&quot;/api&quot;</span><span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>-e<span class="w"> </span><span class="nv">LLM_ROUTER_SERVER_TYPE</span><span class="o">=</span>gunicorn<span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>-e<span class="w"> </span><span class="nv">LLM_ROUTER_SERVER_PORT</span><span class="o">=</span><span class="m">8080</span><span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>-e<span class="w"> </span><span class="nv">LLM_ROUTER_SERVER_WORKERS_COUNT</span><span class="o">=</span><span class="m">4</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>-e<span class="w"> </span><span class="nv">LLM_ROUTER_DEFAULT_EP_LANGUAGE</span><span class="o">=</span><span class="s2">"pl"</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>-e<span class="w"> </span><span class="nv">LLM_ROUTER_LOG_FILENAME</span><span class="o">=</span><span class="s2">"llm-proxy-rest.log"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-e<span class="w"> </span><span class="nv">LLM_ROUTER_DEFAULT_EP_LANGUAGE</span><span class="o">=</span><span class="s2">&quot;pl&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-e<span class="w"> </span><span class="nv">LLM_ROUTER_LOG_FILENAME</span><span class="o">=</span><span class="s2">&quot;llm-proxy-rest.log&quot;</span><span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>-e<span class="w"> </span><span class="nv">LLM_ROUTER_EXTERNAL_TIMEOUT</span><span class="o">=</span><span class="m">300</span><span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>-e<span class="w"> </span><span class="nv">LLM_ROUTER_BALANCE_STRATEGY</span><span class="o">=</span>balanced<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>-e<span class="w"> </span><span class="nv">LLM_ROUTER_REDIS_HOST</span><span class="o">=</span><span class="s2">"192.168.100.67"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-e<span class="w"> </span><span class="nv">LLM_ROUTER_REDIS_HOST</span><span class="o">=</span><span class="s2">&quot;192.168.100.67&quot;</span><span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>-e<span class="w"> </span><span class="nv">LLM_ROUTER_REDIS_PORT</span><span class="o">=</span><span class="m">6379</span><span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>-e<span class="w"> </span><span class="nv">LLM_ROUTER_MODELS_CONFIG</span><span class="o">=</span>/srv/cfg.json<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>-e<span class="w"> </span><span class="nv">LLM_ROUTER_PROMPTS_DIR</span><span class="o">=</span><span class="s2">"/srv/prompts"</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>-v<span class="w"> </span><span class="s2">"</span><span class="si">${</span><span class="nv">PWD</span><span class="si">}</span><span class="s2">/resources/configs/models-config.json"</span>:/srv/cfg.json<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>-v<span class="w"> </span><span class="s2">"</span><span class="si">${</span><span class="nv">PWD</span><span class="si">}</span><span class="s2">/resources/prompts"</span>:/srv/prompts<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-e<span class="w"> </span><span class="nv">LLM_ROUTER_PROMPTS_DIR</span><span class="o">=</span><span class="s2">&quot;/srv/prompts&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-v<span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">PWD</span><span class="si">}</span><span class="s2">/resources/configs/models-config.json&quot;</span>:/srv/cfg.json<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-v<span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">PWD</span><span class="si">}</span><span class="s2">/resources/prompts&quot;</span>:/srv/prompts<span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>quay.io/radlab/llm-router:rc1
 </code></pre></div>
 

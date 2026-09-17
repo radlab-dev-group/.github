@@ -15,7 +15,7 @@
 <link rel="stylesheet" href="../../assets/pygments.css">
 <script src="../../assets/docs.js" defer></script>
 </head>
-<body class="page" data-version="1.0.5" data-search="../search.json" data-latest="1.0.6">
+<body class="page" data-version="1.0.5" data-search="../search.json" data-latest="1.0.7">
 <a class="skip" href="#main">skip to content</a>
 <header class="topbar">
 <div class="topbar-inner">
@@ -30,7 +30,8 @@
 </form>
 <label class="vselect">
 <span class="sr-only">Documentation version</span>
-<select id="versions" aria-label="Documentation version"><option value="../../1.0.6/llm-router-cli/index.html">1.0.6  · latest</option>
+<select id="versions" aria-label="Documentation version"><option value="../../1.0.7/llm-router-cli/index.html">1.0.7  · latest</option>
+<option value="../../1.0.6/llm-router-cli/index.html">1.0.6</option>
 <option value="index.html" selected>1.0.5</option>
 <option value="../../1.0.4/llm-router-cli/index.html">1.0.4</option>
 <option value="../../1.0.3/llm-router-cli/index.html">1.0.3</option>
@@ -335,11 +336,11 @@ flags are separate from the general <code>LLM_ROUTER_REDIS_*</code> env vars.</p
 </table>
 <h4 id="create-name-json-policy-create-a-custom-policy"><code>create &lt;name&gt; [&lt;json-policy&gt;]</code> — Create a custom policy<a class="headerlink" href="#create-name-json-policy-create-a-custom-policy" title="link to this section">#</a></h4>
 <div class="codehilite"><pre><span></span><code><span class="c1"># inline JSON</span>
-llm-router<span class="w"> </span>auth<span class="w"> </span>policy<span class="w"> </span>create<span class="w"> </span>my-team<span class="w"> </span><span class="s1">'{</span>
-<span class="s1">  "can_access": true,</span>
-<span class="s1">  "rate_limit": 120,</span>
-<span class="s1">  "model_whitelist": ["gpt-4", "llama-3"]</span>
-<span class="s1">}'</span><span class="w"> </span>--store<span class="w"> </span>memory
+llm-router<span class="w"> </span>auth<span class="w"> </span>policy<span class="w"> </span>create<span class="w"> </span>my-team<span class="w"> </span><span class="s1">&#39;{</span>
+<span class="s1">  &quot;can_access&quot;: true,</span>
+<span class="s1">  &quot;rate_limit&quot;: 120,</span>
+<span class="s1">  &quot;model_whitelist&quot;: [&quot;gpt-4&quot;, &quot;llama-3&quot;]</span>
+<span class="s1">}&#39;</span><span class="w"> </span>--store<span class="w"> </span>memory
 
 <span class="c1"># from a file, or from stdin (-) — avoids leaking policy JSON into shell history</span>
 llm-router<span class="w"> </span>auth<span class="w"> </span>policy<span class="w"> </span>create<span class="w"> </span>my-team<span class="w"> </span>--file<span class="w"> </span>my-team.json
@@ -486,7 +487,7 @@ llm-router config merge &lt;configs...&gt; [-o FILE]                            
 <h3 id="discover-scan-hosts-for-local-llm-servers"><code>discover</code> — Scan hosts for local LLM servers<a class="headerlink" href="#discover-scan-hosts-for-local-llm-servers" title="link to this section">#</a></h3>
 <div class="codehilite"><pre><span></span><code>llm-router<span class="w"> </span>config<span class="w"> </span>discover<span class="w"> </span>localhost<span class="w"> </span>-o<span class="w"> </span>models-config.json
 llm-router<span class="w"> </span>config<span class="w"> </span>discover<span class="w"> </span>localhost<span class="w"> </span><span class="m">192</span>.168.1.50<span class="w"> </span>--all-ports
-llm-router<span class="w"> </span>config<span class="w"> </span>discover<span class="w"> </span><span class="s2">"10.0.0.1:8080"</span><span class="w"> </span><span class="s2">"ollama.local:11434"</span>
+llm-router<span class="w"> </span>config<span class="w"> </span>discover<span class="w"> </span><span class="s2">&quot;10.0.0.1:8080&quot;</span><span class="w"> </span><span class="s2">&quot;ollama.local:11434&quot;</span>
 </code></pre></div>
 
 <table>

@@ -15,7 +15,7 @@
 <link rel="stylesheet" href="../../assets/pygments.css">
 <script src="../../assets/docs.js" defer></script>
 </head>
-<body class="page" data-version="0.6.5" data-search="../search.json" data-latest="1.0.6">
+<body class="page" data-version="0.6.5" data-search="../search.json" data-latest="1.0.7">
 <a class="skip" href="#main">skip to content</a>
 <header class="topbar">
 <div class="topbar-inner">
@@ -30,7 +30,8 @@
 </form>
 <label class="vselect">
 <span class="sr-only">Documentation version</span>
-<select id="versions" aria-label="Documentation version"><option value="../../1.0.6/index.html">1.0.6  · latest</option>
+<select id="versions" aria-label="Documentation version"><option value="../../1.0.7/index.html">1.0.7  · latest</option>
+<option value="../../1.0.6/index.html">1.0.6</option>
 <option value="../../1.0.5/index.html">1.0.5</option>
 <option value="../../1.0.4/index.html">1.0.4</option>
 <option value="../../1.0.3/index.html">1.0.3</option>
@@ -276,8 +277,8 @@ sudo<span class="w"> </span>systemctl<span class="w"> </span><span class="nb">en
 <h2 id="extending-with-custom-strategies">Extending with Custom Strategies<a class="headerlink" href="#extending-with-custom-strategies" title="link to this section">#</a></h2>
 <p>To use a different strategy (e.g., round‑robin, random weighted, latency‑based),
 implement <code>ChooseProviderStrategyI</code> and pass the instance to <code>ProviderChooser</code>:</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">llm_router_api.core.lb.chooser</span><span class="w"> </span><span class="kn">import</span> <span class="n">ProviderChooser</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">my_strategies</span><span class="w"> </span><span class="kn">import</span> <span class="n">RoundRobinStrategy</span>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">llm_router_api.core.lb.chooser</span> <span class="kn">import</span> <span class="n">ProviderChooser</span>
+<span class="kn">from</span> <span class="nn">my_strategies</span> <span class="kn">import</span> <span class="n">RoundRobinStrategy</span>
 
 <span class="n">chooser</span> <span class="o">=</span> <span class="n">ProviderChooser</span><span class="p">(</span><span class="n">strategy</span><span class="o">=</span><span class="n">RoundRobinStrategy</span><span class="p">())</span>
 </code></pre></div>

@@ -15,7 +15,7 @@
 <link rel="stylesheet" href="../../assets/pygments.css">
 <script src="../../assets/docs.js" defer></script>
 </head>
-<body class="page" data-version="0.3.0" data-search="../search.json" data-latest="1.0.6">
+<body class="page" data-version="0.3.0" data-search="../search.json" data-latest="1.0.7">
 <a class="skip" href="#main">skip to content</a>
 <header class="topbar">
 <div class="topbar-inner">
@@ -30,7 +30,8 @@
 </form>
 <label class="vselect">
 <span class="sr-only">Documentation version</span>
-<select id="versions" aria-label="Documentation version"><option value="../../1.0.6/llm-router-lib/index.html">1.0.6  · latest</option>
+<select id="versions" aria-label="Documentation version"><option value="../../1.0.7/llm-router-lib/index.html">1.0.7  · latest</option>
+<option value="../../1.0.6/llm-router-lib/index.html">1.0.6</option>
 <option value="../../1.0.5/llm-router-lib/index.html">1.0.5</option>
 <option value="../../1.0.4/llm-router-lib/index.html">1.0.4</option>
 <option value="../../1.0.3/llm-router-lib/index.html">1.0.3</option>
@@ -159,20 +160,20 @@ pip install .
 </blockquote>
 <hr />
 <h2 id="quick-start">Quick start<a class="headerlink" href="#quick-start" title="link to this section">#</a></h2>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">llm_router_lib.client</span><span class="w"> </span><span class="kn">import</span> <span class="n">LLMRouterClient</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">llm_router_lib.data_models.builtin_chat</span><span class="w"> </span><span class="kn">import</span> <span class="n">GenerativeConversationModel</span>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">llm_router_lib.client</span> <span class="kn">import</span> <span class="n">LLMRouterClient</span>
+<span class="kn">from</span> <span class="nn">llm_router_lib.data_models.builtin_chat</span> <span class="kn">import</span> <span class="n">GenerativeConversationModel</span>
 
 <span class="c1"># Initialise the client (replace with your own endpoint and token)</span>
 <span class="n">client</span> <span class="o">=</span> <span class="n">LLMRouterClient</span><span class="p">(</span>
-    <span class="n">api</span><span class="o">=</span><span class="s2">"https://api.your-llm-router.com"</span><span class="p">,</span>
-    <span class="n">token</span><span class="o">=</span><span class="s2">"YOUR_ACCESS_TOKEN"</span>
+    <span class="n">api</span><span class="o">=</span><span class="s2">&quot;https://api.your-llm-router.com&quot;</span><span class="p">,</span>
+    <span class="n">token</span><span class="o">=</span><span class="s2">&quot;YOUR_ACCESS_TOKEN&quot;</span>
 <span class="p">)</span>
 
 <span class="c1"># Build a request payload</span>
 <span class="n">payload</span> <span class="o">=</span> <span class="n">GenerativeConversationModel</span><span class="p">(</span>
-    <span class="n">model_name</span><span class="o">=</span><span class="s2">"google/gemma-3-12b-it"</span><span class="p">,</span>
-    <span class="n">user_last_statement</span><span class="o">=</span><span class="s2">"Hello, how are you?"</span><span class="p">,</span>
-    <span class="n">historical_messages</span><span class="o">=</span><span class="p">[{</span><span class="s2">"user"</span><span class="p">:</span> <span class="s2">"Hi"</span><span class="p">}],</span>
+    <span class="n">model_name</span><span class="o">=</span><span class="s2">&quot;google/gemma-3-12b-it&quot;</span><span class="p">,</span>
+    <span class="n">user_last_statement</span><span class="o">=</span><span class="s2">&quot;Hello, how are you?&quot;</span><span class="p">,</span>
+    <span class="n">historical_messages</span><span class="o">=</span><span class="p">[{</span><span class="s2">&quot;user&quot;</span><span class="p">:</span> <span class="s2">&quot;Hi&quot;</span><span class="p">}],</span>
     <span class="n">temperature</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span>
     <span class="n">max_new_tokens</span><span class="o">=</span><span class="mi">128</span><span class="p">,</span>
 <span class="p">)</span>
@@ -180,16 +181,16 @@ pip install .
 <span class="c1"># Call the API</span>
 <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">conversation_with_model</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>  <span class="c1"># → dict with the model's answer and metadata</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>  <span class="c1"># → dict with the model&#39;s answer and metadata</span>
 </code></pre></div>
 
 <h3 id="extended-conversation">Extended conversation<a class="headerlink" href="#extended-conversation" title="link to this section">#</a></h3>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">llm_router_lib.data_models.builtin_chat</span><span class="w"> </span><span class="kn">import</span> <span class="n">ExtendedGenerativeConversationModel</span>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">llm_router_lib.data_models.builtin_chat</span> <span class="kn">import</span> <span class="n">ExtendedGenerativeConversationModel</span>
 
 <span class="n">payload</span> <span class="o">=</span> <span class="n">ExtendedGenerativeConversationModel</span><span class="p">(</span>
-    <span class="n">model_name</span><span class="o">=</span><span class="s2">"google/gemma-3-12b-it"</span><span class="p">,</span>
-    <span class="n">user_last_statement</span><span class="o">=</span><span class="s2">"Explain quantum entanglement."</span><span class="p">,</span>
-    <span class="n">system_prompt</span><span class="o">=</span><span class="s2">"Answer as a friendly professor."</span><span class="p">,</span>
+    <span class="n">model_name</span><span class="o">=</span><span class="s2">&quot;google/gemma-3-12b-it&quot;</span><span class="p">,</span>
+    <span class="n">user_last_statement</span><span class="o">=</span><span class="s2">&quot;Explain quantum entanglement.&quot;</span><span class="p">,</span>
+    <span class="n">system_prompt</span><span class="o">=</span><span class="s2">&quot;Answer as a friendly professor.&quot;</span><span class="p">,</span>
     <span class="n">temperature</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span>
     <span class="n">max_new_tokens</span><span class="o">=</span><span class="mi">256</span><span class="p">,</span>
 <span class="p">)</span>

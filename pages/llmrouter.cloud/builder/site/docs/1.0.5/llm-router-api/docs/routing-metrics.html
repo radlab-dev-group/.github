@@ -15,7 +15,7 @@
 <link rel="stylesheet" href="../../../assets/pygments.css">
 <script src="../../../assets/docs.js" defer></script>
 </head>
-<body class="page" data-version="1.0.5" data-search="../../search.json" data-latest="1.0.6">
+<body class="page" data-version="1.0.5" data-search="../../search.json" data-latest="1.0.7">
 <a class="skip" href="#main">skip to content</a>
 <header class="topbar">
 <div class="topbar-inner">
@@ -30,7 +30,8 @@
 </form>
 <label class="vselect">
 <span class="sr-only">Documentation version</span>
-<select id="versions" aria-label="Documentation version"><option value="../../../1.0.6/llm-router-api/docs/routing-metrics.html">1.0.6  · latest</option>
+<select id="versions" aria-label="Documentation version"><option value="../../../1.0.7/llm-router-api/docs/routing-metrics.html">1.0.7  · latest</option>
+<option value="../../../1.0.6/llm-router-api/docs/routing-metrics.html">1.0.6</option>
 <option value="routing-metrics.html" selected>1.0.5</option>
 <option value="../../../1.0.4/llm-router-api/docs/routing-metrics.html">1.0.4</option>
 <option value="../../../1.0.3/llm-router-api/docs/routing-metrics.html">1.0.3</option>
@@ -125,8 +126,8 @@
 <p>Total number of successful calls to each provider type, grouped by model name.</p>
 <p><strong>Labels:</strong> <code>provider_type</code>, <code>model_name</code></p>
 <p><strong>Example output:</strong></p>
-<div class="codehilite"><pre><span></span><code>llm_router_provider_calls_total{provider_type="openai", model_name="google/gemma-3-12b-it"} 42
-llm_router_provider_calls_total{provider_type="ollama", model_name="google/gemma-3-12b-it"} 18
+<div class="codehilite"><pre><span></span><code>llm_router_provider_calls_total{provider_type=&quot;openai&quot;, model_name=&quot;google/gemma-3-12b-it&quot;} 42
+llm_router_provider_calls_total{provider_type=&quot;ollama&quot;, model_name=&quot;google/gemma-3-12b-it&quot;} 18
 </code></pre></div>
 
 <p><strong>Use case:</strong> Track provider utilization distribution across models.</p>
@@ -135,8 +136,8 @@ llm_router_provider_calls_total{provider_type="ollama", model_name="google/gemma
 <p><strong>Labels:</strong> <code>provider_type</code>, <code>model_name</code></p>
 <p><strong>Buckets:</strong> 10ms → 30s (0.01, 0.025, 0.05, 0.1, 0.25, 0.5, 1, 2.5, 5, 10, 30)</p>
 <p><strong>Example output:</strong></p>
-<div class="codehilite"><pre><span></span><code>llm_router_provider_latency_seconds_count{provider_type="vllm", model_name="google/gemma-3-12b-it"} 100
-llm_router_provider_latency_seconds_sum{provider_type="vllm", model_name="google/gemma-3-12b-it"} 45.2
+<div class="codehilite"><pre><span></span><code>llm_router_provider_latency_seconds_count{provider_type=&quot;vllm&quot;, model_name=&quot;google/gemma-3-12b-it&quot;} 100
+llm_router_provider_latency_seconds_sum{provider_type=&quot;vllm&quot;, model_name=&quot;google/gemma-3-12b-it&quot;} 45.2
 </code></pre></div>
 
 <p><strong>Use case:</strong> Identify slow/degraded providers independently of client-side factors. Query example:</p>
@@ -147,8 +148,8 @@ llm_router_provider_latency_seconds_sum{provider_type="vllm", model_name="google
 <p>Provider errors by type and HTTP error code (for retriable status codes) or classification (timeout, connection_error).</p>
 <p><strong>Labels:</strong> <code>provider_type</code>, <code>model_name</code>, <code>error_code</code></p>
 <p><strong>Example output:</strong></p>
-<div class="codehilite"><pre><span></span><code>llm_router_provider_error_total{provider_type="ollama", model_name="gpt-oss:120b", error_code="429"} 5
-llm_router_provider_error_total{provider_type="openai", model_name="google/gemma-3-12b-it", error_code="timeout"} 2
+<div class="codehilite"><pre><span></span><code>llm_router_provider_error_total{provider_type=&quot;ollama&quot;, model_name=&quot;gpt-oss:120b&quot;, error_code=&quot;429&quot;} 5
+llm_router_provider_error_total{provider_type=&quot;openai&quot;, model_name=&quot;google/gemma-3-12b-it&quot;, error_code=&quot;timeout&quot;} 2
 </code></pre></div>
 
 <p><strong>Use case:</strong> Alert on specific provider error spikes. Query example:</p>
@@ -159,8 +160,8 @@ llm_router_provider_error_total{provider_type="openai", model_name="google/gemma
 <p>Load balancing strategy selections per model, tracking which strategies are used for each model's providers.</p>
 <p><strong>Labels:</strong> <code>strategy</code>, <code>model_name</code></p>
 <p><strong>Example output:</strong></p>
-<div class="codehilite"><pre><span></span><code>llm_router_lb_strategy_selected_total{strategy="balanced", model_name="google/gemma-3-12b-it"} 80
-llm_router_lb_strategy_selected_total{strategy="weighted", model_name="openai/gpt-4"} 35
+<div class="codehilite"><pre><span></span><code>llm_router_lb_strategy_selected_total{strategy=&quot;balanced&quot;, model_name=&quot;google/gemma-3-12b-it&quot;} 80
+llm_router_lb_strategy_selected_total{strategy=&quot;weighted&quot;, model_name=&quot;openai/gpt-4&quot;} 35
 </code></pre></div>
 
 <p><strong>Use case:</strong> Verify load balancing strategy distribution. Useful when debugging or tuning LB strategies.</p>
@@ -196,21 +197,21 @@ llm_router_lb_strategy_selected_total{strategy="weighted", model_name="openai/gp
 </table>
 <p><strong>Labels:</strong> <code>stage</code>, <code>result</code></p>
 <p><strong>Example output:</strong></p>
-<div class="codehilite"><pre><span></span><code>llm_router_pipeline_stage_total{stage="provider_resolved", result="success"} 1200
-llm_router_pipeline_stage_total{stage="guardrail_request", result="block"} 45
+<div class="codehilite"><pre><span></span><code>llm_router_pipeline_stage_total{stage=&quot;provider_resolved&quot;, result=&quot;success&quot;} 1200
+llm_router_pipeline_stage_total{stage=&quot;guardrail_request&quot;, result=&quot;block&quot;} 45
 </code></pre></div>
 
 <p><strong>Use case:</strong> Build a request funnel chart to see where requests drop off. Query example:</p>
 <div class="codehilite"><pre><span></span><code><span class="c1"># Guardrail block rate</span>
-<span class="k">sum</span><span class="o">(</span><span class="kr">rate</span><span class="o">(</span><span class="nv">llm_router_pipeline_stage_total</span><span class="p">{</span><span class="nl">stage</span><span class="o">=</span><span class="p">"</span><span class="s">guardrail_request</span><span class="p">",</span><span class="w"> </span><span class="nl">result</span><span class="o">=</span><span class="p">"</span><span class="s">block</span><span class="p">"}[</span><span class="s">5m</span><span class="p">]</span><span class="o">))</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="k">sum</span><span class="o">(</span><span class="kr">rate</span><span class="o">(</span><span class="nv">llm_router_pipeline_stage_total</span><span class="p">{</span><span class="nl">stage</span><span class="o">=</span><span class="p">"</span><span class="s">guardrail_request</span><span class="p">"}[</span><span class="s">5m</span><span class="p">]</span><span class="o">))</span>
+<span class="k">sum</span><span class="o">(</span><span class="kr">rate</span><span class="o">(</span><span class="nv">llm_router_pipeline_stage_total</span><span class="p">{</span><span class="nl">stage</span><span class="o">=</span><span class="p">&quot;</span><span class="s">guardrail_request</span><span class="p">&quot;,</span><span class="w"> </span><span class="nl">result</span><span class="o">=</span><span class="p">&quot;</span><span class="s">block</span><span class="p">&quot;}[</span><span class="s">5m</span><span class="p">]</span><span class="o">))</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="k">sum</span><span class="o">(</span><span class="kr">rate</span><span class="o">(</span><span class="nv">llm_router_pipeline_stage_total</span><span class="p">{</span><span class="nl">stage</span><span class="o">=</span><span class="p">&quot;</span><span class="s">guardrail_request</span><span class="p">&quot;}[</span><span class="s">5m</span><span class="p">]</span><span class="o">))</span>
 </code></pre></div>
 
 <h3 id="llm_router_retry_total-counter"><code>llm_router_retry_total</code> <em>(Counter)</em><a class="headerlink" href="#llm_router_retry_total-counter" title="link to this section">#</a></h3>
 <p>Retry attempts per model and HTTP error code that triggered the retry (429, 503, 504, 500).</p>
 <p><strong>Labels:</strong> <code>model_name</code>, <code>error_code</code></p>
 <p><strong>Example output:</strong></p>
-<div class="codehilite"><pre><span></span><code>llm_router_retry_total{model_name="gpt-oss:120b", error_code="429"} 12
-llm_router_retry_total{model_name="google/gemma-3-12b-it", error_code="503"} 3
+<div class="codehilite"><pre><span></span><code>llm_router_retry_total{model_name=&quot;gpt-oss:120b&quot;, error_code=&quot;429&quot;} 12
+llm_router_retry_total{model_name=&quot;google/gemma-3-12b-it&quot;, error_code=&quot;503&quot;} 3
 </code></pre></div>
 
 <p><strong>Use case:</strong> Monitor provider reliability. High retry rates indicate infrastructure instability.</p>
@@ -218,7 +219,7 @@ llm_router_retry_total{model_name="google/gemma-3-12b-it", error_code="503"} 3
 <p>Requests where all retry attempts were exhausted (final failure after retries).</p>
 <p><strong>Labels:</strong> <code>model_name</code>, <code>last_error_code</code></p>
 <p><strong>Example output:</strong></p>
-<div class="codehilite"><pre><span></span><code>llm_router_retry_exhausted_total{model_name="gpt-oss:120b", last_error_code="503"} 8
+<div class="codehilite"><pre><span></span><code>llm_router_retry_exhausted_total{model_name=&quot;gpt-oss:120b&quot;, last_error_code=&quot;503&quot;} 8
 </code></pre></div>
 
 <p><strong>Use case:</strong> Monitor unrecoverable provider failures for SLA tracking.</p>
@@ -228,16 +229,16 @@ llm_router_retry_total{model_name="google/gemma-3-12b-it", error_code="503"} 3
 <p>Input/output token usage per model and provider, parsed from the LLM provider's response <code>usage</code> field.</p>
 <p><strong>Labels:</strong> <code>model_name</code>, <code>direction</code> (<code>input</code> / <code>output</code>), <code>provider_type</code></p>
 <p><strong>Example output:</strong></p>
-<div class="codehilite"><pre><span></span><code>llm_router_tokens_total{model_name="google/gemma-3-12b-it", direction="input", provider_type="vllm"} 150000
-llm_router_tokens_total{model_name="google/gemma-3-12b-it", direction="output", provider_type="vllm"} 45000
+<div class="codehilite"><pre><span></span><code>llm_router_tokens_total{model_name=&quot;google/gemma-3-12b-it&quot;, direction=&quot;input&quot;, provider_type=&quot;vllm&quot;} 150000
+llm_router_tokens_total{model_name=&quot;google/gemma-3-12b-it&quot;, direction=&quot;output&quot;, provider_type=&quot;vllm&quot;} 45000
 </code></pre></div>
 
 <p><strong>Use case:</strong> Cost tracking and throughput analysis. Query example:</p>
 <div class="codehilite"><pre><span></span><code><span class="c1"># Total input tokens per model in last hour</span>
-<span class="k">sum</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="o">(</span><span class="nv">model_name</span><span class="o">)</span><span class="w"> </span><span class="o">(</span><span class="kr">rate</span><span class="o">(</span><span class="nv">llm_router_tokens_total</span><span class="p">{</span><span class="nl">direction</span><span class="o">=</span><span class="p">"</span><span class="s">input</span><span class="p">"}[</span><span class="s">1h</span><span class="p">]</span><span class="o">))</span>
+<span class="k">sum</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="o">(</span><span class="nv">model_name</span><span class="o">)</span><span class="w"> </span><span class="o">(</span><span class="kr">rate</span><span class="o">(</span><span class="nv">llm_router_tokens_total</span><span class="p">{</span><span class="nl">direction</span><span class="o">=</span><span class="p">&quot;</span><span class="s">input</span><span class="p">&quot;}[</span><span class="s">1h</span><span class="p">]</span><span class="o">))</span>
 
 <span class="c1"># Token cost estimation (approximate, adjust prices for your models)</span>
-<span class="kr">rate</span><span class="o">(</span><span class="nv">llm_router_tokens_total</span><span class="p">{</span><span class="nl">direction</span><span class="o">=</span><span class="p">"</span><span class="s">input</span><span class="p">",</span><span class="w"> </span><span class="nl">model_name</span><span class="o">=</span><span class="p">"</span><span class="s">google/gemma-3-12b-it</span><span class="p">"}[</span><span class="s">1h</span><span class="p">]</span><span class="o">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">0.00000015</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="kr">rate</span><span class="o">(</span><span class="nv">llm_router_tokens_total</span><span class="p">{</span><span class="nl">direction</span><span class="o">=</span><span class="p">"</span><span class="s">output</span><span class="p">",</span><span class="w"> </span><span class="nl">model_name</span><span class="o">=</span><span class="p">"</span><span class="s">google/gemma-3-12b-it</span><span class="p">"}[</span><span class="s">1h</span><span class="p">]</span><span class="o">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">0.0000006</span>
+<span class="kr">rate</span><span class="o">(</span><span class="nv">llm_router_tokens_total</span><span class="p">{</span><span class="nl">direction</span><span class="o">=</span><span class="p">&quot;</span><span class="s">input</span><span class="p">&quot;,</span><span class="w"> </span><span class="nl">model_name</span><span class="o">=</span><span class="p">&quot;</span><span class="s">google/gemma-3-12b-it</span><span class="p">&quot;}[</span><span class="s">1h</span><span class="p">]</span><span class="o">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">0.00000015</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="kr">rate</span><span class="o">(</span><span class="nv">llm_router_tokens_total</span><span class="p">{</span><span class="nl">direction</span><span class="o">=</span><span class="p">&quot;</span><span class="s">output</span><span class="p">&quot;,</span><span class="w"> </span><span class="nl">model_name</span><span class="o">=</span><span class="p">&quot;</span><span class="s">google/gemma-3-12b-it</span><span class="p">&quot;}[</span><span class="s">1h</span><span class="p">]</span><span class="o">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">0.0000006</span>
 </code></pre></div>
 
 <hr />
@@ -246,8 +247,8 @@ llm_router_tokens_total{model_name="google/gemma-3-12b-it", direction="output", 
 <p>Distribution of streamed vs non-streamed responses per model and provider.</p>
 <p><strong>Labels:</strong> <code>format</code> (<code>streamed</code> / <code>non_streamed</code>), <code>model_name</code>, <code>provider_type</code></p>
 <p><strong>Example output:</strong></p>
-<div class="codehilite"><pre><span></span><code>llm_router_response_format_total{format="streamed", model_name="google/gemma-3-12b-it", provider_type="ollama"} 95
-llm_router_response_format_total{format="non_streamed", model_name="google/gemma-3-12b-it", provider_type="vllm"} 180
+<div class="codehilite"><pre><span></span><code>llm_router_response_format_total{format=&quot;streamed&quot;, model_name=&quot;google/gemma-3-12b-it&quot;, provider_type=&quot;ollama&quot;} 95
+llm_router_response_format_total{format=&quot;non_streamed&quot;, model_name=&quot;google/gemma-3-12b-it&quot;, provider_type=&quot;vllm&quot;} 180
 </code></pre></div>
 
 <p><strong>Use case:</strong> Monitor client streaming preferences and capacity planning for long-polling connections.</p>
@@ -257,8 +258,8 @@ Conversion paths include: <code>openai-&gt;ollama</code>, <code>ollama-&gt;opena
 <code>openai-&gt;lmstudio</code>, <code>ollama-&gt;lmstudio</code>.</p>
 <p><strong>Labels:</strong> <code>from_type</code>, <code>to_type</code></p>
 <p><strong>Example output:</strong></p>
-<div class="codehilite"><pre><span></span><code>llm_router_payload_conversion_total{from_type="openai", to_type="ollama"} 250
-llm_router_payload_conversion_total{from_type="anthropic", to_type="openai"} 180
+<div class="codehilite"><pre><span></span><code>llm_router_payload_conversion_total{from_type=&quot;openai&quot;, to_type=&quot;ollama&quot;} 250
+llm_router_payload_conversion_total{from_type=&quot;anthropic&quot;, to_type=&quot;openai&quot;} 180
 </code></pre></div>
 
 <p><strong>Use case:</strong> Track conversion overhead. Each conversion adds serialization/deserialization cost and potential for bugs.</p>
@@ -266,12 +267,12 @@ llm_router_payload_conversion_total{from_type="anthropic", to_type="openai"} 180
 <h2 id="grafana-dashboard-snippet">Grafana Dashboard Snippet<a class="headerlink" href="#grafana-dashboard-snippet" title="link to this section">#</a></h2>
 <p>Here's a sample JSON panel config for the most important metrics:</p>
 <div class="codehilite"><pre><span></span><code><span class="p">{</span>
-<span class="w">  </span><span class="nt">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Provider Calls (last hour)"</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"graph"</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">"targets"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">  </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Provider Calls (last hour)&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;graph&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;targets&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
 <span class="w">    </span><span class="p">{</span>
-<span class="w">      </span><span class="nt">"expr"</span><span class="p">:</span><span class="w"> </span><span class="s2">"sum by (provider_type) (rate(llm_router_provider_calls_total[1h]))"</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">"legendFormat"</span><span class="p">:</span><span class="w"> </span><span class="s2">"{{provider_type}}"</span>
+<span class="w">      </span><span class="nt">&quot;expr&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;sum by (provider_type) (rate(llm_router_provider_calls_total[1h]))&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;legendFormat&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;{{provider_type}}&quot;</span>
 <span class="w">    </span><span class="p">}</span>
 <span class="w">  </span><span class="p">]</span>
 <span class="p">}</span>

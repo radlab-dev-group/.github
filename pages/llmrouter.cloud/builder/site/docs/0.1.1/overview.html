@@ -15,7 +15,7 @@
 <link rel="stylesheet" href="../assets/pygments.css">
 <script src="../assets/docs.js" defer></script>
 </head>
-<body class="page" data-version="0.1.1" data-search="search.json" data-latest="1.0.6">
+<body class="page" data-version="0.1.1" data-search="search.json" data-latest="1.0.7">
 <a class="skip" href="#main">skip to content</a>
 <header class="topbar">
 <div class="topbar-inner">
@@ -30,7 +30,8 @@
 </form>
 <label class="vselect">
 <span class="sr-only">Documentation version</span>
-<select id="versions" aria-label="Documentation version"><option value="../1.0.6/overview.html">1.0.6  · latest</option>
+<select id="versions" aria-label="Documentation version"><option value="../1.0.7/overview.html">1.0.7  · latest</option>
+<option value="../1.0.6/overview.html">1.0.6</option>
 <option value="../1.0.5/overview.html">1.0.5</option>
 <option value="../1.0.4/overview.html">1.0.4</option>
 <option value="../1.0.3/overview.html">1.0.3</option>
@@ -364,23 +365,23 @@ and the list of provider configurations (as defined in <code>models-config.json<
 returns the chosen provider dictionary.</p>
 <h3 id="strategy-interface">Strategy Interface<a class="headerlink" href="#strategy-interface" title="link to this section">#</a></h3>
 <p>All strategies must implement <code>ChooseProviderStrategyI</code>:</p>
-<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">ChooseProviderStrategyI</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
+<div class="codehilite"><pre><span></span><code><span class="k">class</span> <span class="nc">ChooseProviderStrategyI</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
     <span class="nd">@abstractmethod</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">choose</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">providers</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">"""Select one provider configuration for the given model."""</span>
+    <span class="k">def</span> <span class="nf">choose</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">providers</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Select one provider configuration for the given model.&quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 </code></pre></div>
 
 <h3 id="builtin-strategy-loadbalancedstrategy">Built‑in Strategy: LoadBalancedStrategy<a class="headerlink" href="#builtin-strategy-loadbalancedstrategy" title="link to this section">#</a></h3>
 <p>The default <code>LoadBalancedStrategy</code> distributes requests evenly across providers
 by keeping an in‑memory usage counter per model/provider pair.</p>
-<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">LoadBalancedStrategy</span><span class="p">(</span><span class="n">ChooseProviderStrategyI</span><span class="p">):</span>
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="codehilite"><pre><span></span><code><span class="k">class</span> <span class="nc">LoadBalancedStrategy</span><span class="p">(</span><span class="n">ChooseProviderStrategyI</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_usage_counters</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span>
             <span class="k">lambda</span><span class="p">:</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
         <span class="p">)</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">choose</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">providers</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">choose</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">providers</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
         <span class="c1"># selects the provider with the smallest usage count</span>
         <span class="o">...</span>
 </code></pre></div>
@@ -395,8 +396,8 @@ selection strategy out of the box.</p>
 <h3 id="extending-with-custom-strategies">Extending with Custom Strategies<a class="headerlink" href="#extending-with-custom-strategies" title="link to this section">#</a></h3>
 <p>To use a different strategy (e.g., round‑robin, random weighted, latency‑based),
 implement <code>ChooseProviderStrategyI</code> and pass the instance to <code>ProviderChooser</code>:</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">llm_router_api.base.lb.chooser</span><span class="w"> </span><span class="kn">import</span> <span class="n">ProviderChooser</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">my_strategies</span><span class="w"> </span><span class="kn">import</span> <span class="n">RoundRobinStrategy</span>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">llm_router_api.base.lb.chooser</span> <span class="kn">import</span> <span class="n">ProviderChooser</span>
+<span class="kn">from</span> <span class="nn">my_strategies</span> <span class="kn">import</span> <span class="n">RoundRobinStrategy</span>
 
 <span class="n">chooser</span> <span class="o">=</span> <span class="n">ProviderChooser</span><span class="p">(</span><span class="n">strategy</span><span class="o">=</span><span class="n">RoundRobinStrategy</span><span class="p">())</span>
 </code></pre></div>

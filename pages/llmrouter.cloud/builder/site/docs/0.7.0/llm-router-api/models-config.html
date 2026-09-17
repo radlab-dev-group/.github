@@ -15,7 +15,7 @@
 <link rel="stylesheet" href="../../assets/pygments.css">
 <script src="../../assets/docs.js" defer></script>
 </head>
-<body class="page" data-version="0.7.0" data-search="../search.json" data-latest="1.0.6">
+<body class="page" data-version="0.7.0" data-search="../search.json" data-latest="1.0.7">
 <a class="skip" href="#main">skip to content</a>
 <header class="topbar">
 <div class="topbar-inner">
@@ -30,7 +30,8 @@
 </form>
 <label class="vselect">
 <span class="sr-only">Documentation version</span>
-<select id="versions" aria-label="Documentation version"><option value="../../1.0.6/index.html">1.0.6  · latest</option>
+<select id="versions" aria-label="Documentation version"><option value="../../1.0.7/index.html">1.0.7  · latest</option>
+<option value="../../1.0.6/index.html">1.0.6</option>
 <option value="../../1.0.5/index.html">1.0.5</option>
 <option value="../../1.0.4/index.html">1.0.4</option>
 <option value="../../1.0.3/index.html">1.0.3</option>
@@ -127,14 +128,14 @@ Having a single source of truth for model definitions makes it easy to:</p>
 
 | Field          | Type                      | Description                                                                                                                         | Example                         |
 |----------------|---------------------------|-------------------------------------------------------------------------------------------------------------------------------------|---------------------------------|
-| `id`           | `str`                     | Unique identifier for the provider instance (used for logging &amp; selection).                                                         | `"gemma3_12b-vllm-71:7000"`     |
-| `api_host`     | `str`                     | Base URL of the provider API (must include protocol, may contain trailing slash).                                                   | `"http://192.168.100.71:7000/"` |
-| `api_token`    | `str`                     | Authentication token; empty string if not required.                                                                                 | `""`                            |
-| `api_type`     | `str`                     | Type of the backend – determines which concrete `BaseProvider` class is used (`openai`, `vllm`, `ollama`, …).                       | `"vllm"`                        |
+| `id`           | `str`                     | Unique identifier for the provider instance (used for logging &amp; selection).                                                         | `&quot;gemma3_12b-vllm-71:7000&quot;`     |
+| `api_host`     | `str`                     | Base URL of the provider API (must include protocol, may contain trailing slash).                                                   | `&quot;http://192.168.100.71:7000/&quot;` |
+| `api_token`    | `str`                     | Authentication token; empty string if not required.                                                                                 | `&quot;&quot;`                            |
+| `api_type`     | `str`                     | Type of the backend – determines which concrete `BaseProvider` class is used (`openai`, `vllm`, `ollama`, …).                       | `&quot;vllm&quot;`                        |
 | `input_size`   | `int` (or numeric string) | Maximum context length the provider accepts. The `ApiModel.from_config` helper converts it to `int`.                                | `4096`                          |
-| `model_path`   | `str`                     | Path or name of the model on the provider side (used by Ollama, vLLM, etc.). May be empty for providers that infer it from the URL. | `"gpt-3.5-turbo-0125"`          |
+| `model_path`   | `str`                     | Path or name of the model on the provider side (used by Ollama, vLLM, etc.). May be empty for providers that infer it from the URL. | `&quot;gpt-3.5-turbo-0125&quot;`          |
 | `weight`       | `float`                   | Relative weight for **weighted‑random** load‑balancing strategies. Default `1.0`.                                                   | `0.1`                           |
-| `keep_alive`   | `str`                     | Optional keep‑alive duration (e.g. `"35m"`). Empty or `null` means the provider is not kept alive.                                  | `"35m"`                         |
+| `keep_alive`   | `str`                     | Optional keep‑alive duration (e.g. `&quot;35m&quot;`). Empty or `null` means the provider is not kept alive.                                  | `&quot;35m&quot;`                         |
 | `tool_calling` | `bool`                    | Whether the provider supports tool‑calling (function calling).                                                                      | `true`                          |
 | `is_embedding` | `bool`                    | Whether the model is an embedding model (determines use of embedding endpoints).                                                    | `true`                          |
 
@@ -143,18 +144,18 @@ Having a single source of truth for model definitions makes it easy to:</p>
 ```json
 {
   (...)
-  "active_models": {
-    "google_models": [
-      "google/gemma-3-12b-it",
-      "google/gemini-2.5-flash-lite"
+  &quot;active_models&quot;: {
+    &quot;google_models&quot;: [
+      &quot;google/gemma-3-12b-it&quot;,
+      &quot;google/gemini-2.5-flash-lite&quot;
     ],
-    "openai_models": [
-      "openai/gpt-3.5-turbo-0125",
-      "gpt-oss:20b",
-      "gpt-oss:120b"
+    &quot;openai_models&quot;: [
+      &quot;openai/gpt-3.5-turbo-0125&quot;,
+      &quot;gpt-oss:20b&quot;,
+      &quot;gpt-oss:120b&quot;
     ],
-    "qwen_models": [
-      "qwen3-coder:30b"
+    &quot;qwen_models&quot;: [
+      &quot;qwen3-coder:30b&quot;
     ]
   }
 }
@@ -171,7 +172,7 @@ Having a single source of truth for model definitions makes it easy to:</p>
 <li><strong>Construction</strong></li>
 </ol>
 <div class="codehilite"><pre><span></span><code><span class="n">handler</span> <span class="o">=</span> <span class="n">ModelHandler</span><span class="p">(</span>
-    <span class="n">models_config_path</span><span class="o">=</span><span class="s2">"/path/to/models-config.json"</span><span class="p">,</span>
+    <span class="n">models_config_path</span><span class="o">=</span><span class="s2">&quot;/path/to/models-config.json&quot;</span><span class="p">,</span>
     <span class="n">provider_chooser</span><span class="o">=</span><span class="n">my_provider_strategy</span>
 <span class="p">)</span>
 </code></pre></div>
@@ -185,7 +186,7 @@ Having a single source of truth for model definitions makes it easy to:</p>
 <p><strong>Fetching a provider</strong></p>
 </li>
 </ul>
-<div class="codehilite"><pre><span></span><code><span class="n">api_model</span> <span class="o">=</span> <span class="n">handler</span><span class="o">.</span><span class="n">get_model_provider</span><span class="p">(</span><span class="s2">"google/gemma-3-12b-it"</span><span class="p">)</span>
+<div class="codehilite"><pre><span></span><code><span class="n">api_model</span> <span class="o">=</span> <span class="n">handler</span><span class="o">.</span><span class="n">get_model_provider</span><span class="p">(</span><span class="s2">&quot;google/gemma-3-12b-it&quot;</span><span class="p">)</span>
 </code></pre></div>
 
 <ul>
@@ -211,119 +212,119 @@ Having a single source of truth for model definitions makes it easy to:</p>
 <p>Below is a trimmed version of the real file located in <code>resources/configs/models-config.json</code>.<br />
 Copy it to your own configuration directory and adjust the values to match your environment.</p>
 <div class="codehilite"><pre><span></span><code><span class="p">{</span>
-<span class="w">  </span><span class="nt">"google_models"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="nt">"google/gemma-3-12b-it"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">      </span><span class="nt">"providers"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">  </span><span class="nt">&quot;google_models&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;google/gemma-3-12b-it&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;providers&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
 <span class="w">        </span><span class="p">{</span>
-<span class="w">          </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"gemma3_12b-vllm-71:7000"</span><span class="p">,</span>
-<span class="w">          </span><span class="nt">"api_host"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://192.168.100.71:7000/"</span><span class="p">,</span>
-<span class="w">          </span><span class="nt">"api_token"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span>
-<span class="w">          </span><span class="nt">"api_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"vllm"</span><span class="p">,</span>
-<span class="w">          </span><span class="nt">"input_size"</span><span class="p">:</span><span class="w"> </span><span class="mi">4096</span><span class="p">,</span>
-<span class="w">          </span><span class="nt">"model_path"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span>
-<span class="w">          </span><span class="nt">"weight"</span><span class="p">:</span><span class="w"> </span><span class="mf">1.0</span><span class="p">,</span>
-<span class="w">          </span><span class="nt">"keep_alive"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
-<span class="w">          </span><span class="nt">"tool_calling"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span>
+<span class="w">          </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;gemma3_12b-vllm-71:7000&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;api_host&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;http://192.168.100.71:7000/&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;api_token&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;api_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;vllm&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;input_size&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">4096</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;model_path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;weight&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">1.0</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;keep_alive&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;tool_calling&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span>
 <span class="w">        </span><span class="p">},</span>
 <span class="w">        </span><span class="p">{</span>
-<span class="w">          </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"gemma3_12b-vllm-71:7001"</span><span class="p">,</span>
-<span class="w">          </span><span class="nt">"api_host"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://192.168.100.71:7001/"</span><span class="p">,</span>
-<span class="w">          </span><span class="nt">"api_token"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span>
-<span class="w">          </span><span class="nt">"api_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"vllm"</span><span class="p">,</span>
-<span class="w">          </span><span class="nt">"input_size"</span><span class="p">:</span><span class="w"> </span><span class="mi">4096</span><span class="p">,</span>
-<span class="w">          </span><span class="nt">"model_path"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span>
-<span class="w">          </span><span class="nt">"weight"</span><span class="p">:</span><span class="w"> </span><span class="mf">1.0</span><span class="p">,</span>
-<span class="w">          </span><span class="nt">"keep_alive"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
-<span class="w">          </span><span class="nt">"tool_calling"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span>
+<span class="w">          </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;gemma3_12b-vllm-71:7001&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;api_host&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;http://192.168.100.71:7001/&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;api_token&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;api_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;vllm&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;input_size&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">4096</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;model_path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;weight&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">1.0</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;keep_alive&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;tool_calling&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span>
 <span class="w">        </span><span class="p">}</span>
 <span class="w">      </span><span class="p">],</span>
-<span class="w">      </span><span class="nt">"providers_sleep"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">      </span><span class="nt">&quot;providers_sleep&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
 <span class="w">        </span><span class="p">{</span>
-<span class="w">          </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"gemma3_12b-vllm-66:7000"</span><span class="p">,</span>
-<span class="w">          </span><span class="nt">"api_host"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://192.168.100.66:7000/"</span><span class="p">,</span>
-<span class="w">          </span><span class="nt">"api_token"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span>
-<span class="w">          </span><span class="nt">"api_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"vllm"</span><span class="p">,</span>
-<span class="w">          </span><span class="nt">"input_size"</span><span class="p">:</span><span class="w"> </span><span class="mi">4096</span><span class="p">,</span>
-<span class="w">          </span><span class="nt">"model_path"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span>
-<span class="w">          </span><span class="nt">"weight"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.1</span><span class="p">,</span>
-<span class="w">          </span><span class="nt">"keep_alive"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
-<span class="w">          </span><span class="nt">"tool_calling"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span>
+<span class="w">          </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;gemma3_12b-vllm-66:7000&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;api_host&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;http://192.168.100.66:7000/&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;api_token&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;api_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;vllm&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;input_size&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">4096</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;model_path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;weight&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.1</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;keep_alive&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;tool_calling&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span>
 <span class="w">        </span><span class="p">}</span>
 <span class="w">        </span><span class="cm">/* … more sleeping providers … */</span>
 <span class="w">      </span><span class="p">]</span>
 <span class="w">    </span><span class="p">},</span>
-<span class="w">    </span><span class="nt">"google/gemini-2.5-flash-lite"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">      </span><span class="nt">"providers"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="nt">&quot;google/gemini-2.5-flash-lite&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;providers&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
 <span class="w">        </span><span class="p">{</span>
-<span class="w">          </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"google_gemini_2_5-flash-lite"</span><span class="p">,</span>
-<span class="w">          </span><span class="nt">"api_host"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://generativelanguage.googleapis.com/v1beta/openai/"</span><span class="p">,</span>
-<span class="w">          </span><span class="nt">"api_token"</span><span class="p">:</span><span class="w"> </span><span class="s2">"YOUR_GOOGLE_API_KEY"</span><span class="p">,</span>
-<span class="w">          </span><span class="nt">"api_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"openai"</span><span class="p">,</span>
-<span class="w">          </span><span class="nt">"input_size"</span><span class="p">:</span><span class="w"> </span><span class="mi">512000</span><span class="p">,</span>
-<span class="w">          </span><span class="nt">"model_path"</span><span class="p">:</span><span class="w"> </span><span class="s2">"gemini-2.5-flash-lite"</span><span class="p">,</span>
-<span class="w">          </span><span class="nt">"keep_alive"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
-<span class="w">          </span><span class="nt">"tool_calling"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
+<span class="w">          </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;google_gemini_2_5-flash-lite&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;api_host&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://generativelanguage.googleapis.com/v1beta/openai/&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;api_token&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;YOUR_GOOGLE_API_KEY&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;api_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;openai&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;input_size&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">512000</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;model_path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;gemini-2.5-flash-lite&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;keep_alive&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;tool_calling&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
 <span class="w">        </span><span class="p">}</span>
 <span class="w">      </span><span class="p">]</span>
 <span class="w">    </span><span class="p">}</span>
 <span class="w">  </span><span class="p">},</span>
-<span class="w">  </span><span class="nt">"openai_models"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="nt">"openai/gpt-3.5-turbo-0125"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">      </span><span class="nt">"providers"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">  </span><span class="nt">&quot;openai_models&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;openai/gpt-3.5-turbo-0125&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;providers&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
 <span class="w">        </span><span class="p">{</span>
-<span class="w">          </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"openai-gpt3_5-t-0125"</span><span class="p">,</span>
-<span class="w">          </span><span class="nt">"api_host"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://api.openai.com"</span><span class="p">,</span>
-<span class="w">          </span><span class="nt">"api_token"</span><span class="p">:</span><span class="w"> </span><span class="s2">"YOUR_OPENAI_KEY"</span><span class="p">,</span>
-<span class="w">          </span><span class="nt">"api_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"openai"</span><span class="p">,</span>
-<span class="w">          </span><span class="nt">"input_size"</span><span class="p">:</span><span class="w"> </span><span class="mi">256000</span><span class="p">,</span>
-<span class="w">          </span><span class="nt">"model_path"</span><span class="p">:</span><span class="w"> </span><span class="s2">"gpt-3.5-turbo-0125"</span><span class="p">,</span>
-<span class="w">          </span><span class="nt">"keep_alive"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
-<span class="w">          </span><span class="nt">"tool_calling"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span>
+<span class="w">          </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;openai-gpt3_5-t-0125&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;api_host&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://api.openai.com&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;api_token&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;YOUR_OPENAI_KEY&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;api_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;openai&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;input_size&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">256000</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;model_path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;gpt-3.5-turbo-0125&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;keep_alive&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;tool_calling&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span>
 <span class="w">        </span><span class="p">}</span>
 <span class="w">      </span><span class="p">]</span>
 <span class="w">    </span><span class="p">}</span>
 <span class="w">    </span><span class="cm">/* … other OpenAI/Ollama models … */</span>
 <span class="w">  </span><span class="p">},</span>
-<span class="w">  </span><span class="nt">"qwen_models"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="nt">"nomic-embed-text"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">      </span><span class="nt">"providers"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">  </span><span class="nt">&quot;qwen_models&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;nomic-embed-text&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;providers&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
 <span class="w">        </span><span class="p">{</span>
-<span class="w">          </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"nomic-embed-text-ollama"</span><span class="p">,</span>
-<span class="w">          </span><span class="nt">"api_host"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://192.168.100.66:11434"</span><span class="p">,</span>
-<span class="w">          </span><span class="nt">"api_token"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span>
-<span class="w">          </span><span class="nt">"api_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ollama"</span><span class="p">,</span>
-<span class="w">          </span><span class="nt">"input_size"</span><span class="p">:</span><span class="w"> </span><span class="mi">2048</span><span class="p">,</span>
-<span class="w">          </span><span class="nt">"is_embedding"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
+<span class="w">          </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;nomic-embed-text-ollama&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;api_host&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;http://192.168.100.66:11434&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;api_token&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;api_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ollama&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;input_size&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2048</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;is_embedding&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
 <span class="w">        </span><span class="p">}</span>
 <span class="w">      </span><span class="p">]</span>
 <span class="w">    </span><span class="p">},</span>
-<span class="w">    </span><span class="nt">"qwen3-coder:30b"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">      </span><span class="nt">"providers"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="nt">&quot;qwen3-coder:30b&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;providers&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
 <span class="w">        </span><span class="p">{</span>
-<span class="w">          </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"qwen3-coder-30b-66:11434"</span><span class="p">,</span>
-<span class="w">          </span><span class="nt">"api_host"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://192.168.100.66:11434"</span><span class="p">,</span>
-<span class="w">          </span><span class="nt">"api_token"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span>
-<span class="w">          </span><span class="nt">"api_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ollama"</span><span class="p">,</span>
-<span class="w">          </span><span class="nt">"input_size"</span><span class="p">:</span><span class="w"> </span><span class="mi">256000</span><span class="p">,</span>
-<span class="w">          </span><span class="nt">"model_path"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span>
-<span class="w">          </span><span class="nt">"keep_alive"</span><span class="p">:</span><span class="w"> </span><span class="s2">"35m"</span><span class="p">,</span>
-<span class="w">          </span><span class="nt">"tool_calling"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
+<span class="w">          </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;qwen3-coder-30b-66:11434&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;api_host&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;http://192.168.100.66:11434&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;api_token&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;api_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ollama&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;input_size&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">256000</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;model_path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;keep_alive&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;35m&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;tool_calling&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
 <span class="w">        </span><span class="p">}</span>
 <span class="w">        </span><span class="cm">/* … second provider … */</span>
 <span class="w">      </span><span class="p">]</span>
 <span class="w">    </span><span class="p">}</span>
 <span class="w">  </span><span class="p">},</span>
-<span class="w">  </span><span class="nt">"active_models"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="nt">"google_models"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">      </span><span class="s2">"google/gemma-3-12b-it"</span><span class="p">,</span>
-<span class="w">      </span><span class="s2">"google/gemini-2.5-flash-lite"</span>
+<span class="w">  </span><span class="nt">&quot;active_models&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;google_models&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">      </span><span class="s2">&quot;google/gemma-3-12b-it&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="s2">&quot;google/gemini-2.5-flash-lite&quot;</span>
 <span class="w">    </span><span class="p">],</span>
-<span class="w">    </span><span class="nt">"openai_models"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">      </span><span class="s2">"openai/gpt-3.5-turbo-0125"</span>
+<span class="w">    </span><span class="nt">&quot;openai_models&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">      </span><span class="s2">&quot;openai/gpt-3.5-turbo-0125&quot;</span>
 <span class="w">    </span><span class="p">],</span>
-<span class="w">    </span><span class="nt">"qwen_models"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">      </span><span class="s2">"qwen3-coder:30b"</span><span class="p">,</span>
-<span class="w">      </span><span class="s2">"nomic-embed-text"</span>
+<span class="w">    </span><span class="nt">&quot;qwen_models&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">      </span><span class="s2">&quot;qwen3-coder:30b&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="s2">&quot;nomic-embed-text&quot;</span>
 <span class="w">    </span><span class="p">]</span>
 <span class="w">  </span><span class="p">}</span>
 <span class="p">}</span>

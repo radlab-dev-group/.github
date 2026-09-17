@@ -15,7 +15,7 @@
 <link rel="stylesheet" href="../../assets/pygments.css">
 <script src="../../assets/docs.js" defer></script>
 </head>
-<body class="page" data-version="0.6.0" data-search="../search.json" data-latest="1.0.6">
+<body class="page" data-version="0.6.0" data-search="../search.json" data-latest="1.0.7">
 <a class="skip" href="#main">skip to content</a>
 <header class="topbar">
 <div class="topbar-inner">
@@ -30,7 +30,8 @@
 </form>
 <label class="vselect">
 <span class="sr-only">Documentation version</span>
-<select id="versions" aria-label="Documentation version"><option value="../../1.0.6/llm-router-api/index.html">1.0.6  · latest</option>
+<select id="versions" aria-label="Documentation version"><option value="../../1.0.7/llm-router-api/index.html">1.0.7  · latest</option>
+<option value="../../1.0.6/llm-router-api/index.html">1.0.6</option>
 <option value="../../1.0.5/llm-router-api/index.html">1.0.5</option>
 <option value="../../1.0.4/llm-router-api/index.html">1.0.4</option>
 <option value="../../1.0.3/llm-router-api/index.html">1.0.3</option>
@@ -153,7 +154,7 @@ Configuration is driven primarily by environment variables and a JSON model‑co
 | `LLM_ROUTER_USE_PROMETHEUS`                           | Enable Prometheus metrics collection.** When set to `True`, the router registers a `/metrics` endpoint exposing Prometheus‑compatible metrics for monitoring.                                                                                                            | `False`                                |
 | `LLM_ROUTER_FORCE_MASKING`                            | Enable force-masking payload of each endpoint. Each key and value is masked before sending to model provider.                                                                                                                                                            | `False`                                |
 | `LLM_ROUTER_MASKING_WITH_AUDIT`                       | When enabled, each masking operation is recorded in an audit log. This helps with compliance and traceability by providing a tamper‑evident record of what data was masked and when.                                                                                     | `False`                                |
-| `LLM_ROUTER_MASKING_STRATEGY_PIPELINE`                | Defines the ordered list of masking strategies that will be applied to the request payload. For example, ['fast_masker', 'my_new_masker_strategy'] runs the fast masker first, then the `my_new_masker_strategy` masker. This allows flexible, composable masking flows. | `['fast_masker']`                      |
+| `LLM_ROUTER_MASKING_STRATEGY_PIPELINE`                | Defines the ordered list of masking strategies that will be applied to the request payload. For example, [&#39;fast_masker&#39;, &#39;my_new_masker_strategy&#39;] runs the fast masker first, then the `my_new_masker_strategy` masker. This allows flexible, composable masking flows. | `[&#39;fast_masker&#39;]`                      |
 | `LLM_ROUTER_FORCE_GUARDRAIL_REQUEST`                  | Force guardrail evaluation on every request.                                                                                                                                                                                                                             | `False`                                |
 | `LLM_ROUTER_GUARDRAIL_WITH_AUDIT_REQUEST`             | Audits all guardrail decisions.                                                                                                                                                                                                                                          | `False`                                |
 | `GUARDRAIL_STRATEGY_PIPELINE_REQUEST`                 | Ordered list of guardrail strategies.                                                                                                                                                                                                                                    | `-`                                    |
@@ -168,7 +169,7 @@ Configuration is driven primarily by environment variables and a JSON model‑co
 | `LLM_ROUTER_UTILS_PLUGINS_PIPELINE`                   | Utils (plugins) pipeline                                                                                                                                                                                                                                                 | `[]`                                   |
 | `LLM_ROUTER_LANGCHAIN_RAG_COLLECTION`                 | Name of the FAISS collection used by the LangChain RAG plugin. If unset, the collection will be `None` and the plugin will raise an error when instantiated.                                                                                                             | `None`                                 |
 | `LLM_ROUTER_LANGCHAIN_RAG_EMBEDDER`                   | Hugging Face model identifier or local path for the sentence‑embedding model. If unset, it will be `None` and cause an error on plugin creation.                                                                                                                         | `None`                                 |
-| `LLM_ROUTER_LANGCHAIN_RAG_DEVICE`                     | Torch device on which the embedding model runs (`cpu`, `cuda:0`, etc.).                                                                                                                                                                                                  | `"cpu"`                                |
+| `LLM_ROUTER_LANGCHAIN_RAG_DEVICE`                     | Torch device on which the embedding model runs (`cpu`, `cuda:0`, etc.).                                                                                                                                                                                                  | `&quot;cpu&quot;`                                |
 | `LLM_ROUTER_LANGCHAIN_RAG_CHUNK_SIZE`                 | Number of tokens per chunk when splitting texts.                                                                                                                                                                                                                         | `400` tokens                           |
 | `LLM_ROUTER_LANGCHAIN_RAG_CHUNK_OVERLAP`              | Number of overlapping tokens between consecutive chunks.                                                                                                                                                                                                                 | `100` tokens                           |
 | `LLM_ROUTER_LLANGCHAIN_RAG_PERSIST_DIR`               | Store the FAISS index under the given directory (if set, if not set then index will not be stored).                                                                                                                                                                      | `None`                                 |
@@ -184,7 +185,7 @@ the defaults shown above.
 
 | Variable                                     | Default                           | Description                                                                            |
 |----------------------------------------------|-----------------------------------|----------------------------------------------------------------------------------------|
-| `LLM_ROUTER_AUTH_ENABLED`                    | `false`                           | **Master switch** — `"true"` enables all authentication. Default is `false` (no auth). |
+| `LLM_ROUTER_AUTH_ENABLED`                    | `false`                           | **Master switch** — `&quot;true&quot;` enables all authentication. Default is `false` (no auth). |
 | `LLM_ROUTER_AUTH_KEY_STORE`                  | `memory`                          | Key store backend: `vault`, `redis`, or `memory`.                                      |
 | `LLM_ROUTER_AUTH_VAULT_ADDR`                 | *(empty)*                         | HashiCorp Vault server URL.                                                            |
 | `LLM_ROUTER_AUTH_VAULT_PATH`                 | `secret/data/llm-router/api-keys` | KV v2 mount path for key storage.                                                      |
@@ -216,25 +217,25 @@ the defaults shown above.
 
 ```json
 {
-  "active_models": {
-    "openai_models": [
-      "gpt-4",
-      "gpt-3.5-turbo"
+  &quot;active_models&quot;: {
+    &quot;openai_models&quot;: [
+      &quot;gpt-4&quot;,
+      &quot;gpt-3.5-turbo&quot;
     ],
-    "ollama_models": [
-      "llama2"
+    &quot;ollama_models&quot;: [
+      &quot;llama2&quot;
     ]
   },
-  "openai_models": {
-    "gpt-4": {
-      "providers": [
+  &quot;openai_models&quot;: {
+    &quot;gpt-4&quot;: {
+      &quot;providers&quot;: [
         {
-          "id": "openai-gpt4-1",
-          "api_host": "https://api.openai.com/v1",
-          "api_token": "sk-...",
-          "api_type": "openai",
-          "input_size": 8192,
-          "model_path": ""
+          &quot;id&quot;: &quot;openai-gpt4-1&quot;,
+          &quot;api_host&quot;: &quot;https://api.openai.com/v1&quot;,
+          &quot;api_token&quot;: &quot;sk-...&quot;,
+          &quot;api_type&quot;: &quot;openai&quot;,
+          &quot;input_size&quot;: 8192,
+          &quot;model_path&quot;: &quot;&quot;
         }
       ]
     }

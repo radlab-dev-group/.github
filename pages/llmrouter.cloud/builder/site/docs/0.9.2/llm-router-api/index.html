@@ -15,7 +15,7 @@
 <link rel="stylesheet" href="../../assets/pygments.css">
 <script src="../../assets/docs.js" defer></script>
 </head>
-<body class="page" data-version="0.9.2" data-search="../search.json" data-latest="1.0.6">
+<body class="page" data-version="0.9.2" data-search="../search.json" data-latest="1.0.7">
 <a class="skip" href="#main">skip to content</a>
 <header class="topbar">
 <div class="topbar-inner">
@@ -30,7 +30,8 @@
 </form>
 <label class="vselect">
 <span class="sr-only">Documentation version</span>
-<select id="versions" aria-label="Documentation version"><option value="../../1.0.6/llm-router-api/index.html">1.0.6  · latest</option>
+<select id="versions" aria-label="Documentation version"><option value="../../1.0.7/llm-router-api/index.html">1.0.7  · latest</option>
+<option value="../../1.0.6/llm-router-api/index.html">1.0.6</option>
 <option value="../../1.0.5/llm-router-api/index.html">1.0.5</option>
 <option value="../../1.0.4/llm-router-api/index.html">1.0.4</option>
 <option value="../../1.0.3/llm-router-api/index.html">1.0.3</option>
@@ -146,25 +147,25 @@ section**.
 
 ```json
 {
-  "active_models": {
-    "openai_models": [
-      "gpt-4",
-      "gpt-3.5-turbo"
+  &quot;active_models&quot;: {
+    &quot;openai_models&quot;: [
+      &quot;gpt-4&quot;,
+      &quot;gpt-3.5-turbo&quot;
     ],
-    "ollama_models": [
-      "llama2"
+    &quot;ollama_models&quot;: [
+      &quot;llama2&quot;
     ]
   },
-  "openai_models": {
-    "gpt-4": {
-      "providers": [
+  &quot;openai_models&quot;: {
+    &quot;gpt-4&quot;: {
+      &quot;providers&quot;: [
         {
-          "id": "openai-gpt4-1",
-          "api_host": "https://api.openai.com/v1",
-          "api_token": "sk-...",
-          "api_type": "openai",
-          "input_size": 8192,
-          "model_path": ""
+          &quot;id&quot;: &quot;openai-gpt4-1&quot;,
+          &quot;api_host&quot;: &quot;https://api.openai.com/v1&quot;,
+          &quot;api_token&quot;: &quot;sk-...&quot;,
+          &quot;api_type&quot;: &quot;openai&quot;,
+          &quot;input_size&quot;: 8192,
+          &quot;model_path&quot;: &quot;&quot;
         }
       ]
     }

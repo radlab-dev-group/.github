@@ -15,7 +15,7 @@
 <link rel="stylesheet" href="../../../../assets/pygments.css">
 <script src="../../../../assets/docs.js" defer></script>
 </head>
-<body class="page" data-version="0.4.1" data-search="../../../search.json" data-latest="1.0.6">
+<body class="page" data-version="0.4.1" data-search="../../../search.json" data-latest="1.0.7">
 <a class="skip" href="#main">skip to content</a>
 <header class="topbar">
 <div class="topbar-inner">
@@ -30,7 +30,8 @@
 </form>
 <label class="vselect">
 <span class="sr-only">Documentation version</span>
-<select id="versions" aria-label="Documentation version"><option value="../../../../1.0.6/examples/quickstart/speakleash-bielik-11b-v2-3-instruct/vllm.html">1.0.6  · latest</option>
+<select id="versions" aria-label="Documentation version"><option value="../../../../1.0.7/examples/quickstart/speakleash-bielik-11b-v2-3-instruct/vllm.html">1.0.7  · latest</option>
+<option value="../../../../1.0.6/examples/quickstart/speakleash-bielik-11b-v2-3-instruct/vllm.html">1.0.6</option>
 <option value="../../../../1.0.5/examples/quickstart/speakleash-bielik-11b-v2-3-instruct/vllm.html">1.0.5</option>
 <option value="../../../../1.0.4/examples/quickstart/speakleash-bielik-11b-v2-3-instruct/vllm.html">1.0.4</option>
 <option value="../../../../1.0.3/examples/quickstart/speakleash-bielik-11b-v2-3-instruct/vllm.html">1.0.3</option>
@@ -105,7 +106,7 @@ aktywację (w promptcie pojawi się <code>(.venv)</code>).</p>
 <hr />
 <h2 id="2-zainstaluj-vllm">2️⃣ Zainstaluj <strong>vLLM</strong><a class="headerlink" href="#2-zainstaluj-vllm" title="link to this section">#</a></h2>
 <div class="codehilite"><pre><span></span><code>pip install --upgrade pip
-pip install "vllm[cuda]"
+pip install &quot;vllm[cuda]&quot;
 </code></pre></div>
 
 <blockquote>
@@ -114,7 +115,7 @@ Jeśli nie masz GPU, użyj wersji CPU: <code>pip install vllm[cpu]</code>.</p>
 </blockquote>
 <hr />
 <h3 id="sprawdz-instalacje">Sprawdź instalację<a class="headerlink" href="#sprawdz-instalacje" title="link to this section">#</a></h3>
-<div class="codehilite"><pre><span></span><code>python -c "import vllm; print(vllm.__version__)"
+<div class="codehilite"><pre><span></span><code>python -c &quot;import vllm; print(vllm.__version__)&quot;
 </code></pre></div>
 
 <p>Powinieneś zobaczyć wersję, np. <code>0.11.2</code>.</p>
@@ -158,34 +159,34 @@ bash run-bielik-11b-v2_3-vllm.sh
 </blockquote>
 </blockquote>
 <div class="codehilite"><pre><span></span><code>curl http://localhost:7000/v1/chat/completions \
-  -H "Content-Type: application/json" \
-  -d '{
-        "model": "speakleash/Bielik-11B-v2.3-Instruct",
-        "messages": [{"role": "user", "content": "Cześć, jak się masz?"}],
-        "max_tokens": 100
-      }' | jq
+  -H &quot;Content-Type: application/json&quot; \
+  -d &#39;{
+        &quot;model&quot;: &quot;speakleash/Bielik-11B-v2.3-Instruct&quot;,
+        &quot;messages&quot;: [{&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;Cześć, jak się masz?&quot;}],
+        &quot;max_tokens&quot;: 100
+      }&#39; | jq
 </code></pre></div>
 
 <p>Powinieneś otrzymać odpowiedź w formacie JSON, np.:</p>
 <div class="codehilite"><pre><span></span><code><span class="p">{</span>
-<span class="w">  </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"chatcmpl-xxxx"</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">"object"</span><span class="p">:</span><span class="w"> </span><span class="s2">"chat.completion"</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">"created"</span><span class="p">:</span><span class="w"> </span><span class="mi">1764516430</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">"model"</span><span class="p">:</span><span class="w"> </span><span class="s2">"speakleash/Bielik-11B-v2.3-Instruct"</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">"choices"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">  </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;chatcmpl-xxxx&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;object&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;chat.completion&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;created&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1764516430</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;model&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;speakleash/Bielik-11B-v2.3-Instruct&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;choices&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
 <span class="w">    </span><span class="p">{</span>
-<span class="w">      </span><span class="nt">"index"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">"message"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">"role"</span><span class="p">:</span><span class="w"> </span><span class="s2">"assistant"</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">"content"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Cześć! Jestem w pełni sprawny i gotowy do rozmowy. Jak mogę Ci pomóc?"</span>
+<span class="w">      </span><span class="nt">&quot;index&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;role&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;assistant&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;content&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Cześć! Jestem w pełni sprawny i gotowy do rozmowy. Jak mogę Ci pomóc?&quot;</span>
 <span class="w">      </span><span class="p">},</span>
-<span class="w">      </span><span class="nt">"finish_reason"</span><span class="p">:</span><span class="w"> </span><span class="s2">"stop"</span>
+<span class="w">      </span><span class="nt">&quot;finish_reason&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;stop&quot;</span>
 <span class="w">    </span><span class="p">}</span>
 <span class="w">  </span><span class="p">],</span>
-<span class="w">  </span><span class="nt">"usage"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="nt">"prompt_tokens"</span><span class="p">:</span><span class="w"> </span><span class="mi">15</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">"total_tokens"</span><span class="p">:</span><span class="w"> </span><span class="mi">66</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">"completion_tokens"</span><span class="p">:</span><span class="w"> </span><span class="mi">51</span>
+<span class="w">  </span><span class="nt">&quot;usage&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;prompt_tokens&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">15</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;total_tokens&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">66</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;completion_tokens&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">51</span>
 <span class="w">  </span><span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>

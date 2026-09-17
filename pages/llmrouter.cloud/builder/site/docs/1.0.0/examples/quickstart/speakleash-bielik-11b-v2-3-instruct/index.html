@@ -15,7 +15,7 @@
 <link rel="stylesheet" href="../../../../assets/pygments.css">
 <script src="../../../../assets/docs.js" defer></script>
 </head>
-<body class="page" data-version="1.0.0" data-search="../../../search.json" data-latest="1.0.6">
+<body class="page" data-version="1.0.0" data-search="../../../search.json" data-latest="1.0.7">
 <a class="skip" href="#main">skip to content</a>
 <header class="topbar">
 <div class="topbar-inner">
@@ -30,7 +30,8 @@
 </form>
 <label class="vselect">
 <span class="sr-only">Documentation version</span>
-<select id="versions" aria-label="Documentation version"><option value="../../../../1.0.6/examples/quickstart/speakleash-bielik-11b-v2-3-instruct/index.html">1.0.6  · latest</option>
+<select id="versions" aria-label="Documentation version"><option value="../../../../1.0.7/examples/quickstart/speakleash-bielik-11b-v2-3-instruct/index.html">1.0.7  · latest</option>
+<option value="../../../../1.0.6/examples/quickstart/speakleash-bielik-11b-v2-3-instruct/index.html">1.0.6</option>
 <option value="../../../../1.0.5/examples/quickstart/speakleash-bielik-11b-v2-3-instruct/index.html">1.0.5</option>
 <option value="../../../../1.0.4/examples/quickstart/speakleash-bielik-11b-v2-3-instruct/index.html">1.0.4</option>
 <option value="../../../../1.0.3/examples/quickstart/speakleash-bielik-11b-v2-3-instruct/index.html">1.0.3</option>
@@ -190,22 +191,22 @@ pozostają odizolowane.</p>
 <h2 id="6-przygotowanie-konfiguracji-routera">6️⃣ <strong>Przygotowanie konfiguracji routera</strong><a class="headerlink" href="#6-przygotowanie-konfiguracji-routera" title="link to this section">#</a></h2>
 <p>Plik <code>models-config.json</code> znajdujący się w katalogu <strong>speakleash‑bielik</strong> już zawiera definicję naszego modelu:</p>
 <div class="codehilite"><pre><span></span><code><span class="p">{</span>
-<span class="w">  </span><span class="nt">"speakleash_models"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="nt">"speakleash/Bielik-11B-v2.3-Instruct"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">      </span><span class="nt">"providers"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">  </span><span class="nt">&quot;speakleash_models&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;speakleash/Bielik-11B-v2.3-Instruct&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;providers&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
 <span class="w">        </span><span class="p">{</span>
-<span class="w">          </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"bielik-11B_v2_3-vllm-local:7000"</span><span class="p">,</span>
-<span class="w">          </span><span class="nt">"api_host"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://localhost:7000/"</span><span class="p">,</span>
-<span class="w">          </span><span class="nt">"api_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"vllm"</span><span class="p">,</span>
-<span class="w">          </span><span class="nt">"input_size"</span><span class="p">:</span><span class="w"> </span><span class="mi">56000</span><span class="p">,</span>
-<span class="w">          </span><span class="nt">"weight"</span><span class="p">:</span><span class="w"> </span><span class="mf">1.0</span>
+<span class="w">          </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;bielik-11B_v2_3-vllm-local:7000&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;api_host&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;http://localhost:7000/&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;api_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;vllm&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;input_size&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">56000</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;weight&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">1.0</span>
 <span class="w">        </span><span class="p">}</span>
 <span class="w">      </span><span class="p">]</span>
 <span class="w">    </span><span class="p">}</span>
 <span class="w">  </span><span class="p">},</span>
-<span class="w">  </span><span class="nt">"active_models"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="nt">"speakleash_models"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">      </span><span class="s2">"speakleash/Bielik-11B-v2.3-Instruct"</span>
+<span class="w">  </span><span class="nt">&quot;active_models&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;speakleash_models&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">      </span><span class="s2">&quot;speakleash/Bielik-11B-v2.3-Instruct&quot;</span>
 <span class="w">    </span><span class="p">]</span>
 <span class="w">  </span><span class="p">}</span>
 <span class="p">}</span>
@@ -287,10 +288,10 @@ Haystack). Aby je uruchomić:
 1. **Ustaw adres routera** – w środowisku (`LLM_ROUTER_HOST`) lub w pliku `examples/constants.py`:
 
 ```shell script
-export LLM_ROUTER_HOST="http://localhost:8080/api"
+export LLM_ROUTER_HOST=&quot;http://localhost:8080/api&quot;
 
 # lub w Pythonie (constants.py):
-HOST = "http://localhost:8080/api"
+HOST = &quot;http://localhost:8080/api&quot;
 </code></pre></div>
 
 <ol>

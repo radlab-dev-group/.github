@@ -15,7 +15,7 @@
 <link rel="stylesheet" href="../../../../assets/pygments.css">
 <script src="../../../../assets/docs.js" defer></script>
 </head>
-<body class="page" data-version="0.6.6" data-search="../../../search.json" data-latest="1.0.6">
+<body class="page" data-version="0.6.6" data-search="../../../search.json" data-latest="1.0.7">
 <a class="skip" href="#main">skip to content</a>
 <header class="topbar">
 <div class="topbar-inner">
@@ -30,7 +30,8 @@
 </form>
 <label class="vselect">
 <span class="sr-only">Documentation version</span>
-<select id="versions" aria-label="Documentation version"><option value="../../../../1.0.6/llm-router-api/core/auditor/index.html">1.0.6  · latest</option>
+<select id="versions" aria-label="Documentation version"><option value="../../../../1.0.7/llm-router-api/core/auditor/index.html">1.0.7  · latest</option>
+<option value="../../../../1.0.6/llm-router-api/core/auditor/index.html">1.0.6</option>
 <option value="../../../../1.0.5/llm-router-api/core/auditor/index.html">1.0.5</option>
 <option value="../../../../1.0.4/llm-router-api/core/auditor/index.html">1.0.4</option>
 <option value="../../../../1.0.3/llm-router-api/core/auditor/index.html">1.0.3</option>
@@ -195,20 +196,20 @@ human‑readable <code>*.json</code> file next to it:</p>
 encrypted.</p>
 <hr />
 <h2 id="example-auditing-a-request-guardrail-decision">📚 Example: Auditing a request guard‑rail decision<a class="headerlink" href="#example-auditing-a-request-guardrail-decision" title="link to this section">#</a></h2>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">llm_router_api.core.auditor.auditor</span><span class="w"> </span><span class="kn">import</span> <span class="n">AnyRequestAuditor</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">llm_router_api.core.auditor.auditor</span> <span class="kn">import</span> <span class="n">AnyRequestAuditor</span>
+<span class="kn">import</span> <span class="nn">logging</span>
 
-<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">"router"</span><span class="p">)</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;router&quot;</span><span class="p">)</span>
 <span class="n">auditor</span> <span class="o">=</span> <span class="n">AnyRequestAuditor</span><span class="p">(</span><span class="n">logger</span><span class="p">)</span>
 
 <span class="c1"># Somewhere inside an endpoint, after a guard‑rail check:</span>
 <span class="n">audit_record</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">"audit_type"</span><span class="p">:</span> <span class="s2">"guardrail_request"</span><span class="p">,</span>
-    <span class="s2">"payload"</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">"user_id"</span><span class="p">:</span> <span class="s2">"12345"</span><span class="p">,</span>
-        <span class="s2">"input"</span><span class="p">:</span> <span class="s2">"…"</span><span class="p">,</span>
-        <span class="s2">"decision"</span><span class="p">:</span> <span class="s2">"blocked"</span><span class="p">,</span>
-        <span class="s2">"reason"</span><span class="p">:</span> <span class="s2">"PII detected"</span>
+    <span class="s2">&quot;audit_type&quot;</span><span class="p">:</span> <span class="s2">&quot;guardrail_request&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;payload&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;user_id&quot;</span><span class="p">:</span> <span class="s2">&quot;12345&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;input&quot;</span><span class="p">:</span> <span class="s2">&quot;…&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;decision&quot;</span><span class="p">:</span> <span class="s2">&quot;blocked&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;reason&quot;</span><span class="p">:</span> <span class="s2">&quot;PII detected&quot;</span>
     <span class="p">}</span>
 <span class="p">}</span>
 <span class="n">auditor</span><span class="o">.</span><span class="n">add_log</span><span class="p">(</span><span class="n">audit_record</span><span class="p">)</span>

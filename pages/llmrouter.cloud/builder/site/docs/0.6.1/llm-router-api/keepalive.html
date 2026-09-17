@@ -15,7 +15,7 @@
 <link rel="stylesheet" href="../../assets/pygments.css">
 <script src="../../assets/docs.js" defer></script>
 </head>
-<body class="page" data-version="0.6.1" data-search="../search.json" data-latest="1.0.6">
+<body class="page" data-version="0.6.1" data-search="../search.json" data-latest="1.0.7">
 <a class="skip" href="#main">skip to content</a>
 <header class="topbar">
 <div class="topbar-inner">
@@ -30,7 +30,8 @@
 </form>
 <label class="vselect">
 <span class="sr-only">Documentation version</span>
-<select id="versions" aria-label="Documentation version"><option value="../../1.0.6/index.html">1.0.6  · latest</option>
+<select id="versions" aria-label="Documentation version"><option value="../../1.0.7/index.html">1.0.7  · latest</option>
+<option value="../../1.0.6/index.html">1.0.6</option>
 <option value="../../1.0.5/index.html">1.0.5</option>
 <option value="../../1.0.4/index.html">1.0.4</option>
 <option value="../../1.0.3/index.html">1.0.3</option>
@@ -137,13 +138,13 @@ It consists of two main components:</p>
 <p>Provider configurations live in the global <code>models_configs</code> JSON (see <code>resources/configs/models-config*.json</code>).<br />
 To enable keep‑alive for a specific provider, add a <code>keep_alive</code> field with a duration string:</p>
 <div class="codehilite"><pre><span></span><code><span class="p">{</span>
-<span class="w">  </span><span class="nt">"model_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"gpt‑4"</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">"providers"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">  </span><span class="nt">&quot;model_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;gpt‑4&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;providers&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
 <span class="w">    </span><span class="p">{</span>
-<span class="w">      </span><span class="nt">"api_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"openai"</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">"api_host"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://localhost:8000"</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">"api_token"</span><span class="p">:</span><span class="w"> </span><span class="s2">"YOUR_TOKEN"</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">"keep_alive"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2m"</span>
+<span class="w">      </span><span class="nt">&quot;api_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;openai&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;api_host&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;http://localhost:8000&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;api_token&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;YOUR_TOKEN&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;keep_alive&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2m&quot;</span>
 <span class="w">      </span><span class="c1">// ping every 2 minutes</span>
 <span class="w">    </span><span class="p">}</span>
 <span class="w">  </span><span class="p">]</span>
@@ -179,8 +180,8 @@ To enable keep‑alive for a specific provider, add a <code>keep_alive</code> fi
 </table>
 <p>If the <code>keep_alive</code> field is omitted or falsy, the provider will <strong>not</strong> be scheduled for periodic pings.</p>
 <h2 id="example-usage">Example Usage<a class="headerlink" href="#example-usage" title="link to this section">#</a></h2>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">llm_router_api.core.monitor.keep_alive</span><span class="w"> </span><span class="kn">import</span> <span class="n">KeepAlive</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">llm_router_api.core.monitor.keep_alive_monitor</span><span class="w"> </span><span class="kn">import</span> <span class="n">KeepAliveMonitor</span>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">llm_router_api.core.monitor.keep_alive</span> <span class="kn">import</span> <span class="n">KeepAlive</span>
+<span class="kn">from</span> <span class="nn">llm_router_api.core.monitor.keep_alive_monitor</span> <span class="kn">import</span> <span class="n">KeepAliveMonitor</span>
 
 <span class="c1"># Assume `models_configs` has been loaded from the JSON config files.</span>
 <span class="n">keep_alive</span> <span class="o">=</span> <span class="n">KeepAlive</span><span class="p">(</span><span class="n">models_configs</span><span class="o">=</span><span class="n">models_configs</span><span class="p">)</span>
@@ -197,9 +198,9 @@ To enable keep‑alive for a specific provider, add a <code>keep_alive</code> fi
 
 <span class="c1"># When a provider is selected somewhere in the routing logic:</span>
 <span class="n">monitor</span><span class="o">.</span><span class="n">record_usage</span><span class="p">(</span>
-    <span class="n">model_name</span><span class="o">=</span><span class="s2">"gpt‑4"</span><span class="p">,</span>
-    <span class="n">host</span><span class="o">=</span><span class="s2">"http://localhost:8000"</span><span class="p">,</span>
-    <span class="n">keep_alive</span><span class="o">=</span><span class="s2">"2m"</span>
+    <span class="n">model_name</span><span class="o">=</span><span class="s2">&quot;gpt‑4&quot;</span><span class="p">,</span>
+    <span class="n">host</span><span class="o">=</span><span class="s2">&quot;http://localhost:8000&quot;</span><span class="p">,</span>
+    <span class="n">keep_alive</span><span class="o">=</span><span class="s2">&quot;2m&quot;</span>
 <span class="p">)</span>
 </code></pre></div>
 
