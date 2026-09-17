@@ -1,31 +1,40 @@
 # Documentation website
 
 Everything you read under `/docs` is rendered from the Markdown files that
-already live in this repository. There is no second copy of the documentation,
-no CMS and no server-side rendering: `tools/build_docs.py` walks the Markdown,
-renders static HTML and archives it per release. Publishing a document means
-committing the `.md` file.
+live in the **source repository** -- the llm-router checkout. This repository
+hosts only the builder, the theme and the generated output; there is no second
+copy of the documentation, no CMS and no server-side rendering:
+`tools/build_docs.py` walks the Markdown in the source checkout, renders
+static HTML and archives it per release. Publishing a document means
+committing the `.md` file to the source repository.
+
+The source checkout is resolved in this order: `--source`, then
+`$LLM_ROUTER_DOCS_SOURCE`, then `[site] source_repo` in `tools/docs.toml`,
+then this repository (legacy single-repo layout). Relative paths are resolved
+against the current working directory.
 
 ```text
-source (tracked in git)                 build output (generated, gitignored)
-----------------------------------      --------------------------------------
-landing/index.html                  ->  site/index.html
-README.md                           ->  site/docs/overview.html
-CHANGELOG.md                        ->  site/docs/changelog.html
-llm_router_api/docs/*.md            ->  site/docs/1.0.6/llm-router-api/docs/*.html
-tools/README.md                       ->  site/docs/website.html
-tools/docs.toml                         (section/title/order mapping)
-tools/theme/{docs.css,docs.js}        ->  site/docs/assets/
+source repo (llm-router checkout)            pages repo (this repo)
+---------------------------------            ------------------------
+README.md                              ->   site/docs/overview.html
+CHANGELOG.md                           ->   site/docs/changelog.html
+llm_router_api/docs/*.md               ->   site/docs/1.0.6/llm-router-api/docs/*.html
+.version + git tags                    ->   one frozen site/docs/<version>/ tree per release
+
+tools/build_docs.py + tools/docs.toml    ->   the whole build (this README -> site/docs/website.html)
+tools/theme/{docs.css,docs.js}           ->   site/docs/assets/
+landing/index.html                       ->   site/index.html
 ```
 
 Design constraints worth knowing before you touch anything:
 
-- **Single source of truth** -- the repo. Docs and code ship in the same commit,
-  the same tag and the same PR.
+- **Single source of truth** -- the source repository. Docs and code ship in
+  the same commit, the same tag and the same PR; this repo never keeps a copy.
 - **Static output only** -- plain HTML/CSS/JS, no bundler, no node_modules, no
   runtime. It can be served from any web server, object storage or GitHub Pages.
-- **Versioned by git** -- `/docs` serves the version from `.version`, every
-  release tag keeps a frozen copy of its own documentation.
+- **Versioned by git** -- `/docs` serves the version from the source repo's
+  `.version`, every release tag of the source repo keeps a frozen copy of its
+  own documentation.
 - **All links relative** -- the site works under a project sub-path
   (`https://host/llm-router/docs/`) without any configuration.
 
@@ -33,6 +42,7 @@ Design constraints worth knowing before you touch anything:
 
 | Path | Role |
 | --- | --- |
+| `--source` path (llm-router checkout) | the source repo: Markdown, `.version`, git tags -- where the docs actually live |
 | `tools/build_docs.py` | the whole builder: discovery, rendering, versioning, search, link check, preview server |
 | `tools/docs.toml` | site metadata, discovery filters, navigation sections, per-page overrides |
 | `tools/theme/docs.css` | the docs stylesheet: custom properties, sidebar/rail layout, responsive and print rules |
@@ -40,16 +50,17 @@ Design constraints worth knowing before you touch anything:
 | `tools/requirements-docs.txt` | `markdown` + `pygments`, the only build dependencies |
 | `tools/README.md` | this document -- dogfooding the pipeline, published as `/docs/website.html` |
 | `landing/index.html` | marketing landing page, copied verbatim to the site root |
-| `.github/workflows/docs.yml` | CI build + deploy to GitHub Pages |
+| `gh-action/docs.yml` | CI template: build + deploy to GitHub Pages (two checkouts) |
 | `site/` | build output -- never edited, never committed |
 
 ## Quick start
 
 ```bash
-python3 tools/build_docs.py --serve          # build .version, open http://localhost:8000/docs/
-python3 tools/build_docs.py --check-links    # build and fail on broken internal links
-python3 tools/build_docs.py --dry-run        # what would be published, write nothing
-python3 tools/build_docs.py --all-versions   # every release tag + the current one (~1.5 min)
+SRC=/path/to/llm-router                       # source repository checkout
+python3 tools/build_docs.py --source $SRC --serve         # build .version, open http://localhost:8000/docs/
+python3 tools/build_docs.py --source $SRC --check-links   # build and fail on broken internal links
+python3 tools/build_docs.py --source $SRC --dry-run       # what would be published, write nothing
+python3 tools/build_docs.py --source $SRC --all-versions  # every release tag + the current one (~1.5 min)
 ```
 
 The builder bootstraps itself: if `markdown`/`pygments` are missing it creates
@@ -83,8 +94,11 @@ a path explicitly with `out` in `[[pages]]`.
 
 ## Versioning model
 
-- `.version` is the current version and is published from the **working tree**,
-  so uncommitted edits show up in your local preview.
+The versioning model follows the git state of the source repository (the
+checkout behind `--source`):
+
+- `.version` in the source repo is the current version and is published from
+  the **working tree**, so uncommitted edits show up in your local preview.
 - Tags (`v1.0.5`, `v0.9.4`, ...) are published from the tag object itself via
   `git ls-tree` / `git show`, never from disk -- an old release always renders
   the documentation that shipped with it.
@@ -101,11 +115,11 @@ release**. Nothing else to archive.
 
 ## Adding or changing a document
 
-1. Write the `.md` file anywhere in the repo (except an `exclude` path; hidden
-   directories are skipped when scanning the working tree).
-2. Commit it. That is already enough -- a file that matches no section pattern
-   lands in the fallback section (`other` → "Other docs"), so nothing can
-   silently disappear from the site.
+1. Write the `.md` file anywhere in the source repo (except an `exclude` path;
+   hidden directories are skipped when scanning the working tree).
+2. Commit it there. That is already enough -- a file that matches no section
+   pattern lands in the fallback section (`other` → "Other docs"), so nothing
+   can silently disappear from the site.
 3. Optional: place it in a real section and give it a nicer title.
 
 ```toml
@@ -129,9 +143,11 @@ section/page tree before anything is written.
 ### `tools/docs.toml` reference
 
 `[site]` -- `title`, `tagline`, `description`, `repo_url` (used for "edit on
-GitHub" and for links to non-documentation files), `site_url` (canonical links;
-leave empty when unpublished), `home_url` (target of the logo link back to the
-landing page, relative to a version directory).
+GitHub" and for links to non-documentation files), `source_repo` (source
+repository path; machine specific -- prefer `--source` or
+`$LLM_ROUTER_DOCS_SOURCE`), `site_url` (canonical links; leave empty when
+unpublished), `home_url` (target of the logo link back to the landing page,
+relative to a version directory).
 
 `[discover]`
 
@@ -187,7 +203,7 @@ and on the site:
 | a published `.md` file | URL of the generated page, anchor preserved (`#section`) |
 | link without an extension (`docs/INSTALLATION`) | resolved with `.md` appended |
 | repo-root-relative link from a subdirectory | resolved both relative to the page and to the repo root |
-| a tracked file that is not documentation | `https://github.com/…/blob/<ref>/<path>` |
+| a tracked, non-documentation file (source repo) | `https://github.com/…/blob/<ref>/<path>` |
 | a directory | `https://github.com/…/tree/<ref>/<path>` |
 | anything with a scheme (`http:`, `mailto:`) | untouched, plus `target="_blank" rel="noopener noreferrer"` |
 
@@ -229,13 +245,17 @@ turning into an off-canvas drawer below the content breakpoint.
 
 ## Publishing (GitHub Pages)
 
-`.github/workflows/docs.yml` runs on pushes to `main`, on `v*` tags and on any
-change to `**.md`, `tools/**`, `landing/**` or the workflow itself; PRs build
-without deploying.
+`gh-action/docs.yml` is the CI template (copy it to the pages repository's
+`.github/workflows/docs.yml`). It checks out **both** repositories -- the
+pages repo and the llm-router source at `path: llm-router` -- and builds the
+site from the source. It runs on pushes to `main` and on changes to
+`builder/**`, `landing/**` or the workflow itself; PRs build without
+deploying. Use `workflow_dispatch` to rebuild after a source release: release
+tags live in the source repo, not here.
 
 ```bash
-python -m pip install -r tools/requirements-docs.txt
-python tools/build_docs.py --all-versions --check-links --output site
+python -m pip install -r builder/tools/requirements-docs.txt
+python builder/tools/build_docs.py --source llm-router --all-versions --check-links --output site
 # site/ is uploaded as the Pages artifact
 ```
 
@@ -256,6 +276,7 @@ for a throwaway container.
 | wrong title on the hub | the document has no `#` heading, or a stale `[[pages]] title` |
 | two documents fighting over one URL | same slug from different sources; set distinct `out` values |
 | older versions missing from the dropdown | they were never built: run `--all-versions`, or `--clean` wiped `versions.json` |
+| `source path is not a directory` | `--source` (or `$LLM_ROUTER_DOCS_SOURCE` / `source_repo`) points at the wrong place -- it must be the llm-router repo root, the directory with `.version` and the Markdown |
 | `missing theme file` | `tools/theme/` incomplete -- both files are required |
 | `the .venv-docs interpreter is missing markdown/pygments` | recreate it: `python3 -m venv .venv-docs && .venv-docs/bin/pip install -r tools/requirements-docs.txt` |
 | `Address already in use` from `--serve` | another preview holds the port: `--port=8080` |
@@ -263,8 +284,9 @@ for a throwaway container.
 ## Verifying a change locally
 
 ```bash
-python3 tools/build_docs.py --clean --check-links   # expect: "internal links OK"
-python3 tools/build_docs.py --serve --port=8080
+SRC=/path/to/llm-router
+python3 tools/build_docs.py --source $SRC --clean --check-links   # expect: "internal links OK"
+python3 tools/build_docs.py --source $SRC --serve --port=8080
 ```
 
 Then check `/docs/` (hub), one generated page, the version dropdown at an old
