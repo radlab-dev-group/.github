@@ -1790,3 +1790,96 @@ a:hover {
     margin-top: 18px;
   }
 }
+
+/* Multi-repo: sidebar repo group headers */
+.nav-repo {
+  padding: 0.5rem 1rem 0.25rem;
+  margin-top: 1rem;
+  border-top: 1px solid var(--border);
+}
+.nav-repo:first-child {
+  border-top: none;
+  margin-top: 0.5rem;
+}
+.nav-repo .repo-name {
+  display: block;
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+}
+
+/* Multi-repo: repo chip on hub cards and search results */
+.repo-chip {
+  display: inline-block;
+  padding: 0.15rem 0.5rem;
+  border-radius: 9999px;
+  background: var(--surface-2);
+  color: var(--accent);
+  font-size: 0.7rem;
+  font-weight: 500;
+  margin-bottom: 0.35rem;
+}
+
+/* Multi-repo: section header for repo groups on hub */
+.repo-h {
+  grid-column: 1 / -1;
+  margin: 1.5rem 0 0.75rem;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+/* Multi-repo: satellite info line on hub hero */
+.satellite-line {
+  margin: 0.5rem 0 0;
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+.sat-chip {
+  display: inline-block;
+  padding: 0.25rem 0.6rem;
+  border-radius: 4px;
+  background: var(--surface-2);
+  font-size: 0.75rem;
+}
+.sat-chip a {
+  color: var(--accent);
+}
+
+/* Multi-repo: search result repo label */
+.res-r {
+  display: inline-block;
+  padding: 0.05rem 0.35rem;
+  border-radius: 9999px;
+  background: var(--surface-2);
+  color: var(--accent);
+  font-size: 0.65rem;
+  font-weight: 500;
+  margin-left: 0.5rem;
+  vertical-align: baseline;
+}
+
+/* Multi-repo: repositories box on hub */
+.repo-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.4rem 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.85rem;
+}
+.repo-row:last-child {
+  border-bottom: none;
+}
+.repo-row a {
+  color: var(--accent);
+}
+
+/* Multi-repo: page meta repo row */
+.meta-repo {
+  display: flex;
+  justify-content: space-between;
+}

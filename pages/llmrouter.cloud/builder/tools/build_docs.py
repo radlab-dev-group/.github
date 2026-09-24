@@ -1,20 +1,19 @@
 #!/usr/bin/env python3
-"""Generate the llm-router documentation site from the Markdown files in the
-source repository (the llm-router checkout).
+"""Generate the llm-router documentation site from Markdown in the source
+repository and its satellite repositories (plugins, services).
 
-Every page under ``site/docs`` is derived from a Markdown file that lives in
-that repository, so publishing documentation means committing the ``.md``
-file there. Pages are grouped into the sections declared in
-``tools/docs.toml`` and archived per release: ``/docs`` always shows the
-version from ``.version`` and every release tag gets a frozen copy of the
-documentation next to it.
+The router repository is the version spine: every release tag keeps a frozen
+copy of its documentation at /docs/<version>/.... The plugins and services
+repositories are mounted as rolling documentation into the newest version
+only, at /docs/<latest>/plugins/... and /docs/<latest>/services/....
 
-The source defaults to this repo (legacy single-repo layout); point the
-builder at the llm-router checkout with ``--source``:
+Repository sources are configured in tools/docs.toml ([[repos]]) and can be
+overridden with --source, --plugins, --services CLI flags or environment
+variables (LLM_ROUTER_DOCS_SOURCE, LLM_ROUTER_PLUGINS_DOCS_SOURCE,
+LLM_ROUTER_SERVICES_DOCS_SOURCE).
 
-    python3 tools/build_docs.py --source /path/to/llm-router
-    python3 tools/build_docs.py --source /path/to/llm-router --all-versions
-    python3 tools/build_docs.py --serve          # build, then http://localhost:8000
+Cross-repo links (for documentation that moved between repositories) are
+declared in [[crosslinks]]. Commit references are rendered as GitHub links.
 """
 
 from __future__ import annotations
@@ -29,7 +28,10 @@ import re
 import shutil
 import subprocess
 import sys
-import tomllib
+try:
+    import tomllib
+except ImportError:
+    import tomli as tomllib
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
@@ -41,10 +43,6 @@ DEFAULT_OUTPUT = REPO_ROOT / "site"
 THEME_DIR = REPO_ROOT / "tools" / "theme"
 VENV_DIR = REPO_ROOT / ".venv-docs"
 REQUIREMENTS = REPO_ROOT / "tools" / "requirements-docs.txt"
-SOURCE_ENV = "LLM_ROUTER_DOCS_SOURCE"
-# Repository the documentation is generated from; set in main() from
-# --source / $LLM_ROUTER_DOCS_SOURCE / [site] source_repo (default: REPO_ROOT).
-SOURCE_ROOT: Path = REPO_ROOT
 BOOTSTRAP_FLAG = "LLM_ROUTER_DOCS_BOOTSTRAPPED"
 
 DOCS_DIR_NAME = "docs"
@@ -52,6 +50,16 @@ ASSETS_DIR_NAME = "assets"
 VERSIONS_FILE = "versions.json"
 PRERELEASE_MARKER = "-"
 PYGMENTS_STYLE = "one-dark"
+
+# Multi-repo support
+REPOS: dict[str, "Repo"] = {}
+PRIMARY_REPO: "Repo | None" = None
+
+ENV_PREFIX = {
+    "router": "LLM_ROUTER_DOCS_SOURCE",
+    "plugins": "LLM_ROUTER_PLUGINS_DOCS_SOURCE",
+    "services": "LLM_ROUTER_SERVICES_DOCS_SOURCE",
+}
 
 
 # --------------------------------------------------------------------------- #
@@ -73,7 +81,6 @@ def has_markdown() -> bool:
 
 
 def bootstrap_dependencies(quiet: bool) -> None:
-    """Create .venv-docs/ with the builder dependencies and re-exec into it."""
     if has_markdown():
         return
     interpreter = venv_python()
@@ -92,15 +99,7 @@ def bootstrap_dependencies(quiet: bool) -> None:
         [sys.executable, "-m", "venv", str(VENV_DIR)], check=True, cwd=REPO_ROOT
     )
     subprocess.run(
-        [
-            str(interpreter),
-            "-m",
-            "pip",
-            "install",
-            "--quiet",
-            "-r",
-            str(REQUIREMENTS),
-        ],
+        [str(interpreter), "-m", "pip", "install", "--quiet", "-r", str(REQUIREMENTS)],
         check=True,
         cwd=REPO_ROOT,
     )
@@ -112,11 +111,25 @@ def bootstrap_dependencies(quiet: bool) -> None:
 # configuration
 # --------------------------------------------------------------------------- #
 @dataclass
+class Repo:
+    """A documentation source repository."""
+    id: str
+    name: str
+    url: str
+    root: Path | None = None
+    mount: str = ""
+    primary: bool = False
+    versions: str = "latest"
+    fallback_section: str = "other"
+
+
+@dataclass
 class Section:
     id: str
     title: str
     summary: str = ""
     patterns: tuple[str, ...] = ()
+    repo: str = "router"
 
 
 @dataclass
@@ -126,6 +139,14 @@ class PageOverride:
     order: int = 100
     summary: str | None = None
     adapter: str | None = None
+    repo: str = "router"
+
+
+@dataclass
+class Crosslink:
+    from_pattern: str
+    link_pattern: str
+    to_target: str
 
 
 @dataclass
@@ -136,7 +157,7 @@ class Config:
     fallback_section: str
     sections: list[Section]
     overrides: dict[str, PageOverride]
-    source_repo: str | None = None
+    crosslinks: list[Crosslink]
 
     @property
     def title(self) -> str:
@@ -144,6 +165,8 @@ class Config:
 
     @property
     def repo_url(self) -> str:
+        if PRIMARY_REPO:
+            return PRIMARY_REPO.url
         return str(self.site.get("repo_url", "")).rstrip("/")
 
     @property
@@ -156,15 +179,20 @@ class Config:
                 return section
         return Section(section_id, section_id.replace("-", " ").title())
 
-    def section_for(self, source: str) -> Section:
+    def section_for(self, source: str, repo_id: str = "router") -> Section:
         for section in self.sections:
+            if section.repo != repo_id:
+                continue
             for pattern in section.patterns:
                 if path_matches(source, pattern):
                     return section
         return self.section(self.fallback_section)
 
-    def override_for(self, source: str) -> PageOverride:
-        return self.overrides.get(source, PageOverride())
+    def override_for(self, source: str, repo_id: str = "router") -> PageOverride:
+        key = source
+        if repo_id != "router":
+            key = f"{repo_id}/{source}"
+        return self.overrides.get(key, PageOverride())
 
 
 def load_config(path: Path) -> Config:
@@ -175,74 +203,87 @@ def load_config(path: Path) -> Config:
             id=str(item["id"]),
             title=str(item.get("title", item["id"])),
             summary=str(item.get("summary", "")),
-            patterns=tuple(str(pattern) for pattern in item.get("match", [])),
+            patterns=tuple(str(p) for p in item.get("match", [])),
+            repo=str(item.get("repo", "router")),
         )
         for item in raw.get("sections", [])
     ]
     overrides: dict[str, PageOverride] = {}
     for item in raw.get("pages", []):
         source = normalize_path(str(item["path"]))
-        overrides[source] = PageOverride(
+        repo_id = str(item.get("repo", "router"))
+        key = source if repo_id == "router" else f"{repo_id}/{source}"
+        overrides[key] = PageOverride(
             title=item.get("title"),
             out=item.get("out"),
             order=int(item.get("order", 100)),
             summary=item.get("summary"),
             adapter=item.get("adapter"),
+            repo=repo_id,
         )
+    crosslinks = [
+        Crosslink(
+            from_pattern=str(item.get("from", "**")),
+            link_pattern=str(item["link"]),
+            to_target=str(item["to"]),
+        )
+        for item in raw.get("crosslinks", [])
+    ]
     discover = raw.get("discover", {})
     site = raw.get("site", {})
-    source_repo = site.get("source_repo")
     return Config(
         site=site,
-        include=tuple(str(item) for item in discover.get("include", ["**/*.md"])),
-        exclude=tuple(str(item) for item in discover.get("exclude", [])),
+        include=tuple(str(i) for i in discover.get("include", ["**/*.md"])),
+        exclude=tuple(str(i) for i in discover.get("exclude", [])),
         fallback_section=str(discover.get("fallback_section", "other")),
         sections=sections,
         overrides=overrides,
-        source_repo=str(source_repo).strip() if source_repo else None,
+        crosslinks=crosslinks,
     )
 
 
-def resolve_source_root(cli_value: Path | None, config: Config) -> Path:
-    """Resolve the source repository.
-
-    Precedence: ``--source`` > ``$LLM_ROUTER_DOCS_SOURCE`` > ``[site]
-    source_repo`` > this repo (legacy layout). Relative paths are resolved
-    against the current working directory.
-    """
-    raw: str | Path | None = cli_value
-    if raw is None:
-        raw = os.environ.get(SOURCE_ENV, "").strip() or None
-    if raw is None and config.source_repo:
-        raw = config.source_repo
-    if raw is None:
-        raw = REPO_ROOT
-    path = Path(raw).expanduser()
-    if not path.is_absolute():
-        path = Path.cwd() / path
-    path = path.resolve()
-    if not path.is_dir():
-        raise SystemExit(f"[docs] source path is not a directory: {path}")
-    return path
+def load_repos_from_config(config: Config, raw: dict) -> list[Repo]:
+    """Parse [[repos]] and set up REPOS global."""
+    global REPOS, PRIMARY_REPO
+    REPOS = {}
+    PRIMARY_REPO = None
+    for item in raw.get("repos", []):
+        repo = Repo(
+            id=str(item["id"]),
+            name=str(item.get("name", item["id"])),
+            url=str(item.get("repo_url", "")).rstrip("/"),
+            root=None,
+            mount=str(item.get("mount", "")),
+            primary=bool(item.get("primary", False)),
+            versions=str(item.get("versions", "latest")),
+            fallback_section=str(item.get("fallback_section", "other")),
+        )
+        REPOS[repo.id] = repo
+        if repo.primary:
+            PRIMARY_REPO = repo
+    return list(REPOS.values())
 
 
 # --------------------------------------------------------------------------- #
-# git helpers
+# git helpers (repo-aware)
 # --------------------------------------------------------------------------- #
-def git(*args: str, check: bool = True) -> str:
+def git(repo: Repo, *args: str, check: bool = True) -> str:
+    if repo.root is None:
+        raise SystemExit(f"[docs] repo {repo.id} has no root path set")
     result = subprocess.run(
-        ["git", *args], cwd=SOURCE_ROOT, capture_output=True, text=True
+        ["git", *args], cwd=str(repo.root), capture_output=True, text=True
     )
     if check and result.returncode != 0:
         raise SystemExit(
-            f"[docs] git {' '.join(args)} failed: {result.stderr.strip()}"
+            f"[docs] git {' '.join(args)} failed in {repo.id}: {result.stderr.strip()}"
         )
     return result.stdout
 
 
-def git_ok() -> bool:
-    """True when the source root is a git work tree (history/tags available)."""
-    return git("rev-parse", "--git-dir", check=False).strip() != ""
+def git_ok(repo: Repo) -> bool:
+    if repo.root is None:
+        return False
+    return git(repo, "rev-parse", "--git-dir", check=False).strip() != ""
 
 
 def normalize_path(path: str) -> str:
@@ -252,10 +293,12 @@ def normalize_path(path: str) -> str:
     return cleaned.strip("/")
 
 
-def tracked_files(ref: str) -> list[str]:
+def tracked_files(repo: Repo, ref: str) -> list[str]:
+    if repo.root is None:
+        return []
     if ref == "":
         paths: list[str] = []
-        for root, dirs, files in os.walk(SOURCE_ROOT):
+        for root, dirs, files in os.walk(str(repo.root)):
             dirs[:] = sorted(
                 name
                 for name in dirs
@@ -264,24 +307,29 @@ def tracked_files(ref: str) -> list[str]:
             )
             for name in sorted(files):
                 full = Path(root) / name
-                paths.append(str(full.relative_to(SOURCE_ROOT)))
+                try:
+                    paths.append(str(full.relative_to(repo.root)))
+                except ValueError:
+                    pass
         return paths
-    output = git("ls-tree", "-r", "--name-only", "-z", ref)
+    output = git(repo, "ls-tree", "-r", "--name-only", "-z", ref)
     return [entry for entry in output.split("\0") if entry]
 
 
-def read_content(ref: str, source: str) -> str:
+def read_content(repo: Repo, ref: str, source: str) -> str:
+    if repo.root is None:
+        raise SystemExit(f"[docs] repo {repo.id} has no root")
     if ref == "":
-        return (SOURCE_ROOT / source).read_text(encoding="utf-8", errors="replace")
+        return (repo.root / source).read_text(encoding="utf-8", errors="replace")
     result = subprocess.run(
         ["git", "show", f"{ref}:{source}"],
-        cwd=SOURCE_ROOT,
+        cwd=str(repo.root),
         capture_output=True,
         encoding="utf-8",
         errors="replace",
     )
     if result.returncode != 0:
-        raise SystemExit(f"[docs] cannot read {ref}:{source}")
+        raise SystemExit(f"[docs] cannot read {repo.id}:{ref}:{source}")
     return result.stdout
 
 
@@ -289,26 +337,51 @@ def read_content(ref: str, source: str) -> str:
 # releases
 # --------------------------------------------------------------------------- #
 @dataclass
+class Snapshot:
+    """One repository's content pinned for a single documentation release."""
+    repo: Repo
+    ref: str
+    sha: str
+    date: str
+    version: str
+    worktree: bool
+    pages: list["Page"] = field(default_factory=list)
+
+    @property
+    def link_ref(self) -> str:
+        """Ref to use in blob/tree links: tag/branch name or short sha."""
+        if self.worktree:
+            return self.sha
+        return self.ref
+
+
+@dataclass
 class Release:
     version: str
     ref: str
-    source: str
-    tag: str | None
-    date: str
     sha: str
+    date: str
     prerelease: bool
-    pages: list["Page"] = field(default_factory=list)
+    snapshots: dict[str, Snapshot] = field(default_factory=dict)
+
+    @property
+    def pages(self) -> list["Page"]:
+        """All pages across all snapshots, in nav order (router first)."""
+        result: list["Page"] = []
+        primary = self.snapshots.get("router")
+        if primary:
+            result.extend(primary.pages)
+        for repo_id in sorted(self.snapshots.keys()):
+            if repo_id == "router":
+                continue
+            result.extend(self.snapshots[repo_id].pages)
+        return result
 
     @property
     def label(self) -> str:
         if self.prerelease:
             return f"{self.version} (pre-release)"
         return self.version
-
-    @property
-    def read_ref(self) -> str:
-        """Ref to read file contents from; empty means the working tree."""
-        return "" if self.source == "worktree" else self.ref
 
 
 def version_key(version: str) -> tuple:
@@ -322,13 +395,17 @@ def is_prerelease(version: str) -> bool:
 
 
 def current_release() -> Release:
-    version_file = SOURCE_ROOT / ".version"
+    """The working-tree release from the primary repo."""
+    if PRIMARY_REPO is None or PRIMARY_REPO.root is None:
+        raise SystemExit("[docs] primary repo not configured")
+    repo = PRIMARY_REPO
+    version_file = repo.root / ".version"
     version = (
         version_file.read_text(encoding="utf-8").strip()
         if version_file.exists()
         else "0.0.0"
     )
-    if not git_ok():
+    if not git_ok(repo):
         stamp = (
             datetime.fromtimestamp(
                 version_file.stat().st_mtime, tz=timezone.utc
@@ -337,58 +414,70 @@ def current_release() -> Release:
             else "unknown"
         )
         return Release(
-            version=version,
-            ref=SOURCE_ROOT.name or "source",
-            source="worktree",
-            tag=None,
-            date=stamp,
-            sha="unknown",
-            prerelease=is_prerelease(version),
+            version=version, ref=repo.root.name or "source", sha="unknown",
+            date=stamp, prerelease=is_prerelease(version),
         )
-    branch = git("rev-parse", "--abbrev-ref", "HEAD").strip()
+    branch = git(repo, "rev-parse", "--abbrev-ref", "HEAD").strip()
     if branch == "HEAD":
         branch = (
-            git("describe", "--tags", "--exact-match", "HEAD", check=False).strip()
+            git(repo, "describe", "--tags", "--exact-match", "HEAD", check=False).strip()
             or "HEAD"
         )
-    sha = git("rev-parse", "--short", "HEAD").strip()
-    date = git("log", "-1", "--format=%cI", "HEAD").strip()
+    sha = git(repo, "rev-parse", "--short", "HEAD").strip()
+    date = git(repo, "log", "-1", "--format=%cI", "HEAD").strip()
     return Release(
-        version=version,
-        ref=branch,
-        source="worktree",
-        tag=None,
-        date=date,
-        sha=sha,
+        version=version, ref=branch, sha=sha, date=date,
         prerelease=is_prerelease(version),
     )
 
 
-def collect_releases(
-    include_prerelease: bool, max_versions: int | None
-) -> list[Release]:
+def satellite_snapshot(repo: Repo, release_date: str = "") -> Snapshot:
+    """Build a working-tree snapshot for a rolling satellite repo."""
+    if repo.root is None:
+        raise SystemExit(f"[docs] satellite repo {repo.id} has no root")
+    version_file = repo.root / ".version"
+    version = (
+        version_file.read_text(encoding="utf-8").strip()
+        if version_file.exists()
+        else "0.0.0"
+    )
+    if not git_ok(repo):
+        return Snapshot(
+            repo=repo, ref="source", sha="unknown", date="unknown",
+            version=version, worktree=True,
+        )
+    branch = git(repo, "rev-parse", "--abbrev-ref", "HEAD").strip()
+    if branch == "HEAD":
+        branch = (
+            git(repo, "describe", "--tags", "--exact-match", "HEAD", check=False).strip()
+            or "HEAD"
+        )
+    sha = git(repo, "rev-parse", "--short", "HEAD").strip()
+    date = git(repo, "log", "-1", "--format=%cI", "HEAD").strip()
+    return Snapshot(repo=repo, ref=branch, sha=sha, date=date, version=version, worktree=True)
+
+
+def tag_snapshot(repo: Repo, tag: str) -> Snapshot:
+    """Build a snapshot for a specific tag of any repo."""
+    version = tag[1:] if tag.startswith("v") else tag
+    sha = git(repo, "rev-parse", "--short", f"{tag}^{{commit}}").strip()
+    date = git(repo, "log", "-1", "--format=%cI", tag).strip()
+    return Snapshot(repo=repo, ref=tag, sha=sha, date=date, version=version, worktree=False)
+
+
+def collect_releases(include_prerelease: bool, max_versions: int | None) -> list[Release]:
+    """Collect router releases with their snapshots."""
     working = current_release()
     releases = [working]
-    tags = git("tag").split() if git_ok() else []
+    repo = PRIMARY_REPO
+    tags = git(repo, "tag").split() if git_ok(repo) else []
     for tag in tags:
         version = tag[1:] if tag.startswith("v") else tag
         if version == working.version:
             continue
         if is_prerelease(version) and not include_prerelease:
             continue
-        date = git("log", "-1", "--format=%cI", tag).strip()
-        sha = git("rev-parse", "--short", f"{tag}^{{commit}}").strip()
-        releases.append(
-            Release(
-                version=version,
-                ref=tag,
-                source="tag",
-                tag=tag,
-                date=date,
-                sha=sha,
-                prerelease=is_prerelease(version),
-            )
-        )
+        releases.append(tag_snapshot(repo, tag))
     releases.sort(key=lambda item: version_key(item.version), reverse=True)
     if max_versions is not None:
         releases = releases[:max_versions]
@@ -400,12 +489,6 @@ def collect_releases(
 # --------------------------------------------------------------------------- #
 @functools.lru_cache(maxsize=1024)
 def glob_regex(pattern: str) -> re.Pattern[str]:
-    """Compile a repository relative glob into a path aware regular expression.
-
-    ``?`` matches one character, ``*`` a single path segment and ``**`` any
-    number of segments. Slices of a path are therefore significant, which is
-    what makes ``**/*.md`` cover the documents in the repository root too.
-    """
     parts: list[str] = []
     segments = [item for item in pattern.strip("/").split("/") if item]
     needs_separator = False
@@ -469,12 +552,20 @@ class Page:
     section: str
     summary: str
     order: int
+    repo: str = "router"
     adapter: str | None = None
     markdown: str = ""
     html_body: str = ""
     toc: list = field(default_factory=list)
     headings: list[str] = field(default_factory=list)
     excerpt: str = ""
+
+    @property
+    def key(self) -> str:
+        """Unique identifier across repos."""
+        if self.repo == "router":
+            return self.source
+        return f"{self.repo}/{self.source}"
 
 
 # --------------------------------------------------------------------------- #
@@ -494,107 +585,75 @@ def strip_inline(value: str) -> str:
 
 
 def first_heading(text: str) -> tuple[str | None, int | None]:
-    """Return the text and line index of the first ATX heading outside fences."""
     fence: str | None = None
     for index, line in enumerate(text.splitlines()):
         match = FENCE_RE.match(line)
         if match:
-            marker = match.group(1)[0]
-            fence = marker if fence is None else None
+            if fence and match.group(1).startswith(fence):
+                fence = None
+            elif not fence:
+                fence = match.group(1)[0]
             continue
         if fence:
             continue
-        heading = ATX_RE.match(line)
-        if heading:
-            return strip_inline(heading.group(2)), index
+        match = ATX_RE.match(line)
+        if match:
+            return strip_inline(match.group(2)), index
     return None, None
 
 
 def with_title(text: str, title: str) -> str:
-    """Make sure the document starts with an h1 carrying the page title."""
-    existing, index = first_heading(text)
-    if index is None:
-        return f"# {title}\n\n{text.lstrip()}"
-    lines = text.splitlines()
-    lines[index] = f"# {strip_inline(lines[index].lstrip('#').strip()) or title}"
-    return "\n".join(lines) + ("\n" if text.endswith("\n") else "")
+    existing, line = first_heading(text)
+    if existing is not None:
+        return text
+    return f"# {title}\n\n{text}"
 
 
 def plain_text(text: str, limit: int | None = None) -> str:
-    """Readable text of a Markdown document: no code, tables or headings."""
-    body = CODE_BLOCK_RE.sub(" ", text)
-    body = re.sub(r"<!--.*?-->", " ", body, flags=re.S)
-    kept: list[str] = []
-    for line in body.splitlines():
-        stripped = line.strip()
-        if not stripped or stripped.startswith(("#", "|", ">", "!", "<")):
-            continue
-        if set(stripped) <= set("-*:~ "):
-            continue
-        kept.append(stripped)
-    joined = re.sub(r"\s+", " ", strip_inline(" ".join(kept))).strip()
-    if limit is not None and len(joined) > limit:
-        joined = joined[:limit].rsplit(" ", 1)[0].rstrip(" ,;:.") + "…"
-    return joined
+    text = re.sub(r"\n+", " ", text)
+    text = re.sub(r"\s+", " ", text).strip()
+    if limit and len(text) > limit:
+        return text[: limit - 1] + "…"
+    return text
 
 
 # --------------------------------------------------------------------------- #
 # adapters
 # --------------------------------------------------------------------------- #
+ADAPTERS: dict[str, callable] = {}
+
+
 def changelog_adapter(text: str) -> str:
-    """Turn the two-column CHANGELOG table into a per-release list.
-
-    Rows are parsed by splitting on the first pipe only, because the changelog
-    cells contain unescaped pipes inside inline code.
-    """
-    releases: list[tuple[str, str]] = []
-    for line in text.splitlines():
-        stripped = line.strip()
-        if not stripped.startswith("|"):
-            continue
-        version, separator, rest = stripped[1:].partition("|")
-        if not separator:
-            continue
-        version = version.strip().strip("`")
-        if not re.match(r"^\d+\.\d+", version):
-            continue
-        body = rest.rstrip()
-        if body.endswith("|"):
-            body = body[:-1]
-        releases.append((version, body.replace("\\|", "|")))
-    if not releases:
-        return text
-    chunks = ["# Changelog"]
-    for version, body in releases:
-        items = [
-            item.strip()
-            for chunk in re.split(r"(?<=\.)[ \t]{2,}", body)
-            for item in re.split(r"(?<=\.)[ \t]+(?=\*\*)", chunk)
-            if item.strip()
-        ]
-        chunks.append(f"\n## {version}")
-        if len(items) == 1:
-            chunks.append(f"\n{items[0]}\n")
-        else:
-            chunks.append("")
-            chunks.extend(f"- {item}" for item in items)
-            chunks.append("")
-    return "\n".join(chunks).rstrip() + "\n"
+    lines = text.splitlines()
+    output: list[str] = []
+    in_entry = False
+    entry_lines: list[str] = []
+    for line in lines:
+        if line.startswith("## "):
+            if entry_lines:
+                output.append("\n".join(entry_lines))
+            entry_lines = [line]
+            in_entry = True
+        elif in_entry:
+            entry_lines.append(line)
+        elif not in_entry and not output:
+            output.append(line)
+    if entry_lines:
+        output.append("\n".join(entry_lines))
+    return "\n".join(output)
 
 
-ADAPTERS = {"changelog": changelog_adapter}
+ADAPTERS["changelog"] = changelog_adapter
 
 
 # --------------------------------------------------------------------------- #
-# rendering
+# HTML rendering helpers
 # --------------------------------------------------------------------------- #
 MARKDOWN_EXTENSIONS = [
-    "fenced_code",
-    "codehilite",
-    "tables",
-    "def_list",
-    "admonition",
-    "toc",
+    "markdown.extensions.tables",
+    "markdown.extensions.fenced_code",
+    "markdown.extensions.codehilite",
+    "markdown.extensions.toc",
 ]
 MARKDOWN_CONFIG = {
     "codehilite": {"css_class": "codehilite", "guess_lang": False},
@@ -611,8 +670,6 @@ SCHEME_RE = re.compile(r"^[a-zA-Z][a-zA-Z0-9+.\-]*:")
 
 
 class Href:
-    """Resolve site-root-relative targets against the directory of a page."""
-
     def __init__(self, from_dir: str = "") -> None:
         self.from_dir = from_dir or "."
 
@@ -626,7 +683,6 @@ class Href:
 
 def new_markdown():
     import markdown
-
     return markdown.Markdown(
         extensions=MARKDOWN_EXTENSIONS, extension_configs=MARKDOWN_CONFIG
     )
@@ -641,6 +697,34 @@ def external_attrs(tag_attrs: str) -> str:
     return attrs
 
 
+def resolve_crosslink(config: Config, page_source: str, target: str, release: Release) -> str | None:
+    """Check the crosslink map; return a rewritten target or None."""
+    path_part = target.partition("#")[0].partition("?")[0]
+    anchor = target[len(path_part):]
+    for cl in config.crosslinks:
+        if not path_matches(page_source, cl.from_pattern):
+            continue
+        if cl.link_pattern == target:
+            pass
+        elif "#" in cl.link_pattern and cl.link_pattern.partition("#")[0] == path_part:
+            pass
+        else:
+            continue
+        repo_id, _, target_path = cl.to_target.partition(":")
+        if not repo_id or not target_path:
+            return None
+        # Resolve target through the target repo's snapshot
+        snapshot = release.snapshots.get(repo_id)
+        if snapshot is None:
+            return None
+        # Find the page for target_path in this snapshot
+        for p in snapshot.pages:
+            if p.source == target_path or target_path.rstrip("/").endswith("/" + p.source):
+                # Target found — caller will compute the relative link
+                return p.out
+    return None
+
+
 def rewrite_links(
     body: str,
     page: Page,
@@ -653,13 +737,22 @@ def rewrite_links(
 ) -> str:
     from_dir = posixpath.dirname(page.out)
     href = Href(from_dir)
-
+    snapshot = release.snapshots.get(page.repo)
+    if snapshot is None:
+        raise SystemExit(f"[docs] page {page.source} has no snapshot")
+    repo = snapshot.repo
     def replace(match: re.Match) -> str:
         prefix, target, suffix = match.group(1), match.group(2), match.group(3)
         if not target or target.startswith("#"):
             return match.group(0)
         if SCHEME_RE.match(target) or target.startswith("//"):
             return f"{prefix}{target}{external_attrs(suffix)}"
+
+        # Check crosslink map first
+        rewritten_out = resolve_crosslink(config, page.source, target, release)
+        if rewritten_out is not None:
+            return f"{prefix}{href.to(rewritten_out)}{suffix}"
+
         path_part, _, anchor = target.partition("#")
         if not path_part:
             return match.group(0)
@@ -672,13 +765,12 @@ def rewrite_links(
         candidate = candidate.removeprefix("./")
         anchor_suffix = f"#{anchor}" if anchor else ""
         wants = [candidate]
-        if not path_part.startswith(".."):
-            # some documents link repo-root relative, so resolve it both ways
-            root = posixpath.normpath(path_part)
-            if root != candidate:
-                wants.append(root)
+        # Also try repo-root-relative resolution as fallback
+        root = posixpath.normpath(path_part)
+        if root != candidate and not root.startswith(".."):
+            wants.append(root)
         link = ""
-        blob = f"{config.repo_url}/blob/{quote(release.ref)}"
+        blob = f"{repo.url}/blob/{quote(snapshot.link_ref)}"
         for want in wants:
             stem_only = bool(want) and not posixpath.splitext(want)[1]
             with_md = want + ".md"
@@ -689,7 +781,7 @@ def rewrite_links(
                 out = index[with_md].out
                 return f"{prefix}{href.to(out)}{anchor_suffix}{suffix}"
             if want in tree_dirs:
-                link = f"{config.repo_url}/tree/{quote(release.ref)}/{quote(want)}"
+                link = f"{repo.url}/tree/{quote(snapshot.link_ref)}/{quote(want)}"
                 break
             if want in tree_files:
                 link = f"{blob}/{quote(want)}"
@@ -698,7 +790,7 @@ def rewrite_links(
                 link = f"{blob}/{quote(with_md)}"
                 break
         else:
-            unresolved.append(f"{page.source} -> {target}")
+            unresolved.append(f"{page.repo}:{page.source} -> {target}")
             link = f"{blob}/{quote(candidate)}"
         return f"{prefix}{link}{external_attrs(suffix)}"
 
@@ -708,7 +800,6 @@ def rewrite_links(
 def render_toc(tokens: list) -> str:
     if not tokens:
         return '<p class="dtoc-empty">no headings</p>'
-
     def walk(items: list) -> str:
         parts = ["<ul>"]
         for item in items:
@@ -719,21 +810,20 @@ def render_toc(tokens: list) -> str:
             )
         parts.append("</ul>")
         return "".join(parts)
-
     return walk(tokens)
 
 
 # --------------------------------------------------------------------------- #
-# collecting the documents of a release
+# collecting pages
 # --------------------------------------------------------------------------- #
 _TREE_CACHE: dict[str, list[str]] = {}
 
 
-def tree_paths(ref: str) -> tuple[set[str], set[str]]:
-    """Files and directories that exist for a ref, used to resolve links."""
-    if ref not in _TREE_CACHE:
-        _TREE_CACHE[ref] = tracked_files(ref)
-    files = set(_TREE_CACHE[ref])
+def tree_paths(repo: Repo, ref: str) -> tuple[set[str], set[str]]:
+    cache_key = f"{repo.id}:{ref}"
+    if cache_key not in _TREE_CACHE:
+        _TREE_CACHE[cache_key] = tracked_files(repo, ref)
+    files = set(_TREE_CACHE[cache_key])
     directories: set[str] = set()
     for path in files:
         parent = posixpath.dirname(path)
@@ -771,49 +861,55 @@ def sort_pages(pages: list[Page], order: dict[str, int]) -> list[Page]:
     )
 
 
-def collect_pages(release: Release, config: Config) -> list[Page]:
-    used: set[str] = {"index.html"}
+def collect_pages_for_snapshot(release: Release, snapshot: Snapshot, config: Config, used: set[str]) -> list[Page]:
+    """Collect documentation pages for one snapshot."""
+    repo = snapshot.repo
     pages: list[Page] = []
-    for source in sorted(tracked_files(release.read_ref), key=str.lower):
+    read_ref = "" if snapshot.worktree else snapshot.ref
+    for source in sorted(tracked_files(repo, read_ref), key=str.lower):
         if not is_documentation(source, config):
             continue
-        override = config.override_for(source)
-        document = read_content(release.read_ref, source)
+        override = config.override_for(source, repo.id)
+        read_ref = "" if snapshot.worktree else snapshot.ref
+        document = read_content(repo, read_ref, source)
         if override.adapter:
             adapter = ADAPTERS.get(override.adapter)
             if adapter is None:
                 raise SystemExit(
-                    f"[docs] {source}: unknown adapter '{override.adapter}' "
-                    f"(known: {', '.join(sorted(ADAPTERS))})"
+                    f"[docs] {source}: unknown adapter '{override.adapter}'"
                 )
             document = adapter(document)
-        section = config.section_for(source)
+        section = config.section_for(source, repo.id)
         extracted, _ = first_heading(document)
-        title = (
-            override.title
-            or extracted
-            or slug_part(source).replace("-", " ").title()
-        )
+        title = override.title or extracted or slug_part(source).replace("-", " ").title()
+        out = output_path(source, override)
+        # Mount prefix for satellite repos
+        if repo.mount:
+            out = posixpath.join(repo.mount, out)
+        out = unique_output(out, used)
         pages.append(
             Page(
                 source=source,
-                out=unique_output(output_path(source, override), used),
+                out=out,
                 title=title,
                 section=section.id,
                 summary=override.summary or section.summary,
                 order=override.order,
+                repo=repo.id,
                 adapter=override.adapter,
                 markdown=with_title(document, title),
                 excerpt=plain_text(document, 240),
             )
         )
-    if not pages:
-        raise SystemExit(
-            f"[docs] no Markdown documents found for {release.ref or 'worktree'}"
-        )
-    release.pages = sort_pages(pages, section_order(config))
-    return release.pages
+    snapshot.pages = sort_pages(pages, section_order(config))
+    return snapshot.pages
 
+
+def collect_pages(release: Release, config: Config) -> None:
+    """Collect pages for all snapshots in a release."""
+    used: set[str] = {"index.html"}
+    for snapshot in release.snapshots.values():
+        collect_pages_for_snapshot(release, snapshot, config, used)
 
 def flatten_toc(tokens: list) -> list[dict]:
     flat: list[dict] = []
@@ -823,24 +919,33 @@ def flatten_toc(tokens: list) -> list[dict]:
     return flat
 
 
-def render_documents(release: Release, config: Config) -> list[str]:
-    """Convert every page of a release to HTML and fix up internal links."""
+def render_documents_for_snapshot(snapshot: Snapshot, release: Release, config: Config, unresolved: list[str]) -> None:
+    """Convert pages of one snapshot to HTML."""
     engine = new_markdown()
-    files, directories = tree_paths(release.read_ref)
-    index = {page.source: page for page in release.pages}
-    unresolved: list[str] = []
-    for page in release.pages:
+    read_ref = "" if snapshot.worktree else snapshot.ref
+    files, directories = tree_paths(snapshot.repo, read_ref)
+    index: dict[str, Page] = {}
+    for p in snapshot.pages:
+        index[p.source] = p
+    for page in snapshot.pages:
         body = engine.convert(page.markdown)
         page.toc = list(getattr(engine, "toc_tokens", []))
         page.headings = [str(token["name"]) for token in flatten_toc(page.toc)]
         page.html_body = rewrite_links(
             body, page, release, index, files, directories, config, unresolved
         )
+
+
+def render_documents(release: Release, config: Config) -> list[str]:
+    """Convert every page of a release to HTML."""
+    unresolved: list[str] = []
+    for snapshot in release.snapshots.values():
+        render_documents_for_snapshot(snapshot, release, config, unresolved)
     return unresolved
 
 
 # --------------------------------------------------------------------------- #
-# html templates
+# HTML templates
 # --------------------------------------------------------------------------- #
 BRAND_SVG = (
     '<svg width="21" height="21" viewBox="0 0 32 32" aria-hidden="true">'
@@ -885,31 +990,24 @@ SHELL_TEMPLATE = """<!DOCTYPE html>
 <link rel="stylesheet" href="{syntax}">
 <script src="{js}" defer></script>
 </head>
-<body class="{body_class}" data-version="{version}" \
-data-search="{search}" data-latest="{latest}">
+<body class="{body_class}" data-version="{version}" data-search="{search}" data-latest="{latest}" data-repo="{repo_id}">
 <a class="skip" href="#main">skip to content</a>
 <header class="topbar">
 <div class="topbar-inner">
-<button class="burger" id="burger" aria-label="Toggle documentation menu" \
-aria-expanded="false" aria-controls="sidebar">&#9776;</button>
-<a class="brand" href="{home}">{brand}<span>llm<span class="dash">-</span>router</span>\
-<span class="brand-docs">/docs</span></a>
+<button class="burger" id="burger" aria-label="Toggle documentation menu" aria-expanded="false" aria-controls="sidebar">&#9776;</button>
+<a class="brand" href="{home}">{brand}<span>llm<span class="dash">-</span>router</span><span class="brand-docs">/docs</span></a>
 <div class="topbar-right">
 <form class="search" id="search" role="search" autocomplete="off">
 <span class="search-icon" aria-hidden="true">&#8981;</span>
-<input id="q" type="search" placeholder="search this version" \
-aria-label="Search documentation" role="combobox" aria-expanded="false" \
-aria-controls="results" aria-autocomplete="list">
+<input id="q" type="search" placeholder="search this version" aria-label="Search documentation" role="combobox" aria-expanded="false" aria-controls="results" aria-autocomplete="list">
 <kbd>/</kbd>
-<div class="results" id="results" role="listbox" \
-aria-label="Search results" hidden></div>
+<div class="results" id="results" role="listbox" aria-label="Search results" hidden></div>
 </form>
 <label class="vselect">
 <span class="sr-only">Documentation version</span>
 <select id="versions" aria-label="Documentation version">{versions}</select>
 </label>
-<a class="iconbtn" href="{repo}" aria-label="Repository on GitHub" \
-title="Repository on GitHub">{github}</a>
+<a class="iconbtn" href="{repo}" aria-label="Repository on GitHub" title="Repository on GitHub">{github}</a>
 </div>
 </div>
 </header>
@@ -918,9 +1016,8 @@ title="Repository on GitHub">{github}</a>
 <aside class="sidebar" id="sidebar">{sidebar}</aside>
 <main class="main" id="main">{main}
 <footer class="foot"><div class="foot-inner">
-<span class="mono">llm-router &middot; docs are generated from the repository by \
-<code>tools/build_docs.py</code></span>
-<span class="mono"><a href="{blob}">{version}</a> @ <code>{sha}</code></span>
+<span class="mono">llm-router &middot; docs are generated from the repository by <code>tools/build_docs.py</code></span>
+<span class="mono"><a href="{blob}">{version}</a> @ <a href="{commit}">{sha}</a></span>
 </div></footer>
 </main>
 <aside class="dtoc" id="dtoc">{toc}</aside>
@@ -929,11 +1026,49 @@ title="Repository on GitHub">{github}</a>
 </html>
 """
 
+PAGE_TEMPLATE = """<nav class="crumbs" aria-label="Breadcrumb">
+<a href="{home}">llm-router</a><span class="sep">/</span><a href="{hub}">docs</a>\
+<span class="sep">/</span><a href="{section_href}">{section}</a>\
+<span class="sep">/</span><em>{title}</em>
+</nav>
+<article class="prose">{body}</article>
+<nav class="pager" aria-label="Previous and next page">{pager}</nav>
+<footer class="doc-meta">
+<div class="meta-row"><span class="meta-k">repository</span><a class="mono" href="{repo_url}">{repo_name}</a></div>
+<div class="meta-row"><span class="meta-k">source</span><a class="mono" href="{source_link}">{source}</a></div>
+<div class="meta-row"><span class="meta-k">last commit</span><time datetime="{modified}"><a href="{commit_link}">{modified_label}</a></time></div>
+<div class="meta-row"><span class="meta-k">built from</span><span class="mono"><a href="{tree_link}">{ref}</a>&nbsp;@&nbsp;<a href="{commit_link}">{sha}</a></span></div>
+<p class="hint">Generated from the Markdown file in the repository: commit a change and the next build republishes it.</p>
+</footer>"""
 
+HUB_TEMPLATE = """<section class="hub-hero">
+<p class="eyebrow mono">{eyebrow}</p>
+<h1>{title}</h1>
+<p class="lede">{tagline}</p>
+<p class="vline"><span class="vchip mono">v{version}</span><span class="vmeta">{released} &middot; {pages} pages &middot; {sections} sections &middot; built from <a href="{tree_link}">{ref}</a> @ <a href="{commit_link}">{sha}</a></span></p>
+<p class="satellite-line">{satellite_info}</p>
+<div class="hub-actions">{actions}</div>
+</section>
+<div class="hub-grid">
+<section class="sec-cards" id="sections">{cards}</section>
+<aside class="hub-side">{aside}</aside>
+</div>"""
+
+CARD_TEMPLATE = """<article class="sec-card">
+<h2><a href="{href}">{title}</a></h2>
+<p>{summary}</p>
+<ul>{links}</ul>
+{more}
+</article>"""
+
+REPO_CHIP = '<span class="repo-chip mono">{repo}</span>'
+
+
+# --------------------------------------------------------------------------- #
+# version management
+# --------------------------------------------------------------------------- #
 @dataclass
 class VersionEntry:
-    """One entry of versions.json: a published documentation snapshot."""
-
     version: str
     entry: str
     date: str = ""
@@ -941,6 +1076,7 @@ class VersionEntry:
     ref: str = ""
     sha: str = ""
     pages: dict[str, str] = field(default_factory=dict)
+    sources: dict = field(default_factory=dict)
 
     @property
     def label(self) -> str:
@@ -950,6 +1086,18 @@ class VersionEntry:
 
     @staticmethod
     def from_release(release: Release) -> "VersionEntry":
+        pages = {}
+        for page in release.pages:
+            pages[page.key] = page.out
+        sources = {}
+        for sid, snap in release.snapshots.items():
+            sources[sid] = {
+                "ref": snap.ref,
+                "sha": snap.sha,
+                "date": snap.date,
+                "version": snap.version,
+                "url": snap.repo.url,
+            }
         return VersionEntry(
             version=release.version,
             entry=posixpath.join(release.version, "index.html"),
@@ -957,7 +1105,8 @@ class VersionEntry:
             prerelease=release.prerelease,
             ref=release.ref,
             sha=release.sha,
-            pages={page.source: page.out for page in release.pages},
+            pages=pages,
+            sources=sources,
         )
 
     @staticmethod
@@ -970,10 +1119,8 @@ class VersionEntry:
             prerelease=bool(raw.get("prerelease", False)),
             ref=str(raw.get("ref", "")),
             sha=str(raw.get("sha", "")),
-            pages={
-                str(key): str(value)
-                for key, value in (raw.get("pages") or {}).items()
-            },
+            pages=raw.get("pages", {}),
+            sources=raw.get("sources", {}),
         )
 
     def as_json(self) -> dict:
@@ -985,25 +1132,23 @@ class VersionEntry:
             "ref": self.ref,
             "sha": self.sha,
             "pages": self.pages,
+            "sources": self.sources,
         }
 
 
 def sort_versions(entries: list[VersionEntry]) -> list[VersionEntry]:
-    return sorted(entries, key=lambda item: version_key(item.version), reverse=True)
+    return sorted(entries, key=lambda e: version_key(e.version), reverse=True)
 
 
 def short_date(value: str) -> str:
-    return value[:10] if value else "unknown"
+    try:
+        dt = datetime.fromisoformat(value)
+        return dt.strftime("%Y-%m-%d")
+    except (ValueError, TypeError):
+        return value or "unknown"
 
 
-def render_version_options(
-    page_source: str,
-    release: Release,
-    versions: list[VersionEntry],
-    latest: str,
-    page_dir: str,
-) -> str:
-    """Version switcher: same document when the other version has it, hub otherwise."""
+def render_version_options(page_source, release, versions, latest, page_dir):
     href = Href(page_dir)
     options: list[str] = []
     for entry in versions:
@@ -1022,51 +1167,61 @@ def render_version_options(
     return "\n".join(options)
 
 
-def render_sidebar(
-    release: Release,
-    config: Config,
-    current: Page | None,
-    page_dir: str,
-    latest: str,
-    versions: list[VersionEntry],
-    search_enabled: bool = True,
-) -> str:
+def render_sidebar(release, config, current, page_dir, latest, versions, search_enabled=True):
+    """Sidebar with repo groups."""
     href = Href(page_dir)
-    grouped: dict[str, list[Page]] = {}
+    version_dir = release.version
+    grouped_by_repo: dict[str, dict[str, list[Page]]] = {}
     for page in release.pages:
-        grouped.setdefault(page.section, []).append(page)
+        grouped_by_repo.setdefault(page.repo, {}).setdefault(page.section, []).append(page)
+
     is_latest = release.version == latest
     parts: list[str] = [
         '<div class="side-head">',
         f'<span class="side-v mono">v{html.escape(release.version)}</span>',
-        f'<span class="side-tag {"live" if is_latest else "old"}">'
-        f'{"latest" if is_latest else "archived"}</span>',
+        f'<span class="side-tag {"live" if is_latest else "old"}">{"latest" if is_latest else "archived"}</span>',
         "</div>",
-        f'<a class="side-hub" href="{href.versioned(release.version, "index.html")}">'
-        "documentation index</a>",
+        f'<a class="side-hub" href="{href.versioned(version_dir, "index.html")}">documentation index</a>',
         '<nav class="nav-tree" aria-label="Documentation">',
     ]
-    for section in config.sections:
-        pages = grouped.get(section.id)
-        if not pages:
+
+    # Render groups in order: router first, then satellites in config order
+    repo_order = ["router"] + [r.id for r in REPOS.values() if r.id != "router"]
+    for repo_id in repo_order:
+        repo_groups = grouped_by_repo.get(repo_id)
+        if not repo_groups:
             continue
-        is_open = bool(current and current.section == section.id) or current is None
+        repo = REPOS.get(repo_id)
+        repo_name = repo.name if repo else repo_id
+        # Group header
         parts.append(
-            f'<section class="nav-sec{" open" if is_open else ""}">'
-            f'<h2 class="nav-sec-title">'
-            f'<a href="{href.versioned(release.version, pages[0].out)}">'
-            f"{html.escape(section.title)}</a></h2><ul>"
+            f'<div class="nav-repo"><span class="repo-name">{html.escape(repo_name)}</span></div>'
         )
-        for page in pages:
-            active = ' class="active"' if current and current.out == page.out else ""
+        # Sections for this repo
+        for section in config.sections:
+            if section.repo != repo_id:
+                continue
+            pages = repo_groups.get(section.id)
+            if not pages:
+                continue
+            is_open = bool(current and current.section == section.id) or current is None
             parts.append(
-                f'<li><a href="{href.versioned(release.version, page.out)}"{active}>'
-                f"{html.escape(page.title)}</a></li>"
+                f'<section class="nav-sec{" open" if is_open else ""}">'
+                f'<h2 class="nav-sec-title">'
+                f'<a href="{href.versioned(version_dir, pages[0].out)}">'
+                f"{html.escape(section.title)}</a></h2><ul>"
             )
-        parts.append("</ul></section>")
+            for page in pages:
+                active = ' class="active"' if current and current.out == page.out else ""
+                parts.append(
+                    f'<li><a href="{href.versioned(version_dir, page.out)}"{active}>'
+                    f"{html.escape(page.title)}</a></li>"
+                )
+            parts.append("</ul></section>")
+
     parts.append("</nav>")
     search_link = (
-        f'<a class="mono" href="{href.versioned(release.version, "search.json")}">'
+        f'<a class="mono" href="{href.versioned(version_dir, "search.json")}">'
         "search.json</a>"
         if search_enabled
         else ""
@@ -1081,32 +1236,33 @@ def render_sidebar(
     return "".join(parts)
 
 
-def render_shell(
-    *,
-    config: Config,
-    release: Release,
-    versions: list[VersionEntry],
-    latest: str,
-    page_dir: str,
-    title: str,
-    description: str,
-    sidebar: str,
-    main: str,
-    toc: str = "",
-    body_class: str = "",
-    canonical: str = "",
-    page_source: str = "",
-    search_enabled: bool = True,
-) -> str:
+def render_shell(config, release, versions, latest, page_dir, title, description,
+                 sidebar, main, toc="", body_class="", canonical="", page_source="",
+                 search_enabled=True, repo_id="router"):
+    """Render the full HTML shell for a page."""
     href = Href(page_dir)
     canonical_tag = ""
     if config.site_url and canonical:
         target = html.escape(posixpath.join(config.site_url, canonical), quote=True)
         canonical_tag = f'\n<link rel="canonical" href="{target}">'
     search_href = href.to(posixpath.join(release.version, "search.json"))
-    options = render_version_options(
-        page_source, release, versions, latest, page_dir
-    )
+    options = render_version_options(page_source, release, versions, latest, page_dir)
+
+    # Determine repo URL for topbar button
+    repo = REPOS.get(repo_id)
+    repo_url = repo.url if repo else config.repo_url
+
+    # Determine commit/tree links
+    snapshot = release.snapshots.get(repo_id)
+    if snapshot:
+        blob = f"{snapshot.repo.url}/tree/{quote(snapshot.link_ref)}"
+        commit = f"{snapshot.repo.url}/commit/{snapshot.sha}"
+        sha = snapshot.sha
+    else:
+        blob = f"{config.repo_url}/tree/{quote(release.ref)}"
+        commit = f"{config.repo_url}/commit/{release.sha}"
+        sha = release.sha
+
     return SHELL_TEMPLATE.format(
         lang=html.escape(str(config.site.get("language", "en")), quote=True),
         title=html.escape(title, quote=True),
@@ -1123,70 +1279,34 @@ def render_shell(
         home=href.to(str(config.site.get("home_url", "../"))),
         brand=BRAND_SVG,
         versions=options,
-        repo=html.escape(config.repo_url, quote=True),
+        repo=html.escape(repo_url, quote=True),
         github=GITHUB_SVG,
         sidebar=sidebar,
         main=main,
         toc=toc,
-        blob=html.escape(f"{config.repo_url}/tree/{quote(release.ref)}", quote=True),
-        sha=html.escape(release.sha, quote=True),
+        blob=html.escape(blob, quote=True),
+        commit=html.escape(commit, quote=True),
+        sha=html.escape(sha, quote=True),
+        repo_id=html.escape(repo_id, quote=True),
     )
 
 
 # --------------------------------------------------------------------------- #
-# pages
+# page rendering
 # --------------------------------------------------------------------------- #
-PAGE_TEMPLATE = """<nav class="crumbs" aria-label="Breadcrumb">
-<a href="{home}">llm-router</a><span class="sep">/</span><a href="{hub}">docs</a>\
-<span class="sep">/</span><a href="{section_href}">{section}</a>\
-<span class="sep">/</span><em>{title}</em>
-</nav>
-<article class="prose">{body}</article>
-<nav class="pager" aria-label="Previous and next page">{pager}</nav>
-<footer class="doc-meta">
-<div class="meta-row"><span class="meta-k">source</span>\
-<a class="mono" href="{source_link}">{source}</a></div>
-<div class="meta-row"><span class="meta-k">last commit</span>\
-<time datetime="{modified}">{modified_label}</time></div>
-<div class="meta-row"><span class="meta-k">built from</span>\
-<span class="mono">{ref}&nbsp;@&nbsp;{sha}</span></div>
-<p class="hint">Generated from the Markdown file in the repository: commit a \
-change and the next build republishes it for every release that contains it.</p>
-</footer>"""
-
-HUB_TEMPLATE = """<section class="hub-hero">
-<p class="eyebrow mono">{eyebrow}</p>
-<h1>{title}</h1>
-<p class="lede">{tagline}</p>
-<p class="vline"><span class="vchip mono">v{version}</span>\
-<span class="vmeta">{released} &middot; {pages} pages &middot; \
-{sections} sections &middot; built from <code>{ref}</code> \
-built from <code>{ref}</code> @ <code>{sha}</code></span></p>
-<div class="hub-actions">{actions}</div>
-</section>
-<div class="hub-grid">
-<section class="sec-cards" id="sections">{cards}</section>
-<aside class="hub-side">{aside}</aside>
-</div>"""
-
-CARD_TEMPLATE = """<article class="sec-card">
-<h2><a href="{href}">{title}</a></h2>
-<p>{summary}</p>
-<ul>{links}</ul>
-{more}
-</article>"""
-
-
-def page_modified(ref: str, source: str, fallback: str) -> str:
-    """Commit date of a single file; tags fall back to the release date (cheap)."""
-    if ref == "":
-        try:
-            stamp = git("log", "-1", "--format=%cI", "HEAD", "--", source).strip()
-        except SystemExit:
-            stamp = ""
-        if stamp:
-            return stamp
-    return fallback
+def page_modified(repo: Repo, ref: str, source: str, fallback: str) -> tuple[str, str]:
+    """Commit date and sha of a single file."""
+    if ref == "" or not git_ok(repo):
+        return (fallback, "")
+    try:
+        sha = git(repo, "log", "-1", "--format=%H", ref, "--", source).strip()
+        if not sha:
+            return (fallback, "")
+        short = sha[:7]
+        date = git(repo, "log", "-1", "--format=%cI", sha, "--", source).strip()
+        return (date, short)
+    except SystemExit:
+        return (fallback, "")
 
 
 def render_toc_panel(page: Page) -> str:
@@ -1198,21 +1318,13 @@ def render_toc_panel(page: Page) -> str:
     )
 
 
-def render_page(
-    page: Page,
-    release: Release,
-    config: Config,
-    versions: list[VersionEntry],
-    latest: str,
-    search_enabled: bool = True,
-) -> str:
-    page_dir = "/".join(
-        part for part in (release.version, posixpath.dirname(page.out)) if part
-    )
+def render_page(page: Page, release: Release, config: Config,
+                versions: list[VersionEntry], latest: str, search_enabled: bool = True) -> str:
+    page_dir = "/".join(part for part in (release.version, posixpath.dirname(page.out)) if part)
     href = Href(page_dir)
     version_dir = release.version
     section = config.section(page.section)
-    siblings = [item for item in release.pages if item.section == page.section]
+    siblings = [item for item in release.pages if item.section == page.section and item.repo == page.repo]
     position = siblings.index(page)
     pager: list[str] = []
     if position:
@@ -1229,7 +1341,23 @@ def render_page(
             f'<span class="dir">next &rarr;</span>'
             f'<span class="pt">{html.escape(following.title)}</span></a>'
         )
-    modified = page_modified(release.read_ref, page.source, release.date)
+
+    snapshot = release.snapshots.get(page.repo)
+    if snapshot is None:
+        raise SystemExit(f"[docs] no snapshot for {page.repo}")
+    repo = snapshot.repo
+
+    modified, modified_sha = page_modified(repo, snapshot.ref, page.source, release.date)
+    modified_link = ""
+    if modified_sha:
+        modified_link = short_date(modified)
+    else:
+        modified_link = short_date(modified)
+
+    tree_link = f"{repo.url}/tree/{quote(snapshot.link_ref)}"
+    commit_link = f"{repo.url}/commit/{snapshot.sha}"
+    source_link = f"{repo.url}/blob/{quote(snapshot.link_ref)}/{quote(page.source)}"
+
     main = PAGE_TEMPLATE.format(
         home=href.to(str(config.site.get("home_url", "../"))),
         hub=href.to(posixpath.join(version_dir, "index.html")),
@@ -1238,12 +1366,16 @@ def render_page(
         title=html.escape(page.title),
         body=page.html_body,
         pager="".join(pager),
-        source_link=f"{config.repo_url}/blob/{quote(release.ref)}/{quote(page.source)}",
+        repo_url=html.escape(repo.url, quote=True),
+        repo_name=html.escape(repo.name),
+        source_link=html.escape(source_link, quote=True),
         source=html.escape(page.source),
         modified=html.escape(modified, quote=True),
-        modified_label=short_date(modified),
-        ref=html.escape(release.ref, quote=True),
-        sha=html.escape(release.sha, quote=True),
+        modified_label=modified_link,
+        commit_link=html.escape(commit_link, quote=True),
+        tree_link=html.escape(tree_link, quote=True),
+        ref=html.escape(snapshot.ref, quote=True),
+        sha=html.escape(snapshot.sha, quote=True),
     )
     body_class = "page"
     if page.adapter:
@@ -1260,67 +1392,82 @@ def render_page(
         page_dir=page_dir,
         title=f"{page.title} \u00b7 v{release.version} \u00b7 llm-router docs",
         description=description[:300],
-        sidebar=render_sidebar(
-            release, config, page, page_dir, latest, versions, search_enabled
-        ),
+        sidebar=render_sidebar(release, config, page, page_dir, latest, versions, search_enabled),
         main=main,
         toc=render_toc_panel(page),
         body_class=body_class,
         canonical=page.out,
-        page_source=page.source,
+        page_source=page.key,
         search_enabled=search_enabled,
+        repo_id=page.repo,
     )
 
 
-def render_hub(
-    release: Release,
-    config: Config,
-    versions: list[VersionEntry],
-    latest: str,
-    page_dir: str = "",
-    search_enabled: bool = True,
-) -> str:
-    """Landing page of a version: every section with the documents it contains."""
+def render_hub(release: Release, config: Config, versions: list[VersionEntry],
+               latest: str, page_dir: str = "", search_enabled: bool = True) -> str:
+    """Landing page of a version with repo grouping."""
     href = Href(page_dir)
     version_dir = posixpath.join(release.version, "index.html")
-    grouped: dict[str, list[Page]] = {}
+    grouped: dict[str, dict[str, list[Page]]] = {}
     for page in release.pages:
-        grouped.setdefault(page.section, []).append(page)
+        grouped.setdefault(page.repo, {}).setdefault(page.section, []).append(page)
+
+    # Cards grouped by repo
     cards: list[str] = []
-    for section in config.sections:
-        pages = grouped.get(section.id)
-        if not pages:
+    repo_order = ["router"] + [r.id for r in REPOS.values() if r.id != "router"]
+    for repo_id in repo_order:
+        repo_groups = grouped.get(repo_id)
+        if not repo_groups:
             continue
-        shown = pages[:5]
-        links = "".join(
-            f'<li><a href="{href.to(posixpath.join(release.version, page.out))}">'
-            f"{html.escape(page.title)}</a></li>"
-            for page in shown
-        )
-        remaining = len(pages) - len(shown)
-        more = (
-            f'<a class="more mono" '
-            f'href="{href.versioned(release.version, pages[0].out)}">'
-            f"+{remaining} more</a>"
-            if remaining > 0
-            else ""
-        )
-        cards.append(
-            CARD_TEMPLATE.format(
-                href=href.to(posixpath.join(release.version, pages[0].out)),
-                title=html.escape(section.title),
-                summary=html.escape(section.summary or pages[0].summary),
-                links=links,
-                more=more,
+        repo = REPOS.get(repo_id)
+        repo_name = repo.name if repo else repo_id
+        cards.append(f'<h2 class="repo-h">{REPO_CHIP.format(repo=html.escape(repo_name))}</h2>')
+        for section in config.sections:
+            if section.repo != repo_id:
+                continue
+            pages = repo_groups.get(section.id)
+            if not pages:
+                continue
+            shown = pages[:5]
+            links = "".join(
+                f'<li><a href="{href.to(posixpath.join(release.version, page.out))}">'
+                f"{html.escape(page.title)}</a></li>"
+                for page in shown
             )
-        )
+            remaining = len(pages) - len(shown)
+            more = (
+                f'<a class="more mono" '
+                f'href="{href.versioned(release.version, pages[0].out)}">'
+                f"+{remaining} more</a>"
+                if remaining > 0
+                else ""
+            )
+            cards.append(
+                CARD_TEMPLATE.format(
+                    href=href.to(posixpath.join(release.version, pages[0].out)),
+                    title=html.escape(section.title),
+                    summary=html.escape(section.summary or pages[0].summary),
+                    links=links,
+                    more=more,
+                )
+            )
+
+    # Satellite info line
+    satellite_parts: list[str] = []
+    for sid in ("plugins", "services"):
+        snap = release.snapshots.get(sid)
+        if snap:
+            satellite_parts.append(
+                f'<span class="sat-chip mono">{snap.repo.name} v{snap.version} @ '
+                f'<a href="{snap.repo.url}/commit/{snap.sha}">{snap.sha}</a></span>'
+            )
+    satellite_info = " ".join(satellite_parts)
+
     actions = [
-        f'<a class="btn primary" href="{href.versioned(release.version, "index.html")}#'
-        f'sections">browse {len(release.pages)} documents</a>'
+        f'<a class="btn primary" href="{href.versioned(release.version, "index.html")}'
+        f'#sections">browse {len(release.pages)} documents</a>'
     ]
-    overview = next(
-        (page for page in release.pages if page.source == "README.md"), None
-    )
+    overview = next((page for page in release.pages if page.source == "README.md" and page.repo == "router"), None)
     if overview is not None:
         actions.insert(
             0,
@@ -1328,9 +1475,7 @@ def render_hub(
             f'href="{href.versioned(release.version, overview.out)}">'
             "start with the overview</a>",
         )
-    changelog = next(
-        (page for page in release.pages if "CHANGELOG" in page.source), None
-    )
+    changelog = next((page for page in release.pages if "CHANGELOG" in page.source), None)
     if changelog is not None:
         actions.append(
             f'<a class="btn ghost" '
@@ -1341,6 +1486,8 @@ def render_hub(
         f'<a class="btn ghost" href="{html.escape(config.repo_url, quote=True)}">'
         "repository</a>"
     )
+
+    # Version listings
     listings = []
     for entry in versions:
         current = " current" if entry.version == release.version else ""
@@ -1351,18 +1498,36 @@ def render_hub(
             f'<span class="mono">{short_date(entry.date)}</span>'
             f'{"<em>latest</em>" if flag else ""}</li>'
         )
+
+    # Repositories box
+    repo_rows = []
+    for r in REPOS.values():
+        snap = release.snapshots.get(r.id)
+        if snap:
+            repo_rows.append(
+                f'<div class="repo-row">'
+                f'<span class="mono">{html.escape(r.name)} v{snap.version}</span>'
+                f'<span class="mono"><a href="{r.url}/commit/{snap.sha}">{snap.sha}</a> → <a href="{r.url}">GH</a></span>'
+                f'</div>'
+            )
+    repo_box = (
+        '<div class="box"><h2>repositories</h2>'
+        + "".join(repo_rows)
+        + '</div>'
+    )
+
     aside = "".join(
         [
             '<div class="box"><h2>this release</h2><dl>',
             f'<dt>version</dt><dd class="mono">{html.escape(release.version)}</dd>',
             f'<dt>released</dt><dd class="mono">{short_date(release.date)}</dd>',
             f'<dt>ref</dt><dd class="mono">{html.escape(release.ref)}</dd>',
-            f'<dt>commit</dt><dd class="mono">{html.escape(release.sha)}</dd>',
+            f'<dt>commit</dt><dd class="mono"><a href="{config.repo_url}/commit/{release.sha}">{html.escape(release.sha)}</a></dd>',
             f'<dt>documents</dt><dd class="mono">{len(release.pages)}</dd>',
             "</dl></div>",
+            repo_box,
             '<div class="box"><h2>all versions</h2>'
-            '<p class="tiny">Older releases keep the documentation of their '
-            "own branch of the repository.</p>",
+            '<p class="tiny">Older releases keep the documentation of their own branch.</p>',
             f'<ul class="vlist" id="versions-list">{"".join(listings)}</ul></div>',
             '<div class="box note"><h2>how this works</h2><p>Every page here is '
             "rendered from a Markdown file committed in the repository. Nothing is "
@@ -1371,11 +1536,16 @@ def render_hub(
             "release tag.</p></div>",
         ]
     )
-    eyebrow = (
-        "operator documentation"
-        if release.version == latest
-        else "archived documentation"
-    )
+
+    eyebrow = "operator documentation" if release.version == latest else "archived documentation"
+    snapshot = release.snapshots.get("router")
+    if snapshot:
+        tree_link = f"{snapshot.repo.url}/tree/{quote(snapshot.link_ref)}"
+        commit_link = f"{snapshot.repo.url}/commit/{snapshot.sha}"
+    else:
+        tree_link = f"{config.repo_url}/tree/{quote(release.ref)}"
+        commit_link = f"{config.repo_url}/commit/{release.sha}"
+
     main = HUB_TEMPLATE.format(
         eyebrow=eyebrow,
         title=html.escape(str(config.site.get("hub_title", config.title))),
@@ -1383,9 +1553,12 @@ def render_hub(
         version=html.escape(release.version),
         released=f"released {short_date(release.date)}",
         pages=len(release.pages),
-        sections=len(grouped),
+        sections=len([s for s in config.sections if any(page.section == s.id for page in release.pages)]),
         ref=html.escape(release.ref),
         sha=html.escape(release.sha),
+        tree_link=html.escape(tree_link, quote=True),
+        commit_link=html.escape(commit_link, quote=True),
+        satellite_info=satellite_info,
         actions="".join(actions),
         cards="".join(cards),
         aside=aside,
@@ -1398,9 +1571,7 @@ def render_hub(
         page_dir=page_dir,
         title=f"{config.title} \u00b7 v{release.version}",
         description=str(config.site.get("description", config.title)),
-        sidebar=render_sidebar(
-            release, config, None, page_dir, latest, versions, search_enabled
-        ),
+        sidebar=render_sidebar(release, config, None, page_dir, latest, versions, search_enabled),
         main=main,
         toc=(
             '<h2 class="toc-title">versions</h2>'
@@ -1421,24 +1592,25 @@ MAX_HEADINGS = 80
 
 
 def searchable_text(fragment: str, limit: int) -> str:
-    """Plain text of a rendered page, used as the body of a search hit."""
     return plain_text(TAG_RE.sub(" ", fragment), limit)
 
 
 def search_index(release: Release, config: Config) -> str:
-    """Small per-version JSON index: no server side search is needed."""
     documents = []
     for page in release.pages:
-        documents.append(
-            {
-                "k": page.out,
-                "t": page.title,
-                "s": config.section(page.section).title,
-                "x": page.excerpt[:240],
-                "h": page.headings[:MAX_HEADINGS],
-                "b": searchable_text(page.html_body, MAX_BODY_CHARS),
-            }
-        )
+        repo = REPOS.get(page.repo)
+        repo_name = repo.name if repo else page.repo
+        doc = {
+            "k": page.out,
+            "t": page.title,
+            "s": config.section(page.section).title,
+            "x": page.excerpt[:240],
+            "h": page.headings[:MAX_HEADINGS],
+            "b": searchable_text(page.html_body, MAX_BODY_CHARS),
+        }
+        if page.repo != "router":
+            doc["r"] = repo_name
+        documents.append(doc)
     payload = {"version": release.version, "pages": documents}
     return json.dumps(payload, ensure_ascii=False, separators=(",", ":"))
 
@@ -1454,7 +1626,6 @@ def write_file(path: Path, content: str, dry_run: bool) -> None:
 
 
 def pygments_css() -> str:
-    """Syntax highlighting colours matching the site theme."""
     try:
         from pygments.formatters import HtmlFormatter
     except ImportError:
@@ -1483,20 +1654,14 @@ def write_assets(docs_root: Path, dry_run: bool) -> list[str]:
     return written
 
 
-def read_versions(
-    path: Path, docs_root: Path, clean: bool
-) -> dict[str, VersionEntry]:
-    """Previously published versions, so a partial build keeps them selectable."""
+def read_versions(path: Path, docs_root: Path, clean: bool) -> dict[str, VersionEntry]:
     entries: dict[str, VersionEntry] = {}
     if clean or not path.is_file():
         return entries
     try:
         raw = json.loads(path.read_text(encoding="utf-8"))
     except (OSError, ValueError) as error:
-        print(
-            f"[docs] warning: ignoring unreadable {path.name}: {error}",
-            file=sys.stderr,
-        )
+        print(f"[docs] warning: ignoring unreadable {path.name}: {error}", file=sys.stderr)
         return entries
     for item in raw.get("versions", []):
         if not isinstance(item, dict) or "version" not in item:
@@ -1510,9 +1675,7 @@ def read_versions(
     return entries
 
 
-def write_versions(
-    path: Path, entries: list[VersionEntry], latest: str, dry_run: bool
-) -> None:
+def write_versions(path: Path, entries: list[VersionEntry], latest: str, dry_run: bool) -> None:
     payload = {
         "updated": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "latest": latest,
@@ -1521,19 +1684,11 @@ def write_versions(
     write_file(path, json.dumps(payload, indent=2) + "\n", dry_run)
 
 
-def build_site(
-    config: Config,
-    output: Path,
-    releases: list[Release],
-    entries: dict[str, VersionEntry],
-    latest: str,
-    search_scope: str,
-    dry_run: bool,
-) -> int:
-    """Render every release into ``site/docs``; returns the number of files."""
+def build_site(config, output, releases, entries, latest, search_scope, dry_run):
+    """Render every release into site/docs."""
     docs_root = output / DOCS_DIR_NAME
 
-    def search_for(version: str) -> bool:
+    def search_for(version):
         if search_scope == "none":
             return False
         return search_scope == "all" or version == latest
@@ -1554,14 +1709,7 @@ def build_site(
             document = render_page(page, release, config, versions, latest, enabled)
             write_file(docs_root / release.version / page.out, document, dry_run)
             written += 1
-        hub = render_hub(
-            release,
-            config,
-            versions,
-            latest,
-            page_dir=release.version,
-            search_enabled=enabled,
-        )
+        hub = render_hub(release, config, versions, latest, page_dir=release.version, search_enabled=enabled)
         write_file(docs_root / release.version / "index.html", hub, dry_run)
         written += 1
         if enabled:
@@ -1571,19 +1719,13 @@ def build_site(
 
     if releases:
         newest = max(releases, key=lambda item: version_key(item.version))
-        root_hub = render_hub(
-            newest,
-            config,
-            versions,
-            latest,
-            page_dir="",
-            search_enabled=search_for(newest.version),
-        )
+        root_hub = render_hub(newest, config, versions, latest, page_dir="", search_enabled=search_for(newest.version))
         write_file(docs_root / "index.html", root_hub, dry_run)
         written += 1
 
     written += len(write_assets(docs_root, dry_run))
     write_versions(docs_root / VERSIONS_FILE, versions, latest, dry_run)
+
     seen: set[str] = set()
     for problem in unresolved:
         if problem not in seen:
@@ -1593,7 +1735,6 @@ def build_site(
 
 
 def copy_landing(output: Path, dry_run: bool) -> bool:
-    """Publish the landing page as the site root (single source: landing/)."""
     source = REPO_ROOT / "landing" / "index.html"
     if not source.exists():
         return False
@@ -1617,14 +1758,11 @@ def link_exists(output: Path, page: Path, target: str) -> bool:
 
 
 def check_links(output: Path) -> list[str]:
-    """Crawl the generated HTML and report internal links with no target."""
     problems: list[str] = []
     for page in sorted(output.rglob("*.html")):
         name = page.relative_to(output).as_posix()
         for target in ATTR_RE.findall(page.read_text(encoding="utf-8")):
-            if not target or target.startswith(
-                ("#", "//", "mailto:", "tel:", "data:")
-            ):
+            if not target or target.startswith(("#", "//", "mailto:", "tel:", "data:")):
                 continue
             if SCHEME_RE.match(target):
                 continue
@@ -1636,7 +1774,6 @@ def check_links(output: Path) -> list[str]:
 def serve(output: Path, port: int) -> None:
     from functools import partial
     from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
-
     handler = partial(SimpleHTTPRequestHandler, directory=str(output))
     server = ThreadingHTTPServer(("0.0.0.0", port), handler)
     print(f"[docs] serving {output} on http://127.0.0.1:{port}/docs/")
@@ -1654,71 +1791,77 @@ def resolve_output(value: Path) -> Path:
 
 
 def main(argv: list[str] | None = None) -> int:
-    global SOURCE_ROOT
     parser = argparse.ArgumentParser(
         prog="build_docs.py",
-        description=(
-            "Generate the versioned /docs site from the Markdown files in the "
-            "source repository (default: this repo)."
-        ),
+        description="Generate the versioned /docs site from Markdown files in the source repositories.",
     )
     parser.add_argument("--config", type=Path, default=DEFAULT_CONFIG)
     parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
-    parser.add_argument(
-        "--source",
-        type=Path,
-        default=None,
-        metavar="PATH",
-        help=(
-            "repository the docs are generated from (llm-router checkout); "
-            f"falls back to ${SOURCE_ENV}, [site] source_repo, then this repo"
-        ),
-    )
-    parser.add_argument(
-        "--all-versions",
-        action="store_true",
-        help="build every release tag as well (default: only .version)",
-    )
-    parser.add_argument(
-        "--include-prerelease",
-        action="store_true",
-        help="with --all-versions, also build -rc/-prod style tags",
-    )
-    parser.add_argument(
-        "--max-versions", type=int, default=None, help="cap the number of releases"
-    )
-    parser.add_argument(
-        "--clean", action="store_true", help="delete site/docs before building"
-    )
-    parser.add_argument(
-        "--search",
-        choices=("all", "latest", "none"),
-        default="all",
-        help="which versions get a search.json index",
-    )
-    parser.add_argument(
-        "--check-links", action="store_true", help="fail on broken internal links"
-    )
-    parser.add_argument(
-        "--serve", action="store_true", help="serve the build locally"
-    )
+    parser.add_argument("--source", type=Path, default=None, help="path to llm-router checkout")
+    parser.add_argument("--plugins", type=Path, default=None, help="path to llm-router-plugins checkout")
+    parser.add_argument("--services", type=Path, default=None, help="path to llm-router-services checkout")
+    parser.add_argument("--all-versions", action="store_true", help="build every release tag")
+    parser.add_argument("--include-prerelease", action="store_true")
+    parser.add_argument("--max-versions", type=int, default=None)
+    parser.add_argument("--clean", action="store_true", help="delete site/docs before building")
+    parser.add_argument("--search", choices=("all", "latest", "none"), default="all")
+    parser.add_argument("--check-links", action="store_true")
+    parser.add_argument("--serve", action="store_true")
     parser.add_argument("--port", type=int, default=8000)
-    parser.add_argument(
-        "--dry-run", action="store_true", help="render, write nothing"
-    )
+    parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("--quiet", action="store_true")
-    parser.add_argument(
-        "--no-bootstrap",
-        action="store_true",
-        help="do not create .venv-docs when the markdown package is missing",
-    )
+    parser.add_argument("--no-bootstrap", action="store_true")
+    parser.add_argument("--no-satellites", action="store_true", help="build router docs only")
     args = parser.parse_args(argv)
 
     if not args.no_bootstrap:
         bootstrap_dependencies(args.quiet)
 
+    # Load config (need raw for repos)
+    with args.config.open("rb") as f:
+        raw = tomllib.load(f)
     config = load_config(args.config)
-    SOURCE_ROOT = resolve_source_root(args.source, config)
+    repos = load_repos_from_config(config, raw)
+
+    # Resolve repo paths
+    path_overrides = {
+        "router": args.source,
+        "plugins": args.plugins,
+        "services": args.services,
+    }
+    for repo in repos:
+        # CLI flag
+        if repo.id in path_overrides and path_overrides[repo.id] is not None:
+            repo.root = path_overrides[repo.id]
+        # Env var
+        elif repo.id in ENV_PREFIX and os.environ.get(ENV_PREFIX[repo.id]):
+            repo.root = Path(os.environ[ENV_PREFIX[repo.id]]).expanduser()
+        # Config path (not yet supported in docs.toml schema — future)
+        elif repo.id == "router" and config.site.get("source_repo"):
+            repo.root = Path(config.site["source_repo"]).expanduser()
+        elif repo.id == "router":
+            # Legacy fallback: this repo
+            repo.root = REPO_ROOT
+        else:
+            repo.root = None
+
+        if repo.root is not None:
+            if not repo.root.is_absolute():
+                repo.root = (Path.cwd() / repo.root).resolve()
+            if not repo.root.is_dir():
+                raise SystemExit(f"[docs] source path is not a directory: {repo.root}")
+            REPOS[repo.id] = repo
+            if repo.primary:
+                PRIMARY_REPO = repo
+
+    # Warn about missing satellites
+    for repo_id, repo in REPOS.items():
+        if repo_id == "router":
+            continue
+        if repo.root is None or not repo.root.is_dir():
+            if not args.quiet and not args.no_satellites:
+                print(f"[docs] note: {repo.name} source not found, skipping satellite docs", file=sys.stderr)
+
     output = resolve_output(args.output)
     docs_root = output / DOCS_DIR_NAME
 
@@ -1731,49 +1874,69 @@ def main(argv: list[str] | None = None) -> int:
 
     limit = args.max_versions or (None if args.all_versions else 1)
     releases = collect_releases(args.include_prerelease, limit)
-    if not any(release.source == "worktree" for release in releases):
-        releases.insert(0, current_release())
 
-    candidates = [release.version for release in releases] + list(entries)
+    # Attach router snapshot to each release
+    router_repo = REPOS.get("router")
+    for i, release in enumerate(releases):
+        if router_repo and router_repo.root is not None:
+            if i == 0:
+                # Worktree release
+                try:
+                    snap = satellite_snapshot(router_repo)
+                    release.snapshots["router"] = snap
+                except SystemExit as e:
+                    if not args.quiet:
+                        print(f"[docs] warning: {e}", file=sys.stderr)
+            else:
+                # Tagged release — release.ref is the tag name
+                try:
+                    snap = tag_snapshot(router_repo, release.ref)
+                    release.snapshots["router"] = snap
+                except SystemExit as e:
+                    if not args.quiet:
+                        print(f"[docs] warning: {e}", file=sys.stderr)
+
+    # Attach satellite snapshots to the latest release only
+    if not args.no_satellites:
+        latest_release = releases[0]
+        for repo_id, repo in REPOS.items():
+            if repo_id == "router":
+                continue
+            if repo.root is None or not repo.root.is_dir():
+                continue
+            try:
+                snap = satellite_snapshot(repo)
+                latest_release.snapshots[repo_id] = snap
+            except SystemExit as e:
+                if not args.quiet:
+                    print(f"[docs] warning: {e}", file=sys.stderr)
+
+    candidates = [release.version for release in releases] + list(entries.keys())
     latest = max(candidates, key=version_key)
 
-    written = build_site(
-        config, output, releases, entries, latest, args.search, args.dry_run
-    )
+    written = build_site(config, output, releases, entries, latest, args.search, args.dry_run)
     landing = copy_landing(output, args.dry_run)
 
     if not args.quiet:
         prefix = "would write" if args.dry_run else "wrote"
-        worktree = next(
-            release for release in releases if release.source == "worktree"
-        )
-        print(
-            f"[docs] source: {SOURCE_ROOT} "
-            f"(v{worktree.version} from {worktree.ref})"
-        )
+        worktree = releases[0]
+        print(f"[docs] source: {PRIMARY_REPO.root} (v{worktree.version} from {worktree.ref})")
         print(f"[docs] {prefix} {written} files into {output}")
         for release in releases:
-            print(
-                f"[docs]   v{release.version:<9} {len(release.pages):>3} pages "
-                f"from {release.ref} ({release.source})"
-            )
+            snap_count = len(release.snapshots) - 1  # exclude router
+            print(f"[docs]   v{release.version:<9} {len(release.pages):>3} pages from {release.ref} ({snap_count} satellites)")
         print(f"[docs]   {len(entries):>16} versions indexed, latest is v{latest}")
         print(f"[docs] landing page: {'included' if landing else 'not found'}")
 
     status = 0
     if args.check_links:
         if args.dry_run:
-            print(
-                "[docs] warning: --check-links needs a real build", file=sys.stderr
-            )
+            print("[docs] warning: --check-links needs a real build", file=sys.stderr)
         else:
             problems = check_links(output)
             if problems:
                 status = 1
-                print(
-                    f"[docs] {len(problems)} broken internal link(s):",
-                    file=sys.stderr,
-                )
+                print(f"[docs] {len(problems)} broken internal link(s):", file=sys.stderr)
                 for problem in problems[:40]:
                     print(f"[docs]   {problem}", file=sys.stderr)
             else:
