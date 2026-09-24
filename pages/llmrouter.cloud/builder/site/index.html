@@ -452,7 +452,7 @@ ul.ticks li b{color:#dce7f1;font-weight:600}
 <div class="l"><span class="c-p">$</span> <span class="c-cmd">pip install "radlab-llm-router[api,metrics]"</span></div>
 <div class="l"><span class="c-s">&check;&nbsp;</span><span class="c-o">installed llm-router <b>1.1.0</b> · console script <span class="c-k">llm-router</span></span></div>
 <div class="l">&nbsp;</div>
-<div class="l"><span class="c-p">$</span> <span class="c-cmd">llm-router config</span></div>
+<div class="l"><span class="c-p">$</span> <span class="c-cmd">llm-router config discover localhost 10.0.4.21 -o models-config.json</span></div>
 <div class="l"><span class="c-s">&check;&nbsp;</span><span class="c-o">discovered <b>ollama</b>&nbsp;&nbsp;&nbsp;&nbsp;http://localhost:11434 &nbsp;<span class="c-m">(3 models)</span></span></div>
 <div class="l"><span class="c-s">&check;&nbsp;</span><span class="c-o">discovered <b>vllm</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;http://10.0.4.21:8000 <span class="c-m">(1 model)</span></span></div>
 <div class="l"><span class="c-w">&dash;&nbsp;</span><span class="c-o">wrote models-config.json <span class="c-m">— review before prod</span></span></div>
@@ -595,7 +595,7 @@ ul.ticks li b{color:#dce7f1;font-weight:600}
           <li><b>fast_masker</b> &mdash; 30+ regex rules: email, IP, phone, IBAN, JWT, Polish identifiers (PESEL, NIP, KRS, REGON)</li>
           <li><b>pii_masker</b> &mdash; ML-based token classification (RoBERTa) for context-aware PII detection in Polish and English</li>
         </ul>
-        <p class="hint" style="margin-top:8px">Enable via <code>LLM_ROUTER_MASKING_STRATEGY_PIPELINE="fast_masker,pii_masker"</code></p>
+        <p class="hint" style="margin-top:8px">Enable via <code>LLM_ROUTER_FORCE_MASKING=1</code> plus <code>LLM_ROUTER_MASKING_STRATEGY_PIPELINE="fast_masker,pii_masker"</code></p>
       </div>
 
       <div class="panel reveal">
@@ -604,9 +604,9 @@ ul.ticks li b{color:#dce7f1;font-weight:600}
         <ul class="feature-list">
           <li><b>nask_guard</b> &mdash; Polish content safety (HerBERT-PL-Guard model via HTTP service)</li>
           <li><b>sojka_guard</b> &mdash; Bielik-Guard-0.1B multi-category safety check</li>
-          <li>Fail-closed mode: <code>force_guardrail_request=true</code> overrides client</li>
+          <li>Fail-closed mode: <code>LLM_ROUTER_FORCE_GUARDRAIL_REQUEST=1</code> checks every request</li>
         </ul>
-        <p class="hint" style="margin-top:8px">Enable via <code>LLM_ROUTER_GUARDRAIL_REQUEST_PIPELINE="nask_guard"</code></p>
+        <p class="hint" style="margin-top:8px">Enable via <code>LLM_ROUTER_FORCE_GUARDRAIL_REQUEST=1</code> plus <code>LLM_ROUTER_GUARDRAIL_STRATEGY_PIPELINE_REQUEST="nask_guard"</code></p>
       </div>
     </div>
 
@@ -849,13 +849,13 @@ ul.ticks li b{color:#dce7f1;font-weight:600}
       <div class="code">
         <div class="code-bar"><span class="code-file">/etc/llm-router/router.env &mdash; ordered pipeline, opt-in stages</span>
           <button class="copy" type="button">copy</button></div>
-<pre><span class="k-cm"># request pipeline: applied left to right</span>
+<pre><span class="k-cm"># request pipeline: applied left to right (guardrail = request side)</span>
 <span class="k-key">LLM_ROUTER_MASKING_STRATEGY_PIPELINE</span>=<span class="k-str">"fast_masker,pii_masker"</span>
-<span class="k-key">LLM_ROUTER_GUARDRAIL_STRATEGY_PIPELINE</span>=<span class="k-str">"nask_guard"</span>
-<span class="k-key">LLM_ROUTER_ROUTING_STRATEGY</span>=<span class="k-str">"semantic_biencoder_routing"</span>
-<span class="k-key">LLM_ROUTER_LOAD_BALANCING_STRATEGY</span>=<span class="k-str">"balanced"</span>
+<span class="k-key">LLM_ROUTER_GUARDRAIL_STRATEGY_PIPELINE_REQUEST</span>=<span class="k-str">"nask_guard"</span>
+<span class="k-key">LLM_ROUTER_UTILS_PLUGINS_PIPELINE</span>=<span class="k-str">"simple_semantic_routing"</span>
+<span class="k-key">LLM_ROUTER_BALANCE_STRATEGY</span>=<span class="k-str">"balanced"</span>
 
-<span class="k-cm"># force policy even when the client asks not to (fail closed)</span>
+<span class="k-cm"># force the stages on every request (fail closed)</span>
 <span class="k-key">LLM_ROUTER_FORCE_MASKING</span>=<span class="k-num">1</span>
 <span class="k-key">LLM_ROUTER_FORCE_GUARDRAIL_REQUEST</span>=<span class="k-num">1</span>
 <span class="k-key">LLM_ROUTER_MASKING_WITH_AUDIT</span>=<span class="k-num">1</span>
@@ -873,19 +873,18 @@ ul.ticks li b{color:#dce7f1;font-weight:600}
       <div class="code">
         <div class="code-bar"><span class="code-file">llm-router auth &mdash; issue keys, bind policies, cap the blast radius</span>
           <button class="copy" type="button">copy</button></div>
-<pre><span class="c-p">$</span> llm-router auth key generate --name payments-svc --policy internal-only
+<pre><span class="c-p">$</span> llm-router auth key generate --policy internal-only --store redis
 <span class="c-s">&check;</span> key-id <span class="k-key">key-3f9a1c72</span>  token <span class="k-str">sk-llmr-live-8fQ2d7Xk...</span>
 <span class="c-w">&dash;</span> store <span class="k-key">redis</span> &middot; shown once &middot; hash at rest
 
-<span class="c-p">$</span> llm-router auth rate-limit apply --key key-3f9a1c72 \
-      --requests 60 --window 60 --burst 10
+<span class="c-p">$</span> llm-router auth rate-limit apply key-3f9a1c72 --preset basic
 <span class="c-s">&check;</span> bucket <span class="k-key">auth:ratelimit:key-3f9a1c72:{ip}</span> &rarr; sliding window
 
 <span class="c-p">$</span> llm-router auth key list
 <span class="c-o">key-3f9a1c72  payments-svc   enabled   models: gemma-3-27b, gpt-4o-mini</span>
 <span class="c-o">key-91bc0d45  batch-etl      disabled  rotated 2026-08-14</span>
 
-<span class="c-p">$</span> llm-router auth key rotate --id key-91bc0d45   <span class="k-cm"># grace overlap, no downtime</span></pre>
+<span class="c-p">$</span> llm-router auth key rotate key-91bc0d45 --grace 3600  <span class="k-cm"># grace overlap, no downtime</span></pre>
       </div>
     </div>
 
@@ -1022,7 +1021,7 @@ ul.ticks li b{color:#dce7f1;font-weight:600}
         <ul class="ticks">
           <li><b>nask_guard</b> &mdash; HerBERT-PL-Guard, Polish + English harmfulness</li>
           <li><b>sojka_guard</b> &mdash; Bielik-Guard-0.1B, small enough to run on CPU</li>
-          <li><b>Fail closed</b> &mdash; <code>force_guardrail_request</code> overrides the client</li>
+          <li><b>Fail closed</b> &mdash; <code>LLM_ROUTER_FORCE_GUARDRAIL_REQUEST=1</code> checks every request</li>
           <li><b>Your own</b> &mdash; subclass the guardrail base and register it</li>
         </ul>
         <div class="tagrow"><span class="on">herbert-pl-guard</span><span class="on">bielik-guard</span><span class="gd">block &rarr; 4xx</span></div>
@@ -1149,7 +1148,7 @@ $ <span class="k-str">./scripts/decrypt_auditor_logs.sh</span> 2026-09-09</pre>
         <span class="term-title">deploy@router-01: /srv/llm-router</span>
       </div>
       <div class="term-body">
-<div class="l"><span class="c-p">$</span> <span class="c-cmd">llm-router config</span>                              <span class="c-m"># auto-discover local providers</span></div>
+<div class="l"><span class="c-p">$</span> <span class="c-cmd">llm-router config discover localhost</span>           <span class="c-m"># auto-discover local providers</span></div>
 <div class="l">&nbsp;</div>
 <div class="l"><span class="c-p">$</span> <span class="c-cmd">llm-router server start -i dev --port 8081 --save-config</span>   <span class="c-m"># many routers, one CLI</span></div>
 <div class="l"><span class="c-o">Saved 1 setting(s) to ~/.llm-router/instances/dev/config.env:</span></div>
@@ -1168,7 +1167,7 @@ $ <span class="k-str">./scripts/decrypt_auditor_logs.sh</span> 2026-09-09</pre>
 <div class="l"><span class="c-o">internal-only   models: gemma-3-27b        masking: <span class="c-s">required</span>  guardrail: <span class="c-s">required</span></span></div>
 <div class="l"><span class="c-o">partner-ex      models: gpt-4o-mini        masking: <span class="c-s">required</span>  guardrail: <span class="c-w">request</span></span></div>
 <div class="l">&nbsp;</div>
-<div class="l"><span class="c-p">$</span> <span class="c-cmd">llm-router anonymizer run --text ./incidents/*.md</span>  <span class="c-m"># batch redaction</span></div>
+<div class="l"><span class="c-p">$</span> <span class="c-cmd">cat ./incidents/*.md | llm-router anonymizer run --algorithm fast_masker -o redacted.md</span></div>
 <div class="l"><span class="c-p">$</span> <span class="c-cmd">llm-router util translate --llm-router-url http://localhost:8080 ...</span></div>
 <div class="l"><span class="c-p">$</span> <span class="c-cmd">llm-router completion zsh &gt; ~/.zsh/completions/_llm-router</span></div>
       </div>
@@ -1220,7 +1219,7 @@ $ <span class="k-str">./scripts/decrypt_auditor_logs.sh</span> 2026-09-09</pre>
 <pre><span class="c-p">$</span> docker run -d <span class="k-flag">-p</span> 5555:8080 <span class="k-flag">\</span>
     <span class="k-flag">-v</span> $PWD/models-config.json:/srv/models.json:ro <span class="k-flag">\</span>
     <span class="k-flag">-e</span> LLM_ROUTER_MODELS_CONFIG=/srv/models.json <span class="k-flag">\</span>
-    quay.io/radlab/llm-router:rc1
+    quay.io/radlab/llm-router:v1.1.0
 
 <span class="c-p">$</span> curl localhost:5555/version
 <span class="c-o">{&quot;version&quot;: <span class="c-s">&quot;1.1.0&quot;</span>}</span></pre>
@@ -1826,8 +1825,8 @@ $ <span class="k-str">./scripts/decrypt_auditor_logs.sh</span> 2026-09-09</pre>
     <code>radlab-llm-router</code> SDK.
   </p>
   <ul>
-    <li>OpenAI-compatible <code>/v1/chat/completions</code>, <code>/v1/completions</code>,
-      <code>/v1/responses</code>, <code>/v1/embeddings</code> and <code>/v1/messages</code> endpoints</li>
+    <li>OpenAI-compatible <code>/v1/chat/completions</code>, <code>/v1/responses</code>,
+      <code>/v1/embeddings</code> and <code>/v1/messages</code> endpoints</li>
     <li>PII masking, prompt guardrails and GPG-encrypted audit trails for compliance-minded teams</li>
     <li>API key management, auth policies and Redis-backed rate limiting and load-balancing state</li>
     <li>Multi-instance CLI supervision, Prometheus metrics, Grafana dashboard, Docker image, Helm chart</li>
@@ -1859,9 +1858,9 @@ $ <span class="k-str">./scripts/decrypt_auditor_logs.sh</span> 2026-09-09</pre>
       "publisher": { "@id": "#radlab-dev-group" },
       "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
       "featureList": [
-        "OpenAI-compatible chat, completions, responses, embeddings and Anthropic messages endpoints",
+        "OpenAI-compatible chat, responses, embeddings and Anthropic messages endpoints",
         "Provider adapters for vLLM, Ollama, LM Studio, Anthropic and OpenAI-compatible APIs",
-        "Five load-balancing strategies with health checks, per-provider retry and failover",
+        "Six load-balancing strategies with health checks, per-provider retry and failover",
         "PII masking pipelines and prompt guardrails that fail closed",
         "API key management, auth policies and Redis sliding-window rate limiting",
         "Prometheus metrics, Grafana dashboard and GPG-encrypted audit logs",
