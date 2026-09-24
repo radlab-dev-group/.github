@@ -48,9 +48,9 @@ python3 tools/build_docs.py --serve          # build, then http://localhost:8000
   the same commit, the same tag and the same PR; this repo never keeps a copy.
 - **Static output only** -- plain HTML/CSS/JS, no bundler, no node_modules, no
   runtime. It can be served from any web server, object storage or GitHub Pages.
-- **Versioned by git** -- `/docs` serves the version from the router's `.version`,
-  every release tag keeps a frozen copy. Satellite docs are mounted into the
-  latest version only.
+- **Versioned by git** -- `/docs` is built exclusively from the router's release
+  tags; every tag keeps a frozen copy. Satellite docs are mounted into the
+  latest tag only.
 - **All links relative** -- the site works under a project sub-path without
   configuration.
 - **Cross-repo link map** -- links from one repository to documentation that
@@ -63,7 +63,7 @@ python3 tools/build_docs.py --serve          # build, then http://localhost:8000
 
 | Path | Role |
 |---|---|
-| `--source` path (llm-router checkout) | the source repo: Markdown, `.version`, git tags |
+| `--source` path (llm-router checkout) | the source repo: Markdown, git tags |
 | `--plugins` path (llm-router-plugins checkout) | rolling plugin documentation |
 | `--services` path (llm-router-services checkout) | rolling services documentation |
 | `tools/build_docs.py` | the whole builder: discovery, rendering, versioning, search, link check, preview server |
