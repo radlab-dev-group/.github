@@ -4,18 +4,18 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>REST API reference · v0.6.2 · llm-router docs</title>
-<meta name="description" content="llm‑router‑api is a lightweight Python library that provides a flexible, extensible proxy for Large Language Model ( LLM) back‑ends. It abstracts the details of multiple model providers (OpenAI‑compatible, Ollama, vLLM, LM Studio, etc.)…">
+<meta name="description" content="# llm‑router‑api **llm‑router‑api** is a lightweight Python library that provides a flexible, extensible proxy for Large Language Model ( LLM) back‑ends. It abstracts the details of multiple model providers (OpenAI‑compatible, Ollama, vLLM…">
 <meta name="theme-color" content="#05070a">
 <meta property="og:type" content="article">
 <meta property="og:title" content="REST API reference · v0.6.2 · llm-router docs">
-<meta property="og:description" content="llm‑router‑api is a lightweight Python library that provides a flexible, extensible proxy for Large Language Model ( LLM) back‑ends. It abstracts the details of multiple model providers (OpenAI‑compatible, Ollama, vLLM, LM Studio, etc.)…">
+<meta property="og:description" content="# llm‑router‑api **llm‑router‑api** is a lightweight Python library that provides a flexible, extensible proxy for Large Language Model ( LLM) back‑ends. It abstracts the details of multiple model providers (OpenAI‑compatible, Ollama, vLLM…">
 <meta name="docs-version" content="0.6.2">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2305070a'/%3E%3Cpath d='M8 22V10M8 16h9M17 10v12M17 13h7M17 19h7' stroke='%2300e59b' stroke-width='2' stroke-linecap='round' fill='none'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="../../assets/docs.css">
 <link rel="stylesheet" href="../../assets/pygments.css">
 <script src="../../assets/docs.js" defer></script>
 </head>
-<body class="page" data-version="0.6.2" data-search="../search.json" data-latest="1.0.7">
+<body class="page" data-version="0.6.2" data-search="../search.json" data-latest="1.0.8" data-repo="router">
 <a class="skip" href="#main">skip to content</a>
 <header class="topbar">
 <div class="topbar-inner">
@@ -30,7 +30,8 @@
 </form>
 <label class="vselect">
 <span class="sr-only">Documentation version</span>
-<select id="versions" aria-label="Documentation version"><option value="../../1.0.7/llm-router-api/index.html">1.0.7  · latest</option>
+<select id="versions" aria-label="Documentation version"><option value="../../1.0.8/llm-router-api/index.html">1.0.8  · latest</option>
+<option value="../../1.0.7/llm-router-api/index.html">1.0.7</option>
 <option value="../../1.0.6/llm-router-api/index.html">1.0.6</option>
 <option value="../../1.0.5/llm-router-api/index.html">1.0.5</option>
 <option value="../../1.0.4/llm-router-api/index.html">1.0.4</option>
@@ -80,7 +81,7 @@
 </header>
 <div class="scrim" id="scrim" hidden></div>
 <div class="shell">
-<aside class="sidebar" id="sidebar"><div class="side-head"><span class="side-v mono">v0.6.2</span><span class="side-tag old">archived</span></div><a class="side-hub" href="../index.html">documentation index</a><nav class="nav-tree" aria-label="Documentation"><section class="nav-sec"><h2 class="nav-sec-title"><a href="../overview.html">Getting started</a></h2><ul><li><a href="../overview.html">Overview</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="core/auditor/index.html">Security &amp; auditing</a></h2><ul><li><a href="core/auditor/index.html">Auditing subsystem – llm-router</a></li><li><a href="authentication.html">Authentication &amp; Authorization</a></li><li><a href="rate-limiting.html">Rate Limiting</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="index.html">REST API</a></h2><ul><li><a href="index.html" class="active">REST API reference</a></li><li><a href="endpoints/index.html">Endpoints Overview</a></li><li><a href="endpoints/readme-pl.html">Jak tworzyć endpointy w llm-proxy-api – przewodnik</a></li><li><a href="keepalive.html">Keep‑Alive Utility Overview</a></li><li><a href="lb-strategies.html">Load Balancing Strategies</a></li><li><a href="models-config.html">Models configuration description (JSON)</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../llm-router-cli/index.html">CLI</a></h2><ul><li><a href="../llm-router-cli/index.html">llm-router CLI — Command Reference</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../llm-router-lib/index.html">Python library</a></h2><ul><li><a href="../llm-router-lib/index.html">llmrouterlib</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../helm-charts/index.html">Deployment</a></h2><ul><li><a href="../helm-charts/index.html">LLM‑Router Helm Chart</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../examples/index.html">Examples</a></h2><ul><li><a href="../examples/index.html">Integration Examples with LLM Router</a></li><li><a href="../examples/quickstart/index.html">Full Stack with Local Models</a></li><li><a href="../examples/readme-llamaindex.html">Using LlamaIndex with Local Models via the LLM‑Router</a></li><li><a href="../examples/quickstart/google-gemma3-12b-it/vllm.html">vLLM + google/gemma‑3‑12b‑it – Quick‑Start Guide (Ubuntu)</a></li><li><a href="../examples/quickstart/speakleash-bielik-11b-v2-3-instruct/vllm.html">vLLM + speakleash/Bielik-11B-v2.3-Instruct – Przewodnik Szybkiego Startu (Ubuntu)</a></li><li><a href="../examples/quickstart/speakleash-bielik-11b-v2-3-instruct/index.html">🚀 Przewodnik Szybkiego Startu dla speakleash/Bielik-11B-v2.3-Instruct z vLLM &amp; LLM‑Router</a></li><li><a href="../examples/quickstart/google-gemma3-12b-it/index.html">🚀 Quick‑Start Guide for google/gemma-3-12b‑it with vLLM &amp; LLM‑Router</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../changelog.html">Release notes</a></h2><ul><li><a href="../changelog.html">Changelog</a></li></ul></section></nav><div class="side-foot"><a href="../../..">&larr;&nbsp;landing page</a><a class="mono" href="../search.json">search.json</a></div></aside>
+<aside class="sidebar" id="sidebar"><div class="side-head"><span class="side-v mono">v0.6.2</span><span class="side-tag old">archived</span></div><a class="side-hub" href="../index.html">documentation index</a><nav class="nav-tree" aria-label="Documentation"><div class="nav-repo"><span class="repo-name">llm-router</span></div><section class="nav-sec"><h2 class="nav-sec-title"><a href="../overview.html">Getting started</a></h2><ul><li><a href="../overview.html">Overview</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="core/auditor/index.html">Security &amp; auditing</a></h2><ul><li><a href="core/auditor/index.html">Auditing subsystem – llm-router</a></li><li><a href="authentication.html">Authentication &amp; Authorization</a></li><li><a href="rate-limiting.html">Rate Limiting</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="index.html">REST API</a></h2><ul><li><a href="index.html" class="active">REST API reference</a></li><li><a href="endpoints/index.html">Endpoints Overview</a></li><li><a href="endpoints/readme-pl.html">Jak tworzyć endpointy w llm-proxy-api – przewodnik</a></li><li><a href="keepalive.html">Keep‑Alive Utility Overview</a></li><li><a href="lb-strategies.html">Load Balancing Strategies</a></li><li><a href="models-config.html">Models configuration description (JSON)</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../llm-router-cli/index.html">CLI</a></h2><ul><li><a href="../llm-router-cli/index.html">llm-router CLI — Command Reference</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../llm-router-lib/index.html">Python library</a></h2><ul><li><a href="../llm-router-lib/index.html">llmrouterlib</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../helm-charts/index.html">Deployment</a></h2><ul><li><a href="../helm-charts/index.html">LLM‑Router Helm Chart</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../examples/index.html">Examples</a></h2><ul><li><a href="../examples/index.html">Integration Examples with LLM Router</a></li><li><a href="../examples/quickstart/index.html">Full Stack with Local Models</a></li><li><a href="../examples/readme-llamaindex.html">Using LlamaIndex with Local Models via the LLM‑Router</a></li><li><a href="../examples/quickstart/google-gemma3-12b-it/vllm.html">vLLM + google/gemma‑3‑12b‑it – Quick‑Start Guide (Ubuntu)</a></li><li><a href="../examples/quickstart/speakleash-bielik-11b-v2-3-instruct/vllm.html">vLLM + speakleash/Bielik-11B-v2.3-Instruct – Przewodnik Szybkiego Startu (Ubuntu)</a></li><li><a href="../examples/quickstart/speakleash-bielik-11b-v2-3-instruct/index.html">🚀 Przewodnik Szybkiego Startu dla speakleash/Bielik-11B-v2.3-Instruct z vLLM &amp; LLM‑Router</a></li><li><a href="../examples/quickstart/google-gemma3-12b-it/index.html">🚀 Quick‑Start Guide for google/gemma-3-12b‑it with vLLM &amp; LLM‑Router</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../changelog.html">Release notes</a></h2><ul><li><a href="../changelog.html">Changelog</a></li></ul></section></nav><div class="side-foot"><a href="../../..">&larr;&nbsp;landing page</a><a class="mono" href="../search.json">search.json</a></div></aside>
 <main class="main" id="main"><nav class="crumbs" aria-label="Breadcrumb">
 <a href="../../..">llm-router</a><span class="sep">/</span><a href="../index.html">docs</a><span class="sep">/</span><a href="index.html">REST API</a><span class="sep">/</span><em>REST API reference</em>
 </nav>
@@ -89,7 +90,7 @@
 LLM) back‑ends. It abstracts the details of multiple model providers (OpenAI‑compatible, Ollama, vLLM, LM Studio, etc.)
 and offers a unified REST interface with built‑in load‑balancing, health‑checking, and monitoring.</p>
 <blockquote>
-<p><strong>Repository:</strong> <a href="https://github.com/radlab-dev-group/llm-router"> target="_blank" rel="noopener noreferrer"https://github.com/radlab-dev-group/llm-router</a></p>
+<p><strong>Repository:</strong> <a href="https://github.com/radlab-dev-group/llm-router" target="_blank" rel="noopener noreferrer">https://github.com/radlab-dev-group/llm-router</a></p>
 </blockquote>
 <hr />
 <h2 id="features">Features<a class="headerlink" href="#features" title="link to this section">#</a></h2>
@@ -154,7 +155,7 @@ Configuration is driven primarily by environment variables and a JSON model‑co
 | `LLM_ROUTER_USE_PROMETHEUS`                           | Enable Prometheus metrics collection.** When set to `True`, the router registers a `/metrics` endpoint exposing Prometheus‑compatible metrics for monitoring.                                                                                                            | `False`                                |
 | `LLM_ROUTER_FORCE_MASKING`                            | Enable force-masking payload of each endpoint. Each key and value is masked before sending to model provider.                                                                                                                                                            | `False`                                |
 | `LLM_ROUTER_MASKING_WITH_AUDIT`                       | When enabled, each masking operation is recorded in an audit log. This helps with compliance and traceability by providing a tamper‑evident record of what data was masked and when.                                                                                     | `False`                                |
-| `LLM_ROUTER_MASKING_STRATEGY_PIPELINE`                | Defines the ordered list of masking strategies that will be applied to the request payload. For example, [&#39;fast_masker&#39;, &#39;my_new_masker_strategy&#39;] runs the fast masker first, then the `my_new_masker_strategy` masker. This allows flexible, composable masking flows. | `[&#39;fast_masker&#39;]`                      |
+| `LLM_ROUTER_MASKING_STRATEGY_PIPELINE`                | Defines the ordered list of masking strategies that will be applied to the request payload. For example, ['fast_masker', 'my_new_masker_strategy'] runs the fast masker first, then the `my_new_masker_strategy` masker. This allows flexible, composable masking flows. | `['fast_masker']`                      |
 | `LLM_ROUTER_FORCE_GUARDRAIL_REQUEST`                  | Force guardrail evaluation on every request.                                                                                                                                                                                                                             | `False`                                |
 | `LLM_ROUTER_GUARDRAIL_WITH_AUDIT_REQUEST`             | Audits all guardrail decisions.                                                                                                                                                                                                                                          | `False`                                |
 | `GUARDRAIL_STRATEGY_PIPELINE_REQUEST`                 | Ordered list of guardrail strategies.                                                                                                                                                                                                                                    | `-`                                    |
@@ -169,7 +170,7 @@ Configuration is driven primarily by environment variables and a JSON model‑co
 | `LLM_ROUTER_UTILS_PLUGINS_PIPELINE`                   | Utils (plugins) pipeline                                                                                                                                                                                                                                                 | `[]`                                   |
 | `LLM_ROUTER_LANGCHAIN_RAG_COLLECTION`                 | Name of the FAISS collection used by the LangChain RAG plugin. If unset, the collection will be `None` and the plugin will raise an error when instantiated.                                                                                                             | `None`                                 |
 | `LLM_ROUTER_LANGCHAIN_RAG_EMBEDDER`                   | Hugging Face model identifier or local path for the sentence‑embedding model. If unset, it will be `None` and cause an error on plugin creation.                                                                                                                         | `None`                                 |
-| `LLM_ROUTER_LANGCHAIN_RAG_DEVICE`                     | Torch device on which the embedding model runs (`cpu`, `cuda:0`, etc.).                                                                                                                                                                                                  | `&quot;cpu&quot;`                                |
+| `LLM_ROUTER_LANGCHAIN_RAG_DEVICE`                     | Torch device on which the embedding model runs (`cpu`, `cuda:0`, etc.).                                                                                                                                                                                                  | `"cpu"`                                |
 | `LLM_ROUTER_LANGCHAIN_RAG_CHUNK_SIZE`                 | Number of tokens per chunk when splitting texts.                                                                                                                                                                                                                         | `400` tokens                           |
 | `LLM_ROUTER_LANGCHAIN_RAG_CHUNK_OVERLAP`              | Number of overlapping tokens between consecutive chunks.                                                                                                                                                                                                                 | `100` tokens                           |
 | `LLM_ROUTER_LLANGCHAIN_RAG_PERSIST_DIR`               | Store the FAISS index under the given directory (if set, if not set then index will not be stored).                                                                                                                                                                      | `None`                                 |
@@ -185,7 +186,7 @@ the defaults shown above.
 
 | Variable                                     | Default                           | Description                                                                            |
 |----------------------------------------------|-----------------------------------|----------------------------------------------------------------------------------------|
-| `LLM_ROUTER_AUTH_ENABLED`                    | `false`                           | **Master switch** — `&quot;true&quot;` enables all authentication. Default is `false` (no auth). |
+| `LLM_ROUTER_AUTH_ENABLED`                    | `false`                           | **Master switch** — `"true"` enables all authentication. Default is `false` (no auth). |
 | `LLM_ROUTER_AUTH_KEY_STORE`                  | `memory`                          | Key store backend: `vault`, `redis`, or `memory`.                                      |
 | `LLM_ROUTER_AUTH_VAULT_ADDR`                 | *(empty)*                         | HashiCorp Vault server URL.                                                            |
 | `LLM_ROUTER_AUTH_VAULT_PATH`                 | `secret/data/llm-router/api-keys` | KV v2 mount path for key storage.                                                      |
@@ -217,25 +218,25 @@ the defaults shown above.
 
 ```json
 {
-  &quot;active_models&quot;: {
-    &quot;openai_models&quot;: [
-      &quot;gpt-4&quot;,
-      &quot;gpt-3.5-turbo&quot;
+  "active_models": {
+    "openai_models": [
+      "gpt-4",
+      "gpt-3.5-turbo"
     ],
-    &quot;ollama_models&quot;: [
-      &quot;llama2&quot;
+    "ollama_models": [
+      "llama2"
     ]
   },
-  &quot;openai_models&quot;: {
-    &quot;gpt-4&quot;: {
-      &quot;providers&quot;: [
+  "openai_models": {
+    "gpt-4": {
+      "providers": [
         {
-          &quot;id&quot;: &quot;openai-gpt4-1&quot;,
-          &quot;api_host&quot;: &quot;https://api.openai.com/v1&quot;,
-          &quot;api_token&quot;: &quot;sk-...&quot;,
-          &quot;api_type&quot;: &quot;openai&quot;,
-          &quot;input_size&quot;: 8192,
-          &quot;model_path&quot;: &quot;&quot;
+          "id": "openai-gpt4-1",
+          "api_host": "https://api.openai.com/v1",
+          "api_token": "sk-...",
+          "api_type": "openai",
+          "input_size": 8192,
+          "model_path": ""
         }
       ]
     }
@@ -327,14 +328,15 @@ Placeholders such as <code>##PLACEHOLDER##</code> can be replaced via <code>self
 <p><code>llm-router-api</code> is released under the <strong>Apache 2.0</strong>. See the <code>LICENSE</code> file in the repository for full terms.  </p></article>
 <nav class="pager" aria-label="Previous and next page"><a class="next" href="endpoints/index.html"><span class="dir">next &rarr;</span><span class="pt">Endpoints Overview</span></a></nav>
 <footer class="doc-meta">
+<div class="meta-row"><span class="meta-k">repository</span><a class="mono" href="https://github.com/radlab-dev-group/llm-router">llm-router</a></div>
 <div class="meta-row"><span class="meta-k">source</span><a class="mono" href="https://github.com/radlab-dev-group/llm-router/blob/v0.6.2/llm_router_api/README.md">llm_router_api/README.md</a></div>
-<div class="meta-row"><span class="meta-k">last commit</span><time datetime="2026-07-02T01:07:04+02:00">2026-07-02</time></div>
-<div class="meta-row"><span class="meta-k">built from</span><span class="mono">v0.6.2&nbsp;@&nbsp;673e6e5</span></div>
-<p class="hint">Generated from the Markdown file in the repository: commit a change and the next build republishes it for every release that contains it.</p>
+<div class="meta-row"><span class="meta-k">last commit</span><time datetime="2026-06-30T22:09:21+02:00"><a href="https://github.com/radlab-dev-group/llm-router/commit/673e6e5">2026-06-30</a></time></div>
+<div class="meta-row"><span class="meta-k">built from</span><span class="mono"><a href="https://github.com/radlab-dev-group/llm-router/tree/v0.6.2">v0.6.2</a>&nbsp;@&nbsp;<a href="https://github.com/radlab-dev-group/llm-router/commit/673e6e5">673e6e5</a></span></div>
+<p class="hint">Generated from the Markdown file in the repository: commit a change and the next build republishes it.</p>
 </footer>
 <footer class="foot"><div class="foot-inner">
 <span class="mono">llm-router &middot; docs are generated from the repository by <code>tools/build_docs.py</code></span>
-<span class="mono"><a href="https://github.com/radlab-dev-group/llm-router/tree/v0.6.2">0.6.2</a> @ <code>673e6e5</code></span>
+<span class="mono"><a href="https://github.com/radlab-dev-group/llm-router/tree/v0.6.2">0.6.2</a> @ <a href="https://github.com/radlab-dev-group/llm-router/commit/673e6e5">673e6e5</a></span>
 </div></footer>
 </main>
 <aside class="dtoc" id="dtoc"><h2 class="toc-title">on this page</h2><div class="toc-body"><ul><li><a href="#features">Features</a></li><li><a href="#installation">Installation</a></li><li><a href="#running-the-server">Running the Server</a></li><li><a href="#rest-api-overview">REST API Overview</a></li><li><a href="#loadbalancing-strategies">Load‑Balancing Strategies</a></li><li><a href="#keepalive-mechanism">Keep‑Alive Mechanism</a></li><li><a href="#extending-the-router">Extending the Router</a><ul><li><a href="#adding-a-new-provider-type">Adding a New Provider Type</a></li><li><a href="#adding-a-new-endpoint">Adding a New Endpoint</a></li><li><a href="#prompt-files">Prompt Files</a></li></ul></li><li><a href="#monitoring-metrics">Monitoring &amp;amp; Metrics</a></li><li><a href="#license">License</a></li></ul></div></aside>

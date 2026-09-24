@@ -4,18 +4,18 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Response models · v0.9.1 · llm-router docs</title>
-<meta name="description" content="The router speaks JSON, and every endpoint emits a different shape. Before these models, LLMRouterClient handed that JSON straight back as a raw dict, so the knowledge of each response schema lived on the caller side: you had to remember…">
+<meta name="description" content="# Response models ## Introduction The router speaks JSON, and every endpoint emits a *different* shape. Before these models, `LLMRouterClient` handed that JSON straight back as a raw `dict`, so the knowledge of each response schema lived o…">
 <meta name="theme-color" content="#05070a">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Response models · v0.9.1 · llm-router docs">
-<meta property="og:description" content="The router speaks JSON, and every endpoint emits a different shape. Before these models, LLMRouterClient handed that JSON straight back as a raw dict, so the knowledge of each response schema lived on the caller side: you had to remember…">
+<meta property="og:description" content="# Response models ## Introduction The router speaks JSON, and every endpoint emits a *different* shape. Before these models, `LLMRouterClient` handed that JSON straight back as a raw `dict`, so the knowledge of each response schema lived o…">
 <meta name="docs-version" content="0.9.1">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2305070a'/%3E%3Cpath d='M8 22V10M8 16h9M17 10v12M17 13h7M17 19h7' stroke='%2300e59b' stroke-width='2' stroke-linecap='round' fill='none'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="../../assets/docs.css">
 <link rel="stylesheet" href="../../assets/pygments.css">
 <script src="../../assets/docs.js" defer></script>
 </head>
-<body class="page" data-version="0.9.1" data-search="../search.json" data-latest="1.0.7">
+<body class="page" data-version="0.9.1" data-search="../search.json" data-latest="1.0.8" data-repo="router">
 <a class="skip" href="#main">skip to content</a>
 <header class="topbar">
 <div class="topbar-inner">
@@ -30,7 +30,8 @@
 </form>
 <label class="vselect">
 <span class="sr-only">Documentation version</span>
-<select id="versions" aria-label="Documentation version"><option value="../../1.0.7/llm-router-lib/response-models.html">1.0.7  · latest</option>
+<select id="versions" aria-label="Documentation version"><option value="../../1.0.8/llm-router-lib/response-models.html">1.0.8  · latest</option>
+<option value="../../1.0.7/llm-router-lib/response-models.html">1.0.7</option>
 <option value="../../1.0.6/llm-router-lib/response-models.html">1.0.6</option>
 <option value="../../1.0.5/llm-router-lib/response-models.html">1.0.5</option>
 <option value="../../1.0.4/llm-router-lib/response-models.html">1.0.4</option>
@@ -80,7 +81,7 @@
 </header>
 <div class="scrim" id="scrim" hidden></div>
 <div class="shell">
-<aside class="sidebar" id="sidebar"><div class="side-head"><span class="side-v mono">v0.9.1</span><span class="side-tag old">archived</span></div><a class="side-hub" href="../index.html">documentation index</a><nav class="nav-tree" aria-label="Documentation"><section class="nav-sec"><h2 class="nav-sec-title"><a href="../overview.html">Getting started</a></h2><ul><li><a href="../overview.html">Overview</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../llm-router-api/core/auditor/index.html">Security &amp; auditing</a></h2><ul><li><a href="../llm-router-api/core/auditor/index.html">Auditing subsystem – llm-router</a></li><li><a href="../llm-router-api/authentication.html">Authentication &amp; Authorization</a></li><li><a href="../llm-router-api/rate-limiting.html">Rate Limiting</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../llm-router-api/routing-metrics.html">Observability</a></h2><ul><li><a href="../llm-router-api/routing-metrics.html">Router Prometheus Metrics</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../llm-router-api/index.html">REST API</a></h2><ul><li><a href="../llm-router-api/index.html">REST API reference</a></li><li><a href="../llm-router-api/endpoints/index.html">Endpoints Overview</a></li><li><a href="../llm-router-api/env-definitions.html">Environment Variables</a></li><li><a href="../llm-router-api/endpoints/readme-pl.html">Jak tworzyć endpointy w llm-proxy-api – przewodnik</a></li><li><a href="../llm-router-api/keepalive.html">Keep‑Alive Utility Overview</a></li><li><a href="../llm-router-api/lb-strategies.html">Load Balancing Strategies</a></li><li><a href="../llm-router-api/models-config.html">Models configuration description (JSON)</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../llm-router-cli/index.html">CLI</a></h2><ul><li><a href="../llm-router-cli/index.html">llm-router CLI — Command Reference</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="index.html">Python library</a></h2><ul><li><a href="index.html">llmrouterlib</a></li><li><a href="response-models.html" class="active">Response models</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../helm-charts/index.html">Deployment</a></h2><ul><li><a href="../helm-charts/index.html">LLM‑Router Helm Chart</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../examples/index.html">Examples</a></h2><ul><li><a href="../examples/index.html">Integration Examples with LLM Router</a></li><li><a href="../examples/quickstart/index.html">Full Stack with Local Models</a></li><li><a href="../examples/readme-llamaindex.html">Using LlamaIndex with Local Models via the LLM‑Router</a></li><li><a href="../examples/quickstart/google-gemma3-12b-it/vllm.html">vLLM + google/gemma‑3‑12b‑it – Quick‑Start Guide (Ubuntu)</a></li><li><a href="../examples/quickstart/speakleash-bielik-11b-v2-3-instruct/vllm.html">vLLM + speakleash/Bielik-11B-v2.3-Instruct – Przewodnik Szybkiego Startu (Ubuntu)</a></li><li><a href="../examples/quickstart/speakleash-bielik-11b-v2-3-instruct/index.html">🚀 Przewodnik Szybkiego Startu dla speakleash/Bielik-11B-v2.3-Instruct z vLLM &amp; LLM‑Router</a></li><li><a href="../examples/quickstart/google-gemma3-12b-it/index.html">🚀 Quick‑Start Guide for google/gemma-3-12b‑it with vLLM &amp; LLM‑Router</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../changelog.html">Release notes</a></h2><ul><li><a href="../changelog.html">Changelog</a></li></ul></section></nav><div class="side-foot"><a href="../../..">&larr;&nbsp;landing page</a><a class="mono" href="../search.json">search.json</a></div></aside>
+<aside class="sidebar" id="sidebar"><div class="side-head"><span class="side-v mono">v0.9.1</span><span class="side-tag old">archived</span></div><a class="side-hub" href="../index.html">documentation index</a><nav class="nav-tree" aria-label="Documentation"><div class="nav-repo"><span class="repo-name">llm-router</span></div><section class="nav-sec"><h2 class="nav-sec-title"><a href="../overview.html">Getting started</a></h2><ul><li><a href="../overview.html">Overview</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../llm-router-api/core/auditor/index.html">Security &amp; auditing</a></h2><ul><li><a href="../llm-router-api/core/auditor/index.html">Auditing subsystem – llm-router</a></li><li><a href="../llm-router-api/authentication.html">Authentication &amp; Authorization</a></li><li><a href="../llm-router-api/rate-limiting.html">Rate Limiting</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../llm-router-api/routing-metrics.html">Observability</a></h2><ul><li><a href="../llm-router-api/routing-metrics.html">Router Prometheus Metrics</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../llm-router-api/index.html">REST API</a></h2><ul><li><a href="../llm-router-api/index.html">REST API reference</a></li><li><a href="../llm-router-api/endpoints/index.html">Endpoints Overview</a></li><li><a href="../llm-router-api/env-definitions.html">Environment Variables</a></li><li><a href="../llm-router-api/endpoints/readme-pl.html">Jak tworzyć endpointy w llm-proxy-api – przewodnik</a></li><li><a href="../llm-router-api/keepalive.html">Keep‑Alive Utility Overview</a></li><li><a href="../llm-router-api/lb-strategies.html">Load Balancing Strategies</a></li><li><a href="../llm-router-api/models-config.html">Models configuration description (JSON)</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../llm-router-cli/index.html">CLI</a></h2><ul><li><a href="../llm-router-cli/index.html">llm-router CLI — Command Reference</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="index.html">Python library</a></h2><ul><li><a href="index.html">llmrouterlib</a></li><li><a href="response-models.html" class="active">Response models</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../helm-charts/index.html">Deployment</a></h2><ul><li><a href="../helm-charts/index.html">LLM‑Router Helm Chart</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../examples/index.html">Examples</a></h2><ul><li><a href="../examples/index.html">Integration Examples with LLM Router</a></li><li><a href="../examples/quickstart/index.html">Full Stack with Local Models</a></li><li><a href="../examples/readme-llamaindex.html">Using LlamaIndex with Local Models via the LLM‑Router</a></li><li><a href="../examples/quickstart/google-gemma3-12b-it/vllm.html">vLLM + google/gemma‑3‑12b‑it – Quick‑Start Guide (Ubuntu)</a></li><li><a href="../examples/quickstart/speakleash-bielik-11b-v2-3-instruct/vllm.html">vLLM + speakleash/Bielik-11B-v2.3-Instruct – Przewodnik Szybkiego Startu (Ubuntu)</a></li><li><a href="../examples/quickstart/speakleash-bielik-11b-v2-3-instruct/index.html">🚀 Przewodnik Szybkiego Startu dla speakleash/Bielik-11B-v2.3-Instruct z vLLM &amp; LLM‑Router</a></li><li><a href="../examples/quickstart/google-gemma3-12b-it/index.html">🚀 Quick‑Start Guide for google/gemma-3-12b‑it with vLLM &amp; LLM‑Router</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../changelog.html">Release notes</a></h2><ul><li><a href="../changelog.html">Changelog</a></li></ul></section></nav><div class="side-foot"><a href="../../..">&larr;&nbsp;landing page</a><a class="mono" href="../search.json">search.json</a></div></aside>
 <main class="main" id="main"><nav class="crumbs" aria-label="Breadcrumb">
 <a href="../../..">llm-router</a><span class="sep">/</span><a href="../index.html">docs</a><span class="sep">/</span><a href="index.html">Python library</a><span class="sep">/</span><em>Response models</em>
 </nav>
@@ -91,7 +92,7 @@
 caller side: you had to remember the exact key names, guard against missing fields, and you got no compile‑time or IDE
 help.</p>
 <p>The response models move that contract into the library. Every client method returns a typed Pydantic model that mirrors
-the JSON body the router emits for that endpoint, and the models are defined in one place — <a href="https://github.com/radlab-dev-group/llm-router/blob/v0.9.1/llm_router_lib/data_models/response.py"> target="_blank" rel="noopener noreferrer"
+the JSON body the router emits for that endpoint, and the models are defined in one place — <a href="https://github.com/radlab-dev-group/llm-router/blob/v0.9.1/llm_router_lib/data_models/response.py" target="_blank" rel="noopener noreferrer">
 <code>data_models/response.py</code></a> — next to the existing <em>request</em> models (<code>TranslateModel</code>,
 <code>Polarity3cModel</code>, …). Together, request</p>
 <ul>
@@ -108,7 +109,7 @@ the JSON body the router emits for that endpoint, and the models are defined in 
   <code>model_json_schema()</code> for docs, codegen, or contract tests.</li>
 </ul>
 <div class="codehilite"><pre><span></span><code><span class="c1"># resp is a typed model, not a dict</span>
-<span class="n">resp</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">texts</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Hello world&quot;</span><span class="p">],</span> <span class="n">model</span><span class="o">=</span><span class="s2">&quot;speakleash/Bielik-11B-v2.3-Instruct&quot;</span><span class="p">)</span>
+<span class="n">resp</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">texts</span><span class="o">=</span><span class="p">[</span><span class="s2">"Hello world"</span><span class="p">],</span> <span class="n">model</span><span class="o">=</span><span class="s2">"speakleash/Bielik-11B-v2.3-Instruct"</span><span class="p">)</span>
 <span class="n">resp</span><span class="o">.</span><span class="n">response</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">translated</span>  <span class="c1"># str</span>
 <span class="n">resp</span><span class="o">.</span><span class="n">generation_time</span>  <span class="c1"># Optional[float]</span>
 <span class="n">resp</span><span class="o">.</span><span class="n">model_dump</span><span class="p">()</span>  <span class="c1"># → plain dict, if you still need one</span>
@@ -118,7 +119,7 @@ the JSON body the router emits for that endpoint, and the models are defined in 
 <h2 id="where-the-models-live-and-how-to-import-them">📦 Where the models live and how to import them<a class="headerlink" href="#where-the-models-live-and-how-to-import-them" title="link to this section">#</a></h2>
 <p>All response models are exported from the package root, so either import style works:</p>
 <div class="codehilite"><pre><span></span><code><span class="c1"># Option 1 – from the package (recommended)</span>
-<span class="kn">from</span> <span class="nn">llm_router_lib.data_models</span> <span class="kn">import</span> <span class="p">(</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">llm_router_lib.data_models</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">TranslateResponse</span><span class="p">,</span>
     <span class="n">Polarity3cResponse</span><span class="p">,</span>
     <span class="n">ConversationResponse</span><span class="p">,</span>
@@ -127,7 +128,7 @@ the JSON body the router emits for that endpoint, and the models are defined in 
 <span class="p">)</span>
 
 <span class="c1"># Option 2 – from the module directly</span>
-<span class="kn">from</span> <span class="nn">llm_router_lib.data_models.response</span> <span class="kn">import</span> <span class="n">TranslateResponse</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">llm_router_lib.data_models.response</span><span class="w"> </span><span class="kn">import</span> <span class="n">TranslateResponse</span>
 </code></pre></div>
 
 <p>They sit alongside (but are independent of) the request models such as
@@ -267,28 +268,28 @@ the JSON body the router emits for that endpoint, and the models are defined in 
 <hr />
 <h2 id="model-reference">📚 Model reference<a class="headerlink" href="#model-reference" title="link to this section">#</a></h2>
 <h3 id="health-meta">Health / meta<a class="headerlink" href="#health-meta" title="link to this section">#</a></h3>
-<div class="codehilite"><pre><span></span><code><span class="k">class</span> <span class="nc">PingResponse</span><span class="p">(</span><span class="n">BaseResponse</span><span class="p">):</span>
+<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">PingResponse</span><span class="p">(</span><span class="n">BaseResponse</span><span class="p">):</span>
     <span class="n">status</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># True on success</span>
-    <span class="n">body</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># e.g. &quot;pong&quot;</span>
+    <span class="n">body</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># e.g. "pong"</span>
 
 
-<span class="k">class</span> <span class="nc">VersionResponse</span><span class="p">(</span><span class="n">BaseResponse</span><span class="p">):</span>
-    <span class="n">version</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>  <span class="c1"># e.g. &quot;1.4.2&quot;</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">VersionResponse</span><span class="p">(</span><span class="n">BaseResponse</span><span class="p">):</span>
+    <span class="n">version</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">""</span>  <span class="c1"># e.g. "1.4.2"</span>
 
 
-<span class="k">class</span> <span class="nc">ModelInfo</span><span class="p">(</span><span class="n">BaseResponse</span><span class="p">):</span>
-    <span class="nb">id</span><span class="p">:</span> <span class="nb">str</span>  <span class="c1"># model identifier, e.g. &quot;google/gemma-3-12b-it&quot;</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ModelInfo</span><span class="p">(</span><span class="n">BaseResponse</span><span class="p">):</span>
+    <span class="nb">id</span><span class="p">:</span> <span class="nb">str</span>  <span class="c1"># model identifier, e.g. "google/gemma-3-12b-it"</span>
     <span class="nb">object</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">created</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">owned_by</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
 
-<span class="k">class</span> <span class="nc">ModelsListResponse</span><span class="p">(</span><span class="n">BaseResponse</span><span class="p">):</span>
-    <span class="nb">object</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;list&quot;</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ModelsListResponse</span><span class="p">(</span><span class="n">BaseResponse</span><span class="p">):</span>
+    <span class="nb">object</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"list"</span>
     <span class="n">data</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">ModelInfo</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">ids</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>  <span class="c1"># convenience: just the identifiers</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">ids</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>  <span class="c1"># convenience: just the identifiers</span>
         <span class="o">...</span>
 </code></pre></div>
 
@@ -298,69 +299,69 @@ read <code>client.models().ids</code> to get the previous list of names, or
 <code>client.models().data</code> for the full entries.</p>
 </blockquote>
 <h3 id="conversation">Conversation<a class="headerlink" href="#conversation" title="link to this section">#</a></h3>
-<div class="codehilite"><pre><span></span><code><span class="k">class</span> <span class="nc">ConversationResponse</span><span class="p">(</span><span class="n">GenerationResponse</span><span class="p">):</span>
-    <span class="n">response</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># the assistant&#39;s reply text</span>
+<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">ConversationResponse</span><span class="p">(</span><span class="n">GenerationResponse</span><span class="p">):</span>
+    <span class="n">response</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># the assistant's reply text</span>
 
 
-<span class="k">class</span> <span class="nc">ExtendedConversationResponse</span><span class="p">(</span><span class="n">GenerationResponse</span><span class="p">):</span>
-    <span class="n">response</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># the assistant&#39;s reply text</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ExtendedConversationResponse</span><span class="p">(</span><span class="n">GenerationResponse</span><span class="p">):</span>
+    <span class="n">response</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># the assistant's reply text</span>
 </code></pre></div>
 
 <h3 id="pertext-list-utilities">Per‑text (list) utilities<a class="headerlink" href="#pertext-list-utilities" title="link to this section">#</a></h3>
-<div class="codehilite"><pre><span></span><code><span class="k">class</span> <span class="nc">Polarity3cItem</span><span class="p">(</span><span class="n">BaseResponse</span><span class="p">):</span>
-    <span class="n">original</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>  <span class="c1"># the input text</span>
-    <span class="n">polarity</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>  <span class="c1"># &quot;positive&quot; | &quot;negative&quot; | &quot;ambivalent&quot;</span>
+<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Polarity3cItem</span><span class="p">(</span><span class="n">BaseResponse</span><span class="p">):</span>
+    <span class="n">original</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">""</span>  <span class="c1"># the input text</span>
+    <span class="n">polarity</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">""</span>  <span class="c1"># "positive" | "negative" | "ambivalent"</span>
 
 
-<span class="k">class</span> <span class="nc">Polarity3cResponse</span><span class="p">(</span><span class="n">GenerationResponse</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Polarity3cResponse</span><span class="p">(</span><span class="n">GenerationResponse</span><span class="p">):</span>
     <span class="n">response</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Polarity3cItem</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># one item per input text</span>
 
 
-<span class="k">class</span> <span class="nc">TranslateItem</span><span class="p">(</span><span class="n">BaseResponse</span><span class="p">):</span>
-    <span class="n">original</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>  <span class="c1"># the input text</span>
-    <span class="n">translated</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>  <span class="c1"># the translation</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">TranslateItem</span><span class="p">(</span><span class="n">BaseResponse</span><span class="p">):</span>
+    <span class="n">original</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">""</span>  <span class="c1"># the input text</span>
+    <span class="n">translated</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">""</span>  <span class="c1"># the translation</span>
 
 
-<span class="k">class</span> <span class="nc">TranslateResponse</span><span class="p">(</span><span class="n">GenerationResponse</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">TranslateResponse</span><span class="p">(</span><span class="n">GenerationResponse</span><span class="p">):</span>
     <span class="n">response</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">TranslateItem</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># one item per input text</span>
 
 
-<span class="k">class</span> <span class="nc">SimplifyTextResponse</span><span class="p">(</span><span class="n">GenerationResponse</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">SimplifyTextResponse</span><span class="p">(</span><span class="n">GenerationResponse</span><span class="p">):</span>
     <span class="n">response</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># the simplified texts, in input order</span>
 
 
-<span class="k">class</span> <span class="nc">TextQuestions</span><span class="p">(</span><span class="n">BaseResponse</span><span class="p">):</span>
-    <span class="n">text</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>  <span class="c1"># the input text</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">TextQuestions</span><span class="p">(</span><span class="n">BaseResponse</span><span class="p">):</span>
+    <span class="n">text</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">""</span>  <span class="c1"># the input text</span>
     <span class="n">questions</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># the generated questions</span>
 
 
-<span class="k">class</span> <span class="nc">GenerateQuestionsResponse</span><span class="p">(</span><span class="n">GenerationResponse</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">GenerateQuestionsResponse</span><span class="p">(</span><span class="n">GenerationResponse</span><span class="p">):</span>
     <span class="n">response</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">TextQuestions</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># one entry per input text</span>
 </code></pre></div>
 
 <h3 id="singleoutput-utilities">Single‑output utilities<a class="headerlink" href="#singleoutput-utilities" title="link to this section">#</a></h3>
-<div class="codehilite"><pre><span></span><code><span class="k">class</span> <span class="nc">GenerativeAnswerResponse</span><span class="p">(</span><span class="n">GenerationResponse</span><span class="p">):</span>
+<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">GenerativeAnswerResponse</span><span class="p">(</span><span class="n">GenerationResponse</span><span class="p">):</span>
     <span class="n">response</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># the generated answer</span>
 
 
-<span class="k">class</span> <span class="nc">GenerateLabelResponse</span><span class="p">(</span><span class="n">GenerationResponse</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">GenerateLabelResponse</span><span class="p">(</span><span class="n">GenerationResponse</span><span class="p">):</span>
     <span class="n">response</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># the generated category label</span>
 </code></pre></div>
 
 <h3 id="article-utilities">Article utilities<a class="headerlink" href="#article-utilities" title="link to this section">#</a></h3>
-<div class="codehilite"><pre><span></span><code><span class="k">class</span> <span class="nc">ArticleText</span><span class="p">(</span><span class="n">BaseResponse</span><span class="p">):</span>
+<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">ArticleText</span><span class="p">(</span><span class="n">BaseResponse</span><span class="p">):</span>
     <span class="n">article_text</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># the generated article</span>
 
 
-<span class="k">class</span> <span class="nc">GenerateArticleFromTextResponse</span><span class="p">(</span><span class="n">GenerationResponse</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">GenerateArticleFromTextResponse</span><span class="p">(</span><span class="n">GenerationResponse</span><span class="p">):</span>
     <span class="n">response</span><span class="p">:</span> <span class="n">ArticleText</span> <span class="o">=</span> <span class="n">ArticleText</span><span class="p">()</span>
 
 
-<span class="k">class</span> <span class="nc">GenerateArticleFromTextsResponse</span><span class="p">(</span><span class="n">GenerationResponse</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">GenerateArticleFromTextsResponse</span><span class="p">(</span><span class="n">GenerationResponse</span><span class="p">):</span>
     <span class="n">response</span><span class="p">:</span> <span class="n">ArticleText</span> <span class="o">=</span> <span class="n">ArticleText</span><span class="p">()</span>
 
 
-<span class="k">class</span> <span class="nc">CreateFullArticleFromTextsResponse</span><span class="p">(</span><span class="n">GenerationResponse</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">CreateFullArticleFromTextsResponse</span><span class="p">(</span><span class="n">GenerationResponse</span><span class="p">):</span>
     <span class="n">response</span><span class="p">:</span> <span class="n">ArticleText</span> <span class="o">=</span> <span class="n">ArticleText</span><span class="p">()</span>
 </code></pre></div>
 
@@ -386,50 +387,50 @@ partial/<code>status</code>‑wrapped body (<code>{"status": true, "response": �
 <hr />
 <h2 id="usage-examples">🚀 Usage examples<a class="headerlink" href="#usage-examples" title="link to this section">#</a></h2>
 <h3 id="access-fields-typed">Access fields (typed)<a class="headerlink" href="#access-fields-typed" title="link to this section">#</a></h3>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">llm_router_lib</span> <span class="kn">import</span> <span class="n">LLMRouterClient</span>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">llm_router_lib</span><span class="w"> </span><span class="kn">import</span> <span class="n">LLMRouterClient</span>
 
-<span class="n">client</span> <span class="o">=</span> <span class="n">LLMRouterClient</span><span class="p">(</span><span class="n">api</span><span class="o">=</span><span class="s2">&quot;http://localhost:8080&quot;</span><span class="p">,</span> <span class="n">token</span><span class="o">=</span><span class="s2">&quot;...&quot;</span><span class="p">)</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">LLMRouterClient</span><span class="p">(</span><span class="n">api</span><span class="o">=</span><span class="s2">"http://localhost:8080"</span><span class="p">,</span> <span class="n">token</span><span class="o">=</span><span class="s2">"..."</span><span class="p">)</span>
 
 <span class="c1"># Conversation — a single reply string (named keyword arguments)</span>
 <span class="n">conv</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">conversation_with_model</span><span class="p">(</span>
-    <span class="n">user_last_statement</span><span class="o">=</span><span class="s2">&quot;Hello!&quot;</span><span class="p">,</span>
-    <span class="n">model</span><span class="o">=</span><span class="s2">&quot;google/gemma-3-12b-it&quot;</span><span class="p">,</span>
+    <span class="n">user_last_statement</span><span class="o">=</span><span class="s2">"Hello!"</span><span class="p">,</span>
+    <span class="n">model</span><span class="o">=</span><span class="s2">"google/gemma-3-12b-it"</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">conv</span><span class="o">.</span><span class="n">response</span><span class="p">)</span>  <span class="c1"># &quot;Hi! How can I help?&quot;</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">conv</span><span class="o">.</span><span class="n">response</span><span class="p">)</span>  <span class="c1"># "Hi! How can I help?"</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">conv</span><span class="o">.</span><span class="n">generation_time</span><span class="p">)</span>  <span class="c1"># 0.42 (seconds)</span>
 
 <span class="c1"># Translate — one item per input text</span>
-<span class="n">tr</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">texts</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Hello world&quot;</span><span class="p">,</span> <span class="s2">&quot;Thank you&quot;</span><span class="p">],</span> <span class="n">model</span><span class="o">=</span><span class="s2">&quot;speakleash/Bielik-11B-v2.3-Instruct&quot;</span><span class="p">)</span>
+<span class="n">tr</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">texts</span><span class="o">=</span><span class="p">[</span><span class="s2">"Hello world"</span><span class="p">,</span> <span class="s2">"Thank you"</span><span class="p">],</span> <span class="n">model</span><span class="o">=</span><span class="s2">"speakleash/Bielik-11B-v2.3-Instruct"</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">tr</span><span class="o">.</span><span class="n">response</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">original</span><span class="p">,</span> <span class="s2">&quot;-&gt;&quot;</span><span class="p">,</span> <span class="n">item</span><span class="o">.</span><span class="n">translated</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">original</span><span class="p">,</span> <span class="s2">"-&gt;"</span><span class="p">,</span> <span class="n">item</span><span class="o">.</span><span class="n">translated</span><span class="p">)</span>
 
 <span class="c1"># Polarity — one item per input text</span>
-<span class="n">pol</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">polarity_3c</span><span class="p">(</span><span class="n">texts</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Great product!&quot;</span><span class="p">,</span> <span class="s2">&quot;Terrible.&quot;</span><span class="p">],</span> <span class="n">model</span><span class="o">=</span><span class="s2">&quot;google/gemma-3-12b-it&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">pol</span><span class="o">.</span><span class="n">response</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">polarity</span><span class="p">)</span>  <span class="c1"># &quot;positive&quot;</span>
+<span class="n">pol</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">polarity_3c</span><span class="p">(</span><span class="n">texts</span><span class="o">=</span><span class="p">[</span><span class="s2">"Great product!"</span><span class="p">,</span> <span class="s2">"Terrible."</span><span class="p">],</span> <span class="n">model</span><span class="o">=</span><span class="s2">"google/gemma-3-12b-it"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">pol</span><span class="o">.</span><span class="n">response</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">polarity</span><span class="p">)</span>  <span class="c1"># "positive"</span>
 
 <span class="c1"># Article — nested object</span>
-<span class="n">art</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">generate_article_from_text</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="s2">&quot;…&quot;</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="s2">&quot;google/gemma-3-12b-it&quot;</span><span class="p">)</span>
+<span class="n">art</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">generate_article_from_text</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="s2">"…"</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="s2">"google/gemma-3-12b-it"</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">art</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">article_text</span><span class="p">)</span>
 </code></pre></div>
 
 <h3 id="serialize-export">Serialize / export<a class="headerlink" href="#serialize-export" title="link to this section">#</a></h3>
 <div class="codehilite"><pre><span></span><code><span class="c1"># To a plain dict</span>
-<span class="n">d</span> <span class="o">=</span> <span class="n">tr</span><span class="o">.</span><span class="n">model_dump</span><span class="p">()</span>  <span class="c1"># {&quot;response&quot;: [{&quot;original&quot;:…, &quot;translated&quot;:…}], &quot;generation_time&quot;: …}</span>
+<span class="n">d</span> <span class="o">=</span> <span class="n">tr</span><span class="o">.</span><span class="n">model_dump</span><span class="p">()</span>  <span class="c1"># {"response": [{"original":…, "translated":…}], "generation_time": …}</span>
 
 <span class="c1"># To JSON</span>
-<span class="n">s</span> <span class="o">=</span> <span class="n">tr</span><span class="o">.</span><span class="n">model_dump_json</span><span class="p">()</span>  <span class="c1"># &#39;...&#39;</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">tr</span><span class="o">.</span><span class="n">model_dump_json</span><span class="p">()</span>  <span class="c1"># '...'</span>
 
 <span class="c1"># To a JSON Schema (for docs / codegen / contract tests)</span>
 <span class="n">schema</span> <span class="o">=</span> <span class="n">TranslateResponse</span><span class="o">.</span><span class="n">model_json_schema</span><span class="p">()</span>
 </code></pre></div>
 
 <h3 id="roundtrip-validate-a-storedstatuswrapped-body">Round‑trip (validate a stored/<code>status</code>‑wrapped body)<a class="headerlink" href="#roundtrip-validate-a-storedstatuswrapped-body" title="link to this section">#</a></h3>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">llm_router_lib.data_models.response</span> <span class="kn">import</span> <span class="n">TranslateResponse</span>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">llm_router_lib.data_models.response</span><span class="w"> </span><span class="kn">import</span> <span class="n">TranslateResponse</span>
 
-<span class="n">body</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
-        <span class="s2">&quot;response&quot;</span><span class="p">:</span> <span class="p">[{</span><span class="s2">&quot;original&quot;</span><span class="p">:</span> <span class="s2">&quot;Hi&quot;</span><span class="p">,</span> <span class="s2">&quot;translated&quot;</span><span class="p">:</span> <span class="s2">&quot;Hej&quot;</span><span class="p">}]}</span>
-<span class="n">tr</span> <span class="o">=</span> <span class="n">TranslateResponse</span><span class="o">.</span><span class="n">model_validate</span><span class="p">(</span><span class="n">body</span><span class="p">)</span>  <span class="c1"># extra &quot;status&quot; key is ignored</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">tr</span><span class="o">.</span><span class="n">response</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">translated</span><span class="p">)</span>  <span class="c1"># &quot;Hej&quot;</span>
+<span class="n">body</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"status"</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s2">"response"</span><span class="p">:</span> <span class="p">[{</span><span class="s2">"original"</span><span class="p">:</span> <span class="s2">"Hi"</span><span class="p">,</span> <span class="s2">"translated"</span><span class="p">:</span> <span class="s2">"Hej"</span><span class="p">}]}</span>
+<span class="n">tr</span> <span class="o">=</span> <span class="n">TranslateResponse</span><span class="o">.</span><span class="n">model_validate</span><span class="p">(</span><span class="n">body</span><span class="p">)</span>  <span class="c1"># extra "status" key is ignored</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">tr</span><span class="o">.</span><span class="n">response</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">translated</span><span class="p">)</span>  <span class="c1"># "Hej"</span>
 </code></pre></div>
 
 <hr />
@@ -534,14 +535,15 @@ partial/<code>status</code>‑wrapped body (<code>{"status": true, "response": �
 </table></article>
 <nav class="pager" aria-label="Previous and next page"><a class="prev" href="index.html"><span class="dir">&larr; previous</span><span class="pt">llmrouterlib</span></a></nav>
 <footer class="doc-meta">
+<div class="meta-row"><span class="meta-k">repository</span><a class="mono" href="https://github.com/radlab-dev-group/llm-router">llm-router</a></div>
 <div class="meta-row"><span class="meta-k">source</span><a class="mono" href="https://github.com/radlab-dev-group/llm-router/blob/v0.9.1/llm_router_lib/RESPONSE_MODELS.md">llm_router_lib/RESPONSE_MODELS.md</a></div>
-<div class="meta-row"><span class="meta-k">last commit</span><time datetime="2026-08-28T13:13:28+02:00">2026-08-28</time></div>
-<div class="meta-row"><span class="meta-k">built from</span><span class="mono">v0.9.1&nbsp;@&nbsp;aa3860b</span></div>
-<p class="hint">Generated from the Markdown file in the repository: commit a change and the next build republishes it for every release that contains it.</p>
+<div class="meta-row"><span class="meta-k">last commit</span><time datetime="2026-08-28T08:32:26+02:00"><a href="https://github.com/radlab-dev-group/llm-router/commit/aa3860b">2026-08-28</a></time></div>
+<div class="meta-row"><span class="meta-k">built from</span><span class="mono"><a href="https://github.com/radlab-dev-group/llm-router/tree/v0.9.1">v0.9.1</a>&nbsp;@&nbsp;<a href="https://github.com/radlab-dev-group/llm-router/commit/aa3860b">aa3860b</a></span></div>
+<p class="hint">Generated from the Markdown file in the repository: commit a change and the next build republishes it.</p>
 </footer>
 <footer class="foot"><div class="foot-inner">
 <span class="mono">llm-router &middot; docs are generated from the repository by <code>tools/build_docs.py</code></span>
-<span class="mono"><a href="https://github.com/radlab-dev-group/llm-router/tree/v0.9.1">0.9.1</a> @ <code>aa3860b</code></span>
+<span class="mono"><a href="https://github.com/radlab-dev-group/llm-router/tree/v0.9.1">0.9.1</a> @ <a href="https://github.com/radlab-dev-group/llm-router/commit/aa3860b">aa3860b</a></span>
 </div></footer>
 </main>
 <aside class="dtoc" id="dtoc"><h2 class="toc-title">on this page</h2><div class="toc-body"><ul><li><a href="#introduction">Introduction</a></li><li><a href="#where-the-models-live-and-how-to-import-them">📦 Where the models live and how to import them</a></li><li><a href="#client-method-response-model">🗺️ Client method → response model</a></li><li><a href="#class-hierarchy">🧱 Class hierarchy</a></li><li><a href="#model-reference">📚 Model reference</a><ul><li><a href="#health-meta">Health / meta</a></li><li><a href="#conversation">Conversation</a></li><li><a href="#pertext-list-utilities">Per‑text (list) utilities</a></li><li><a href="#singleoutput-utilities">Single‑output utilities</a></li><li><a href="#article-utilities">Article utilities</a></li></ul></li><li><a href="#design-decisions">🎨 Design decisions</a></li><li><a href="#usage-examples">🚀 Usage examples</a><ul><li><a href="#access-fields-typed">Access fields (typed)</a></li><li><a href="#serialize-export">Serialize / export</a></li><li><a href="#roundtrip-validate-a-storedstatuswrapped-body">Round‑trip (validate a stored/status‑wrapped body)</a></li></ul></li><li><a href="#backward-compatibility">🔁 Backward compatibility</a></li><li><a href="#adding-a-new-endpoint-model">➕ Adding a new endpoint model</a></li><li><a href="#testing-notes">✅ Testing notes</a></li><li><a href="#file-map">🧾 File map</a></li></ul></div></aside>

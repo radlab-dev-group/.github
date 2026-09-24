@@ -4,18 +4,18 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Rate Limiting · v0.6.8 · llm-router docs</title>
-<meta name="description" content="Sliding-window rate limiting backed by Redis sorted sets. Prevents API abuse, controls load on downstream LLM providers, and protects against brute-force key enumeration. The rate limiter uses a sliding window approach — unlike…">
+<meta name="description" content="# Rate Limiting Sliding-window rate limiting backed by Redis sorted sets. Prevents API abuse, controls load on downstream LLM providers, and protects against brute-force key enumeration. --- ## How It Works ### Sliding Window Algorithm The…">
 <meta name="theme-color" content="#05070a">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Rate Limiting · v0.6.8 · llm-router docs">
-<meta property="og:description" content="Sliding-window rate limiting backed by Redis sorted sets. Prevents API abuse, controls load on downstream LLM providers, and protects against brute-force key enumeration. The rate limiter uses a sliding window approach — unlike…">
+<meta property="og:description" content="# Rate Limiting Sliding-window rate limiting backed by Redis sorted sets. Prevents API abuse, controls load on downstream LLM providers, and protects against brute-force key enumeration. --- ## How It Works ### Sliding Window Algorithm The…">
 <meta name="docs-version" content="0.6.8">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2305070a'/%3E%3Cpath d='M8 22V10M8 16h9M17 10v12M17 13h7M17 19h7' stroke='%2300e59b' stroke-width='2' stroke-linecap='round' fill='none'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="../../assets/docs.css">
 <link rel="stylesheet" href="../../assets/pygments.css">
 <script src="../../assets/docs.js" defer></script>
 </head>
-<body class="page" data-version="0.6.8" data-search="../search.json" data-latest="1.0.7">
+<body class="page" data-version="0.6.8" data-search="../search.json" data-latest="1.0.8" data-repo="router">
 <a class="skip" href="#main">skip to content</a>
 <header class="topbar">
 <div class="topbar-inner">
@@ -30,7 +30,8 @@
 </form>
 <label class="vselect">
 <span class="sr-only">Documentation version</span>
-<select id="versions" aria-label="Documentation version"><option value="../../1.0.7/index.html">1.0.7  · latest</option>
+<select id="versions" aria-label="Documentation version"><option value="../../1.0.8/index.html">1.0.8  · latest</option>
+<option value="../../1.0.7/index.html">1.0.7</option>
 <option value="../../1.0.6/index.html">1.0.6</option>
 <option value="../../1.0.5/index.html">1.0.5</option>
 <option value="../../1.0.4/index.html">1.0.4</option>
@@ -80,7 +81,7 @@
 </header>
 <div class="scrim" id="scrim" hidden></div>
 <div class="shell">
-<aside class="sidebar" id="sidebar"><div class="side-head"><span class="side-v mono">v0.6.8</span><span class="side-tag old">archived</span></div><a class="side-hub" href="../index.html">documentation index</a><nav class="nav-tree" aria-label="Documentation"><section class="nav-sec"><h2 class="nav-sec-title"><a href="../overview.html">Getting started</a></h2><ul><li><a href="../overview.html">Overview</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="core/auditor/index.html">Security &amp; auditing</a></h2><ul><li><a href="core/auditor/index.html">Auditing subsystem – llm-router</a></li><li><a href="authentication.html">Authentication &amp; Authorization</a></li><li><a href="rate-limiting.html" class="active">Rate Limiting</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="routing-metrics.html">Observability</a></h2><ul><li><a href="routing-metrics.html">Router Prometheus Metrics</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="index.html">REST API</a></h2><ul><li><a href="index.html">REST API reference</a></li><li><a href="endpoints/index.html">Endpoints Overview</a></li><li><a href="env-definitions.html">Environment Variables</a></li><li><a href="endpoints/readme-pl.html">Jak tworzyć endpointy w llm-proxy-api – przewodnik</a></li><li><a href="keepalive.html">Keep‑Alive Utility Overview</a></li><li><a href="lb-strategies.html">Load Balancing Strategies</a></li><li><a href="models-config.html">Models configuration description (JSON)</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../llm-router-cli/index.html">CLI</a></h2><ul><li><a href="../llm-router-cli/index.html">llm-router CLI — Command Reference</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../llm-router-lib/index.html">Python library</a></h2><ul><li><a href="../llm-router-lib/index.html">llmrouterlib</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../helm-charts/index.html">Deployment</a></h2><ul><li><a href="../helm-charts/index.html">LLM‑Router Helm Chart</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../examples/index.html">Examples</a></h2><ul><li><a href="../examples/index.html">Integration Examples with LLM Router</a></li><li><a href="../examples/quickstart/index.html">Full Stack with Local Models</a></li><li><a href="../examples/readme-llamaindex.html">Using LlamaIndex with Local Models via the LLM‑Router</a></li><li><a href="../examples/quickstart/google-gemma3-12b-it/vllm.html">vLLM + google/gemma‑3‑12b‑it – Quick‑Start Guide (Ubuntu)</a></li><li><a href="../examples/quickstart/speakleash-bielik-11b-v2-3-instruct/vllm.html">vLLM + speakleash/Bielik-11B-v2.3-Instruct – Przewodnik Szybkiego Startu (Ubuntu)</a></li><li><a href="../examples/quickstart/speakleash-bielik-11b-v2-3-instruct/index.html">🚀 Przewodnik Szybkiego Startu dla speakleash/Bielik-11B-v2.3-Instruct z vLLM &amp; LLM‑Router</a></li><li><a href="../examples/quickstart/google-gemma3-12b-it/index.html">🚀 Quick‑Start Guide for google/gemma-3-12b‑it with vLLM &amp; LLM‑Router</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../changelog.html">Release notes</a></h2><ul><li><a href="../changelog.html">Changelog</a></li></ul></section></nav><div class="side-foot"><a href="../../..">&larr;&nbsp;landing page</a><a class="mono" href="../search.json">search.json</a></div></aside>
+<aside class="sidebar" id="sidebar"><div class="side-head"><span class="side-v mono">v0.6.8</span><span class="side-tag old">archived</span></div><a class="side-hub" href="../index.html">documentation index</a><nav class="nav-tree" aria-label="Documentation"><div class="nav-repo"><span class="repo-name">llm-router</span></div><section class="nav-sec"><h2 class="nav-sec-title"><a href="../overview.html">Getting started</a></h2><ul><li><a href="../overview.html">Overview</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="core/auditor/index.html">Security &amp; auditing</a></h2><ul><li><a href="core/auditor/index.html">Auditing subsystem – llm-router</a></li><li><a href="authentication.html">Authentication &amp; Authorization</a></li><li><a href="rate-limiting.html" class="active">Rate Limiting</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="routing-metrics.html">Observability</a></h2><ul><li><a href="routing-metrics.html">Router Prometheus Metrics</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="index.html">REST API</a></h2><ul><li><a href="index.html">REST API reference</a></li><li><a href="endpoints/index.html">Endpoints Overview</a></li><li><a href="env-definitions.html">Environment Variables</a></li><li><a href="endpoints/readme-pl.html">Jak tworzyć endpointy w llm-proxy-api – przewodnik</a></li><li><a href="keepalive.html">Keep‑Alive Utility Overview</a></li><li><a href="lb-strategies.html">Load Balancing Strategies</a></li><li><a href="models-config.html">Models configuration description (JSON)</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../llm-router-cli/index.html">CLI</a></h2><ul><li><a href="../llm-router-cli/index.html">llm-router CLI — Command Reference</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../llm-router-lib/index.html">Python library</a></h2><ul><li><a href="../llm-router-lib/index.html">llmrouterlib</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../helm-charts/index.html">Deployment</a></h2><ul><li><a href="../helm-charts/index.html">LLM‑Router Helm Chart</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../examples/index.html">Examples</a></h2><ul><li><a href="../examples/index.html">Integration Examples with LLM Router</a></li><li><a href="../examples/quickstart/index.html">Full Stack with Local Models</a></li><li><a href="../examples/readme-llamaindex.html">Using LlamaIndex with Local Models via the LLM‑Router</a></li><li><a href="../examples/quickstart/google-gemma3-12b-it/vllm.html">vLLM + google/gemma‑3‑12b‑it – Quick‑Start Guide (Ubuntu)</a></li><li><a href="../examples/quickstart/speakleash-bielik-11b-v2-3-instruct/vllm.html">vLLM + speakleash/Bielik-11B-v2.3-Instruct – Przewodnik Szybkiego Startu (Ubuntu)</a></li><li><a href="../examples/quickstart/speakleash-bielik-11b-v2-3-instruct/index.html">🚀 Przewodnik Szybkiego Startu dla speakleash/Bielik-11B-v2.3-Instruct z vLLM &amp; LLM‑Router</a></li><li><a href="../examples/quickstart/google-gemma3-12b-it/index.html">🚀 Quick‑Start Guide for google/gemma-3-12b‑it with vLLM &amp; LLM‑Router</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../changelog.html">Release notes</a></h2><ul><li><a href="../changelog.html">Changelog</a></li></ul></section></nav><div class="side-foot"><a href="../../..">&larr;&nbsp;landing page</a><a class="mono" href="../search.json">search.json</a></div></aside>
 <main class="main" id="main"><nav class="crumbs" aria-label="Breadcrumb">
 <a href="../../..">llm-router</a><span class="sep">/</span><a href="../index.html">docs</a><span class="sep">/</span><a href="core/auditor/index.html">Security &amp; auditing</a><span class="sep">/</span><em>Rate Limiting</em>
 </nav>
@@ -156,7 +157,7 @@ python<span class="w"> </span>-m<span class="w"> </span>llm_router_api.rest_api
 <div class="codehilite"><pre><span></span><code>HTTP/1.1 429 Too Many Requests
 Retry-After: 35
 
-{&quot;error&quot;: {&quot;message&quot;: &quot;Rate limit exceeded&quot;}}
+{"error": {"message": "Rate limit exceeded"}}
 </code></pre></div>
 
 <p>The <code>Retry-After</code> value is calculated from the oldest entry still in the window — this tells the client exactly when it
@@ -174,18 +175,18 @@ can retry.</p>
 
 <h3 id="ratelimitresult-dataclass"><code>RateLimitResult</code> Dataclass<a class="headerlink" href="#ratelimitresult-dataclass" title="link to this section">#</a></h3>
 <div class="codehilite"><pre><span></span><code><span class="nd">@dataclass</span>
-<span class="k">class</span> <span class="nc">RateLimitResult</span><span class="p">:</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">RateLimitResult</span><span class="p">:</span>
     <span class="n">allowed</span><span class="p">:</span> <span class="nb">bool</span>  <span class="c1"># Whether the request is within the limit</span>
     <span class="n">remaining</span><span class="p">:</span> <span class="nb">int</span>  <span class="c1"># Remaining requests in the current window</span>
     <span class="n">retry_after</span><span class="p">:</span> <span class="nb">int</span>  <span class="c1"># Seconds until the oldest request expires (0 if allowed)</span>
 </code></pre></div>
 
 <h3 id="redisratelimiter-class"><code>RedisRateLimiter</code> Class<a class="headerlink" href="#redisratelimiter-class" title="link to this section">#</a></h3>
-<div class="codehilite"><pre><span></span><code><span class="k">class</span> <span class="nc">RedisRateLimiter</span><span class="p">:</span>
-    <span class="n">PREFIX</span> <span class="o">=</span> <span class="s2">&quot;auth:ratelimit&quot;</span>
+<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">RedisRateLimiter</span><span class="p">:</span>
+    <span class="n">PREFIX</span> <span class="o">=</span> <span class="s2">"auth:ratelimit"</span>
     <span class="n">WINDOW</span> <span class="o">=</span> <span class="mi">60</span>  <span class="c1"># seconds</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span>
             <span class="n">redis_client</span><span class="p">:</span> <span class="n">redis</span><span class="o">.</span><span class="n">Redis</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
             <span class="n">redis_host</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -195,7 +196,7 @@ can retry.</p>
             <span class="n">window</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">60</span><span class="p">,</span>
     <span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">is_allowed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">ip</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">RateLimitResult</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_allowed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">ip</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">RateLimitResult</span>
 </code></pre></div>
 
 <hr />
@@ -262,7 +263,7 @@ variable.</p>
 <div class="codehilite"><pre><span></span><code><span class="c1"># Developer tier (default, hardcoded 60 rpm when no per-key override exists)</span>
 
 <span class="c1"># Admin tier (per-key override in seed file):</span>
-<span class="c1">#   &quot;policy_override&quot;: { &quot;rate_limit&quot;: 300 }</span>
+<span class="c1">#   "policy_override": { "rate_limit": 300 }</span>
 
 <span class="c1"># Or via CLI preset:</span>
 llm-router<span class="w"> </span>auth<span class="w"> </span>rate-limit<span class="w"> </span>apply<span class="w"> </span>key-id<span class="w"> </span>--preset<span class="w"> </span>enterprise
@@ -373,7 +374,7 @@ appendfsync<span class="w"> </span>everysec
 
 <h3 id="5-use-public-endpoints-for-health-checks">5. Use Public Endpoints for Health Checks<a class="headerlink" href="#5-use-public-endpoints-for-health-checks" title="link to this section">#</a></h3>
 <p>Health checks should not count against rate limits:</p>
-<div class="codehilite"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">LLM_ROUTER_AUTH_PUBLIC_ENDPOINTS</span><span class="o">=</span><span class="s2">&quot;/ping,/version,/models,/,/health&quot;</span>
+<div class="codehilite"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">LLM_ROUTER_AUTH_PUBLIC_ENDPOINTS</span><span class="o">=</span><span class="s2">"/ping,/version,/models,/,/health"</span>
 </code></pre></div>
 
 <hr />
@@ -534,14 +535,15 @@ appendfsync<span class="w"> </span>everysec
 </ul></article>
 <nav class="pager" aria-label="Previous and next page"><a class="prev" href="authentication.html"><span class="dir">&larr; previous</span><span class="pt">Authentication &amp; Authorization</span></a></nav>
 <footer class="doc-meta">
+<div class="meta-row"><span class="meta-k">repository</span><a class="mono" href="https://github.com/radlab-dev-group/llm-router">llm-router</a></div>
 <div class="meta-row"><span class="meta-k">source</span><a class="mono" href="https://github.com/radlab-dev-group/llm-router/blob/v0.6.8/llm_router_api/RATE_LIMITING.md">llm_router_api/RATE_LIMITING.md</a></div>
-<div class="meta-row"><span class="meta-k">last commit</span><time datetime="2026-07-28T21:32:43+02:00">2026-07-28</time></div>
-<div class="meta-row"><span class="meta-k">built from</span><span class="mono">v0.6.8&nbsp;@&nbsp;0576e1e</span></div>
-<p class="hint">Generated from the Markdown file in the repository: commit a change and the next build republishes it for every release that contains it.</p>
+<div class="meta-row"><span class="meta-k">last commit</span><time datetime="2026-07-27T19:46:07+02:00"><a href="https://github.com/radlab-dev-group/llm-router/commit/0576e1e">2026-07-27</a></time></div>
+<div class="meta-row"><span class="meta-k">built from</span><span class="mono"><a href="https://github.com/radlab-dev-group/llm-router/tree/v0.6.8">v0.6.8</a>&nbsp;@&nbsp;<a href="https://github.com/radlab-dev-group/llm-router/commit/0576e1e">0576e1e</a></span></div>
+<p class="hint">Generated from the Markdown file in the repository: commit a change and the next build republishes it.</p>
 </footer>
 <footer class="foot"><div class="foot-inner">
 <span class="mono">llm-router &middot; docs are generated from the repository by <code>tools/build_docs.py</code></span>
-<span class="mono"><a href="https://github.com/radlab-dev-group/llm-router/tree/v0.6.8">0.6.8</a> @ <code>0576e1e</code></span>
+<span class="mono"><a href="https://github.com/radlab-dev-group/llm-router/tree/v0.6.8">0.6.8</a> @ <a href="https://github.com/radlab-dev-group/llm-router/commit/0576e1e">0576e1e</a></span>
 </div></footer>
 </main>
 <aside class="dtoc" id="dtoc"><h2 class="toc-title">on this page</h2><div class="toc-body"><ul><li><a href="#how-it-works">How It Works</a><ul><li><a href="#sliding-window-algorithm">Sliding Window Algorithm</a></li><li><a href="#key-ip-binning">Key + IP Binning</a></li><li><a href="#bucket-naming">Bucket Naming</a></li></ul></li><li><a href="#configuration">Configuration</a><ul><li><a href="#environment-variables">Environment Variables</a></li><li><a href="#enabling-rate-limiting">Enabling Rate Limiting</a></li></ul></li><li><a href="#response-behavior">Response Behavior</a></li><li><a href="#architecture">Architecture</a><ul><li><a href="#ratelimitresult-dataclass">RateLimitResult Dataclass</a></li><li><a href="#redisratelimiter-class">RedisRateLimiter Class</a></li></ul></li><li><a href="#prometheus-metrics">Prometheus Metrics</a></li><li><a href="#rate-limit-strategy-by-use-case">Rate Limit Strategy by Use Case</a><ul><li><a href="#per-user-quotas-default">Per-User Quotas (Default)</a></li><li><a href="#tiered-rate-limiting-policy-based">Tiered Rate Limiting (Policy-Based)</a></li></ul></li><li><a href="#redis-requirements">Redis Requirements</a><ul><li><a href="#redis-persistence">Redis Persistence</a></li></ul></li><li><a href="#comparison-with-fixed-window">Comparison with Fixed-Window</a><ul><li><a href="#why-sliding-window">Why Sliding Window?</a></li></ul></li><li><a href="#best-practices">Best Practices</a><ul><li><a href="#1-always-enable-rate-limiting-in-production">1. Always Enable Rate Limiting in Production</a></li><li><a href="#2-set-up-auth-redis-connection">2. Set up auth Redis connection</a></li><li><a href="#3-monitor-rate-limit-events">3. Monitor Rate Limit Events</a></li><li><a href="#4-set-graceful-limits">4. Set Graceful Limits</a></li><li><a href="#5-use-public-endpoints-for-health-checks">5. Use Public Endpoints for Health Checks</a></li></ul></li><li><a href="#migration-from-no-auth-default-rate">Migration from No-Auth / Default Rate</a></li><li><a href="#troubleshooting">Troubleshooting</a><ul><li><a href="#why-am-i-getting-429s-immediately">&quot;Why am I getting 429s immediately?&quot;</a></li><li><a href="#rate-limit-is-too-strictloose">&quot;Rate limit is too strict/loose&quot;</a></li><li><a href="#clients-arent-respecting-retry-after">&quot;Clients aren&#x27;t respecting Retry-After&quot;</a></li></ul></li><li><a href="#rate-limit-presets">Rate Limit Presets</a></li><li><a href="#see-also">See Also</a></li></ul></div></aside>

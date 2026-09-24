@@ -4,18 +4,18 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Overview · v0.2.0 · llm-router docs</title>
-<meta name="description" content="A lightweight, extensible gateway that exposes a clean REST API for interacting with multiple Large Language Model (LLM) providers (OpenAI, Ollama, vLLM, etc.). It centralises request validation, prompt management, model configuration and…">
+<meta name="description" content="## llm‑router A lightweight, extensible gateway that exposes a clean **REST** API for interacting with multiple Large Language Model (LLM) providers (OpenAI, Ollama, vLLM, etc.). It centralises request validation, prompt management, model …">
 <meta name="theme-color" content="#05070a">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Overview · v0.2.0 · llm-router docs">
-<meta property="og:description" content="A lightweight, extensible gateway that exposes a clean REST API for interacting with multiple Large Language Model (LLM) providers (OpenAI, Ollama, vLLM, etc.). It centralises request validation, prompt management, model configuration and…">
+<meta property="og:description" content="## llm‑router A lightweight, extensible gateway that exposes a clean **REST** API for interacting with multiple Large Language Model (LLM) providers (OpenAI, Ollama, vLLM, etc.). It centralises request validation, prompt management, model …">
 <meta name="docs-version" content="0.2.0">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2305070a'/%3E%3Cpath d='M8 22V10M8 16h9M17 10v12M17 13h7M17 19h7' stroke='%2300e59b' stroke-width='2' stroke-linecap='round' fill='none'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="../assets/docs.css">
 <link rel="stylesheet" href="../assets/pygments.css">
 <script src="../assets/docs.js" defer></script>
 </head>
-<body class="page" data-version="0.2.0" data-search="search.json" data-latest="1.0.7">
+<body class="page" data-version="0.2.0" data-search="search.json" data-latest="1.0.8" data-repo="router">
 <a class="skip" href="#main">skip to content</a>
 <header class="topbar">
 <div class="topbar-inner">
@@ -30,7 +30,8 @@
 </form>
 <label class="vselect">
 <span class="sr-only">Documentation version</span>
-<select id="versions" aria-label="Documentation version"><option value="../1.0.7/overview.html">1.0.7  · latest</option>
+<select id="versions" aria-label="Documentation version"><option value="../1.0.8/overview.html">1.0.8  · latest</option>
+<option value="../1.0.7/overview.html">1.0.7</option>
 <option value="../1.0.6/overview.html">1.0.6</option>
 <option value="../1.0.5/overview.html">1.0.5</option>
 <option value="../1.0.4/overview.html">1.0.4</option>
@@ -80,11 +81,11 @@
 </header>
 <div class="scrim" id="scrim" hidden></div>
 <div class="shell">
-<aside class="sidebar" id="sidebar"><div class="side-head"><span class="side-v mono">v0.2.0</span><span class="side-tag old">archived</span></div><a class="side-hub" href="index.html">documentation index</a><nav class="nav-tree" aria-label="Documentation"><section class="nav-sec open"><h2 class="nav-sec-title"><a href="overview.html">Getting started</a></h2><ul><li><a href="overview.html" class="active">Overview</a></li><li><a href="install.html">Instalacja zależności</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="llm-router-api/endpoints/readme-pl.html">REST API</a></h2><ul><li><a href="llm-router-api/endpoints/readme-pl.html">Jak tworzyć endpointy w llm-proxy-api – przewodnik</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="changelog.html">Release notes</a></h2><ul><li><a href="changelog.html">Changelog</a></li></ul></section></nav><div class="side-foot"><a href="../..">&larr;&nbsp;landing page</a><a class="mono" href="search.json">search.json</a></div></aside>
+<aside class="sidebar" id="sidebar"><div class="side-head"><span class="side-v mono">v0.2.0</span><span class="side-tag old">archived</span></div><a class="side-hub" href="index.html">documentation index</a><nav class="nav-tree" aria-label="Documentation"><div class="nav-repo"><span class="repo-name">llm-router</span></div><section class="nav-sec open"><h2 class="nav-sec-title"><a href="overview.html">Getting started</a></h2><ul><li><a href="overview.html" class="active">Overview</a></li><li><a href="install.html">Instalacja zależności</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="llm-router-api/endpoints/readme-pl.html">REST API</a></h2><ul><li><a href="llm-router-api/endpoints/readme-pl.html">Jak tworzyć endpointy w llm-proxy-api – przewodnik</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="changelog.html">Release notes</a></h2><ul><li><a href="changelog.html">Changelog</a></li></ul></section></nav><div class="side-foot"><a href="../..">&larr;&nbsp;landing page</a><a class="mono" href="search.json">search.json</a></div></aside>
 <main class="main" id="main"><nav class="crumbs" aria-label="Breadcrumb">
 <a href="../..">llm-router</a><span class="sep">/</span><a href="index.html">docs</a><span class="sep">/</span><a href="overview.html">Getting started</a><span class="sep">/</span><em>Overview</em>
 </nav>
-<article class="prose"><h1 id="llmrouter">llm‑router<a class="headerlink" href="#llmrouter" title="link to this section">#</a></h1>
+<article class="prose"><h2 id="llmrouter">llm‑router<a class="headerlink" href="#llmrouter" title="link to this section">#</a></h2>
 <p>A lightweight, extensible gateway that exposes a clean <strong>REST</strong> API for interacting with 
 multiple Large Language Model (LLM) providers (OpenAI, Ollama, vLLM, etc.). 
 It centralises request validation, prompt management, model configuration and logging, 
@@ -175,7 +176,7 @@ and advanced features like load balancing strategies.</p>
 <blockquote>
 <p><strong>Prerequisite</strong>: <code>radlab-ml-utils</code></p>
 <p>This project uses the
-<a href="https://github.com/radlab-dev-group/ml-utils"> target="_blank" rel="noopener noreferrer"radlab-ml-utils</a>
+<a href="https://github.com/radlab-dev-group/ml-utils" target="_blank" rel="noopener noreferrer">radlab-ml-utils</a>
 library for machine learning utilities
 (e.g., experiment/result logging with Weights &amp; Biases/wandb).
 Install it before working with ML-related parts:</p>
@@ -420,8 +421,8 @@ for coordinating provider availability across multiple workers.
 The connection details for Redis can be configured using environment variables:
 
 ```shell
-LLM_ROUTER_BALANCE_STRATEGY=&quot;first_available&quot; \
-LLM_ROUTER_REDIS_HOST=&quot;your.machine.redis.host&quot; \
+LLM_ROUTER_BALANCE_STRATEGY="first_available" \
+LLM_ROUTER_REDIS_HOST="your.machine.redis.host" \
 LLM_ROUTER_REDIS_PORT=redis_port \
 </code></pre></div>
 
@@ -461,8 +462,8 @@ sudo<span class="w"> </span>systemctl<span class="w"> </span><span class="nb">en
 <h3 id="extending-with-custom-strategies">Extending with Custom Strategies<a class="headerlink" href="#extending-with-custom-strategies" title="link to this section">#</a></h3>
 <p>To use a different strategy (e.g., round‑robin, random weighted, latency‑based),
 implement <code>ChooseProviderStrategyI</code> and pass the instance to <code>ProviderChooser</code>:</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">llm_router_api.base.lb.chooser</span> <span class="kn">import</span> <span class="n">ProviderChooser</span>
-<span class="kn">from</span> <span class="nn">my_strategies</span> <span class="kn">import</span> <span class="n">RoundRobinStrategy</span>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">llm_router_api.base.lb.chooser</span><span class="w"> </span><span class="kn">import</span> <span class="n">ProviderChooser</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">my_strategies</span><span class="w"> </span><span class="kn">import</span> <span class="n">RoundRobinStrategy</span>
 
 <span class="n">chooser</span> <span class="o">=</span> <span class="n">ProviderChooser</span><span class="p">(</span><span class="n">strategy</span><span class="o">=</span><span class="n">RoundRobinStrategy</span><span class="p">())</span>
 </code></pre></div>
@@ -596,23 +597,24 @@ flag lives in the request schema (<code>OpenAIChatModel</code> and analogous mod
 </ul>
 <hr />
 <h2 id="license">📜 License<a class="headerlink" href="#license" title="link to this section">#</a></h2>
-<p>See the <a href="https://github.com/radlab-dev-group/llm-router/blob/v0.2.0/LICENSE"> target="_blank" rel="noopener noreferrer"LICENSE</a> file.</p>
+<p>See the <a href="https://github.com/radlab-dev-group/llm-router/blob/v0.2.0/LICENSE" target="_blank" rel="noopener noreferrer">LICENSE</a> file.</p>
 <hr />
 <h2 id="changelog">📚 Changelog<a class="headerlink" href="#changelog" title="link to this section">#</a></h2>
 <p>See the <a href="changelog.html">CHANGELOG</a> for a complete history of changes.</p></article>
 <nav class="pager" aria-label="Previous and next page"><a class="next" href="install.html"><span class="dir">next &rarr;</span><span class="pt">Instalacja zależności</span></a></nav>
 <footer class="doc-meta">
+<div class="meta-row"><span class="meta-k">repository</span><a class="mono" href="https://github.com/radlab-dev-group/llm-router">llm-router</a></div>
 <div class="meta-row"><span class="meta-k">source</span><a class="mono" href="https://github.com/radlab-dev-group/llm-router/blob/v0.2.0/README.md">README.md</a></div>
-<div class="meta-row"><span class="meta-k">last commit</span><time datetime="2025-10-28T17:24:26+01:00">2025-10-28</time></div>
-<div class="meta-row"><span class="meta-k">built from</span><span class="mono">v0.2.0&nbsp;@&nbsp;9148d57</span></div>
-<p class="hint">Generated from the Markdown file in the repository: commit a change and the next build republishes it for every release that contains it.</p>
+<div class="meta-row"><span class="meta-k">last commit</span><time datetime="2025-10-24T10:16:13+02:00"><a href="https://github.com/radlab-dev-group/llm-router/commit/9148d57">2025-10-24</a></time></div>
+<div class="meta-row"><span class="meta-k">built from</span><span class="mono"><a href="https://github.com/radlab-dev-group/llm-router/tree/v0.2.0">v0.2.0</a>&nbsp;@&nbsp;<a href="https://github.com/radlab-dev-group/llm-router/commit/9148d57">9148d57</a></span></div>
+<p class="hint">Generated from the Markdown file in the repository: commit a change and the next build republishes it.</p>
 </footer>
 <footer class="foot"><div class="foot-inner">
 <span class="mono">llm-router &middot; docs are generated from the repository by <code>tools/build_docs.py</code></span>
-<span class="mono"><a href="https://github.com/radlab-dev-group/llm-router/tree/v0.2.0">0.2.0</a> @ <code>9148d57</code></span>
+<span class="mono"><a href="https://github.com/radlab-dev-group/llm-router/tree/v0.2.0">0.2.0</a> @ <a href="https://github.com/radlab-dev-group/llm-router/commit/9148d57">9148d57</a></span>
 </div></footer>
 </main>
-<aside class="dtoc" id="dtoc"><h2 class="toc-title">on this page</h2><div class="toc-body"><ul><li><a href="#key-features">✨ Key Features</a></li><li><a href="#quick-start">📦 Quick Start</a><ul><li><a href="#1-create-activate-a-virtual-environment">1️⃣ Create &amp;amp; activate a virtual environment</a></li><li><a href="#2-minimum-required-environment-variable">2️⃣ Minimum required environment variable</a></li><li><a href="#3-optional-configuration-via-environment">3️⃣ Optional configuration (via environment)</a></li><li><a href="#4-run-the-rest-api">4️⃣ Run the REST API</a></li><li><a href="#extending-with-custom-strategies">Extending with Custom Strategies</a></li></ul></li><li><a href="#endpoints-overview">🛣️ Endpoints Overview</a><ul><li><a href="#built-in-text-utilities">Built-in Text Utilities</a></li><li><a href="#content-generation">Content Generation</a></li><li><a href="#context-qa-rag-like">Context QA (RAG-like)</a></li><li><a href="#streaming-vs-nonstreaming-responses">Streaming vs. Non‑Streaming Responses</a></li></ul></li><li><a href="#configuration-details">⚙️ Configuration Details</a></li><li><a href="#development">🛠️ Development</a></li><li><a href="#license">📜 License</a></li><li><a href="#changelog">📚 Changelog</a></li></ul></div></aside>
+<aside class="dtoc" id="dtoc"><h2 class="toc-title">on this page</h2><div class="toc-body"><ul><li><a href="#llmrouter">llm‑router</a><ul><li><a href="#key-features">✨ Key Features</a></li></ul></li><li><a href="#quick-start">📦 Quick Start</a><ul><li><a href="#1-create-activate-a-virtual-environment">1️⃣ Create &amp;amp; activate a virtual environment</a></li><li><a href="#2-minimum-required-environment-variable">2️⃣ Minimum required environment variable</a></li><li><a href="#3-optional-configuration-via-environment">3️⃣ Optional configuration (via environment)</a></li><li><a href="#4-run-the-rest-api">4️⃣ Run the REST API</a></li><li><a href="#extending-with-custom-strategies">Extending with Custom Strategies</a></li></ul></li><li><a href="#endpoints-overview">🛣️ Endpoints Overview</a><ul><li><a href="#built-in-text-utilities">Built-in Text Utilities</a></li><li><a href="#content-generation">Content Generation</a></li><li><a href="#context-qa-rag-like">Context QA (RAG-like)</a></li><li><a href="#streaming-vs-nonstreaming-responses">Streaming vs. Non‑Streaming Responses</a></li></ul></li><li><a href="#configuration-details">⚙️ Configuration Details</a></li><li><a href="#development">🛠️ Development</a></li><li><a href="#license">📜 License</a></li><li><a href="#changelog">📚 Changelog</a></li></ul></div></aside>
 </div>
 </body>
 </html>

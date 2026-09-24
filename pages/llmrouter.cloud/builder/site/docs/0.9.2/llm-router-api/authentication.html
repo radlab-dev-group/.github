@@ -4,18 +4,18 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Authentication &amp; Authorization · v0.9.2 · llm-router docs</title>
-<meta name="description" content="API-key-based authentication with per-endpoint policies, rate limiting, audit trail, and Prometheus metrics. Enabled by default: LLMROUTERAUTHENABLED=false — set to &quot;true&quot; to enforce authentication. All environment variables are documented…">
+<meta name="description" content="# Authentication &amp; Authorization API-key-based authentication with per-endpoint policies, rate limiting, audit trail, and Prometheus metrics. **Enabled by default: `LLM_ROUTER_AUTH_ENABLED=false`** — set to `&quot;true&quot;` to enforce authenticati…">
 <meta name="theme-color" content="#05070a">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Authentication &amp; Authorization · v0.9.2 · llm-router docs">
-<meta property="og:description" content="API-key-based authentication with per-endpoint policies, rate limiting, audit trail, and Prometheus metrics. Enabled by default: LLMROUTERAUTHENABLED=false — set to &quot;true&quot; to enforce authentication. All environment variables are documented…">
+<meta property="og:description" content="# Authentication &amp; Authorization API-key-based authentication with per-endpoint policies, rate limiting, audit trail, and Prometheus metrics. **Enabled by default: `LLM_ROUTER_AUTH_ENABLED=false`** — set to `&quot;true&quot;` to enforce authenticati…">
 <meta name="docs-version" content="0.9.2">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2305070a'/%3E%3Cpath d='M8 22V10M8 16h9M17 10v12M17 13h7M17 19h7' stroke='%2300e59b' stroke-width='2' stroke-linecap='round' fill='none'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="../../assets/docs.css">
 <link rel="stylesheet" href="../../assets/pygments.css">
 <script src="../../assets/docs.js" defer></script>
 </head>
-<body class="page" data-version="0.9.2" data-search="../search.json" data-latest="1.0.7">
+<body class="page" data-version="0.9.2" data-search="../search.json" data-latest="1.0.8" data-repo="router">
 <a class="skip" href="#main">skip to content</a>
 <header class="topbar">
 <div class="topbar-inner">
@@ -30,7 +30,8 @@
 </form>
 <label class="vselect">
 <span class="sr-only">Documentation version</span>
-<select id="versions" aria-label="Documentation version"><option value="../../1.0.7/index.html">1.0.7  · latest</option>
+<select id="versions" aria-label="Documentation version"><option value="../../1.0.8/index.html">1.0.8  · latest</option>
+<option value="../../1.0.7/index.html">1.0.7</option>
 <option value="../../1.0.6/index.html">1.0.6</option>
 <option value="../../1.0.5/index.html">1.0.5</option>
 <option value="../../1.0.4/index.html">1.0.4</option>
@@ -80,7 +81,7 @@
 </header>
 <div class="scrim" id="scrim" hidden></div>
 <div class="shell">
-<aside class="sidebar" id="sidebar"><div class="side-head"><span class="side-v mono">v0.9.2</span><span class="side-tag old">archived</span></div><a class="side-hub" href="../index.html">documentation index</a><nav class="nav-tree" aria-label="Documentation"><section class="nav-sec"><h2 class="nav-sec-title"><a href="../overview.html">Getting started</a></h2><ul><li><a href="../overview.html">Overview</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="core/auditor/index.html">Security &amp; auditing</a></h2><ul><li><a href="core/auditor/index.html">Auditing subsystem – llm-router</a></li><li><a href="authentication.html" class="active">Authentication &amp; Authorization</a></li><li><a href="rate-limiting.html">Rate Limiting</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="routing-metrics.html">Observability</a></h2><ul><li><a href="routing-metrics.html">Router Prometheus Metrics</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="index.html">REST API</a></h2><ul><li><a href="index.html">REST API reference</a></li><li><a href="endpoints/index.html">Endpoints Overview</a></li><li><a href="env-definitions.html">Environment Variables</a></li><li><a href="endpoints/readme-pl.html">Jak tworzyć endpointy w llm-proxy-api – przewodnik</a></li><li><a href="keepalive.html">Keep‑Alive Utility Overview</a></li><li><a href="lb-strategies.html">Load Balancing Strategies</a></li><li><a href="models-config.html">Models configuration description (JSON)</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../llm-router-cli/index.html">CLI</a></h2><ul><li><a href="../llm-router-cli/index.html">llm-router CLI — Command Reference</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../llm-router-lib/index.html">Python library</a></h2><ul><li><a href="../llm-router-lib/index.html">llmrouterlib</a></li><li><a href="../llm-router-lib/response-models.html">Response models</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../helm-charts/index.html">Deployment</a></h2><ul><li><a href="../helm-charts/index.html">LLM‑Router Helm Chart</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../examples/index.html">Examples</a></h2><ul><li><a href="../examples/index.html">Integration Examples with LLM Router</a></li><li><a href="../examples/quickstart/index.html">Full Stack with Local Models</a></li><li><a href="../examples/readme-llamaindex.html">Using LlamaIndex with Local Models via the LLM‑Router</a></li><li><a href="../examples/quickstart/google-gemma3-12b-it/vllm.html">vLLM + google/gemma‑3‑12b‑it – Quick‑Start Guide (Ubuntu)</a></li><li><a href="../examples/quickstart/speakleash-bielik-11b-v2-3-instruct/vllm.html">vLLM + speakleash/Bielik-11B-v2.3-Instruct – Przewodnik Szybkiego Startu (Ubuntu)</a></li><li><a href="../examples/quickstart/speakleash-bielik-11b-v2-3-instruct/index.html">🚀 Przewodnik Szybkiego Startu dla speakleash/Bielik-11B-v2.3-Instruct z vLLM &amp; LLM‑Router</a></li><li><a href="../examples/quickstart/google-gemma3-12b-it/index.html">🚀 Quick‑Start Guide for google/gemma-3-12b‑it with vLLM &amp; LLM‑Router</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../changelog.html">Release notes</a></h2><ul><li><a href="../changelog.html">Changelog</a></li></ul></section></nav><div class="side-foot"><a href="../../..">&larr;&nbsp;landing page</a><a class="mono" href="../search.json">search.json</a></div></aside>
+<aside class="sidebar" id="sidebar"><div class="side-head"><span class="side-v mono">v0.9.2</span><span class="side-tag old">archived</span></div><a class="side-hub" href="../index.html">documentation index</a><nav class="nav-tree" aria-label="Documentation"><div class="nav-repo"><span class="repo-name">llm-router</span></div><section class="nav-sec"><h2 class="nav-sec-title"><a href="../overview.html">Getting started</a></h2><ul><li><a href="../overview.html">Overview</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="core/auditor/index.html">Security &amp; auditing</a></h2><ul><li><a href="core/auditor/index.html">Auditing subsystem – llm-router</a></li><li><a href="authentication.html" class="active">Authentication &amp; Authorization</a></li><li><a href="rate-limiting.html">Rate Limiting</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="routing-metrics.html">Observability</a></h2><ul><li><a href="routing-metrics.html">Router Prometheus Metrics</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="index.html">REST API</a></h2><ul><li><a href="index.html">REST API reference</a></li><li><a href="endpoints/index.html">Endpoints Overview</a></li><li><a href="env-definitions.html">Environment Variables</a></li><li><a href="endpoints/readme-pl.html">Jak tworzyć endpointy w llm-proxy-api – przewodnik</a></li><li><a href="keepalive.html">Keep‑Alive Utility Overview</a></li><li><a href="lb-strategies.html">Load Balancing Strategies</a></li><li><a href="models-config.html">Models configuration description (JSON)</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../llm-router-cli/index.html">CLI</a></h2><ul><li><a href="../llm-router-cli/index.html">llm-router CLI — Command Reference</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../llm-router-lib/index.html">Python library</a></h2><ul><li><a href="../llm-router-lib/index.html">llmrouterlib</a></li><li><a href="../llm-router-lib/response-models.html">Response models</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../helm-charts/index.html">Deployment</a></h2><ul><li><a href="../helm-charts/index.html">LLM‑Router Helm Chart</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../examples/index.html">Examples</a></h2><ul><li><a href="../examples/index.html">Integration Examples with LLM Router</a></li><li><a href="../examples/quickstart/index.html">Full Stack with Local Models</a></li><li><a href="../examples/readme-llamaindex.html">Using LlamaIndex with Local Models via the LLM‑Router</a></li><li><a href="../examples/quickstart/google-gemma3-12b-it/vllm.html">vLLM + google/gemma‑3‑12b‑it – Quick‑Start Guide (Ubuntu)</a></li><li><a href="../examples/quickstart/speakleash-bielik-11b-v2-3-instruct/vllm.html">vLLM + speakleash/Bielik-11B-v2.3-Instruct – Przewodnik Szybkiego Startu (Ubuntu)</a></li><li><a href="../examples/quickstart/speakleash-bielik-11b-v2-3-instruct/index.html">🚀 Przewodnik Szybkiego Startu dla speakleash/Bielik-11B-v2.3-Instruct z vLLM &amp; LLM‑Router</a></li><li><a href="../examples/quickstart/google-gemma3-12b-it/index.html">🚀 Quick‑Start Guide for google/gemma-3-12b‑it with vLLM &amp; LLM‑Router</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../changelog.html">Release notes</a></h2><ul><li><a href="../changelog.html">Changelog</a></li></ul></section></nav><div class="side-foot"><a href="../../..">&larr;&nbsp;landing page</a><a class="mono" href="../search.json">search.json</a></div></aside>
 <main class="main" id="main"><nav class="crumbs" aria-label="Breadcrumb">
 <a href="../../..">llm-router</a><span class="sep">/</span><a href="../index.html">docs</a><span class="sep">/</span><a href="core/auditor/index.html">Security &amp; auditing</a><span class="sep">/</span><em>Authentication &amp; Authorization</em>
 </nav>
@@ -178,7 +179,7 @@ llm-router<span class="w"> </span>auth<span class="w"> </span>key<span class="w"
 llm-router<span class="w"> </span>auth<span class="w"> </span>policy<span class="w"> </span>list
 
 <span class="c1"># Create a new policy</span>
-llm-router<span class="w"> </span>auth<span class="w"> </span>policy<span class="w"> </span>create<span class="w"> </span>my-team<span class="w"> </span><span class="s1">&#39;{&quot;can_access&quot;: true, &quot;rate_limit&quot;: 120}&#39;</span>
+llm-router<span class="w"> </span>auth<span class="w"> </span>policy<span class="w"> </span>create<span class="w"> </span>my-team<span class="w"> </span><span class="s1">'{"can_access": true, "rate_limit": 120}'</span>
 </code></pre></div>
 
 <h3 id="rate-limit">Rate Limit<a class="headerlink" href="#rate-limit" title="link to this section">#</a></h3>
@@ -272,32 +273,32 @@ restarts (and between the CLI and router processes), use a seed file.</p>
 </table>
 <div class="codehilite"><pre><span></span><code><span class="p">[</span>
 <span class="w">  </span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;key_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;manual-key-001&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;key_plain&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;sk-litm-my-key-1234567890abcdefghij&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;policy_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;developer&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;is_active&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;expires_at&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;created_at&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1718000000</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;last_used_at&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;rotate_at&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;grace_until&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;metadata&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{},</span>
-<span class="w">    </span><span class="nt">&quot;policy_override&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">      </span><span class="nt">&quot;rate_limit&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">300</span>
+<span class="w">    </span><span class="nt">"key_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"manual-key-001"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"key_plain"</span><span class="p">:</span><span class="w"> </span><span class="s2">"sk-litm-my-key-1234567890abcdefghij"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"policy_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"developer"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"is_active"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"expires_at"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="mi">1718000000</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"last_used_at"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"rotate_at"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"grace_until"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"metadata"</span><span class="p">:</span><span class="w"> </span><span class="p">{},</span>
+<span class="w">    </span><span class="nt">"policy_override"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">"rate_limit"</span><span class="p">:</span><span class="w"> </span><span class="mi">300</span>
 <span class="w">    </span><span class="p">}</span>
 <span class="w">  </span><span class="p">},</span>
 <span class="w">  </span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;key_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;manual-key-002&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;key_plain&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;sk-litm-my-readonly-key-0987654321zyxwvutsrq&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;policy_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;chat&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;is_active&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;expires_at&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1750000000</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;created_at&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1718000000</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;last_used_at&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;rotate_at&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;grace_until&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;metadata&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">      </span><span class="nt">&quot;team&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;backend&quot;</span>
+<span class="w">    </span><span class="nt">"key_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"manual-key-002"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"key_plain"</span><span class="p">:</span><span class="w"> </span><span class="s2">"sk-litm-my-readonly-key-0987654321zyxwvutsrq"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"policy_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"chat"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"is_active"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"expires_at"</span><span class="p">:</span><span class="w"> </span><span class="mi">1750000000</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="mi">1718000000</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"last_used_at"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"rotate_at"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"grace_until"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"metadata"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">"team"</span><span class="p">:</span><span class="w"> </span><span class="s2">"backend"</span>
 <span class="w">    </span><span class="p">}</span>
 <span class="w">  </span><span class="p">}</span>
 <span class="p">]</span>
@@ -430,9 +431,9 @@ configuration, key management commands, and operational notes.</p>
 per-process — not multi-process safe even with seed file.</p>
 <div class="codehilite"><pre><span></span><code><span class="c1"># 1. Create seed file (keys persist to disk)</span>
 mkdir<span class="w"> </span>-p<span class="w"> </span>~/.llm-router/configs/auth
-cat<span class="w"> </span>&gt;<span class="w"> </span>~/.llm-router/configs/auth/memory-keys.json<span class="w"> </span><span class="s">&lt;&lt; &#39;EOF&#39;</span>
+cat<span class="w"> </span>&gt;<span class="w"> </span>~/.llm-router/configs/auth/memory-keys.json<span class="w"> </span><span class="s">&lt;&lt; 'EOF'</span>
 <span class="s">[</span>
-<span class="s">  { &quot;key_plain&quot;: &quot;sk-litm-my-dev-key&quot;, &quot;policy_name&quot;: &quot;developer&quot; }</span>
+<span class="s">  { "key_plain": "sk-litm-my-dev-key", "policy_name": "developer" }</span>
 <span class="s">]</span>
 <span class="s">EOF</span>
 
@@ -450,7 +451,7 @@ llm-router<span class="w"> </span>auth<span class="w"> </span>key<span class="w"
 python<span class="w"> </span>-m<span class="w"> </span>llm_router_api.rest_api
 
 <span class="c1"># 6. Use the key</span>
-curl<span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;x-api-key: sk-litm-my-dev-key&quot;</span><span class="w"> </span>https://host/api/chat/completions
+curl<span class="w"> </span>-H<span class="w"> </span><span class="s2">"x-api-key: sk-litm-my-dev-key"</span><span class="w"> </span>https://host/api/chat/completions
 </code></pre></div>
 
 <table>
@@ -502,7 +503,7 @@ llm-router<span class="w"> </span>auth<span class="w"> </span>key<span class="w"
 python<span class="w"> </span>-m<span class="w"> </span>llm_router_api.rest_api
 
 <span class="c1"># 5. Use the key</span>
-curl<span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;x-api-key: sk-litm-...&quot;</span><span class="w"> </span>https://host/api/chat/completions
+curl<span class="w"> </span>-H<span class="w"> </span><span class="s2">"x-api-key: sk-litm-..."</span><span class="w"> </span>https://host/api/chat/completions
 </code></pre></div>
 
 <table>
@@ -565,7 +566,7 @@ method configuration.</p>
 <span class="c1"># 2. Generate and use keys</span>
 llm-router<span class="w"> </span>auth<span class="w"> </span>key<span class="w"> </span>generate<span class="w"> </span>--policy<span class="w"> </span>developer<span class="w"> </span>--store<span class="w"> </span>vault
 llm-router<span class="w"> </span>auth<span class="w"> </span>key<span class="w"> </span>list<span class="w"> </span>--store<span class="w"> </span>vault
-curl<span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;x-api-key: sk-litm-...&quot;</span><span class="w"> </span>https://host/api/chat/completions
+curl<span class="w"> </span>-H<span class="w"> </span><span class="s2">"x-api-key: sk-litm-..."</span><span class="w"> </span>https://host/api/chat/completions
 </code></pre></div>
 
 <table>
@@ -718,14 +719,15 @@ curl<span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;x-a
 </ul></article>
 <nav class="pager" aria-label="Previous and next page"><a class="prev" href="core/auditor/index.html"><span class="dir">&larr; previous</span><span class="pt">Auditing subsystem – llm-router</span></a><a class="next" href="rate-limiting.html"><span class="dir">next &rarr;</span><span class="pt">Rate Limiting</span></a></nav>
 <footer class="doc-meta">
+<div class="meta-row"><span class="meta-k">repository</span><a class="mono" href="https://github.com/radlab-dev-group/llm-router">llm-router</a></div>
 <div class="meta-row"><span class="meta-k">source</span><a class="mono" href="https://github.com/radlab-dev-group/llm-router/blob/v0.9.2/llm_router_api/AUTHENTICATION.md">llm_router_api/AUTHENTICATION.md</a></div>
-<div class="meta-row"><span class="meta-k">last commit</span><time datetime="2026-08-29T09:50:48+02:00">2026-08-29</time></div>
-<div class="meta-row"><span class="meta-k">built from</span><span class="mono">v0.9.2&nbsp;@&nbsp;ea7b8e7</span></div>
-<p class="hint">Generated from the Markdown file in the repository: commit a change and the next build republishes it for every release that contains it.</p>
+<div class="meta-row"><span class="meta-k">last commit</span><time datetime="2026-08-27T23:19:53+02:00"><a href="https://github.com/radlab-dev-group/llm-router/commit/ea7b8e7">2026-08-27</a></time></div>
+<div class="meta-row"><span class="meta-k">built from</span><span class="mono"><a href="https://github.com/radlab-dev-group/llm-router/tree/v0.9.2">v0.9.2</a>&nbsp;@&nbsp;<a href="https://github.com/radlab-dev-group/llm-router/commit/ea7b8e7">ea7b8e7</a></span></div>
+<p class="hint">Generated from the Markdown file in the repository: commit a change and the next build republishes it.</p>
 </footer>
 <footer class="foot"><div class="foot-inner">
 <span class="mono">llm-router &middot; docs are generated from the repository by <code>tools/build_docs.py</code></span>
-<span class="mono"><a href="https://github.com/radlab-dev-group/llm-router/tree/v0.9.2">0.9.2</a> @ <code>ea7b8e7</code></span>
+<span class="mono"><a href="https://github.com/radlab-dev-group/llm-router/tree/v0.9.2">0.9.2</a> @ <a href="https://github.com/radlab-dev-group/llm-router/commit/ea7b8e7">ea7b8e7</a></span>
 </div></footer>
 </main>
 <aside class="dtoc" id="dtoc"><h2 class="toc-title">on this page</h2><div class="toc-body"><ul><li><a href="#architecture">Architecture</a><ul><li><a href="#components">Components</a></li></ul></li><li><a href="#environment-variables">Environment Variables</a></li><li><a href="#cli-commands">CLI Commands</a><ul><li><a href="#key-management">Key Management</a></li><li><a href="#policy-management">Policy Management</a></li><li><a href="#rate-limit">Rate Limit</a></li></ul></li><li><a href="#seed-file-memory-store">Seed File (Memory Store)</a><ul><li><a href="#seed-file-format">Seed File Format</a></li><li><a href="#how-it-works">How It Works</a></li><li><a href="#default-location">Default Location</a></li></ul></li><li><a href="#permission-engine">Permission Engine</a><ul><li><a href="#builtin-policies">Builtin Policies</a></li></ul></li><li><a href="#prometheus-metrics">Prometheus Metrics</a></li><li><a href="#key-format">Key Format</a></li><li><a href="#deployment-options">Deployment Options</a><ul><li><a href="#1-in-memory-store-development-quick-start">1️⃣ In-Memory Store — Development / Quick Start</a></li><li><a href="#2-redis-store-multi-process-stateful-single-node">2️⃣ Redis Store — Multi-Process / Stateful Single-Node</a></li><li><a href="#3-hashicorp-vault-production-multi-cluster-enterprise">3️⃣ HashiCorp Vault — Production / Multi-Cluster / Enterprise</a></li><li><a href="#comparison-matrix">Comparison Matrix</a></li></ul></li><li><a href="#see-also">See Also</a></li></ul></div></aside>

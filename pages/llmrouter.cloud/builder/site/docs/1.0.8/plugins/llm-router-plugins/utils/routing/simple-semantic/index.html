@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Simple Semantic Routing (simplesemanticrouting) · v1.0.8 · llm-router docs</title>
+<meta name="description" content="# Simple Semantic Routing (`simple_semantic_routing`) Heuristic, two-stage model selection: it classifies the **intent** of the last user message (code / math / creative / general) with weighted keywords, phrases and regexes, estimates the…">
+<meta name="theme-color" content="#05070a">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Simple Semantic Routing (simplesemanticrouting) · v1.0.8 · llm-router docs">
+<meta property="og:description" content="# Simple Semantic Routing (`simple_semantic_routing`) Heuristic, two-stage model selection: it classifies the **intent** of the last user message (code / math / creative / general) with weighted keywords, phrases and regexes, estimates the…">
+<meta name="docs-version" content="1.0.8">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2305070a'/%3E%3Cpath d='M8 22V10M8 16h9M17 10v12M17 13h7M17 19h7' stroke='%2300e59b' stroke-width='2' stroke-linecap='round' fill='none'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="../../../../../../assets/docs.css">
+<link rel="stylesheet" href="../../../../../../assets/pygments.css">
+<script src="../../../../../../assets/docs.js" defer></script>
+</head>
+<body class="page" data-version="1.0.8" data-search="../../../../../search.json" data-latest="1.0.8" data-repo="plugins">
+<a class="skip" href="#main">skip to content</a>
+<header class="topbar">
+<div class="topbar-inner">
+<button class="burger" id="burger" aria-label="Toggle documentation menu" aria-expanded="false" aria-controls="sidebar">&#9776;</button>
+<a class="brand" href="../../../../../../.."><svg width="21" height="21" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="7" fill="#0b1119" stroke="#1a232e"/><path d="M8 22V10M8 16h9M17 10v12M17 13h7M17 19h7" stroke="#00e59b" stroke-width="2" stroke-linecap="round" fill="none"/></svg><span>llm<span class="dash">-</span>router</span><span class="brand-docs">/docs</span></a>
+<div class="topbar-right">
+<form class="search" id="search" role="search" autocomplete="off">
+<span class="search-icon" aria-hidden="true">&#8981;</span>
+<input id="q" type="search" placeholder="search this version" aria-label="Search documentation" role="combobox" aria-expanded="false" aria-controls="results" aria-autocomplete="list">
+<kbd>/</kbd>
+<div class="results" id="results" role="listbox" aria-label="Search results" hidden></div>
+</form>
+<label class="vselect">
+<span class="sr-only">Documentation version</span>
+<select id="versions" aria-label="Documentation version"><option value="index.html" selected>1.0.8  · latest</option>
+<option value="../../../../../../1.0.7/index.html">1.0.7</option>
+<option value="../../../../../../1.0.6/index.html">1.0.6</option>
+<option value="../../../../../../1.0.5/index.html">1.0.5</option>
+<option value="../../../../../../1.0.4/index.html">1.0.4</option>
+<option value="../../../../../../1.0.3/index.html">1.0.3</option>
+<option value="../../../../../../1.0.1/index.html">1.0.1</option>
+<option value="../../../../../../1.0.0/index.html">1.0.0</option>
+<option value="../../../../../../0.9.6/index.html">0.9.6</option>
+<option value="../../../../../../0.9.5/index.html">0.9.5</option>
+<option value="../../../../../../0.9.4/index.html">0.9.4</option>
+<option value="../../../../../../0.9.2/index.html">0.9.2</option>
+<option value="../../../../../../0.9.1/index.html">0.9.1</option>
+<option value="../../../../../../0.9.0/index.html">0.9.0</option>
+<option value="../../../../../../0.8.0/index.html">0.8.0</option>
+<option value="../../../../../../0.7.0/index.html">0.7.0</option>
+<option value="../../../../../../0.6.9/index.html">0.6.9</option>
+<option value="../../../../../../0.6.8/index.html">0.6.8</option>
+<option value="../../../../../../0.6.7/index.html">0.6.7</option>
+<option value="../../../../../../0.6.6/index.html">0.6.6</option>
+<option value="../../../../../../0.6.5/index.html">0.6.5</option>
+<option value="../../../../../../0.6.4/index.html">0.6.4</option>
+<option value="../../../../../../0.6.3/index.html">0.6.3</option>
+<option value="../../../../../../0.6.2/index.html">0.6.2</option>
+<option value="../../../../../../0.6.1/index.html">0.6.1</option>
+<option value="../../../../../../0.6.0/index.html">0.6.0</option>
+<option value="../../../../../../0.5.2/index.html">0.5.2</option>
+<option value="../../../../../../0.5.1/index.html">0.5.1</option>
+<option value="../../../../../../0.5.0/index.html">0.5.0</option>
+<option value="../../../../../../0.4.6/index.html">0.4.6</option>
+<option value="../../../../../../0.4.5/index.html">0.4.5</option>
+<option value="../../../../../../0.4.4/index.html">0.4.4</option>
+<option value="../../../../../../0.4.3/index.html">0.4.3</option>
+<option value="../../../../../../0.4.2/index.html">0.4.2</option>
+<option value="../../../../../../0.4.1/index.html">0.4.1</option>
+<option value="../../../../../../0.4.0/index.html">0.4.0</option>
+<option value="../../../../../../0.3.1/index.html">0.3.1</option>
+<option value="../../../../../../0.3.0/index.html">0.3.0</option>
+<option value="../../../../../../0.2.3/index.html">0.2.3</option>
+<option value="../../../../../../0.2.2/index.html">0.2.2</option>
+<option value="../../../../../../0.2.1/index.html">0.2.1</option>
+<option value="../../../../../../0.2.0/index.html">0.2.0</option>
+<option value="../../../../../../0.1.1/index.html">0.1.1</option>
+<option value="../../../../../../0.1.0/index.html">0.1.0</option></select>
+</label>
+<a class="iconbtn" href="https://github.com/radlab-dev-group/llm-router-plugins" aria-label="Repository on GitHub" title="Repository on GitHub"><svg width="17" height="17" viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8a8 8 0 0 0 5.47 7.59c.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.46-.53.42-.02.72.39.82.55.48.81 1.25.94 1.56.73.2-.27.6-.94.94-1.13-.01-.2-.05-.82-.14-.98-.6.1-1.22.2-1.87.2-1.9 0-3.62-1.13-3.62-3.53 0-.78.28-1.42.74-1.92-.07-.18-.32-.91.07-1.9 0 0 .6-.19 1.97.74a6.8 6.8 0 0 1 3.58 0c1.37-.93 1.97-.74 1.97-.74.39.99.14 1.72.07 1.9.46.5.74 1.14.74 1.92 0 2.41-1.47 3.53-3.87 3.72.3.26.57.77.57 1.56 0 1.13-.012.04-.01 2.32 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg></a>
+</div>
+</div>
+</header>
+<div class="scrim" id="scrim" hidden></div>
+<div class="shell">
+<aside class="sidebar" id="sidebar"><div class="side-head"><span class="side-v mono">v1.0.8</span><span class="side-tag live">latest</span></div><a class="side-hub" href="../../../../../index.html">documentation index</a><nav class="nav-tree" aria-label="Documentation"><div class="nav-repo"><span class="repo-name">llm-router</span></div><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../../../../overview.html">Getting started</a></h2><ul><li><a href="../../../../../overview.html">Overview</a></li><li><a href="../../../../../llm-router-api/docs/installation.html">Installation</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../../../../llm-router-api/docs/env-definitions.html">Configuration</a></h2><ul><li><a href="../../../../../llm-router-api/docs/env-definitions.html">Environment Variables</a></li><li><a href="../../../../../llm-router-api/docs/models-config.html">Models configuration description (JSON)</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../../../../llm-router-api/docs/keepalive.html">Routing &amp; resilience</a></h2><ul><li><a href="../../../../../llm-router-api/docs/keepalive.html">Keep‑Alive Utility Overview</a></li><li><a href="../../../../../llm-router-api/docs/lb-strategies.html">Load Balancing Strategies</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../../../../llm-router-api/core/auditor/index.html">Security &amp; auditing</a></h2><ul><li><a href="../../../../../llm-router-api/core/auditor/index.html">Auditing subsystem – llm-router</a></li><li><a href="../../../../../llm-router-api/docs/authentication.html">Authentication &amp; Authorization</a></li><li><a href="../../../../../llm-router-api/docs/rate-limiting.html">Rate Limiting</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../../../../llm-router-api/docs/routing-metrics.html">Observability</a></h2><ul><li><a href="../../../../../llm-router-api/docs/routing-metrics.html">Router Prometheus Metrics</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../../../../llm-router-api/index.html">REST API</a></h2><ul><li><a href="../../../../../llm-router-api/index.html">REST API reference</a></li><li><a href="../../../../../llm-router-api/endpoints/index.html">Endpoints Overview</a></li><li><a href="../../../../../llm-router-api/docs/endpoint-dev.html">Endpoint Development Guide</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../../../../llm-router-cli/index.html">CLI</a></h2><ul><li><a href="../../../../../llm-router-cli/index.html">llm-router CLI — Command Reference</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../../../../llm-router-lib/index.html">Python library</a></h2><ul><li><a href="../../../../../llm-router-lib/index.html">llmrouterlib</a></li><li><a href="../../../../../llm-router-lib/response-models.html">Response models</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../../../../helm-charts/index.html">Deployment</a></h2><ul><li><a href="../../../../../helm-charts/index.html">LLM‑Router Helm Chart</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../../../../examples/index.html">Examples</a></h2><ul><li><a href="../../../../../examples/index.html">Integration Examples with LLM Router</a></li><li><a href="../../../../../examples/quickstart/index.html">Full Stack with Local Models</a></li><li><a href="../../../../../examples/readme-llamaindex.html">Using LlamaIndex with Local Models via the LLM‑Router</a></li><li><a href="../../../../../examples/quickstart/google-gemma3-12b-it/vllm.html">vLLM + google/gemma‑3‑12b‑it – Quick‑Start Guide (Ubuntu)</a></li><li><a href="../../../../../examples/quickstart/speakleash-bielik-11b-v2-3-instruct/vllm.html">vLLM + speakleash/Bielik-11B-v2.3-Instruct – Przewodnik Szybkiego Startu (Ubuntu)</a></li><li><a href="../../../../../examples/quickstart/speakleash-bielik-11b-v2-3-instruct/index.html">🚀 Przewodnik Szybkiego Startu dla speakleash/Bielik-11B-v2.3-Instruct z vLLM &amp; LLM‑Router</a></li><li><a href="../../../../../examples/quickstart/google-gemma3-12b-it/index.html">🚀 Quick‑Start Guide for google/gemma-3-12b‑it with vLLM &amp; LLM‑Router</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../../../../changelog.html">Release notes</a></h2><ul><li><a href="../../../../../changelog.html">Changelog</a></li></ul></section><div class="nav-repo"><span class="repo-name">llm-router-plugins</span></div><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../../../index.html">Plugins overview</a></h2><ul><li><a href="../../../../index.html">Plugins overview</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../../maskers/fast-masker/index.html">Masker plugins</a></h2><ul><li><a href="../../../maskers/fast-masker/index.html">Overview</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="../agentic-routing/claude-code/index.html">Routing plugins</a></h2><ul><li><a href="../agentic-routing/claude-code/index.html">Claude Code Model Swap (agenticroutingclaude_code)</a></li><li><a href="../agentic-routing/codex/index.html">Codex CLI Routing (agenticroutingcodex)</a></li><li><a href="../semantic-biencoder/index.html">Semantic BiEncoder Routing (semanticbiencoderrouting)</a></li><li><a href="../index.html">Semantic Routing Plugins</a></li><li><a href="index.html" class="active">Simple Semantic Routing (simplesemanticrouting)</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../rag/langchain-rag.html">Utility plugins</a></h2><ul><li><a href="../../rag/langchain-rag.html">LangChain RAG Plugin for LLM‑Router</a></li></ul></section><div class="nav-repo"><span class="repo-name">llm-router-services</span></div><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../../../../services/index.html">Services overview</a></h2><ul><li><a href="../../../../../services/index.html">llm-router services</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../../../../services/llm-router-services/guardrails/index.html">Guardrail services</a></h2><ul><li><a href="../../../../../services/llm-router-services/guardrails/index.html">Guardrails Package</a></li><li><a href="../../../../../services/llm-router-services/guardrails/speakleash/index.html">Integration of Bielik‑Guard‑0.1B as llm‑router guardrail service (Sojka)</a></li><li><a href="../../../../../services/llm-router-services/guardrails/nask/index.html">Integration of HerBERT‑PL‑Guard with the naskpibguard_app.py Service</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../../../../services/docker/index.html">Docker &amp; deployment</a></h2><ul><li><a href="../../../../../services/docker/index.html">LLM‑Router Services – Docker Build &amp; Run Guide</a></li></ul></section></nav><div class="side-foot"><a href="../../../../../../..">&larr;&nbsp;landing page</a><a class="mono" href="../../../../../search.json">search.json</a></div></aside>
+<main class="main" id="main"><nav class="crumbs" aria-label="Breadcrumb">
+<a href="../../../../../../..">llm-router</a><span class="sep">/</span><a href="../../../../../index.html">docs</a><span class="sep">/</span><a href="../agentic-routing/claude-code/index.html">Routing plugins</a><span class="sep">/</span><em>Simple Semantic Routing (simplesemanticrouting)</em>
+</nav>
+<article class="prose"><h1 id="simple-semantic-routing-simple_semantic_routing">Simple Semantic Routing (<code>simple_semantic_routing</code>)<a class="headerlink" href="#simple-semantic-routing-simple_semantic_routing" title="link to this section">#</a></h1>
+<p>Heuristic, two-stage model selection: it classifies the <strong>intent</strong> of the last user message (code / math / creative /
+general) with weighted keywords, phrases and regexes, estimates the <strong>complexity</strong> from a rough token count, and picks
+a model from an ordered pool. No embedding model, no vector store, no network — the whole decision is a few string
+scans, so it costs microseconds and is fully reproducible.</p>
+<p>It is the entry-level routing plugin: turn <code>model: "auto"</code> into "a sensible model for this request" without any ML
+dependencies. When you outgrow keyword heuristics, move to
+<a href="../semantic-biencoder/index.html"><code>semantic_biencoder_routing</code></a>, which decides by embedding similarity instead.</p>
+<ul>
+<li><strong>Plugin name (registry key):</strong> <code>simple_semantic_routing</code></li>
+<li><strong>Class:</strong> <code>llm_router_plugins.utils.routing.simple_semantic.simple_semantic_routing.SimpleSemanticRoutingPlugin</code></li>
+<li><strong>Default config:</strong> <code>llm_router_plugins/resources/routing/simple_semantic.json</code></li>
+<li><strong>Trigger:</strong> <code>payload["model"] == "auto"</code> (exact match)</li>
+<li><strong>Env prefix:</strong> <code>LLM_ROUTER_ROUTING_SEMANTIC_</code></li>
+<li><strong>Dependencies:</strong> none beyond the base package</li>
+</ul>
+<hr />
+<h2 id="what-the-plugin-changes">What the plugin changes<a class="headerlink" href="#what-the-plugin-changes" title="link to this section">#</a></h2>
+<p><code>apply()</code> sets exactly one key:</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>model</code></td>
+<td>the pool entry selected for this intent + complexity</td>
+</tr>
+</tbody>
+</table>
+<p>Nothing else is added — there is <strong>no <code>routing</code> metadata block</strong> in the payload (unlike
+<code>semantic_biencoder_routing</code> and <code>agentic_routing_codex</code>). Everything the plugin knows is written to the log:</p>
+<div class="codehilite"><pre><span></span><code>SimpleSemanticRouting: intent=code, complexity=simple (10 tokens) -&gt; qwen3.6:35b
+</code></pre></div>
+
+<p>If no user text can be found, <code>model</code> is set to the configured <strong>default model</strong> and a warning is logged; a payload
+whose <code>model</code> is not exactly <code>"auto"</code> is returned untouched.</p>
+<hr />
+<h2 id="quick-start">Quick start<a class="headerlink" href="#quick-start" title="link to this section">#</a></h2>
+<h3 id="1-install">1. Install<a class="headerlink" href="#1-install" title="link to this section">#</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="c1"># from a checkout of this repository, into the environment the router runs in</span>
+pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.
+</code></pre></div>
+
+<p>No extras needed — this plugin imports only the standard library.</p>
+<h3 id="2-load-the-plugin-into-the-router">2. Load the plugin into the router<a class="headerlink" href="#2-load-the-plugin-into-the-router" title="link to this section">#</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">LLM_ROUTER_UTILS_PLUGINS_PIPELINE</span><span class="o">=</span><span class="s2">"simple_semantic_routing"</span>
+</code></pre></div>
+
+<p>The router resolves the name in <code>llm_router_plugins.utils.registry.MAIN_UTILS_REGISTRY</code>, instantiates it once per
+process and runs <code>apply()</code> on every prepared payload, before guardrails and before a provider is selected.</p>
+<h3 id="3-declare-the-models-in-the-router-model-config">3. Declare the models in the router model config<a class="headerlink" href="#3-declare-the-models-in-the-router-model-config" title="link to this section">#</a></h3>
+<p>Everything the plugin can select must exist in the llm-router model config (<code>LLM_ROUTER_MODELS_CONFIG</code>):</p>
+<ul>
+<li>the <strong><code>auto</code></strong> alias itself, backed by a <code>builtin</code> provider — the client asks for it, the plugin replaces it;</li>
+<li><strong>every model in the pool</strong> (<code>default_models</code> values, or the <code>LLM_ROUTER_ROUTING_SEMANTIC_MODELS</code> list).</li>
+</ul>
+<div class="codehilite"><pre><span></span><code>// fragment of the llm-router models config
+"semantic_routing": {
+  "auto": {
+    "providers": [
+      { "id": "semantic-routing__auto", "api_type": "builtin", "api_host": null,
+        "api_token": "", "model_path": "", "input_size": 0, "weight": 1.0,
+        "tool_calling": false }
+    ]
+  }
+}
+</code></pre></div>
+
+<p>A pool entry the router does not know is a hard downstream error, not a routing no-op.</p>
+<h3 id="4-verify">4. Verify<a class="headerlink" href="#4-verify" title="link to this section">#</a></h3>
+<p>Send a request with <code>"model": "auto"</code> and look for the log line, or run the
+<a href="#offline-dry-run">verification snippet</a>. Two lines to remember:</p>
+<div class="codehilite"><pre><span></span><code>SimpleSemanticRouting: intent=code, complexity=simple (10 tokens) -&gt; qwen3.6:35b
+No text content found, using default model gpt-oss:120b
+</code></pre></div>
+
+<hr />
+<h2 id="how-it-works">How it works<a class="headerlink" href="#how-it-works" title="link to this section">#</a></h2>
+<div class="codehilite"><pre><span></span><code>payload ──▶ extract text ──▶ stage 1: intent ──▶ stage 2: complexity ──▶ stage 3: pool index ──▶ payload["model"]
+</code></pre></div>
+
+<h3 id="where-it-runs">Where it runs<a class="headerlink" href="#where-it-runs" title="link to this section">#</a></h3>
+<p>Inside the llm-router utils pipeline. The plugin is stateless: no cache, no session, no learned state, so every
+replica answers identically.</p>
+<h3 id="text-extraction">Text extraction<a class="headerlink" href="#text-extraction" title="link to this section">#</a></h3>
+<p>Text is located by the shared helper <code>llm_router_plugins.utils.text_extractor.extract_user_text</code>, in this priority:</p>
+<ol>
+<li><code>payload["messages"][-1]["content"]</code> — the last message of a chat history (earlier turns are <strong>not</strong> seen)</li>
+<li><code>payload["user_last_statement"]</code></li>
+<li><code>payload["query"]</code></li>
+<li><code>payload["prompt"]</code></li>
+<li><code>payload["input"]</code></li>
+</ol>
+<p>Only that one string is scored, so intent detection always reflects the newest user turn.</p>
+<h3 id="stage-1-intent-classification">Stage 1 — intent classification<a class="headerlink" href="#stage-1-intent-classification" title="link to this section">#</a></h3>
+<p>Every intent in <code>intents</code> accumulates a score from three signal kinds; the highest score above zero wins, ties go to
+the intent declared first in the config, and a zero score everywhere yields <code>none</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Signal</th>
+<th>Match</th>
+<th>Weight</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>keywords</code></td>
+<td><strong>case-insensitive substring</strong> in the lower-cased text</td>
+<td><code>weights[keyword]</code>, else <code>1</code></td>
+</tr>
+<tr>
+<td><code>phrases</code></td>
+<td>substring of the multi-word expression</td>
+<td><code>":weight"</code> suffix, else <code>2.0</code></td>
+</tr>
+<tr>
+<td><code>patterns</code></td>
+<td><code>re.search(pattern, lower_text)</code></td>
+<td><code>3.0</code> per matching pattern</td>
+</tr>
+</tbody>
+</table>
+<p>Measured with the shipped config (score contributions listed):</p>
+<table>
+<thead>
+<tr>
+<th>Input</th>
+<th>Winner</th>
+<th>What scored</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Napisz funkcję def foo(): import os</code></td>
+<td><code>code</code></td>
+<td><code>funkcję</code> 3 + <code>import</code> 2 + <code>napisz funkcję</code> 2 + 2 patterns 6 = 14.0</td>
+</tr>
+<tr>
+<td>the same input, <code>creative</code> intent</td>
+<td>—</td>
+<td><code>napisz</code> 1 + <code>pisz</code> 1 + … = 5.0 (outscored)</td>
+</tr>
+<tr>
+<td><code>Wyjaśnij czym jest blockchain</code></td>
+<td><code>general</code></td>
+<td><code>wyjaśnij</code> 3 + <code>czym</code> 1 = 4.0</td>
+</tr>
+<tr>
+<td><code>hello</code></td>
+<td><code>none</code></td>
+<td>nothing scores — greetings are not an intent</td>
+</tr>
+<tr>
+<td><code>contest</code></td>
+<td><code>general</code></td>
+<td>substring <code>co</code> → 1.0 (see the substring caveat below)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Keywords are plain substrings, not word-start matches.</strong> That is what makes the Polish lists work — <code>kod</code>, <code>kodu</code>,
+<code>kodem</code>, <code>kodzie</code> are all listed explicitly — but it also means a short keyword matches inside unrelated words: the
+<code>general</code> keyword <code>co</code> fires inside <code>contest</code>, <code>cost</code>, <code>second</code>, <code>economy</code>. Keep ambiguous short words out of the
+lists, or give them a phrase with a higher weight.</p>
+<h3 id="stage-2-complexity-estimation">Stage 2 — complexity estimation<a class="headerlink" href="#stage-2-complexity-estimation" title="link to this section">#</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="n">token_estimate</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">())</span> <span class="o">*</span> <span class="mf">1.25</span><span class="p">)</span>     <span class="c1"># word count, not a tokenizer</span>
+</code></pre></div>
+
+<table>
+<thead>
+<tr>
+<th><code>token_estimate</code></th>
+<th>Complexity</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>≤ <code>len_thresholds_max.simple</code> (25)</td>
+<td><code>simple</code></td>
+</tr>
+<tr>
+<td>≤ <code>len_thresholds_max.medium</code> (150)</td>
+<td><code>medium</code></td>
+</tr>
+<tr>
+<td>&gt; <code>len_thresholds_max.medium</code></td>
+<td><code>complex</code></td>
+</tr>
+</tbody>
+</table>
+<p>The estimate is a whitespace word count, so code blocks, URLs and CJK text are counted badly (a 400-line pasted file
+is scored by its whitespace, not its tokens). Treat the thresholds as "how much did the user write", not "how much
+context the model will see".</p>
+<h3 id="stage-3-model-selection">Stage 3 — model selection<a class="headerlink" href="#stage-3-model-selection" title="link to this section">#</a></h3>
+<p>The pool is the ordered list of model names: <code>default_models.values()</code> from the config, or
+<code>LLM_ROUTER_ROUTING_SEMANTIC_MODELS</code>. Position <strong>is</strong> capability ranking: index <code>0</code> is the cheapest/simplest model,
+index <code>n-1</code> the strongest.</p>
+<div class="codehilite"><pre><span></span><code>base index    simple → 0        medium → n // 2        complex → n - 1
+adjustment    intent_adjustment[intent] → index i of a complexity level
+                  defined (non-empty) → index = max(base, i)     # can only escalate
+                  empty or unknown     → index = base - 1        # de-escalates by one
+final index   clamp(index, 0, n - 1) → pool[index]
+</code></pre></div>
+
+<p>Measured with the shipped two-model pool <code>["gpt-oss:120b", "qwen3.6:35b"]</code>
+(<code>intent_adjustment</code>: <code>code</code>/<code>math</code> → <code>medium</code>, <code>creative</code>/<code>general</code> → <code>simple</code>, <code>none</code> → <code>""</code>):</p>
+<table>
+<thead>
+<tr>
+<th>Intent</th>
+<th>simple</th>
+<th>medium</th>
+<th>complex</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>code</code></td>
+<td><code>qwen3.6:35b</code></td>
+<td><code>qwen3.6:35b</code></td>
+<td><code>qwen3.6:35b</code></td>
+</tr>
+<tr>
+<td><code>math</code></td>
+<td><code>qwen3.6:35b</code></td>
+<td><code>qwen3.6:35b</code></td>
+<td><code>qwen3.6:35b</code></td>
+</tr>
+<tr>
+<td><code>creative</code></td>
+<td><code>gpt-oss:120b</code></td>
+<td><code>qwen3.6:35b</code></td>
+<td><code>qwen3.6:35b</code></td>
+</tr>
+<tr>
+<td><code>general</code></td>
+<td><code>gpt-oss:120b</code></td>
+<td><code>qwen3.6:35b</code></td>
+<td><code>qwen3.6:35b</code></td>
+</tr>
+<tr>
+<td><code>none</code></td>
+<td><code>gpt-oss:120b</code></td>
+<td><code>gpt-oss:120b</code></td>
+<td><code>gpt-oss:120b</code></td>
+</tr>
+</tbody>
+</table>
+<p>With a three-model pool (<code>LLM_ROUTER_ROUTING_SEMANTIC_MODELS="gpt-mini|qwen-mid|qwen-max"</code>, <code>default_models</code>
+unchanged) the same rules produce a real three-step ladder:</p>
+<table>
+<thead>
+<tr>
+<th>Intent</th>
+<th>simple</th>
+<th>medium</th>
+<th>complex</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>code</code></td>
+<td><code>qwen-mid</code></td>
+<td><code>qwen-mid</code></td>
+<td><code>qwen-max</code></td>
+</tr>
+<tr>
+<td><code>math</code></td>
+<td><code>qwen-mid</code></td>
+<td><code>qwen-mid</code></td>
+<td><code>qwen-max</code></td>
+</tr>
+<tr>
+<td><code>creative</code></td>
+<td><code>gpt-mini</code></td>
+<td><code>qwen-mid</code></td>
+<td><code>qwen-max</code></td>
+</tr>
+<tr>
+<td><code>general</code></td>
+<td><code>gpt-mini</code></td>
+<td><code>qwen-mid</code></td>
+<td><code>qwen-max</code></td>
+</tr>
+<tr>
+<td><code>none</code></td>
+<td><code>gpt-mini</code></td>
+<td><code>gpt-mini</code></td>
+<td><code>qwen-mid</code></td>
+</tr>
+</tbody>
+</table>
+<p>Note what the matrices say about the shipped config: with two models, <code>code</code> and <code>math</code> are always escalated — a
+one-word "debug" reaches the bigger model — while <code>none</code> is de-escalated to index 0 at every length.</p>
+<hr />
+<h2 id="configuration">Configuration<a class="headerlink" href="#configuration" title="link to this section">#</a></h2>
+<h3 id="config-file-layout">Config file layout<a class="headerlink" href="#config-file-layout" title="link to this section">#</a></h3>
+<div class="codehilite"><pre><span></span><code>{
+  "settings": {
+    "len_thresholds_max": { "simple": 25, "medium": 150 },
+    "default_models": {                       // required: complexity → model name
+      "simple": "gpt-oss:120b",
+      "medium": "qwen3.6:35b"
+    },
+    "intent_adjustment": {                    // intent → complexity floor ("" = de-escalate)
+      "code": "medium", "math": "medium", "creative": "simple", "general": "simple", "none": ""
+    }
+  },
+  "intents": {
+    "code": {
+      "keywords": ["code", "debug", "kod", "funkcja"],
+      "phrases": ["write code:5", "napraw błąd:4"],
+      "patterns": ["def\\s+\\w+\\s*\\(", "import\\s+\\w+"],
+      "weights": { "debug": 5, "napraw": 4, "kod": 3 }
+    }
+  },
+  "none": { "keywords": ["hello", "cześć"] }   // informational, not used by the plugin
+}
+</code></pre></div>
+
+<p>Required keys: <code>settings.len_thresholds_max</code>, <code>settings.default_models</code>, <code>settings.intent_adjustment</code>, <code>intents</code>
+(a <code>KeyError</code> at startup names the missing one). <code>default_models</code> must contain <code>simple</code> (it provides the fallback
+model) and <code>medium</code> (it provides the escalation target for <code>intent_adjustment</code>).</p>
+<p>The top-level <code>none</code> block is read into <code>RoutingConfig.none_keywords</code> and <strong>never used</strong>: <code>none</code> is what the plugin
+reports when nothing scores, and it can also be forced via <code>intent_adjustment</code>. Editing that block changes nothing.</p>
+<h3 id="environment-variables">Environment variables<a class="headerlink" href="#environment-variables" title="link to this section">#</a></h3>
+<p>Prefix <code>LLM_ROUTER_ROUTING_SEMANTIC_</code>, read once at plugin construction (restart to apply):</p>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>…_COMPLEXITY_THRESHOLDS</code></td>
+<td><code>simple\|medium</code> token cut-offs, e.g. <code>25\|150</code>; malformed input warns and keeps the file values</td>
+</tr>
+<tr>
+<td><code>…_MODELS</code></td>
+<td>replaces the whole pool, pipe-separated, cheapest first</td>
+</tr>
+<tr>
+<td><code>…_DEFAULT_MODEL</code></td>
+<td>model used when no user text is found</td>
+</tr>
+<tr>
+<td><code>…_INTENT_&lt;name&gt;</code></td>
+<td>replaces one intent: <code>kw1\|kw2\|phrase one:3\|phrase two:5</code></td>
+</tr>
+</tbody>
+</table>
+<p><code>…_INTENT_&lt;name&gt;</code> splits its value on <code>:</code> — entries with a colon become phrases (with weights), the rest become
+keywords. There is <strong>no <code>…_CONFIG</code> variable for this plugin</strong>: the config path is fixed to the bundled
+<code>simple_semantic.json</code>, so a custom config means editing that file (or bind-mounting your own over it in a container).</p>
+<h3 id="validation">Validation<a class="headerlink" href="#validation" title="link to this section">#</a></h3>
+<p>Startup raises <code>ValueError</code> when the pool is empty, the thresholds are not exactly two values, no intent category is
+defined, or no default model resolves. A malformed <code>…_COMPLEXITY_THRESHOLDS</code> value only warns and falls back to the
+file.</p>
+<hr />
+<h2 id="tuning-and-gotchas">Tuning and gotchas<a class="headerlink" href="#tuning-and-gotchas" title="link to this section">#</a></h2>
+<ul>
+<li><strong>Pool order is everything.</strong> The plugin never reads model metadata; index <code>0</code> is what it uses for "easy", index
+  <code>n-1</code> for "hard". Reversing <code>…_MODELS</code> inverts your cost curve.</li>
+<li><strong><code>…_MODELS</code> does not move the default model.</strong> The fallback for text-less requests comes from the config
+  (<code>default_models.simple</code>), so with <code>…_MODELS="model-a|model-b"</code> a request without extractable text is still sent to
+  <code>gpt-oss:120b</code> — a model that may not even be in your pool. Always set <code>…_DEFAULT_MODEL</code> together with <code>…_MODELS</code>.</li>
+<li><strong><code>…_INTENT_&lt;name&gt;</code> replaces, it does not merge.</strong> The override rebuilds the intent with <code>patterns: []</code> and
+  <code>weights: {}</code>: overriding <code>INTENT_code</code> silently drops all 31 code regexes and all 15 keyword weights. Add your words
+  to the JSON instead.</li>
+<li><strong>Category names keep the env var's case.</strong> <code>…_INTENT_CODE=x</code> creates an intent called <code>CODE</code>, next to the existing
+  <code>code</code> — and <code>intent_adjustment</code> will not match it, so it never escalates.</li>
+<li><strong>Phrase weights are parsed strictly.</strong> A value with two colons (<code>…_INTENT_X=bad:phrase:x</code>) raises
+  <code>ValueError: could not convert string to float</code> inside <code>apply()</code> — the request fails, it does not degrade. One colon,
+  digits after it.</li>
+<li><strong>Substring matching bites short keywords.</strong> <code>co</code> matches <code>contest</code>; <code>pisz</code> matches <code>piszemy</code> <em>and</em> any word that
+  contains it. Prefer longer stems or a phrase with a weight over a 2-letter keyword.</li>
+<li><strong>Patterns are not anchored and are matched against lower-cased text.</strong> An upper-case pattern can never match; an
+  invalid regex is skipped silently (<code>re.error</code> is swallowed).</li>
+<li><strong>Only the last message is classified.</strong> A long system prompt with tools and instructions is invisible; so is the
+  rest of the conversation. Intent is decided on the newest user turn alone.</li>
+<li><strong>No <code>routing</code> block.</strong> Correlate decisions with the <code>intent=…, complexity=… (N tokens) -&gt; model</code> log line; add
+  <code>logger</code> at INFO level in the router.</li>
+<li><strong>Both this plugin and <code>semantic_biencoder_routing</code> trigger on <code>auto</code>.</strong> If both are in the pipeline, the first one
+  rewrites <code>model</code> and the second sees a concrete model and does nothing. Pick one, or make them complementary by
+  keeping only one enabled.</li>
+<li><strong>Escalation is monotonic on purpose.</strong> <code>intent_adjustment</code> can raise the index but never lower it below the
+  complexity base; the only de-escalation is the <code>-1</code> step for intents with an empty adjustment.</li>
+</ul>
+<hr />
+<h2 id="verifying-the-plugin">Verifying the plugin<a class="headerlink" href="#verifying-the-plugin" title="link to this section">#</a></h2>
+<h3 id="offline-dry-run">Offline dry run<a class="headerlink" href="#offline-dry-run" title="link to this section">#</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="sd">"""Public-API check of the Simple Semantic routing plugin."""</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+
+<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">"</span><span class="si">%(message)s</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">llm_router_plugins.utils.routing.simple_semantic.simple_semantic_routing</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">SimpleSemanticRoutingPlugin</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">plugin</span> <span class="o">=</span> <span class="n">SimpleSemanticRoutingPlugin</span><span class="p">(</span><span class="n">logger</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">"routing"</span><span class="p">))</span>
+
+<span class="n">TEXTS</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">"hello"</span><span class="p">,</span>
+    <span class="s2">"Napisz funkcję w Pythonie, która sortuje listę słowników"</span><span class="p">,</span>
+    <span class="s2">"Oblicz prawdopodobieństwo warunkowe dla zdarzeń A i B"</span><span class="p">,</span>
+    <span class="s2">"Napisz wiersz o jesieni"</span><span class="p">,</span>
+    <span class="s2">"Wyjaśnij czym jest blockchain"</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="k">for</span> <span class="n">text</span> <span class="ow">in</span> <span class="n">TEXTS</span><span class="p">:</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">plugin</span><span class="o">.</span><span class="n">apply</span><span class="p">({</span><span class="s2">"model"</span><span class="p">:</span> <span class="s2">"auto"</span><span class="p">,</span> <span class="s2">"messages"</span><span class="p">:</span> <span class="p">[{</span><span class="s2">"role"</span><span class="p">:</span> <span class="s2">"user"</span><span class="p">,</span> <span class="s2">"content"</span><span class="p">:</span> <span class="n">text</span><span class="p">}]})</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">text</span><span class="p">[:</span><span class="mi">44</span><span class="p">]</span><span class="si">!r:</span><span class="s2">48</span><span class="si">}</span><span class="s2"> -&gt; </span><span class="si">{</span><span class="n">out</span><span class="p">[</span><span class="s1">'model'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Expected output with the shipped config:</p>
+<div class="codehilite"><pre><span></span><code>SimpleSemanticRouting: intent=none, complexity=simple (1 tokens) -&gt; gpt-oss:120b
+SimpleSemanticRouting: intent=code, complexity=simple (10 tokens) -&gt; qwen3.6:35b
+SimpleSemanticRouting: intent=math, complexity=simple (10 tokens) -&gt; qwen3.6:35b
+SimpleSemanticRouting: intent=creative, complexity=simple (5 tokens) -&gt; gpt-oss:120b
+SimpleSemanticRouting: intent=general, complexity=simple (5 tokens) -&gt; gpt-oss:120b
+'hello'                                          -&gt; gpt-oss:120b
+'Napisz funkcję w Pythonie, która sortuje lis'   -&gt; qwen3.6:35b
+'Oblicz prawdopodobieństwo warunkowe dla zdar'   -&gt; qwen3.6:35b
+'Napisz wiersz o jesieni'                        -&gt; gpt-oss:120b
+'Wyjaśnij czym jest blockchain'                  -&gt; gpt-oss:120b
+</code></pre></div>
+
+<h3 id="router-smoke-test">Router smoke test<a class="headerlink" href="#router-smoke-test" title="link to this section">#</a></h3>
+<div class="codehilite"><pre><span></span><code>curl<span class="w"> </span>-sS<span class="w"> </span>http://&lt;router-host&gt;:8081/v1/chat/completions<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">"Authorization: Bearer </span><span class="nv">$LLM_ROUTER_API_KEY</span><span class="s2">"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">"Content-Type: application/json"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-d<span class="w"> </span><span class="s1">'{"model":"auto","messages":[{"role":"user","content":"napraw błąd w funkcji eksportu"}]}'</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span><span class="p">|</span><span class="w"> </span>head<span class="w"> </span>-c<span class="w"> </span><span class="m">300</span>
+</code></pre></div>
+
+<h3 id="automated-tests">Automated tests<a class="headerlink" href="#automated-tests" title="link to this section">#</a></h3>
+<div class="codehilite"><pre><span></span><code>python<span class="w"> </span>-m<span class="w"> </span>pytest<span class="w"> </span>tests/test_simple_semantic_routing.py<span class="w"> </span>-q
+</code></pre></div>
+
+<hr />
+<h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="link to this section">#</a></h2>
+<table>
+<thead>
+<tr>
+<th>Symptom</th>
+<th>Cause</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Requests never rerouted</td>
+<td>plugin not in <code>LLM_ROUTER_UTILS_PLUGINS_PIPELINE</code>, or <code>model</code> ≠ <code>auto</code> (not even <code>" auto "</code>)</td>
+<td>check the pipeline env var and the exact model string</td>
+</tr>
+<tr>
+<td>Everything lands on the same model</td>
+<td>pool too small, or <code>intent_adjustment</code> collapses the ladder</td>
+<td>use a 3-model pool, review the matrices above</td>
+</tr>
+<tr>
+<td>Big model chosen for a one-word greeting</td>
+<td>an intent is scoring on a substring, so <code>none</code> is not reached</td>
+<td>shorten/qualify the offending keyword, verify with the dry run</td>
+</tr>
+<tr>
+<td><code>none</code> on obvious code requests</td>
+<td>signals are English-only or too narrow</td>
+<td>add PL+EN phrases with weights in the JSON</td>
+</tr>
+<tr>
+<td>Text-less request routed to an unexpected model</td>
+<td><code>…_MODELS</code> changed the pool but not <code>…_DEFAULT_MODEL</code></td>
+<td>set both env vars together</td>
+</tr>
+<tr>
+<td><code>ValueError: could not convert string to float</code></td>
+<td>a phrase with two colons in an <code>…_INTENT_&lt;name&gt;</code> override</td>
+<td>exactly one <code>:weight</code> suffix</td>
+</tr>
+<tr>
+<td>Intent keywords stopped working after an env override</td>
+<td><code>…_INTENT_&lt;name&gt;</code> replaced the intent (patterns and weights cleared)</td>
+<td>move the change into the JSON config</td>
+</tr>
+<tr>
+<td>4xx/5xx from the provider after routing</td>
+<td>a pool entry is not declared in <code>LLM_ROUTER_MODELS_CONFIG</code></td>
+<td>declare every pool model</td>
+</tr>
+<tr>
+<td>Long pasted code treated as <code>simple</code></td>
+<td>token estimate counts whitespace words</td>
+<td>rely on intent escalation, or lower the thresholds</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="reference">Reference<a class="headerlink" href="#reference" title="link to this section">#</a></h2>
+<h3 id="defaults-at-a-glance">Defaults at a glance<a class="headerlink" href="#defaults-at-a-glance" title="link to this section">#</a></h3>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Shipped value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Trigger</td>
+<td><code>payload["model"] == "auto"</code></td>
+</tr>
+<tr>
+<td>Complexity thresholds</td>
+<td><code>simple ≤ 25</code>, <code>medium ≤ 150</code> tokens</td>
+</tr>
+<tr>
+<td>Token estimate</td>
+<td><code>int(words * 1.25)</code></td>
+</tr>
+<tr>
+<td>Pool</td>
+<td><code>["gpt-oss:120b", "qwen3.6:35b"]</code></td>
+</tr>
+<tr>
+<td>Default (text-less) model</td>
+<td><code>gpt-oss:120b</code> (<code>default_models.simple</code>)</td>
+</tr>
+<tr>
+<td>Intent categories</td>
+<td><code>code</code>, <code>math</code>, <code>creative</code>, <code>general</code></td>
+</tr>
+<tr>
+<td>Keyword / phrase / pattern weight</td>
+<td><code>1</code> / <code>2.0</code> / <code>3.0</code></td>
+</tr>
+<tr>
+<td>No-match intent</td>
+<td><code>none</code> (de-escalates one pool step)</td>
+</tr>
+<tr>
+<td>Payload keys written</td>
+<td><code>model</code> only</td>
+</tr>
+</tbody>
+</table>
+<h3 id="files">Files<a class="headerlink" href="#files" title="link to this section">#</a></h3>
+<table>
+<thead>
+<tr>
+<th>Path</th>
+<th>Role</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>simple_semantic_routing.py</code></td>
+<td>plugin: three stages, pool selection</td>
+</tr>
+<tr>
+<td><code>config.py</code></td>
+<td><code>RoutingConfig</code> loader for the bundled JSON</td>
+</tr>
+<tr>
+<td><code>../../../resources/routing/simple_semantic.json</code></td>
+<td>intents, thresholds, pool, adjustments</td>
+</tr>
+<tr>
+<td><code>../../text_extractor.py</code></td>
+<td>shared user-text extraction</td>
+</tr>
+</tbody>
+</table>
+<h3 id="see-also">See also<a class="headerlink" href="#see-also" title="link to this section">#</a></h3>
+<ul>
+<li><a href="../index.html#1-simple-semantic-routing-heuristic">Semantic Routing Plugins reference</a> — §1 of the shared routing
+  README: architecture diagram, built-in pattern catalogue, weight-tuning guidelines and how to add an intent.</li>
+<li><a href="../semantic-biencoder/index.html"><code>semantic_biencoder</code></a> — embedding-similarity routing on the same <code>auto</code> trigger.</li>
+<li><a href="../agentic-routing/codex/index.html"><code>agentic_routing/codex</code></a> — work-mode routing for Codex CLI traffic.</li>
+<li><a href="../../../../index.html#27-semantic-routing-model-selection">Root README §2.7</a> — plugin overview and triggers.</li>
+</ul></article>
+<nav class="pager" aria-label="Previous and next page"><a class="prev" href="../index.html"><span class="dir">&larr; previous</span><span class="pt">Semantic Routing Plugins</span></a></nav>
+<footer class="doc-meta">
+<div class="meta-row"><span class="meta-k">repository</span><a class="mono" href="https://github.com/radlab-dev-group/llm-router-plugins">llm-router-plugins</a></div>
+<div class="meta-row"><span class="meta-k">source</span><a class="mono" href="https://github.com/radlab-dev-group/llm-router-plugins/blob/eefb333/llm_router_plugins/utils/routing/simple_semantic/README.md">llm_router_plugins/utils/routing/simple_semantic/README.md</a></div>
+<div class="meta-row"><span class="meta-k">last commit</span><time datetime="2026-09-24T13:14:00+02:00"><a href="https://github.com/radlab-dev-group/llm-router-plugins/commit/eefb333">2026-09-24</a></time></div>
+<div class="meta-row"><span class="meta-k">built from</span><span class="mono"><a href="https://github.com/radlab-dev-group/llm-router-plugins/tree/eefb333">feat/claude_code_plugin</a>&nbsp;@&nbsp;<a href="https://github.com/radlab-dev-group/llm-router-plugins/commit/eefb333">eefb333</a></span></div>
+<p class="hint">Generated from the Markdown file in the repository: commit a change and the next build republishes it.</p>
+</footer>
+<footer class="foot"><div class="foot-inner">
+<span class="mono">llm-router &middot; docs are generated from the repository by <code>tools/build_docs.py</code></span>
+<span class="mono"><a href="https://github.com/radlab-dev-group/llm-router-plugins/tree/eefb333">1.0.8</a> @ <a href="https://github.com/radlab-dev-group/llm-router-plugins/commit/eefb333">eefb333</a></span>
+</div></footer>
+</main>
+<aside class="dtoc" id="dtoc"><h2 class="toc-title">on this page</h2><div class="toc-body"><ul><li><a href="#what-the-plugin-changes">What the plugin changes</a></li><li><a href="#quick-start">Quick start</a><ul><li><a href="#1-install">1. Install</a></li><li><a href="#2-load-the-plugin-into-the-router">2. Load the plugin into the router</a></li><li><a href="#3-declare-the-models-in-the-router-model-config">3. Declare the models in the router model config</a></li><li><a href="#4-verify">4. Verify</a></li></ul></li><li><a href="#how-it-works">How it works</a><ul><li><a href="#where-it-runs">Where it runs</a></li><li><a href="#text-extraction">Text extraction</a></li><li><a href="#stage-1-intent-classification">Stage 1 — intent classification</a></li><li><a href="#stage-2-complexity-estimation">Stage 2 — complexity estimation</a></li><li><a href="#stage-3-model-selection">Stage 3 — model selection</a></li></ul></li><li><a href="#configuration">Configuration</a><ul><li><a href="#config-file-layout">Config file layout</a></li><li><a href="#environment-variables">Environment variables</a></li><li><a href="#validation">Validation</a></li></ul></li><li><a href="#tuning-and-gotchas">Tuning and gotchas</a></li><li><a href="#verifying-the-plugin">Verifying the plugin</a><ul><li><a href="#offline-dry-run">Offline dry run</a></li><li><a href="#router-smoke-test">Router smoke test</a></li><li><a href="#automated-tests">Automated tests</a></li></ul></li><li><a href="#troubleshooting">Troubleshooting</a></li><li><a href="#reference">Reference</a><ul><li><a href="#defaults-at-a-glance">Defaults at a glance</a></li><li><a href="#files">Files</a></li><li><a href="#see-also">See also</a></li></ul></li></ul></div></aside>
+</div>
+</body>
+</html>

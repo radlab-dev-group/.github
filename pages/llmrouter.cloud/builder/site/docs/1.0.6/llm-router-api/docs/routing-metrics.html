@@ -4,18 +4,18 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Router Prometheus Metrics · v1.0.6 · llm-router docs</title>
-<meta name="description" content="Additional Prometheus metrics for the LLM router core (routing, provider lifecycle, pipeline funnel). Enabling these metrics requires LLMROUTERUSEPROMETHEUS=true and the metrics extra (pip install .[metrics]). The router tracks 10 new…">
+<meta name="description" content="# Router Prometheus Metrics Additional Prometheus metrics for the LLM router core (routing, provider lifecycle, pipeline funnel). Enabling these metrics requires `LLM_ROUTER_USE_PROMETHEUS=true` and the `metrics` extra (`pip install .[metr…">
 <meta name="theme-color" content="#05070a">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Router Prometheus Metrics · v1.0.6 · llm-router docs">
-<meta property="og:description" content="Additional Prometheus metrics for the LLM router core (routing, provider lifecycle, pipeline funnel). Enabling these metrics requires LLMROUTERUSEPROMETHEUS=true and the metrics extra (pip install .[metrics]). The router tracks 10 new…">
+<meta property="og:description" content="# Router Prometheus Metrics Additional Prometheus metrics for the LLM router core (routing, provider lifecycle, pipeline funnel). Enabling these metrics requires `LLM_ROUTER_USE_PROMETHEUS=true` and the `metrics` extra (`pip install .[metr…">
 <meta name="docs-version" content="1.0.6">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2305070a'/%3E%3Cpath d='M8 22V10M8 16h9M17 10v12M17 13h7M17 19h7' stroke='%2300e59b' stroke-width='2' stroke-linecap='round' fill='none'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="../../../assets/docs.css">
 <link rel="stylesheet" href="../../../assets/pygments.css">
 <script src="../../../assets/docs.js" defer></script>
 </head>
-<body class="page" data-version="1.0.6" data-search="../../search.json" data-latest="1.0.7">
+<body class="page" data-version="1.0.6" data-search="../../search.json" data-latest="1.0.8" data-repo="router">
 <a class="skip" href="#main">skip to content</a>
 <header class="topbar">
 <div class="topbar-inner">
@@ -30,7 +30,8 @@
 </form>
 <label class="vselect">
 <span class="sr-only">Documentation version</span>
-<select id="versions" aria-label="Documentation version"><option value="../../../1.0.7/llm-router-api/docs/routing-metrics.html">1.0.7  · latest</option>
+<select id="versions" aria-label="Documentation version"><option value="../../../1.0.8/llm-router-api/docs/routing-metrics.html">1.0.8  · latest</option>
+<option value="../../../1.0.7/llm-router-api/docs/routing-metrics.html">1.0.7</option>
 <option value="routing-metrics.html" selected>1.0.6</option>
 <option value="../../../1.0.5/llm-router-api/docs/routing-metrics.html">1.0.5</option>
 <option value="../../../1.0.4/llm-router-api/docs/routing-metrics.html">1.0.4</option>
@@ -80,7 +81,7 @@
 </header>
 <div class="scrim" id="scrim" hidden></div>
 <div class="shell">
-<aside class="sidebar" id="sidebar"><div class="side-head"><span class="side-v mono">v1.0.6</span><span class="side-tag old">archived</span></div><a class="side-hub" href="../../index.html">documentation index</a><nav class="nav-tree" aria-label="Documentation"><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../overview.html">Getting started</a></h2><ul><li><a href="../../overview.html">Overview</a></li><li><a href="installation.html">Installation</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="env-definitions.html">Configuration</a></h2><ul><li><a href="env-definitions.html">Environment Variables</a></li><li><a href="models-config.html">Models configuration description (JSON)</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="keepalive.html">Routing &amp; resilience</a></h2><ul><li><a href="keepalive.html">Keep‑Alive Utility Overview</a></li><li><a href="lb-strategies.html">Load Balancing Strategies</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../core/auditor/index.html">Security &amp; auditing</a></h2><ul><li><a href="../core/auditor/index.html">Auditing subsystem – llm-router</a></li><li><a href="authentication.html">Authentication &amp; Authorization</a></li><li><a href="rate-limiting.html">Rate Limiting</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="routing-metrics.html">Observability</a></h2><ul><li><a href="routing-metrics.html" class="active">Router Prometheus Metrics</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../index.html">REST API</a></h2><ul><li><a href="../index.html">REST API reference</a></li><li><a href="../endpoints/index.html">Endpoints Overview</a></li><li><a href="endpoint-dev.html">Endpoint Development Guide</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../llm-router-cli/index.html">CLI</a></h2><ul><li><a href="../../llm-router-cli/index.html">llm-router CLI — Command Reference</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../llm-router-lib/index.html">Python library</a></h2><ul><li><a href="../../llm-router-lib/index.html">llmrouterlib</a></li><li><a href="../../llm-router-lib/response-models.html">Response models</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../helm-charts/index.html">Deployment</a></h2><ul><li><a href="../../helm-charts/index.html">LLM‑Router Helm Chart</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../examples/index.html">Examples</a></h2><ul><li><a href="../../examples/index.html">Integration Examples with LLM Router</a></li><li><a href="../../examples/quickstart/index.html">Full Stack with Local Models</a></li><li><a href="../../examples/readme-llamaindex.html">Using LlamaIndex with Local Models via the LLM‑Router</a></li><li><a href="../../examples/quickstart/google-gemma3-12b-it/vllm.html">vLLM + google/gemma‑3‑12b‑it – Quick‑Start Guide (Ubuntu)</a></li><li><a href="../../examples/quickstart/speakleash-bielik-11b-v2-3-instruct/vllm.html">vLLM + speakleash/Bielik-11B-v2.3-Instruct – Przewodnik Szybkiego Startu (Ubuntu)</a></li><li><a href="../../examples/quickstart/speakleash-bielik-11b-v2-3-instruct/index.html">🚀 Przewodnik Szybkiego Startu dla speakleash/Bielik-11B-v2.3-Instruct z vLLM &amp; LLM‑Router</a></li><li><a href="../../examples/quickstart/google-gemma3-12b-it/index.html">🚀 Quick‑Start Guide for google/gemma-3-12b‑it with vLLM &amp; LLM‑Router</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../changelog.html">Release notes</a></h2><ul><li><a href="../../changelog.html">Changelog</a></li></ul></section></nav><div class="side-foot"><a href="../../../..">&larr;&nbsp;landing page</a><a class="mono" href="../../search.json">search.json</a></div></aside>
+<aside class="sidebar" id="sidebar"><div class="side-head"><span class="side-v mono">v1.0.6</span><span class="side-tag old">archived</span></div><a class="side-hub" href="../../index.html">documentation index</a><nav class="nav-tree" aria-label="Documentation"><div class="nav-repo"><span class="repo-name">llm-router</span></div><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../overview.html">Getting started</a></h2><ul><li><a href="../../overview.html">Overview</a></li><li><a href="installation.html">Installation</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="env-definitions.html">Configuration</a></h2><ul><li><a href="env-definitions.html">Environment Variables</a></li><li><a href="models-config.html">Models configuration description (JSON)</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="keepalive.html">Routing &amp; resilience</a></h2><ul><li><a href="keepalive.html">Keep‑Alive Utility Overview</a></li><li><a href="lb-strategies.html">Load Balancing Strategies</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../core/auditor/index.html">Security &amp; auditing</a></h2><ul><li><a href="../core/auditor/index.html">Auditing subsystem – llm-router</a></li><li><a href="authentication.html">Authentication &amp; Authorization</a></li><li><a href="rate-limiting.html">Rate Limiting</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="routing-metrics.html">Observability</a></h2><ul><li><a href="routing-metrics.html" class="active">Router Prometheus Metrics</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../index.html">REST API</a></h2><ul><li><a href="../index.html">REST API reference</a></li><li><a href="../endpoints/index.html">Endpoints Overview</a></li><li><a href="endpoint-dev.html">Endpoint Development Guide</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../llm-router-cli/index.html">CLI</a></h2><ul><li><a href="../../llm-router-cli/index.html">llm-router CLI — Command Reference</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../llm-router-lib/index.html">Python library</a></h2><ul><li><a href="../../llm-router-lib/index.html">llmrouterlib</a></li><li><a href="../../llm-router-lib/response-models.html">Response models</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../helm-charts/index.html">Deployment</a></h2><ul><li><a href="../../helm-charts/index.html">LLM‑Router Helm Chart</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../examples/index.html">Examples</a></h2><ul><li><a href="../../examples/index.html">Integration Examples with LLM Router</a></li><li><a href="../../examples/quickstart/index.html">Full Stack with Local Models</a></li><li><a href="../../examples/readme-llamaindex.html">Using LlamaIndex with Local Models via the LLM‑Router</a></li><li><a href="../../examples/quickstart/google-gemma3-12b-it/vllm.html">vLLM + google/gemma‑3‑12b‑it – Quick‑Start Guide (Ubuntu)</a></li><li><a href="../../examples/quickstart/speakleash-bielik-11b-v2-3-instruct/vllm.html">vLLM + speakleash/Bielik-11B-v2.3-Instruct – Przewodnik Szybkiego Startu (Ubuntu)</a></li><li><a href="../../examples/quickstart/speakleash-bielik-11b-v2-3-instruct/index.html">🚀 Przewodnik Szybkiego Startu dla speakleash/Bielik-11B-v2.3-Instruct z vLLM &amp; LLM‑Router</a></li><li><a href="../../examples/quickstart/google-gemma3-12b-it/index.html">🚀 Quick‑Start Guide for google/gemma-3-12b‑it with vLLM &amp; LLM‑Router</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../changelog.html">Release notes</a></h2><ul><li><a href="../../changelog.html">Changelog</a></li></ul></section></nav><div class="side-foot"><a href="../../../..">&larr;&nbsp;landing page</a><a class="mono" href="../../search.json">search.json</a></div></aside>
 <main class="main" id="main"><nav class="crumbs" aria-label="Breadcrumb">
 <a href="../../../..">llm-router</a><span class="sep">/</span><a href="../../index.html">docs</a><span class="sep">/</span><a href="routing-metrics.html">Observability</a><span class="sep">/</span><em>Router Prometheus Metrics</em>
 </nav>
@@ -126,8 +127,8 @@
 <p>Total number of successful calls to each provider type, grouped by model name.</p>
 <p><strong>Labels:</strong> <code>provider_type</code>, <code>model_name</code></p>
 <p><strong>Example output:</strong></p>
-<div class="codehilite"><pre><span></span><code>llm_router_provider_calls_total{provider_type=&quot;openai&quot;, model_name=&quot;google/gemma-3-12b-it&quot;} 42
-llm_router_provider_calls_total{provider_type=&quot;ollama&quot;, model_name=&quot;google/gemma-3-12b-it&quot;} 18
+<div class="codehilite"><pre><span></span><code>llm_router_provider_calls_total{provider_type="openai", model_name="google/gemma-3-12b-it"} 42
+llm_router_provider_calls_total{provider_type="ollama", model_name="google/gemma-3-12b-it"} 18
 </code></pre></div>
 
 <p><strong>Use case:</strong> Track provider utilization distribution across models.</p>
@@ -136,8 +137,8 @@ llm_router_provider_calls_total{provider_type=&quot;ollama&quot;, model_name=&qu
 <p><strong>Labels:</strong> <code>provider_type</code>, <code>model_name</code></p>
 <p><strong>Buckets:</strong> 10ms → 30s (0.01, 0.025, 0.05, 0.1, 0.25, 0.5, 1, 2.5, 5, 10, 30)</p>
 <p><strong>Example output:</strong></p>
-<div class="codehilite"><pre><span></span><code>llm_router_provider_latency_seconds_count{provider_type=&quot;vllm&quot;, model_name=&quot;google/gemma-3-12b-it&quot;} 100
-llm_router_provider_latency_seconds_sum{provider_type=&quot;vllm&quot;, model_name=&quot;google/gemma-3-12b-it&quot;} 45.2
+<div class="codehilite"><pre><span></span><code>llm_router_provider_latency_seconds_count{provider_type="vllm", model_name="google/gemma-3-12b-it"} 100
+llm_router_provider_latency_seconds_sum{provider_type="vllm", model_name="google/gemma-3-12b-it"} 45.2
 </code></pre></div>
 
 <p><strong>Use case:</strong> Identify slow/degraded providers independently of client-side factors. Query example:</p>
@@ -148,8 +149,8 @@ llm_router_provider_latency_seconds_sum{provider_type=&quot;vllm&quot;, model_na
 <p>Provider errors by type and HTTP error code (for retriable status codes) or classification (timeout, connection_error).</p>
 <p><strong>Labels:</strong> <code>provider_type</code>, <code>model_name</code>, <code>error_code</code></p>
 <p><strong>Example output:</strong></p>
-<div class="codehilite"><pre><span></span><code>llm_router_provider_error_total{provider_type=&quot;ollama&quot;, model_name=&quot;gpt-oss:120b&quot;, error_code=&quot;429&quot;} 5
-llm_router_provider_error_total{provider_type=&quot;openai&quot;, model_name=&quot;google/gemma-3-12b-it&quot;, error_code=&quot;timeout&quot;} 2
+<div class="codehilite"><pre><span></span><code>llm_router_provider_error_total{provider_type="ollama", model_name="gpt-oss:120b", error_code="429"} 5
+llm_router_provider_error_total{provider_type="openai", model_name="google/gemma-3-12b-it", error_code="timeout"} 2
 </code></pre></div>
 
 <p><strong>Use case:</strong> Alert on specific provider error spikes. Query example:</p>
@@ -160,8 +161,8 @@ llm_router_provider_error_total{provider_type=&quot;openai&quot;, model_name=&qu
 <p>Load balancing strategy selections per model, tracking which strategies are used for each model's providers.</p>
 <p><strong>Labels:</strong> <code>strategy</code>, <code>model_name</code></p>
 <p><strong>Example output:</strong></p>
-<div class="codehilite"><pre><span></span><code>llm_router_lb_strategy_selected_total{strategy=&quot;balanced&quot;, model_name=&quot;google/gemma-3-12b-it&quot;} 80
-llm_router_lb_strategy_selected_total{strategy=&quot;weighted&quot;, model_name=&quot;openai/gpt-4&quot;} 35
+<div class="codehilite"><pre><span></span><code>llm_router_lb_strategy_selected_total{strategy="balanced", model_name="google/gemma-3-12b-it"} 80
+llm_router_lb_strategy_selected_total{strategy="weighted", model_name="openai/gpt-4"} 35
 </code></pre></div>
 
 <p><strong>Use case:</strong> Verify load balancing strategy distribution. Useful when debugging or tuning LB strategies.</p>
@@ -197,21 +198,21 @@ llm_router_lb_strategy_selected_total{strategy=&quot;weighted&quot;, model_name=
 </table>
 <p><strong>Labels:</strong> <code>stage</code>, <code>result</code></p>
 <p><strong>Example output:</strong></p>
-<div class="codehilite"><pre><span></span><code>llm_router_pipeline_stage_total{stage=&quot;provider_resolved&quot;, result=&quot;success&quot;} 1200
-llm_router_pipeline_stage_total{stage=&quot;guardrail_request&quot;, result=&quot;block&quot;} 45
+<div class="codehilite"><pre><span></span><code>llm_router_pipeline_stage_total{stage="provider_resolved", result="success"} 1200
+llm_router_pipeline_stage_total{stage="guardrail_request", result="block"} 45
 </code></pre></div>
 
 <p><strong>Use case:</strong> Build a request funnel chart to see where requests drop off. Query example:</p>
 <div class="codehilite"><pre><span></span><code><span class="c1"># Guardrail block rate</span>
-<span class="k">sum</span><span class="o">(</span><span class="kr">rate</span><span class="o">(</span><span class="nv">llm_router_pipeline_stage_total</span><span class="p">{</span><span class="nl">stage</span><span class="o">=</span><span class="p">&quot;</span><span class="s">guardrail_request</span><span class="p">&quot;,</span><span class="w"> </span><span class="nl">result</span><span class="o">=</span><span class="p">&quot;</span><span class="s">block</span><span class="p">&quot;}[</span><span class="s">5m</span><span class="p">]</span><span class="o">))</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="k">sum</span><span class="o">(</span><span class="kr">rate</span><span class="o">(</span><span class="nv">llm_router_pipeline_stage_total</span><span class="p">{</span><span class="nl">stage</span><span class="o">=</span><span class="p">&quot;</span><span class="s">guardrail_request</span><span class="p">&quot;}[</span><span class="s">5m</span><span class="p">]</span><span class="o">))</span>
+<span class="k">sum</span><span class="o">(</span><span class="kr">rate</span><span class="o">(</span><span class="nv">llm_router_pipeline_stage_total</span><span class="p">{</span><span class="nl">stage</span><span class="o">=</span><span class="p">"</span><span class="s">guardrail_request</span><span class="p">",</span><span class="w"> </span><span class="nl">result</span><span class="o">=</span><span class="p">"</span><span class="s">block</span><span class="p">"}[</span><span class="s">5m</span><span class="p">]</span><span class="o">))</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="k">sum</span><span class="o">(</span><span class="kr">rate</span><span class="o">(</span><span class="nv">llm_router_pipeline_stage_total</span><span class="p">{</span><span class="nl">stage</span><span class="o">=</span><span class="p">"</span><span class="s">guardrail_request</span><span class="p">"}[</span><span class="s">5m</span><span class="p">]</span><span class="o">))</span>
 </code></pre></div>
 
 <h3 id="llm_router_retry_total-counter"><code>llm_router_retry_total</code> <em>(Counter)</em><a class="headerlink" href="#llm_router_retry_total-counter" title="link to this section">#</a></h3>
 <p>Retry attempts per model and HTTP error code that triggered the retry (429, 503, 504, 500).</p>
 <p><strong>Labels:</strong> <code>model_name</code>, <code>error_code</code></p>
 <p><strong>Example output:</strong></p>
-<div class="codehilite"><pre><span></span><code>llm_router_retry_total{model_name=&quot;gpt-oss:120b&quot;, error_code=&quot;429&quot;} 12
-llm_router_retry_total{model_name=&quot;google/gemma-3-12b-it&quot;, error_code=&quot;503&quot;} 3
+<div class="codehilite"><pre><span></span><code>llm_router_retry_total{model_name="gpt-oss:120b", error_code="429"} 12
+llm_router_retry_total{model_name="google/gemma-3-12b-it", error_code="503"} 3
 </code></pre></div>
 
 <p><strong>Use case:</strong> Monitor provider reliability. High retry rates indicate infrastructure instability.</p>
@@ -219,7 +220,7 @@ llm_router_retry_total{model_name=&quot;google/gemma-3-12b-it&quot;, error_code=
 <p>Requests where all retry attempts were exhausted (final failure after retries).</p>
 <p><strong>Labels:</strong> <code>model_name</code>, <code>last_error_code</code></p>
 <p><strong>Example output:</strong></p>
-<div class="codehilite"><pre><span></span><code>llm_router_retry_exhausted_total{model_name=&quot;gpt-oss:120b&quot;, last_error_code=&quot;503&quot;} 8
+<div class="codehilite"><pre><span></span><code>llm_router_retry_exhausted_total{model_name="gpt-oss:120b", last_error_code="503"} 8
 </code></pre></div>
 
 <p><strong>Use case:</strong> Monitor unrecoverable provider failures for SLA tracking.</p>
@@ -229,16 +230,16 @@ llm_router_retry_total{model_name=&quot;google/gemma-3-12b-it&quot;, error_code=
 <p>Input/output token usage per model and provider, parsed from the LLM provider's response <code>usage</code> field.</p>
 <p><strong>Labels:</strong> <code>model_name</code>, <code>direction</code> (<code>input</code> / <code>output</code>), <code>provider_type</code></p>
 <p><strong>Example output:</strong></p>
-<div class="codehilite"><pre><span></span><code>llm_router_tokens_total{model_name=&quot;google/gemma-3-12b-it&quot;, direction=&quot;input&quot;, provider_type=&quot;vllm&quot;} 150000
-llm_router_tokens_total{model_name=&quot;google/gemma-3-12b-it&quot;, direction=&quot;output&quot;, provider_type=&quot;vllm&quot;} 45000
+<div class="codehilite"><pre><span></span><code>llm_router_tokens_total{model_name="google/gemma-3-12b-it", direction="input", provider_type="vllm"} 150000
+llm_router_tokens_total{model_name="google/gemma-3-12b-it", direction="output", provider_type="vllm"} 45000
 </code></pre></div>
 
 <p><strong>Use case:</strong> Cost tracking and throughput analysis. Query example:</p>
 <div class="codehilite"><pre><span></span><code><span class="c1"># Total input tokens per model in last hour</span>
-<span class="k">sum</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="o">(</span><span class="nv">model_name</span><span class="o">)</span><span class="w"> </span><span class="o">(</span><span class="kr">rate</span><span class="o">(</span><span class="nv">llm_router_tokens_total</span><span class="p">{</span><span class="nl">direction</span><span class="o">=</span><span class="p">&quot;</span><span class="s">input</span><span class="p">&quot;}[</span><span class="s">1h</span><span class="p">]</span><span class="o">))</span>
+<span class="k">sum</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="o">(</span><span class="nv">model_name</span><span class="o">)</span><span class="w"> </span><span class="o">(</span><span class="kr">rate</span><span class="o">(</span><span class="nv">llm_router_tokens_total</span><span class="p">{</span><span class="nl">direction</span><span class="o">=</span><span class="p">"</span><span class="s">input</span><span class="p">"}[</span><span class="s">1h</span><span class="p">]</span><span class="o">))</span>
 
 <span class="c1"># Token cost estimation (approximate, adjust prices for your models)</span>
-<span class="kr">rate</span><span class="o">(</span><span class="nv">llm_router_tokens_total</span><span class="p">{</span><span class="nl">direction</span><span class="o">=</span><span class="p">&quot;</span><span class="s">input</span><span class="p">&quot;,</span><span class="w"> </span><span class="nl">model_name</span><span class="o">=</span><span class="p">&quot;</span><span class="s">google/gemma-3-12b-it</span><span class="p">&quot;}[</span><span class="s">1h</span><span class="p">]</span><span class="o">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">0.00000015</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="kr">rate</span><span class="o">(</span><span class="nv">llm_router_tokens_total</span><span class="p">{</span><span class="nl">direction</span><span class="o">=</span><span class="p">&quot;</span><span class="s">output</span><span class="p">&quot;,</span><span class="w"> </span><span class="nl">model_name</span><span class="o">=</span><span class="p">&quot;</span><span class="s">google/gemma-3-12b-it</span><span class="p">&quot;}[</span><span class="s">1h</span><span class="p">]</span><span class="o">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">0.0000006</span>
+<span class="kr">rate</span><span class="o">(</span><span class="nv">llm_router_tokens_total</span><span class="p">{</span><span class="nl">direction</span><span class="o">=</span><span class="p">"</span><span class="s">input</span><span class="p">",</span><span class="w"> </span><span class="nl">model_name</span><span class="o">=</span><span class="p">"</span><span class="s">google/gemma-3-12b-it</span><span class="p">"}[</span><span class="s">1h</span><span class="p">]</span><span class="o">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">0.00000015</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="kr">rate</span><span class="o">(</span><span class="nv">llm_router_tokens_total</span><span class="p">{</span><span class="nl">direction</span><span class="o">=</span><span class="p">"</span><span class="s">output</span><span class="p">",</span><span class="w"> </span><span class="nl">model_name</span><span class="o">=</span><span class="p">"</span><span class="s">google/gemma-3-12b-it</span><span class="p">"}[</span><span class="s">1h</span><span class="p">]</span><span class="o">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">0.0000006</span>
 </code></pre></div>
 
 <hr />
@@ -247,8 +248,8 @@ llm_router_tokens_total{model_name=&quot;google/gemma-3-12b-it&quot;, direction=
 <p>Distribution of streamed vs non-streamed responses per model and provider.</p>
 <p><strong>Labels:</strong> <code>format</code> (<code>streamed</code> / <code>non_streamed</code>), <code>model_name</code>, <code>provider_type</code></p>
 <p><strong>Example output:</strong></p>
-<div class="codehilite"><pre><span></span><code>llm_router_response_format_total{format=&quot;streamed&quot;, model_name=&quot;google/gemma-3-12b-it&quot;, provider_type=&quot;ollama&quot;} 95
-llm_router_response_format_total{format=&quot;non_streamed&quot;, model_name=&quot;google/gemma-3-12b-it&quot;, provider_type=&quot;vllm&quot;} 180
+<div class="codehilite"><pre><span></span><code>llm_router_response_format_total{format="streamed", model_name="google/gemma-3-12b-it", provider_type="ollama"} 95
+llm_router_response_format_total{format="non_streamed", model_name="google/gemma-3-12b-it", provider_type="vllm"} 180
 </code></pre></div>
 
 <p><strong>Use case:</strong> Monitor client streaming preferences and capacity planning for long-polling connections.</p>
@@ -258,8 +259,8 @@ Conversion paths include: <code>openai-&gt;ollama</code>, <code>ollama-&gt;opena
 <code>openai-&gt;lmstudio</code>, <code>ollama-&gt;lmstudio</code>.</p>
 <p><strong>Labels:</strong> <code>from_type</code>, <code>to_type</code></p>
 <p><strong>Example output:</strong></p>
-<div class="codehilite"><pre><span></span><code>llm_router_payload_conversion_total{from_type=&quot;openai&quot;, to_type=&quot;ollama&quot;} 250
-llm_router_payload_conversion_total{from_type=&quot;anthropic&quot;, to_type=&quot;openai&quot;} 180
+<div class="codehilite"><pre><span></span><code>llm_router_payload_conversion_total{from_type="openai", to_type="ollama"} 250
+llm_router_payload_conversion_total{from_type="anthropic", to_type="openai"} 180
 </code></pre></div>
 
 <p><strong>Use case:</strong> Track conversion overhead. Each conversion adds serialization/deserialization cost and potential for bugs.</p>
@@ -267,12 +268,12 @@ llm_router_payload_conversion_total{from_type=&quot;anthropic&quot;, to_type=&qu
 <h2 id="grafana-dashboard-snippet">Grafana Dashboard Snippet<a class="headerlink" href="#grafana-dashboard-snippet" title="link to this section">#</a></h2>
 <p>Here's a sample JSON panel config for the most important metrics:</p>
 <div class="codehilite"><pre><span></span><code><span class="p">{</span>
-<span class="w">  </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Provider Calls (last hour)&quot;</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;graph&quot;</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">&quot;targets&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">  </span><span class="nt">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Provider Calls (last hour)"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"graph"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"targets"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
 <span class="w">    </span><span class="p">{</span>
-<span class="w">      </span><span class="nt">&quot;expr&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;sum by (provider_type) (rate(llm_router_provider_calls_total[1h]))&quot;</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;legendFormat&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;{{provider_type}}&quot;</span>
+<span class="w">      </span><span class="nt">"expr"</span><span class="p">:</span><span class="w"> </span><span class="s2">"sum by (provider_type) (rate(llm_router_provider_calls_total[1h]))"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"legendFormat"</span><span class="p">:</span><span class="w"> </span><span class="s2">"{{provider_type}}"</span>
 <span class="w">    </span><span class="p">}</span>
 <span class="w">  </span><span class="p">]</span>
 <span class="p">}</span>
@@ -316,14 +317,15 @@ llm_router_payload_conversion_total{from_type=&quot;anthropic&quot;, to_type=&qu
 </ul></article>
 <nav class="pager" aria-label="Previous and next page"></nav>
 <footer class="doc-meta">
+<div class="meta-row"><span class="meta-k">repository</span><a class="mono" href="https://github.com/radlab-dev-group/llm-router">llm-router</a></div>
 <div class="meta-row"><span class="meta-k">source</span><a class="mono" href="https://github.com/radlab-dev-group/llm-router/blob/v1.0.6/llm_router_api/docs/ROUTING_METRICS.md">llm_router_api/docs/ROUTING_METRICS.md</a></div>
-<div class="meta-row"><span class="meta-k">last commit</span><time datetime="2026-09-09T11:45:10+02:00">2026-09-09</time></div>
-<div class="meta-row"><span class="meta-k">built from</span><span class="mono">v1.0.6&nbsp;@&nbsp;a66f0fa</span></div>
-<p class="hint">Generated from the Markdown file in the repository: commit a change and the next build republishes it for every release that contains it.</p>
+<div class="meta-row"><span class="meta-k">last commit</span><time datetime="2026-08-29T14:46:24+02:00"><a href="https://github.com/radlab-dev-group/llm-router/commit/a66f0fa">2026-08-29</a></time></div>
+<div class="meta-row"><span class="meta-k">built from</span><span class="mono"><a href="https://github.com/radlab-dev-group/llm-router/tree/v1.0.6">v1.0.6</a>&nbsp;@&nbsp;<a href="https://github.com/radlab-dev-group/llm-router/commit/a66f0fa">a66f0fa</a></span></div>
+<p class="hint">Generated from the Markdown file in the repository: commit a change and the next build republishes it.</p>
 </footer>
 <footer class="foot"><div class="foot-inner">
 <span class="mono">llm-router &middot; docs are generated from the repository by <code>tools/build_docs.py</code></span>
-<span class="mono"><a href="https://github.com/radlab-dev-group/llm-router/tree/v1.0.6">1.0.6</a> @ <code>a66f0fa</code></span>
+<span class="mono"><a href="https://github.com/radlab-dev-group/llm-router/tree/v1.0.6">1.0.6</a> @ <a href="https://github.com/radlab-dev-group/llm-router/commit/a66f0fa">a66f0fa</a></span>
 </div></footer>
 </main>
 <aside class="dtoc" id="dtoc"><h2 class="toc-title">on this page</h2><div class="toc-body"><ul><li><a href="#overview">Overview</a></li><li><a href="#a-routing-provider-metrics">A. Routing &amp;amp; Provider Metrics</a><ul><li><a href="#llm_router_provider_calls_total-counter">llm_router_provider_calls_total (Counter)</a></li><li><a href="#llm_router_provider_latency_seconds-histogram">llm_router_provider_latency_seconds (Histogram)</a></li><li><a href="#llm_router_provider_error_total-counter">llm_router_provider_error_total (Counter)</a></li><li><a href="#llm_router_lb_strategy_selected_total-counter">llm_router_lb_strategy_selected_total (Counter)</a></li></ul></li><li><a href="#b-pipeline-request-funnel-metrics">B. Pipeline / Request Funnel Metrics</a><ul><li><a href="#llm_router_pipeline_stage_total-counter">llm_router_pipeline_stage_total (Counter)</a></li><li><a href="#llm_router_retry_total-counter">llm_router_retry_total (Counter)</a></li><li><a href="#llm_router_retry_exhausted_total-counter">llm_router_retry_exhausted_total (Counter)</a></li></ul></li><li><a href="#c-token-usage-metric">C. Token Usage Metric</a><ul><li><a href="#llm_router_tokens_total-counter">llm_router_tokens_total (Counter)</a></li></ul></li><li><a href="#d-streaming-response-format-metrics">D. Streaming &amp;amp; Response Format Metrics</a><ul><li><a href="#llm_router_response_format_total-counter">llm_router_response_format_total (Counter)</a></li><li><a href="#llm_router_payload_conversion_total-counter">llm_router_payload_conversion_total (Counter)</a></li></ul></li><li><a href="#grafana-dashboard-snippet">Grafana Dashboard Snippet</a></li><li><a href="#implementation-notes">Implementation Notes</a></li></ul></div></aside>

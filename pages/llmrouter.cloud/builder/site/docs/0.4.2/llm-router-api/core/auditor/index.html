@@ -4,18 +4,18 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Auditing subsystem – llm-router · v0.4.2 · llm-router docs</title>
-<meta name="description" content="The auditor package provides a pluggable, tamper‑evident audit‑log system for the LLM‑router. All audit entries are written as JSON, encrypted with GPG and stored under logs/auditor. The subsystem is used by the router to record: request…">
+<meta name="description" content="# Auditing subsystem – `llm-router` The **auditor** package provides a pluggable, tamper‑evident audit‑log system for the LLM‑router. All audit entries are written as JSON, encrypted with GPG and stored under `logs/auditor`. The subsystem …">
 <meta name="theme-color" content="#05070a">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Auditing subsystem – llm-router · v0.4.2 · llm-router docs">
-<meta property="og:description" content="The auditor package provides a pluggable, tamper‑evident audit‑log system for the LLM‑router. All audit entries are written as JSON, encrypted with GPG and stored under logs/auditor. The subsystem is used by the router to record: request…">
+<meta property="og:description" content="# Auditing subsystem – `llm-router` The **auditor** package provides a pluggable, tamper‑evident audit‑log system for the LLM‑router. All audit entries are written as JSON, encrypted with GPG and stored under `logs/auditor`. The subsystem …">
 <meta name="docs-version" content="0.4.2">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2305070a'/%3E%3Cpath d='M8 22V10M8 16h9M17 10v12M17 13h7M17 19h7' stroke='%2300e59b' stroke-width='2' stroke-linecap='round' fill='none'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="../../../../assets/docs.css">
 <link rel="stylesheet" href="../../../../assets/pygments.css">
 <script src="../../../../assets/docs.js" defer></script>
 </head>
-<body class="page" data-version="0.4.2" data-search="../../../search.json" data-latest="1.0.7">
+<body class="page" data-version="0.4.2" data-search="../../../search.json" data-latest="1.0.8" data-repo="router">
 <a class="skip" href="#main">skip to content</a>
 <header class="topbar">
 <div class="topbar-inner">
@@ -30,7 +30,8 @@
 </form>
 <label class="vselect">
 <span class="sr-only">Documentation version</span>
-<select id="versions" aria-label="Documentation version"><option value="../../../../1.0.7/llm-router-api/core/auditor/index.html">1.0.7  · latest</option>
+<select id="versions" aria-label="Documentation version"><option value="../../../../1.0.8/llm-router-api/core/auditor/index.html">1.0.8  · latest</option>
+<option value="../../../../1.0.7/llm-router-api/core/auditor/index.html">1.0.7</option>
 <option value="../../../../1.0.6/llm-router-api/core/auditor/index.html">1.0.6</option>
 <option value="../../../../1.0.5/llm-router-api/core/auditor/index.html">1.0.5</option>
 <option value="../../../../1.0.4/llm-router-api/core/auditor/index.html">1.0.4</option>
@@ -80,11 +81,11 @@
 </header>
 <div class="scrim" id="scrim" hidden></div>
 <div class="shell">
-<aside class="sidebar" id="sidebar"><div class="side-head"><span class="side-v mono">v0.4.2</span><span class="side-tag old">archived</span></div><a class="side-hub" href="../../../index.html">documentation index</a><nav class="nav-tree" aria-label="Documentation"><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../../overview.html">Getting started</a></h2><ul><li><a href="../../../overview.html">Overview</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="index.html">Security &amp; auditing</a></h2><ul><li><a href="index.html" class="active">Auditing subsystem – llm-router</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../index.html">REST API</a></h2><ul><li><a href="../../index.html">REST API reference</a></li><li><a href="../../endpoints/index.html">Endpoints Overview</a></li><li><a href="../../endpoints/readme-pl.html">Jak tworzyć endpointy w llm-proxy-api – przewodnik</a></li><li><a href="../../keepalive.html">Keep‑Alive Utility Overview</a></li><li><a href="../../lb-strategies.html">Load Balancing Strategies</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../../llm-router-lib/index.html">Python library</a></h2><ul><li><a href="../../../llm-router-lib/index.html">llmrouterlib</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../../examples/index.html">Examples</a></h2><ul><li><a href="../../../examples/index.html">Integration Examples with LLM Router</a></li><li><a href="../../../examples/quickstart/index.html">Full Stack with Local Models</a></li><li><a href="../../../examples/readme-llamaindex.html">Using LlamaIndex with Local Models via the LLM‑Router</a></li><li><a href="../../../examples/quickstart/google-gemma3-12b-it/vllm.html">vLLM + google/gemma‑3‑12b‑it – Quick‑Start Guide (Ubuntu)</a></li><li><a href="../../../examples/quickstart/speakleash-bielik-11b-v2-3-instruct/vllm.html">vLLM + speakleash/Bielik-11B-v2.3-Instruct – Przewodnik Szybkiego Startu (Ubuntu)</a></li><li><a href="../../../examples/quickstart/speakleash-bielik-11b-v2-3-instruct/index.html">🚀 Przewodnik Szybkiego Startu dla speakleash/Bielik-11B-v2.3-Instruct z vLLM &amp; LLM‑Router</a></li><li><a href="../../../examples/quickstart/google-gemma3-12b-it/index.html">🚀 Quick‑Start Guide for google/gemma-3-12b‑it with vLLM &amp; LLM‑Router</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../../changelog.html">Release notes</a></h2><ul><li><a href="../../../changelog.html">Changelog</a></li></ul></section></nav><div class="side-foot"><a href="../../../../..">&larr;&nbsp;landing page</a><a class="mono" href="../../../search.json">search.json</a></div></aside>
+<aside class="sidebar" id="sidebar"><div class="side-head"><span class="side-v mono">v0.4.2</span><span class="side-tag old">archived</span></div><a class="side-hub" href="../../../index.html">documentation index</a><nav class="nav-tree" aria-label="Documentation"><div class="nav-repo"><span class="repo-name">llm-router</span></div><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../../overview.html">Getting started</a></h2><ul><li><a href="../../../overview.html">Overview</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="index.html">Security &amp; auditing</a></h2><ul><li><a href="index.html" class="active">Auditing subsystem – llm-router</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../index.html">REST API</a></h2><ul><li><a href="../../index.html">REST API reference</a></li><li><a href="../../endpoints/index.html">Endpoints Overview</a></li><li><a href="../../endpoints/readme-pl.html">Jak tworzyć endpointy w llm-proxy-api – przewodnik</a></li><li><a href="../../keepalive.html">Keep‑Alive Utility Overview</a></li><li><a href="../../lb-strategies.html">Load Balancing Strategies</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../../llm-router-lib/index.html">Python library</a></h2><ul><li><a href="../../../llm-router-lib/index.html">llmrouterlib</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../../examples/index.html">Examples</a></h2><ul><li><a href="../../../examples/index.html">Integration Examples with LLM Router</a></li><li><a href="../../../examples/quickstart/index.html">Full Stack with Local Models</a></li><li><a href="../../../examples/readme-llamaindex.html">Using LlamaIndex with Local Models via the LLM‑Router</a></li><li><a href="../../../examples/quickstart/google-gemma3-12b-it/vllm.html">vLLM + google/gemma‑3‑12b‑it – Quick‑Start Guide (Ubuntu)</a></li><li><a href="../../../examples/quickstart/speakleash-bielik-11b-v2-3-instruct/vllm.html">vLLM + speakleash/Bielik-11B-v2.3-Instruct – Przewodnik Szybkiego Startu (Ubuntu)</a></li><li><a href="../../../examples/quickstart/speakleash-bielik-11b-v2-3-instruct/index.html">🚀 Przewodnik Szybkiego Startu dla speakleash/Bielik-11B-v2.3-Instruct z vLLM &amp; LLM‑Router</a></li><li><a href="../../../examples/quickstart/google-gemma3-12b-it/index.html">🚀 Quick‑Start Guide for google/gemma-3-12b‑it with vLLM &amp; LLM‑Router</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../../changelog.html">Release notes</a></h2><ul><li><a href="../../../changelog.html">Changelog</a></li></ul></section></nav><div class="side-foot"><a href="../../../../..">&larr;&nbsp;landing page</a><a class="mono" href="../../../search.json">search.json</a></div></aside>
 <main class="main" id="main"><nav class="crumbs" aria-label="Breadcrumb">
 <a href="../../../../..">llm-router</a><span class="sep">/</span><a href="../../../index.html">docs</a><span class="sep">/</span><a href="index.html">Security &amp; auditing</a><span class="sep">/</span><em>Auditing subsystem – llm-router</em>
 </nav>
-<article class="prose"><h1 id="auditing-subsystem-llm-router">Auditing subsystem – llm-router<a class="headerlink" href="#auditing-subsystem-llm-router" title="link to this section">#</a></h1>
+<article class="prose"><h1 id="auditing-subsystem-llm-router">Auditing subsystem – <code>llm-router</code><a class="headerlink" href="#auditing-subsystem-llm-router" title="link to this section">#</a></h1>
 <p>The <strong>auditor</strong> package provides a pluggable, tamper‑evident audit‑log system for the
 LLM‑router. All audit entries are written as JSON, encrypted with GPG and stored
 under <code>logs/auditor</code>. The subsystem is used by the router to record:</p>
@@ -196,20 +197,20 @@ human‑readable <code>*.json</code> file next to it:</p>
 encrypted.</p>
 <hr />
 <h2 id="example-auditing-a-request-guardrail-decision">📚 Example: Auditing a request guard‑rail decision<a class="headerlink" href="#example-auditing-a-request-guardrail-decision" title="link to this section">#</a></h2>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">llm_router_api.core.auditor.auditor</span> <span class="kn">import</span> <span class="n">AnyRequestAuditor</span>
-<span class="kn">import</span> <span class="nn">logging</span>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">llm_router_api.core.auditor.auditor</span><span class="w"> </span><span class="kn">import</span> <span class="n">AnyRequestAuditor</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
 
-<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;router&quot;</span><span class="p">)</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">"router"</span><span class="p">)</span>
 <span class="n">auditor</span> <span class="o">=</span> <span class="n">AnyRequestAuditor</span><span class="p">(</span><span class="n">logger</span><span class="p">)</span>
 
 <span class="c1"># Somewhere inside an endpoint, after a guard‑rail check:</span>
 <span class="n">audit_record</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;audit_type&quot;</span><span class="p">:</span> <span class="s2">&quot;guardrail_request&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;payload&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;user_id&quot;</span><span class="p">:</span> <span class="s2">&quot;12345&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;input&quot;</span><span class="p">:</span> <span class="s2">&quot;…&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;decision&quot;</span><span class="p">:</span> <span class="s2">&quot;blocked&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;reason&quot;</span><span class="p">:</span> <span class="s2">&quot;PII detected&quot;</span>
+    <span class="s2">"audit_type"</span><span class="p">:</span> <span class="s2">"guardrail_request"</span><span class="p">,</span>
+    <span class="s2">"payload"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"user_id"</span><span class="p">:</span> <span class="s2">"12345"</span><span class="p">,</span>
+        <span class="s2">"input"</span><span class="p">:</span> <span class="s2">"…"</span><span class="p">,</span>
+        <span class="s2">"decision"</span><span class="p">:</span> <span class="s2">"blocked"</span><span class="p">,</span>
+        <span class="s2">"reason"</span><span class="p">:</span> <span class="s2">"PII detected"</span>
     <span class="p">}</span>
 <span class="p">}</span>
 <span class="n">auditor</span><span class="o">.</span><span class="n">add_log</span><span class="p">(</span><span class="n">audit_record</span><span class="p">)</span>
@@ -237,14 +238,15 @@ class that inherits from <code>AuditorLogStorageInterface</code> and provides a
 <p><em>Happy auditing!</em> 🎯</p></article>
 <nav class="pager" aria-label="Previous and next page"></nav>
 <footer class="doc-meta">
+<div class="meta-row"><span class="meta-k">repository</span><a class="mono" href="https://github.com/radlab-dev-group/llm-router">llm-router</a></div>
 <div class="meta-row"><span class="meta-k">source</span><a class="mono" href="https://github.com/radlab-dev-group/llm-router/blob/v0.4.2/llm_router_api/core/auditor/README.md">llm_router_api/core/auditor/README.md</a></div>
-<div class="meta-row"><span class="meta-k">last commit</span><time datetime="2025-12-13T04:18:06+01:00">2025-12-13</time></div>
-<div class="meta-row"><span class="meta-k">built from</span><span class="mono">v0.4.2&nbsp;@&nbsp;38ce174</span></div>
-<p class="hint">Generated from the Markdown file in the repository: commit a change and the next build republishes it for every release that contains it.</p>
+<div class="meta-row"><span class="meta-k">last commit</span><time datetime="2025-11-29T13:04:05+01:00"><a href="https://github.com/radlab-dev-group/llm-router/commit/38ce174">2025-11-29</a></time></div>
+<div class="meta-row"><span class="meta-k">built from</span><span class="mono"><a href="https://github.com/radlab-dev-group/llm-router/tree/v0.4.2">v0.4.2</a>&nbsp;@&nbsp;<a href="https://github.com/radlab-dev-group/llm-router/commit/38ce174">38ce174</a></span></div>
+<p class="hint">Generated from the Markdown file in the repository: commit a change and the next build republishes it.</p>
 </footer>
 <footer class="foot"><div class="foot-inner">
 <span class="mono">llm-router &middot; docs are generated from the repository by <code>tools/build_docs.py</code></span>
-<span class="mono"><a href="https://github.com/radlab-dev-group/llm-router/tree/v0.4.2">0.4.2</a> @ <code>38ce174</code></span>
+<span class="mono"><a href="https://github.com/radlab-dev-group/llm-router/tree/v0.4.2">0.4.2</a> @ <a href="https://github.com/radlab-dev-group/llm-router/commit/38ce174">38ce174</a></span>
 </div></footer>
 </main>
 <aside class="dtoc" id="dtoc"><h2 class="toc-title">on this page</h2><div class="toc-body"><ul><li><a href="#directory-layout">📁 Directory layout</a></li><li><a href="#how-the-auditor-works">🛠️ How the auditor works</a></li><li><a href="#gpg-key-management">🔐 GPG key management</a><ul><li><a href="#1-generate-a-new-key-pair">1️⃣ Generate a new key pair</a></li><li><a href="#2-place-the-public-key-where-the-router-expects-it">2️⃣ Place the public key where the router expects it</a></li><li><a href="#3-decrypt-audit-logs">3️⃣ Decrypt audit logs</a></li></ul></li><li><a href="#example-auditing-a-request-guardrail-decision">📚 Example: Auditing a request guard‑rail decision</a></li><li><a href="#extending-the-auditor">🧩 Extending the auditor</a></li><li><a href="#further-reading">📖 Further reading</a></li></ul></div></aside>

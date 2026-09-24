@@ -4,18 +4,18 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Using LlamaIndex with Local Models via the LLM‑Router · v0.6.2 · llm-router docs</title>
-<meta name="description" content="LlamaIndex’s OpenAI wrapper expects OpenAI‑style model names (e.g. gpt-3.5-turbo, gpt-4). When you want to run local models (Gemma, Ollama, vLLM, etc.) behind an LLM‑Router, the router must translate those OpenAI names to the actual model…">
+<meta name="description" content="## Using LlamaIndex with Local Models via the LLM‑Router LlamaIndex’s `OpenAI` wrapper expects **OpenAI‑style model names** (e.g. `gpt-3.5-turbo`, `gpt-4`). When you want to run *local* models (Gemma, Ollama, vLLM, etc.) behind an LLM‑Rout…">
 <meta name="theme-color" content="#05070a">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Using LlamaIndex with Local Models via the LLM‑Router · v0.6.2 · llm-router docs">
-<meta property="og:description" content="LlamaIndex’s OpenAI wrapper expects OpenAI‑style model names (e.g. gpt-3.5-turbo, gpt-4). When you want to run local models (Gemma, Ollama, vLLM, etc.) behind an LLM‑Router, the router must translate those OpenAI names to the actual model…">
+<meta property="og:description" content="## Using LlamaIndex with Local Models via the LLM‑Router LlamaIndex’s `OpenAI` wrapper expects **OpenAI‑style model names** (e.g. `gpt-3.5-turbo`, `gpt-4`). When you want to run *local* models (Gemma, Ollama, vLLM, etc.) behind an LLM‑Rout…">
 <meta name="docs-version" content="0.6.2">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2305070a'/%3E%3Cpath d='M8 22V10M8 16h9M17 10v12M17 13h7M17 19h7' stroke='%2300e59b' stroke-width='2' stroke-linecap='round' fill='none'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="../../assets/docs.css">
 <link rel="stylesheet" href="../../assets/pygments.css">
 <script src="../../assets/docs.js" defer></script>
 </head>
-<body class="page" data-version="0.6.2" data-search="../search.json" data-latest="1.0.7">
+<body class="page" data-version="0.6.2" data-search="../search.json" data-latest="1.0.8" data-repo="router">
 <a class="skip" href="#main">skip to content</a>
 <header class="topbar">
 <div class="topbar-inner">
@@ -30,7 +30,8 @@
 </form>
 <label class="vselect">
 <span class="sr-only">Documentation version</span>
-<select id="versions" aria-label="Documentation version"><option value="../../1.0.7/examples/readme-llamaindex.html">1.0.7  · latest</option>
+<select id="versions" aria-label="Documentation version"><option value="../../1.0.8/examples/readme-llamaindex.html">1.0.8  · latest</option>
+<option value="../../1.0.7/examples/readme-llamaindex.html">1.0.7</option>
 <option value="../../1.0.6/examples/readme-llamaindex.html">1.0.6</option>
 <option value="../../1.0.5/examples/readme-llamaindex.html">1.0.5</option>
 <option value="../../1.0.4/examples/readme-llamaindex.html">1.0.4</option>
@@ -80,11 +81,11 @@
 </header>
 <div class="scrim" id="scrim" hidden></div>
 <div class="shell">
-<aside class="sidebar" id="sidebar"><div class="side-head"><span class="side-v mono">v0.6.2</span><span class="side-tag old">archived</span></div><a class="side-hub" href="../index.html">documentation index</a><nav class="nav-tree" aria-label="Documentation"><section class="nav-sec"><h2 class="nav-sec-title"><a href="../overview.html">Getting started</a></h2><ul><li><a href="../overview.html">Overview</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../llm-router-api/core/auditor/index.html">Security &amp; auditing</a></h2><ul><li><a href="../llm-router-api/core/auditor/index.html">Auditing subsystem – llm-router</a></li><li><a href="../llm-router-api/authentication.html">Authentication &amp; Authorization</a></li><li><a href="../llm-router-api/rate-limiting.html">Rate Limiting</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../llm-router-api/index.html">REST API</a></h2><ul><li><a href="../llm-router-api/index.html">REST API reference</a></li><li><a href="../llm-router-api/endpoints/index.html">Endpoints Overview</a></li><li><a href="../llm-router-api/endpoints/readme-pl.html">Jak tworzyć endpointy w llm-proxy-api – przewodnik</a></li><li><a href="../llm-router-api/keepalive.html">Keep‑Alive Utility Overview</a></li><li><a href="../llm-router-api/lb-strategies.html">Load Balancing Strategies</a></li><li><a href="../llm-router-api/models-config.html">Models configuration description (JSON)</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../llm-router-cli/index.html">CLI</a></h2><ul><li><a href="../llm-router-cli/index.html">llm-router CLI — Command Reference</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../llm-router-lib/index.html">Python library</a></h2><ul><li><a href="../llm-router-lib/index.html">llmrouterlib</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../helm-charts/index.html">Deployment</a></h2><ul><li><a href="../helm-charts/index.html">LLM‑Router Helm Chart</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="index.html">Examples</a></h2><ul><li><a href="index.html">Integration Examples with LLM Router</a></li><li><a href="quickstart/index.html">Full Stack with Local Models</a></li><li><a href="readme-llamaindex.html" class="active">Using LlamaIndex with Local Models via the LLM‑Router</a></li><li><a href="quickstart/google-gemma3-12b-it/vllm.html">vLLM + google/gemma‑3‑12b‑it – Quick‑Start Guide (Ubuntu)</a></li><li><a href="quickstart/speakleash-bielik-11b-v2-3-instruct/vllm.html">vLLM + speakleash/Bielik-11B-v2.3-Instruct – Przewodnik Szybkiego Startu (Ubuntu)</a></li><li><a href="quickstart/speakleash-bielik-11b-v2-3-instruct/index.html">🚀 Przewodnik Szybkiego Startu dla speakleash/Bielik-11B-v2.3-Instruct z vLLM &amp; LLM‑Router</a></li><li><a href="quickstart/google-gemma3-12b-it/index.html">🚀 Quick‑Start Guide for google/gemma-3-12b‑it with vLLM &amp; LLM‑Router</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../changelog.html">Release notes</a></h2><ul><li><a href="../changelog.html">Changelog</a></li></ul></section></nav><div class="side-foot"><a href="../../..">&larr;&nbsp;landing page</a><a class="mono" href="../search.json">search.json</a></div></aside>
+<aside class="sidebar" id="sidebar"><div class="side-head"><span class="side-v mono">v0.6.2</span><span class="side-tag old">archived</span></div><a class="side-hub" href="../index.html">documentation index</a><nav class="nav-tree" aria-label="Documentation"><div class="nav-repo"><span class="repo-name">llm-router</span></div><section class="nav-sec"><h2 class="nav-sec-title"><a href="../overview.html">Getting started</a></h2><ul><li><a href="../overview.html">Overview</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../llm-router-api/core/auditor/index.html">Security &amp; auditing</a></h2><ul><li><a href="../llm-router-api/core/auditor/index.html">Auditing subsystem – llm-router</a></li><li><a href="../llm-router-api/authentication.html">Authentication &amp; Authorization</a></li><li><a href="../llm-router-api/rate-limiting.html">Rate Limiting</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../llm-router-api/index.html">REST API</a></h2><ul><li><a href="../llm-router-api/index.html">REST API reference</a></li><li><a href="../llm-router-api/endpoints/index.html">Endpoints Overview</a></li><li><a href="../llm-router-api/endpoints/readme-pl.html">Jak tworzyć endpointy w llm-proxy-api – przewodnik</a></li><li><a href="../llm-router-api/keepalive.html">Keep‑Alive Utility Overview</a></li><li><a href="../llm-router-api/lb-strategies.html">Load Balancing Strategies</a></li><li><a href="../llm-router-api/models-config.html">Models configuration description (JSON)</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../llm-router-cli/index.html">CLI</a></h2><ul><li><a href="../llm-router-cli/index.html">llm-router CLI — Command Reference</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../llm-router-lib/index.html">Python library</a></h2><ul><li><a href="../llm-router-lib/index.html">llmrouterlib</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../helm-charts/index.html">Deployment</a></h2><ul><li><a href="../helm-charts/index.html">LLM‑Router Helm Chart</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="index.html">Examples</a></h2><ul><li><a href="index.html">Integration Examples with LLM Router</a></li><li><a href="quickstart/index.html">Full Stack with Local Models</a></li><li><a href="readme-llamaindex.html" class="active">Using LlamaIndex with Local Models via the LLM‑Router</a></li><li><a href="quickstart/google-gemma3-12b-it/vllm.html">vLLM + google/gemma‑3‑12b‑it – Quick‑Start Guide (Ubuntu)</a></li><li><a href="quickstart/speakleash-bielik-11b-v2-3-instruct/vllm.html">vLLM + speakleash/Bielik-11B-v2.3-Instruct – Przewodnik Szybkiego Startu (Ubuntu)</a></li><li><a href="quickstart/speakleash-bielik-11b-v2-3-instruct/index.html">🚀 Przewodnik Szybkiego Startu dla speakleash/Bielik-11B-v2.3-Instruct z vLLM &amp; LLM‑Router</a></li><li><a href="quickstart/google-gemma3-12b-it/index.html">🚀 Quick‑Start Guide for google/gemma-3-12b‑it with vLLM &amp; LLM‑Router</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../changelog.html">Release notes</a></h2><ul><li><a href="../changelog.html">Changelog</a></li></ul></section></nav><div class="side-foot"><a href="../../..">&larr;&nbsp;landing page</a><a class="mono" href="../search.json">search.json</a></div></aside>
 <main class="main" id="main"><nav class="crumbs" aria-label="Breadcrumb">
 <a href="../../..">llm-router</a><span class="sep">/</span><a href="../index.html">docs</a><span class="sep">/</span><a href="index.html">Examples</a><span class="sep">/</span><em>Using LlamaIndex with Local Models via the LLM‑Router</em>
 </nav>
-<article class="prose"><h1 id="using-llamaindex-with-local-models-via-the-llmrouter">Using LlamaIndex with Local Models via the LLM‑Router<a class="headerlink" href="#using-llamaindex-with-local-models-via-the-llmrouter" title="link to this section">#</a></h1>
+<article class="prose"><h2 id="using-llamaindex-with-local-models-via-the-llmrouter">Using LlamaIndex with Local Models via the LLM‑Router<a class="headerlink" href="#using-llamaindex-with-local-models-via-the-llmrouter" title="link to this section">#</a></h2>
 <p>LlamaIndex’s <code>OpenAI</code> wrapper expects <strong>OpenAI‑style model names</strong> (e.g. <code>gpt-3.5-turbo</code>, <code>gpt-4</code>).<br />
 When you want to run <em>local</em> models (Gemma, Ollama, vLLM, etc.) behind an LLM‑Router, the router must translate those
 OpenAI names to the actual model identifiers used by the local providers.</p>
@@ -94,7 +95,7 @@ OpenAI names to the actual model identifiers used by the local providers.</p>
   request, to obtain context‑window size, etc.</li>
 <li>If the wrapper receives a name it does not recognise (e.g. <code>google/gemma-3-12b-it</code>), it raises a <code>ValueError</code> like:</li>
 </ul>
-<div class="codehilite"><pre><span></span><code>ValueError: Unknown model &#39;google/gemma-3-12b-it&#39;. Please provide a valid OpenAI model name …
+<div class="codehilite"><pre><span></span><code>ValueError: Unknown model 'google/gemma-3-12b-it'. Please provide a valid OpenAI model name …
 </code></pre></div>
 
 <ul>
@@ -136,40 +137,40 @@ The key points are:</p>
 </tbody>
 </table>
 <h4 id="example-snippet">Example snippet<a class="headerlink" href="#example-snippet" title="link to this section">#</a></h4>
-<div class="codehilite"><pre><span></span><code><span class="nt">&quot;openai_models&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<div class="codehilite"><pre><span></span><code><span class="nt">"openai_models"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="err">(...)</span>
 
-<span class="w">    </span><span class="nt">&quot;gpt-3.5-turbo&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;providers&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="nt">"gpt-3.5-turbo"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">"providers"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
 <span class="w">            </span><span class="p">{</span>
-<span class="w">                </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;gpt_35_turbo-gemma3_12b-vllm-71:7000&quot;</span><span class="p">,</span>
-<span class="w">                </span><span class="nt">&quot;api_host&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;http://192.168.100.71:7000/&quot;</span><span class="p">,</span>
-<span class="w">                </span><span class="nt">&quot;api_token&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">,</span>
-<span class="w">                </span><span class="nt">&quot;api_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;vllm&quot;</span><span class="p">,</span>
-<span class="w">                </span><span class="nt">&quot;input_size&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">4096</span><span class="p">,</span>
-<span class="w">                </span><span class="nt">&quot;model_path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;google/gemma-3-12b-it&quot;</span><span class="p">,</span>
-<span class="w">                </span><span class="nt">&quot;weight&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">1.0</span>
+<span class="w">                </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"gpt_35_turbo-gemma3_12b-vllm-71:7000"</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">"api_host"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://192.168.100.71:7000/"</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">"api_token"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">"api_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"vllm"</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">"input_size"</span><span class="p">:</span><span class="w"> </span><span class="mi">4096</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">"model_path"</span><span class="p">:</span><span class="w"> </span><span class="s2">"google/gemma-3-12b-it"</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">"weight"</span><span class="p">:</span><span class="w"> </span><span class="mf">1.0</span>
 <span class="w">            </span><span class="p">},</span>
 <span class="w">            </span><span class="p">{</span>
-<span class="w">                </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;gpt_35_turbo-gemma3_12b-vllm-71:7001&quot;</span><span class="p">,</span>
-<span class="w">                </span><span class="nt">&quot;api_host&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;http://192.168.100.71:7001/&quot;</span><span class="p">,</span>
-<span class="w">                </span><span class="nt">&quot;api_token&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">,</span>
-<span class="w">                </span><span class="nt">&quot;api_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;vllm&quot;</span><span class="p">,</span>
-<span class="w">                </span><span class="nt">&quot;input_size&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">4096</span><span class="p">,</span>
-<span class="w">                </span><span class="nt">&quot;model_path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;google/gemma-3-12b-it&quot;</span><span class="p">,</span>
-<span class="w">                </span><span class="nt">&quot;weight&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">1.0</span>
+<span class="w">                </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"gpt_35_turbo-gemma3_12b-vllm-71:7001"</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">"api_host"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://192.168.100.71:7001/"</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">"api_token"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">"api_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"vllm"</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">"input_size"</span><span class="p">:</span><span class="w"> </span><span class="mi">4096</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">"model_path"</span><span class="p">:</span><span class="w"> </span><span class="s2">"google/gemma-3-12b-it"</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">"weight"</span><span class="p">:</span><span class="w"> </span><span class="mf">1.0</span>
 <span class="w">            </span><span class="p">}</span>
 <span class="w">        </span><span class="p">]</span>
 <span class="w">    </span><span class="p">},</span>
-<span class="w">    </span><span class="nt">&quot;gpt-4&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;providers&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="nt">"gpt-4"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">"providers"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
 <span class="w">            </span><span class="p">{</span>
-<span class="w">                </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;gpt-4-gpt-oss-20b-ollama-66:11434&quot;</span><span class="p">,</span>
-<span class="w">                </span><span class="nt">&quot;api_host&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;http://192.168.100.66:11434&quot;</span><span class="p">,</span>
-<span class="w">                </span><span class="nt">&quot;api_token&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">,</span>
-<span class="w">                </span><span class="nt">&quot;api_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ollama&quot;</span><span class="p">,</span>
-<span class="w">                </span><span class="nt">&quot;input_size&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">256000</span><span class="p">,</span>
-<span class="w">                </span><span class="nt">&quot;model_path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;gpt-oss:120b&quot;</span>
+<span class="w">                </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"gpt-4-gpt-oss-20b-ollama-66:11434"</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">"api_host"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://192.168.100.66:11434"</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">"api_token"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">"api_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ollama"</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">"input_size"</span><span class="p">:</span><span class="w"> </span><span class="mi">256000</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">"model_path"</span><span class="p">:</span><span class="w"> </span><span class="s2">"gpt-oss:120b"</span>
 <span class="w">                </span><span class="p">}</span>
 <span class="w">        </span><span class="p">]</span>
 <span class="w">    </span><span class="p">}</span>
@@ -177,10 +178,10 @@ The key points are:</p>
 
 <span class="err">...</span>
 
-<span class="nt">&quot;active_models&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;openai_models&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">        </span><span class="s2">&quot;gpt-3.5-turbo&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="s2">&quot;gpt-4&quot;</span>
+<span class="nt">"active_models"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">"openai_models"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="s2">"gpt-3.5-turbo"</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">"gpt-4"</span>
 
 <span class="w">        </span><span class="err">...</span>
 <span class="w">    </span><span class="p">]</span>
@@ -191,7 +192,7 @@ The key points are:</p>
 <ol>
 <li><strong>LlamaIndex code</strong> creates an <code>OpenAI</code> client with a model name that the wrapper knows, e.g.:</li>
 </ol>
-<div class="codehilite"><pre><span></span><code><span class="n">llm</span> <span class="o">=</span> <span class="n">OpenAI</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s2">&quot;gpt-3.5-turbo&quot;</span><span class="p">,</span> <span class="n">api_base</span><span class="o">=</span><span class="s2">&quot;http://localhost:8080&quot;</span><span class="p">,</span> <span class="n">api_key</span><span class="o">=</span><span class="s2">&quot;not-needed&quot;</span><span class="p">)</span>
+<div class="codehilite"><pre><span></span><code><span class="n">llm</span> <span class="o">=</span> <span class="n">OpenAI</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s2">"gpt-3.5-turbo"</span><span class="p">,</span> <span class="n">api_base</span><span class="o">=</span><span class="s2">"http://localhost:8080"</span><span class="p">,</span> <span class="n">api_key</span><span class="o">=</span><span class="s2">"not-needed"</span><span class="p">)</span>
 </code></pre></div>
 
 <ol>
@@ -217,17 +218,18 @@ router will translate those names to the real local model identifiers (<code>mod
 needed for LlamaIndex to work seamlessly with any self�</p></article>
 <nav class="pager" aria-label="Previous and next page"><a class="prev" href="quickstart/index.html"><span class="dir">&larr; previous</span><span class="pt">Full Stack with Local Models</span></a><a class="next" href="quickstart/google-gemma3-12b-it/vllm.html"><span class="dir">next &rarr;</span><span class="pt">vLLM + google/gemma‑3‑12b‑it – Quick‑Start Guide (Ubuntu)</span></a></nav>
 <footer class="doc-meta">
+<div class="meta-row"><span class="meta-k">repository</span><a class="mono" href="https://github.com/radlab-dev-group/llm-router">llm-router</a></div>
 <div class="meta-row"><span class="meta-k">source</span><a class="mono" href="https://github.com/radlab-dev-group/llm-router/blob/v0.6.2/examples/README_LLAMAINDEX.md">examples/README_LLAMAINDEX.md</a></div>
-<div class="meta-row"><span class="meta-k">last commit</span><time datetime="2026-07-02T01:07:04+02:00">2026-07-02</time></div>
-<div class="meta-row"><span class="meta-k">built from</span><span class="mono">v0.6.2&nbsp;@&nbsp;673e6e5</span></div>
-<p class="hint">Generated from the Markdown file in the repository: commit a change and the next build republishes it for every release that contains it.</p>
+<div class="meta-row"><span class="meta-k">last commit</span><time datetime="2025-11-27T02:29:40+01:00"><a href="https://github.com/radlab-dev-group/llm-router/commit/673e6e5">2025-11-27</a></time></div>
+<div class="meta-row"><span class="meta-k">built from</span><span class="mono"><a href="https://github.com/radlab-dev-group/llm-router/tree/v0.6.2">v0.6.2</a>&nbsp;@&nbsp;<a href="https://github.com/radlab-dev-group/llm-router/commit/673e6e5">673e6e5</a></span></div>
+<p class="hint">Generated from the Markdown file in the repository: commit a change and the next build republishes it.</p>
 </footer>
 <footer class="foot"><div class="foot-inner">
 <span class="mono">llm-router &middot; docs are generated from the repository by <code>tools/build_docs.py</code></span>
-<span class="mono"><a href="https://github.com/radlab-dev-group/llm-router/tree/v0.6.2">0.6.2</a> @ <code>673e6e5</code></span>
+<span class="mono"><a href="https://github.com/radlab-dev-group/llm-router/tree/v0.6.2">0.6.2</a> @ <a href="https://github.com/radlab-dev-group/llm-router/commit/673e6e5">673e6e5</a></span>
 </div></footer>
 </main>
-<aside class="dtoc" id="dtoc"><h2 class="toc-title">on this page</h2><div class="toc-body"><ul><li><a href="#why-the-mapping-is-required">Why the mapping is required</a></li><li><a href="#router-configuration">Router configuration</a></li><li><a href="#how-it-works-endtoend">How it works end‑to‑end</a></li><li><a href="#checklist-for-a-working-setup">Checklist for a working setup</a></li><li><a href="#tldr">TL;DR</a></li></ul></div></aside>
+<aside class="dtoc" id="dtoc"><h2 class="toc-title">on this page</h2><div class="toc-body"><ul><li><a href="#using-llamaindex-with-local-models-via-the-llmrouter">Using LlamaIndex with Local Models via the LLM‑Router</a><ul><li><a href="#why-the-mapping-is-required">Why the mapping is required</a></li><li><a href="#router-configuration">Router configuration</a></li><li><a href="#how-it-works-endtoend">How it works end‑to‑end</a></li><li><a href="#checklist-for-a-working-setup">Checklist for a working setup</a></li><li><a href="#tldr">TL;DR</a></li></ul></li></ul></div></aside>
 </div>
 </body>
 </html>
