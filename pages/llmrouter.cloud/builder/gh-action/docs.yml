@@ -24,10 +24,10 @@ concurrency:
   group: pages
   cancel-in-progress: true
 
-# Repository the documentation is generated from. It is checked out next to
-# this one and passed to the builder as --source llm-router.
 env:
   SOURCE_REPO: radlab-dev-group/llm-router
+  PLUGINS_REPO: radlab-dev-group/llm-router-plugins
+  SERVICES_REPO: radlab-dev-group/llm-router-services
 
 jobs:
   build:
@@ -37,12 +37,26 @@ jobs:
       - name: Checkout pages repository
         uses: actions/checkout@v4
 
-      - name: Checkout source repository (tags included)
+      - name: Checkout router source (tags included)
         uses: actions/checkout@v4
         with:
           repository: ${{ env.SOURCE_REPO }}
           path: llm-router
           fetch-depth: 0
+
+      - name: Checkout plugins source
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ env.PLUGINS_REPO }}
+          path: llm-router-plugins
+          fetch-depth: 1
+
+      - name: Checkout services source
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ env.SERVICES_REPO }}
+          path: llm-router-services
+          fetch-depth: 1
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -54,10 +68,13 @@ jobs:
       - name: Install documentation dependencies
         run: python -m pip install -r builder/tools/requirements-docs.txt
 
-      - name: Build /docs from the source repository
+      - name: Build /docs from the source repositories
         run: >-
           python builder/tools/build_docs.py
           --source llm-router
+          --plugins llm-router-plugins
+          --services llm-router-services
+          --clean
           --all-versions
           --check-links
           --output site

@@ -394,43 +394,6 @@ def is_prerelease(version: str) -> bool:
     return PRERELEASE_MARKER in version
 
 
-def current_release() -> Release:
-    """The working-tree release from the primary repo."""
-    if PRIMARY_REPO is None or PRIMARY_REPO.root is None:
-        raise SystemExit("[docs] primary repo not configured")
-    repo = PRIMARY_REPO
-    version_file = repo.root / ".version"
-    version = (
-        version_file.read_text(encoding="utf-8").strip()
-        if version_file.exists()
-        else "0.0.0"
-    )
-    if not git_ok(repo):
-        stamp = (
-            datetime.fromtimestamp(
-                version_file.stat().st_mtime, tz=timezone.utc
-            ).isoformat()
-            if version_file.exists()
-            else "unknown"
-        )
-        return Release(
-            version=version, ref=repo.root.name or "source", sha="unknown",
-            date=stamp, prerelease=is_prerelease(version),
-        )
-    branch = git(repo, "rev-parse", "--abbrev-ref", "HEAD").strip()
-    if branch == "HEAD":
-        branch = (
-            git(repo, "describe", "--tags", "--exact-match", "HEAD", check=False).strip()
-            or "HEAD"
-        )
-    sha = git(repo, "rev-parse", "--short", "HEAD").strip()
-    date = git(repo, "log", "-1", "--format=%cI", "HEAD").strip()
-    return Release(
-        version=version, ref=branch, sha=sha, date=date,
-        prerelease=is_prerelease(version),
-    )
-
-
 def satellite_snapshot(repo: Repo, release_date: str = "") -> Snapshot:
     """Build a working-tree snapshot for a rolling satellite repo."""
     if repo.root is None:
@@ -466,18 +429,26 @@ def tag_snapshot(repo: Repo, tag: str) -> Snapshot:
 
 
 def collect_releases(include_prerelease: bool, max_versions: int | None) -> list[Release]:
-    """Collect router releases with their snapshots."""
-    working = current_release()
-    releases = [working]
+    """Collect tagged router releases, newest first."""
     repo = PRIMARY_REPO
+    if repo is None or repo.root is None:
+        raise SystemExit("[docs] primary repo not configured")
+    releases: list[Release] = []
     tags = git(repo, "tag").split() if git_ok(repo) else []
     for tag in tags:
         version = tag[1:] if tag.startswith("v") else tag
-        if version == working.version:
-            continue
         if is_prerelease(version) and not include_prerelease:
             continue
-        releases.append(tag_snapshot(repo, tag))
+        snapshot = tag_snapshot(repo, tag)
+        releases.append(
+            Release(
+                version=snapshot.version,
+                ref=snapshot.ref,
+                sha=snapshot.sha,
+                date=snapshot.date,
+                prerelease=is_prerelease(version),
+            )
+        )
     releases.sort(key=lambda item: version_key(item.version), reverse=True)
     if max_versions is not None:
         releases = releases[:max_versions]
@@ -656,8 +627,11 @@ MARKDOWN_EXTENSIONS = [
     "markdown.extensions.toc",
 ]
 MARKDOWN_CONFIG = {
-    "codehilite": {"css_class": "codehilite", "guess_lang": False},
-    "toc": {
+    "markdown.extensions.codehilite": {
+        "css_class": "codehilite",
+        "guess_lang": False,
+    },
+    "markdown.extensions.toc": {
         "toc_depth": "2-3",
         "permalink": "#",
         "permalink_class": "headerlink",
@@ -665,7 +639,7 @@ MARKDOWN_CONFIG = {
     },
 }
 
-LINK_RE = re.compile(r'(<a\b[^>]*?href=")([^"]*)("[^>]*>)')
+LINK_RE = re.compile(r'(<a\b[^>]*?href=")([^"]*)("[^>]*?)(/?>)')
 SCHEME_RE = re.compile(r"^[a-zA-Z][a-zA-Z0-9+.\-]*:")
 
 
@@ -681,8 +655,64 @@ class Href:
         return self.to(posixpath.join(version_dir, target))
 
 
+def harden_pygments_plugins() -> None:
+    """Skip plugin lexers/formatters whose entry point fails to import.
+
+    codehilite reaches into pygments plugin discovery for every language
+    alias it cannot resolve, so a half-broken optional install (e.g.
+    IPython without _sqlite3) would otherwise crash the whole build.
+    pygments replaces pygments.lexers/pygments.formatters with an
+    _automodule at import time, so the globals of the loader functions
+    are patched directly, not just the public module attributes.
+    """
+    try:
+        import pygments.formatters
+        import pygments.lexers
+        import pygments.plugin
+    except ImportError:
+        return
+    if getattr(pygments.lexers, "_docs_safe_plugins", False):
+        return
+
+    def safe_lexers():
+        for entrypoint in pygments.plugin.iter_entry_points(
+            pygments.plugin.LEXER_ENTRY_POINT
+        ):
+            try:
+                yield entrypoint.load()
+            except Exception:
+                continue
+
+    def safe_formatters():
+        for entrypoint in pygments.plugin.iter_entry_points(
+            pygments.plugin.FORMATTER_ENTRY_POINT
+        ):
+            try:
+                yield entrypoint.name, entrypoint.load()
+            except Exception:
+                continue
+
+    replacements = {
+        "find_plugin_lexers": safe_lexers,
+        "find_plugin_formatters": safe_formatters,
+    }
+    for func in (
+        pygments.lexers.get_lexer_by_name,
+        pygments.lexers.get_lexer_for_filename,
+        pygments.lexers.guess_lexer,
+        pygments.formatters.get_formatter_by_name,
+    ):
+        for name, replacement in replacements.items():
+            if name in func.__globals__:
+                func.__globals__[name] = replacement
+    pygments.lexers.find_plugin_lexers = safe_lexers
+    pygments.formatters.find_plugin_formatters = safe_formatters
+    pygments.lexers._docs_safe_plugins = True
+
+
 def new_markdown():
     import markdown
+    harden_pygments_plugins()
     return markdown.Markdown(
         extensions=MARKDOWN_EXTENSIONS, extension_configs=MARKDOWN_CONFIG
     )
@@ -742,11 +772,14 @@ def rewrite_links(
         raise SystemExit(f"[docs] page {page.source} has no snapshot")
     repo = snapshot.repo
     def replace(match: re.Match) -> str:
-        prefix, target, suffix = match.group(1), match.group(2), match.group(3)
+        prefix, target, attrs, close = (
+            match.group(1), match.group(2), match.group(3), match.group(4)
+        )
+        suffix = f"{attrs}{close}"
         if not target or target.startswith("#"):
             return match.group(0)
         if SCHEME_RE.match(target) or target.startswith("//"):
-            return f"{prefix}{target}{external_attrs(suffix)}"
+            return f"{prefix}{target}{external_attrs(attrs)}{close}"
 
         # Check crosslink map first
         rewritten_out = resolve_crosslink(config, page.source, target, release)
@@ -792,7 +825,7 @@ def rewrite_links(
         else:
             unresolved.append(f"{page.repo}:{page.source} -> {target}")
             link = f"{blob}/{quote(candidate)}"
-        return f"{prefix}{link}{external_attrs(suffix)}"
+        return f"{prefix}{link}{external_attrs(attrs)}{close}"
 
     return LINK_RE.sub(replace, body)
 
@@ -1521,8 +1554,7 @@ def render_hub(release: Release, config: Config, versions: list[VersionEntry],
             '<div class="box"><h2>this release</h2><dl>',
             f'<dt>version</dt><dd class="mono">{html.escape(release.version)}</dd>',
             f'<dt>released</dt><dd class="mono">{short_date(release.date)}</dd>',
-            f'<dt>ref</dt><dd class="mono">{html.escape(release.ref)}</dd>',
-            f'<dt>commit</dt><dd class="mono"><a href="{config.repo_url}/commit/{release.sha}">{html.escape(release.sha)}</a></dd>',
+            f'<dt>release</dt><dd class="mono"><a href="{config.repo_url}/releases/tag/{quote(release.ref)}">{html.escape(release.ref)}</a></dd>',
             f'<dt>documents</dt><dd class="mono">{len(release.pages)}</dd>',
             "</dl></div>",
             repo_box,
@@ -1734,13 +1766,18 @@ def build_site(config, output, releases, entries, latest, search_scope, dry_run)
     return written
 
 
-def copy_landing(output: Path, dry_run: bool) -> bool:
+def copy_landing(output: Path, latest: str, dry_run: bool) -> bool:
     source = REPO_ROOT / "landing" / "index.html"
     if not source.exists():
         return False
     if not dry_run:
         output.mkdir(parents=True, exist_ok=True)
-        shutil.copyfile(source, output / "index.html")
+        html = source.read_text(encoding="utf-8")
+        if "{{VERSION}}" not in html:
+            print("[docs] warning: landing has no {{VERSION}} token", file=sys.stderr)
+        else:
+            html = html.replace("{{VERSION}}", latest)
+        (output / "index.html").write_text(html, encoding="utf-8")
     return True
 
 
@@ -1874,27 +1911,19 @@ def main(argv: list[str] | None = None) -> int:
 
     limit = args.max_versions or (None if args.all_versions else 1)
     releases = collect_releases(args.include_prerelease, limit)
+    if not releases:
+        raise SystemExit("[docs] no version tags found in the primary repository")
 
-    # Attach router snapshot to each release
+    # Attach the router snapshot to each release (release.ref is the tag)
     router_repo = REPOS.get("router")
-    for i, release in enumerate(releases):
+    for release in releases:
         if router_repo and router_repo.root is not None:
-            if i == 0:
-                # Worktree release
-                try:
-                    snap = satellite_snapshot(router_repo)
-                    release.snapshots["router"] = snap
-                except SystemExit as e:
-                    if not args.quiet:
-                        print(f"[docs] warning: {e}", file=sys.stderr)
-            else:
-                # Tagged release — release.ref is the tag name
-                try:
-                    snap = tag_snapshot(router_repo, release.ref)
-                    release.snapshots["router"] = snap
-                except SystemExit as e:
-                    if not args.quiet:
-                        print(f"[docs] warning: {e}", file=sys.stderr)
+            try:
+                snap = tag_snapshot(router_repo, release.ref)
+                release.snapshots["router"] = snap
+            except SystemExit as e:
+                if not args.quiet:
+                    print(f"[docs] warning: {e}", file=sys.stderr)
 
     # Attach satellite snapshots to the latest release only
     if not args.no_satellites:
@@ -1915,12 +1944,12 @@ def main(argv: list[str] | None = None) -> int:
     latest = max(candidates, key=version_key)
 
     written = build_site(config, output, releases, entries, latest, args.search, args.dry_run)
-    landing = copy_landing(output, args.dry_run)
+    landing = copy_landing(output, latest, args.dry_run)
 
     if not args.quiet:
         prefix = "would write" if args.dry_run else "wrote"
-        worktree = releases[0]
-        print(f"[docs] source: {PRIMARY_REPO.root} (v{worktree.version} from {worktree.ref})")
+        newest = releases[0]
+        print(f"[docs] source: {PRIMARY_REPO.root} (latest tag {newest.ref})")
         print(f"[docs] {prefix} {written} files into {output}")
         for release in releases:
             snap_count = len(release.snapshots) - 1  # exclude router
