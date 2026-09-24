@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-9KM7GYM55M"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-9KM7GYM55M');</script>
+<title>Response models · v1.1.0 · llm-router docs</title>
+<meta name="description" content="# Response models ## Introduction The router speaks JSON, and every endpoint emits a *different* shape. Before these models, `LLMRouterClient` handed that JSON straight back as a raw `dict`, so the knowledge of each response schema lived o…">
+<meta name="theme-color" content="#05070a">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Response models · v1.1.0 · llm-router docs">
+<meta property="og:description" content="# Response models ## Introduction The router speaks JSON, and every endpoint emits a *different* shape. Before these models, `LLMRouterClient` handed that JSON straight back as a raw `dict`, so the knowledge of each response schema lived o…">
+<meta name="docs-version" content="1.1.0">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2305070a'/%3E%3Cpath d='M8 22V10M8 16h9M17 10v12M17 13h7M17 19h7' stroke='%2300e59b' stroke-width='2' stroke-linecap='round' fill='none'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="../../assets/docs.css">
+<link rel="stylesheet" href="../../assets/pygments.css">
+<script src="../../assets/docs.js" defer></script>
+</head>
+<body class="page" data-version="1.1.0" data-search="../search.json" data-latest="1.1.0" data-repo="router">
+<a class="skip" href="#main">skip to content</a>
+<header class="topbar">
+<div class="topbar-inner">
+<button class="burger" id="burger" aria-label="Toggle documentation menu" aria-expanded="false" aria-controls="sidebar">&#9776;</button>
+<a class="brand" href="../../.."><svg width="21" height="21" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="7" fill="#0b1119" stroke="#1a232e"/><path d="M8 22V10M8 16h9M17 10v12M17 13h7M17 19h7" stroke="#00e59b" stroke-width="2" stroke-linecap="round" fill="none"/></svg><span>llm<span class="dash">-</span>router</span><span class="brand-docs">/docs</span></a>
+<div class="topbar-right">
+<form class="search" id="search" role="search" autocomplete="off">
+<span class="search-icon" aria-hidden="true">&#8981;</span>
+<input id="q" type="search" placeholder="search this version" aria-label="Search documentation" role="combobox" aria-expanded="false" aria-controls="results" aria-autocomplete="list">
+<kbd>/</kbd>
+<div class="results" id="results" role="listbox" aria-label="Search results" hidden></div>
+</form>
+<label class="vselect">
+<span class="sr-only">Documentation version</span>
+<select id="versions" aria-label="Documentation version"><option value="response-models.html" selected>1.1.0  · latest</option>
+<option value="../../1.0.8/llm-router-lib/response-models.html">1.0.8</option>
+<option value="../../1.0.7/llm-router-lib/response-models.html">1.0.7</option>
+<option value="../../1.0.6/llm-router-lib/response-models.html">1.0.6</option>
+<option value="../../1.0.5/llm-router-lib/response-models.html">1.0.5</option>
+<option value="../../1.0.4/llm-router-lib/response-models.html">1.0.4</option>
+<option value="../../1.0.3/llm-router-lib/response-models.html">1.0.3</option>
+<option value="../../1.0.1/llm-router-lib/response-models.html">1.0.1</option>
+<option value="../../1.0.0/llm-router-lib/response-models.html">1.0.0</option>
+<option value="../../0.9.6/llm-router-lib/response-models.html">0.9.6</option>
+<option value="../../0.9.5/llm-router-lib/response-models.html">0.9.5</option>
+<option value="../../0.9.4/llm-router-lib/response-models.html">0.9.4</option>
+<option value="../../0.9.2/llm-router-lib/response-models.html">0.9.2</option>
+<option value="../../0.9.1/llm-router-lib/response-models.html">0.9.1</option>
+<option value="../../0.9.0/llm-router-lib/response-models.html">0.9.0</option>
+<option value="../../0.8.0/index.html">0.8.0</option>
+<option value="../../0.7.0/index.html">0.7.0</option>
+<option value="../../0.6.9/index.html">0.6.9</option>
+<option value="../../0.6.8/index.html">0.6.8</option>
+<option value="../../0.6.7/index.html">0.6.7</option>
+<option value="../../0.6.6/index.html">0.6.6</option>
+<option value="../../0.6.5/index.html">0.6.5</option>
+<option value="../../0.6.4/index.html">0.6.4</option>
+<option value="../../0.6.3/index.html">0.6.3</option>
+<option value="../../0.6.2/index.html">0.6.2</option>
+<option value="../../0.6.1/index.html">0.6.1</option>
+<option value="../../0.6.0/index.html">0.6.0</option>
+<option value="../../0.5.2/index.html">0.5.2</option>
+<option value="../../0.5.1/index.html">0.5.1</option>
+<option value="../../0.5.0/index.html">0.5.0</option>
+<option value="../../0.4.6/index.html">0.4.6</option>
+<option value="../../0.4.5/index.html">0.4.5</option>
+<option value="../../0.4.4/index.html">0.4.4</option>
+<option value="../../0.4.3/index.html">0.4.3</option>
+<option value="../../0.4.2/index.html">0.4.2</option>
+<option value="../../0.4.1/index.html">0.4.1</option>
+<option value="../../0.4.0/index.html">0.4.0</option>
+<option value="../../0.3.1/index.html">0.3.1</option>
+<option value="../../0.3.0/index.html">0.3.0</option>
+<option value="../../0.2.3/index.html">0.2.3</option>
+<option value="../../0.2.2/index.html">0.2.2</option>
+<option value="../../0.2.1/index.html">0.2.1</option>
+<option value="../../0.2.0/index.html">0.2.0</option>
+<option value="../../0.1.1/index.html">0.1.1</option>
+<option value="../../0.1.0/index.html">0.1.0</option></select>
+</label>
+<a class="iconbtn" href="https://github.com/radlab-dev-group/llm-router" aria-label="Repository on GitHub" title="Repository on GitHub"><svg width="17" height="17" viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8a8 8 0 0 0 5.47 7.59c.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.46-.53.42-.02.72.39.82.55.48.81 1.25.94 1.56.73.2-.27.6-.94.94-1.13-.01-.2-.05-.82-.14-.98-.6.1-1.22.2-1.87.2-1.9 0-3.62-1.13-3.62-3.53 0-.78.28-1.42.74-1.92-.07-.18-.32-.91.07-1.9 0 0 .6-.19 1.97.74a6.8 6.8 0 0 1 3.58 0c1.37-.93 1.97-.74 1.97-.74.39.99.14 1.72.07 1.9.46.5.74 1.14.74 1.92 0 2.41-1.47 3.53-3.87 3.72.3.26.57.77.57 1.56 0 1.13-.012.04-.01 2.32 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg></a>
+</div>
+</div>
+</header>
+<div class="scrim" id="scrim" hidden></div>
+<div class="shell">
+<aside class="sidebar" id="sidebar"><div class="side-head"><span class="side-v mono">v1.1.0</span><span class="side-tag live">latest</span></div><a class="side-hub" href="../index.html">documentation index</a><nav class="nav-tree" aria-label="Documentation"><div class="nav-repo"><span class="repo-name">llm-router</span></div><section class="nav-sec"><h2 class="nav-sec-title"><a href="../overview.html">Getting started</a></h2><ul><li><a href="../overview.html">Overview</a></li><li><a href="../llm-router-api/docs/installation.html">Installation</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../llm-router-api/docs/env-definitions.html">Configuration</a></h2><ul><li><a href="../llm-router-api/docs/env-definitions.html">Environment Variables</a></li><li><a href="../llm-router-api/docs/models-config.html">Models configuration description (JSON)</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../llm-router-api/docs/keepalive.html">Routing &amp; resilience</a></h2><ul><li><a href="../llm-router-api/docs/keepalive.html">Keep‑Alive Utility Overview</a></li><li><a href="../llm-router-api/docs/lb-strategies.html">Load Balancing Strategies</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../llm-router-api/core/auditor/index.html">Security &amp; auditing</a></h2><ul><li><a href="../llm-router-api/core/auditor/index.html">Auditing subsystem – llm-router</a></li><li><a href="../llm-router-api/docs/authentication.html">Authentication &amp; Authorization</a></li><li><a href="../llm-router-api/docs/rate-limiting.html">Rate Limiting</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../llm-router-api/docs/routing-metrics.html">Observability</a></h2><ul><li><a href="../llm-router-api/docs/routing-metrics.html">Router Prometheus Metrics</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../llm-router-api/index.html">REST API</a></h2><ul><li><a href="../llm-router-api/index.html">REST API reference</a></li><li><a href="../llm-router-api/endpoints/index.html">Endpoints Overview</a></li><li><a href="../llm-router-api/docs/endpoint-dev.html">Endpoint Development Guide</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../llm-router-cli/index.html">CLI</a></h2><ul><li><a href="../llm-router-cli/index.html">llm-router CLI — Command Reference</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="index.html">Python library</a></h2><ul><li><a href="index.html">llmrouterlib</a></li><li><a href="response-models.html" class="active">Response models</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../helm-charts/index.html">Deployment</a></h2><ul><li><a href="../helm-charts/index.html">LLM‑Router Helm Chart</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../examples/index.html">Examples</a></h2><ul><li><a href="../examples/index.html">Integration Examples with LLM Router</a></li><li><a href="../examples/quickstart/index.html">Full Stack with Local Models</a></li><li><a href="../examples/readme-llamaindex.html">Using LlamaIndex with Local Models via the LLM‑Router</a></li><li><a href="../examples/quickstart/google-gemma3-12b-it/vllm.html">vLLM + google/gemma‑3‑12b‑it – Quick‑Start Guide (Ubuntu)</a></li><li><a href="../examples/quickstart/speakleash-bielik-11b-v2-3-instruct/vllm.html">vLLM + speakleash/Bielik-11B-v2.3-Instruct – Przewodnik Szybkiego Startu (Ubuntu)</a></li><li><a href="../examples/quickstart/speakleash-bielik-11b-v2-3-instruct/index.html">🚀 Przewodnik Szybkiego Startu dla speakleash/Bielik-11B-v2.3-Instruct z vLLM &amp; LLM‑Router</a></li><li><a href="../examples/quickstart/google-gemma3-12b-it/index.html">🚀 Quick‑Start Guide for google/gemma-3-12b‑it with vLLM &amp; LLM‑Router</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../changelog.html">Release notes</a></h2><ul><li><a href="../changelog.html">Changelog</a></li></ul></section><div class="nav-repo"><span class="repo-name">llm-router-plugins</span></div><section class="nav-sec"><h2 class="nav-sec-title"><a href="../plugins/index.html">Plugins overview</a></h2><ul><li><a href="../plugins/index.html">Plugins overview</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../plugins/llm-router-plugins/maskers/fast-masker/index.html">Masker plugins</a></h2><ul><li><a href="../plugins/llm-router-plugins/maskers/fast-masker/index.html">Overview</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../plugins/llm-router-plugins/utils/routing/agentic-routing/claude-code/index.html">Routing plugins</a></h2><ul><li><a href="../plugins/llm-router-plugins/utils/routing/agentic-routing/claude-code/index.html">Claude Code Model Swap (agenticroutingclaude_code)</a></li><li><a href="../plugins/llm-router-plugins/utils/routing/agentic-routing/codex/index.html">Codex CLI Routing (agenticroutingcodex)</a></li><li><a href="../plugins/llm-router-plugins/utils/routing/semantic-biencoder/index.html">Semantic BiEncoder Routing (semanticbiencoderrouting)</a></li><li><a href="../plugins/llm-router-plugins/utils/routing/index.html">Semantic Routing Plugins</a></li><li><a href="../plugins/llm-router-plugins/utils/routing/simple-semantic/index.html">Simple Semantic Routing (simplesemanticrouting)</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../plugins/llm-router-plugins/utils/rag/langchain-rag.html">Utility plugins</a></h2><ul><li><a href="../plugins/llm-router-plugins/utils/rag/langchain-rag.html">LangChain RAG Plugin for LLM‑Router</a></li></ul></section><div class="nav-repo"><span class="repo-name">llm-router-services</span></div><section class="nav-sec"><h2 class="nav-sec-title"><a href="../services/index.html">Services overview</a></h2><ul><li><a href="../services/index.html">llm-router services</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../services/llm-router-services/guardrails/index.html">Guardrail services</a></h2><ul><li><a href="../services/llm-router-services/guardrails/index.html">Guardrails Package</a></li><li><a href="../services/llm-router-services/guardrails/speakleash/index.html">Integration of Bielik‑Guard‑0.1B as llm‑router guardrail service (Sojka)</a></li><li><a href="../services/llm-router-services/guardrails/nask/index.html">Integration of HerBERT‑PL‑Guard with the naskpibguard_app.py Service</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../services/docker/index.html">Docker &amp; deployment</a></h2><ul><li><a href="../services/docker/index.html">LLM‑Router Services – Docker Build &amp; Run Guide</a></li></ul></section></nav><div class="side-foot"><a href="../../..">&larr;&nbsp;landing page</a><a class="mono" href="../search.json">search.json</a></div></aside>
+<main class="main" id="main"><nav class="crumbs" aria-label="Breadcrumb">
+<a href="../../..">llm-router</a><span class="sep">/</span><a href="../index.html">docs</a><span class="sep">/</span><a href="index.html">Python library</a><span class="sep">/</span><em>Response models</em>
+</nav>
+<article class="prose"><h1 id="response-models">Response models<a class="headerlink" href="#response-models" title="link to this section">#</a></h1>
+<h2 id="introduction">Introduction<a class="headerlink" href="#introduction" title="link to this section">#</a></h2>
+<p>The router speaks JSON, and every endpoint emits a <em>different</em> shape. Before these models,
+<code>LLMRouterClient</code> handed that JSON straight back as a raw <code>dict</code>, so the knowledge of each response schema lived on the
+caller side: you had to remember the exact key names, guard against missing fields, and you got no compile‑time or IDE
+help.</p>
+<p>The response models move that contract into the library. Every client method returns a typed Pydantic model that mirrors
+the JSON body the router emits for that endpoint, and the models are defined in one place — <a href="https://github.com/radlab-dev-group/llm-router/blob/v1.1.0/llm_router_lib/data_models/response.py" target="_blank" rel="noopener noreferrer">
+<code>data_models/response.py</code></a> — next to the existing <em>request</em> models (<code>TranslateModel</code>,
+<code>Polarity3cModel</code>, …). Together, request</p>
+<ul>
+<li>response describe the full contract of an endpoint.</li>
+</ul>
+<p>Concretely, the typing is there to do three things:</p>
+<ul>
+<li><strong>Fix the contract in one place.</strong> <code>response.py</code> is the single definition of what each endpoint returns. Change the
+  router → change the model → type checkers and tests flag every consumer that still relied on the old shape.</li>
+<li><strong>Validate at the boundary.</strong> Pydantic checks the body as it comes in, so a malformed or partial response fails there
+  with a <code>ValidationError</code> instead of as a <code>KeyError</code> a few frames deep in your code.</li>
+<li><strong>Expose static types.</strong> Because the return annotation is a class rather than
+  <code>Dict[str, Any]</code>, <code>mypy</code> and IDEs can resolve <code>resp.response[0].translated</code>. The model also exports a JSON Schema via
+  <code>model_json_schema()</code> for docs, codegen, or contract tests.</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="c1"># resp is a typed model, not a dict</span>
+<span class="n">resp</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">texts</span><span class="o">=</span><span class="p">[</span><span class="s2">"Hello world"</span><span class="p">],</span> <span class="n">model</span><span class="o">=</span><span class="s2">"speakleash/Bielik-11B-v2.3-Instruct"</span><span class="p">)</span>
+<span class="n">resp</span><span class="o">.</span><span class="n">response</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">translated</span>  <span class="c1"># str</span>
+<span class="n">resp</span><span class="o">.</span><span class="n">generation_time</span>  <span class="c1"># Optional[float]</span>
+<span class="n">resp</span><span class="o">.</span><span class="n">model_dump</span><span class="p">()</span>  <span class="c1"># → plain dict, if you still need one</span>
+</code></pre></div>
+
+<hr />
+<h2 id="where-the-models-live-and-how-to-import-them">📦 Where the models live and how to import them<a class="headerlink" href="#where-the-models-live-and-how-to-import-them" title="link to this section">#</a></h2>
+<p>All response models are exported from the package root, so either import style works:</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Option 1 – from the package (recommended)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">llm_router_lib.data_models</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">TranslateResponse</span><span class="p">,</span>
+    <span class="n">Polarity3cResponse</span><span class="p">,</span>
+    <span class="n">ConversationResponse</span><span class="p">,</span>
+    <span class="n">ModelsListResponse</span><span class="p">,</span>
+    <span class="c1"># …see the full list in data_models/__init__.py</span>
+<span class="p">)</span>
+
+<span class="c1"># Option 2 – from the module directly</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">llm_router_lib.data_models.response</span><span class="w"> </span><span class="kn">import</span> <span class="n">TranslateResponse</span>
+</code></pre></div>
+
+<p>They sit alongside (but are independent of) the request models such as
+<code>TranslateModel</code>, <code>Polarity3cModel</code>, etc.</p>
+<hr />
+<h2 id="client-method-response-model">🗺️ Client method → response model<a class="headerlink" href="#client-method-response-model" title="link to this section">#</a></h2>
+<p>The table below maps <strong>every</strong> <code>LLMRouterClient</code> method to the model it now returns.
+<code>response</code> is the endpoint‑specific payload; <code>generation_time</code> (seconds) is present on all generation endpoints.</p>
+<table>
+<thead>
+<tr>
+<th>Client method</th>
+<th>Endpoint</th>
+<th>Returns</th>
+<th><code>response</code> payload</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ping()</code></td>
+<td><code>GET /api/ping</code></td>
+<td><code>PingResponse</code></td>
+<td><code>status: bool</code>, <code>body: str</code></td>
+</tr>
+<tr>
+<td><code>version()</code></td>
+<td><code>GET /api/version</code></td>
+<td><code>VersionResponse</code></td>
+<td><code>version: str</code></td>
+</tr>
+<tr>
+<td><code>models()</code></td>
+<td><code>GET /v1/models</code></td>
+<td><code>ModelsListResponse</code></td>
+<td><code>object: str</code>, <code>data: List[ModelInfo]</code></td>
+</tr>
+<tr>
+<td><code>conversation_with_model(payload)</code></td>
+<td><code>POST /api/conversation_with_model</code></td>
+<td><code>ConversationResponse</code></td>
+<td><code>str</code> (assistant reply)</td>
+</tr>
+<tr>
+<td><code>extended_conversation_with_model(payload)</code></td>
+<td><code>POST /api/extended_conversation_with_model</code></td>
+<td><code>ExtendedConversationResponse</code></td>
+<td><code>str</code> (assistant reply)</td>
+</tr>
+<tr>
+<td><code>polarity_3c(...)</code></td>
+<td><code>POST /api/polarity_3c</code></td>
+<td><code>Polarity3cResponse</code></td>
+<td><code>List[Polarity3cItem]</code></td>
+</tr>
+<tr>
+<td><code>translate(...)</code></td>
+<td><code>POST /api/translate</code></td>
+<td><code>TranslateResponse</code></td>
+<td><code>List[TranslateItem]</code></td>
+</tr>
+<tr>
+<td><code>simplify_text(...)</code></td>
+<td><code>POST /api/simplify_text</code></td>
+<td><code>SimplifyTextResponse</code></td>
+<td><code>List[str]</code></td>
+</tr>
+<tr>
+<td><code>generative_answer(...)</code></td>
+<td><code>POST /api/generative_answer</code></td>
+<td><code>GenerativeAnswerResponse</code></td>
+<td><code>str</code> (answer)</td>
+</tr>
+<tr>
+<td><code>generate_article_from_text(...)</code></td>
+<td><code>POST /api/generate_article_from_text</code></td>
+<td><code>GenerateArticleFromTextResponse</code></td>
+<td><code>ArticleText</code></td>
+</tr>
+<tr>
+<td><code>generate_article_from_texts(...)</code></td>
+<td><code>POST /api/generate_article_from_texts</code></td>
+<td><code>GenerateArticleFromTextsResponse</code></td>
+<td><code>ArticleText</code></td>
+</tr>
+<tr>
+<td><code>create_full_article_from_texts(...)</code></td>
+<td><code>POST /api/create_full_article_from_texts</code></td>
+<td><code>CreateFullArticleFromTextsResponse</code></td>
+<td><code>ArticleText</code></td>
+</tr>
+<tr>
+<td><code>generate_questions(...)</code></td>
+<td><code>POST /api/generate_questions</code></td>
+<td><code>GenerateQuestionsResponse</code></td>
+<td><code>List[TextQuestions]</code></td>
+</tr>
+<tr>
+<td><code>generate_label(...)</code></td>
+<td><code>POST /api/generate_label</code></td>
+<td><code>GenerateLabelResponse</code></td>
+<td><code>str</code> (label)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="class-hierarchy">🧱 Class hierarchy<a class="headerlink" href="#class-hierarchy" title="link to this section">#</a></h2>
+<div class="codehilite"><pre><span></span><code>BaseResponse                 # extra keys ignored (pydantic default)
+├── PingResponse
+├── VersionResponse
+├── ModelInfo
+├── ModelsListResponse
+├── Polarity3cItem
+├── TranslateItem
+├── TextQuestions
+├── ArticleText
+└── GenerationResponse       # adds: generation_time: Optional[float]
+    ├── ConversationResponse
+    ├── ExtendedConversationResponse
+    ├── Polarity3cResponse
+    ├── TranslateResponse
+    ├── SimplifyTextResponse
+    ├── GenerativeAnswerResponse
+    ├── GenerateLabelResponse
+    ├── GenerateArticleFromTextResponse
+    ├── GenerateArticleFromTextsResponse
+    └── CreateFullArticleFromTextsResponse
+</code></pre></div>
+
+<ul>
+<li><code>BaseResponse</code> – the common base. It does not define payload fields; it only sets the shared model configuration
+  (unknown keys are ignored).</li>
+<li><code>GenerationResponse</code> – the base for every <strong>generative</strong> endpoint; it contributes the
+  <code>generation_time</code> field. Concrete subclasses declare the type of <code>response</code>.</li>
+<li><code>BaseResponse</code>/<code>GenerationResponse</code> are also the base for the small nested item models (<code>Polarity3cItem</code>,
+  <code>TranslateItem</code>, <code>TextQuestions</code>, <code>ArticleText</code>, <code>ModelInfo</code>).</li>
+</ul>
+<hr />
+<h2 id="model-reference">📚 Model reference<a class="headerlink" href="#model-reference" title="link to this section">#</a></h2>
+<h3 id="health-meta">Health / meta<a class="headerlink" href="#health-meta" title="link to this section">#</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">PingResponse</span><span class="p">(</span><span class="n">BaseResponse</span><span class="p">):</span>
+    <span class="n">status</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># True on success</span>
+    <span class="n">body</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># e.g. "pong"</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">VersionResponse</span><span class="p">(</span><span class="n">BaseResponse</span><span class="p">):</span>
+    <span class="n">version</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">""</span>  <span class="c1"># e.g. "1.4.2"</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">ModelInfo</span><span class="p">(</span><span class="n">BaseResponse</span><span class="p">):</span>
+    <span class="nb">id</span><span class="p">:</span> <span class="nb">str</span>  <span class="c1"># model identifier, e.g. "google/gemma-3-12b-it"</span>
+    <span class="nb">object</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">created</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">owned_by</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">ModelsListResponse</span><span class="p">(</span><span class="n">BaseResponse</span><span class="p">):</span>
+    <span class="nb">object</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"list"</span>
+    <span class="n">data</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">ModelInfo</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">ids</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>  <span class="c1"># convenience: just the identifiers</span>
+        <span class="o">...</span>
+</code></pre></div>
+
+<blockquote>
+<p><code>models()</code> previously returned <code>List[str]</code>. It now returns <code>ModelsListResponse</code>;
+read <code>client.models().ids</code> to get the previous list of names, or
+<code>client.models().data</code> for the full entries.</p>
+</blockquote>
+<h3 id="conversation">Conversation<a class="headerlink" href="#conversation" title="link to this section">#</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">ConversationResponse</span><span class="p">(</span><span class="n">GenerationResponse</span><span class="p">):</span>
+    <span class="n">response</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># the assistant's reply text</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">ExtendedConversationResponse</span><span class="p">(</span><span class="n">GenerationResponse</span><span class="p">):</span>
+    <span class="n">response</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># the assistant's reply text</span>
+</code></pre></div>
+
+<h3 id="pertext-list-utilities">Per‑text (list) utilities<a class="headerlink" href="#pertext-list-utilities" title="link to this section">#</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Polarity3cItem</span><span class="p">(</span><span class="n">BaseResponse</span><span class="p">):</span>
+    <span class="n">original</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">""</span>  <span class="c1"># the input text</span>
+    <span class="n">polarity</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">""</span>  <span class="c1"># "positive" | "negative" | "ambivalent"</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">Polarity3cResponse</span><span class="p">(</span><span class="n">GenerationResponse</span><span class="p">):</span>
+    <span class="n">response</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Polarity3cItem</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># one item per input text</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">TranslateItem</span><span class="p">(</span><span class="n">BaseResponse</span><span class="p">):</span>
+    <span class="n">original</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">""</span>  <span class="c1"># the input text</span>
+    <span class="n">translated</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">""</span>  <span class="c1"># the translation</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">TranslateResponse</span><span class="p">(</span><span class="n">GenerationResponse</span><span class="p">):</span>
+    <span class="n">response</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">TranslateItem</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># one item per input text</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">SimplifyTextResponse</span><span class="p">(</span><span class="n">GenerationResponse</span><span class="p">):</span>
+    <span class="n">response</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># the simplified texts, in input order</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">TextQuestions</span><span class="p">(</span><span class="n">BaseResponse</span><span class="p">):</span>
+    <span class="n">text</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">""</span>  <span class="c1"># the input text</span>
+    <span class="n">questions</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># the generated questions</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">GenerateQuestionsResponse</span><span class="p">(</span><span class="n">GenerationResponse</span><span class="p">):</span>
+    <span class="n">response</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">TextQuestions</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># one entry per input text</span>
+</code></pre></div>
+
+<h3 id="singleoutput-utilities">Single‑output utilities<a class="headerlink" href="#singleoutput-utilities" title="link to this section">#</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">GenerativeAnswerResponse</span><span class="p">(</span><span class="n">GenerationResponse</span><span class="p">):</span>
+    <span class="n">response</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># the generated answer</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">GenerateLabelResponse</span><span class="p">(</span><span class="n">GenerationResponse</span><span class="p">):</span>
+    <span class="n">response</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># the generated category label</span>
+</code></pre></div>
+
+<h3 id="article-utilities">Article utilities<a class="headerlink" href="#article-utilities" title="link to this section">#</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">ArticleText</span><span class="p">(</span><span class="n">BaseResponse</span><span class="p">):</span>
+    <span class="n">article_text</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># the generated article</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">GenerateArticleFromTextResponse</span><span class="p">(</span><span class="n">GenerationResponse</span><span class="p">):</span>
+    <span class="n">response</span><span class="p">:</span> <span class="n">ArticleText</span> <span class="o">=</span> <span class="n">ArticleText</span><span class="p">()</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">GenerateArticleFromTextsResponse</span><span class="p">(</span><span class="n">GenerationResponse</span><span class="p">):</span>
+    <span class="n">response</span><span class="p">:</span> <span class="n">ArticleText</span> <span class="o">=</span> <span class="n">ArticleText</span><span class="p">()</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">CreateFullArticleFromTextsResponse</span><span class="p">(</span><span class="n">GenerationResponse</span><span class="p">):</span>
+    <span class="n">response</span><span class="p">:</span> <span class="n">ArticleText</span> <span class="o">=</span> <span class="n">ArticleText</span><span class="p">()</span>
+</code></pre></div>
+
+<hr />
+<h2 id="design-decisions">🎨 Design decisions<a class="headerlink" href="#design-decisions" title="link to this section">#</a></h2>
+<p><strong>Tolerance over strictness.</strong> Real router responses can carry extra keys (the
+<code>status</code>/<code>body</code> envelope, book‑keeping fields) and sometimes omit an optional field. The models are therefore
+intentionally permissive:</p>
+<ul>
+<li><strong>Unknown keys are ignored</strong> (Pydantic's default, re‑stated in <code>BaseResponse</code> via
+  <code>ConfigDict(extra="ignore")</code>).</li>
+<li><strong>Fields have sensible defaults</strong> — <code>None</code> for strings, <code>[]</code> for lists, and an empty
+  <code>ArticleText</code> for the article payload — so a partial response still validates.</li>
+<li><strong><code>generation_time</code> is optional</strong>, because some deployments/versions may omit it.</li>
+</ul>
+<p>This means the same model validates both the canonical server payload (<code>{"response": …, "generation_time": …}</code>) <em>and</em> a
+partial/<code>status</code>‑wrapped body (<code>{"status": true, "response": …}</code>).</p>
+<p><strong><code>response</code> is the single point of variation.</strong> Every generation endpoint returns a
+<code>response</code> key; only its <em>type</em> differs (string vs. list vs. nested object). The subclasses pin that type, so
+<code>resp.response</code> is always the right shape for the method you called.</p>
+<p><strong>No cross‑model inheritance for payload types.</strong> Each concrete response declares its own
+<code>response</code> field (rather than a shared <code>Any</code>) so the type system and the JSON schema reflect the real payload.</p>
+<hr />
+<h2 id="usage-examples">🚀 Usage examples<a class="headerlink" href="#usage-examples" title="link to this section">#</a></h2>
+<h3 id="access-fields-typed">Access fields (typed)<a class="headerlink" href="#access-fields-typed" title="link to this section">#</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">llm_router_lib</span><span class="w"> </span><span class="kn">import</span> <span class="n">LLMRouterClient</span>
+
+<span class="n">client</span> <span class="o">=</span> <span class="n">LLMRouterClient</span><span class="p">(</span><span class="n">api</span><span class="o">=</span><span class="s2">"http://localhost:8080"</span><span class="p">,</span> <span class="n">token</span><span class="o">=</span><span class="s2">"..."</span><span class="p">)</span>
+
+<span class="c1"># Conversation — a single reply string (named keyword arguments)</span>
+<span class="n">conv</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">conversation_with_model</span><span class="p">(</span>
+    <span class="n">user_last_statement</span><span class="o">=</span><span class="s2">"Hello!"</span><span class="p">,</span>
+    <span class="n">model</span><span class="o">=</span><span class="s2">"google/gemma-3-12b-it"</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">conv</span><span class="o">.</span><span class="n">response</span><span class="p">)</span>  <span class="c1"># "Hi! How can I help?"</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">conv</span><span class="o">.</span><span class="n">generation_time</span><span class="p">)</span>  <span class="c1"># 0.42 (seconds)</span>
+
+<span class="c1"># Translate — one item per input text</span>
+<span class="n">tr</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">texts</span><span class="o">=</span><span class="p">[</span><span class="s2">"Hello world"</span><span class="p">,</span> <span class="s2">"Thank you"</span><span class="p">],</span> <span class="n">model</span><span class="o">=</span><span class="s2">"speakleash/Bielik-11B-v2.3-Instruct"</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">tr</span><span class="o">.</span><span class="n">response</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">original</span><span class="p">,</span> <span class="s2">"-&gt;"</span><span class="p">,</span> <span class="n">item</span><span class="o">.</span><span class="n">translated</span><span class="p">)</span>
+
+<span class="c1"># Polarity — one item per input text</span>
+<span class="n">pol</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">polarity_3c</span><span class="p">(</span><span class="n">texts</span><span class="o">=</span><span class="p">[</span><span class="s2">"Great product!"</span><span class="p">,</span> <span class="s2">"Terrible."</span><span class="p">],</span> <span class="n">model</span><span class="o">=</span><span class="s2">"google/gemma-3-12b-it"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">pol</span><span class="o">.</span><span class="n">response</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">polarity</span><span class="p">)</span>  <span class="c1"># "positive"</span>
+
+<span class="c1"># Article — nested object</span>
+<span class="n">art</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">generate_article_from_text</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="s2">"…"</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="s2">"google/gemma-3-12b-it"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">art</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">article_text</span><span class="p">)</span>
+</code></pre></div>
+
+<h3 id="serialize-export">Serialize / export<a class="headerlink" href="#serialize-export" title="link to this section">#</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="c1"># To a plain dict</span>
+<span class="n">d</span> <span class="o">=</span> <span class="n">tr</span><span class="o">.</span><span class="n">model_dump</span><span class="p">()</span>  <span class="c1"># {"response": [{"original":…, "translated":…}], "generation_time": …}</span>
+
+<span class="c1"># To JSON</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">tr</span><span class="o">.</span><span class="n">model_dump_json</span><span class="p">()</span>  <span class="c1"># '...'</span>
+
+<span class="c1"># To a JSON Schema (for docs / codegen / contract tests)</span>
+<span class="n">schema</span> <span class="o">=</span> <span class="n">TranslateResponse</span><span class="o">.</span><span class="n">model_json_schema</span><span class="p">()</span>
+</code></pre></div>
+
+<h3 id="roundtrip-validate-a-storedstatuswrapped-body">Round‑trip (validate a stored/<code>status</code>‑wrapped body)<a class="headerlink" href="#roundtrip-validate-a-storedstatuswrapped-body" title="link to this section">#</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">llm_router_lib.data_models.response</span><span class="w"> </span><span class="kn">import</span> <span class="n">TranslateResponse</span>
+
+<span class="n">body</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"status"</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s2">"response"</span><span class="p">:</span> <span class="p">[{</span><span class="s2">"original"</span><span class="p">:</span> <span class="s2">"Hi"</span><span class="p">,</span> <span class="s2">"translated"</span><span class="p">:</span> <span class="s2">"Hej"</span><span class="p">}]}</span>
+<span class="n">tr</span> <span class="o">=</span> <span class="n">TranslateResponse</span><span class="o">.</span><span class="n">model_validate</span><span class="p">(</span><span class="n">body</span><span class="p">)</span>  <span class="c1"># extra "status" key is ignored</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">tr</span><span class="o">.</span><span class="n">response</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">translated</span><span class="p">)</span>  <span class="c1"># "Hej"</span>
+</code></pre></div>
+
+<hr />
+<h2 id="backward-compatibility">🔁 Backward compatibility<a class="headerlink" href="#backward-compatibility" title="link to this section">#</a></h2>
+<p>The change is <strong>source‑breaking</strong> for code that treated the return value as a <code>dict</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Before</th>
+<th>After</th>
+<th>Migration</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>resp["response"]</code></td>
+<td><code>resp.response</code></td>
+<td>attribute access</td>
+</tr>
+<tr>
+<td><code>resp["response"][0]["translated"]</code></td>
+<td><code>resp.response[0].translated</code></td>
+<td>attribute access</td>
+</tr>
+<tr>
+<td><code>resp["generation_time"]</code></td>
+<td><code>resp.generation_time</code></td>
+<td>attribute access</td>
+</tr>
+<tr>
+<td><code>resp.get("response")</code></td>
+<td><code>resp.response</code> (already <code>None</code>/<code>[]</code> when absent)</td>
+<td>no guard needed</td>
+</tr>
+<tr>
+<td><code>client.models()</code> → <code>List[str]</code></td>
+<td><code>client.models()</code> → <code>ModelsListResponse</code></td>
+<td>use <code>.ids</code> for the old list</td>
+</tr>
+</tbody>
+</table>
+<p>If you still need a <code>dict</code>, call <code>model_dump()</code> on the result. The integration helper
+<code>llm_router_lib/tests/llm_router_client.py</code> already does this automatically before
+<code>json.dumps(...)</code>.</p>
+<hr />
+<h2 id="adding-a-new-endpoint-model">➕ Adding a new endpoint model<a class="headerlink" href="#adding-a-new-endpoint-model" title="link to this section">#</a></h2>
+<p>When a new router endpoint is added, mirror the pattern:</p>
+<ol>
+<li><strong>Define the model</strong> in <code>data_models/response.py</code>:<ul>
+<li>subclass <code>GenerationResponse</code> for a generative endpoint and declare <code>response</code> with the correct type, or subclass
+  <code>BaseResponse</code> for a health/meta style endpoint.</li>
+</ul>
+</li>
+<li><strong>Export it</strong> from <code>data_models/__init__.py</code> (add the import + the <code>__all__</code> entry).</li>
+<li><strong>Wire the client method</strong> in <code>client.py</code>:<ul>
+<li>import the model,</li>
+<li>annotate the method's return type,</li>
+<li>return <code>YourModel.model_validate(Service(self.http, self.logger).call_post(payload))</code>.</li>
+</ul>
+</li>
+<li><strong>Document</strong> it in the table above and add the field to the reference section.</li>
+<li><strong>Test</strong> both the canonical payload and a partial/<code>status</code>‑wrapped payload.</li>
+</ol>
+<hr />
+<h2 id="testing-notes">✅ Testing notes<a class="headerlink" href="#testing-notes" title="link to this section">#</a></h2>
+<ul>
+<li><code>llm_router_api/tests/test_*.py</code> — the client tests now assert
+  <code>isinstance(resp, &lt;Response&gt;)</code> <strong>and</strong> check the typed fields (<code>resp.response</code>, <code>resp.response[0].translated</code>, …)
+  rather than dict equality.</li>
+<li>Models validate both the canonical <code>{"response": …, "generation_time": …}</code> body and a partial
+  <code>{"status": true, "response": …}</code> body.</li>
+<li><code>llm_router_lib/tests/llm_router_client.py</code> serialises model results with
+  <code>model_dump()</code> before printing JSON.</li>
+</ul>
+<hr />
+<h2 id="file-map">🧾 File map<a class="headerlink" href="#file-map" title="link to this section">#</a></h2>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Responsibility</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>llm_router_lib/data_models/response.py</code></td>
+<td>All response model definitions</td>
+</tr>
+<tr>
+<td><code>llm_router_lib/data_models/__init__.py</code></td>
+<td>Re‑exports the response models</td>
+</tr>
+<tr>
+<td><code>llm_router_lib/client.py</code></td>
+<td><code>LLMRouterClient</code> — every method returns a response model</td>
+</tr>
+<tr>
+<td><code>llm_router_api/endpoints/builtin/*.py</code></td>
+<td>Server side — the source of the response shapes the models mirror</td>
+</tr>
+</tbody>
+</table></article>
+<nav class="pager" aria-label="Previous and next page"><a class="prev" href="index.html"><span class="dir">&larr; previous</span><span class="pt">llmrouterlib</span></a></nav>
+<footer class="doc-meta">
+<div class="meta-row"><span class="meta-k">repository</span><a class="mono" href="https://github.com/radlab-dev-group/llm-router">llm-router</a></div>
+<div class="meta-row"><span class="meta-k">source</span><a class="mono" href="https://github.com/radlab-dev-group/llm-router/blob/v1.1.0/llm_router_lib/RESPONSE_MODELS.md">llm_router_lib/RESPONSE_MODELS.md</a></div>
+<div class="meta-row"><span class="meta-k">last commit</span><time datetime="2026-08-28T08:32:26+02:00"><a href="https://github.com/radlab-dev-group/llm-router/commit/b2b806b">2026-08-28</a></time></div>
+<div class="meta-row"><span class="meta-k">built from</span><span class="mono"><a href="https://github.com/radlab-dev-group/llm-router/tree/v1.1.0">v1.1.0</a>&nbsp;@&nbsp;<a href="https://github.com/radlab-dev-group/llm-router/commit/b2b806b">b2b806b</a></span></div>
+<p class="hint">Generated from the Markdown file in the repository: commit a change and the next build republishes it.</p>
+</footer>
+<footer class="foot"><div class="foot-inner">
+<span class="mono">llm-router &middot; docs are generated from the repository by <code>tools/build_docs.py</code></span>
+<span class="mono"><a href="https://github.com/radlab-dev-group/llm-router/tree/v1.1.0">1.1.0</a> @ <a href="https://github.com/radlab-dev-group/llm-router/commit/b2b806b">b2b806b</a></span>
+</div></footer>
+</main>
+<aside class="dtoc" id="dtoc"><h2 class="toc-title">on this page</h2><div class="toc-body"><ul><li><a href="#introduction">Introduction</a></li><li><a href="#where-the-models-live-and-how-to-import-them">📦 Where the models live and how to import them</a></li><li><a href="#client-method-response-model">🗺️ Client method → response model</a></li><li><a href="#class-hierarchy">🧱 Class hierarchy</a></li><li><a href="#model-reference">📚 Model reference</a><ul><li><a href="#health-meta">Health / meta</a></li><li><a href="#conversation">Conversation</a></li><li><a href="#pertext-list-utilities">Per‑text (list) utilities</a></li><li><a href="#singleoutput-utilities">Single‑output utilities</a></li><li><a href="#article-utilities">Article utilities</a></li></ul></li><li><a href="#design-decisions">🎨 Design decisions</a></li><li><a href="#usage-examples">🚀 Usage examples</a><ul><li><a href="#access-fields-typed">Access fields (typed)</a></li><li><a href="#serialize-export">Serialize / export</a></li><li><a href="#roundtrip-validate-a-storedstatuswrapped-body">Round‑trip (validate a stored/status‑wrapped body)</a></li></ul></li><li><a href="#backward-compatibility">🔁 Backward compatibility</a></li><li><a href="#adding-a-new-endpoint-model">➕ Adding a new endpoint model</a></li><li><a href="#testing-notes">✅ Testing notes</a></li><li><a href="#file-map">🧾 File map</a></li></ul></div></aside>
+</div>
+</body>
+</html>

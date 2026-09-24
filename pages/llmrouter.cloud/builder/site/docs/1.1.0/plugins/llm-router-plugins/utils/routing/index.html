@@ -1,0 +1,1691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-9KM7GYM55M"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-9KM7GYM55M');</script>
+<title>Semantic Routing Plugins · v1.1.0 · llm-router docs</title>
+<meta name="description" content="# Semantic Routing Plugins Three routing plugins are available for **model selection** in the **LLM‑Router** system. - `simple_semantic_routing` and `semantic_biencoder_routing` activate when `payload[&quot;model&quot;] == &quot;auto&quot;`. - `agentic_routin…">
+<meta name="theme-color" content="#05070a">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Semantic Routing Plugins · v1.1.0 · llm-router docs">
+<meta property="og:description" content="# Semantic Routing Plugins Three routing plugins are available for **model selection** in the **LLM‑Router** system. - `simple_semantic_routing` and `semantic_biencoder_routing` activate when `payload[&quot;model&quot;] == &quot;auto&quot;`. - `agentic_routin…">
+<meta name="docs-version" content="1.1.0">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2305070a'/%3E%3Cpath d='M8 22V10M8 16h9M17 10v12M17 13h7M17 19h7' stroke='%2300e59b' stroke-width='2' stroke-linecap='round' fill='none'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="../../../../../assets/docs.css">
+<link rel="stylesheet" href="../../../../../assets/pygments.css">
+<script src="../../../../../assets/docs.js" defer></script>
+</head>
+<body class="page" data-version="1.1.0" data-search="../../../../search.json" data-latest="1.1.0" data-repo="plugins">
+<a class="skip" href="#main">skip to content</a>
+<header class="topbar">
+<div class="topbar-inner">
+<button class="burger" id="burger" aria-label="Toggle documentation menu" aria-expanded="false" aria-controls="sidebar">&#9776;</button>
+<a class="brand" href="../../../../../.."><svg width="21" height="21" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="7" fill="#0b1119" stroke="#1a232e"/><path d="M8 22V10M8 16h9M17 10v12M17 13h7M17 19h7" stroke="#00e59b" stroke-width="2" stroke-linecap="round" fill="none"/></svg><span>llm<span class="dash">-</span>router</span><span class="brand-docs">/docs</span></a>
+<div class="topbar-right">
+<form class="search" id="search" role="search" autocomplete="off">
+<span class="search-icon" aria-hidden="true">&#8981;</span>
+<input id="q" type="search" placeholder="search this version" aria-label="Search documentation" role="combobox" aria-expanded="false" aria-controls="results" aria-autocomplete="list">
+<kbd>/</kbd>
+<div class="results" id="results" role="listbox" aria-label="Search results" hidden></div>
+</form>
+<label class="vselect">
+<span class="sr-only">Documentation version</span>
+<select id="versions" aria-label="Documentation version"><option value="index.html" selected>1.1.0  · latest</option>
+<option value="../../../../../1.0.8/index.html">1.0.8</option>
+<option value="../../../../../1.0.7/index.html">1.0.7</option>
+<option value="../../../../../1.0.6/index.html">1.0.6</option>
+<option value="../../../../../1.0.5/index.html">1.0.5</option>
+<option value="../../../../../1.0.4/index.html">1.0.4</option>
+<option value="../../../../../1.0.3/index.html">1.0.3</option>
+<option value="../../../../../1.0.1/index.html">1.0.1</option>
+<option value="../../../../../1.0.0/index.html">1.0.0</option>
+<option value="../../../../../0.9.6/index.html">0.9.6</option>
+<option value="../../../../../0.9.5/index.html">0.9.5</option>
+<option value="../../../../../0.9.4/index.html">0.9.4</option>
+<option value="../../../../../0.9.2/index.html">0.9.2</option>
+<option value="../../../../../0.9.1/index.html">0.9.1</option>
+<option value="../../../../../0.9.0/index.html">0.9.0</option>
+<option value="../../../../../0.8.0/index.html">0.8.0</option>
+<option value="../../../../../0.7.0/index.html">0.7.0</option>
+<option value="../../../../../0.6.9/index.html">0.6.9</option>
+<option value="../../../../../0.6.8/index.html">0.6.8</option>
+<option value="../../../../../0.6.7/index.html">0.6.7</option>
+<option value="../../../../../0.6.6/index.html">0.6.6</option>
+<option value="../../../../../0.6.5/index.html">0.6.5</option>
+<option value="../../../../../0.6.4/index.html">0.6.4</option>
+<option value="../../../../../0.6.3/index.html">0.6.3</option>
+<option value="../../../../../0.6.2/index.html">0.6.2</option>
+<option value="../../../../../0.6.1/index.html">0.6.1</option>
+<option value="../../../../../0.6.0/index.html">0.6.0</option>
+<option value="../../../../../0.5.2/index.html">0.5.2</option>
+<option value="../../../../../0.5.1/index.html">0.5.1</option>
+<option value="../../../../../0.5.0/index.html">0.5.0</option>
+<option value="../../../../../0.4.6/index.html">0.4.6</option>
+<option value="../../../../../0.4.5/index.html">0.4.5</option>
+<option value="../../../../../0.4.4/index.html">0.4.4</option>
+<option value="../../../../../0.4.3/index.html">0.4.3</option>
+<option value="../../../../../0.4.2/index.html">0.4.2</option>
+<option value="../../../../../0.4.1/index.html">0.4.1</option>
+<option value="../../../../../0.4.0/index.html">0.4.0</option>
+<option value="../../../../../0.3.1/index.html">0.3.1</option>
+<option value="../../../../../0.3.0/index.html">0.3.0</option>
+<option value="../../../../../0.2.3/index.html">0.2.3</option>
+<option value="../../../../../0.2.2/index.html">0.2.2</option>
+<option value="../../../../../0.2.1/index.html">0.2.1</option>
+<option value="../../../../../0.2.0/index.html">0.2.0</option>
+<option value="../../../../../0.1.1/index.html">0.1.1</option>
+<option value="../../../../../0.1.0/index.html">0.1.0</option></select>
+</label>
+<a class="iconbtn" href="https://github.com/radlab-dev-group/llm-router-plugins" aria-label="Repository on GitHub" title="Repository on GitHub"><svg width="17" height="17" viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8a8 8 0 0 0 5.47 7.59c.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.46-.53.42-.02.72.39.82.55.48.81 1.25.94 1.56.73.2-.27.6-.94.94-1.13-.01-.2-.05-.82-.14-.98-.6.1-1.22.2-1.87.2-1.9 0-3.62-1.13-3.62-3.53 0-.78.28-1.42.74-1.92-.07-.18-.32-.91.07-1.9 0 0 .6-.19 1.97.74a6.8 6.8 0 0 1 3.58 0c1.37-.93 1.97-.74 1.97-.74.39.99.14 1.72.07 1.9.46.5.74 1.14.74 1.92 0 2.41-1.47 3.53-3.87 3.72.3.26.57.77.57 1.56 0 1.13-.012.04-.01 2.32 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg></a>
+</div>
+</div>
+</header>
+<div class="scrim" id="scrim" hidden></div>
+<div class="shell">
+<aside class="sidebar" id="sidebar"><div class="side-head"><span class="side-v mono">v1.1.0</span><span class="side-tag live">latest</span></div><a class="side-hub" href="../../../../index.html">documentation index</a><nav class="nav-tree" aria-label="Documentation"><div class="nav-repo"><span class="repo-name">llm-router</span></div><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../../../overview.html">Getting started</a></h2><ul><li><a href="../../../../overview.html">Overview</a></li><li><a href="../../../../llm-router-api/docs/installation.html">Installation</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../../../llm-router-api/docs/env-definitions.html">Configuration</a></h2><ul><li><a href="../../../../llm-router-api/docs/env-definitions.html">Environment Variables</a></li><li><a href="../../../../llm-router-api/docs/models-config.html">Models configuration description (JSON)</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../../../llm-router-api/docs/keepalive.html">Routing &amp; resilience</a></h2><ul><li><a href="../../../../llm-router-api/docs/keepalive.html">Keep‑Alive Utility Overview</a></li><li><a href="../../../../llm-router-api/docs/lb-strategies.html">Load Balancing Strategies</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../../../llm-router-api/core/auditor/index.html">Security &amp; auditing</a></h2><ul><li><a href="../../../../llm-router-api/core/auditor/index.html">Auditing subsystem – llm-router</a></li><li><a href="../../../../llm-router-api/docs/authentication.html">Authentication &amp; Authorization</a></li><li><a href="../../../../llm-router-api/docs/rate-limiting.html">Rate Limiting</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../../../llm-router-api/docs/routing-metrics.html">Observability</a></h2><ul><li><a href="../../../../llm-router-api/docs/routing-metrics.html">Router Prometheus Metrics</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../../../llm-router-api/index.html">REST API</a></h2><ul><li><a href="../../../../llm-router-api/index.html">REST API reference</a></li><li><a href="../../../../llm-router-api/endpoints/index.html">Endpoints Overview</a></li><li><a href="../../../../llm-router-api/docs/endpoint-dev.html">Endpoint Development Guide</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../../../llm-router-cli/index.html">CLI</a></h2><ul><li><a href="../../../../llm-router-cli/index.html">llm-router CLI — Command Reference</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../../../llm-router-lib/index.html">Python library</a></h2><ul><li><a href="../../../../llm-router-lib/index.html">llmrouterlib</a></li><li><a href="../../../../llm-router-lib/response-models.html">Response models</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../../../helm-charts/index.html">Deployment</a></h2><ul><li><a href="../../../../helm-charts/index.html">LLM‑Router Helm Chart</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../../../examples/index.html">Examples</a></h2><ul><li><a href="../../../../examples/index.html">Integration Examples with LLM Router</a></li><li><a href="../../../../examples/quickstart/index.html">Full Stack with Local Models</a></li><li><a href="../../../../examples/readme-llamaindex.html">Using LlamaIndex with Local Models via the LLM‑Router</a></li><li><a href="../../../../examples/quickstart/google-gemma3-12b-it/vllm.html">vLLM + google/gemma‑3‑12b‑it – Quick‑Start Guide (Ubuntu)</a></li><li><a href="../../../../examples/quickstart/speakleash-bielik-11b-v2-3-instruct/vllm.html">vLLM + speakleash/Bielik-11B-v2.3-Instruct – Przewodnik Szybkiego Startu (Ubuntu)</a></li><li><a href="../../../../examples/quickstart/speakleash-bielik-11b-v2-3-instruct/index.html">🚀 Przewodnik Szybkiego Startu dla speakleash/Bielik-11B-v2.3-Instruct z vLLM &amp; LLM‑Router</a></li><li><a href="../../../../examples/quickstart/google-gemma3-12b-it/index.html">🚀 Quick‑Start Guide for google/gemma-3-12b‑it with vLLM &amp; LLM‑Router</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../../../changelog.html">Release notes</a></h2><ul><li><a href="../../../../changelog.html">Changelog</a></li></ul></section><div class="nav-repo"><span class="repo-name">llm-router-plugins</span></div><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../../index.html">Plugins overview</a></h2><ul><li><a href="../../../index.html">Plugins overview</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../maskers/fast-masker/index.html">Masker plugins</a></h2><ul><li><a href="../../maskers/fast-masker/index.html">Overview</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="agentic-routing/claude-code/index.html">Routing plugins</a></h2><ul><li><a href="agentic-routing/claude-code/index.html">Claude Code Model Swap (agenticroutingclaude_code)</a></li><li><a href="agentic-routing/codex/index.html">Codex CLI Routing (agenticroutingcodex)</a></li><li><a href="semantic-biencoder/index.html">Semantic BiEncoder Routing (semanticbiencoderrouting)</a></li><li><a href="index.html" class="active">Semantic Routing Plugins</a></li><li><a href="simple-semantic/index.html">Simple Semantic Routing (simplesemanticrouting)</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../rag/langchain-rag.html">Utility plugins</a></h2><ul><li><a href="../rag/langchain-rag.html">LangChain RAG Plugin for LLM‑Router</a></li></ul></section><div class="nav-repo"><span class="repo-name">llm-router-services</span></div><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../../../services/index.html">Services overview</a></h2><ul><li><a href="../../../../services/index.html">llm-router services</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../../../services/llm-router-services/guardrails/index.html">Guardrail services</a></h2><ul><li><a href="../../../../services/llm-router-services/guardrails/index.html">Guardrails Package</a></li><li><a href="../../../../services/llm-router-services/guardrails/speakleash/index.html">Integration of Bielik‑Guard‑0.1B as llm‑router guardrail service (Sojka)</a></li><li><a href="../../../../services/llm-router-services/guardrails/nask/index.html">Integration of HerBERT‑PL‑Guard with the naskpibguard_app.py Service</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../../../services/docker/index.html">Docker &amp; deployment</a></h2><ul><li><a href="../../../../services/docker/index.html">LLM‑Router Services – Docker Build &amp; Run Guide</a></li></ul></section></nav><div class="side-foot"><a href="../../../../../..">&larr;&nbsp;landing page</a><a class="mono" href="../../../../search.json">search.json</a></div></aside>
+<main class="main" id="main"><nav class="crumbs" aria-label="Breadcrumb">
+<a href="../../../../../..">llm-router</a><span class="sep">/</span><a href="../../../../index.html">docs</a><span class="sep">/</span><a href="agentic-routing/claude-code/index.html">Routing plugins</a><span class="sep">/</span><em>Semantic Routing Plugins</em>
+</nav>
+<article class="prose"><h1 id="semantic-routing-plugins">Semantic Routing Plugins<a class="headerlink" href="#semantic-routing-plugins" title="link to this section">#</a></h1>
+<p>Three routing plugins are available for <strong>model selection</strong> in the <strong>LLM‑Router</strong> system.</p>
+<ul>
+<li><code>simple_semantic_routing</code> and <code>semantic_biencoder_routing</code> activate when <code>payload["model"] == "auto"</code>.</li>
+<li><code>agentic_routing_codex</code> activates when <code>payload["model"]</code> equals its own trigger value (<code>"auto_codex"</code> by default) and
+  routes the <strong>Codex CLI's</strong> request class (main turn, title generation, compaction) and work mode.</li>
+</ul>
+<hr />
+<h2 id="table-of-contents">Table of Contents<a class="headerlink" href="#table-of-contents" title="link to this section">#</a></h2>
+<ul>
+<li><a href="#0-shared-routing-layer">0. Shared Routing Layer</a></li>
+<li><a href="#1-simple-semantic-routing-heuristic">1. Simple Semantic Routing (Heuristic)</a></li>
+<li><a href="#2-bi-encoder-semantic-routing-embedding-based">2. Bi-Encoder Semantic Routing (Embedding-based)</a></li>
+<li><a href="#3-codex-routing-codex-cli-requests">3. Codex Routing (Codex CLI Requests)</a></li>
+<li><a href="#4-comparison-which-plugin-to-use">4. Comparison: Which Plugin to Use?</a></li>
+<li><a href="#5-file-locations">5. File Locations</a></li>
+</ul>
+<hr />
+<h2 id="0-shared-routing-layer">0. Shared Routing Layer<a class="headerlink" href="#0-shared-routing-layer" title="link to this section">#</a></h2>
+<p><code>semantic_biencoder_routing</code> and <code>agentic_routing_codex</code> share a common layer in
+<code>llm_router_plugins/utils/routing/</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Module</th>
+<th>Contents</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>embedder.py</code></td>
+<td><code>EmbeddingRouter</code> (BiEncoder + FAISS: chunking, index build/load/persist, <code>route()</code>) and <code>EmbeddingRouterConfig</code> — the formal config contract the router duck-types</td>
+</tr>
+<tr>
+<td><code>target.py</code></td>
+<td><code>RoutingTarget</code> — the shared target/mode dataclass (<code>name</code>, <code>model_name</code>, <code>description</code>, <code>examples</code>); <code>CodexMode</code> is a subclass of it</td>
+</tr>
+<tr>
+<td><code>common.py</code></td>
+<td><code>RoutingConfigBase</code> (shared <code>from_file</code>/<code>from_json</code> protocol: <code>..._CONFIG</code> env var holding raw JSON or a file path, optional default config location), <code>env_int</code>/<code>env_float</code>/<code>env_bool</code>/<code>resolve_persist_dir</code> env helpers, <code>build_embedding_router</code> + <code>check_router_has_vectors</code>, <code>should_route</code> (the <code>payload["model"]</code> trigger gate) and <code>annotate_routing</code> (writes <code>payload["model"]</code> + <code>payload["routing"]</code>)</td>
+</tr>
+</tbody>
+</table>
+<p>Backward compatibility: <code>semantic_biencoder/embedder.py</code> and
+<code>semantic_biencoder/config.py</code> re-export <code>EmbeddingRouter</code> /
+<code>EmbeddingRouterConfig</code> / <code>RoutingTarget</code> from the shared modules, so existing
+imports keep working.</p>
+<p>Both plugins also share the text-extraction helper
+<code>llm_router_plugins/utils/text_extractor.py::extract_user_text</code>
+(<code>messages[-1].content</code> → <code>user_last_statement</code> → <code>query</code> → <code>prompt</code> → <code>input</code>).</p>
+<h2 id="1-simple-semantic-routing-heuristic">1. Simple Semantic Routing (Heuristic)<a class="headerlink" href="#1-simple-semantic-routing-heuristic" title="link to this section">#</a></h2>
+<p>The <strong>Simple Semantic Routing plugin</strong> (<code>simple_semantic_routing</code>) performs
+two-stage heuristic model selection: it classifies the user's intent
+(code, math, creative, general) via weighted keywords, multi-word phrases, and
+regex patterns, then estimates input complexity (token count) to pick the most
+appropriate model from a configured pool.</p>
+<p><strong>No embedding model is required</strong> — routing is a fast, pure-text classification.</p>
+<h3 id="11-architecture">1.1 Architecture<a class="headerlink" href="#11-architecture" title="link to this section">#</a></h3>
+<h4 id="data-flow">Data Flow<a class="headerlink" href="#data-flow" title="link to this section">#</a></h4>
+<div class="codehilite"><pre><span></span><code>User Input
+    │
+    ▼
+classify_intent(text)  ← keywords + phrases + regex patterns
+    │
+    ▼
+estimate_tokens(text)  ← word_count × 1.25
+    │
+    ▼
+complexity_level(tokens)  ← simple / medium / complex
+    │
+    ▼
+select_model(intent, complexity)  ← weighted score → model index
+    │
+    ▼
+Updated payload["model"]
+</code></pre></div>
+
+<h4 id="intent-classification-algorithm">Intent Classification Algorithm<a class="headerlink" href="#intent-classification-algorithm" title="link to this section">#</a></h4>
+<p>Each intent is defined in <code>simple_semantic.json</code> with <strong>four complementary signal types</strong>:</p>
+<h5 id="a-keywords-single-words">a) Keywords — single words<a class="headerlink" href="#a-keywords-single-words" title="link to this section">#</a></h5>
+<p>Each keyword has an optional weight. If no weight is specified, the default is <strong>1.0</strong>.</p>
+<div class="codehilite"><pre><span></span><code><span class="nt">"keywords"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"code"</span><span class="p">,</span><span class="w"> </span><span class="s2">"debug"</span><span class="p">,</span><span class="w"> </span><span class="s2">"funkcja"</span><span class="p">],</span>
+<span class="nt">"weights"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">"debug"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="nt">"kod"</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="nt">"code"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">}</span>
+</code></pre></div>
+
+<p>Matching <code>"debug"</code> adds <strong>5</strong> to the score; matching <code>"code"</code> adds <strong>2</strong>.</p>
+<h5 id="b-phrases-multi-word-expressions">b) Phrases — multi-word expressions<a class="headerlink" href="#b-phrases-multi-word-expressions" title="link to this section">#</a></h5>
+<p>Phrases use the format <code>"text:weight"</code>. The default weight is <strong>2.0</strong> when omitted.</p>
+<div class="codehilite"><pre><span></span><code><span class="nt">"phrases"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"write code:5"</span><span class="p">,</span><span class="w"> </span><span class="s2">"fix bug:4"</span><span class="p">,</span><span class="w"> </span><span class="s2">"napisz funkcję:4"</span><span class="p">]</span>
+</code></pre></div>
+
+<p>Matching <code>"write code"</code> adds <strong>5</strong> to the score.</p>
+<h5 id="c-regex-patterns-structural-detection">c) Regex Patterns — structural detection<a class="headerlink" href="#c-regex-patterns-structural-detection" title="link to this section">#</a></h5>
+<p>Patterns add a flat <strong>+3.0</strong> per match, useful for detecting code structures, math formulas, and question patterns.</p>
+<div class="codehilite"><pre><span></span><code><span class="nt">"patterns"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="s2">"def\\s+\\w+\\s*\\("</span><span class="p">,</span>
+<span class="s2">"class\\s+\\w+\\s*[(:]"</span><span class="p">,</span>
+<span class="s2">"\\b\\d+\\s*[+\\-*/^]\\s*\\d+\\b"</span><span class="p">,</span>
+<span class="s2">"\\bwhat\\s+(is|are|does)\\b"</span>
+<span class="p">]</span>
+</code></pre></div>
+
+<h5 id="d-weights-keyword-importance">d) Weights — keyword importance<a class="headerlink" href="#d-weights-keyword-importance" title="link to this section">#</a></h5>
+<p>The <code>weights</code> object maps individual keywords to boost factors, allowing fine-grained control:</p>
+<div class="codehilite"><pre><span></span><code><span class="nt">"weights"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="nt">"debug"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="c1">// Very strong signal for code intent</span>
+<span class="nt">"błąd"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="c1">// Very strong signal for code intent</span>
+<span class="nt">"kod"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="c1">// Moderate signal</span>
+<span class="nt">"python"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="w">   </span><span class="c1">// Moderate signal</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<h3 id="12-intent-categories">1.2 Intent Categories<a class="headerlink" href="#12-intent-categories" title="link to this section">#</a></h3>
+<table>
+<thead>
+<tr>
+<th>Intent</th>
+<th>Description</th>
+<th>Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong><code>code</code></strong></td>
+<td>Programming, debugging, implementation</td>
+<td>"napisz funkcję", "fix bug", "debug code", "git commit"</td>
+</tr>
+<tr>
+<td><strong><code>math</code></strong></td>
+<td>Mathematics, calculations, statistics</td>
+<td>"oblicz prawdopodobieństwo", "solve equation", "calculate mean"</td>
+</tr>
+<tr>
+<td><strong><code>creative</code></strong></td>
+<td>Creative writing, editing, brainstorming</td>
+<td>"napisz opowiadanie", "write a story", "brainstorm"</td>
+</tr>
+<tr>
+<td><strong><code>general</code></strong></td>
+<td>General questions, explanations, comparisons</td>
+<td>"wyjaśnij jak", "what is the difference", "compare"</td>
+</tr>
+<tr>
+<td><strong><code>none</code></strong></td>
+<td>No specific intent (greetings, etc.)</td>
+<td>"cześć", "hello", "dziękuję"</td>
+</tr>
+</tbody>
+</table>
+<h3 id="13-model-selection-algorithm">1.3 Model Selection Algorithm<a class="headerlink" href="#13-model-selection-algorithm" title="link to this section">#</a></h3>
+<div class="codehilite"><pre><span></span><code>1. complexity_map = {"simple": 0, "medium": n//2, "complex": n-1}
+2. idx = complexity_map[complexity]
+
+3. if intent has a target in intent_adjustment:
+       intent_idx = model_index_for(intent.target)
+       idx = max(idx, intent_idx)      // boost toward intent's target
+   else:
+       idx -= 1                          // demote (no intent)
+
+4. idx = clamp(idx, 0, n-1)
+5. return models[idx]
+</code></pre></div>
+
+<p><strong>Boost / Demote Examples:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Intent</th>
+<th>Complexity</th>
+<th>Base Index</th>
+<th>Intent Adjustment</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>code</code> → <code>medium</code></td>
+<td>simple (idx=0)</td>
+<td>0</td>
+<td>intent targets index 1</td>
+<td><strong>max(0, 1) = 1</strong></td>
+</tr>
+<tr>
+<td><code>none</code></td>
+<td>complex (idx=2)</td>
+<td>2</td>
+<td>no target → demote</td>
+<td><strong>2-1 = 1</strong></td>
+</tr>
+<tr>
+<td><code>math</code> → <code>medium</code></td>
+<td>complex (idx=3)</td>
+<td>3</td>
+<td>intent targets index 1</td>
+<td><strong>max(3, 1) = 3</strong></td>
+</tr>
+<tr>
+<td><code>creative</code> → <code>simple</code></td>
+<td>medium (idx=1)</td>
+<td>1</td>
+<td>intent targets index 0</td>
+<td><strong>max(1, 0) = 1</strong></td>
+</tr>
+</tbody>
+</table>
+<h3 id="14-configuration">1.4 Configuration<a class="headerlink" href="#14-configuration" title="link to this section">#</a></h3>
+<h4 id="json-config-simple_semanticjson">JSON Config (<code>simple_semantic.json</code>)<a class="headerlink" href="#json-config-simple_semanticjson" title="link to this section">#</a></h4>
+<p>All configuration lives in <a href="https://github.com/radlab-dev-group/llm-router-plugins/blob/eefb333/llm_router_plugins/utils/resources/routing/simple_semantic.json" target="_blank" rel="noopener noreferrer">
+<code>llm_router_plugins/resources/routing/simple_semantic.json</code></a>.</p>
+<div class="codehilite"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">"settings"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"len_thresholds_max"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">"simple"</span><span class="p">:</span><span class="w"> </span><span class="mi">25</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"medium"</span><span class="p">:</span><span class="w"> </span><span class="mi">150</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">"default_models"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">"simple"</span><span class="p">:</span><span class="w"> </span><span class="s2">"gpt-oss:120b"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"medium"</span><span class="p">:</span><span class="w"> </span><span class="s2">"qwen3.6:35b"</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">"intent_adjustment"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">"code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"medium"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"math"</span><span class="p">:</span><span class="w"> </span><span class="s2">"medium"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"creative"</span><span class="p">:</span><span class="w"> </span><span class="s2">"simple"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"general"</span><span class="p">:</span><span class="w"> </span><span class="s2">"simple"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"none"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">"intents"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"code"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">"keywords"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="s2">"code"</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">"debug"</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">"funkcja"</span>
+<span class="w">      </span><span class="p">],</span>
+<span class="w">      </span><span class="nt">"phrases"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="s2">"write code:5"</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">"fix bug:4"</span>
+<span class="w">      </span><span class="p">],</span>
+<span class="w">      </span><span class="nt">"patterns"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="s2">"def\\s+\\w+\\s*\\("</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">"class\\s+\\w+"</span>
+<span class="w">      </span><span class="p">],</span>
+<span class="w">      </span><span class="nt">"weights"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">"debug"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">"błąd"</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">"math"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">"keywords"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="s2">"calculate"</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">"equation"</span>
+<span class="w">      </span><span class="p">],</span>
+<span class="w">      </span><span class="nt">"phrases"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="s2">"calculate:4"</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">"solve equation:4"</span>
+<span class="w">      </span><span class="p">],</span>
+<span class="w">      </span><span class="nt">"patterns"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="s2">"\\b\\d+\\s*[+\\-*/^]\\s*\\d+\\b"</span>
+<span class="w">      </span><span class="p">],</span>
+<span class="w">      </span><span class="nt">"weights"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">"calculate"</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">"solve"</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">"creative"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">"keywords"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="s2">"write"</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">"story"</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">"napisz"</span>
+<span class="w">      </span><span class="p">],</span>
+<span class="w">      </span><span class="nt">"phrases"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="s2">"write a story:4"</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">"napisz wiersz:4"</span>
+<span class="w">      </span><span class="p">],</span>
+<span class="w">      </span><span class="nt">"patterns"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="s2">"napisz\\s+(mi|ci|go|ją)"</span>
+<span class="w">      </span><span class="p">],</span>
+<span class="w">      </span><span class="nt">"weights"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">"napisz"</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">"write"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">"general"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">"keywords"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="s2">"explain"</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">"difference"</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">"wyjaśnij"</span>
+<span class="w">      </span><span class="p">],</span>
+<span class="w">      </span><span class="nt">"phrases"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="s2">"what is:4"</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">"how to:4"</span>
+<span class="w">      </span><span class="p">],</span>
+<span class="w">      </span><span class="nt">"patterns"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="s2">"\\bwhat\\s+(is|are|does)\\b"</span>
+<span class="w">      </span><span class="p">],</span>
+<span class="w">      </span><span class="nt">"weights"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">"wyjaśnij"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">"help"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">"none"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"keywords"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">      </span><span class="s2">"hello"</span><span class="p">,</span>
+<span class="w">      </span><span class="s2">"cześć"</span><span class="p">,</span>
+<span class="w">      </span><span class="s2">"thanks"</span>
+<span class="w">    </span><span class="p">],</span>
+<span class="w">    </span><span class="nt">"phrases"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">      </span><span class="s2">"hello:1"</span><span class="p">,</span>
+<span class="w">      </span><span class="s2">"thanks:1"</span>
+<span class="w">    </span><span class="p">],</span>
+<span class="w">    </span><span class="nt">"patterns"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">      </span><span class="s2">"^\\b(hello|hi|cześć)\\b"</span>
+<span class="w">    </span><span class="p">],</span>
+<span class="w">    </span><span class="nt">"weights"</span><span class="p">:</span><span class="w"> </span><span class="p">{}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<h4 id="configurable-values">Configurable Values<a class="headerlink" href="#configurable-values" title="link to this section">#</a></h4>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>len_thresholds_max.simple</code></td>
+<td>Max tokens for "simple" complexity</td>
+<td><code>25</code></td>
+</tr>
+<tr>
+<td><code>len_thresholds_max.medium</code></td>
+<td>Max tokens for "medium" complexity</td>
+<td><code>150</code></td>
+</tr>
+<tr>
+<td><code>default_models.simple</code></td>
+<td>Model for simple complexity</td>
+<td><code>gpt-oss:120b</code></td>
+</tr>
+<tr>
+<td><code>default_models.medium</code></td>
+<td>Model for medium complexity</td>
+<td><code>qwen3.6:35b</code></td>
+</tr>
+<tr>
+<td><code>intent_adjustment.code</code></td>
+<td>Target complexity for code intent</td>
+<td><code>medium</code></td>
+</tr>
+<tr>
+<td><code>intent_adjustment.math</code></td>
+<td>Target complexity for math intent</td>
+<td><code>medium</code></td>
+</tr>
+<tr>
+<td><code>intent_adjustment.creative</code></td>
+<td>Target complexity for creative intent</td>
+<td><code>simple</code></td>
+</tr>
+<tr>
+<td><code>intent_adjustment.general</code></td>
+<td>Target complexity for general intent</td>
+<td><code>simple</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="15-environment-variable-overrides">1.5 Environment Variable Overrides<a class="headerlink" href="#15-environment-variable-overrides" title="link to this section">#</a></h3>
+<p>All environment variables are prefixed with <code>LLM_ROUTER_ROUTING_</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Format</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>LLM_ROUTER_ROUTING_MODELS</code></td>
+<td><code>model-a\|model-b\|model-c</code></td>
+<td>Comma-separated model pool (pipe-delimited)</td>
+</tr>
+<tr>
+<td><code>LLM_ROUTER_ROUTING_COMPLEXITY_THRESHOLDS</code></td>
+<td><code>simple_threshold\|medium_threshold</code></td>
+<td>Token count thresholds (e.g. <code>10\|50</code>)</td>
+</tr>
+<tr>
+<td><code>LLM_ROUTER_ROUTING_DEFAULT_MODEL</code></td>
+<td><code>model-name</code></td>
+<td>Fallback model when no text content is found</td>
+</tr>
+<tr>
+<td><code>LLM_ROUTER_ROUTING_INTENT_&lt;CATEGORY&gt;</code></td>
+<td><code>kw1\|kw2:5\|phrase:3</code></td>
+<td>Override intent keywords/phrases for a category</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example:</strong></p>
+<div class="codehilite"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">LLM_ROUTER_ROUTING_MODELS</span><span class="o">=</span><span class="s2">"tiny-model\|medium-model\|large-model"</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">LLM_ROUTER_ROUTING_COMPLEXITY_THRESHOLDS</span><span class="o">=</span><span class="s2">"10\|50"</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">LLM_ROUTER_ROUTING_INTENT_CODE</span><span class="o">=</span><span class="s2">"code\|debug\|implement"</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">LLM_ROUTER_ROUTING_DEFAULT_MODEL</span><span class="o">=</span><span class="s2">"fallback-model"</span>
+</code></pre></div>
+
+<h3 id="16-usage-examples">1.6 Usage Examples<a class="headerlink" href="#16-usage-examples" title="link to this section">#</a></h3>
+<h4 id="basic-usage">Basic Usage<a class="headerlink" href="#basic-usage" title="link to this section">#</a></h4>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">llm_router_plugins.utils.routing.simple_semantic.simple_semantic_routing</span><span class="w"> </span><span class="kn">import</span> <span class="n">SimpleSemanticRoutingPlugin</span>
+
+<span class="n">plugin</span> <span class="o">=</span> <span class="n">SimpleSemanticRoutingPlugin</span><span class="p">()</span>
+
+<span class="n">payload</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">"model"</span><span class="p">:</span> <span class="s2">"auto"</span><span class="p">,</span>
+    <span class="s2">"messages"</span><span class="p">:</span> <span class="p">[{</span><span class="s2">"role"</span><span class="p">:</span> <span class="s2">"user"</span><span class="p">,</span> <span class="s2">"content"</span><span class="p">:</span> <span class="s2">"Napisz funkcję w Pythonie"</span><span class="p">}]</span>
+<span class="p">}</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">plugin</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span>
+<span class="c1"># result["model"] → selected model (e.g., "qwen3.6:35b")</span>
+</code></pre></div>
+
+<h4 id="payload-text-sources">Payload Text Sources<a class="headerlink" href="#payload-text-sources" title="link to this section">#</a></h4>
+<p>The plugin extracts text from the payload in this priority order:</p>
+<ol>
+<li><code>payload["messages"][-1]["content"]</code> — last message content</li>
+<li><code>payload["user_last_statement"]</code></li>
+<li><code>payload["query"]</code></li>
+<li><code>payload["prompt"]</code></li>
+<li><code>payload["input"]</code></li>
+</ol>
+<h4 id="logging">Logging<a class="headerlink" href="#logging" title="link to this section">#</a></h4>
+<p>When a logger is provided, the plugin logs routing decisions:</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">"llm_router"</span><span class="p">)</span>
+<span class="n">plugin</span> <span class="o">=</span> <span class="n">SimpleSemanticRoutingPlugin</span><span class="p">(</span><span class="n">logger</span><span class="o">=</span><span class="n">logger</span><span class="p">)</span>
+
+<span class="c1"># On apply:</span>
+<span class="c1"># INFO: Semantic routing: intent=code, complexity=medium (12 tokens) -&gt; qwen3.6:35b</span>
+</code></pre></div>
+
+<h3 id="17-weight-tuning-guidelines">1.7 Weight Tuning Guidelines<a class="headerlink" href="#17-weight-tuning-guidelines" title="link to this section">#</a></h3>
+<table>
+<thead>
+<tr>
+<th>Weight Range</th>
+<th>Meaning</th>
+<th>Use Case</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>1</strong></td>
+<td>Weak / baseline</td>
+<td>Generic terms that appear in many contexts</td>
+</tr>
+<tr>
+<td><strong>2–3</strong></td>
+<td>Moderate</td>
+<td>Common but not definitive signals</td>
+</tr>
+<tr>
+<td><strong>4–5</strong></td>
+<td>Strong</td>
+<td>Highly specific, unambiguous signals (e.g., "debug", "błąd" for code)</td>
+</tr>
+<tr>
+<td><strong>1 (none)</strong></td>
+<td>Neutral</td>
+<td>Greetings and filler phrases that shouldn't influence routing</td>
+</tr>
+</tbody>
+</table>
+<h3 id="18-phrase-format-guidelines">1.8 Phrase Format Guidelines<a class="headerlink" href="#18-phrase-format-guidelines" title="link to this section">#</a></h3>
+<table>
+<thead>
+<tr>
+<th>Format</th>
+<th>Weight</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>"text:weight"</code></td>
+<td>Explicit</td>
+<td><code>"write code:5"</code></td>
+</tr>
+<tr>
+<td><code>"text"</code></td>
+<td>Default (2.0)</td>
+<td><code>"fix bug"</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="19-complexity-levels">1.9 Complexity Levels<a class="headerlink" href="#19-complexity-levels" title="link to this section">#</a></h3>
+<table>
+<thead>
+<tr>
+<th>Level</th>
+<th>Token Range</th>
+<th>Model Selection</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>simple</code></td>
+<td>0 – <code>thresholds[simple]</code></td>
+<td>Cheapest / simplest model (index 0)</td>
+</tr>
+<tr>
+<td><code>medium</code></td>
+<td><code>thresholds[simple]</code> + 1 – <code>thresholds[medium]</code></td>
+<td>Middle model (index n // 2)</td>
+</tr>
+<tr>
+<td><code>complex</code></td>
+<td>&gt; <code>thresholds[medium]</code></td>
+<td>Strongest model (index n - 1)</td>
+</tr>
+</tbody>
+</table>
+<p>Token estimation: <code>round(word_count × 1.25)</code></p>
+<h3 id="110-built-in-patterns-reference">1.10 Built-in Patterns Reference<a class="headerlink" href="#110-built-in-patterns-reference" title="link to this section">#</a></h3>
+<h4 id="code-patterns">Code Patterns<a class="headerlink" href="#code-patterns" title="link to this section">#</a></h4>
+<table>
+<thead>
+<tr>
+<th>Pattern</th>
+<th>Matches</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>def\s+\w+\s*\(</code></td>
+<td>Python function definitions</td>
+</tr>
+<tr>
+<td><code>class\s+\w+\s*[(:]</code></td>
+<td>Python/class definitions</td>
+</tr>
+<tr>
+<td><code>import\s+\w+</code></td>
+<td>Import statements</td>
+</tr>
+<tr>
+<td><code>try\s*:</code>, <code>except\s*:</code></td>
+<td>Try/except blocks</td>
+</tr>
+<tr>
+<td><code>git\s+(commit\|push\|pull\|branch\|merge)</code></td>
+<td>Git commands</td>
+</tr>
+<tr>
+<td><code>npm\s+(install\|run\|start\|build)</code></td>
+<td>NPM commands</td>
+</tr>
+<tr>
+<td><code>docker\s+(build\|run\|compose)</code></td>
+<td>Docker commands</td>
+</tr>
+<tr>
+<td><code>SELECT\s+.*\s+FROM</code></td>
+<td>SQL SELECT queries</td>
+</tr>
+</tbody>
+</table>
+<h4 id="math-patterns">Math Patterns<a class="headerlink" href="#math-patterns" title="link to this section">#</a></h4>
+<table>
+<thead>
+<tr>
+<th>Pattern</th>
+<th>Matches</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>\b\d+\s*[+\-*/^]\s*\d+\b</code></td>
+<td>Arithmetic expressions</td>
+</tr>
+<tr>
+<td><code>\bsin\s*\(</code>, <code>\bcos\s*\(</code>, <code>\btan\s*\(</code></td>
+<td>Trig functions</td>
+</tr>
+<tr>
+<td><code>\bsqrt\s*\(</code>, <code>\blog\s*\(</code></td>
+<td>Math functions</td>
+</tr>
+<tr>
+<td><code>\bf\(x\)\s*=</code></td>
+<td>Function notation</td>
+</tr>
+<tr>
+<td><code>\b∑\b</code>, <code>\b∫\b</code></td>
+<td>Sigma / integral symbols</td>
+</tr>
+</tbody>
+</table>
+<h4 id="general-question-patterns">General Question Patterns<a class="headerlink" href="#general-question-patterns" title="link to this section">#</a></h4>
+<table>
+<thead>
+<tr>
+<th>Pattern</th>
+<th>Matches</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>\bwhat\s+(is\|are\|does)\b</code></td>
+<td>What questions</td>
+</tr>
+<tr>
+<td><code>\bhow\s+(to\|does\|do)\b</code></td>
+<td>How questions</td>
+</tr>
+<tr>
+<td><code>\bwhy\s+(is\|does)\b</code></td>
+<td>Why questions</td>
+</tr>
+<tr>
+<td><code>\bporównaj\s+</code></td>
+<td>Polish comparison questions</td>
+</tr>
+</tbody>
+</table>
+<h3 id="111-adding-new-intents">1.11 Adding New Intents<a class="headerlink" href="#111-adding-new-intents" title="link to this section">#</a></h3>
+<p>To add a new intent category:</p>
+<ol>
+<li><strong>Add the intent to <code>simple_semantic.json</code>:</strong></li>
+</ol>
+<div class="codehilite"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">"intents"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"my_intent"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">"keywords"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="s2">"keyword1"</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">"keyword2"</span>
+<span class="w">      </span><span class="p">],</span>
+<span class="w">      </span><span class="nt">"phrases"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="s2">"phrase one:4"</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">"phrase two:3"</span>
+<span class="w">      </span><span class="p">],</span>
+<span class="w">      </span><span class="nt">"patterns"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="s2">"pattern\\s+here"</span>
+<span class="w">      </span><span class="p">],</span>
+<span class="w">      </span><span class="nt">"weights"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">"keyword1"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">"keyword2"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">"settings"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"intent_adjustment"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">"my_intent"</span><span class="p">:</span><span class="w"> </span><span class="s2">"medium"</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<ol>
+<li><strong>Or override via environment variable:</strong></li>
+</ol>
+<div class="codehilite"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">LLM_ROUTER_ROUTING_INTENT_MY_INTENT</span><span class="o">=</span><span class="s2">"keyword1\|keyword2:5\|phrase:4"</span>
+</code></pre></div>
+
+<h3 id="112-running-tests">1.12 Running Tests<a class="headerlink" href="#112-running-tests" title="link to this section">#</a></h3>
+<div class="codehilite"><pre><span></span><code>pytest<span class="w"> </span>tests/test_simple_semantic_routing.py<span class="w"> </span>-v
+</code></pre></div>
+
+<hr />
+<h2 id="2-bi-encoder-semantic-routing-embedding-based">2. Bi-Encoder Semantic Routing (Embedding-based)<a class="headerlink" href="#2-bi-encoder-semantic-routing-embedding-based" title="link to this section">#</a></h2>
+<p>The <strong>Bi-Encoder routing plugin</strong> (<code>semantic_biencoder_routing</code>) uses a neural embedding model
+(<strong>google/embeddinggemma-300m</strong>) to compute semantic embeddings for a set of pre-configured routing targets.
+Each target has a <code>name</code>, a <code>model_name</code> (the model to route to), a <code>description</code>, and a list of <code>examples</code>.
+At query time the user message is embedded and matched against all stored target embeddings using FAISS
+(<code>IndexFlatIP</code> on L2-normalised vectors = cosine similarity). The best-matching target determines the selected model.</p>
+<h3 id="21-index-building-on-first-load-or-when-the-persist-directory-is-missing">2.1 Index Building (on first load or when the persist directory is missing)<a class="headerlink" href="#21-index-building-on-first-load-or-when-the-persist-directory-is-missing" title="link to this section">#</a></h3>
+<ul>
+<li>For each target, its <code>description</code> and <code>examples</code> are combined into text.</li>
+<li>The text is split into overlapping <strong>token chunks</strong> using a sliding window (<code>chunk_size</code> tokens, <code>chunk_overlap</code>
+  tokens overlap).</li>
+<li>Each chunk is embedded via the BiEncoder model (e.g. <code>google/embeddinggemma-300m</code>).</li>
+<li>All embedding vectors are <strong>L2-normalised</strong> to unit length.</li>
+<li>Vectors are inserted into a <code>faiss.IndexFlatIP</code> index (inner product).</li>
+<li>A docstore maps each FAISS doc ID to its target name (for reverse lookup).</li>
+</ul>
+<h3 id="22-routing-query">2.2 Routing (query)<a class="headerlink" href="#22-routing-query" title="link to this section">#</a></h3>
+<ul>
+<li>The user message is embedded and L2-normalised.</li>
+<li>A message longer than the model's <code>max_seq_length</code> is first split into overlapping token windows (window =
+  <code>max_seq_length</code>, overlap = <code>chunk_overlap</code> clamped to <code>max_seq_length // 4</code>), capped at the first 4 windows from
+  the head of the text (<code>MAX_QUERY_WINDOWS</code>). The windows are encoded in a single batch and combined into one unit-norm
+  query vector — the L2-normalised mean of the per-window unit vectors — so the cosine scale of the lookup is
+  unchanged. Each extra window costs roughly ~1.2 s of CPU latency.</li>
+<li>FAISS performs a nearest-neighbor search returning the <code>top_k</code> closest chunks.</li>
+<li>Scores are <strong>aggregated per target</strong>: the mean cosine similarity of all chunks belonging to the same target is
+  computed.</li>
+<li>The target with the <strong>highest mean similarity</strong> wins and its <code>model_name</code> is returned.</li>
+</ul>
+<h3 id="23-persistence">2.3 Persistence<a class="headerlink" href="#23-persistence" title="link to this section">#</a></h3>
+<p>The FAISS index and docstore are saved to disk (files <code>index.faiss</code> and <code>docstore.pkl</code>) under the configured persist
+directory. On subsequent starts the index is loaded from disk — embeddings are <strong>not recomputed</strong>.
+If the embedding model changes (different output dimension) the index is automatically rebuilt.</p>
+<h3 id="24-configuration">2.4 Configuration<a class="headerlink" href="#24-configuration" title="link to this section">#</a></h3>
+<p>Configuration is loaded from <a href="https://github.com/radlab-dev-group/llm-router-plugins/blob/eefb333/llm_router_plugins/utils/resources/routing/semantic_biencoder.json" target="_blank" rel="noopener noreferrer">
+<code>llm_router_plugins/resources/routing/semantic_biencoder.json</code></a>.</p>
+<p>Example JSON configuration:</p>
+<div class="codehilite"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">"embedding_model"</span><span class="p">:</span><span class="w"> </span><span class="s2">"google/embeddinggemma-300m"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"settings"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"chunk_size"</span><span class="p">:</span><span class="w"> </span><span class="mi">256</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"chunk_overlap"</span><span class="p">:</span><span class="w"> </span><span class="mi">64</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"similarity_threshold"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.0</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"top_k"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"vector_store_path"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">"routing_targets"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"code-generation"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"model_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"qwen3.6:35b"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Model specialized for code-related tasks."</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"examples"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="s2">"Write a Python function..."</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">"..."</span>
+<span class="w">      </span><span class="p">]</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"math-reasoning"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"model_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"gpt-oss:120b"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Model for mathematical reasoning and calculations."</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"examples"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="s2">"Calculate the derivative of..."</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">"..."</span>
+<span class="w">      </span><span class="p">]</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<h4 id="environment-variables">Environment Variables<a class="headerlink" href="#environment-variables" title="link to this section">#</a></h4>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>LLM_ROUTER_ROUTING_SEMANTIC_BIENCODER_MODEL</code></td>
+<td>Override the embedding model name</td>
+</tr>
+<tr>
+<td><code>LLM_ROUTER_ROUTING_SEMANTIC_BIENCODER_TARGETS</code></td>
+<td>Pipe-separated list of target names</td>
+</tr>
+<tr>
+<td><code>LLM_ROUTER_ROUTING_SEMANTIC_BIENCODER_CHUNK_SIZE</code></td>
+<td>Override chunk size</td>
+</tr>
+<tr>
+<td><code>LLM_ROUTER_ROUTING_SEMANTIC_BIENCODER_CHUNK_OVERLAP</code></td>
+<td>Override chunk overlap</td>
+</tr>
+<tr>
+<td><code>LLM_ROUTER_ROUTING_SEMANTIC_BIENCODER_PERSIST_DIR</code></td>
+<td>Directory for FAISS index persistence</td>
+</tr>
+</tbody>
+</table>
+<h3 id="25-usage-examples">2.5 Usage Examples<a class="headerlink" href="#25-usage-examples" title="link to this section">#</a></h3>
+<h4 id="basic-usage_1">Basic Usage<a class="headerlink" href="#basic-usage_1" title="link to this section">#</a></h4>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">llm_router_plugins.utils.routing.semantic_biencoder.semantic_biencoder_routing</span><span class="w"> </span><span class="kn">import</span>
+    <span class="n">SemanticBiEncoderRoutingPlugin</span>
+
+<span class="n">plugin</span> <span class="o">=</span> <span class="n">SemanticBiEncoderRoutingPlugin</span><span class="p">()</span>
+
+<span class="n">payload</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">"model"</span><span class="p">:</span> <span class="s2">"auto"</span><span class="p">,</span>
+    <span class="s2">"messages"</span><span class="p">:</span> <span class="p">[{</span><span class="s2">"role"</span><span class="p">:</span> <span class="s2">"user"</span><span class="p">,</span> <span class="s2">"content"</span><span class="p">:</span> <span class="s2">"Napisz funkcję w Pythonie"</span><span class="p">}]</span>
+<span class="p">}</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">plugin</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span>
+<span class="c1"># result["model"] → selected model (e.g., "qwen3.6:35b")</span>
+</code></pre></div>
+
+<h4 id="target-examples-with-embeddings">Target Examples with Embeddings<a class="headerlink" href="#target-examples-with-embeddings" title="link to this section">#</a></h4>
+<p>Each routing target has <code>description</code> + <code>examples</code>. The plugin embeds both and computes the mean vector as the
+target's embedding. When a user query arrives:</p>
+<ol>
+<li>Query text is embedded → <strong>vector Q</strong> (L2-normalised).</li>
+<li>FAISS searches for closest vectors to <strong>Q</strong> among all target embeddings.</li>
+<li>Best match → that target's <code>model_name</code> is selected.</li>
+</ol>
+<p><strong>Example targets:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Target Name</th>
+<th>Model</th>
+<th>Description</th>
+<th>Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>code-generation</td>
+<td>qwen3.6:35b</td>
+<td>Write and debug code</td>
+<td>"Write a Python function to sort a list", "Fix my CSS layout"</td>
+</tr>
+<tr>
+<td>math-reasoning</td>
+<td>gpt-oss:120b</td>
+<td>Mathematical problems and calculations</td>
+<td>"Calculate the integral of x²", "Solve for x in 2x+3=7"</td>
+</tr>
+<tr>
+<td>creative-writing</td>
+<td>gpt-oss:120b</td>
+<td>Creative writing and storytelling</td>
+<td>"Write a short story about...", "Create a poem about..."</td>
+</tr>
+<tr>
+<td>general-knowledge</td>
+<td>gpt-oss:120b</td>
+<td>General questions and explanations</td>
+<td>"What is the capital of France?", "How does DNA work?"</td>
+</tr>
+</tbody>
+</table>
+<h3 id="26-scoring-details">2.6 Scoring Details<a class="headerlink" href="#26-scoring-details" title="link to this section">#</a></h3>
+<p>For each user query, FAISS returns <code>top_k</code> closest chunks with similarity scores. These scores are <strong>aggregated per
+target</strong> (mean of all matching chunk scores). The final score table looks like:</p>
+<table>
+<thead>
+<tr>
+<th>Target</th>
+<th>Mean Cosine Similarity</th>
+<th>Selected?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>code-generation</td>
+<td>0.85</td>
+<td>✅ Yes</td>
+</tr>
+<tr>
+<td>math-reasoning</td>
+<td>0.42</td>
+<td></td>
+</tr>
+<tr>
+<td>creative-writing</td>
+<td>0.31</td>
+<td></td>
+</tr>
+<tr>
+<td>general-knowledge</td>
+<td>0.28</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>The target with the <strong>highest mean similarity</strong> wins. If its score falls below
+<code>similarity_threshold</code> (default 0.0), the payload is returned unchanged —
+<code>payload["model"]</code> is left as it was.</p>
+<h3 id="27-running-tests">2.7 Running Tests<a class="headerlink" href="#27-running-tests" title="link to this section">#</a></h3>
+<div class="codehilite"><pre><span></span><code>pytest<span class="w"> </span>tests/test_semantic_biencoder_routing.py<span class="w"> </span>-v
+</code></pre></div>
+
+<hr />
+<h2 id="3-codex-routing-codex-cli-requests">3. Codex Routing (Codex CLI Requests)<a class="headerlink" href="#3-codex-routing-codex-cli-requests" title="link to this section">#</a></h2>
+<p>The <strong>Codex Routing plugin</strong> (<code>agentic_routing_codex</code>) routes OpenAI-Responses-style requests emitted by the
+<strong>Codex CLI</strong> coding agent. It activates when <code>payload["model"]</code> equals its own trigger value (<code>"auto_codex"</code> by
+default), resolves the agent's <strong>work mode</strong> (<code>plan</code>, <code>implement</code>, <code>test</code>, <code>git_review</code>, <code>review</code>, <code>debug</code>, <code>aux_title</code>,
+<code>compaction</code>) and rewrites <code>payload["model"]</code>. Exactly three keys change — <code>model</code>, <code>routing</code> and <code>agent_mode</code>; <code>tools</code>,
+<code>instructions</code>, <code>input</code>, <code>reasoning</code>, <code>text</code> and <code>stream</code> are forwarded byte-identical.</p>
+<p>The Codex CLI needs a plugin of its own for two reasons:</p>
+<ul>
+<li>A Codex session contains requests that are <strong>not conversations at all</strong>. Auxiliary thread-title generation and
+  context compaction carry no user intent, so guessing a mode from their text is always wrong — they must be
+  recognized by <em>request class</em> and pinned to a cheap model.</li>
+<li>The CLI <strong>declares</strong> the active mode in a <code>&lt;collaboration_mode&gt;</code> block injected into a developer message. A
+  declared fact has to win over any keyword or embedding guess.</li>
+</ul>
+<p>The subpackage is self-contained — its own config, scorer, semantic layer and JSON resource — and shares only the
+generic infrastructure (<code>common.py</code>, <code>constants.py</code>, <code>target.py</code>, <code>plugin_interface.py</code>). It never reads the other
+plugins' configuration: <code>auto</code> traffic stays with the semantic plugins, <code>auto_codex</code> comes here.</p>
+<h3 id="31-module-layout">3.1 Module Layout<a class="headerlink" href="#31-module-layout" title="link to this section">#</a></h3>
+<table>
+<thead>
+<tr>
+<th>Module</th>
+<th>Contents</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>payload.py</code></td>
+<td><code>CodexRequest</code> and <code>parse_codex_payload()</code> — the read-only request normalizer</td>
+</tr>
+<tr>
+<td><code>scoring.py</code></td>
+<td><code>detect_mode()</code>, <code>score_mode()</code>, <code>score_to_similarity()</code> — deterministic keyword scoring</td>
+</tr>
+<tr>
+<td><code>semantic.py</code></td>
+<td><code>CodexSemanticLayer</code> — availability gate and cosine-similarity lookup</td>
+</tr>
+<tr>
+<td><code>classifier.py</code></td>
+<td><code>classify()</code> and <code>RoutingDecision</code> — the resolution cascade</td>
+</tr>
+<tr>
+<td><code>config.py</code></td>
+<td><code>CodexRoutingConfig</code>, <code>CodexMode</code>, defaults, validation, env overrides</td>
+</tr>
+<tr>
+<td><code>plugin.py</code></td>
+<td><code>CodexRoutingPlugin</code> — trigger check, cascade, payload annotation</td>
+</tr>
+</tbody>
+</table>
+<h3 id="32-request-classes">3.2 Request Classes<a class="headerlink" href="#32-request-classes" title="link to this section">#</a></h3>
+<p><code>payload.py</code> is the only module that knows where Codex metadata lives on the wire. Everything else works on the
+frozen <code>CodexRequest</code> snapshot, so detection never depends on the shape of an individual request. Every request is
+labelled with a class, in strict priority order <strong>compaction → aux_title → main</strong>:</p>
+<table>
+<thead>
+<tr>
+<th>Class</th>
+<th><code>request_class</code></th>
+<th>Detected from</th>
+<th>Routed as</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Compaction</td>
+<td><code>compaction</code></td>
+<td><code>request_kind == "compaction"</code> in the turn metadata</td>
+<td><code>compaction</code></td>
+</tr>
+<tr>
+<td>Title</td>
+<td><code>aux_title</code></td>
+<td><code>request_kind == "turn"</code> <strong>and</strong> <code>thread_source == "system"</code>, corroborated by <code>tools == []</code> and a <code>codex_output_schema</code> JSON-schema output</td>
+<td><code>aux_title</code></td>
+</tr>
+<tr>
+<td>Main turn</td>
+<td><code>main</code></td>
+<td>everything else</td>
+<td>mode layers</td>
+</tr>
+</tbody>
+</table>
+<p>Notes on the wire format:</p>
+<ul>
+<li>IDs come from <code>client_metadata</code>: <code>session_id</code>, <code>thread_id</code>, <code>turn_id</code>, <code>root_turn_id</code>, <code>agent_name</code> and
+  <code>x-codex-window-id</code>. <code>x-codex-turn-metadata</code> is a <strong>JSON string</strong>, not an object — it is decoded defensively and
+  a malformed value degrades to <code>{}</code> instead of raising.</li>
+<li>Tool names follow the flat Responses shape <code>{"type": "function", "name": ...}</code>. An entry without <code>name</code> falls
+  back to its <code>type</code>, because the CLI really does send <code>{"type": "web_search", "external_web_access": true}</code>.</li>
+<li><code>structured_output</code> reads <code>text.format.type == "json_schema"</code>; <code>reasoning_effort</code> reads <code>reasoning.effort</code>;
+  <code>context_tokens</code> is an estimate (<code>context_chars // 4</code> over <code>instructions</code> plus <code>input</code>).</li>
+<li><code>collaboration_mode</code> is matched with <code>&lt;collaboration_mode&gt;(.*?)(&lt;/collaboration_mode&gt;|\Z)</code> (<code>re.S</code>) over every
+  <code>input_text</code> part of a <code>role == "developer"</code> message. The <strong>last</strong> block wins and its first non-empty line
+  decides: <code># Plan Mode</code> → <code>plan</code>, <code># Collaboration Mode: Default</code> → <code>default</code>, anything else → <code>""</code>. Taking the
+  latest occurrence is what makes a mid-session Plan → Default switch reclassify correctly.</li>
+<li><code>latest_user_text</code> is every <code>role == "user"</code> message assembled from the newest to the oldest; <code>&lt;environment_context&gt;</code>
+  messages are skipped and <code>payload["prompt"]</code> is the final fallback. The newest message is always kept whole, an older
+  one is appended only while the text stays within <code>classify_max_chars</code> (default <code>4000</code>), and assembly stops at the first
+  message that would overflow, so the text the classifier sees is bounded as the session grows. <code>instructions</code> is deliberately <strong>not</strong> classified — in captured
+  sessions it is one constant 16 979-character preamble that would drown the signal.</li>
+<li>Parsing never mutates the payload and never raises: a missing or non-list <code>input</code>, <code>tools=None</code>, an absent
+  <code>client_metadata</code> or a missing <code>text</code> all yield a well-formed <code>CodexRequest</code> with empty defaults.</li>
+</ul>
+<h3 id="33-detection-cascade">3.3 Detection Cascade<a class="headerlink" href="#33-detection-cascade" title="link to this section">#</a></h3>
+<p>Mode resolution is strictly ordered — the first layer that answers wins:</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Layer</th>
+<th><code>source</code></th>
+<th>Behaviour</th>
+<th>ML</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><strong>Explicit</strong></td>
+<td><code>explicit</code></td>
+<td>First present key wins: <code>agent_mode</code> → <code>codex_mode</code> → <code>metadata.agent_mode</code>, when it names a configured mode</td>
+<td>no</td>
+</tr>
+<tr>
+<td>2</td>
+<td><strong>Class: compaction</strong></td>
+<td><code>class</code></td>
+<td>Context compaction — never keyword-scored, outranks a plan block</td>
+<td>no</td>
+</tr>
+<tr>
+<td>3</td>
+<td><strong>Class: aux title</strong></td>
+<td><code>class</code></td>
+<td>Auxiliary title generation on a system thread — never keyword-scored</td>
+<td>no</td>
+</tr>
+<tr>
+<td>4</td>
+<td><strong>Collaboration mode</strong></td>
+<td><code>collaboration_mode</code></td>
+<td>The CLI declared Plan Mode in the latest <code>&lt;collaboration_mode&gt;</code> block</td>
+<td>no</td>
+</tr>
+<tr>
+<td>5</td>
+<td><strong>Heuristic</strong></td>
+<td><code>heuristic</code></td>
+<td>Keywords (default 1.0), <code>text:weight</code> phrases (default 2.0), regex patterns (default 3.0)</td>
+<td>no</td>
+</tr>
+<tr>
+<td>6</td>
+<td><strong>Semantic</strong></td>
+<td><code>semantic</code></td>
+<td>Embedding cosine similarity over mode descriptions/examples, accepted at <code>similarity &gt;= threshold</code>; reached only when 1-5 stay silent</td>
+<td>yes</td>
+</tr>
+<tr>
+<td>7</td>
+<td><strong>Fallback</strong></td>
+<td><code>fallback</code></td>
+<td>The configured <code>fallback_mode</code> (<code>implement</code>)</td>
+<td>no</td>
+</tr>
+</tbody>
+</table>
+<p>Details worth knowing:</p>
+<ul>
+<li><strong>Compaction outranks everything except an explicit mode</strong>, including a plan collaboration block — a compaction
+  request still carries the mode text of the conversation it is compacting.</li>
+<li>Only <code>test</code>, <code>git_review</code>, <code>review</code> and <code>debug</code> are keyword-scored, scanned in that order. The <code>keywords</code>, <code>phrases</code>
+  and <code>patterns</code> of <code>plan</code> and <code>implement</code> are therefore never scored — only their <code>description</code> and <code>examples</code> reach the
+  embedding index. A main turn never falls below <code>implement</code>: the probabilistic layers can specialise a decision but can
+  never make it weaker.</li>
+<li>A heuristic hit needs <code>score &gt;= heuristic_min_score</code> (<code>3.0</code> by default); below it the request stays on the
+  fallback mode. Scores sum across keywords, phrases and patterns, and ties are won by the mode that comes first in
+  <code>HEURISTIC_MODES</code> (<code>test</code> → <code>git_review</code> → <code>review</code> → <code>debug</code>), independently of the order the JSON lists its modes.</li>
+<li>Keywords and phrases are Polish <strong>and</strong> English, because real prompts are short and mixed: <code>"napraw testy"</code> and
+  <code>"run the tests"</code> both resolve to <code>test</code>, <code>"Przejrzyj ten katalog i zaproponuj poprawki"</code> to <code>review</code>.</li>
+<li>Keywords and phrases match at a word start, so inflected Polish forms still match (<code>testów</code>) while mid-word
+  hits do not: <code>protest</code> never scores the <code>test</code> keyword.</li>
+<li>An explicit mode is honoured even without usable text, and empty text never reaches the vector store.</li>
+<li>Everything fails open. Any exception during parse or classify logs a warning and returns the payload untouched,
+  so a routing bug can never turn into a failed request; an unknown mode name or a mode with an empty <code>model_name</code>
+  is likewise a passthrough.</li>
+</ul>
+<h3 id="34-similarity-cosine-over-mode-embeddings">3.4 Similarity: Cosine over Mode Embeddings<a class="headerlink" href="#34-similarity-cosine-over-mode-embeddings" title="link to this section">#</a></h3>
+<p><code>payload["routing"]["similarity"]</code> is a real <strong>embedding cosine similarity</strong>, produced by the shared embedding
+stack: <code>build_embedding_router()</code> (sentence-transformers BiEncoder + FAISS)
+indexes the <code>description</code> and <code>examples</code> of each mode, so scores are on the same scale and are comparable across
+plugins. The bundled embedding model is <code>google/embeddinggemma-300m</code>.</p>
+<table>
+<thead>
+<tr>
+<th><code>source</code></th>
+<th>Reported <code>similarity</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>explicit</code> / <code>class</code> / <code>collaboration_mode</code></td>
+<td><code>1.0</code> — the mode was declared, not inferred</td>
+</tr>
+<tr>
+<td><code>heuristic</code></td>
+<td><code>score / (score + 1)</code> — the keyword layer answers before any embedding is computed</td>
+</tr>
+<tr>
+<td><code>semantic</code></td>
+<td>The accepted cosine similarity</td>
+</tr>
+<tr>
+<td><code>fallback</code></td>
+<td>Cosine of the fallback mode, else <code>0.0</code></td>
+</tr>
+</tbody>
+</table>
+<p>Notes:</p>
+<ul>
+<li><code>aux_title</code> and <code>compaction</code> are <strong>excluded from the index</strong> — they are class-routed, so indexing them would
+  only add near-miss neighbours for real turns. The indexed targets are <code>plan</code>, <code>implement</code>, <code>test</code>,
+  <code>git_review</code>, <code>review</code>, <code>debug</code>.</li>
+<li>A request queries the store <strong>at most once, and only when layers 1–5 stay silent</strong>: an explicit mode, a request
+  class, a collaboration block or a keyword hit never touches the embedding stack. The single lookup serves both the
+  semantic decision and the cosine reported for the fallback, so a text is never embedded twice.</li>
+<li>The layer is optional by construction. With <code>SEMANTIC_ENABLED=false</code>, with missing
+  <code>faiss</code> / <code>sentence-transformers</code>, or with an unloadable embedding model, no router is built, every lookup
+  returns nothing, and routing stays purely deterministic. Modes that a deterministic layer already decided are
+  unaffected; only the semantic and fallback similarities drop out.</li>
+<li>The index persists to disk through the shared <code>resolve_persist_dir()</code> helper (<code>PERSIST_DIR</code>,
+  <code>settings.vector_store_path</code>).</li>
+</ul>
+<h3 id="35-configuration">3.5 Configuration<a class="headerlink" href="#35-configuration" title="link to this section">#</a></h3>
+<p><code>llm_router_plugins/resources/routing/agentic_routing_codex.json</code>:</p>
+<div class="codehilite"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">"embedding_model"</span><span class="p">:</span><span class="w"> </span><span class="s2">"google/embeddinggemma-300m"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"settings"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"trigger_model"</span><span class="p">:</span><span class="w"> </span><span class="s2">"auto_codex"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"fallback_mode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"implement"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"heuristic_enabled"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"heuristic_min_score"</span><span class="p">:</span><span class="w"> </span><span class="mf">3.0</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"classify_max_chars"</span><span class="p">:</span><span class="w"> </span><span class="mi">4000</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"vector_store_path"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"semantic"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">"enabled"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"threshold"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.51</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"top_k"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"chunk_size"</span><span class="p">:</span><span class="w"> </span><span class="mi">256</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"chunk_overlap"</span><span class="p">:</span><span class="w"> </span><span class="mi">64</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">"codex_modes"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"plan"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"model_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"qwen/Qwen3.8-Flash-Next"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"The agent plans before touching any file..."</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"examples"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"Zaplanuj migrację bazy danych."</span><span class="p">,</span><span class="w"> </span><span class="s2">"Plan the refactor of the billing module."</span><span class="p">],</span>
+<span class="w">      </span><span class="nt">"keywords"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"plan"</span><span class="p">,</span><span class="w"> </span><span class="s2">"zaplanuj"</span><span class="p">],</span>
+<span class="w">      </span><span class="nt">"phrases"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"step by step:2.5"</span><span class="p">],</span>
+<span class="w">      </span><span class="nt">"patterns"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"(zaplanuj|plan(ning)?)\\b"</span><span class="p">],</span>
+<span class="w">      </span><span class="nt">"weights"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">"plan"</span><span class="p">:</span><span class="w"> </span><span class="mf">1.5</span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p><code>codex_modes</code> is a <strong>list</strong>, so declaration order fixes which mode a duplicated signal reaches first; heuristic score
+ties are broken by <code>HEURISTIC_MODES</code>, not by this list.</p>
+<table>
+<thead>
+<tr>
+<th>Mode</th>
+<th>Default model</th>
+<th>Decided by</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>plan</code></td>
+<td><code>qwen/Qwen3.8-Flash-Next</code></td>
+<td>Collaboration block, then keywords/embeddings</td>
+</tr>
+<tr>
+<td><code>implement</code></td>
+<td><code>qwen/Qwen3.8-Flash-Next</code></td>
+<td>Fallback for main turns, then keywords</td>
+</tr>
+<tr>
+<td><code>test</code></td>
+<td><code>qwen/Qwen3.8-27B</code></td>
+<td>Keywords / embeddings</td>
+</tr>
+<tr>
+<td><code>git_review</code></td>
+<td><code>qwen/Qwen3.8-27B</code></td>
+<td>Keywords / embeddings</td>
+</tr>
+<tr>
+<td><code>review</code></td>
+<td><code>qwen/Qwen3.8-Flash-Next</code></td>
+<td>Keywords / embeddings</td>
+</tr>
+<tr>
+<td><code>debug</code></td>
+<td><code>qwen/Qwen3.8-Flash-Next</code></td>
+<td>Keywords / embeddings</td>
+</tr>
+<tr>
+<td><code>aux_title</code></td>
+<td><code>qwen/Qwen3.8-27B</code></td>
+<td>Request class only (no keywords)</td>
+</tr>
+<tr>
+<td><code>compaction</code></td>
+<td><code>qwen/Qwen3.8-27B</code></td>
+<td>Request class only (no keywords)</td>
+</tr>
+</tbody>
+</table>
+<p>A mode whose <code>model_name</code> is empty is a deliberate <strong>passthrough</strong>: the payload is returned unchanged, so an
+operator can disable a single mode without removing it or touching the plugin.</p>
+<h3 id="36-environment-variable-overrides">3.6 Environment Variable Overrides<a class="headerlink" href="#36-environment-variable-overrides" title="link to this section">#</a></h3>
+<p>All variables use the <code>LLM_ROUTER_ROUTING_SEMANTIC_AGENTIC_CODEX_</code> prefix:</p>
+<table>
+<thead>
+<tr>
+<th>Env variable</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>..._CONFIG</code></td>
+<td>Full config as a raw JSON string or a path to a config file</td>
+</tr>
+<tr>
+<td><code>..._TRIGGER</code></td>
+<td>The single <code>payload["model"]</code> trigger value</td>
+</tr>
+<tr>
+<td><code>..._MODEL_&lt;MODE&gt;</code></td>
+<td>Per-mode model override, e.g. <code>..._MODEL_PLAN</code></td>
+</tr>
+<tr>
+<td><code>..._MODELS</code></td>
+<td>Per-mode model mapping, e.g. <code>plan=model_a\|test=model_b</code></td>
+</tr>
+<tr>
+<td><code>..._MODES</code></td>
+<td>Pipe-separated whitelist of enabled mode names</td>
+</tr>
+<tr>
+<td><code>..._FALLBACK_MODE</code></td>
+<td>Override the fallback mode name</td>
+</tr>
+<tr>
+<td><code>..._HEURISTIC_ENABLED</code></td>
+<td>Turn the keyword layer on/off (<code>1/0</code>, <code>true/false</code>, <code>on/off</code>)</td>
+</tr>
+<tr>
+<td><code>..._HEURISTIC_MIN_SCORE</code></td>
+<td>Override the heuristic acceptance threshold</td>
+</tr>
+<tr>
+<td><code>..._CLASSIFY_MAX_CHARS</code></td>
+<td>Character budget of the classified user text (default 4000)</td>
+</tr>
+<tr>
+<td><code>..._MODE_&lt;name&gt;_KEYWORDS</code></td>
+<td>Pipe-separated keyword list for one mode</td>
+</tr>
+<tr>
+<td><code>..._MODEL</code></td>
+<td>Embedding model used by the similarity layer</td>
+</tr>
+<tr>
+<td><code>..._SEMANTIC_ENABLED</code></td>
+<td>Turn the embedding similarity layer on/off</td>
+</tr>
+<tr>
+<td><code>..._SIMILARITY_THRESHOLD</code></td>
+<td>Minimum cosine similarity to accept a semantic match</td>
+</tr>
+<tr>
+<td><code>..._TOP_K</code> / <code>..._CHUNK_SIZE</code> / <code>..._CHUNK_OVERLAP</code></td>
+<td>Embedding router knobs</td>
+</tr>
+<tr>
+<td><code>..._PERSIST_DIR</code></td>
+<td>Directory holding the persisted FAISS index</td>
+</tr>
+</tbody>
+</table>
+<p>Unparseable booleans and floats and unknown mode names are logged as warnings and otherwise ignored. A <code>MODES</code>
+whitelist that excludes the <code>fallback_mode</code> is a startup validation error rather than a silent
+misconfiguration — the plugin refuses to start instead of falling back to a mode it no longer has.</p>
+<h3 id="37-usage-example">3.7 Usage Example<a class="headerlink" href="#37-usage-example" title="link to this section">#</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">llm_router_plugins.utils.routing.agentic_routing.codex</span><span class="w"> </span><span class="kn">import</span> <span class="n">CodexRoutingPlugin</span>
+
+<span class="n">plugin</span> <span class="o">=</span> <span class="n">CodexRoutingPlugin</span><span class="p">()</span>
+
+<span class="n">payload</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">"model"</span><span class="p">:</span> <span class="s2">"auto_codex"</span><span class="p">,</span>
+    <span class="s2">"instructions"</span><span class="p">:</span> <span class="s2">"You are a coding agent running in the Codex CLI."</span><span class="p">,</span>
+    <span class="s2">"input"</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"message"</span><span class="p">,</span> <span class="s2">"role"</span><span class="p">:</span> <span class="s2">"developer"</span><span class="p">,</span> <span class="s2">"content"</span><span class="p">:</span> <span class="p">[</span>
+            <span class="p">{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"input_text"</span><span class="p">,</span> <span class="s2">"text"</span><span class="p">:</span> <span class="s2">"...</span><span class="se">\n\n</span><span class="s2">"</span>
+             <span class="s2">"&lt;collaboration_mode&gt;# Plan Mode (Conversational)</span><span class="se">\n\n</span><span class="s2">"</span>
+             <span class="s2">"Think, do not edit.&lt;/collaboration_mode&gt;"</span><span class="p">}]},</span>
+        <span class="p">{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"message"</span><span class="p">,</span> <span class="s2">"role"</span><span class="p">:</span> <span class="s2">"user"</span><span class="p">,</span> <span class="s2">"content"</span><span class="p">:</span> <span class="p">[</span>
+            <span class="p">{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"input_text"</span><span class="p">,</span> <span class="s2">"text"</span><span class="p">:</span> <span class="s2">"Zaplanuj migrację bazy danych."</span><span class="p">}]},</span>
+    <span class="p">],</span>
+    <span class="s2">"client_metadata"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"thread_id"</span><span class="p">:</span> <span class="s2">"thread-1"</span><span class="p">,</span> <span class="s2">"turn_id"</span><span class="p">:</span> <span class="s2">"turn-7"</span><span class="p">},</span>
+<span class="p">}</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">plugin</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span>
+<span class="n">result</span><span class="p">[</span><span class="s2">"model"</span><span class="p">]</span>
+<span class="c1"># 'qwen/Qwen3.8-Flash-Next'</span>
+<span class="n">result</span><span class="p">[</span><span class="s2">"agent_mode"</span><span class="p">]</span>
+<span class="c1"># 'plan'</span>
+<span class="n">result</span><span class="p">[</span><span class="s2">"routing"</span><span class="p">]</span>
+<span class="c1"># {'plugin': 'agentic_routing_codex', 'similarity': 1.0, 'agent_mode': 'plan',</span>
+<span class="c1">#  'source': 'collaboration_mode', 'codex_class': 'main', 'collaboration_mode': 'plan',</span>
+<span class="c1">#  'request_kind': 'turn', 'thread_id': 'thread-1', 'turn_id': 'turn-7'}</span>
+</code></pre></div>
+
+<p>With the same plugin and a Default-mode collaboration block, the latest user message decides:</p>
+<table>
+<thead>
+<tr>
+<th>Latest user message</th>
+<th><code>model</code></th>
+<th><code>agent_mode</code></th>
+<th><code>source</code></th>
+<th><code>similarity</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>"Zaplanuj migrację bazy danych."</code> + Plan Mode block</td>
+<td><code>qwen/Qwen3.8-Flash-Next</code></td>
+<td><code>plan</code></td>
+<td><code>collaboration_mode</code></td>
+<td>1.0</td>
+</tr>
+<tr>
+<td><code>"Zaimplementuj nowy moduł eksportu."</code></td>
+<td><code>qwen/Qwen3.8-Flash-Next</code></td>
+<td><code>implement</code></td>
+<td><code>heuristic</code></td>
+<td>0.9375</td>
+</tr>
+<tr>
+<td><code>"napraw testy w tests/"</code></td>
+<td><code>qwen/Qwen3.8-27B</code></td>
+<td><code>test</code></td>
+<td><code>heuristic</code></td>
+<td>0.9333333333333333</td>
+</tr>
+<tr>
+<td><code>"Przejrzyj ten katalog i zaproponuj poprawki do modułów"</code></td>
+<td><code>qwen/Qwen3.8-Flash-Next</code></td>
+<td><code>review</code></td>
+<td><code>heuristic</code></td>
+<td>0.9333333333333333</td>
+</tr>
+<tr>
+<td><code>"hello world"</code></td>
+<td><code>qwen/Qwen3.8-Flash-Next</code></td>
+<td><code>implement</code></td>
+<td><code>fallback</code></td>
+<td>0.0</td>
+</tr>
+<tr>
+<td>Title generation (<code>thread_source="system"</code>, <code>tools: []</code>)</td>
+<td><code>qwen/Qwen3.8-27B</code></td>
+<td><code>aux_title</code></td>
+<td><code>class</code></td>
+<td>1.0</td>
+</tr>
+<tr>
+<td><code>request_kind="compaction"</code></td>
+<td><code>qwen/Qwen3.8-27B</code></td>
+<td><code>compaction</code></td>
+<td><code>class</code></td>
+<td>1.0</td>
+</tr>
+<tr>
+<td>Any payload with <code>model="gpt-4"</code></td>
+<td>the payload object itself (identity)</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<p>The table was captured with <code>..._SEMANTIC_ENABLED=false</code>, so heuristic rows still show <code>score / (score + 1)</code>. With
+the embedding layer enabled those rows report the cosine similarity of the winning mode instead, while declared
+sources (<code>class</code>, <code>collaboration_mode</code>) stay at <code>1.0</code>.</p>
+<h3 id="38-running-tests">3.8 Running Tests<a class="headerlink" href="#38-running-tests" title="link to this section">#</a></h3>
+<div class="codehilite"><pre><span></span><code>pytest<span class="w"> </span>tests/test_agentic_routing_codex.py<span class="w"> </span>-v
+</code></pre></div>
+
+<p>No <code>faiss</code> or <code>sentence-transformers</code> installation is required: the tests inject stub routers through
+<code>CodexRoutingPlugin(emb_router=...)</code> / <code>CodexRoutingPlugin(semantic=...)</code>, so the real embedding model is never
+loaded, and <code>LLM_ROUTER_ROUTING_SEMANTIC_AGENTIC_CODEX_SEMANTIC_ENABLED=false</code> keeps the plugin from building one.</p>
+<hr />
+<h2 id="4-comparison-which-plugin-to-use">4. Comparison: Which Plugin to Use?<a class="headerlink" href="#4-comparison-which-plugin-to-use" title="link to this section">#</a></h2>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Simple Semantic Routing</th>
+<th>Bi-Encoder Semantic Routing</th>
+<th>Codex Routing</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Trigger</strong></td>
+<td><code>model == "auto"</code></td>
+<td><code>model == "auto"</code></td>
+<td><code>model == "auto_codex"</code></td>
+</tr>
+<tr>
+<td><strong>Decides from</strong></td>
+<td>Intent + token complexity</td>
+<td>Nearest embedding target</td>
+<td>Request class + collaboration block + latest message</td>
+</tr>
+<tr>
+<td><strong>Approach</strong></td>
+<td>Heuristic (keyword/phrase)</td>
+<td>Neural embeddings (FAISS)</td>
+<td>Explicit → class → collaboration → heuristic → embeddings</td>
+</tr>
+<tr>
+<td><strong>Accuracy</strong></td>
+<td>Rule-based, limited context</td>
+<td>Semantic understanding of meaning</td>
+<td>Wire-format aware: declared mode beats guessing</td>
+</tr>
+<tr>
+<td><strong>Model Required</strong></td>
+<td>❌ None</td>
+<td>✅ Bi-encoder embeddings</td>
+<td>Optional — class/collaboration/keyword layers need no ML</td>
+</tr>
+<tr>
+<td><strong>Speed</strong></td>
+<td>Very fast (~0.1ms)</td>
+<td>Slower (~50-200ms, model dependent)</td>
+<td>Fast; at most one embedding lookup per request</td>
+</tr>
+<tr>
+<td><strong>Config Complexity</strong></td>
+<td>JSON keywords/phrases/patterns</td>
+<td>JSON targets + examples</td>
+<td>JSON modes with PL+EN keywords and examples</td>
+</tr>
+<tr>
+<td><strong>Scalability</strong></td>
+<td>Linear keyword search</td>
+<td>FAISS index (efficient at scale)</td>
+<td>Linear keyword search; FAISS index at scale</td>
+</tr>
+<tr>
+<td><strong>Caller Control</strong></td>
+<td>None</td>
+<td>None</td>
+<td>✅ Pass <code>agent_mode</code>; honours CLI <code>collaboration_mode</code></td>
+</tr>
+<tr>
+<td><strong>Persistence</strong></td>
+<td>N/A</td>
+<td>✅ FAISS index saved to disk</td>
+<td>✅ FAISS index saved to disk</td>
+</tr>
+<tr>
+<td><strong>Use Case</strong></td>
+<td>Fast, lightweight routing</td>
+<td>High-quality semantic matching</td>
+<td>Codex CLI sessions (Responses API shape)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="recommendation">Recommendation<a class="headerlink" href="#recommendation" title="link to this section">#</a></h3>
+<ul>
+<li>
+<p>Use <strong>Simple Semantic Routing</strong> when:</p>
+<ul>
+<li>You need fast, deterministic routing with no external model dependency.</li>
+<li>Your routing categories are well-defined by keywords and phrases.</li>
+<li>You want minimal infrastructure.</li>
+</ul>
+</li>
+<li>
+<p>Use <strong>Bi-Encoder Semantic Routing</strong> when:</p>
+<ul>
+<li>You need semantic understanding beyond keywords (e.g., synonyms, paraphrasing).</li>
+<li>You have diverse, nuanced use cases that keyword matching can't capture.</li>
+<li>You can afford the embedding model latency and dependencies.</li>
+</ul>
+</li>
+<li>
+<p>Use <strong>Codex Routing</strong> when:</p>
+<ul>
+<li>Requests come from the Codex CLI (OpenAI-Responses wire shape) and you want per-work-mode models.</li>
+<li>A session mixes real turns with auxiliary title-generation and compaction calls that must land on a cheap model.</li>
+<li>The CLI's declared <code>&lt;collaboration_mode&gt;</code> has to be authoritative over any keyword or embedding guess.</li>
+<li>Prompts are short and mixed Polish/English — the bundled keyword sets cover both.</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h2 id="5-file-locations">5. File Locations<a class="headerlink" href="#5-file-locations" title="link to this section">#</a></h2>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>llm_router_plugins/utils/routing/embedder.py</code></td>
+<td>Shared <code>EmbeddingRouter</code> (BiEncoder + FAISS)</td>
+</tr>
+<tr>
+<td><code>llm_router_plugins/utils/routing/target.py</code></td>
+<td>Shared <code>RoutingTarget</code> dataclass</td>
+</tr>
+<tr>
+<td><code>llm_router_plugins/utils/routing/common.py</code></td>
+<td>Shared config base, env helpers, router factory</td>
+</tr>
+<tr>
+<td><code>llm_router_plugins/utils/routing/simple_semantic/</code></td>
+<td>SimpleSemanticRoutingPlugin code</td>
+</tr>
+<tr>
+<td><code>llm_router_plugins/utils/routing/semantic_biencoder/</code></td>
+<td>SemanticBiEncoderRoutingPlugin code</td>
+</tr>
+<tr>
+<td><code>llm_router_plugins/utils/routing/agentic_routing/codex/</code></td>
+<td>CodexRoutingPlugin package</td>
+</tr>
+<tr>
+<td><code>llm_router_plugins/utils/routing/agentic_routing/codex/payload.py</code></td>
+<td>Codex request normalizer (<code>CodexRequest</code>, request class, <code>collaboration_mode</code>)</td>
+</tr>
+<tr>
+<td><code>llm_router_plugins/utils/routing/agentic_routing/codex/scoring.py</code></td>
+<td>Deterministic keyword/phrase/pattern scoring for work modes</td>
+</tr>
+<tr>
+<td><code>llm_router_plugins/utils/routing/agentic_routing/codex/semantic.py</code></td>
+<td>Cosine similarity layer (<code>CodexSemanticLayer</code>) on the shared embedding router</td>
+</tr>
+<tr>
+<td><code>llm_router_plugins/utils/routing/agentic_routing/codex/classifier.py</code></td>
+<td>Mode resolution cascade (explicit → class → collaboration → heuristic → semantic)</td>
+</tr>
+<tr>
+<td><code>llm_router_plugins/utils/routing/agentic_routing/codex/plugin.py</code></td>
+<td>Plugin entry point (<code>CodexRoutingPlugin</code>)</td>
+</tr>
+<tr>
+<td><code>llm_router_plugins/utils/text_extractor.py</code></td>
+<td>Shared payload text extraction</td>
+</tr>
+<tr>
+<td><code>llm_router_plugins/resources/routing/simple_semantic.json</code></td>
+<td>Intent definitions &amp; config</td>
+</tr>
+<tr>
+<td><code>llm_router_plugins/resources/routing/semantic_biencoder.json</code></td>
+<td>Embedding routing config</td>
+</tr>
+<tr>
+<td><code>llm_router_plugins/resources/routing/agentic_routing_codex.json</code></td>
+<td>Codex mode definitions &amp; config</td>
+</tr>
+<tr>
+<td><code>tests/test_routing_common.py</code></td>
+<td>Unit tests (shared layer)</td>
+</tr>
+<tr>
+<td><code>tests/test_simple_semantic_routing.py</code></td>
+<td>Unit tests (Simple)</td>
+</tr>
+<tr>
+<td><code>tests/test_semantic_biencoder_routing.py</code></td>
+<td>Unit tests (Bi-Encoder)</td>
+</tr>
+<tr>
+<td><code>tests/test_agentic_routing_codex.py</code></td>
+<td>Unit tests (Codex)</td>
+</tr>
+</tbody>
+</table></article>
+<nav class="pager" aria-label="Previous and next page"><a class="prev" href="semantic-biencoder/index.html"><span class="dir">&larr; previous</span><span class="pt">Semantic BiEncoder Routing (semanticbiencoderrouting)</span></a><a class="next" href="simple-semantic/index.html"><span class="dir">next &rarr;</span><span class="pt">Simple Semantic Routing (simplesemanticrouting)</span></a></nav>
+<footer class="doc-meta">
+<div class="meta-row"><span class="meta-k">repository</span><a class="mono" href="https://github.com/radlab-dev-group/llm-router-plugins">llm-router-plugins</a></div>
+<div class="meta-row"><span class="meta-k">source</span><a class="mono" href="https://github.com/radlab-dev-group/llm-router-plugins/blob/eefb333/llm_router_plugins/utils/routing/README.md">llm_router_plugins/utils/routing/README.md</a></div>
+<div class="meta-row"><span class="meta-k">last commit</span><time datetime="2026-09-24T14:12:06+02:00"><a href="https://github.com/radlab-dev-group/llm-router-plugins/commit/eefb333">2026-09-24</a></time></div>
+<div class="meta-row"><span class="meta-k">built from</span><span class="mono"><a href="https://github.com/radlab-dev-group/llm-router-plugins/tree/eefb333">feat/claude_code_plugin</a>&nbsp;@&nbsp;<a href="https://github.com/radlab-dev-group/llm-router-plugins/commit/eefb333">eefb333</a></span></div>
+<p class="hint">Generated from the Markdown file in the repository: commit a change and the next build republishes it.</p>
+</footer>
+<footer class="foot"><div class="foot-inner">
+<span class="mono">llm-router &middot; docs are generated from the repository by <code>tools/build_docs.py</code></span>
+<span class="mono"><a href="https://github.com/radlab-dev-group/llm-router-plugins/tree/eefb333">1.1.0</a> @ <a href="https://github.com/radlab-dev-group/llm-router-plugins/commit/eefb333">eefb333</a></span>
+</div></footer>
+</main>
+<aside class="dtoc" id="dtoc"><h2 class="toc-title">on this page</h2><div class="toc-body"><ul><li><a href="#table-of-contents">Table of Contents</a></li><li><a href="#0-shared-routing-layer">0. Shared Routing Layer</a></li><li><a href="#1-simple-semantic-routing-heuristic">1. Simple Semantic Routing (Heuristic)</a><ul><li><a href="#11-architecture">1.1 Architecture</a></li><li><a href="#12-intent-categories">1.2 Intent Categories</a></li><li><a href="#13-model-selection-algorithm">1.3 Model Selection Algorithm</a></li><li><a href="#14-configuration">1.4 Configuration</a></li><li><a href="#15-environment-variable-overrides">1.5 Environment Variable Overrides</a></li><li><a href="#16-usage-examples">1.6 Usage Examples</a></li><li><a href="#17-weight-tuning-guidelines">1.7 Weight Tuning Guidelines</a></li><li><a href="#18-phrase-format-guidelines">1.8 Phrase Format Guidelines</a></li><li><a href="#19-complexity-levels">1.9 Complexity Levels</a></li><li><a href="#110-built-in-patterns-reference">1.10 Built-in Patterns Reference</a></li><li><a href="#111-adding-new-intents">1.11 Adding New Intents</a></li><li><a href="#112-running-tests">1.12 Running Tests</a></li></ul></li><li><a href="#2-bi-encoder-semantic-routing-embedding-based">2. Bi-Encoder Semantic Routing (Embedding-based)</a><ul><li><a href="#21-index-building-on-first-load-or-when-the-persist-directory-is-missing">2.1 Index Building (on first load or when the persist directory is missing)</a></li><li><a href="#22-routing-query">2.2 Routing (query)</a></li><li><a href="#23-persistence">2.3 Persistence</a></li><li><a href="#24-configuration">2.4 Configuration</a></li><li><a href="#25-usage-examples">2.5 Usage Examples</a></li><li><a href="#26-scoring-details">2.6 Scoring Details</a></li><li><a href="#27-running-tests">2.7 Running Tests</a></li></ul></li><li><a href="#3-codex-routing-codex-cli-requests">3. Codex Routing (Codex CLI Requests)</a><ul><li><a href="#31-module-layout">3.1 Module Layout</a></li><li><a href="#32-request-classes">3.2 Request Classes</a></li><li><a href="#33-detection-cascade">3.3 Detection Cascade</a></li><li><a href="#34-similarity-cosine-over-mode-embeddings">3.4 Similarity: Cosine over Mode Embeddings</a></li><li><a href="#35-configuration">3.5 Configuration</a></li><li><a href="#36-environment-variable-overrides">3.6 Environment Variable Overrides</a></li><li><a href="#37-usage-example">3.7 Usage Example</a></li><li><a href="#38-running-tests">3.8 Running Tests</a></li></ul></li><li><a href="#4-comparison-which-plugin-to-use">4. Comparison: Which Plugin to Use?</a><ul><li><a href="#recommendation">Recommendation</a></li></ul></li><li><a href="#5-file-locations">5. File Locations</a></li></ul></div></aside>
+</div>
+</body>
+</html>
