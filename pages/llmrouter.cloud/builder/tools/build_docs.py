@@ -1011,6 +1011,7 @@ SHELL_TEMPLATE = """<!DOCTYPE html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+@@GA@@
 <title>{title}</title>
 <meta name="description" content="{description}">
 <meta name="theme-color" content="#05070a">
@@ -1269,6 +1270,16 @@ def render_sidebar(release, config, current, page_dir, latest, versions, search_
     return "".join(parts)
 
 
+@functools.lru_cache(maxsize=1)
+def ga_snippet() -> str:
+    """Google Analytics snippet shared by the landing and every docs page."""
+    source = REPO_ROOT / "tools" / "ga_code.txt"
+    if not source.exists():
+        print("[docs] warning: tools/ga_code.txt not found; GA snippet omitted", file=sys.stderr)
+        return ""
+    return source.read_text(encoding="utf-8").strip()
+
+
 def render_shell(config, release, versions, latest, page_dir, title, description,
                  sidebar, main, toc="", body_class="", canonical="", page_source="",
                  search_enabled=True, repo_id="router"):
@@ -1296,7 +1307,7 @@ def render_shell(config, release, versions, latest, page_dir, title, description
         commit = f"{config.repo_url}/commit/{release.sha}"
         sha = release.sha
 
-    return SHELL_TEMPLATE.format(
+    shell = SHELL_TEMPLATE.format(
         lang=html.escape(str(config.site.get("language", "en")), quote=True),
         title=html.escape(title, quote=True),
         description=html.escape(description, quote=True),
@@ -1322,6 +1333,7 @@ def render_shell(config, release, versions, latest, page_dir, title, description
         sha=html.escape(sha, quote=True),
         repo_id=html.escape(repo_id, quote=True),
     )
+    return shell.replace("@@GA@@", ga_snippet())
 
 
 # --------------------------------------------------------------------------- #
@@ -1777,6 +1789,8 @@ def copy_landing(output: Path, latest: str, dry_run: bool) -> bool:
             print("[docs] warning: landing has no {{VERSION}} token", file=sys.stderr)
         else:
             html = html.replace("{{VERSION}}", latest)
+        if "{{GA}}" in html:
+            html = html.replace("{{GA}}", ga_snippet())
         (output / "index.html").write_text(html, encoding="utf-8")
     return True
 
