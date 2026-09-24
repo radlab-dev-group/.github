@@ -3,3 +3,4 @@
 # or just run the builder -- it bootstraps .venv-docs/ automatically.
 markdown==3.10.3
 pygments==2.21.0
+tomli>=1.1.0; python_version < "3.11"

@@ -3,19 +3,21 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-9KM7GYM55M"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-9KM7GYM55M');</script>
 <title>Installation · v1.0.7 · llm-router docs</title>
-<meta name="description" content="Three ways to get LLM Router running: from PyPI (recommended), from the GitHub source repository, or as a pre-built Docker image on Quay. Requires Python ≥ 3.10. The package is published on PyPI: radlab-llm-router. Installing from source…">
+<meta name="description" content="# Installation Three ways to get **LLM Router** running: from **PyPI** (recommended), from the **GitHub** source repository, or as a pre-built **Docker image on Quay**. Requires **Python ≥ 3.10**. --- ## 1. PIP (recommended) The package is…">
 <meta name="theme-color" content="#05070a">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Installation · v1.0.7 · llm-router docs">
-<meta property="og:description" content="Three ways to get LLM Router running: from PyPI (recommended), from the GitHub source repository, or as a pre-built Docker image on Quay. Requires Python ≥ 3.10. The package is published on PyPI: radlab-llm-router. Installing from source…">
+<meta property="og:description" content="# Installation Three ways to get **LLM Router** running: from **PyPI** (recommended), from the **GitHub** source repository, or as a pre-built **Docker image on Quay**. Requires **Python ≥ 3.10**. --- ## 1. PIP (recommended) The package is…">
 <meta name="docs-version" content="1.0.7">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2305070a'/%3E%3Cpath d='M8 22V10M8 16h9M17 10v12M17 13h7M17 19h7' stroke='%2300e59b' stroke-width='2' stroke-linecap='round' fill='none'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="../../../assets/docs.css">
 <link rel="stylesheet" href="../../../assets/pygments.css">
 <script src="../../../assets/docs.js" defer></script>
 </head>
-<body class="page" data-version="1.0.7" data-search="../../search.json" data-latest="1.0.7">
+<body class="page" data-version="1.0.7" data-search="../../search.json" data-latest="1.0.8" data-repo="router">
 <a class="skip" href="#main">skip to content</a>
 <header class="topbar">
 <div class="topbar-inner">
@@ -30,7 +32,8 @@
 </form>
 <label class="vselect">
 <span class="sr-only">Documentation version</span>
-<select id="versions" aria-label="Documentation version"><option value="installation.html" selected>1.0.7  · latest</option>
+<select id="versions" aria-label="Documentation version"><option value="../../../1.0.8/llm-router-api/docs/installation.html">1.0.8  · latest</option>
+<option value="installation.html" selected>1.0.7</option>
 <option value="../../../1.0.6/llm-router-api/docs/installation.html">1.0.6</option>
 <option value="../../../1.0.5/index.html">1.0.5</option>
 <option value="../../../1.0.4/index.html">1.0.4</option>
@@ -80,7 +83,7 @@
 </header>
 <div class="scrim" id="scrim" hidden></div>
 <div class="shell">
-<aside class="sidebar" id="sidebar"><div class="side-head"><span class="side-v mono">v1.0.7</span><span class="side-tag live">latest</span></div><a class="side-hub" href="../../index.html">documentation index</a><nav class="nav-tree" aria-label="Documentation"><section class="nav-sec open"><h2 class="nav-sec-title"><a href="../../overview.html">Getting started</a></h2><ul><li><a href="../../overview.html">Overview</a></li><li><a href="installation.html" class="active">Installation</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="env-definitions.html">Configuration</a></h2><ul><li><a href="env-definitions.html">Environment Variables</a></li><li><a href="models-config.html">Models configuration description (JSON)</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="keepalive.html">Routing &amp; resilience</a></h2><ul><li><a href="keepalive.html">Keep‑Alive Utility Overview</a></li><li><a href="lb-strategies.html">Load Balancing Strategies</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../core/auditor/index.html">Security &amp; auditing</a></h2><ul><li><a href="../core/auditor/index.html">Auditing subsystem – llm-router</a></li><li><a href="authentication.html">Authentication &amp; Authorization</a></li><li><a href="rate-limiting.html">Rate Limiting</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="routing-metrics.html">Observability</a></h2><ul><li><a href="routing-metrics.html">Router Prometheus Metrics</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../index.html">REST API</a></h2><ul><li><a href="../index.html">REST API reference</a></li><li><a href="../endpoints/index.html">Endpoints Overview</a></li><li><a href="endpoint-dev.html">Endpoint Development Guide</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../llm-router-cli/index.html">CLI</a></h2><ul><li><a href="../../llm-router-cli/index.html">llm-router CLI — Command Reference</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../llm-router-lib/index.html">Python library</a></h2><ul><li><a href="../../llm-router-lib/index.html">llmrouterlib</a></li><li><a href="../../llm-router-lib/response-models.html">Response models</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../helm-charts/index.html">Deployment</a></h2><ul><li><a href="../../helm-charts/index.html">LLM‑Router Helm Chart</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../examples/index.html">Examples</a></h2><ul><li><a href="../../examples/index.html">Integration Examples with LLM Router</a></li><li><a href="../../examples/quickstart/index.html">Full Stack with Local Models</a></li><li><a href="../../examples/readme-llamaindex.html">Using LlamaIndex with Local Models via the LLM‑Router</a></li><li><a href="../../examples/quickstart/google-gemma3-12b-it/vllm.html">vLLM + google/gemma‑3‑12b‑it – Quick‑Start Guide (Ubuntu)</a></li><li><a href="../../examples/quickstart/speakleash-bielik-11b-v2-3-instruct/vllm.html">vLLM + speakleash/Bielik-11B-v2.3-Instruct – Przewodnik Szybkiego Startu (Ubuntu)</a></li><li><a href="../../examples/quickstart/speakleash-bielik-11b-v2-3-instruct/index.html">🚀 Przewodnik Szybkiego Startu dla speakleash/Bielik-11B-v2.3-Instruct z vLLM &amp; LLM‑Router</a></li><li><a href="../../examples/quickstart/google-gemma3-12b-it/index.html">🚀 Quick‑Start Guide for google/gemma-3-12b‑it with vLLM &amp; LLM‑Router</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../changelog.html">Release notes</a></h2><ul><li><a href="../../changelog.html">Changelog</a></li></ul></section></nav><div class="side-foot"><a href="../../../..">&larr;&nbsp;landing page</a><a class="mono" href="../../search.json">search.json</a></div></aside>
+<aside class="sidebar" id="sidebar"><div class="side-head"><span class="side-v mono">v1.0.7</span><span class="side-tag old">archived</span></div><a class="side-hub" href="../../index.html">documentation index</a><nav class="nav-tree" aria-label="Documentation"><div class="nav-repo"><span class="repo-name">llm-router</span></div><section class="nav-sec open"><h2 class="nav-sec-title"><a href="../../overview.html">Getting started</a></h2><ul><li><a href="../../overview.html">Overview</a></li><li><a href="installation.html" class="active">Installation</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="env-definitions.html">Configuration</a></h2><ul><li><a href="env-definitions.html">Environment Variables</a></li><li><a href="models-config.html">Models configuration description (JSON)</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="keepalive.html">Routing &amp; resilience</a></h2><ul><li><a href="keepalive.html">Keep‑Alive Utility Overview</a></li><li><a href="lb-strategies.html">Load Balancing Strategies</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../core/auditor/index.html">Security &amp; auditing</a></h2><ul><li><a href="../core/auditor/index.html">Auditing subsystem – llm-router</a></li><li><a href="authentication.html">Authentication &amp; Authorization</a></li><li><a href="rate-limiting.html">Rate Limiting</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="routing-metrics.html">Observability</a></h2><ul><li><a href="routing-metrics.html">Router Prometheus Metrics</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../index.html">REST API</a></h2><ul><li><a href="../index.html">REST API reference</a></li><li><a href="../endpoints/index.html">Endpoints Overview</a></li><li><a href="endpoint-dev.html">Endpoint Development Guide</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../llm-router-cli/index.html">CLI</a></h2><ul><li><a href="../../llm-router-cli/index.html">llm-router CLI — Command Reference</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../llm-router-lib/index.html">Python library</a></h2><ul><li><a href="../../llm-router-lib/index.html">llmrouterlib</a></li><li><a href="../../llm-router-lib/response-models.html">Response models</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../helm-charts/index.html">Deployment</a></h2><ul><li><a href="../../helm-charts/index.html">LLM‑Router Helm Chart</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../examples/index.html">Examples</a></h2><ul><li><a href="../../examples/index.html">Integration Examples with LLM Router</a></li><li><a href="../../examples/quickstart/index.html">Full Stack with Local Models</a></li><li><a href="../../examples/readme-llamaindex.html">Using LlamaIndex with Local Models via the LLM‑Router</a></li><li><a href="../../examples/quickstart/google-gemma3-12b-it/vllm.html">vLLM + google/gemma‑3‑12b‑it – Quick‑Start Guide (Ubuntu)</a></li><li><a href="../../examples/quickstart/speakleash-bielik-11b-v2-3-instruct/vllm.html">vLLM + speakleash/Bielik-11B-v2.3-Instruct – Przewodnik Szybkiego Startu (Ubuntu)</a></li><li><a href="../../examples/quickstart/speakleash-bielik-11b-v2-3-instruct/index.html">🚀 Przewodnik Szybkiego Startu dla speakleash/Bielik-11B-v2.3-Instruct z vLLM &amp; LLM‑Router</a></li><li><a href="../../examples/quickstart/google-gemma3-12b-it/index.html">🚀 Quick‑Start Guide for google/gemma-3-12b‑it with vLLM &amp; LLM‑Router</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../changelog.html">Release notes</a></h2><ul><li><a href="../../changelog.html">Changelog</a></li></ul></section></nav><div class="side-foot"><a href="../../../..">&larr;&nbsp;landing page</a><a class="mono" href="../../search.json">search.json</a></div></aside>
 <main class="main" id="main"><nav class="crumbs" aria-label="Breadcrumb">
 <a href="../../../..">llm-router</a><span class="sep">/</span><a href="../../index.html">docs</a><span class="sep">/</span><a href="../../overview.html">Getting started</a><span class="sep">/</span><em>Installation</em>
 </nav>
@@ -91,7 +94,7 @@ source repository, or as a pre-built <strong>Docker image on Quay</strong>.</p>
 <hr />
 <h2 id="1-pip-recommended">1. PIP (recommended)<a class="headerlink" href="#1-pip-recommended" title="link to this section">#</a></h2>
 <p>The package is published on PyPI:
-<a href="https://pypi.org/project/radlab-llm-router/"> target="_blank" rel="noopener noreferrer"radlab-llm-router</a>.</p>
+<a href="https://pypi.org/project/radlab-llm-router/" target="_blank" rel="noopener noreferrer">radlab-llm-router</a>.</p>
 <h3 id="create-activate-a-virtual-environment">Create &amp; activate a virtual environment<a class="headerlink" href="#create-activate-a-virtual-environment" title="link to this section">#</a></h3>
 <div class="codehilite"><pre><span></span><code>python3<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>.venv
 <span class="nb">source</span><span class="w"> </span>.venv/bin/activate
@@ -141,7 +144,7 @@ The multiproc directory defaults to
 <hr />
 <h2 id="2-github-from-source">2. GitHub (from source)<a class="headerlink" href="#2-github-from-source" title="link to this section">#</a></h2>
 <p>Installing from source pulls the latest code from the
-<a href="https://github.com/radlab-dev-group/llm-router"> target="_blank" rel="noopener noreferrer"llm-router repository</a> —
+<a href="https://github.com/radlab-dev-group/llm-router" target="_blank" rel="noopener noreferrer">llm-router repository</a> —
 prefer PyPI for production deployments.</p>
 <h3 id="option-a-clone-install-locally">Option A — clone &amp; install locally<a class="headerlink" href="#option-a-clone-install-locally" title="link to this section">#</a></h3>
 <div class="codehilite"><pre><span></span><code>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/radlab-dev-group/llm-router.git
@@ -162,10 +165,10 @@ pip<span class="w"> </span>install<span class="w"> </span>.<span class="o">[</sp
 
 <h3 id="option-b-install-directly-from-the-git-url-no-clone">Option B — install directly from the git URL (no clone)<a class="headerlink" href="#option-b-install-directly-from-the-git-url-no-clone" title="link to this section">#</a></h3>
 <div class="codehilite"><pre><span></span><code><span class="c1"># Pin a release tag (e.g. v1.0.5):</span>
-pip<span class="w"> </span>install<span class="w"> </span><span class="s2">&quot;git+https://github.com/radlab-dev-group/llm-router@v1.0.5&quot;</span>
+pip<span class="w"> </span>install<span class="w"> </span><span class="s2">"git+https://github.com/radlab-dev-group/llm-router@v1.0.5"</span>
 
 <span class="c1"># With extras:</span>
-pip<span class="w"> </span>install<span class="w"> </span><span class="s2">&quot;git+https://github.com/radlab-dev-group/llm-router@v1.0.5#[api]&quot;</span>
+pip<span class="w"> </span>install<span class="w"> </span><span class="s2">"git+https://github.com/radlab-dev-group/llm-router@v1.0.5#[api]"</span>
 </code></pre></div>
 
 <blockquote>
@@ -175,7 +178,7 @@ unstable changes — always pin a release tag for reproducible installs.</p>
 <hr />
 <h2 id="3-quay-docker-image">3. Quay (Docker image)<a class="headerlink" href="#3-quay-docker-image" title="link to this section">#</a></h2>
 <p>A pre-built container image is available on
-<a href="https://quay.io/repository/radlab/llm-router"> target="_blank" rel="noopener noreferrer"Quay</a>: <code>quay.io/radlab/llm-router</code>.</p>
+<a href="https://quay.io/repository/radlab/llm-router" target="_blank" rel="noopener noreferrer">Quay</a>: <code>quay.io/radlab/llm-router</code>.</p>
 <h3 id="quick-start">Quick start<a class="headerlink" href="#quick-start" title="link to this section">#</a></h3>
 <div class="codehilite"><pre><span></span><code>docker<span class="w"> </span>pull<span class="w"> </span>quay.io/radlab/llm-router:rc1
 docker<span class="w"> </span>run<span class="w"> </span>-p<span class="w"> </span><span class="m">5555</span>:8080<span class="w"> </span>quay.io/radlab/llm-router:rc1
@@ -189,17 +192,18 @@ models config mount, …), and
 <a href="env-definitions.html">ENV_DEFINITIONS.md</a> for the complete variable reference.</p>
 <h3 id="kubernetes-helm">Kubernetes (Helm)<a class="headerlink" href="#kubernetes-helm" title="link to this section">#</a></h3>
 <p>Helm charts for Kubernetes deployment are available in the
-<a href="https://github.com/radlab-dev-group/llm-router/tree/main/helm_charts"> target="_blank" rel="noopener noreferrer"<code>helm_charts/</code></a> directory.</p></article>
+<a href="https://github.com/radlab-dev-group/llm-router/tree/v1.0.7/helm_charts" target="_blank" rel="noopener noreferrer"><code>helm_charts/</code></a> directory.</p></article>
 <nav class="pager" aria-label="Previous and next page"><a class="prev" href="../../overview.html"><span class="dir">&larr; previous</span><span class="pt">Overview</span></a></nav>
 <footer class="doc-meta">
-<div class="meta-row"><span class="meta-k">source</span><a class="mono" href="https://github.com/radlab-dev-group/llm-router/blob/main/llm_router_api/docs/INSTALLATION.md">llm_router_api/docs/INSTALLATION.md</a></div>
-<div class="meta-row"><span class="meta-k">last commit</span><time datetime="2026-09-08T01:21:50+02:00">2026-09-08</time></div>
-<div class="meta-row"><span class="meta-k">built from</span><span class="mono">main&nbsp;@&nbsp;1e434cf</span></div>
-<p class="hint">Generated from the Markdown file in the repository: commit a change and the next build republishes it for every release that contains it.</p>
+<div class="meta-row"><span class="meta-k">repository</span><a class="mono" href="https://github.com/radlab-dev-group/llm-router">llm-router</a></div>
+<div class="meta-row"><span class="meta-k">source</span><a class="mono" href="https://github.com/radlab-dev-group/llm-router/blob/v1.0.7/llm_router_api/docs/INSTALLATION.md">llm_router_api/docs/INSTALLATION.md</a></div>
+<div class="meta-row"><span class="meta-k">last commit</span><time datetime="2026-09-08T01:21:50+02:00"><a href="https://github.com/radlab-dev-group/llm-router/commit/15dc296">2026-09-08</a></time></div>
+<div class="meta-row"><span class="meta-k">built from</span><span class="mono"><a href="https://github.com/radlab-dev-group/llm-router/tree/v1.0.7">v1.0.7</a>&nbsp;@&nbsp;<a href="https://github.com/radlab-dev-group/llm-router/commit/15dc296">15dc296</a></span></div>
+<p class="hint">Generated from the Markdown file in the repository: commit a change and the next build republishes it.</p>
 </footer>
 <footer class="foot"><div class="foot-inner">
 <span class="mono">llm-router &middot; docs are generated from the repository by <code>tools/build_docs.py</code></span>
-<span class="mono"><a href="https://github.com/radlab-dev-group/llm-router/tree/main">1.0.7</a> @ <code>1e434cf</code></span>
+<span class="mono"><a href="https://github.com/radlab-dev-group/llm-router/tree/v1.0.7">1.0.7</a> @ <a href="https://github.com/radlab-dev-group/llm-router/commit/15dc296">15dc296</a></span>
 </div></footer>
 </main>
 <aside class="dtoc" id="dtoc"><h2 class="toc-title">on this page</h2><div class="toc-body"><ul><li><a href="#1-pip-recommended">1. PIP (recommended)</a><ul><li><a href="#create-activate-a-virtual-environment">Create &amp;amp; activate a virtual environment</a></li><li><a href="#install">Install</a></li><li><a href="#extras">Extras</a></li></ul></li><li><a href="#2-github-from-source">2. GitHub (from source)</a><ul><li><a href="#option-a-clone-install-locally">Option A — clone &amp;amp; install locally</a></li><li><a href="#option-b-install-directly-from-the-git-url-no-clone">Option B — install directly from the git URL (no clone)</a></li></ul></li><li><a href="#3-quay-docker-image">3. Quay (Docker image)</a><ul><li><a href="#quick-start">Quick start</a></li><li><a href="#advanced-usage">Advanced usage</a></li><li><a href="#kubernetes-helm">Kubernetes (Helm)</a></li></ul></li></ul></div></aside>

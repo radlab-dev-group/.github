@@ -3,19 +3,21 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-9KM7GYM55M"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-9KM7GYM55M');</script>
 <title>Overview · v0.4.5 · llm-router docs</title>
-<meta name="description" content="LLM Router is a service that can be deployed on‑premises or in the cloud. It adds a layer between any application and the LLM provider. In real time it controls traffic, distributes a load among providers of a specific LLM, and enables…">
+<meta name="description" content="# LLM Router - Open-Source AI Gateway for Local and Cloud LLM Infrastructure [**LLM Router**](https://llm-router.cloud) is a service that can be deployed on‑premises or in the cloud. It adds a layer between any application and the LLM prov…">
 <meta name="theme-color" content="#05070a">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Overview · v0.4.5 · llm-router docs">
-<meta property="og:description" content="LLM Router is a service that can be deployed on‑premises or in the cloud. It adds a layer between any application and the LLM provider. In real time it controls traffic, distributes a load among providers of a specific LLM, and enables…">
+<meta property="og:description" content="# LLM Router - Open-Source AI Gateway for Local and Cloud LLM Infrastructure [**LLM Router**](https://llm-router.cloud) is a service that can be deployed on‑premises or in the cloud. It adds a layer between any application and the LLM prov…">
 <meta name="docs-version" content="0.4.5">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2305070a'/%3E%3Cpath d='M8 22V10M8 16h9M17 10v12M17 13h7M17 19h7' stroke='%2300e59b' stroke-width='2' stroke-linecap='round' fill='none'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="../assets/docs.css">
 <link rel="stylesheet" href="../assets/pygments.css">
 <script src="../assets/docs.js" defer></script>
 </head>
-<body class="page" data-version="0.4.5" data-search="search.json" data-latest="1.0.7">
+<body class="page" data-version="0.4.5" data-search="search.json" data-latest="1.0.8" data-repo="router">
 <a class="skip" href="#main">skip to content</a>
 <header class="topbar">
 <div class="topbar-inner">
@@ -30,7 +32,8 @@
 </form>
 <label class="vselect">
 <span class="sr-only">Documentation version</span>
-<select id="versions" aria-label="Documentation version"><option value="../1.0.7/overview.html">1.0.7  · latest</option>
+<select id="versions" aria-label="Documentation version"><option value="../1.0.8/overview.html">1.0.8  · latest</option>
+<option value="../1.0.7/overview.html">1.0.7</option>
 <option value="../1.0.6/overview.html">1.0.6</option>
 <option value="../1.0.5/overview.html">1.0.5</option>
 <option value="../1.0.4/overview.html">1.0.4</option>
@@ -80,12 +83,12 @@
 </header>
 <div class="scrim" id="scrim" hidden></div>
 <div class="shell">
-<aside class="sidebar" id="sidebar"><div class="side-head"><span class="side-v mono">v0.4.5</span><span class="side-tag old">archived</span></div><a class="side-hub" href="index.html">documentation index</a><nav class="nav-tree" aria-label="Documentation"><section class="nav-sec open"><h2 class="nav-sec-title"><a href="overview.html">Getting started</a></h2><ul><li><a href="overview.html" class="active">Overview</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="llm-router-api/core/auditor/index.html">Security &amp; auditing</a></h2><ul><li><a href="llm-router-api/core/auditor/index.html">Auditing subsystem – llm-router</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="llm-router-api/index.html">REST API</a></h2><ul><li><a href="llm-router-api/index.html">REST API reference</a></li><li><a href="llm-router-api/endpoints/index.html">Endpoints Overview</a></li><li><a href="llm-router-api/endpoints/readme-pl.html">Jak tworzyć endpointy w llm-proxy-api – przewodnik</a></li><li><a href="llm-router-api/keepalive.html">Keep‑Alive Utility Overview</a></li><li><a href="llm-router-api/lb-strategies.html">Load Balancing Strategies</a></li><li><a href="llm-router-api/models-config.html">Models configuration description (JSON)</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="llm-router-lib/index.html">Python library</a></h2><ul><li><a href="llm-router-lib/index.html">llmrouterlib</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="helm-charts/index.html">Deployment</a></h2><ul><li><a href="helm-charts/index.html">LLM‑Router Helm Chart</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="examples/index.html">Examples</a></h2><ul><li><a href="examples/index.html">Integration Examples with LLM Router</a></li><li><a href="examples/quickstart/index.html">Full Stack with Local Models</a></li><li><a href="examples/readme-llamaindex.html">Using LlamaIndex with Local Models via the LLM‑Router</a></li><li><a href="examples/quickstart/google-gemma3-12b-it/vllm.html">vLLM + google/gemma‑3‑12b‑it – Quick‑Start Guide (Ubuntu)</a></li><li><a href="examples/quickstart/speakleash-bielik-11b-v2-3-instruct/vllm.html">vLLM + speakleash/Bielik-11B-v2.3-Instruct – Przewodnik Szybkiego Startu (Ubuntu)</a></li><li><a href="examples/quickstart/speakleash-bielik-11b-v2-3-instruct/index.html">🚀 Przewodnik Szybkiego Startu dla speakleash/Bielik-11B-v2.3-Instruct z vLLM &amp; LLM‑Router</a></li><li><a href="examples/quickstart/google-gemma3-12b-it/index.html">🚀 Quick‑Start Guide for google/gemma-3-12b‑it with vLLM &amp; LLM‑Router</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="changelog.html">Release notes</a></h2><ul><li><a href="changelog.html">Changelog</a></li></ul></section></nav><div class="side-foot"><a href="../..">&larr;&nbsp;landing page</a><a class="mono" href="search.json">search.json</a></div></aside>
+<aside class="sidebar" id="sidebar"><div class="side-head"><span class="side-v mono">v0.4.5</span><span class="side-tag old">archived</span></div><a class="side-hub" href="index.html">documentation index</a><nav class="nav-tree" aria-label="Documentation"><div class="nav-repo"><span class="repo-name">llm-router</span></div><section class="nav-sec open"><h2 class="nav-sec-title"><a href="overview.html">Getting started</a></h2><ul><li><a href="overview.html" class="active">Overview</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="llm-router-api/core/auditor/index.html">Security &amp; auditing</a></h2><ul><li><a href="llm-router-api/core/auditor/index.html">Auditing subsystem – llm-router</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="llm-router-api/index.html">REST API</a></h2><ul><li><a href="llm-router-api/index.html">REST API reference</a></li><li><a href="llm-router-api/endpoints/index.html">Endpoints Overview</a></li><li><a href="llm-router-api/endpoints/readme-pl.html">Jak tworzyć endpointy w llm-proxy-api – przewodnik</a></li><li><a href="llm-router-api/keepalive.html">Keep‑Alive Utility Overview</a></li><li><a href="llm-router-api/lb-strategies.html">Load Balancing Strategies</a></li><li><a href="llm-router-api/models-config.html">Models configuration description (JSON)</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="llm-router-lib/index.html">Python library</a></h2><ul><li><a href="llm-router-lib/index.html">llmrouterlib</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="helm-charts/index.html">Deployment</a></h2><ul><li><a href="helm-charts/index.html">LLM‑Router Helm Chart</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="examples/index.html">Examples</a></h2><ul><li><a href="examples/index.html">Integration Examples with LLM Router</a></li><li><a href="examples/quickstart/index.html">Full Stack with Local Models</a></li><li><a href="examples/readme-llamaindex.html">Using LlamaIndex with Local Models via the LLM‑Router</a></li><li><a href="examples/quickstart/google-gemma3-12b-it/vllm.html">vLLM + google/gemma‑3‑12b‑it – Quick‑Start Guide (Ubuntu)</a></li><li><a href="examples/quickstart/speakleash-bielik-11b-v2-3-instruct/vllm.html">vLLM + speakleash/Bielik-11B-v2.3-Instruct – Przewodnik Szybkiego Startu (Ubuntu)</a></li><li><a href="examples/quickstart/speakleash-bielik-11b-v2-3-instruct/index.html">🚀 Przewodnik Szybkiego Startu dla speakleash/Bielik-11B-v2.3-Instruct z vLLM &amp; LLM‑Router</a></li><li><a href="examples/quickstart/google-gemma3-12b-it/index.html">🚀 Quick‑Start Guide for google/gemma-3-12b‑it with vLLM &amp; LLM‑Router</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="changelog.html">Release notes</a></h2><ul><li><a href="changelog.html">Changelog</a></li></ul></section></nav><div class="side-foot"><a href="../..">&larr;&nbsp;landing page</a><a class="mono" href="search.json">search.json</a></div></aside>
 <main class="main" id="main"><nav class="crumbs" aria-label="Breadcrumb">
 <a href="../..">llm-router</a><span class="sep">/</span><a href="index.html">docs</a><span class="sep">/</span><a href="overview.html">Getting started</a><span class="sep">/</span><em>Overview</em>
 </nav>
 <article class="prose"><h1 id="llm-router-open-source-ai-gateway-for-local-and-cloud-llm-infrastructure">LLM Router - Open-Source AI Gateway for Local and Cloud LLM Infrastructure<a class="headerlink" href="#llm-router-open-source-ai-gateway-for-local-and-cloud-llm-infrastructure" title="link to this section">#</a></h1>
-<p><a href="https://llm-router.cloud"> target="_blank" rel="noopener noreferrer"<strong>LLM Router</strong></a> is a service that can be deployed on‑premises or in the cloud.
+<p><a href="https://llm-router.cloud" target="_blank" rel="noopener noreferrer"><strong>LLM Router</strong></a> is a service that can be deployed on‑premises or in the cloud.
 It adds a layer between any application and the LLM provider. In real time it controls traffic,
 distributes a load among providers of a specific LLM, and enables analysis of outgoing requests
 from a security perspective (masking, anonymization, prohibited content).
@@ -97,14 +100,14 @@ a ready‑made image in your own infrastructure.</p>
   and optional Prometheus metrics.</li>
 <li><strong>llm_router_lib</strong> is a Python SDK that wraps the API with typed request/response models, automatic retries, token
   handling and a rich exception hierarchy, letting developers focus on application logic rather than raw HTTP calls.</li>
-<li><a href="https://github.com/radlab-dev-group/llm-router-web"> target="_blank" rel="noopener noreferrer"<strong>llm_router_web</strong></a> offers ready‑to‑use Flask UIs – an anonymizer
+<li><a href="https://github.com/radlab-dev-group/llm-router-web" target="_blank" rel="noopener noreferrer"><strong>llm_router_web</strong></a> offers ready‑to‑use Flask UIs – an anonymizer
   UI that masks sensitive data and a configuration
   manager for model/user settings – demonstrating how to consume the router from a browser.</li>
-<li><a href="https://github.com/radlab-dev-group/llm-router-plugins"> target="_blank" rel="noopener noreferrer"<strong>llm_router_plugins</strong></a> (e.g., the <strong>fast_masker</strong> plugin)
+<li><a href="https://github.com/radlab-dev-group/llm-router-plugins" target="_blank" rel="noopener noreferrer"><strong>llm_router_plugins</strong></a> (e.g., the <strong>fast_masker</strong> plugin)
   deliver a rule‑based text anonymisation engine with
   a comprehensive set of Polish‑specific masking rules (emails, IPs, URLs, phone numbers, PESEL, NIP, KRS, REGON,
   monetary amounts, dates, etc.) and an extensible architecture for custom rules and validators.</li>
-<li><a href="https://github.com/radlab-dev-group/llm-router-services"> target="_blank" rel="noopener noreferrer"<strong>llm_router_services</strong></a> provides HTTP services that
+<li><a href="https://github.com/radlab-dev-group/llm-router-services" target="_blank" rel="noopener noreferrer"><strong>llm_router_services</strong></a> provides HTTP services that
   implement the core functionality used by the LLM‑Router’s plugin system. The services expose guardrail and masking
   capabilities through Flask applications.</li>
 </ul>
@@ -343,20 +346,21 @@ a description of the streaming mechanisms can be found at the link:
 </ul>
 <hr />
 <h2 id="license">📜 License<a class="headerlink" href="#license" title="link to this section">#</a></h2>
-<p>See the <a href="https://github.com/radlab-dev-group/llm-router/blob/v0.4.5/LICENSE"> target="_blank" rel="noopener noreferrer"LICENSE</a> file.</p>
+<p>See the <a href="https://github.com/radlab-dev-group/llm-router/blob/v0.4.5/LICENSE" target="_blank" rel="noopener noreferrer">LICENSE</a> file.</p>
 <hr />
 <h2 id="changelog">📚 Changelog<a class="headerlink" href="#changelog" title="link to this section">#</a></h2>
 <p>See the <a href="changelog.html">CHANGELOG</a> for a complete history of changes.</p></article>
 <nav class="pager" aria-label="Previous and next page"></nav>
 <footer class="doc-meta">
+<div class="meta-row"><span class="meta-k">repository</span><a class="mono" href="https://github.com/radlab-dev-group/llm-router">llm-router</a></div>
 <div class="meta-row"><span class="meta-k">source</span><a class="mono" href="https://github.com/radlab-dev-group/llm-router/blob/v0.4.5/README.md">README.md</a></div>
-<div class="meta-row"><span class="meta-k">last commit</span><time datetime="2026-01-10T17:52:02+01:00">2026-01-10</time></div>
-<div class="meta-row"><span class="meta-k">built from</span><span class="mono">v0.4.5&nbsp;@&nbsp;45d2708</span></div>
-<p class="hint">Generated from the Markdown file in the repository: commit a change and the next build republishes it for every release that contains it.</p>
+<div class="meta-row"><span class="meta-k">last commit</span><time datetime="2025-12-01T02:51:37+01:00"><a href="https://github.com/radlab-dev-group/llm-router/commit/45d2708">2025-12-01</a></time></div>
+<div class="meta-row"><span class="meta-k">built from</span><span class="mono"><a href="https://github.com/radlab-dev-group/llm-router/tree/v0.4.5">v0.4.5</a>&nbsp;@&nbsp;<a href="https://github.com/radlab-dev-group/llm-router/commit/45d2708">45d2708</a></span></div>
+<p class="hint">Generated from the Markdown file in the repository: commit a change and the next build republishes it.</p>
 </footer>
 <footer class="foot"><div class="foot-inner">
 <span class="mono">llm-router &middot; docs are generated from the repository by <code>tools/build_docs.py</code></span>
-<span class="mono"><a href="https://github.com/radlab-dev-group/llm-router/tree/v0.4.5">0.4.5</a> @ <code>45d2708</code></span>
+<span class="mono"><a href="https://github.com/radlab-dev-group/llm-router/tree/v0.4.5">0.4.5</a> @ <a href="https://github.com/radlab-dev-group/llm-router/commit/45d2708">45d2708</a></span>
 </div></footer>
 </main>
 <aside class="dtoc" id="dtoc"><h2 class="toc-title">on this page</h2><div class="toc-body"><ul><li><a href="#boilerplates">🧩 Boilerplates</a></li><li><a href="#key-features">✨ Key Features</a></li><li><a href="#quick-start">📦 Quick Start</a><ul><li><a href="#1-create-activate-a-virtual-environment">1️⃣ Create &amp;amp; activate a virtual environment</a></li><li><a href="#2-minimum-required-environment-variable">2️⃣ Minimum required environment variable</a></li></ul></li><li><a href="#configuration-via-environment">🛠️ Configuration (via environment)</a></li><li><a href="#load-balancing-strategies">⚖️ Load Balancing Strategies</a></li><li><a href="#endpoints-overview">🛣️ Endpoints Overview</a></li><li><a href="#configuration-details">⚙️ Configuration Details</a></li><li><a href="#development">🔧 Development</a></li><li><a href="#license">📜 License</a></li><li><a href="#changelog">📚 Changelog</a></li></ul></div></aside>

@@ -14,7 +14,7 @@
 <meta name="twitter:title" content="LLM Router — one endpoint in front of every LLM you run">
 <meta name="twitter:description" content="Self-hosted AI gateway: unified REST surface, PII masking, guardrails, 5 load-balancing strategies, Prometheus metrics, Helm chart. Apache-2.0.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2305070a'/%3E%3Cpath d='M8 22V10M8 16h9M17 10v12M17 13h7M17 19h7' stroke='%2300e59b' stroke-width='2' stroke-linecap='round' fill='none'/%3E%3C/svg%3E">
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-9KM7GYM55M"></script>
+{{GA}}
 <style>
 /* ============================================================ tokens */
 :root{
@@ -392,6 +392,7 @@ ul.ticks li b{color:#dce7f1;font-weight:600}
     </a>
     <nav class="nav-links" id="navlinks">
       <a href="#pipeline">pipeline</a>
+      <a href="#plugins">plugins</a>
       <a href="#features">features</a>
       <a href="#config">config</a>
       <a href="#balancing">balancing</a>
@@ -402,7 +403,7 @@ ul.ticks li b{color:#dce7f1;font-weight:600}
       <a href="docs/">docs</a>
     </nav>
     <div class="nav-right">
-      <span class="chip chip-live">v1.0.6 · Apache-2.0</span>
+      <span class="chip chip-live">v{{VERSION}} · Apache-2.0</span>
       <a class="btn ghost" href="https://github.com/radlab-dev-group/llm-router" rel="noopener">GitHub</a>
       <a class="btn btn-primary" href="#deploy">Deploy</a>
       <button class="burger" id="burger" aria-label="Toggle navigation" aria-expanded="false">&#9776;</button>
@@ -448,7 +449,7 @@ ul.ticks li b{color:#dce7f1;font-weight:600}
       </div>
       <div class="term-body">
 <div class="l"><span class="c-p">$</span> <span class="c-cmd">pip install "radlab-llm-router[api,metrics]"</span></div>
-<div class="l"><span class="c-s">&check;&nbsp;</span><span class="c-o">installed llm-router <b>1.0.6</b> · console script <span class="c-k">llm-router</span></span></div>
+<div class="l"><span class="c-s">&check;&nbsp;</span><span class="c-o">installed llm-router <b>{{VERSION}}</b> · console script <span class="c-k">llm-router</span></span></div>
 <div class="l">&nbsp;</div>
 <div class="l"><span class="c-p">$</span> <span class="c-cmd">llm-router config</span></div>
 <div class="l"><span class="c-s">&check;&nbsp;</span><span class="c-o">discovered <b>ollama</b>&nbsp;&nbsp;&nbsp;&nbsp;http://localhost:11434 &nbsp;<span class="c-m">(3 models)</span></span></div>
@@ -569,6 +570,98 @@ ul.ticks li b{color:#dce7f1;font-weight:600}
 </section>
 
 <!-- ============================================================ 02 features -->
+
+<!-- ============================================================ plugins -->
+<section id="plugins">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="sec-num">03 / PLUGINS</span>
+    </div>
+    <h2 class="reveal">Pluggable processing pipeline</h2>
+    <p class="sec-sub reveal" style="margin-top:12px">
+      Every request walks through a configurable pipeline of masker, guardrail and routing plugins.
+      Each plugin is a small, well-defined class that implements <code>apply()</code> and can be
+      chained with others. Plugins live in the separate
+      <a href="https://github.com/radlab-dev-group/llm-router-plugins" rel="noopener">llm-router-plugins</a>
+      repository and are loaded by the router via its plugin registry.
+    </p>
+
+    <div class="split">
+      <div class="panel reveal">
+        <h3><span class="mono-i">01</span> Masker plugins</h3>
+        <p class="hint">Strip personally identifiable information before it reaches a model.</p>
+        <ul class="feature-list">
+          <li><b>fast_masker</b> &mdash; 30+ regex rules: email, IP, phone, IBAN, JWT, Polish identifiers (PESEL, NIP, KRS, REGON)</li>
+          <li><b>pii_masker</b> &mdash; ML-based token classification (RoBERTa) for context-aware PII detection in Polish and English</li>
+        </ul>
+        <p class="hint" style="margin-top:8px">Enable via <code>LLM_ROUTER_MASKING_STRATEGY_PIPELINE="fast_masker,pii_masker"</code></p>
+      </div>
+
+      <div class="panel reveal">
+        <h3><span class="mono-i">02</span> Guardrail plugins</h3>
+        <p class="hint">Validate requests and responses against policy rules before spend.</p>
+        <ul class="feature-list">
+          <li><b>nask_guard</b> &mdash; Polish content safety (HerBERT-PL-Guard model via HTTP service)</li>
+          <li><b>sojka_guard</b> &mdash; Bielik-Guard-0.1B multi-category safety check</li>
+          <li>Fail-closed mode: <code>force_guardrail_request=true</code> overrides client</li>
+        </ul>
+        <p class="hint" style="margin-top:8px">Enable via <code>LLM_ROUTER_GUARDRAIL_REQUEST_PIPELINE="nask_guard"</code></p>
+      </div>
+    </div>
+
+    <div class="split" style="margin-top:32px">
+      <div class="panel reveal">
+        <h3><span class="mono-i">03</span> Codex CLI routing</h3>
+        <p class="hint">Route OpenAI Responses-style requests from the Codex coding agent based on task type.</p>
+        <ul class="feature-list">
+          <li>Recognises <b>plan</b>, <b>implement</b>, <b>test</b>, <b>debug</b> and <b>review</b> modes from collaboration metadata</li>
+          <li>Routes plan mode to a fast reasoning model, implementation to a larger model</li>
+          <li>Uses <code>auto_codex</code> as a stable model alias &mdash; no per-developer config needed</li>
+          <li>Detects request kind (turn, subtask, search, memory, plan) and routes accordingly</li>
+        </ul>
+        <p class="hint" style="margin-top:8px">Enable: <code>LLM_ROUTER_UTILS_PLUGINS_PIPELINE="agentic_routing_codex"</code></p>
+        <p class="hint" style="margin-top:4px;font-size:12.5px">Codex config: <code>model = "auto_codex"</code> in <code>~/.codex/config.toml</code></p>
+      </div>
+
+      <div class="panel reveal">
+        <h3><span class="mono-i">04</span> Claude Code model swap</h3>
+        <p class="hint">Rewrite Anthropic tier model names (Sonnet, Opus, Haiku) to the models your router actually serves.</p>
+        <ul class="feature-list">
+          <li>Maps <code>claude-sonnet-*</code>, <code>claude-opus-*</code>, <code>claude-haiku-*</code> to local or custom models</li>
+          <li>Handles Claude Code's internal subagent model selection (<code>CLAUDE_CODE_SUBAGENT_MODEL</code>)</li>
+          <li>One JSON config file on the router &mdash; no environment variables on every client host</li>
+          <li>Fail-open: unmatched model names pass through unchanged</li>
+        </ul>
+        <p class="hint" style="margin-top:8px">Enable: <code>LLM_ROUTER_UTILS_PLUGINS_PIPELINE="agentic_routing_claude_code"</code></p>
+        <p class="hint" style="margin-top:4px;font-size:12.5px">Point Claude Code at router: <code>ANTHROPIC_BASE_URL</code> and <code>ANTHROPIC_AUTH_TOKEN</code></p>
+      </div>
+    </div>
+
+    <div class="split" style="margin-top:32px">
+      <div class="panel reveal">
+        <h3><span class="mono-i">05</span> Semantic routing</h3>
+        <p class="hint">Embedding-based routing that matches user messages against pre-configured targets.</p>
+        <ul class="feature-list">
+          <li><b>simple_semantic</b> &mdash; heuristic-based routing with regex and keyword matching</li>
+          <li><b>semantic_biencoder</b> &mdash; embedding model + FAISS index for similarity-based routing</li>
+          <li>Configure targets with similarity thresholds and fallback models</li>
+          <li>Works with any OpenAI-compatible embedding endpoint</li>
+        </ul>
+      </div>
+
+      <div class="panel reveal">
+        <h3><span class="mono-i">06</span> RAG enrichment</h3>
+        <p class="hint">Augment requests with relevant context before model inference.</p>
+        <ul class="feature-list">
+          <li><b>langchain_rag</b> &mdash; LangChain-based retrieval with custom vector stores</li>
+          <li>Index external documentation and knowledge bases</li>
+          <li>CLI tools for indexing and searching: <code>llm-router-rag-langchain-index</code></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section id="features">
   <div class="wrap">
     <div class="sec-head reveal"><span class="sec-num">02 / FEATURES</span></div>
@@ -1120,14 +1213,14 @@ $ <span class="k-str">./scripts/decrypt_auditor_logs.sh</span> 2026-09-09</pre>
     quay.io/radlab/llm-router:rc1
 
 <span class="c-p">$</span> curl localhost:5555/version
-<span class="c-o">{&quot;version&quot;: <span class="c-s">&quot;1.0.6&quot;</span>}</span></pre>
+<span class="c-o">{&quot;version&quot;: <span class="c-s">&quot;{{VERSION}}&quot;</span>}</span></pre>
         </div>
       </div>
 
       <div class="dep reveal">
         <div class="t"><svg width="16" height="16" aria-hidden="true"><use href="#i-wheel"/></svg> helm</div>
         <div class="d">
-          Chart in-repo (<code>appVersion 1.0.6</code>), Deployment + Service + Ingress +
+          Chart in-repo (<code>appVersion {{VERSION}}</code>), Deployment + Service + Ingress +
           HPA, readiness on <code>/</code>, Bitnami <code>redis</code> 23.2.12 subchart
           behind <code>redis.enabled</code>.
         </div>

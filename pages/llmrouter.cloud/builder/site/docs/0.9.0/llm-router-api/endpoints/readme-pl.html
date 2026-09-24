@@ -3,19 +3,21 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-9KM7GYM55M"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-9KM7GYM55M');</script>
 <title>Jak tworzyć endpointy w llm-proxy-api – przewodnik · v0.9.0 · llm-router docs</title>
-<meta name="description" content="Poniżej zebrano kluczowe informacje o tym, jak definiować i konfigurować endpointy (EP) na podstawie klas z endpoints., z odniesieniem do logiki wykonywania w endpointi.EndpointWithHttpRequestI.runep(...). Uwzględniono też role…">
+<meta name="description" content="## Jak tworzyć endpointy w llm-proxy-api – przewodnik Poniżej zebrano kluczowe informacje o tym, jak definiować i konfigurować endpointy (EP) na podstawie klas z `endpoints.*`, z odniesieniem do logiki wykonywania w `endpoint_i.EndpointWit…">
 <meta name="theme-color" content="#05070a">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Jak tworzyć endpointy w llm-proxy-api – przewodnik · v0.9.0 · llm-router docs">
-<meta property="og:description" content="Poniżej zebrano kluczowe informacje o tym, jak definiować i konfigurować endpointy (EP) na podstawie klas z endpoints., z odniesieniem do logiki wykonywania w endpointi.EndpointWithHttpRequestI.runep(...). Uwzględniono też role…">
+<meta property="og:description" content="## Jak tworzyć endpointy w llm-proxy-api – przewodnik Poniżej zebrano kluczowe informacje o tym, jak definiować i konfigurować endpointy (EP) na podstawie klas z `endpoints.*`, z odniesieniem do logiki wykonywania w `endpoint_i.EndpointWit…">
 <meta name="docs-version" content="0.9.0">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2305070a'/%3E%3Cpath d='M8 22V10M8 16h9M17 10v12M17 13h7M17 19h7' stroke='%2300e59b' stroke-width='2' stroke-linecap='round' fill='none'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="../../../assets/docs.css">
 <link rel="stylesheet" href="../../../assets/pygments.css">
 <script src="../../../assets/docs.js" defer></script>
 </head>
-<body class="page" data-version="0.9.0" data-search="../../search.json" data-latest="1.0.7">
+<body class="page" data-version="0.9.0" data-search="../../search.json" data-latest="1.0.8" data-repo="router">
 <a class="skip" href="#main">skip to content</a>
 <header class="topbar">
 <div class="topbar-inner">
@@ -30,7 +32,8 @@
 </form>
 <label class="vselect">
 <span class="sr-only">Documentation version</span>
-<select id="versions" aria-label="Documentation version"><option value="../../../1.0.7/index.html">1.0.7  · latest</option>
+<select id="versions" aria-label="Documentation version"><option value="../../../1.0.8/index.html">1.0.8  · latest</option>
+<option value="../../../1.0.7/index.html">1.0.7</option>
 <option value="../../../1.0.6/index.html">1.0.6</option>
 <option value="../../../1.0.5/index.html">1.0.5</option>
 <option value="../../../1.0.4/index.html">1.0.4</option>
@@ -80,11 +83,11 @@
 </header>
 <div class="scrim" id="scrim" hidden></div>
 <div class="shell">
-<aside class="sidebar" id="sidebar"><div class="side-head"><span class="side-v mono">v0.9.0</span><span class="side-tag old">archived</span></div><a class="side-hub" href="../../index.html">documentation index</a><nav class="nav-tree" aria-label="Documentation"><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../overview.html">Getting started</a></h2><ul><li><a href="../../overview.html">Overview</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../core/auditor/index.html">Security &amp; auditing</a></h2><ul><li><a href="../core/auditor/index.html">Auditing subsystem – llm-router</a></li><li><a href="../authentication.html">Authentication &amp; Authorization</a></li><li><a href="../rate-limiting.html">Rate Limiting</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../routing-metrics.html">Observability</a></h2><ul><li><a href="../routing-metrics.html">Router Prometheus Metrics</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="../index.html">REST API</a></h2><ul><li><a href="../index.html">REST API reference</a></li><li><a href="index.html">Endpoints Overview</a></li><li><a href="../env-definitions.html">Environment Variables</a></li><li><a href="readme-pl.html" class="active">Jak tworzyć endpointy w llm-proxy-api – przewodnik</a></li><li><a href="../keepalive.html">Keep‑Alive Utility Overview</a></li><li><a href="../lb-strategies.html">Load Balancing Strategies</a></li><li><a href="../models-config.html">Models configuration description (JSON)</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../llm-router-cli/index.html">CLI</a></h2><ul><li><a href="../../llm-router-cli/index.html">llm-router CLI — Command Reference</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../llm-router-lib/index.html">Python library</a></h2><ul><li><a href="../../llm-router-lib/index.html">llmrouterlib</a></li><li><a href="../../llm-router-lib/response-models.html">Response models</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../helm-charts/index.html">Deployment</a></h2><ul><li><a href="../../helm-charts/index.html">LLM‑Router Helm Chart</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../examples/index.html">Examples</a></h2><ul><li><a href="../../examples/index.html">Integration Examples with LLM Router</a></li><li><a href="../../examples/quickstart/index.html">Full Stack with Local Models</a></li><li><a href="../../examples/readme-llamaindex.html">Using LlamaIndex with Local Models via the LLM‑Router</a></li><li><a href="../../examples/quickstart/google-gemma3-12b-it/vllm.html">vLLM + google/gemma‑3‑12b‑it – Quick‑Start Guide (Ubuntu)</a></li><li><a href="../../examples/quickstart/speakleash-bielik-11b-v2-3-instruct/vllm.html">vLLM + speakleash/Bielik-11B-v2.3-Instruct – Przewodnik Szybkiego Startu (Ubuntu)</a></li><li><a href="../../examples/quickstart/speakleash-bielik-11b-v2-3-instruct/index.html">🚀 Przewodnik Szybkiego Startu dla speakleash/Bielik-11B-v2.3-Instruct z vLLM &amp; LLM‑Router</a></li><li><a href="../../examples/quickstart/google-gemma3-12b-it/index.html">🚀 Quick‑Start Guide for google/gemma-3-12b‑it with vLLM &amp; LLM‑Router</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../changelog.html">Release notes</a></h2><ul><li><a href="../../changelog.html">Changelog</a></li></ul></section></nav><div class="side-foot"><a href="../../../..">&larr;&nbsp;landing page</a><a class="mono" href="../../search.json">search.json</a></div></aside>
+<aside class="sidebar" id="sidebar"><div class="side-head"><span class="side-v mono">v0.9.0</span><span class="side-tag old">archived</span></div><a class="side-hub" href="../../index.html">documentation index</a><nav class="nav-tree" aria-label="Documentation"><div class="nav-repo"><span class="repo-name">llm-router</span></div><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../overview.html">Getting started</a></h2><ul><li><a href="../../overview.html">Overview</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../core/auditor/index.html">Security &amp; auditing</a></h2><ul><li><a href="../core/auditor/index.html">Auditing subsystem – llm-router</a></li><li><a href="../authentication.html">Authentication &amp; Authorization</a></li><li><a href="../rate-limiting.html">Rate Limiting</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../routing-metrics.html">Observability</a></h2><ul><li><a href="../routing-metrics.html">Router Prometheus Metrics</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="../index.html">REST API</a></h2><ul><li><a href="../index.html">REST API reference</a></li><li><a href="index.html">Endpoints Overview</a></li><li><a href="../env-definitions.html">Environment Variables</a></li><li><a href="readme-pl.html" class="active">Jak tworzyć endpointy w llm-proxy-api – przewodnik</a></li><li><a href="../keepalive.html">Keep‑Alive Utility Overview</a></li><li><a href="../lb-strategies.html">Load Balancing Strategies</a></li><li><a href="../models-config.html">Models configuration description (JSON)</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../llm-router-cli/index.html">CLI</a></h2><ul><li><a href="../../llm-router-cli/index.html">llm-router CLI — Command Reference</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../llm-router-lib/index.html">Python library</a></h2><ul><li><a href="../../llm-router-lib/index.html">llmrouterlib</a></li><li><a href="../../llm-router-lib/response-models.html">Response models</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../helm-charts/index.html">Deployment</a></h2><ul><li><a href="../../helm-charts/index.html">LLM‑Router Helm Chart</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../examples/index.html">Examples</a></h2><ul><li><a href="../../examples/index.html">Integration Examples with LLM Router</a></li><li><a href="../../examples/quickstart/index.html">Full Stack with Local Models</a></li><li><a href="../../examples/readme-llamaindex.html">Using LlamaIndex with Local Models via the LLM‑Router</a></li><li><a href="../../examples/quickstart/google-gemma3-12b-it/vllm.html">vLLM + google/gemma‑3‑12b‑it – Quick‑Start Guide (Ubuntu)</a></li><li><a href="../../examples/quickstart/speakleash-bielik-11b-v2-3-instruct/vllm.html">vLLM + speakleash/Bielik-11B-v2.3-Instruct – Przewodnik Szybkiego Startu (Ubuntu)</a></li><li><a href="../../examples/quickstart/speakleash-bielik-11b-v2-3-instruct/index.html">🚀 Przewodnik Szybkiego Startu dla speakleash/Bielik-11B-v2.3-Instruct z vLLM &amp; LLM‑Router</a></li><li><a href="../../examples/quickstart/google-gemma3-12b-it/index.html">🚀 Quick‑Start Guide for google/gemma-3-12b‑it with vLLM &amp; LLM‑Router</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../changelog.html">Release notes</a></h2><ul><li><a href="../../changelog.html">Changelog</a></li></ul></section></nav><div class="side-foot"><a href="../../../..">&larr;&nbsp;landing page</a><a class="mono" href="../../search.json">search.json</a></div></aside>
 <main class="main" id="main"><nav class="crumbs" aria-label="Breadcrumb">
 <a href="../../../..">llm-router</a><span class="sep">/</span><a href="../../index.html">docs</a><span class="sep">/</span><a href="../index.html">REST API</a><span class="sep">/</span><em>Jak tworzyć endpointy w llm-proxy-api – przewodnik</em>
 </nav>
-<article class="prose"><h1 id="jak-tworzyc-endpointy-w-llm-proxy-api-przewodnik">Jak tworzyć endpointy w llm-proxy-api – przewodnik<a class="headerlink" href="#jak-tworzyc-endpointy-w-llm-proxy-api-przewodnik" title="link to this section">#</a></h1>
+<article class="prose"><h2 id="jak-tworzyc-endpointy-w-llm-proxy-api-przewodnik">Jak tworzyć endpointy w llm-proxy-api – przewodnik<a class="headerlink" href="#jak-tworzyc-endpointy-w-llm-proxy-api-przewodnik" title="link to this section">#</a></h2>
 <p>Poniżej zebrano kluczowe informacje o tym, jak definiować i konfigurować endpointy (EP) na podstawie klas z
 <code>endpoints.*</code>, z odniesieniem do logiki wykonywania w <code>endpoint_i.EndpointWithHttpRequestI.run_ep(...)</code>. Uwzględniono
 też role atrybutów/stałych takich jak <code>self._map_prompt</code>, <code>self._prompt_str_postfix</code>, <code>_prepare_response_function</code>,
@@ -408,84 +411,84 @@ Treść dokumentu:
 <li>Jeśli w przyszłości dojdzie upload, należy dodać warstwę ekstrakcji tekstu przed wywołaniami LLM (poza tym EP).</li>
 </ul>
 <hr />
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Optional</span>
-<span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">Field</span><span class="p">,</span> <span class="n">validator</span>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Optional</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">Field</span><span class="p">,</span> <span class="n">validator</span>
 
 <span class="c1"># Wymagane i opcjonalne argumenty dla EP</span>
-<span class="n">BFS_REQ</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;model_name&quot;</span><span class="p">,</span> <span class="s2">&quot;language&quot;</span><span class="p">,</span> <span class="s2">&quot;files&quot;</span><span class="p">]</span>
-<span class="n">BFS_OPT</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;stream&quot;</span><span class="p">,</span> <span class="s2">&quot;max_points&quot;</span><span class="p">,</span> <span class="s2">&quot;style_hint&quot;</span><span class="p">]</span>
+<span class="n">BFS_REQ</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"model_name"</span><span class="p">,</span> <span class="s2">"language"</span><span class="p">,</span> <span class="s2">"files"</span><span class="p">]</span>
+<span class="n">BFS_OPT</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"stream"</span><span class="p">,</span> <span class="s2">"max_points"</span><span class="p">,</span> <span class="s2">"style_hint"</span><span class="p">]</span>
 
 
-<span class="k">class</span> <span class="nc">BatchFileInput</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Nazwa pliku (np. raport.pdf)&quot;</span><span class="p">)</span>
-    <span class="n">content</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Tekstowa treść pliku&quot;</span><span class="p">)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">BatchFileInput</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">"Nazwa pliku (np. raport.pdf)"</span><span class="p">)</span>
+    <span class="n">content</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">"Tekstowa treść pliku"</span><span class="p">)</span>
 
 
-<span class="k">class</span> <span class="nc">BatchFileSummariesModel</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">BatchFileSummariesModel</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
     <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span>
-    <span class="n">language</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Kod języka: &#39;pl&#39; lub &#39;en&#39;&quot;</span><span class="p">)</span>
-    <span class="n">files</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">BatchFileInput</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Lista plików do przetworzenia&quot;</span><span class="p">)</span>
+    <span class="n">language</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">"Kod języka: 'pl' lub 'en'"</span><span class="p">)</span>
+    <span class="n">files</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">BatchFileInput</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">"Lista plików do przetworzenia"</span><span class="p">)</span>
     <span class="n">stream</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="n">max_points</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span>
     <span class="n">style_hint</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
-    <span class="nd">@validator</span><span class="p">(</span><span class="s2">&quot;language&quot;</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">_lang_check</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="n">v</span> <span class="o">=</span> <span class="p">(</span><span class="n">v</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
-        <span class="k">if</span> <span class="n">v</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;pl&quot;</span><span class="p">,</span> <span class="s2">&quot;en&quot;</span><span class="p">}:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;language must be &#39;pl&#39; or &#39;en&#39;&quot;</span><span class="p">)</span>
+    <span class="nd">@validator</span><span class="p">(</span><span class="s2">"language"</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_lang_check</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="p">(</span><span class="n">v</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">v</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">"pl"</span><span class="p">,</span> <span class="s2">"en"</span><span class="p">}:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"language must be 'pl' or 'en'"</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">v</span>
 
-    <span class="nd">@validator</span><span class="p">(</span><span class="s2">&quot;max_points&quot;</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">_points_check</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="nd">@validator</span><span class="p">(</span><span class="s2">"max_points"</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_points_check</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">v</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;max_points must be &gt; 0&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"max_points must be &gt; 0"</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">v</span>
 </code></pre></div>
 
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">List</span>
-<span class="kn">import</span> <span class="nn">time</span>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">List</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
 
-<span class="kn">from</span> <span class="nn">rdl_ml_utils.handlers.prompt_handler</span> <span class="kn">import</span> <span class="n">PromptHandler</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rdl_ml_utils.handlers.prompt_handler</span><span class="w"> </span><span class="kn">import</span> <span class="n">PromptHandler</span>
 
-<span class="kn">from</span> <span class="nn">llm_router_api.core.decorators</span> <span class="kn">import</span> <span class="n">EP</span>
-<span class="kn">from</span> <span class="nn">llm_router_api.core.model_handler</span> <span class="kn">import</span> <span class="n">ModelHandler</span>
-<span class="kn">from</span> <span class="nn">llm_router_api.base.constants</span> <span class="kn">import</span> <span class="n">REST_API_LOG_LEVEL</span>
-<span class="kn">from</span> <span class="nn">llm_router_api.endpoints.endpoint_i</span> <span class="kn">import</span> <span class="n">EndpointWithHttpRequestI</span>
-<span class="kn">from</span> <span class="nn">llm_router_lib.data_models</span> <span class="kn">import</span> <span class="p">(</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">llm_router_api.core.decorators</span><span class="w"> </span><span class="kn">import</span> <span class="n">EP</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">llm_router_api.core.model_handler</span><span class="w"> </span><span class="kn">import</span> <span class="n">ModelHandler</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">llm_router_api.base.constants</span><span class="w"> </span><span class="kn">import</span> <span class="n">REST_API_LOG_LEVEL</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">llm_router_api.endpoints.endpoint_i</span><span class="w"> </span><span class="kn">import</span> <span class="n">EndpointWithHttpRequestI</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">llm_router_lib.data_models</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">BatchFileSummariesModel</span><span class="p">,</span>
     <span class="n">BFS_REQ</span><span class="p">,</span>
     <span class="n">BFS_OPT</span><span class="p">,</span>
 <span class="p">)</span>
 
 
-<span class="k">class</span> <span class="nc">BatchFileSummariesHandler</span><span class="p">(</span><span class="n">EndpointWithHttpRequestI</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">BatchFileSummariesHandler</span><span class="p">(</span><span class="n">EndpointWithHttpRequestI</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    POST /api/batch_file_summaries</span>
 
 <span class="sd">    Przetwarza listę plików (każdy jako osobny user message) i zwraca</span>
 <span class="sd">    listę podsumowań oraz kluczowych punktów.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="n">REQUIRED_ARGS</span> <span class="o">=</span> <span class="n">BFS_REQ</span>
     <span class="n">OPTIONAL_ARGS</span> <span class="o">=</span> <span class="n">BFS_OPT</span>
     <span class="n">SYSTEM_PROMPT_NAME</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">&quot;pl&quot;</span><span class="p">:</span> <span class="s2">&quot;builtin/system/pl/batch-file-summaries&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;en&quot;</span><span class="p">:</span> <span class="s2">&quot;builtin/system/en/batch-file-summaries&quot;</span><span class="p">,</span>
+        <span class="s2">"pl"</span><span class="p">:</span> <span class="s2">"builtin/system/pl/batch-file-summaries"</span><span class="p">,</span>
+        <span class="s2">"en"</span><span class="p">:</span> <span class="s2">"builtin/system/en/batch-file-summaries"</span><span class="p">,</span>
     <span class="p">}</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span>
             <span class="n">logger_file_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
             <span class="n">logger_level</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">REST_API_LOG_LEVEL</span><span class="p">,</span>
             <span class="n">prompt_handler</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">PromptHandler</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
             <span class="n">model_handler</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ModelHandler</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="n">ep_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;batch_file_summaries&quot;</span><span class="p">,</span>
+            <span class="n">ep_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"batch_file_summaries"</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
             <span class="n">ep_name</span><span class="o">=</span><span class="n">ep_name</span><span class="p">,</span>
-            <span class="n">api_types</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;builtin&quot;</span><span class="p">],</span>
-            <span class="n">method</span><span class="o">=</span><span class="s2">&quot;POST&quot;</span><span class="p">,</span>
+            <span class="n">api_types</span><span class="o">=</span><span class="p">[</span><span class="s2">"builtin"</span><span class="p">],</span>
+            <span class="n">method</span><span class="o">=</span><span class="s2">"POST"</span><span class="p">,</span>
             <span class="n">logger_level</span><span class="o">=</span><span class="n">logger_level</span><span class="p">,</span>
             <span class="n">logger_file_name</span><span class="o">=</span><span class="n">logger_file_name</span><span class="p">,</span>
             <span class="n">prompt_handler</span><span class="o">=</span><span class="n">prompt_handler</span><span class="p">,</span>
@@ -502,45 +505,45 @@ Treść dokumentu:
         <span class="bp">self</span><span class="o">.</span><span class="n">__file_names</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
 
     <span class="nd">@EP</span><span class="o">.</span><span class="n">require_params</span>
-    <span class="k">def</span> <span class="nf">prepare_payload</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">prepare_payload</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Buduje payload do backendu:</span>
 <span class="sd">        - mapuje model_name -&gt; model</span>
 <span class="sd">        - przygotowuje messages: każdy plik jako osobny user message</span>
 <span class="sd">        - ustawia mapowania do promptu systemowego (max_points, style_hint)</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">options</span> <span class="o">=</span> <span class="n">BatchFileSummariesModel</span><span class="p">(</span><span class="o">**</span><span class="p">(</span><span class="n">params</span> <span class="ow">or</span> <span class="p">{}))</span>
         <span class="n">payload</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">model_dump</span><span class="p">()</span>
 
         <span class="c1"># mapowania do promptu</span>
-        <span class="n">style_hint</span> <span class="o">=</span> <span class="p">(</span><span class="n">payload</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;style_hint&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="n">style_hint</span> <span class="o">=</span> <span class="p">(</span><span class="n">payload</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"style_hint"</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_map_prompt</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;##MAX_POINTS##&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">payload</span><span class="p">[</span><span class="s2">&quot;max_points&quot;</span><span class="p">]),</span>
-            <span class="s2">&quot;##STYLE_HINT##&quot;</span><span class="p">:</span> <span class="p">(</span>
-                <span class="n">style_hint</span> <span class="k">if</span> <span class="n">style_hint</span> <span class="k">else</span> <span class="p">(</span><span class="s2">&quot;neutralny&quot;</span> <span class="k">if</span> <span class="n">payload</span><span class="p">[</span><span class="s2">&quot;language&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;pl&quot;</span> <span class="k">else</span> <span class="s2">&quot;neutral&quot;</span><span class="p">)),</span>
+            <span class="s2">"##MAX_POINTS##"</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">payload</span><span class="p">[</span><span class="s2">"max_points"</span><span class="p">]),</span>
+            <span class="s2">"##STYLE_HINT##"</span><span class="p">:</span> <span class="p">(</span>
+                <span class="n">style_hint</span> <span class="k">if</span> <span class="n">style_hint</span> <span class="k">else</span> <span class="p">(</span><span class="s2">"neutralny"</span> <span class="k">if</span> <span class="n">payload</span><span class="p">[</span><span class="s2">"language"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"pl"</span> <span class="k">else</span> <span class="s2">"neutral"</span><span class="p">)),</span>
         <span class="p">}</span>
 
         <span class="c1"># przygotuj user messages (po jednym na plik)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__file_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">payload</span><span class="p">[</span><span class="s2">&quot;files&quot;</span><span class="p">]]</span>
-        <span class="n">messages</span> <span class="o">=</span> <span class="p">[{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="n">f</span><span class="p">[</span><span class="s2">&quot;content&quot;</span><span class="p">]}</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">payload</span><span class="p">[</span><span class="s2">&quot;files&quot;</span><span class="p">]]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__file_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span><span class="p">[</span><span class="s2">"name"</span><span class="p">]</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">payload</span><span class="p">[</span><span class="s2">"files"</span><span class="p">]]</span>
+        <span class="n">messages</span> <span class="o">=</span> <span class="p">[{</span><span class="s2">"role"</span><span class="p">:</span> <span class="s2">"user"</span><span class="p">,</span> <span class="s2">"content"</span><span class="p">:</span> <span class="n">f</span><span class="p">[</span><span class="s2">"content"</span><span class="p">]}</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">payload</span><span class="p">[</span><span class="s2">"files"</span><span class="p">]]</span>
 
         <span class="c1"># finalny payload do calla</span>
         <span class="n">out</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="n">payload</span><span class="p">[</span><span class="s2">&quot;model_name&quot;</span><span class="p">],</span>
-            <span class="s2">&quot;stream&quot;</span><span class="p">:</span> <span class="nb">bool</span><span class="p">(</span><span class="n">payload</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;stream&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)),</span>
-            <span class="s2">&quot;messages&quot;</span><span class="p">:</span> <span class="n">messages</span><span class="p">,</span>
+            <span class="s2">"model"</span><span class="p">:</span> <span class="n">payload</span><span class="p">[</span><span class="s2">"model_name"</span><span class="p">],</span>
+            <span class="s2">"stream"</span><span class="p">:</span> <span class="nb">bool</span><span class="p">(</span><span class="n">payload</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"stream"</span><span class="p">,</span> <span class="kc">False</span><span class="p">)),</span>
+            <span class="s2">"messages"</span><span class="p">:</span> <span class="n">messages</span><span class="p">,</span>
             <span class="c1"># dodatkowe parametry modelu można tu dodać, jeśli wymagane</span>
         <span class="p">}</span>
         <span class="k">return</span> <span class="n">out</span>
 
-    <span class="k">def</span> <span class="nf">__prepare_response_function</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">responses</span><span class="p">,</span> <span class="n">contents</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__prepare_response_function</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">responses</span><span class="p">,</span> <span class="n">contents</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Agregacja odpowiedzi z wielu wywołań (per user message).</span>
 <span class="sd">        responses: List[requests.Response]</span>
 <span class="sd">        contents: List[str] -&gt; tu to zawartość plików (kolejność == messages)</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">responses</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">contents</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__file_names</span><span class="p">)</span>
 
         <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
@@ -549,20 +552,20 @@ Treść dokumentu:
             <span class="n">parsed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__parse_summary_and_points</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
             <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
                 <span class="p">{</span>
-                    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">__file_names</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
-                    <span class="s2">&quot;summary&quot;</span><span class="p">:</span> <span class="n">parsed</span><span class="p">[</span><span class="s2">&quot;summary&quot;</span><span class="p">],</span>
-                    <span class="s2">&quot;key_points&quot;</span><span class="p">:</span> <span class="n">parsed</span><span class="p">[</span><span class="s2">&quot;key_points&quot;</span><span class="p">],</span>
+                    <span class="s2">"name"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">__file_names</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
+                    <span class="s2">"summary"</span><span class="p">:</span> <span class="n">parsed</span><span class="p">[</span><span class="s2">"summary"</span><span class="p">],</span>
+                    <span class="s2">"key_points"</span><span class="p">:</span> <span class="n">parsed</span><span class="p">[</span><span class="s2">"key_points"</span><span class="p">],</span>
                 <span class="p">}</span>
             <span class="p">)</span>
 
         <span class="k">return</span> <span class="p">{</span>
-            <span class="s2">&quot;response&quot;</span><span class="p">:</span> <span class="n">result</span><span class="p">,</span>
-            <span class="s2">&quot;generation_time&quot;</span><span class="p">:</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_start_time</span><span class="p">,</span>
+            <span class="s2">"response"</span><span class="p">:</span> <span class="n">result</span><span class="p">,</span>
+            <span class="s2">"generation_time"</span><span class="p">:</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_start_time</span><span class="p">,</span>
         <span class="p">}</span>
 
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">__parse_summary_and_points</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__parse_summary_and_points</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Prosta heurystyka: zakładamy format:</span>
 <span class="sd">        Podsumowanie:/Summary:</span>
 <span class="sd">        ...</span>
@@ -570,17 +573,17 @@ Treść dokumentu:
 <span class="sd">        - ...</span>
 <span class="sd">        - ...</span>
 <span class="sd">        Jeśli model zwróci inaczej, zwracamy całość jako summary.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">text</span><span class="p">:</span>
-            <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;summary&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;key_points&quot;</span><span class="p">:</span> <span class="p">[]}</span>
+            <span class="k">return</span> <span class="p">{</span><span class="s2">"summary"</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span> <span class="s2">"key_points"</span><span class="p">:</span> <span class="p">[]}</span>
 
         <span class="n">t</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
         <span class="n">lower</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
 
         <span class="c1"># Znaczniki sekcji w PL/EN</span>
         <span class="n">markers</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="p">(</span><span class="s2">&quot;podsumowanie:&quot;</span><span class="p">,</span> <span class="s2">&quot;kluczowe punkty:&quot;</span><span class="p">),</span>
-            <span class="p">(</span><span class="s2">&quot;summary:&quot;</span><span class="p">,</span> <span class="s2">&quot;key points:&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">"podsumowanie:"</span><span class="p">,</span> <span class="s2">"kluczowe punkty:"</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">"summary:"</span><span class="p">,</span> <span class="s2">"key points:"</span><span class="p">),</span>
         <span class="p">]</span>
 
         <span class="k">for</span> <span class="n">sum_m</span><span class="p">,</span> <span class="n">pts_m</span> <span class="ow">in</span> <span class="n">markers</span><span class="p">:</span>
@@ -590,16 +593,16 @@ Treść dokumentu:
                 <span class="n">sum_part</span> <span class="o">=</span> <span class="n">t</span><span class="p">[</span><span class="n">i_sum</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">sum_m</span><span class="p">):</span> <span class="n">i_pts</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
                 <span class="n">pts_part</span> <span class="o">=</span> <span class="n">t</span><span class="p">[</span><span class="n">i_pts</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">pts_m</span><span class="p">):]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
                 <span class="n">key_points</span> <span class="o">=</span> <span class="p">[</span>
-                    <span class="n">p</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">&quot; -•</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                    <span class="n">p</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">" -•</span><span class="se">\t</span><span class="s2">"</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
                     <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">pts_part</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()</span>
                     <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
                 <span class="p">]</span>
                 <span class="c1"># odfiltruj puste/wstępne wiersze</span>
                 <span class="n">key_points</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">key_points</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">p</span><span class="p">)]</span>
-                <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;summary&quot;</span><span class="p">:</span> <span class="n">sum_part</span><span class="p">,</span> <span class="s2">&quot;key_points&quot;</span><span class="p">:</span> <span class="n">key_points</span><span class="p">}</span>
+                <span class="k">return</span> <span class="p">{</span><span class="s2">"summary"</span><span class="p">:</span> <span class="n">sum_part</span><span class="p">,</span> <span class="s2">"key_points"</span><span class="p">:</span> <span class="n">key_points</span><span class="p">}</span>
 
         <span class="c1"># fallback – całość jako summary</span>
-        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;summary&quot;</span><span class="p">:</span> <span class="n">t</span><span class="p">,</span> <span class="s2">&quot;key_points&quot;</span><span class="p">:</span> <span class="p">[]}</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s2">"summary"</span><span class="p">:</span> <span class="n">t</span><span class="p">,</span> <span class="s2">"key_points"</span><span class="p">:</span> <span class="p">[]}</span>
 </code></pre></div>
 
 <div class="codehilite"><pre><span></span><code>Jesteś asystentem do analizy dokumentów. Dla KAŻDEGO wejściowego dokumentu wykonujesz:
@@ -637,17 +640,18 @@ Key points:
 </code></pre></div></article>
 <nav class="pager" aria-label="Previous and next page"><a class="prev" href="../env-definitions.html"><span class="dir">&larr; previous</span><span class="pt">Environment Variables</span></a><a class="next" href="../keepalive.html"><span class="dir">next &rarr;</span><span class="pt">Keep‑Alive Utility Overview</span></a></nav>
 <footer class="doc-meta">
+<div class="meta-row"><span class="meta-k">repository</span><a class="mono" href="https://github.com/radlab-dev-group/llm-router">llm-router</a></div>
 <div class="meta-row"><span class="meta-k">source</span><a class="mono" href="https://github.com/radlab-dev-group/llm-router/blob/v0.9.0/llm_router_api/endpoints/README-pl.md">llm_router_api/endpoints/README-pl.md</a></div>
-<div class="meta-row"><span class="meta-k">last commit</span><time datetime="2026-08-26T20:02:33+02:00">2026-08-26</time></div>
-<div class="meta-row"><span class="meta-k">built from</span><span class="mono">v0.9.0&nbsp;@&nbsp;832c832</span></div>
-<p class="hint">Generated from the Markdown file in the repository: commit a change and the next build republishes it for every release that contains it.</p>
+<div class="meta-row"><span class="meta-k">last commit</span><time datetime="2026-07-01T00:48:11+02:00"><a href="https://github.com/radlab-dev-group/llm-router/commit/832c832">2026-07-01</a></time></div>
+<div class="meta-row"><span class="meta-k">built from</span><span class="mono"><a href="https://github.com/radlab-dev-group/llm-router/tree/v0.9.0">v0.9.0</a>&nbsp;@&nbsp;<a href="https://github.com/radlab-dev-group/llm-router/commit/832c832">832c832</a></span></div>
+<p class="hint">Generated from the Markdown file in the repository: commit a change and the next build republishes it.</p>
 </footer>
 <footer class="foot"><div class="foot-inner">
 <span class="mono">llm-router &middot; docs are generated from the repository by <code>tools/build_docs.py</code></span>
-<span class="mono"><a href="https://github.com/radlab-dev-group/llm-router/tree/v0.9.0">0.9.0</a> @ <code>832c832</code></span>
+<span class="mono"><a href="https://github.com/radlab-dev-group/llm-router/tree/v0.9.0">0.9.0</a> @ <a href="https://github.com/radlab-dev-group/llm-router/commit/832c832">832c832</a></span>
 </div></footer>
 </main>
-<aside class="dtoc" id="dtoc"><h2 class="toc-title">on this page</h2><div class="toc-body"><ul><li><a href="#propozycja-ep-batchfilesummaries-podsumowania-plikow-z-listy">Propozycja EP: BatchFileSummaries – podsumowania plików z listy</a></li></ul></div></aside>
+<aside class="dtoc" id="dtoc"><h2 class="toc-title">on this page</h2><div class="toc-body"><ul><li><a href="#jak-tworzyc-endpointy-w-llm-proxy-api-przewodnik">Jak tworzyć endpointy w llm-proxy-api – przewodnik</a></li><li><a href="#propozycja-ep-batchfilesummaries-podsumowania-plikow-z-listy">Propozycja EP: BatchFileSummaries – podsumowania plików z listy</a></li></ul></div></aside>
 </div>
 </body>
 </html>

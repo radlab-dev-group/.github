@@ -1,22 +1,31 @@
 # ---------------------------------------------------------------------------
 # Documentation site configuration (tools/build_docs.py).
 #
-# Everything under /docs is generated from the Markdown files that live in the
-# source repository (the llm-router checkout) -- there is no separate copy of
-# the documentation to maintain.
+# Multi-repo layout:
+#   Router  -- the version spine. Every release tag keeps a frozen copy of its
+#              documentation at /docs/<version>/....
+#   Plugins -- rolling docs (llm-router-plugins working tree) mounted into the
+#              newest version at /docs/<latest>/plugins/....
+#   Services-- rolling docs (llm-router-services working tree) mounted into the
+#              newest version at /docs/<latest>/services/....
 #
-#   python3 tools/build_docs.py --source /path/to/llm-router          # docs for the version in .version
-#   python3 tools/build_docs.py --source /path/to/llm-router --all-versions  # every release tag + current
-#   python3 tools/build_docs.py --source /path/to/llm-router --dry-run       # show what would be published
-#   python3 tools/build_docs.py --source /path/to/llm-router --serve         # build + http://localhost:8000
+# Repository sources are configured in [[repos]] below. Paths can be supplied
+# via CLI flags (--source, --plugins, --services), environment variables
+# (LLM_ROUTER_DOCS_SOURCE, LLM_ROUTER_PLUGINS_DOCS_SOURCE,
+# LLM_ROUTER_SERVICES_DOCS_SOURCE) or the path field in [[repos]]. Precedence:
+# CLI > env > config > (primary only) this repo.
 #
-# Without --source the builder falls back to $LLM_ROUTER_DOCS_SOURCE, then to
-# [site] source_repo below, then to this repo (legacy single-repo layout).
+# Adding documentation: commit the .md file to the appropriate repo. Pages are
+# grouped into [[sections]] (first matching glob wins); unmatched files go to
+# that repo's fallback_section. Use [[pages]] to override title/output/order.
 #
-# Adding a new document: commit the .md file. That is all -- files that do not
-# match any [[sections]] pattern below land in the "Other docs" section, so
-# nothing can silently disappear from the site. Use [[pages]] to pick a nicer
-# title/summary/position.
+# Cross-repo links (for docs that moved) are declared in [[crosslinks]].
+#
+# Build commands:
+#   python3 tools/build_docs.py --source /path/to/llm-router
+#   python3 tools/build_docs.py --source /path/to/llm-router --plugins /path/to/plugins --services /path/to/services
+#   python3 tools/build_docs.py --source /path/to/llm-router --all-versions
+#   python3 tools/build_docs.py --source /path/to/llm-router --serve
 # ---------------------------------------------------------------------------
 
 [site]
@@ -28,15 +37,9 @@ repo_url = "https://github.com/radlab-dev-group/llm-router"
 site_url = ""
 # Shown as the "back to the landing page" target.
 home_url = "../"
-# Source repository the docs are generated from (machine specific -- prefer
-# --source or $LLM_ROUTER_DOCS_SOURCE in CI). Uncomment and adapt:
-# source_repo = "/path/to/llm-router"
 
 [discover]
-# Which Markdown files become documentation pages.
 include = ["**/*.md"]
-# Paths that are never published. Patterns are path aware globs matched against
-# repo relative paths: "*" stops at "/", "**" spans directories, "?" is one char.
 exclude = [
   ".git/**",
   ".github/**",
@@ -49,12 +52,44 @@ exclude = [
   "**/node_modules/**",
   ".pytest_cache/**",
   "**/.pytest_cache/**",
+  # Vendored model artifact directory, not tracked by git.
+  "radlab/**",
+  # Local ops scratch note with machine-specific paths.
+  "scripts/MEDUSA_README.md",
 ]
-# Where unmatched files go, so a brand new doc is still published.
 fallback_section = "other"
 
 # ---------------------------------------------------------------------------
-# Navigation sections, evaluated in order; the first matching glob wins.
+# Repository sources
+# ---------------------------------------------------------------------------
+
+[[repos]]
+id = "router"
+name = "llm-router"
+repo_url = "https://github.com/radlab-dev-group/llm-router"
+primary = true
+versions = "all"
+
+[[repos]]
+id = "plugins"
+name = "llm-router-plugins"
+repo_url = "https://github.com/radlab-dev-group/llm-router-plugins"
+mount = "plugins"
+versions = "latest"
+fallback_section = "plugins-other"
+
+[[repos]]
+id = "services"
+name = "llm-router-services"
+repo_url = "https://github.com/radlab-dev-group/llm-router-services"
+mount = "services"
+versions = "latest"
+fallback_section = "services-other"
+
+# ---------------------------------------------------------------------------
+# Navigation sections
+# Evaluated per repository in order; the first matching glob wins.
+# Sections of one repository must be contiguous.
 # ---------------------------------------------------------------------------
 
 [[sections]]
@@ -95,7 +130,7 @@ match = [
 id = "observability"
 title = "Observability"
 summary = "Prometheus metrics exposed by the router and how to scrape them."
-match = ["**/ROUTING_METRICS.md", "resources/**"]
+match = ["**/ROUTING_METRICS.md"]
 
 [[sections]]
 id = "rest-api"
@@ -105,7 +140,6 @@ match = [
   "llm_router_api/README.md",
   "llm_router_api/endpoints/**",
   "llm_router_api/docs/ENDPOINT_DEV.md",
-  # older releases kept their docs directly in llm_router_api/
   "llm_router_api/*.md",
 ]
 
@@ -133,14 +167,94 @@ title = "Examples"
 summary = "Runnable stacks: vLLM, Ollama, LangChain, LlamaIndex and client SDKs."
 match = ["examples/**"]
 
+# --- Satellite repo sections (plugins) ---
+
+[[sections]]
+id = "plugins-overview"
+title = "Plugins overview"
+summary = "The llm-router-plugins package: anonymizers, guardrails, semantic routing and RAG plugins."
+repo = "plugins"
+match = ["README.md"]
+
+[[sections]]
+id = "plugins-maskers"
+title = "Masker plugins"
+summary = "Built-in and custom PII anonymizer plugins."
+repo = "plugins"
+match = ["llm_router_plugins/maskers/**"]
+
+[[sections]]
+id = "plugins-routing"
+title = "Routing plugins"
+summary = "Semantic routing, bi-encoder routing and Codex CLI routing."
+repo = "plugins"
+match = ["llm_router_plugins/utils/routing/**"]
+
+[[sections]]
+id = "plugins-utils"
+title = "Utility plugins"
+summary = "RAG support and other pipeline utilities."
+repo = "plugins"
+match = ["llm_router_plugins/utils/**"]
+
+[[sections]]
+id = "plugins-scripts"
+title = "Plugin scripts"
+summary = "Shell scripts and operational guides for plugin tooling."
+repo = "plugins"
+match = ["scripts/**"]
+
+[[sections]]
+id = "plugins-other"
+title = "Other plugins docs"
+summary = "Plugin documentation without an explicit section."
+repo = "plugins"
+match = ["**/*.md"]
+
+# --- Satellite repo sections (services) ---
+
+[[sections]]
+id = "services-overview"
+title = "Services overview"
+summary = "The llm-router-services HTTP API: guardrails, maskers and the unified Flask application."
+repo = "services"
+match = ["README.md"]
+
+[[sections]]
+id = "services-guardrails"
+title = "Guardrail services"
+summary = "NASK-PIB, Sojka and dynamic guardrail routing endpoints."
+repo = "services"
+match = ["llm_router_services/guardrails/**"]
+
+[[sections]]
+id = "services-maskers"
+title = "Masker services"
+summary = "The HTTP PII masker service and its caching model."
+repo = "services"
+match = ["llm_router_services/maskers/**"]
+
+[[sections]]
+id = "services-docker"
+title = "Docker & deployment"
+summary = "Building, running and deploying the services container."
+repo = "services"
+match = ["docker/**"]
+
+[[sections]]
+id = "services-other"
+title = "Other services docs"
+summary = "Services documentation without an explicit section."
+repo = "services"
+match = ["**/*.md"]
+
+# --- Router sections continued (archived) ---
+
 [[sections]]
 id = "website"
 title = "Website & tooling"
 summary = "How this site, its builder and the Pages pipeline work -- for contributors."
 match = ["tools/**"]
-
-# Retired subsystems: the sections stay empty for current releases and only
-# show up when an older version of the documentation is opened.
 
 [[sections]]
 id = "web-ui"
@@ -149,7 +263,7 @@ summary = "Configuration and anonymizer panels shipped before the CLI rewrite."
 match = ["llm_router_web/**"]
 
 [[sections]]
-id = "plugins"
+id = "plugins-archived"
 title = "Masker plugins (archived)"
 summary = "Standalone masking plugins from the early 0.x releases."
 match = ["llm_router_plugins/**"]
@@ -173,7 +287,9 @@ summary = "Markdown files without an explicit section -- edit tools/docs.toml to
 match = ["**/*.md"]
 
 # ---------------------------------------------------------------------------
-# Per document overrides. `path` is repo-relative and case sensitive.
+# Per document overrides
+# `path` is repo-relative. `repo` disambiguates when the same path exists in
+# multiple repositories.
 # ---------------------------------------------------------------------------
 
 [[pages]]
@@ -182,6 +298,20 @@ title = "Overview"
 out = "overview.html"
 order = 10
 summary = "What llm-router is: one OpenAI-compatible endpoint in front of every model you run, locally or in the cloud."
+
+[[pages]]
+path = "README.md"
+repo = "plugins"
+title = "Plugins overview"
+out = "index.html"
+order = 10
+
+[[pages]]
+path = "README.md"
+repo = "services"
+title = "llm-router services"
+out = "index.html"
+order = 10
 
 [[pages]]
 path = "llm_router_api/docs/INSTALLATION.md"
@@ -225,3 +355,52 @@ title = "Documentation site"
 out = "website.html"
 order = 10
 summary = "The generator behind /docs: discovery, per-release archives, search, theme and the Pages pipeline."
+
+# ---------------------------------------------------------------------------
+# Cross-repo link map
+# Rewrites links from one repository to documentation that moved to another.
+# `from` is optional (glob, default: any). `link` is exactly as written in the
+# source doc (relative path or full GH URL). `to` = "<repo-id>:<path>[#anchor]".
+# If the target page is not built for the current version, normal resolution
+# (GH blob fallback) applies.
+# ---------------------------------------------------------------------------
+
+[[crosslinks]]
+from = "README.md"
+link = "llm_router_api/README.md#masking--guardrail"
+to = "plugins:README.md#1-anonymizers-maskers"
+
+[[crosslinks]]
+from = "README.md"
+link = "llm_router_api/README.md#semantic-biencoder-routing"
+to = "plugins:README.md#27-semantic-routing-model-selection"
+
+[[crosslinks]]
+from = "README.md"
+link = "llm_router_api/README.md#utils-plugins-variables"
+to = "plugins:README.md"
+
+[[crosslinks]]
+from = "README.md"
+link = "https://github.com/radlab-dev-group/llm-router-plugins"
+to = "plugins:README.md"
+
+[[crosslinks]]
+from = "README.md"
+link = "https://github.com/radlab-dev-group/llm-router-services"
+to = "services:README.md"
+
+[[crosslinks]]
+from = "README.md"
+link = "https://github.com/radlab-dev-group/llm-router-plugins/blob/main/llm_router_plugins/utils/routing/README.md#24-configuration"
+to = "plugins:llm_router_plugins/utils/routing/README.md"
+
+[[crosslinks]]
+from = "llm_router_services/guardrails/README.md"
+link = "nask/README.md"
+to = "services:llm_router_services/guardrails/nask/README.md"
+
+[[crosslinks]]
+from = "llm_router_services/guardrails/README.md"
+link = "speakleash/README.md"
+to = "services:llm_router_services/guardrails/speakleash/README.md"

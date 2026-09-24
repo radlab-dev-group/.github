@@ -3,19 +3,21 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-9KM7GYM55M"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-9KM7GYM55M');</script>
 <title>llmrouterlib · v0.9.4 · llm-router docs</title>
-<meta name="description" content="llmrouterlib bundles Pydantic data‑model definitions and a thin, opinionated client wrapper for the LLM‑Router service. - The data models live in llmrouterlib/datamodels and describe every request payload the router accepts. - The client…">
+<meta name="description" content="# llm_router_lib ## Overview `llm_router_lib` bundles **Pydantic data‑model definitions** **and** a **thin, opinionated client wrapper** for the LLM‑Router service. - The **data models** live in `llm_router_lib/data_models` and describe ev…">
 <meta name="theme-color" content="#05070a">
 <meta property="og:type" content="article">
 <meta property="og:title" content="llmrouterlib · v0.9.4 · llm-router docs">
-<meta property="og:description" content="llmrouterlib bundles Pydantic data‑model definitions and a thin, opinionated client wrapper for the LLM‑Router service. - The data models live in llmrouterlib/datamodels and describe every request payload the router accepts. - The client…">
+<meta property="og:description" content="# llm_router_lib ## Overview `llm_router_lib` bundles **Pydantic data‑model definitions** **and** a **thin, opinionated client wrapper** for the LLM‑Router service. - The **data models** live in `llm_router_lib/data_models` and describe ev…">
 <meta name="docs-version" content="0.9.4">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2305070a'/%3E%3Cpath d='M8 22V10M8 16h9M17 10v12M17 13h7M17 19h7' stroke='%2300e59b' stroke-width='2' stroke-linecap='round' fill='none'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="../../assets/docs.css">
 <link rel="stylesheet" href="../../assets/pygments.css">
 <script src="../../assets/docs.js" defer></script>
 </head>
-<body class="page" data-version="0.9.4" data-search="../search.json" data-latest="1.0.7">
+<body class="page" data-version="0.9.4" data-search="../search.json" data-latest="1.0.8" data-repo="router">
 <a class="skip" href="#main">skip to content</a>
 <header class="topbar">
 <div class="topbar-inner">
@@ -30,7 +32,8 @@
 </form>
 <label class="vselect">
 <span class="sr-only">Documentation version</span>
-<select id="versions" aria-label="Documentation version"><option value="../../1.0.7/llm-router-lib/index.html">1.0.7  · latest</option>
+<select id="versions" aria-label="Documentation version"><option value="../../1.0.8/llm-router-lib/index.html">1.0.8  · latest</option>
+<option value="../../1.0.7/llm-router-lib/index.html">1.0.7</option>
 <option value="../../1.0.6/llm-router-lib/index.html">1.0.6</option>
 <option value="../../1.0.5/llm-router-lib/index.html">1.0.5</option>
 <option value="../../1.0.4/llm-router-lib/index.html">1.0.4</option>
@@ -80,11 +83,11 @@
 </header>
 <div class="scrim" id="scrim" hidden></div>
 <div class="shell">
-<aside class="sidebar" id="sidebar"><div class="side-head"><span class="side-v mono">v0.9.4</span><span class="side-tag old">archived</span></div><a class="side-hub" href="../index.html">documentation index</a><nav class="nav-tree" aria-label="Documentation"><section class="nav-sec"><h2 class="nav-sec-title"><a href="../overview.html">Getting started</a></h2><ul><li><a href="../overview.html">Overview</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../llm-router-api/docs/env-definitions.html">Configuration</a></h2><ul><li><a href="../llm-router-api/docs/env-definitions.html">Environment Variables</a></li><li><a href="../llm-router-api/docs/models-config.html">Models configuration description (JSON)</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../llm-router-api/docs/keepalive.html">Routing &amp; resilience</a></h2><ul><li><a href="../llm-router-api/docs/keepalive.html">Keep‑Alive Utility Overview</a></li><li><a href="../llm-router-api/docs/lb-strategies.html">Load Balancing Strategies</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../llm-router-api/core/auditor/index.html">Security &amp; auditing</a></h2><ul><li><a href="../llm-router-api/core/auditor/index.html">Auditing subsystem – llm-router</a></li><li><a href="../llm-router-api/docs/authentication.html">Authentication &amp; Authorization</a></li><li><a href="../llm-router-api/docs/rate-limiting.html">Rate Limiting</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../llm-router-api/docs/routing-metrics.html">Observability</a></h2><ul><li><a href="../llm-router-api/docs/routing-metrics.html">Router Prometheus Metrics</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../llm-router-api/index.html">REST API</a></h2><ul><li><a href="../llm-router-api/index.html">REST API reference</a></li><li><a href="../llm-router-api/endpoints/index.html">Endpoints Overview</a></li><li><a href="../llm-router-api/endpoints/readme-pl.html">Jak tworzyć endpointy w llm-proxy-api – przewodnik</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../llm-router-cli/index.html">CLI</a></h2><ul><li><a href="../llm-router-cli/index.html">llm-router CLI — Command Reference</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="index.html">Python library</a></h2><ul><li><a href="index.html" class="active">llmrouterlib</a></li><li><a href="response-models.html">Response models</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../helm-charts/index.html">Deployment</a></h2><ul><li><a href="../helm-charts/index.html">LLM‑Router Helm Chart</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../examples/index.html">Examples</a></h2><ul><li><a href="../examples/index.html">Integration Examples with LLM Router</a></li><li><a href="../examples/quickstart/index.html">Full Stack with Local Models</a></li><li><a href="../examples/readme-llamaindex.html">Using LlamaIndex with Local Models via the LLM‑Router</a></li><li><a href="../examples/quickstart/google-gemma3-12b-it/vllm.html">vLLM + google/gemma‑3‑12b‑it – Quick‑Start Guide (Ubuntu)</a></li><li><a href="../examples/quickstart/speakleash-bielik-11b-v2-3-instruct/vllm.html">vLLM + speakleash/Bielik-11B-v2.3-Instruct – Przewodnik Szybkiego Startu (Ubuntu)</a></li><li><a href="../examples/quickstart/speakleash-bielik-11b-v2-3-instruct/index.html">🚀 Przewodnik Szybkiego Startu dla speakleash/Bielik-11B-v2.3-Instruct z vLLM &amp; LLM‑Router</a></li><li><a href="../examples/quickstart/google-gemma3-12b-it/index.html">🚀 Quick‑Start Guide for google/gemma-3-12b‑it with vLLM &amp; LLM‑Router</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../changelog.html">Release notes</a></h2><ul><li><a href="../changelog.html">Changelog</a></li></ul></section></nav><div class="side-foot"><a href="../../..">&larr;&nbsp;landing page</a><a class="mono" href="../search.json">search.json</a></div></aside>
+<aside class="sidebar" id="sidebar"><div class="side-head"><span class="side-v mono">v0.9.4</span><span class="side-tag old">archived</span></div><a class="side-hub" href="../index.html">documentation index</a><nav class="nav-tree" aria-label="Documentation"><div class="nav-repo"><span class="repo-name">llm-router</span></div><section class="nav-sec"><h2 class="nav-sec-title"><a href="../overview.html">Getting started</a></h2><ul><li><a href="../overview.html">Overview</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../llm-router-api/docs/env-definitions.html">Configuration</a></h2><ul><li><a href="../llm-router-api/docs/env-definitions.html">Environment Variables</a></li><li><a href="../llm-router-api/docs/models-config.html">Models configuration description (JSON)</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../llm-router-api/docs/keepalive.html">Routing &amp; resilience</a></h2><ul><li><a href="../llm-router-api/docs/keepalive.html">Keep‑Alive Utility Overview</a></li><li><a href="../llm-router-api/docs/lb-strategies.html">Load Balancing Strategies</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../llm-router-api/core/auditor/index.html">Security &amp; auditing</a></h2><ul><li><a href="../llm-router-api/core/auditor/index.html">Auditing subsystem – llm-router</a></li><li><a href="../llm-router-api/docs/authentication.html">Authentication &amp; Authorization</a></li><li><a href="../llm-router-api/docs/rate-limiting.html">Rate Limiting</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../llm-router-api/docs/routing-metrics.html">Observability</a></h2><ul><li><a href="../llm-router-api/docs/routing-metrics.html">Router Prometheus Metrics</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../llm-router-api/index.html">REST API</a></h2><ul><li><a href="../llm-router-api/index.html">REST API reference</a></li><li><a href="../llm-router-api/endpoints/index.html">Endpoints Overview</a></li><li><a href="../llm-router-api/endpoints/readme-pl.html">Jak tworzyć endpointy w llm-proxy-api – przewodnik</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../llm-router-cli/index.html">CLI</a></h2><ul><li><a href="../llm-router-cli/index.html">llm-router CLI — Command Reference</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="index.html">Python library</a></h2><ul><li><a href="index.html" class="active">llmrouterlib</a></li><li><a href="response-models.html">Response models</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../helm-charts/index.html">Deployment</a></h2><ul><li><a href="../helm-charts/index.html">LLM‑Router Helm Chart</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../examples/index.html">Examples</a></h2><ul><li><a href="../examples/index.html">Integration Examples with LLM Router</a></li><li><a href="../examples/quickstart/index.html">Full Stack with Local Models</a></li><li><a href="../examples/readme-llamaindex.html">Using LlamaIndex with Local Models via the LLM‑Router</a></li><li><a href="../examples/quickstart/google-gemma3-12b-it/vllm.html">vLLM + google/gemma‑3‑12b‑it – Quick‑Start Guide (Ubuntu)</a></li><li><a href="../examples/quickstart/speakleash-bielik-11b-v2-3-instruct/vllm.html">vLLM + speakleash/Bielik-11B-v2.3-Instruct – Przewodnik Szybkiego Startu (Ubuntu)</a></li><li><a href="../examples/quickstart/speakleash-bielik-11b-v2-3-instruct/index.html">🚀 Przewodnik Szybkiego Startu dla speakleash/Bielik-11B-v2.3-Instruct z vLLM &amp; LLM‑Router</a></li><li><a href="../examples/quickstart/google-gemma3-12b-it/index.html">🚀 Quick‑Start Guide for google/gemma-3-12b‑it with vLLM &amp; LLM‑Router</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../changelog.html">Release notes</a></h2><ul><li><a href="../changelog.html">Changelog</a></li></ul></section></nav><div class="side-foot"><a href="../../..">&larr;&nbsp;landing page</a><a class="mono" href="../search.json">search.json</a></div></aside>
 <main class="main" id="main"><nav class="crumbs" aria-label="Breadcrumb">
 <a href="../../..">llm-router</a><span class="sep">/</span><a href="../index.html">docs</a><span class="sep">/</span><a href="index.html">Python library</a><span class="sep">/</span><em>llmrouterlib</em>
 </nav>
-<article class="prose"><h1 id="llmrouterlib">llmrouterlib<a class="headerlink" href="#llmrouterlib" title="link to this section">#</a></h1>
+<article class="prose"><h1 id="llm_router_lib">llm_router_lib<a class="headerlink" href="#llm_router_lib" title="link to this section">#</a></h1>
 <h2 id="overview">Overview<a class="headerlink" href="#overview" title="link to this section">#</a></h2>
 <p><code>llm_router_lib</code> bundles <strong>Pydantic data‑model definitions</strong> <strong>and</strong> a <strong>thin, opinionated client wrapper</strong> for the
 LLM‑Router service.</p>
@@ -104,7 +107,7 @@ LLM‑Router service.</p>
 router service.</p>
 <h2 id="installation">Installation<a class="headerlink" href="#installation" title="link to this section">#</a></h2>
 <p>The library targets <strong>Python 3.10.6</strong> and uses a <code>virtualenv</code>. Install it in editable mode for development:</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># Clone the repository (if you haven&#39;t already)</span>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Clone the repository (if you haven't already)</span>
 
 git<span class="w"> </span>clone<span class="w"> </span>https://github.com/radlab-dev-group/llm-router.git
 <span class="nb">cd</span><span class="w"> </span>llm-router/llm_router_lib
@@ -122,37 +125,37 @@ pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </s
 <p>All runtime dependencies (<code>requests</code>, <code>pydantic</code>, plus the packages listed in <code>requirements.txt</code>) are declared in the
 project’s <code>requirements.txt</code>.</p>
 <h2 id="quick-start">Quick start<a class="headerlink" href="#quick-start" title="link to this section">#</a></h2>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">llm_router_lib</span> <span class="kn">import</span> <span class="n">LLMRouterClient</span>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">llm_router_lib</span><span class="w"> </span><span class="kn">import</span> <span class="n">LLMRouterClient</span>
 
 <span class="c1"># Initialise the client – point it at the router’s host (do **not** include the `/api` prefix)</span>
 
 <span class="n">client</span> <span class="o">=</span> <span class="n">LLMRouterClient</span><span class="p">(</span>
-    <span class="n">api</span><span class="o">=</span><span class="s2">&quot;http://localhost:8080&quot;</span><span class="p">,</span>  <span class="c1"># router host URL</span>
-    <span class="n">token</span><span class="o">=</span><span class="s2">&quot;YOUR_ROUTER_TOKEN&quot;</span><span class="p">,</span>  <span class="c1"># optional, if router requires auth</span>
+    <span class="n">api</span><span class="o">=</span><span class="s2">"http://localhost:8080"</span><span class="p">,</span>  <span class="c1"># router host URL</span>
+    <span class="n">token</span><span class="o">=</span><span class="s2">"YOUR_ROUTER_TOKEN"</span><span class="p">,</span>  <span class="c1"># optional, if router requires auth</span>
 <span class="p">)</span>
 
 <span class="c1"># Call the standard conversation endpoint with named keyword arguments –</span>
 <span class="c1"># the client builds the Pydantic request model for you.</span>
 
 <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">conversation_with_model</span><span class="p">(</span>
-    <span class="n">user_last_statement</span><span class="o">=</span><span class="s2">&quot;Hello, how are you?&quot;</span><span class="p">,</span>
-    <span class="n">model</span><span class="o">=</span><span class="s2">&quot;google/gemma-3-12b-it&quot;</span><span class="p">,</span>
+    <span class="n">user_last_statement</span><span class="o">=</span><span class="s2">"Hello, how are you?"</span><span class="p">,</span>
+    <span class="n">model</span><span class="o">=</span><span class="s2">"google/gemma-3-12b-it"</span><span class="p">,</span>
     <span class="n">temperature</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span>
     <span class="n">max_new_tokens</span><span class="o">=</span><span class="mi">128</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="c1"># response is a typed `ConversationResponse` model:</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">response</span><span class="p">)</span>  <span class="c1"># → the assistant&#39;s reply text</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">response</span><span class="p">)</span>  <span class="c1"># → the assistant's reply text</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">generation_time</span><span class="p">)</span>  <span class="c1"># → seconds taken by the server</span>
 </code></pre></div>
 
 <p>You can also pass a ready‑made <code>pydantic</code> request model via the <code>payload</code>
 keyword (all endpoint parameters are keyword‑only – there are no positional arguments):</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">llm_router_lib.data_models.builtin_chat</span> <span class="kn">import</span> <span class="n">ConversationWithModelRequest</span>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">llm_router_lib.data_models.builtin_chat</span><span class="w"> </span><span class="kn">import</span> <span class="n">ConversationWithModelRequest</span>
 
 <span class="n">payload</span> <span class="o">=</span> <span class="n">ConversationWithModelRequest</span><span class="p">(</span>
-    <span class="n">model_name</span><span class="o">=</span><span class="s2">&quot;google/gemma-3-12b-it&quot;</span><span class="p">,</span>
-    <span class="n">user_last_statement</span><span class="o">=</span><span class="s2">&quot;Hello, how are you?&quot;</span><span class="p">,</span>
+    <span class="n">model_name</span><span class="o">=</span><span class="s2">"google/gemma-3-12b-it"</span><span class="p">,</span>
+    <span class="n">user_last_statement</span><span class="o">=</span><span class="s2">"Hello, how are you?"</span><span class="p">,</span>
     <span class="n">temperature</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span>
     <span class="n">max_new_tokens</span><span class="o">=</span><span class="mi">128</span><span class="p">,</span>
 <span class="p">)</span>
@@ -170,8 +173,8 @@ enough named arguments raises <code>NoArgsAndNoPayloadError</code>.</p>
 <h2 id="data-models">Data models<a class="headerlink" href="#data-models" title="link to this section">#</a></h2>
 <p>All request payloads are defined in <code>llm_router_lib/data_models</code>.<br />
 A common base class supplies shared options:</p>
-<div class="codehilite"><pre><span></span><code><span class="k">class</span> <span class="nc">BaseModelOptions</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Options shared across many endpoint models.&quot;&quot;&quot;</span>
+<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">BaseModelOptions</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Options shared across many endpoint models."""</span>
     <span class="n">mask_payload</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="n">masker_pipeline</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
 </code></pre></div>
@@ -313,17 +316,17 @@ flags.)</em></p>
 <p>These services inherit from <code>BaseConversationServiceInterface</code>, which provides <code>call_post</code> and <code>call_get</code> helpers that
 perform JSON parsing and raise the library‑specific exceptions on failure.</p>
 <h3 id="example-using-a-service-directly">Example: using a service directly<a class="headerlink" href="#example-using-a-service-directly" title="link to this section">#</a></h3>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">llm_router_lib.services.conversation</span> <span class="kn">import</span> <span class="n">ConversationWithModelService</span>
-<span class="kn">from</span> <span class="nn">llm_router_lib.utils.http</span> <span class="kn">import</span> <span class="n">HttpRequester</span>
-<span class="kn">import</span> <span class="nn">logging</span>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">llm_router_lib.services.conversation</span><span class="w"> </span><span class="kn">import</span> <span class="n">ConversationWithModelService</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">llm_router_lib.utils.http</span><span class="w"> </span><span class="kn">import</span> <span class="n">HttpRequester</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
 
-<span class="n">http</span> <span class="o">=</span> <span class="n">HttpRequester</span><span class="p">(</span><span class="n">base_url</span><span class="o">=</span><span class="s2">&quot;http://localhost:8080&quot;</span><span class="p">,</span> <span class="n">token</span><span class="o">=</span><span class="s2">&quot;...&quot;</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
-<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;demo&quot;</span><span class="p">)</span>
+<span class="n">http</span> <span class="o">=</span> <span class="n">HttpRequester</span><span class="p">(</span><span class="n">base_url</span><span class="o">=</span><span class="s2">"http://localhost:8080"</span><span class="p">,</span> <span class="n">token</span><span class="o">=</span><span class="s2">"..."</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">"demo"</span><span class="p">)</span>
 
 <span class="n">service</span> <span class="o">=</span> <span class="n">ConversationWithModelService</span><span class="p">(</span><span class="n">http</span><span class="p">,</span> <span class="n">logger</span><span class="p">)</span>
 <span class="n">payload</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;model_name&quot;</span><span class="p">:</span> <span class="s2">&quot;google/gemma-3-12b-it&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;user_last_statement&quot;</span><span class="p">:</span> <span class="s2">&quot;Hi!&quot;</span><span class="p">,</span>
+    <span class="s2">"model_name"</span><span class="p">:</span> <span class="s2">"google/gemma-3-12b-it"</span><span class="p">,</span>
+    <span class="s2">"user_last_statement"</span><span class="p">:</span> <span class="s2">"Hi!"</span><span class="p">,</span>
 <span class="p">}</span>
 <span class="n">response</span> <span class="o">=</span> <span class="n">service</span><span class="o">.</span><span class="n">call_post</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
@@ -458,12 +461,12 @@ OpenAI API schema:</p>
 <p>All public types (<code>LLMRouterClient</code>, <code>HttpRequester</code>) implement <code>__enter__</code> / <code>__exit__</code>, so they can be used with
 the
 <code>with</code> statement to guarantee resource cleanup:</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">llm_router_lib</span> <span class="kn">import</span> <span class="n">LLMRouterClient</span>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">llm_router_lib</span><span class="w"> </span><span class="kn">import</span> <span class="n">LLMRouterClient</span>
 
-<span class="k">with</span> <span class="n">LLMRouterClient</span><span class="p">(</span><span class="n">api</span><span class="o">=</span><span class="s2">&quot;http://localhost:8080&quot;</span><span class="p">,</span> <span class="n">token</span><span class="o">=</span><span class="s2">&quot;...&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">client</span><span class="p">:</span>
+<span class="k">with</span> <span class="n">LLMRouterClient</span><span class="p">(</span><span class="n">api</span><span class="o">=</span><span class="s2">"http://localhost:8080"</span><span class="p">,</span> <span class="n">token</span><span class="o">=</span><span class="s2">"..."</span><span class="p">)</span> <span class="k">as</span> <span class="n">client</span><span class="p">:</span>
     <span class="n">result</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">conversation_with_model</span><span class="p">(</span>  <span class="c1"># session closed automatically</span>
-        <span class="n">user_last_statement</span><span class="o">=</span><span class="s2">&quot;Hi!&quot;</span><span class="p">,</span>
-        <span class="n">model</span><span class="o">=</span><span class="s2">&quot;google/gemma-3-12b-it&quot;</span><span class="p">,</span>
+        <span class="n">user_last_statement</span><span class="o">=</span><span class="s2">"Hi!"</span><span class="p">,</span>
+        <span class="n">model</span><span class="o">=</span><span class="s2">"google/gemma-3-12b-it"</span><span class="p">,</span>
     <span class="p">)</span>
 </code></pre></div>
 
@@ -488,14 +491,15 @@ the
 conversation, translation, generative answering, and health checks.</p></article>
 <nav class="pager" aria-label="Previous and next page"><a class="next" href="response-models.html"><span class="dir">next &rarr;</span><span class="pt">Response models</span></a></nav>
 <footer class="doc-meta">
+<div class="meta-row"><span class="meta-k">repository</span><a class="mono" href="https://github.com/radlab-dev-group/llm-router">llm-router</a></div>
 <div class="meta-row"><span class="meta-k">source</span><a class="mono" href="https://github.com/radlab-dev-group/llm-router/blob/v0.9.4/llm_router_lib/README.md">llm_router_lib/README.md</a></div>
-<div class="meta-row"><span class="meta-k">last commit</span><time datetime="2026-08-29T15:19:07+02:00">2026-08-29</time></div>
-<div class="meta-row"><span class="meta-k">built from</span><span class="mono">v0.9.4&nbsp;@&nbsp;40488c4</span></div>
-<p class="hint">Generated from the Markdown file in the repository: commit a change and the next build republishes it for every release that contains it.</p>
+<div class="meta-row"><span class="meta-k">last commit</span><time datetime="2026-08-28T08:32:26+02:00"><a href="https://github.com/radlab-dev-group/llm-router/commit/40488c4">2026-08-28</a></time></div>
+<div class="meta-row"><span class="meta-k">built from</span><span class="mono"><a href="https://github.com/radlab-dev-group/llm-router/tree/v0.9.4">v0.9.4</a>&nbsp;@&nbsp;<a href="https://github.com/radlab-dev-group/llm-router/commit/40488c4">40488c4</a></span></div>
+<p class="hint">Generated from the Markdown file in the repository: commit a change and the next build republishes it.</p>
 </footer>
 <footer class="foot"><div class="foot-inner">
 <span class="mono">llm-router &middot; docs are generated from the repository by <code>tools/build_docs.py</code></span>
-<span class="mono"><a href="https://github.com/radlab-dev-group/llm-router/tree/v0.9.4">0.9.4</a> @ <code>40488c4</code></span>
+<span class="mono"><a href="https://github.com/radlab-dev-group/llm-router/tree/v0.9.4">0.9.4</a> @ <a href="https://github.com/radlab-dev-group/llm-router/commit/40488c4">40488c4</a></span>
 </div></footer>
 </main>
 <aside class="dtoc" id="dtoc"><h2 class="toc-title">on this page</h2><div class="toc-body"><ul><li><a href="#overview">Overview</a></li><li><a href="#installation">Installation</a></li><li><a href="#quick-start">Quick start</a></li><li><a href="#data-models">Data models</a><ul><li><a href="#conversation-models">Conversation models</a></li><li><a href="#utility-models-selected-examples">Utility models (selected examples)</a></li></ul></li><li><a href="#services-lowlevel-wrappers">Services (low‑level wrappers)</a><ul><li><a href="#example-using-a-service-directly">Example: using a service directly</a></li></ul></li><li><a href="#thin-client-wrapper-llmrouterclient">Thin client wrapper (LLMRouterClient)</a></li><li><a href="#utilities">Utilities</a></li><li><a href="#development-testing">Development &amp;amp; testing</a></li></ul></div></aside>

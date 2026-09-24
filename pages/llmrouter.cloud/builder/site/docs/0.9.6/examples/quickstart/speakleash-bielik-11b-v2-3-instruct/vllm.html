@@ -3,19 +3,21 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-9KM7GYM55M"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-9KM7GYM55M');</script>
 <title>vLLM + speakleash/Bielik-11B-v2.3-Instruct – Przewodnik Szybkiego Startu (Ubuntu) · v0.9.6 · llm-router docs</title>
-<meta name="description" content="Powinieneś zobaczyć wersję, np. 0.11.2. Jeśli chcesz, aby wszystkie modele były przechowywane wewnątrz projektu, ustaw zmienną przed pobraniem: Skopiuj gotowy skrypt Bash (przykładowa ścieżka – dostosuj do swojego projektu): Powinieneś…">
+<meta name="description" content="# vLLM + `speakleash/Bielik-11B-v2.3-Instruct` – Przewodnik Szybkiego Startu (Ubuntu) &gt; **Wymagania wstępne** &gt; - Ubuntu 20.04 lub nowszy &gt; - Python 3.10 (w projekcie używamy 3.10.6) &gt; - `virtualenv` (zainstalowany) &gt; - CUDA 11.8 + GPU **l…">
 <meta name="theme-color" content="#05070a">
 <meta property="og:type" content="article">
 <meta property="og:title" content="vLLM + speakleash/Bielik-11B-v2.3-Instruct – Przewodnik Szybkiego Startu (Ubuntu) · v0.9.6 · llm-router docs">
-<meta property="og:description" content="Powinieneś zobaczyć wersję, np. 0.11.2. Jeśli chcesz, aby wszystkie modele były przechowywane wewnątrz projektu, ustaw zmienną przed pobraniem: Skopiuj gotowy skrypt Bash (przykładowa ścieżka – dostosuj do swojego projektu): Powinieneś…">
+<meta property="og:description" content="# vLLM + `speakleash/Bielik-11B-v2.3-Instruct` – Przewodnik Szybkiego Startu (Ubuntu) &gt; **Wymagania wstępne** &gt; - Ubuntu 20.04 lub nowszy &gt; - Python 3.10 (w projekcie używamy 3.10.6) &gt; - `virtualenv` (zainstalowany) &gt; - CUDA 11.8 + GPU **l…">
 <meta name="docs-version" content="0.9.6">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2305070a'/%3E%3Cpath d='M8 22V10M8 16h9M17 10v12M17 13h7M17 19h7' stroke='%2300e59b' stroke-width='2' stroke-linecap='round' fill='none'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="../../../../assets/docs.css">
 <link rel="stylesheet" href="../../../../assets/pygments.css">
 <script src="../../../../assets/docs.js" defer></script>
 </head>
-<body class="page" data-version="0.9.6" data-search="../../../search.json" data-latest="1.0.7">
+<body class="page" data-version="0.9.6" data-search="../../../search.json" data-latest="1.0.8" data-repo="router">
 <a class="skip" href="#main">skip to content</a>
 <header class="topbar">
 <div class="topbar-inner">
@@ -30,7 +32,8 @@
 </form>
 <label class="vselect">
 <span class="sr-only">Documentation version</span>
-<select id="versions" aria-label="Documentation version"><option value="../../../../1.0.7/examples/quickstart/speakleash-bielik-11b-v2-3-instruct/vllm.html">1.0.7  · latest</option>
+<select id="versions" aria-label="Documentation version"><option value="../../../../1.0.8/examples/quickstart/speakleash-bielik-11b-v2-3-instruct/vllm.html">1.0.8  · latest</option>
+<option value="../../../../1.0.7/examples/quickstart/speakleash-bielik-11b-v2-3-instruct/vllm.html">1.0.7</option>
 <option value="../../../../1.0.6/examples/quickstart/speakleash-bielik-11b-v2-3-instruct/vllm.html">1.0.6</option>
 <option value="../../../../1.0.5/examples/quickstart/speakleash-bielik-11b-v2-3-instruct/vllm.html">1.0.5</option>
 <option value="../../../../1.0.4/examples/quickstart/speakleash-bielik-11b-v2-3-instruct/vllm.html">1.0.4</option>
@@ -80,11 +83,11 @@
 </header>
 <div class="scrim" id="scrim" hidden></div>
 <div class="shell">
-<aside class="sidebar" id="sidebar"><div class="side-head"><span class="side-v mono">v0.9.6</span><span class="side-tag old">archived</span></div><a class="side-hub" href="../../../index.html">documentation index</a><nav class="nav-tree" aria-label="Documentation"><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../../overview.html">Getting started</a></h2><ul><li><a href="../../../overview.html">Overview</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../../llm-router-api/docs/env-definitions.html">Configuration</a></h2><ul><li><a href="../../../llm-router-api/docs/env-definitions.html">Environment Variables</a></li><li><a href="../../../llm-router-api/docs/models-config.html">Models configuration description (JSON)</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../../llm-router-api/docs/keepalive.html">Routing &amp; resilience</a></h2><ul><li><a href="../../../llm-router-api/docs/keepalive.html">Keep‑Alive Utility Overview</a></li><li><a href="../../../llm-router-api/docs/lb-strategies.html">Load Balancing Strategies</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../../llm-router-api/core/auditor/index.html">Security &amp; auditing</a></h2><ul><li><a href="../../../llm-router-api/core/auditor/index.html">Auditing subsystem – llm-router</a></li><li><a href="../../../llm-router-api/docs/authentication.html">Authentication &amp; Authorization</a></li><li><a href="../../../llm-router-api/docs/rate-limiting.html">Rate Limiting</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../../llm-router-api/docs/routing-metrics.html">Observability</a></h2><ul><li><a href="../../../llm-router-api/docs/routing-metrics.html">Router Prometheus Metrics</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../../llm-router-api/index.html">REST API</a></h2><ul><li><a href="../../../llm-router-api/index.html">REST API reference</a></li><li><a href="../../../llm-router-api/endpoints/index.html">Endpoints Overview</a></li><li><a href="../../../llm-router-api/endpoints/readme-pl.html">Jak tworzyć endpointy w llm-proxy-api – przewodnik</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../../llm-router-cli/index.html">CLI</a></h2><ul><li><a href="../../../llm-router-cli/index.html">llm-router CLI — Command Reference</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../../llm-router-lib/index.html">Python library</a></h2><ul><li><a href="../../../llm-router-lib/index.html">llmrouterlib</a></li><li><a href="../../../llm-router-lib/response-models.html">Response models</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../../helm-charts/index.html">Deployment</a></h2><ul><li><a href="../../../helm-charts/index.html">LLM‑Router Helm Chart</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="../../index.html">Examples</a></h2><ul><li><a href="../../index.html">Integration Examples with LLM Router</a></li><li><a href="../index.html">Full Stack with Local Models</a></li><li><a href="../../readme-llamaindex.html">Using LlamaIndex with Local Models via the LLM‑Router</a></li><li><a href="../google-gemma3-12b-it/vllm.html">vLLM + google/gemma‑3‑12b‑it – Quick‑Start Guide (Ubuntu)</a></li><li><a href="vllm.html" class="active">vLLM + speakleash/Bielik-11B-v2.3-Instruct – Przewodnik Szybkiego Startu (Ubuntu)</a></li><li><a href="index.html">🚀 Przewodnik Szybkiego Startu dla speakleash/Bielik-11B-v2.3-Instruct z vLLM &amp; LLM‑Router</a></li><li><a href="../google-gemma3-12b-it/index.html">🚀 Quick‑Start Guide for google/gemma-3-12b‑it with vLLM &amp; LLM‑Router</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../../changelog.html">Release notes</a></h2><ul><li><a href="../../../changelog.html">Changelog</a></li></ul></section></nav><div class="side-foot"><a href="../../../../..">&larr;&nbsp;landing page</a><a class="mono" href="../../../search.json">search.json</a></div></aside>
+<aside class="sidebar" id="sidebar"><div class="side-head"><span class="side-v mono">v0.9.6</span><span class="side-tag old">archived</span></div><a class="side-hub" href="../../../index.html">documentation index</a><nav class="nav-tree" aria-label="Documentation"><div class="nav-repo"><span class="repo-name">llm-router</span></div><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../../overview.html">Getting started</a></h2><ul><li><a href="../../../overview.html">Overview</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../../llm-router-api/docs/env-definitions.html">Configuration</a></h2><ul><li><a href="../../../llm-router-api/docs/env-definitions.html">Environment Variables</a></li><li><a href="../../../llm-router-api/docs/models-config.html">Models configuration description (JSON)</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../../llm-router-api/docs/keepalive.html">Routing &amp; resilience</a></h2><ul><li><a href="../../../llm-router-api/docs/keepalive.html">Keep‑Alive Utility Overview</a></li><li><a href="../../../llm-router-api/docs/lb-strategies.html">Load Balancing Strategies</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../../llm-router-api/core/auditor/index.html">Security &amp; auditing</a></h2><ul><li><a href="../../../llm-router-api/core/auditor/index.html">Auditing subsystem – llm-router</a></li><li><a href="../../../llm-router-api/docs/authentication.html">Authentication &amp; Authorization</a></li><li><a href="../../../llm-router-api/docs/rate-limiting.html">Rate Limiting</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../../llm-router-api/docs/routing-metrics.html">Observability</a></h2><ul><li><a href="../../../llm-router-api/docs/routing-metrics.html">Router Prometheus Metrics</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../../llm-router-api/index.html">REST API</a></h2><ul><li><a href="../../../llm-router-api/index.html">REST API reference</a></li><li><a href="../../../llm-router-api/endpoints/index.html">Endpoints Overview</a></li><li><a href="../../../llm-router-api/endpoints/readme-pl.html">Jak tworzyć endpointy w llm-proxy-api – przewodnik</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../../llm-router-cli/index.html">CLI</a></h2><ul><li><a href="../../../llm-router-cli/index.html">llm-router CLI — Command Reference</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../../llm-router-lib/index.html">Python library</a></h2><ul><li><a href="../../../llm-router-lib/index.html">llmrouterlib</a></li><li><a href="../../../llm-router-lib/response-models.html">Response models</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../../helm-charts/index.html">Deployment</a></h2><ul><li><a href="../../../helm-charts/index.html">LLM‑Router Helm Chart</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="../../index.html">Examples</a></h2><ul><li><a href="../../index.html">Integration Examples with LLM Router</a></li><li><a href="../index.html">Full Stack with Local Models</a></li><li><a href="../../readme-llamaindex.html">Using LlamaIndex with Local Models via the LLM‑Router</a></li><li><a href="../google-gemma3-12b-it/vllm.html">vLLM + google/gemma‑3‑12b‑it – Quick‑Start Guide (Ubuntu)</a></li><li><a href="vllm.html" class="active">vLLM + speakleash/Bielik-11B-v2.3-Instruct – Przewodnik Szybkiego Startu (Ubuntu)</a></li><li><a href="index.html">🚀 Przewodnik Szybkiego Startu dla speakleash/Bielik-11B-v2.3-Instruct z vLLM &amp; LLM‑Router</a></li><li><a href="../google-gemma3-12b-it/index.html">🚀 Quick‑Start Guide for google/gemma-3-12b‑it with vLLM &amp; LLM‑Router</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../../changelog.html">Release notes</a></h2><ul><li><a href="../../../changelog.html">Changelog</a></li></ul></section></nav><div class="side-foot"><a href="../../../../..">&larr;&nbsp;landing page</a><a class="mono" href="../../../search.json">search.json</a></div></aside>
 <main class="main" id="main"><nav class="crumbs" aria-label="Breadcrumb">
 <a href="../../../../..">llm-router</a><span class="sep">/</span><a href="../../../index.html">docs</a><span class="sep">/</span><a href="../../index.html">Examples</a><span class="sep">/</span><em>vLLM + speakleash/Bielik-11B-v2.3-Instruct – Przewodnik Szybkiego Startu (Ubuntu)</em>
 </nav>
-<article class="prose"><h1 id="vllm-speakleashbielik-11b-v23-instruct-przewodnik-szybkiego-startu-ubuntu">vLLM + speakleash/Bielik-11B-v2.3-Instruct – Przewodnik Szybkiego Startu (Ubuntu)<a class="headerlink" href="#vllm-speakleashbielik-11b-v23-instruct-przewodnik-szybkiego-startu-ubuntu" title="link to this section">#</a></h1>
+<article class="prose"><h1 id="vllm-speakleashbielik-11b-v23-instruct-przewodnik-szybkiego-startu-ubuntu">vLLM + <code>speakleash/Bielik-11B-v2.3-Instruct</code> – Przewodnik Szybkiego Startu (Ubuntu)<a class="headerlink" href="#vllm-speakleashbielik-11b-v23-instruct-przewodnik-szybkiego-startu-ubuntu" title="link to this section">#</a></h1>
 <blockquote>
 <p><strong>Wymagania wstępne</strong>
 - Ubuntu 20.04 lub nowszy
@@ -106,7 +109,7 @@ aktywację (w promptcie pojawi się <code>(.venv)</code>).</p>
 <hr />
 <h2 id="2-zainstaluj-vllm">2️⃣ Zainstaluj <strong>vLLM</strong><a class="headerlink" href="#2-zainstaluj-vllm" title="link to this section">#</a></h2>
 <div class="codehilite"><pre><span></span><code>pip install --upgrade pip
-pip install &quot;vllm[cuda]&quot;
+pip install "vllm[cuda]"
 </code></pre></div>
 
 <blockquote>
@@ -115,7 +118,7 @@ Jeśli nie masz GPU, użyj wersji CPU: <code>pip install vllm[cpu]</code>.</p>
 </blockquote>
 <hr />
 <h3 id="sprawdz-instalacje">Sprawdź instalację<a class="headerlink" href="#sprawdz-instalacje" title="link to this section">#</a></h3>
-<div class="codehilite"><pre><span></span><code>python -c &quot;import vllm; print(vllm.__version__)&quot;
+<div class="codehilite"><pre><span></span><code>python -c "import vllm; print(vllm.__version__)"
 </code></pre></div>
 
 <p>Powinieneś zobaczyć wersję, np. <code>0.11.2</code>.</p>
@@ -159,34 +162,34 @@ bash run-bielik-11b-v2_3-vllm.sh
 </blockquote>
 </blockquote>
 <div class="codehilite"><pre><span></span><code>curl http://localhost:7000/v1/chat/completions \
-  -H &quot;Content-Type: application/json&quot; \
-  -d &#39;{
-        &quot;model&quot;: &quot;speakleash/Bielik-11B-v2.3-Instruct&quot;,
-        &quot;messages&quot;: [{&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;Cześć, jak się masz?&quot;}],
-        &quot;max_tokens&quot;: 100
-      }&#39; | jq
+  -H "Content-Type: application/json" \
+  -d '{
+        "model": "speakleash/Bielik-11B-v2.3-Instruct",
+        "messages": [{"role": "user", "content": "Cześć, jak się masz?"}],
+        "max_tokens": 100
+      }' | jq
 </code></pre></div>
 
 <p>Powinieneś otrzymać odpowiedź w formacie JSON, np.:</p>
 <div class="codehilite"><pre><span></span><code><span class="p">{</span>
-<span class="w">  </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;chatcmpl-xxxx&quot;</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">&quot;object&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;chat.completion&quot;</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">&quot;created&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1764516430</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">&quot;model&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;speakleash/Bielik-11B-v2.3-Instruct&quot;</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">&quot;choices&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">  </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"chatcmpl-xxxx"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"object"</span><span class="p">:</span><span class="w"> </span><span class="s2">"chat.completion"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"created"</span><span class="p">:</span><span class="w"> </span><span class="mi">1764516430</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"model"</span><span class="p">:</span><span class="w"> </span><span class="s2">"speakleash/Bielik-11B-v2.3-Instruct"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"choices"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
 <span class="w">    </span><span class="p">{</span>
-<span class="w">      </span><span class="nt">&quot;index&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;role&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;assistant&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;content&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Cześć! Jestem w pełni sprawny i gotowy do rozmowy. Jak mogę Ci pomóc?&quot;</span>
+<span class="w">      </span><span class="nt">"index"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"message"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">"role"</span><span class="p">:</span><span class="w"> </span><span class="s2">"assistant"</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">"content"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Cześć! Jestem w pełni sprawny i gotowy do rozmowy. Jak mogę Ci pomóc?"</span>
 <span class="w">      </span><span class="p">},</span>
-<span class="w">      </span><span class="nt">&quot;finish_reason&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;stop&quot;</span>
+<span class="w">      </span><span class="nt">"finish_reason"</span><span class="p">:</span><span class="w"> </span><span class="s2">"stop"</span>
 <span class="w">    </span><span class="p">}</span>
 <span class="w">  </span><span class="p">],</span>
-<span class="w">  </span><span class="nt">&quot;usage&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;prompt_tokens&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">15</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;total_tokens&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">66</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;completion_tokens&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">51</span>
+<span class="w">  </span><span class="nt">"usage"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"prompt_tokens"</span><span class="p">:</span><span class="w"> </span><span class="mi">15</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"total_tokens"</span><span class="p">:</span><span class="w"> </span><span class="mi">66</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"completion_tokens"</span><span class="p">:</span><span class="w"> </span><span class="mi">51</span>
 <span class="w">  </span><span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
@@ -233,14 +236,15 @@ bash run-bielik-11b-v2_3-vllm.sh
 <strong>speakleash/Bielik-11B-v2.3-Instruct</strong>.</p></article>
 <nav class="pager" aria-label="Previous and next page"><a class="prev" href="../google-gemma3-12b-it/vllm.html"><span class="dir">&larr; previous</span><span class="pt">vLLM + google/gemma‑3‑12b‑it – Quick‑Start Guide (Ubuntu)</span></a><a class="next" href="index.html"><span class="dir">next &rarr;</span><span class="pt">🚀 Przewodnik Szybkiego Startu dla speakleash/Bielik-11B-v2.3-Instruct z vLLM &amp; LLM‑Router</span></a></nav>
 <footer class="doc-meta">
+<div class="meta-row"><span class="meta-k">repository</span><a class="mono" href="https://github.com/radlab-dev-group/llm-router">llm-router</a></div>
 <div class="meta-row"><span class="meta-k">source</span><a class="mono" href="https://github.com/radlab-dev-group/llm-router/blob/v0.9.6/examples/quickstart/speakleash-bielik-11b-v2_3-Instruct/VLLM.md">examples/quickstart/speakleash-bielik-11b-v2_3-Instruct/VLLM.md</a></div>
-<div class="meta-row"><span class="meta-k">last commit</span><time datetime="2026-08-31T08:29:03+02:00">2026-08-31</time></div>
-<div class="meta-row"><span class="meta-k">built from</span><span class="mono">v0.9.6&nbsp;@&nbsp;ab3e739</span></div>
-<p class="hint">Generated from the Markdown file in the repository: commit a change and the next build republishes it for every release that contains it.</p>
+<div class="meta-row"><span class="meta-k">last commit</span><time datetime="2025-12-01T02:51:37+01:00"><a href="https://github.com/radlab-dev-group/llm-router/commit/ab3e739">2025-12-01</a></time></div>
+<div class="meta-row"><span class="meta-k">built from</span><span class="mono"><a href="https://github.com/radlab-dev-group/llm-router/tree/v0.9.6">v0.9.6</a>&nbsp;@&nbsp;<a href="https://github.com/radlab-dev-group/llm-router/commit/ab3e739">ab3e739</a></span></div>
+<p class="hint">Generated from the Markdown file in the repository: commit a change and the next build republishes it.</p>
 </footer>
 <footer class="foot"><div class="foot-inner">
 <span class="mono">llm-router &middot; docs are generated from the repository by <code>tools/build_docs.py</code></span>
-<span class="mono"><a href="https://github.com/radlab-dev-group/llm-router/tree/v0.9.6">0.9.6</a> @ <code>ab3e739</code></span>
+<span class="mono"><a href="https://github.com/radlab-dev-group/llm-router/tree/v0.9.6">0.9.6</a> @ <a href="https://github.com/radlab-dev-group/llm-router/commit/ab3e739">ab3e739</a></span>
 </div></footer>
 </main>
 <aside class="dtoc" id="dtoc"><h2 class="toc-title">on this page</h2><div class="toc-body"><ul><li><a href="#1-utworz-i-aktywuj-wirtualne-srodowisko">1️⃣ Utwórz i aktywuj wirtualne środowisko</a></li><li><a href="#2-zainstaluj-vllm">2️⃣ Zainstaluj vLLM</a><ul><li><a href="#sprawdz-instalacje">Sprawdź instalację</a></li></ul></li><li><a href="#4-przygotuj-srodowisko-do-pobierania-modelu">4️⃣ Przygotuj środowisko do pobierania modelu</a></li><li><a href="#6-pobierz-model-speakleashbielik-11b-v23-instruct">6️⃣ Pobierz model speakleash/Bielik-11B-v2.3-Instruct</a><ul><li><a href="#opcjonalnie-ustaw-wasny-katalog-cache">(Opcjonalnie) Ustaw własny katalog cache</a></li></ul></li><li><a href="#7-uruchom-serwer-vllm">7️⃣ Uruchom serwer vLLM</a></li><li><a href="#8-przetestuj-endpoint">8️⃣ Przetestuj endpoint</a></li><li><a href="#9-przydatne-wskazowki">9️⃣ Przydatne wskazówki</a></li><li><a href="#gotowe">🎉 Gotowe!</a></li></ul></div></aside>

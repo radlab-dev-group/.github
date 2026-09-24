@@ -3,19 +3,21 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-9KM7GYM55M"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-9KM7GYM55M');</script>
 <title>Load Balancing Strategies · v0.4.3 · llm-router docs</title>
-<meta name="description" content="The llm-router supports various strategies for selecting the most suitable provider when multiple options exist for a given model. This ensures efficient and reliable routing of requests. The available strategies are: Description: This is…">
+<meta name="description" content="## Load Balancing Strategies The `llm-router` supports various strategies for selecting the most suitable provider when multiple options exist for a given model. This ensures efficient and reliable routing of requests. The available strate…">
 <meta name="theme-color" content="#05070a">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Load Balancing Strategies · v0.4.3 · llm-router docs">
-<meta property="og:description" content="The llm-router supports various strategies for selecting the most suitable provider when multiple options exist for a given model. This ensures efficient and reliable routing of requests. The available strategies are: Description: This is…">
+<meta property="og:description" content="## Load Balancing Strategies The `llm-router` supports various strategies for selecting the most suitable provider when multiple options exist for a given model. This ensures efficient and reliable routing of requests. The available strate…">
 <meta name="docs-version" content="0.4.3">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2305070a'/%3E%3Cpath d='M8 22V10M8 16h9M17 10v12M17 13h7M17 19h7' stroke='%2300e59b' stroke-width='2' stroke-linecap='round' fill='none'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="../../assets/docs.css">
 <link rel="stylesheet" href="../../assets/pygments.css">
 <script src="../../assets/docs.js" defer></script>
 </head>
-<body class="page" data-version="0.4.3" data-search="../search.json" data-latest="1.0.7">
+<body class="page" data-version="0.4.3" data-search="../search.json" data-latest="1.0.8" data-repo="router">
 <a class="skip" href="#main">skip to content</a>
 <header class="topbar">
 <div class="topbar-inner">
@@ -30,7 +32,8 @@
 </form>
 <label class="vselect">
 <span class="sr-only">Documentation version</span>
-<select id="versions" aria-label="Documentation version"><option value="../../1.0.7/index.html">1.0.7  · latest</option>
+<select id="versions" aria-label="Documentation version"><option value="../../1.0.8/index.html">1.0.8  · latest</option>
+<option value="../../1.0.7/index.html">1.0.7</option>
 <option value="../../1.0.6/index.html">1.0.6</option>
 <option value="../../1.0.5/index.html">1.0.5</option>
 <option value="../../1.0.4/index.html">1.0.4</option>
@@ -80,11 +83,11 @@
 </header>
 <div class="scrim" id="scrim" hidden></div>
 <div class="shell">
-<aside class="sidebar" id="sidebar"><div class="side-head"><span class="side-v mono">v0.4.3</span><span class="side-tag old">archived</span></div><a class="side-hub" href="../index.html">documentation index</a><nav class="nav-tree" aria-label="Documentation"><section class="nav-sec"><h2 class="nav-sec-title"><a href="../overview.html">Getting started</a></h2><ul><li><a href="../overview.html">Overview</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="core/auditor/index.html">Security &amp; auditing</a></h2><ul><li><a href="core/auditor/index.html">Auditing subsystem – llm-router</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="index.html">REST API</a></h2><ul><li><a href="index.html">REST API reference</a></li><li><a href="endpoints/index.html">Endpoints Overview</a></li><li><a href="endpoints/readme-pl.html">Jak tworzyć endpointy w llm-proxy-api – przewodnik</a></li><li><a href="keepalive.html">Keep‑Alive Utility Overview</a></li><li><a href="lb-strategies.html" class="active">Load Balancing Strategies</a></li><li><a href="models-config.html">Models configuration description (JSON)</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../llm-router-lib/index.html">Python library</a></h2><ul><li><a href="../llm-router-lib/index.html">llmrouterlib</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../helm-charts/index.html">Deployment</a></h2><ul><li><a href="../helm-charts/index.html">LLM‑Router Helm Chart</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../examples/index.html">Examples</a></h2><ul><li><a href="../examples/index.html">Integration Examples with LLM Router</a></li><li><a href="../examples/quickstart/index.html">Full Stack with Local Models</a></li><li><a href="../examples/readme-llamaindex.html">Using LlamaIndex with Local Models via the LLM‑Router</a></li><li><a href="../examples/quickstart/google-gemma3-12b-it/vllm.html">vLLM + google/gemma‑3‑12b‑it – Quick‑Start Guide (Ubuntu)</a></li><li><a href="../examples/quickstart/speakleash-bielik-11b-v2-3-instruct/vllm.html">vLLM + speakleash/Bielik-11B-v2.3-Instruct – Przewodnik Szybkiego Startu (Ubuntu)</a></li><li><a href="../examples/quickstart/speakleash-bielik-11b-v2-3-instruct/index.html">🚀 Przewodnik Szybkiego Startu dla speakleash/Bielik-11B-v2.3-Instruct z vLLM &amp; LLM‑Router</a></li><li><a href="../examples/quickstart/google-gemma3-12b-it/index.html">🚀 Quick‑Start Guide for google/gemma-3-12b‑it with vLLM &amp; LLM‑Router</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../changelog.html">Release notes</a></h2><ul><li><a href="../changelog.html">Changelog</a></li></ul></section></nav><div class="side-foot"><a href="../../..">&larr;&nbsp;landing page</a><a class="mono" href="../search.json">search.json</a></div></aside>
+<aside class="sidebar" id="sidebar"><div class="side-head"><span class="side-v mono">v0.4.3</span><span class="side-tag old">archived</span></div><a class="side-hub" href="../index.html">documentation index</a><nav class="nav-tree" aria-label="Documentation"><div class="nav-repo"><span class="repo-name">llm-router</span></div><section class="nav-sec"><h2 class="nav-sec-title"><a href="../overview.html">Getting started</a></h2><ul><li><a href="../overview.html">Overview</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="core/auditor/index.html">Security &amp; auditing</a></h2><ul><li><a href="core/auditor/index.html">Auditing subsystem – llm-router</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="index.html">REST API</a></h2><ul><li><a href="index.html">REST API reference</a></li><li><a href="endpoints/index.html">Endpoints Overview</a></li><li><a href="endpoints/readme-pl.html">Jak tworzyć endpointy w llm-proxy-api – przewodnik</a></li><li><a href="keepalive.html">Keep‑Alive Utility Overview</a></li><li><a href="lb-strategies.html" class="active">Load Balancing Strategies</a></li><li><a href="models-config.html">Models configuration description (JSON)</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../llm-router-lib/index.html">Python library</a></h2><ul><li><a href="../llm-router-lib/index.html">llmrouterlib</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../helm-charts/index.html">Deployment</a></h2><ul><li><a href="../helm-charts/index.html">LLM‑Router Helm Chart</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../examples/index.html">Examples</a></h2><ul><li><a href="../examples/index.html">Integration Examples with LLM Router</a></li><li><a href="../examples/quickstart/index.html">Full Stack with Local Models</a></li><li><a href="../examples/readme-llamaindex.html">Using LlamaIndex with Local Models via the LLM‑Router</a></li><li><a href="../examples/quickstart/google-gemma3-12b-it/vllm.html">vLLM + google/gemma‑3‑12b‑it – Quick‑Start Guide (Ubuntu)</a></li><li><a href="../examples/quickstart/speakleash-bielik-11b-v2-3-instruct/vllm.html">vLLM + speakleash/Bielik-11B-v2.3-Instruct – Przewodnik Szybkiego Startu (Ubuntu)</a></li><li><a href="../examples/quickstart/speakleash-bielik-11b-v2-3-instruct/index.html">🚀 Przewodnik Szybkiego Startu dla speakleash/Bielik-11B-v2.3-Instruct z vLLM &amp; LLM‑Router</a></li><li><a href="../examples/quickstart/google-gemma3-12b-it/index.html">🚀 Quick‑Start Guide for google/gemma-3-12b‑it with vLLM &amp; LLM‑Router</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../changelog.html">Release notes</a></h2><ul><li><a href="../changelog.html">Changelog</a></li></ul></section></nav><div class="side-foot"><a href="../../..">&larr;&nbsp;landing page</a><a class="mono" href="../search.json">search.json</a></div></aside>
 <main class="main" id="main"><nav class="crumbs" aria-label="Breadcrumb">
 <a href="../../..">llm-router</a><span class="sep">/</span><a href="../index.html">docs</a><span class="sep">/</span><a href="index.html">REST API</a><span class="sep">/</span><em>Load Balancing Strategies</em>
 </nav>
-<article class="prose"><h1 id="load-balancing-strategies">Load Balancing Strategies<a class="headerlink" href="#load-balancing-strategies" title="link to this section">#</a></h1>
+<article class="prose"><h2 id="load-balancing-strategies">Load Balancing Strategies<a class="headerlink" href="#load-balancing-strategies" title="link to this section">#</a></h2>
 <p>The <code>llm-router</code> supports various strategies for selecting the most suitable provider
 when multiple options exist for a given model. This ensures efficient
 and reliable routing of requests. The available strategies are:</p>
@@ -266,8 +269,8 @@ sudo<span class="w"> </span>systemctl<span class="w"> </span><span class="nb">en
 <h2 id="extending-with-custom-strategies">Extending with Custom Strategies<a class="headerlink" href="#extending-with-custom-strategies" title="link to this section">#</a></h2>
 <p>To use a different strategy (e.g., round‑robin, random weighted, latency‑based),
 implement <code>ChooseProviderStrategyI</code> and pass the instance to <code>ProviderChooser</code>:</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">llm_router_api.core.lb.chooser</span> <span class="kn">import</span> <span class="n">ProviderChooser</span>
-<span class="kn">from</span> <span class="nn">my_strategies</span> <span class="kn">import</span> <span class="n">RoundRobinStrategy</span>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">llm_router_api.core.lb.chooser</span><span class="w"> </span><span class="kn">import</span> <span class="n">ProviderChooser</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">my_strategies</span><span class="w"> </span><span class="kn">import</span> <span class="n">RoundRobinStrategy</span>
 
 <span class="n">chooser</span> <span class="o">=</span> <span class="n">ProviderChooser</span><span class="p">(</span><span class="n">strategy</span><span class="o">=</span><span class="n">RoundRobinStrategy</span><span class="p">())</span>
 </code></pre></div>
@@ -276,17 +279,18 @@ implement <code>ChooseProviderStrategyI</code> and pass the instance to <code>Pr
 automatically use the chooser you provide.</p></article>
 <nav class="pager" aria-label="Previous and next page"><a class="prev" href="keepalive.html"><span class="dir">&larr; previous</span><span class="pt">Keep‑Alive Utility Overview</span></a><a class="next" href="models-config.html"><span class="dir">next &rarr;</span><span class="pt">Models configuration description (JSON)</span></a></nav>
 <footer class="doc-meta">
+<div class="meta-row"><span class="meta-k">repository</span><a class="mono" href="https://github.com/radlab-dev-group/llm-router">llm-router</a></div>
 <div class="meta-row"><span class="meta-k">source</span><a class="mono" href="https://github.com/radlab-dev-group/llm-router/blob/v0.4.3/llm_router_api/LB_STRATEGIES.md">llm_router_api/LB_STRATEGIES.md</a></div>
-<div class="meta-row"><span class="meta-k">last commit</span><time datetime="2025-12-23T16:33:32+01:00">2025-12-23</time></div>
-<div class="meta-row"><span class="meta-k">built from</span><span class="mono">v0.4.3&nbsp;@&nbsp;9883043</span></div>
-<p class="hint">Generated from the Markdown file in the repository: commit a change and the next build republishes it for every release that contains it.</p>
+<div class="meta-row"><span class="meta-k">last commit</span><time datetime="2025-11-30T00:44:17+01:00"><a href="https://github.com/radlab-dev-group/llm-router/commit/9883043">2025-11-30</a></time></div>
+<div class="meta-row"><span class="meta-k">built from</span><span class="mono"><a href="https://github.com/radlab-dev-group/llm-router/tree/v0.4.3">v0.4.3</a>&nbsp;@&nbsp;<a href="https://github.com/radlab-dev-group/llm-router/commit/9883043">9883043</a></span></div>
+<p class="hint">Generated from the Markdown file in the repository: commit a change and the next build republishes it.</p>
 </footer>
 <footer class="foot"><div class="foot-inner">
 <span class="mono">llm-router &middot; docs are generated from the repository by <code>tools/build_docs.py</code></span>
-<span class="mono"><a href="https://github.com/radlab-dev-group/llm-router/tree/v0.4.3">0.4.3</a> @ <code>9883043</code></span>
+<span class="mono"><a href="https://github.com/radlab-dev-group/llm-router/tree/v0.4.3">0.4.3</a> @ <a href="https://github.com/radlab-dev-group/llm-router/commit/9883043">9883043</a></span>
 </div></footer>
 </main>
-<aside class="dtoc" id="dtoc"><h2 class="toc-title">on this page</h2><div class="toc-body"><ul><li><a href="#1-balanced-default">1. balanced (Default)</a></li><li><a href="#2-weighted">2. weighted</a></li><li><a href="#3-dynamic_weighted-beta">3. dynamic_weighted (beta)</a></li><li><a href="#4-first_available">4. first_available</a></li><li><a href="#5-first_available_optim">5. first_available_optim</a></li><li><a href="#environments-and-redis-installation">Environments and Redis installation</a></li><li><a href="#extending-with-custom-strategies">Extending with Custom Strategies</a></li></ul></div></aside>
+<aside class="dtoc" id="dtoc"><h2 class="toc-title">on this page</h2><div class="toc-body"><ul><li><a href="#load-balancing-strategies">Load Balancing Strategies</a><ul><li><a href="#1-balanced-default">1. balanced (Default)</a></li><li><a href="#2-weighted">2. weighted</a></li><li><a href="#3-dynamic_weighted-beta">3. dynamic_weighted (beta)</a></li><li><a href="#4-first_available">4. first_available</a></li><li><a href="#5-first_available_optim">5. first_available_optim</a></li></ul></li><li><a href="#environments-and-redis-installation">Environments and Redis installation</a></li><li><a href="#extending-with-custom-strategies">Extending with Custom Strategies</a></li></ul></div></aside>
 </div>
 </body>
 </html>

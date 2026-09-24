@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-9KM7GYM55M"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-9KM7GYM55M');</script>
+<title>Plugins overview · v1.0.8 · llm-router docs</title>
+<meta name="description" content="## Overview The **LLM‑Router** project ships with a modular plugin system that lets you plug‑in **anonymizers** (also called *maskers*) and **guardrails** into request‑processing pipelines. Each plugin implements a tiny, well‑defined inter…">
+<meta name="theme-color" content="#05070a">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Plugins overview · v1.0.8 · llm-router docs">
+<meta property="og:description" content="## Overview The **LLM‑Router** project ships with a modular plugin system that lets you plug‑in **anonymizers** (also called *maskers*) and **guardrails** into request‑processing pipelines. Each plugin implements a tiny, well‑defined inter…">
+<meta name="docs-version" content="1.0.8">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2305070a'/%3E%3Cpath d='M8 22V10M8 16h9M17 10v12M17 13h7M17 19h7' stroke='%2300e59b' stroke-width='2' stroke-linecap='round' fill='none'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="../../assets/docs.css">
+<link rel="stylesheet" href="../../assets/pygments.css">
+<script src="../../assets/docs.js" defer></script>
+</head>
+<body class="page" data-version="1.0.8" data-search="../search.json" data-latest="1.0.8" data-repo="plugins">
+<a class="skip" href="#main">skip to content</a>
+<header class="topbar">
+<div class="topbar-inner">
+<button class="burger" id="burger" aria-label="Toggle documentation menu" aria-expanded="false" aria-controls="sidebar">&#9776;</button>
+<a class="brand" href="../../.."><svg width="21" height="21" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="7" fill="#0b1119" stroke="#1a232e"/><path d="M8 22V10M8 16h9M17 10v12M17 13h7M17 19h7" stroke="#00e59b" stroke-width="2" stroke-linecap="round" fill="none"/></svg><span>llm<span class="dash">-</span>router</span><span class="brand-docs">/docs</span></a>
+<div class="topbar-right">
+<form class="search" id="search" role="search" autocomplete="off">
+<span class="search-icon" aria-hidden="true">&#8981;</span>
+<input id="q" type="search" placeholder="search this version" aria-label="Search documentation" role="combobox" aria-expanded="false" aria-controls="results" aria-autocomplete="list">
+<kbd>/</kbd>
+<div class="results" id="results" role="listbox" aria-label="Search results" hidden></div>
+</form>
+<label class="vselect">
+<span class="sr-only">Documentation version</span>
+<select id="versions" aria-label="Documentation version"><option value="index.html" selected>1.0.8  · latest</option>
+<option value="../../1.0.7/index.html">1.0.7</option>
+<option value="../../1.0.6/index.html">1.0.6</option>
+<option value="../../1.0.5/index.html">1.0.5</option>
+<option value="../../1.0.4/index.html">1.0.4</option>
+<option value="../../1.0.3/index.html">1.0.3</option>
+<option value="../../1.0.1/index.html">1.0.1</option>
+<option value="../../1.0.0/index.html">1.0.0</option>
+<option value="../../0.9.6/index.html">0.9.6</option>
+<option value="../../0.9.5/index.html">0.9.5</option>
+<option value="../../0.9.4/index.html">0.9.4</option>
+<option value="../../0.9.2/index.html">0.9.2</option>
+<option value="../../0.9.1/index.html">0.9.1</option>
+<option value="../../0.9.0/index.html">0.9.0</option>
+<option value="../../0.8.0/index.html">0.8.0</option>
+<option value="../../0.7.0/index.html">0.7.0</option>
+<option value="../../0.6.9/index.html">0.6.9</option>
+<option value="../../0.6.8/index.html">0.6.8</option>
+<option value="../../0.6.7/index.html">0.6.7</option>
+<option value="../../0.6.6/index.html">0.6.6</option>
+<option value="../../0.6.5/index.html">0.6.5</option>
+<option value="../../0.6.4/index.html">0.6.4</option>
+<option value="../../0.6.3/index.html">0.6.3</option>
+<option value="../../0.6.2/index.html">0.6.2</option>
+<option value="../../0.6.1/index.html">0.6.1</option>
+<option value="../../0.6.0/index.html">0.6.0</option>
+<option value="../../0.5.2/index.html">0.5.2</option>
+<option value="../../0.5.1/index.html">0.5.1</option>
+<option value="../../0.5.0/index.html">0.5.0</option>
+<option value="../../0.4.6/index.html">0.4.6</option>
+<option value="../../0.4.5/index.html">0.4.5</option>
+<option value="../../0.4.4/index.html">0.4.4</option>
+<option value="../../0.4.3/index.html">0.4.3</option>
+<option value="../../0.4.2/index.html">0.4.2</option>
+<option value="../../0.4.1/index.html">0.4.1</option>
+<option value="../../0.4.0/index.html">0.4.0</option>
+<option value="../../0.3.1/index.html">0.3.1</option>
+<option value="../../0.3.0/index.html">0.3.0</option>
+<option value="../../0.2.3/index.html">0.2.3</option>
+<option value="../../0.2.2/index.html">0.2.2</option>
+<option value="../../0.2.1/index.html">0.2.1</option>
+<option value="../../0.2.0/index.html">0.2.0</option>
+<option value="../../0.1.1/index.html">0.1.1</option>
+<option value="../../0.1.0/index.html">0.1.0</option></select>
+</label>
+<a class="iconbtn" href="https://github.com/radlab-dev-group/llm-router-plugins" aria-label="Repository on GitHub" title="Repository on GitHub"><svg width="17" height="17" viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8a8 8 0 0 0 5.47 7.59c.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.46-.53.42-.02.72.39.82.55.48.81 1.25.94 1.56.73.2-.27.6-.94.94-1.13-.01-.2-.05-.82-.14-.98-.6.1-1.22.2-1.87.2-1.9 0-3.62-1.13-3.62-3.53 0-.78.28-1.42.74-1.92-.07-.18-.32-.91.07-1.9 0 0 .6-.19 1.97.74a6.8 6.8 0 0 1 3.58 0c1.37-.93 1.97-.74 1.97-.74.39.99.14 1.72.07 1.9.46.5.74 1.14.74 1.92 0 2.41-1.47 3.53-3.87 3.72.3.26.57.77.57 1.56 0 1.13-.012.04-.01 2.32 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg></a>
+</div>
+</div>
+</header>
+<div class="scrim" id="scrim" hidden></div>
+<div class="shell">
+<aside class="sidebar" id="sidebar"><div class="side-head"><span class="side-v mono">v1.0.8</span><span class="side-tag live">latest</span></div><a class="side-hub" href="../index.html">documentation index</a><nav class="nav-tree" aria-label="Documentation"><div class="nav-repo"><span class="repo-name">llm-router</span></div><section class="nav-sec"><h2 class="nav-sec-title"><a href="../overview.html">Getting started</a></h2><ul><li><a href="../overview.html">Overview</a></li><li><a href="../llm-router-api/docs/installation.html">Installation</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../llm-router-api/docs/env-definitions.html">Configuration</a></h2><ul><li><a href="../llm-router-api/docs/env-definitions.html">Environment Variables</a></li><li><a href="../llm-router-api/docs/models-config.html">Models configuration description (JSON)</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../llm-router-api/docs/keepalive.html">Routing &amp; resilience</a></h2><ul><li><a href="../llm-router-api/docs/keepalive.html">Keep‑Alive Utility Overview</a></li><li><a href="../llm-router-api/docs/lb-strategies.html">Load Balancing Strategies</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../llm-router-api/core/auditor/index.html">Security &amp; auditing</a></h2><ul><li><a href="../llm-router-api/core/auditor/index.html">Auditing subsystem – llm-router</a></li><li><a href="../llm-router-api/docs/authentication.html">Authentication &amp; Authorization</a></li><li><a href="../llm-router-api/docs/rate-limiting.html">Rate Limiting</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../llm-router-api/docs/routing-metrics.html">Observability</a></h2><ul><li><a href="../llm-router-api/docs/routing-metrics.html">Router Prometheus Metrics</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../llm-router-api/index.html">REST API</a></h2><ul><li><a href="../llm-router-api/index.html">REST API reference</a></li><li><a href="../llm-router-api/endpoints/index.html">Endpoints Overview</a></li><li><a href="../llm-router-api/docs/endpoint-dev.html">Endpoint Development Guide</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../llm-router-cli/index.html">CLI</a></h2><ul><li><a href="../llm-router-cli/index.html">llm-router CLI — Command Reference</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../llm-router-lib/index.html">Python library</a></h2><ul><li><a href="../llm-router-lib/index.html">llmrouterlib</a></li><li><a href="../llm-router-lib/response-models.html">Response models</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../helm-charts/index.html">Deployment</a></h2><ul><li><a href="../helm-charts/index.html">LLM‑Router Helm Chart</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../examples/index.html">Examples</a></h2><ul><li><a href="../examples/index.html">Integration Examples with LLM Router</a></li><li><a href="../examples/quickstart/index.html">Full Stack with Local Models</a></li><li><a href="../examples/readme-llamaindex.html">Using LlamaIndex with Local Models via the LLM‑Router</a></li><li><a href="../examples/quickstart/google-gemma3-12b-it/vllm.html">vLLM + google/gemma‑3‑12b‑it – Quick‑Start Guide (Ubuntu)</a></li><li><a href="../examples/quickstart/speakleash-bielik-11b-v2-3-instruct/vllm.html">vLLM + speakleash/Bielik-11B-v2.3-Instruct – Przewodnik Szybkiego Startu (Ubuntu)</a></li><li><a href="../examples/quickstart/speakleash-bielik-11b-v2-3-instruct/index.html">🚀 Przewodnik Szybkiego Startu dla speakleash/Bielik-11B-v2.3-Instruct z vLLM &amp; LLM‑Router</a></li><li><a href="../examples/quickstart/google-gemma3-12b-it/index.html">🚀 Quick‑Start Guide for google/gemma-3-12b‑it with vLLM &amp; LLM‑Router</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../changelog.html">Release notes</a></h2><ul><li><a href="../changelog.html">Changelog</a></li></ul></section><div class="nav-repo"><span class="repo-name">llm-router-plugins</span></div><section class="nav-sec open"><h2 class="nav-sec-title"><a href="index.html">Plugins overview</a></h2><ul><li><a href="index.html" class="active">Plugins overview</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="llm-router-plugins/maskers/fast-masker/index.html">Masker plugins</a></h2><ul><li><a href="llm-router-plugins/maskers/fast-masker/index.html">Overview</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="llm-router-plugins/utils/routing/agentic-routing/claude-code/index.html">Routing plugins</a></h2><ul><li><a href="llm-router-plugins/utils/routing/agentic-routing/claude-code/index.html">Claude Code Model Swap (agenticroutingclaude_code)</a></li><li><a href="llm-router-plugins/utils/routing/agentic-routing/codex/index.html">Codex CLI Routing (agenticroutingcodex)</a></li><li><a href="llm-router-plugins/utils/routing/semantic-biencoder/index.html">Semantic BiEncoder Routing (semanticbiencoderrouting)</a></li><li><a href="llm-router-plugins/utils/routing/index.html">Semantic Routing Plugins</a></li><li><a href="llm-router-plugins/utils/routing/simple-semantic/index.html">Simple Semantic Routing (simplesemanticrouting)</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="llm-router-plugins/utils/rag/langchain-rag.html">Utility plugins</a></h2><ul><li><a href="llm-router-plugins/utils/rag/langchain-rag.html">LangChain RAG Plugin for LLM‑Router</a></li></ul></section><div class="nav-repo"><span class="repo-name">llm-router-services</span></div><section class="nav-sec"><h2 class="nav-sec-title"><a href="../services/index.html">Services overview</a></h2><ul><li><a href="../services/index.html">llm-router services</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../services/llm-router-services/guardrails/index.html">Guardrail services</a></h2><ul><li><a href="../services/llm-router-services/guardrails/index.html">Guardrails Package</a></li><li><a href="../services/llm-router-services/guardrails/speakleash/index.html">Integration of Bielik‑Guard‑0.1B as llm‑router guardrail service (Sojka)</a></li><li><a href="../services/llm-router-services/guardrails/nask/index.html">Integration of HerBERT‑PL‑Guard with the naskpibguard_app.py Service</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../services/docker/index.html">Docker &amp; deployment</a></h2><ul><li><a href="../services/docker/index.html">LLM‑Router Services – Docker Build &amp; Run Guide</a></li></ul></section></nav><div class="side-foot"><a href="../../..">&larr;&nbsp;landing page</a><a class="mono" href="../search.json">search.json</a></div></aside>
+<main class="main" id="main"><nav class="crumbs" aria-label="Breadcrumb">
+<a href="../../..">llm-router</a><span class="sep">/</span><a href="../index.html">docs</a><span class="sep">/</span><a href="index.html">Plugins overview</a><span class="sep">/</span><em>Plugins overview</em>
+</nav>
+<article class="prose"><h2 id="overview">Overview<a class="headerlink" href="#overview" title="link to this section">#</a></h2>
+<p>The <strong>LLM‑Router</strong> project ships with a modular plugin system that lets you plug‑in <strong>anonymizers</strong> (also called
+<em>maskers</em>) and <strong>guardrails</strong> into request‑processing pipelines.<br />
+Each plugin implements a tiny, well‑defined interface (<code>apply</code>) and can be composed in an ordered list to form a *
+<em>pipeline</em>*. Pipelines are instantiated by the <code>MaskerPipeline</code> and <code>GuardrailPipeline</code> classes and are driven
+automatically by the endpoint logic in <code>endpoint_i.py</code>.</p>
+<hr />
+<h2 id="1-anonymizers-maskers">1. Anonymizers (Maskers)<a class="headerlink" href="#1-anonymizers-maskers" title="link to this section">#</a></h2>
+<h3 id="11-what-they-do">1.1 What they do<a class="headerlink" href="#11-what-they-do" title="link to this section">#</a></h3>
+<ul>
+<li><strong>Goal</strong> – Remove or replace personally‑identifiable information (PII) from a payload before it reaches the LLM or an
+  external service.</li>
+<li><strong>Typical strategy</strong> – Run a pipeline of maskers that locate spans corresponding to IDs, emails, IPs, etc., and
+  replace each span with a placeholder such as <code>{{MASKED_ITEM}}</code>.</li>
+</ul>
+<h3 id="12-builtin-anonymizer-plugins">1.2 Built‑in anonymizer plugins<a class="headerlink" href="#12-builtin-anonymizer-plugins" title="link to this section">#</a></h3>
+<table>
+<thead>
+<tr>
+<th>Plugin</th>
+<th>Description</th>
+<th>Technical notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>FastMaskerPlugin</strong> (<code>fast_masker_plugin.py</code>)</td>
+<td>Thin wrapper around the <code>FastMasker</code> utility class. Receives a JSON‑compatible payload and returns the same payload with all detected PII masked.</td>
+<td>Implements <code>PluginInterface</code>. The heavy lifting is delegated to <code>FastMasker.mask_payload(payload)</code>. No extra I/O; the <code>FastMasker</code> instance is created once in <code>__init__</code>.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="13-how-a-masker-is-used">1.3 How a masker is used<a class="headerlink" href="#13-how-a-masker-is-used" title="link to this section">#</a></h3>
+<ol>
+<li>The endpoint (e.g. <code>EndpointI._do_masking_if_needed</code>) checks the global flag <code>FORCE_MASKING</code>.</li>
+<li>If enabled, it creates a <code>MaskerPipeline</code> with the list of masker plugin identifiers (e.g. <code>["fast_masker"]</code>).</li>
+<li>The pipeline calls each plugin’s <code>apply</code> method sequentially, feeding the output of one as the input of the next.</li>
+<li>The final payload – now stripped of PII – proceeds to the rest of the request flow (guardrails, model dispatch,
+   etc.).</li>
+</ol>
+<hr />
+<h2 id="2-guardrails">2. Guardrails<a class="headerlink" href="#2-guardrails" title="link to this section">#</a></h2>
+<h3 id="21-what-they-do">2.1 What they do<a class="headerlink" href="#21-what-they-do" title="link to this section">#</a></h3>
+<ul>
+<li><strong>Goal</strong> – Verify that a request (or its response) complies with policy rules (e.g. no hateful, illegal, or unsafe
+  content).</li>
+<li><strong>Typical strategy</strong> – Split the payload into manageable text chunks, run a pipeline of guardrails, aggregate
+  per‑chunk scores, and decide whether the overall request is safe.</li>
+</ul>
+<h3 id="22-builtin-guardrail-plugins">2.2 Built‑in guardrail plugins<a class="headerlink" href="#22-builtin-guardrail-plugins" title="link to this section">#</a></h3>
+<table>
+<thead>
+<tr>
+<th>Plugin</th>
+<th>Description</th>
+<th>Technical notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>NASKGuardPlugin</strong> (<code>nask_guard_plugin.py</code>)</td>
+<td>HTTP‑based guardrail that forwards the payload to the external NASK guardrail service (<code>/nask_guard</code> endpoint) and returns a boolean <em>safe</em> flag together with the raw response.</td>
+<td>Inherits from <code>HttpPluginInterface</code>. The <code>apply</code> method calls <code>_request(payload)</code> (provided by the base class) and extracts <code>results["safe"]</code>. Errors are caught and logged; on failure the plugin returns <code>(False, {})</code>.</td>
+</tr>
+<tr>
+<td><strong>SojkaGuardPlugin</strong> (<code>sojka_guard_plugin.py</code>)</td>
+<td>HTTP‑based guardrail that forwards the payload to the <strong>Sójka</strong> guardrail service (<code>/sojka_guard</code> endpoint) and returns a safety flag.</td>
+<td>Mirrors the design of <code>NASKGuardPlugin</code>. The <code>endpoint_url</code> is built from the <code>LLM_ROUTER_GUARDRAIL_SOJKA_GUARD_HOST</code> environment variable. On success it returns <code>(True, response)</code>, otherwise <code>(False, {})</code>.</td>
+</tr>
+<tr>
+<td><strong>(Implicit) GuardrailProcessor</strong> (<code>processor.py</code>)</td>
+<td>Core logic used by the internal NASK guardrail Flask route (<code>nask_guardrail</code>). Tokenises the payload, creates overlapping chunks, runs a Hugging‑Face <code>text‑classification</code> pipeline, and produces a detailed safety report.</td>
+<td>Handles model loading (<code>AutoTokenizer</code>, <code>pipeline("text‑classification")</code>), chunking (<code>_chunk_text</code>), and scoring thresholds (<code>MIN_SCORE_FOR_SAFE</code>, <code>MIN_SCORE_FOR_NOT_SAFE</code>). Returns a dict: <code>{"safe": &lt;bool&gt;, "detailed": [...]}</code>.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="23-how-a-guardrail-is-used">2.3 How a guardrail is used<a class="headerlink" href="#23-how-a-guardrail-is-used" title="link to this section">#</a></h3>
+<ol>
+<li>The endpoint calls <code>_is_request_guardrail_safe(payload)</code> (or the analogous response guardrail).</li>
+<li>If <code>FORCE_GUARDRAIL_REQUEST</code> is true, a <code>GuardrailPipeline</code> is built from the configured plugin IDs (e.g.
+   <code>["nask_guard", "sojka_guard"]</code>).</li>
+<li>The pipeline iterates over each guardrail plugin; each <code>apply</code> returns <code>(is_safe, message)</code>.</li>
+<li>The first plugin that reports <code>is_safe=False</code> short‑circuits the pipeline and the request is rejected with a 400/500
+   error payload.</li>
+</ol>
+<hr />
+<h2 id="25-ml-based-pii-classification">2.5 ML-Based PII Classification<a class="headerlink" href="#25-ml-based-pii-classification" title="link to this section">#</a></h2>
+<p>For cases where regex patterns alone are insufficient (e.g. context-dependent PII detection), the project integrates
+with the <strong>anonymizer-model</strong> repository:</p>
+<p><strong>Repository</strong>: <a href="https://github.com/radlab-dev-group/anonymizer-model" target="_blank" rel="noopener noreferrer">radlab-dev-group/anonymizer-model</a></p>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Approach</strong></td>
+<td>NER (Named Entity Recognition) model based on Hugging Face <code>AutoModelForTokenClassification</code></td>
+</tr>
+<tr>
+<td><strong>What it does</strong></td>
+<td>Identifies PII entities in Polish text with context-aware detection (not just pattern matching)</td>
+</tr>
+<tr>
+<td><strong>Training pipeline</strong></td>
+<td>Configurable via JSON, logs to W&amp;B, exports best model (F1 macro) to <code>final_model/</code></td>
+</tr>
+<tr>
+<td><strong>REST API</strong></td>
+<td>Flask service supporting multiple model versions with optional dynamic quantization</td>
+</tr>
+<tr>
+<td><strong>CLI</strong></td>
+<td><code>pii-classifier convert</code> / <code>generalise</code> / <code>report</code> for data prep and analysis</td>
+</tr>
+<tr>
+<td><strong>Inference</strong></td>
+<td>Sub-token merging, punctuation cleaning, gap preservation for human-readable entity spans</td>
+</tr>
+<tr>
+<td><strong>Web tester</strong></td>
+<td>HTML/JS interface for real-time PII detection testing</td>
+</tr>
+</tbody>
+</table>
+<h3 id="how-it-complements-regex-maskers">How it complements regex maskers<a class="headerlink" href="#how-it-complements-regex-maskers" title="link to this section">#</a></h3>
+<table>
+<thead>
+<tr>
+<th>Approach</th>
+<th>Strength</th>
+<th>Best for</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Regex maskers</strong> (FastMasker)</td>
+<td>Deterministic, zero false negatives for known formats, fast</td>
+<td>Structured IDs (KRS, NIP, PESEL, NRB, REGON, VIN, etc.)</td>
+</tr>
+<tr>
+<td><strong>PII classifier</strong> (anonymizer-model)</td>
+<td>Context-aware, handles unknown formats, generalizes across domains</td>
+<td>Free-text entities, names, addresses, context-dependent PII</td>
+</tr>
+</tbody>
+</table>
+<h3 id="quick-start">Quick start<a class="headerlink" href="#quick-start" title="link to this section">#</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Clone and install</span>
+git<span class="w"> </span>clone<span class="w"> </span>https://github.com/radlab-dev-group/anonymizer-model.git
+<span class="nb">cd</span><span class="w"> </span>anonymizer-model
+pip<span class="w"> </span>install<span class="w"> </span>.
+
+<span class="c1"># Run the API (serves multiple model versions)</span>
+python3<span class="w"> </span>-m<span class="w"> </span>pii_classification.api.app
+
+<span class="c1"># API endpoints</span>
+<span class="c1">#   GET  /models   — list available models + default</span>
+<span class="c1">#   POST /predict   — { "text": "...", "model": "optional_name" }</span>
+</code></pre></div>
+
+<hr />
+<h2 id="26-polish-identification-regex-patterns">2.6 Polish Identification Regex Patterns<a class="headerlink" href="#26-polish-identification-regex-patterns" title="link to this section">#</a></h2>
+<p>The <strong>FastMaskerPlugin</strong> ships with a comprehensive set of rules for detecting Polish business and personal identifiers.
+These rules use regex matching + checksum/form validation to minimize false positives.</p>
+<h3 id="available-polish-rules">Available Polish rules<a class="headerlink" href="#available-polish-rules" title="link to this section">#</a></h3>
+<table>
+<thead>
+<tr>
+<th>Rule</th>
+<th>Placeholder</th>
+<th>Format</th>
+<th>Validation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>KrsRule</strong></td>
+<td><code>{{KRS}}</code></td>
+<td><code>1234567890</code> or <code>123-456-78-90</code> / <code>123 456 78 90</code></td>
+<td>10 digits (format-only)</td>
+</tr>
+<tr>
+<td><strong>NrbRule</strong></td>
+<td><code>{{NRB}}</code></td>
+<td><code>PL58105012981000009062923173</code> (26 digits)</td>
+<td>26 digits</td>
+</tr>
+<tr>
+<td><strong>NipRule</strong></td>
+<td><code>{{NIP}}</code></td>
+<td><code>1234567890</code> or <code>123-456-78-90</code></td>
+<td>Checksum with weights <code>[6,5,7,2,3,4,5,6,7]</code> mod 11</td>
+</tr>
+<tr>
+<td><strong>PeselRule</strong></td>
+<td><code>{{PESEL}}</code></td>
+<td>11 digits</td>
+<td>Checksum with weights <code>[1,3,7,9,1,3,7,9,1,3]</code> mod 10</td>
+</tr>
+<tr>
+<td><strong>RegonRule</strong></td>
+<td><code>{{REGON}}</code></td>
+<td>9 or 14 digits</td>
+<td>Checksum (different weights per form)</td>
+</tr>
+<tr>
+<td><strong>BankAccountRule</strong></td>
+<td><code>{{BANK_ACCOUNT}}</code></td>
+<td><code>PL58 1050 1298 1000 0090 6292 3173</code></td>
+<td>Polish IBAN (28 chars), supports masked <code>XX</code> groups</td>
+</tr>
+</tbody>
+</table>
+<h3 id="how-they-work">How they work<a class="headerlink" href="#how-they-work" title="link to this section">#</a></h3>
+<p>Each rule follows the same pattern:</p>
+<ol>
+<li><strong>Regex match</strong> — detects candidate strings (e.g. 10-digit sequences for KRS)</li>
+<li><strong>Checksum validation</strong> — validates the candidate against the official algorithm</li>
+<li><strong>Placeholder replacement</strong> — valid matches are replaced with <code>{{PLACEHOLDER}}</code>; invalid ones are left untouched</li>
+<li><strong>Optional anonymizer</strong> — if an <code>anonymizer_fn</code> is provided, it's called with <code>(original, tag_type)</code> and its result (
+   wrapped in <code>{}</code>) is used instead</li>
+</ol>
+<h3 id="adding-rules-to-the-pipeline">Adding rules to the pipeline<a class="headerlink" href="#adding-rules-to-the-pipeline" title="link to this section">#</a></h3>
+<p>To enable Polish rules in your masking pipeline, add their plugin IDs to <code>MASKING_STRATEGY_PIPELINE</code>:</p>
+<div class="codehilite"><pre><span></span><code><span class="n">MASKING_STRATEGY_PIPELINE</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"fast_masker"</span><span class="p">]</span>
+</code></pre></div>
+
+<p>All Polish rules are included in the FastMasker plugin by default. For a full list of available rules, see
+the <a href="llm-router-plugins/maskers/fast-masker/index.html">fast_masker README</a>.</p>
+<hr />
+<h2 id="27-semantic-routing-model-selection">2.7 Semantic Routing (Model Selection)<a class="headerlink" href="#27-semantic-routing-model-selection" title="link to this section">#</a></h2>
+<p>Four routing plugins are available for model selection. The two semantic plugins
+(<code>simple_semantic_routing</code>, <code>semantic_biencoder_routing</code>) activate when <code>payload["model"] == "auto"</code>; the Codex plugin
+(<code>agentic_routing_codex</code>) activates on <code>"auto_codex"</code>, routing the OpenAI-Responses-style requests emitted by the Codex
+CLI agent by request class and work mode. The Claude Code plugin (<code>agentic_routing_claude_code</code>) decides by model name
+alone, mapping the model IDs Claude Code asks for onto the models this router serves.</p>
+<h3 id="271-simple-semantic-routing-heuristic">2.7.1 Simple Semantic Routing (Heuristic)<a class="headerlink" href="#271-simple-semantic-routing-heuristic" title="link to this section">#</a></h3>
+<p>The <strong>Simple Semantic Routing plugin</strong> (<code>simple_semantic_routing</code>, <code>utils/routing/simple_semantic/</code>) activates on
+<code>payload["model"] == "auto"</code> and rewrites it in three dependency-free stages: <strong>intent</strong> scoring over the last user
+message — weighted keywords (case-insensitive substrings), phrases with a <code>:weight</code> suffix and regex patterns (+3.0
+each) — giving <code>code</code> / <code>math</code> / <code>creative</code> / <code>general</code>, or <code>none</code> when nothing scores; <strong>complexity</strong> from a word-count
+estimate (<code>int(words * 1.25)</code>) against the <code>simple</code> / <code>medium</code> thresholds; and <strong>model selection</strong> from an ordered pool
+where index 0 is the cheapest and index <code>n-1</code> the strongest. <code>intent_adjustment</code> only ever escalates the intents that
+declare one; an intent with an empty adjustment is demoted a single pool step. Only <code>payload["model"]</code> is written, so
+the decision lives in the log:
+<code>SimpleSemanticRouting: intent=code, complexity=simple (10 tokens) -&gt; qwen3.6:35b</code>.</p>
+<p>Configuration ships in
+<a href="https://github.com/radlab-dev-group/llm-router-plugins/blob/eefb333/llm_router_plugins/resources/routing/simple_semantic.json" target="_blank" rel="noopener noreferrer">simple_semantic.json</a>. Overrides:
+<code>LLM_ROUTER_ROUTING_COMPLEXITY_THRESHOLDS</code> (<code>simple|medium</code>), <code>LLM_ROUTER_ROUTING_MODELS</code> (the pool),
+<code>LLM_ROUTER_ROUTING_DEFAULT_MODEL</code> and <code>LLM_ROUTER_ROUTING_INTENT_&lt;name&gt;</code> — that last one <strong>replaces</strong> an intent and
+clears its patterns and weights, and there is no <code>..._CONFIG</code> variable for this plugin.</p>
+<p><strong>Full documentation</strong> — stage-by-stage mechanics, measured intent × complexity → model matrices for two- and
+three-model pools, configuration reference, tuning, gotchas and a runnable verification snippet:
+<a href="llm-router-plugins/utils/routing/simple-semantic/index.html">Simple Semantic Routing README</a>.</p>
+<h3 id="272-bi-encoder-semantic-routing-model-selection">2.7.2 Bi-Encoder Semantic Routing (Model Selection)<a class="headerlink" href="#272-bi-encoder-semantic-routing-model-selection" title="link to this section">#</a></h3>
+<p>The <strong>Bi-Encoder routing plugin</strong> (<code>semantic_biencoder_routing</code>, <code>utils/routing/semantic_biencoder/</code>) also answers
+<code>payload["model"] == "auto"</code>, but decides by <strong>embedding similarity</strong>. Each routing target is indexed at startup as
+<code>"Target: {name}. {description}"</code> plus its <code>examples</code>, split into overlapping token chunks, embedded by a
+sentence-transformers BiEncoder (<code>google/embeddinggemma-300m</code> by default), L2-normalized and stored in a
+<code>faiss.IndexFlatIP</code>; a docstore maps doc IDs back to target names. At request time the last user message is embedded
+(text longer than the model's <code>max_seq_length</code> is windowed and averaged, capped at <code>MAX_QUERY_WINDOWS = 4</code>), the
+<code>top_k</code> hits are <strong>averaged per target</strong>, and the winning target's <code>model_name</code> is selected when its cosine reaches
+<code>similarity_threshold</code>; the payload gains <code>routing.target_name</code> and <code>routing.similarity</code>. The index is persisted as
+<code>index.faiss</code> + <code>docstore.pkl</code> and reloaded on the next start, rebuilt automatically when the embedding model outputs a
+different dimension. Needs the <code>[ml]</code> / <code>[ml-gpu]</code> extras — and it fails hard rather than passing traffic through.</p>
+<p>Configuration ships in <a href="https://github.com/radlab-dev-group/llm-router-plugins/blob/eefb333/llm_router_plugins/resources/routing/semantic_biencoder.json" target="_blank" rel="noopener noreferrer">semantic_biencoder.json</a>.
+Overrides: <code>LLM_ROUTER_ROUTING_SEMANTIC_BIENCODER_CONFIG</code> (inline JSON <em>or</em> a path), <code>_MODEL</code>, <code>_TARGETS</code>,
+<code>_CHUNK_SIZE</code>, <code>_CHUNK_OVERLAP</code>, <code>_PERSIST_DIR</code>; <code>similarity_threshold</code> and <code>top_k</code> are config-only. The shipped
+<code>similarity_threshold: 0.0</code> reroutes <strong>every</strong> request — measured on the shipped targets, real matches score 0.70–0.82
+while unrelated or nonsense text still scores ≈0.35–0.37, so <code>0.5</code>–<code>0.6</code> is the usual production band.</p>
+<p><strong>Full documentation</strong> — startup and query mechanics, measured similarities per target, configuration reference, failure
+modes, tuning, gotchas (persisted-index staleness included) and a verification recipe:
+<a href="llm-router-plugins/utils/routing/semantic-biencoder/index.html">Bi-Encoder Routing README</a>.</p>
+<h3 id="273-codex-cli-routing-auto_codex">2.7.3 Codex CLI routing (<code>auto_codex</code>)<a class="headerlink" href="#273-codex-cli-routing-auto_codex" title="link to this section">#</a></h3>
+<p>The <strong>Codex Routing plugin</strong> (<code>agentic_routing_codex</code>, <code>utils/routing/agentic_routing/codex/</code>) routes the
+OpenAI-Responses-style requests emitted by the <strong>Codex CLI</strong> coding agent. It activates only when <code>payload["model"]</code>
+equals its configured trigger — <code>"auto_codex"</code> by default — so it never intercepts the <code>"auto"</code> traffic owned by the
+two semantic plugins. It rewrites <code>payload["model"]</code> and adds <code>payload["agent_mode"]</code> plus a <code>payload["routing"]</code>
+block, and nothing else; routing <strong>fails open</strong>, so a payload it cannot classify is passed through untouched.</p>
+<p>A work mode is resolved by a deterministic cascade — an explicit <code>agent_mode</code> override, the request class
+(<code>compaction</code>, <code>aux_title</code>), the <code>&lt;collaboration_mode&gt;</code> Plan block injected by the CLI, PL+EN keyword scoring, then an
+optional embedding cosine-similarity lookup — and falls back to <code>implement</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Mode</th>
+<th>Model</th>
+<th>Routed by</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>plan</code></td>
+<td><code>qwen/Qwen3.8-Flash-Next</code></td>
+<td><code>&lt;collaboration_mode&gt;</code> Plan Mode block</td>
+</tr>
+<tr>
+<td><code>implement</code></td>
+<td><code>qwen/Qwen3.8-Flash-Next</code></td>
+<td>Fallback for a plain main turn</td>
+</tr>
+<tr>
+<td><code>test</code></td>
+<td><code>qwen/Qwen3.8-27B</code></td>
+<td>Keywords in the classified user text</td>
+</tr>
+<tr>
+<td><code>git_review</code></td>
+<td><code>qwen/Qwen3.8-27B</code></td>
+<td>Keywords in the classified user text</td>
+</tr>
+<tr>
+<td><code>review</code></td>
+<td><code>qwen/Qwen3.8-Flash-Next</code></td>
+<td>Keywords in the classified user text</td>
+</tr>
+<tr>
+<td><code>debug</code></td>
+<td><code>qwen/Qwen3.8-Flash-Next</code></td>
+<td>Keywords in the classified user text</td>
+</tr>
+<tr>
+<td><code>aux_title</code></td>
+<td><code>qwen/Qwen3.8-27B</code></td>
+<td>Request class — system-thread title generation</td>
+</tr>
+<tr>
+<td><code>compaction</code></td>
+<td><code>qwen/Qwen3.8-27B</code></td>
+<td>Request class — context compaction</td>
+</tr>
+</tbody>
+</table>
+<p>Modes ship in
+<a href="https://github.com/radlab-dev-group/llm-router-plugins/blob/eefb333/llm_router_plugins/resources/routing/agentic_routing_codex.json" target="_blank" rel="noopener noreferrer">agentic_routing_codex.json</a> and are overridable with
+<code>LLM_ROUTER_ROUTING_SEMANTIC_AGENTIC_CODEX_*</code> environment variables (<code>…_CONFIG</code>, <code>…_TRIGGER</code>, <code>…_MODEL_&lt;MODE&gt;</code>,
+<code>…_MODELS</code>, <code>…_MODES</code>, <code>…_FALLBACK_MODE</code>, <code>…_HEURISTIC_ENABLED</code>, <code>…_HEURISTIC_MIN_SCORE</code>, <code>…_CLASSIFY_MAX_CHARS</code>,
+<code>…_MODEL</code>, <code>…_SEMANTIC_ENABLED</code>, <code>…_SIMILARITY_THRESHOLD</code>, <code>…_TOP_K</code>, <code>…_CHUNK_SIZE</code>, <code>…_CHUNK_OVERLAP</code>,
+<code>…_PERSIST_DIR</code>, <code>…_MODE_&lt;name&gt;_KEYWORDS</code>). <code>MODES</code> filters the mode list but does not move the fallback: if the
+whitelist excludes the configured <code>fallback_mode</code> (<code>implement</code>), set <code>FALLBACK_MODE</code> as well — otherwise configuration
+validation fails at startup.</p>
+<p><strong>Full documentation</strong> — the cascade and scoring model, installation, loading the plugin into the router, model
+selection and its pitfalls, tuning, a verification recipe and a troubleshooting table — lives in the
+<a href="llm-router-plugins/utils/routing/agentic-routing/codex/index.html">Codex CLI Routing README</a>.</p>
+<h3 id="274-claude-code-model-swap-claude-configured-models">2.7.4 Claude Code Model Swap (<code>claude-*</code> → configured models)<a class="headerlink" href="#274-claude-code-model-swap-claude-configured-models" title="link to this section">#</a></h3>
+<p>The <strong>Claude Code Model Swap plugin</strong> (<code>agentic_routing_claude_code</code>, <code>utils/routing/agentic_routing/claude_code/</code>)
+rewrites the model Claude Code asks for into the model the operator serves. Claude Code resolves its <code>fable</code> / <code>opus</code> /
+<code>sonnet</code> / <code>haiku</code> aliases client-side and sends a versioned ID, so pointing it at your own backend means overriding one
+environment variable per tier (<code>ANTHROPIC_DEFAULT_FABLE_MODEL</code>, <code>ANTHROPIC_DEFAULT_OPUS_MODEL</code>,
+<code>ANTHROPIC_DEFAULT_SONNET_MODEL</code>, <code>ANTHROPIC_DEFAULT_HAIKU_MODEL</code>, <code>CLAUDE_CODE_SUBAGENT_MODEL</code>) on every host. This
+plugin moves that mapping into one config file: a <strong>tier</strong> names the model IDs it answers and the model to serve them
+with, and a matching request gets the target written into <code>payload["model"]</code> (and <code>payload["model_name"]</code>, when the
+payload carries it) plus a <code>payload["routing"]</code> block.</p>
+<table>
+<thead>
+<tr>
+<th>Tier</th>
+<th>Model IDs Claude Code sends</th>
+<th>Setting it replaces</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>fable</code></td>
+<td><code>claude-fable-5-1</code>, <code>claude-fable-5</code>, <code>best</code></td>
+<td><code>ANTHROPIC_DEFAULT_FABLE_MODEL</code></td>
+</tr>
+<tr>
+<td><code>opus</code></td>
+<td><code>claude-opus-5-5</code> … <code>claude-opus-4-6</code></td>
+<td><code>ANTHROPIC_DEFAULT_OPUS_MODEL</code></td>
+</tr>
+<tr>
+<td><code>plan</code></td>
+<td><code>opusplan</code></td>
+<td>the <code>model: "opusplan"</code> phase</td>
+</tr>
+<tr>
+<td><code>sonnet</code></td>
+<td><code>claude-sonnet-5</code>, <code>claude-sonnet-4-6</code>, <code>-4-5</code></td>
+<td><code>ANTHROPIC_DEFAULT_SONNET_MODEL</code></td>
+</tr>
+<tr>
+<td><code>haiku</code></td>
+<td><code>claude-haiku-4-5</code>, <code>claude-3-5-haiku-*</code></td>
+<td><code>ANTHROPIC_DEFAULT_HAIKU_MODEL</code></td>
+</tr>
+</tbody>
+</table>
+<p>Matching is content-free and deterministic: the requested name is normalized (window suffix <code>[1m]</code>, provider version
+<code>:0</code>, <code>@YYYYMMDD</code> revision, <code>us.anthropic.</code> / <code>anthropic/</code> prefix, <code>models/</code> path and <code>-YYYYMMDD</code> release date stripped)
+and resolved through four layers, most specific first — literal, normalized exact, longest wildcard prefix
+(<code>claude-opus-*</code>), then family token (<code>claude-3-5-haiku-20241022</code> → Haiku). Configuration ships in
+<a href="https://github.com/radlab-dev-group/llm-router-plugins/blob/eefb333/llm_router_plugins/resources/routing/agentic_routing_claude_code.json" target="_blank" rel="noopener noreferrer">agentic_routing_claude_code.json</a> and is
+overridable with <code>LLM_ROUTER_ROUTING_SEMANTIC_AGENTIC_CLAUDE_CODE_*</code> (<code>…_CONFIG</code>, <code>…_ENABLED</code>, <code>…_MATCH_FAMILIES</code>,
+<code>…_FIELDS</code>, <code>…_MODEL_&lt;TIER&gt;</code>, <code>…_MODELS</code>, <code>…_MODES</code>, <code>…_MODE_&lt;tier&gt;_MODELS</code>). Routing <strong>fails open and silent</strong>: a model
+no tier claims comes back as the same object it arrived as, with no log line, while an inconsistent config (duplicate tier
+names, an embedded or bare wildcard, one exact name claimed twice) raises at startup. No ML dependencies.</p>
+<p><strong>Full documentation</strong> — the normalization and match layers, installation, router and CLI wiring, tier configuration,
+linting, gotchas, a verification recipe and a troubleshooting table — lives in the
+<a href="llm-router-plugins/utils/routing/agentic-routing/claude-code/index.html">Claude Code Model Swap README</a>.</p>
+<hr />
+<h2 id="3-pipelines">3. Pipelines<a class="headerlink" href="#3-pipelines" title="link to this section">#</a></h2>
+<p>Both masker and guardrail pipelines share the same design pattern:</p>
+<table>
+<thead>
+<tr>
+<th>Class</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>MaskerPipeline</strong> (<code>pipeline.py</code> – masker version)</td>
+<td>Executes a list of masker plugins in order, transforming the payload step‑by‑step.</td>
+</tr>
+<tr>
+<td><strong>GuardrailPipeline</strong> (<code>pipeline.py</code> – guardrail version)</td>
+<td>Executes guardrail plugins sequentially, stopping on the first failure.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="31-registration">3.1 Registration<a class="headerlink" href="#31-registration" title="link to this section">#</a></h3>
+<ul>
+<li>Plugins are registered lazily via <code>MaskerRegistry.register(name, logger)</code> or
+  <code>GuardrailRegistry.register(name, logger)</code>.</li>
+<li>The registry maps a string identifier (e.g. <code>"fast_masker"</code>) to a concrete plugin class, allowing pipelines to resolve
+  the classes at runtime.</li>
+</ul>
+<h3 id="32-configuration">3.2 Configuration<a class="headerlink" href="#32-configuration" title="link to this section">#</a></h3>
+<p>All plugin identifiers are stored in environment variables or constants such as:</p>
+<div class="codehilite"><pre><span></span><code><span class="n">MASKING_STRATEGY_PIPELINE</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"fast_masker"</span><span class="p">]</span>
+<span class="n">GUARDRAIL_STRATEGY_PIPELINE_REQUEST</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"nask_guard"</span><span class="p">,</span> <span class="s2">"sojka_guard"</span><span class="p">]</span>
+</code></pre></div>
+
+<p>These lists are consumed by the endpoint initialization (<code>EndpointI._prepare_masker_pipeline</code>,
+<code>EndpointI._prepare_guardrails_pipeline</code>).</p>
+<hr />
+<h2 id="4-adding-a-new-plugin">4. Adding a New Plugin<a class="headerlink" href="#4-adding-a-new-plugin" title="link to this section">#</a></h2>
+<ol>
+<li><strong>Create a subclass</strong> of either <code>PluginInterface</code> (for maskers) or <code>HttpPluginInterface</code> / a custom guardrail base.</li>
+<li><strong>Define a <code>name</code> class attribute</strong> – this is the identifier used in pipeline configuration.</li>
+<li><strong>Implement <code>apply(self, payload: Dict) -&gt; Dict</code></strong> (masker) **or <code>apply(self, payload: Dict) -&gt; Tuple[bool, Dict]</code>
+   ** (guardrail).</li>
+<li><strong>Register the plugin</strong> – either automatically via the registry’s <code>register</code> call in the pipeline constructor, or
+   manually by calling <code>MaskerRegistry.register(name=MyPlugin.name, logger=logger)</code>.</li>
+</ol>
+<p><em>Example stub for a new masker:</em></p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># my_custom_masker.py</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">llm_router_plugins.maskers.plugin_interface</span><span class="w"> </span><span class="kn">import</span> <span class="n">PluginInterface</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Optional</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">MyCustomMasker</span><span class="p">(</span><span class="n">PluginInterface</span><span class="p">):</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="s2">"my_custom_masker"</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">logger</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">logging</span><span class="o">.</span><span class="n">Logger</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">logger</span><span class="o">=</span><span class="n">logger</span><span class="p">)</span>
+        <span class="c1"># Load any heavy resources here (e.g., a spaCy model)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">payload</span><span class="p">:</span> <span class="n">Dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
+        <span class="c1"># Perform your masking logic and return the modified payload</span>
+        <span class="k">return</span> <span class="n">payload</span>
+</code></pre></div>
+
+<p>After placing the file in <code>llm_router_plugins/maskers/plugins/</code>, enable it by adding <code>"my_custom_masker"</code> to
+<code>MASKING_STRATEGY_PIPELINE</code>.</p>
+<hr />
+<h2 id="5-retrievalaugmented-generation-rag-support">5. Retrieval‑Augmented Generation (RAG) Support<a class="headerlink" href="#5-retrievalaugmented-generation-rag-support" title="link to this section">#</a></h2>
+<p>The project now includes a <strong>LangChain‑based RAG plugin</strong> that enables semantic search over user‑provided documents. The
+implementation lives in <code>llm_router_plugins/utils/rag/langchain_plugin.py</code> and is driven by the helper CLI scripts
+located in <code>scripts/</code>.</p>
+<h3 id="51-what-the-plugin-does">5.1 What the plugin does<a class="headerlink" href="#51-what-the-plugin-does" title="link to this section">#</a></h3>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Indexing</strong></td>
+<td>Reads a directory of text‑like files (<code>.txt</code>, <code>.md</code>, <code>.html</code>, <code>.js</code>, …), splits them into token‑based windows, embeds each chunk with a configurable transformer model, and stores the vectors in a FAISS (or compatible) vector store.</td>
+</tr>
+<tr>
+<td><strong>Searching</strong></td>
+<td>Given a user query, retrieves the most similar chunks and injects them into the payload (e.g., appends to the last user message) so that downstream LLM calls can use the retrieved context.</td>
+</tr>
+<tr>
+<td><strong>Configuration</strong></td>
+<td>All parameters (collection name, embedder model, device, chunk size, overlap, persistence directory) are driven by environment variables prefixed with <code>LLM_ROUTER_</code>. See the table below for the full list.</td>
+</tr>
+<tr>
+<td><strong>CLI helpers</strong></td>
+<td>Two ready‑to‑use scripts: <code>scripts/llm-router-rag-langchain-index.sh</code> (indexes a repository) and <code>scripts/llm-router-rag-langchain-search.sh</code> (runs a search or starts an interactive REPL).</td>
+</tr>
+</tbody>
+</table>
+<h3 id="52-environment-variables">5.2 Environment variables<a class="headerlink" href="#52-environment-variables" title="link to this section">#</a></h3>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Default</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>LLM_ROUTER_LANGCHAIN_RAG_COLLECTION</code></td>
+<td><em>must be set</em></td>
+<td>Name of the FAISS collection (e.g. <code>sample_collection</code>).</td>
+</tr>
+<tr>
+<td><code>LLM_ROUTER_LANGCHAIN_RAG_EMBEDDER</code></td>
+<td><code>/mnt/data2/llms/models/community/google/embeddinggemma-300m</code></td>
+<td>Path or Hugging‑Face identifier of the embedding model.</td>
+</tr>
+<tr>
+<td><code>LLM_ROUTER_LANGCHAIN_RAG_DEVICE</code></td>
+<td><code>cuda:2</code></td>
+<td>Torch device (<code>cpu</code>, <code>cuda:0</code>, …).</td>
+</tr>
+<tr>
+<td><code>LLM_ROUTER_LANGCHAIN_RAG_CHUNK_SIZE</code></td>
+<td><code>1024</code></td>
+<td>Number of tokens per chunk.</td>
+</tr>
+<tr>
+<td><code>LLM_ROUTER_LANGCHAIN_RAG_CHUNK_OVERLAP</code></td>
+<td><code>100</code></td>
+<td>Number of overlapping tokens between consecutive chunks.</td>
+</tr>
+<tr>
+<td><code>LLM_ROUTER_LANGCHAIN_RAG_PERSIST_DIR</code></td>
+<td><code>./workdir/plugins/utils/rag/langchain/${LLM_ROUTER_LANGCHAIN_RAG_COLLECTION}</code></td>
+<td>Directory where the FAISS index and docstore are persisted.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="example-export-block-add-to-your-shell-profile-or-a-env-file">Example export block (add to your shell profile or a <code>.env</code> file)<a class="headerlink" href="#example-export-block-add-to-your-shell-profile-or-a-env-file" title="link to this section">#</a></h4>
+<p>```shell script
+export LLM_ROUTER_LANGCHAIN_RAG_COLLECTION="${LLM_ROUTER_LANGCHAIN_RAG_COLLECTION:-sample_collection}"
+export LLM_ROUTER_LANGCHAIN_RAG_EMBEDDER="${LLM_ROUTER_LANGCHAIN_RAG_EMBEDDER:-/mnt/data2/llms/models/community/google/embeddinggemma-300m}"
+export LLM_ROUTER_LANGCHAIN_RAG_DEVICE="${LLM_ROUTER_LANGCHAIN_RAG_DEVICE:-cuda:2}"
+export LLM_ROUTER_LANGCHAIN_RAG_CHUNK_SIZE="${LLM_ROUTER_LANGCHAIN_RAG_CHUNK_SIZE:-1024}"
+export LLM_ROUTER_LANGCHAIN_RAG_CHUNK_OVERLAP="${LLM_ROUTER_LANGCHAIN_RAG_CHUNK_OVERLAP:-100}"
+export LLM_ROUTER_LANGCHAIN_RAG_PERSIST_DIR="${LLM_ROUTER_LANGCHAIN_RAG_PERSIST_DIR:-./workdir/plugins/utils/rag/langchain/${LLM_ROUTER_LANGCHAIN_RAG_COLLECTION}}"</p>
+<div class="codehilite"><pre><span></span><code>### 5.3 Using the CLI scripts
+
+**Index a repository** (example for the documentation site):
+
+```shell script
+scripts/llm-router-rag-langchain-index.sh
+# Internally runs:
+# llm-router-rag-langchain index --path "../.github/pages/llmrouter.cloud/" --ext .html .js .md
+</code></pre></div>
+
+<p><strong>Search</strong> (interactive REPL):</p>
+<p>```shell script
+scripts/llm-router-rag-langchain-search.sh</p>
+<h1 id="internally-runs">Internally runs:<a class="headerlink" href="#internally-runs" title="link to this section">#</a></h1>
+<h1 id="llm-router-rag-langchain-search">llm-router-rag-langchain search<a class="headerlink" href="#llm-router-rag-langchain-search" title="link to this section">#</a></h1>
+<h1 id="you-will-be-prompted-for-a-query-type-exit-to-quit">(you will be prompted for a query, type “exit” to quit)<a class="headerlink" href="#you-will-be-prompted-for-a-query-type-exit-to-quit" title="link to this section">#</a></h1>
+<div class="codehilite"><pre><span></span><code>**One‑shot search**:
+
+```shell script
+llm-router-rag-langchain search --query "What is Retrieval‑Augmented Generation?" --top_n 5
+</code></pre></div>
+
+<p>The CLI returns the raw matching chunks together with similarity scores. The <code>LangchainRAGPlugin</code> automatically formats
+the retrieved text and appends it to the user’s last message, prefixed with:</p>
+<div class="codehilite"><pre><span></span><code>If the context below will help answer the above question, use it.
+Context separated with double enter
+</code></pre></div></article>
+<nav class="pager" aria-label="Previous and next page"></nav>
+<footer class="doc-meta">
+<div class="meta-row"><span class="meta-k">repository</span><a class="mono" href="https://github.com/radlab-dev-group/llm-router-plugins">llm-router-plugins</a></div>
+<div class="meta-row"><span class="meta-k">source</span><a class="mono" href="https://github.com/radlab-dev-group/llm-router-plugins/blob/eefb333/README.md">README.md</a></div>
+<div class="meta-row"><span class="meta-k">last commit</span><time datetime="2026-09-24T17:24:48+02:00"><a href="https://github.com/radlab-dev-group/llm-router-plugins/commit/eefb333">2026-09-24</a></time></div>
+<div class="meta-row"><span class="meta-k">built from</span><span class="mono"><a href="https://github.com/radlab-dev-group/llm-router-plugins/tree/eefb333">feat/claude_code_plugin</a>&nbsp;@&nbsp;<a href="https://github.com/radlab-dev-group/llm-router-plugins/commit/eefb333">eefb333</a></span></div>
+<p class="hint">Generated from the Markdown file in the repository: commit a change and the next build republishes it.</p>
+</footer>
+<footer class="foot"><div class="foot-inner">
+<span class="mono">llm-router &middot; docs are generated from the repository by <code>tools/build_docs.py</code></span>
+<span class="mono"><a href="https://github.com/radlab-dev-group/llm-router-plugins/tree/eefb333">1.0.8</a> @ <a href="https://github.com/radlab-dev-group/llm-router-plugins/commit/eefb333">eefb333</a></span>
+</div></footer>
+</main>
+<aside class="dtoc" id="dtoc"><h2 class="toc-title">on this page</h2><div class="toc-body"><ul><li><a href="#overview">Overview</a></li><li><a href="#1-anonymizers-maskers">1. Anonymizers (Maskers)</a><ul><li><a href="#11-what-they-do">1.1 What they do</a></li><li><a href="#12-builtin-anonymizer-plugins">1.2 Built‑in anonymizer plugins</a></li><li><a href="#13-how-a-masker-is-used">1.3 How a masker is used</a></li></ul></li><li><a href="#2-guardrails">2. Guardrails</a><ul><li><a href="#21-what-they-do">2.1 What they do</a></li><li><a href="#22-builtin-guardrail-plugins">2.2 Built‑in guardrail plugins</a></li><li><a href="#23-how-a-guardrail-is-used">2.3 How a guardrail is used</a></li></ul></li><li><a href="#25-ml-based-pii-classification">2.5 ML-Based PII Classification</a><ul><li><a href="#how-it-complements-regex-maskers">How it complements regex maskers</a></li><li><a href="#quick-start">Quick start</a></li></ul></li><li><a href="#26-polish-identification-regex-patterns">2.6 Polish Identification Regex Patterns</a><ul><li><a href="#available-polish-rules">Available Polish rules</a></li><li><a href="#how-they-work">How they work</a></li><li><a href="#adding-rules-to-the-pipeline">Adding rules to the pipeline</a></li></ul></li><li><a href="#27-semantic-routing-model-selection">2.7 Semantic Routing (Model Selection)</a><ul><li><a href="#271-simple-semantic-routing-heuristic">2.7.1 Simple Semantic Routing (Heuristic)</a></li><li><a href="#272-bi-encoder-semantic-routing-model-selection">2.7.2 Bi-Encoder Semantic Routing (Model Selection)</a></li><li><a href="#273-codex-cli-routing-auto_codex">2.7.3 Codex CLI routing (auto_codex)</a></li><li><a href="#274-claude-code-model-swap-claude-configured-models">2.7.4 Claude Code Model Swap (claude-* → configured models)</a></li></ul></li><li><a href="#3-pipelines">3. Pipelines</a><ul><li><a href="#31-registration">3.1 Registration</a></li><li><a href="#32-configuration">3.2 Configuration</a></li></ul></li><li><a href="#4-adding-a-new-plugin">4. Adding a New Plugin</a></li><li><a href="#5-retrievalaugmented-generation-rag-support">5. Retrieval‑Augmented Generation (RAG) Support</a><ul><li><a href="#51-what-the-plugin-does">5.1 What the plugin does</a></li><li><a href="#52-environment-variables">5.2 Environment variables</a></li></ul></li></ul></div></aside>
+</div>
+</body>
+</html>

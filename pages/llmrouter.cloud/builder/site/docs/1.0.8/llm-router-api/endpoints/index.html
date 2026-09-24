@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-9KM7GYM55M"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-9KM7GYM55M');</script>
+<title>Endpoints Overview · v1.0.8 · llm-router docs</title>
+<meta name="description" content="## Endpoints Overview &gt; **Creating new endpoints?** See the [Endpoint Development Guide](../docs/ENDPOINT_DEV.md) &gt; (`llm_router_api/docs/ENDPOINT_DEV.md`). All endpoints are exposed under the REST API service. Unless stated otherwise, met…">
+<meta name="theme-color" content="#05070a">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Endpoints Overview · v1.0.8 · llm-router docs">
+<meta property="og:description" content="## Endpoints Overview &gt; **Creating new endpoints?** See the [Endpoint Development Guide](../docs/ENDPOINT_DEV.md) &gt; (`llm_router_api/docs/ENDPOINT_DEV.md`). All endpoints are exposed under the REST API service. Unless stated otherwise, met…">
+<meta name="docs-version" content="1.0.8">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2305070a'/%3E%3Cpath d='M8 22V10M8 16h9M17 10v12M17 13h7M17 19h7' stroke='%2300e59b' stroke-width='2' stroke-linecap='round' fill='none'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="../../../assets/docs.css">
+<link rel="stylesheet" href="../../../assets/pygments.css">
+<script src="../../../assets/docs.js" defer></script>
+</head>
+<body class="page" data-version="1.0.8" data-search="../../search.json" data-latest="1.0.8" data-repo="router">
+<a class="skip" href="#main">skip to content</a>
+<header class="topbar">
+<div class="topbar-inner">
+<button class="burger" id="burger" aria-label="Toggle documentation menu" aria-expanded="false" aria-controls="sidebar">&#9776;</button>
+<a class="brand" href="../../../.."><svg width="21" height="21" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="7" fill="#0b1119" stroke="#1a232e"/><path d="M8 22V10M8 16h9M17 10v12M17 13h7M17 19h7" stroke="#00e59b" stroke-width="2" stroke-linecap="round" fill="none"/></svg><span>llm<span class="dash">-</span>router</span><span class="brand-docs">/docs</span></a>
+<div class="topbar-right">
+<form class="search" id="search" role="search" autocomplete="off">
+<span class="search-icon" aria-hidden="true">&#8981;</span>
+<input id="q" type="search" placeholder="search this version" aria-label="Search documentation" role="combobox" aria-expanded="false" aria-controls="results" aria-autocomplete="list">
+<kbd>/</kbd>
+<div class="results" id="results" role="listbox" aria-label="Search results" hidden></div>
+</form>
+<label class="vselect">
+<span class="sr-only">Documentation version</span>
+<select id="versions" aria-label="Documentation version"><option value="index.html" selected>1.0.8  · latest</option>
+<option value="../../../1.0.7/llm-router-api/endpoints/index.html">1.0.7</option>
+<option value="../../../1.0.6/llm-router-api/endpoints/index.html">1.0.6</option>
+<option value="../../../1.0.5/llm-router-api/endpoints/index.html">1.0.5</option>
+<option value="../../../1.0.4/llm-router-api/endpoints/index.html">1.0.4</option>
+<option value="../../../1.0.3/llm-router-api/endpoints/index.html">1.0.3</option>
+<option value="../../../1.0.1/llm-router-api/endpoints/index.html">1.0.1</option>
+<option value="../../../1.0.0/llm-router-api/endpoints/index.html">1.0.0</option>
+<option value="../../../0.9.6/llm-router-api/endpoints/index.html">0.9.6</option>
+<option value="../../../0.9.5/llm-router-api/endpoints/index.html">0.9.5</option>
+<option value="../../../0.9.4/llm-router-api/endpoints/index.html">0.9.4</option>
+<option value="../../../0.9.2/llm-router-api/endpoints/index.html">0.9.2</option>
+<option value="../../../0.9.1/llm-router-api/endpoints/index.html">0.9.1</option>
+<option value="../../../0.9.0/llm-router-api/endpoints/index.html">0.9.0</option>
+<option value="../../../0.8.0/llm-router-api/endpoints/index.html">0.8.0</option>
+<option value="../../../0.7.0/llm-router-api/endpoints/index.html">0.7.0</option>
+<option value="../../../0.6.9/llm-router-api/endpoints/index.html">0.6.9</option>
+<option value="../../../0.6.8/llm-router-api/endpoints/index.html">0.6.8</option>
+<option value="../../../0.6.7/llm-router-api/endpoints/index.html">0.6.7</option>
+<option value="../../../0.6.6/llm-router-api/endpoints/index.html">0.6.6</option>
+<option value="../../../0.6.5/llm-router-api/endpoints/index.html">0.6.5</option>
+<option value="../../../0.6.4/llm-router-api/endpoints/index.html">0.6.4</option>
+<option value="../../../0.6.3/llm-router-api/endpoints/index.html">0.6.3</option>
+<option value="../../../0.6.2/llm-router-api/endpoints/index.html">0.6.2</option>
+<option value="../../../0.6.1/llm-router-api/endpoints/index.html">0.6.1</option>
+<option value="../../../0.6.0/llm-router-api/endpoints/index.html">0.6.0</option>
+<option value="../../../0.5.2/llm-router-api/endpoints/index.html">0.5.2</option>
+<option value="../../../0.5.1/llm-router-api/endpoints/index.html">0.5.1</option>
+<option value="../../../0.5.0/llm-router-api/endpoints/index.html">0.5.0</option>
+<option value="../../../0.4.6/llm-router-api/endpoints/index.html">0.4.6</option>
+<option value="../../../0.4.5/llm-router-api/endpoints/index.html">0.4.5</option>
+<option value="../../../0.4.4/llm-router-api/endpoints/index.html">0.4.4</option>
+<option value="../../../0.4.3/llm-router-api/endpoints/index.html">0.4.3</option>
+<option value="../../../0.4.2/llm-router-api/endpoints/index.html">0.4.2</option>
+<option value="../../../0.4.1/llm-router-api/endpoints/index.html">0.4.1</option>
+<option value="../../../0.4.0/llm-router-api/endpoints/index.html">0.4.0</option>
+<option value="../../../0.3.1/index.html">0.3.1</option>
+<option value="../../../0.3.0/index.html">0.3.0</option>
+<option value="../../../0.2.3/index.html">0.2.3</option>
+<option value="../../../0.2.2/index.html">0.2.2</option>
+<option value="../../../0.2.1/index.html">0.2.1</option>
+<option value="../../../0.2.0/index.html">0.2.0</option>
+<option value="../../../0.1.1/index.html">0.1.1</option>
+<option value="../../../0.1.0/index.html">0.1.0</option></select>
+</label>
+<a class="iconbtn" href="https://github.com/radlab-dev-group/llm-router" aria-label="Repository on GitHub" title="Repository on GitHub"><svg width="17" height="17" viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8a8 8 0 0 0 5.47 7.59c.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.46-.53.42-.02.72.39.82.55.48.81 1.25.94 1.56.73.2-.27.6-.94.94-1.13-.01-.2-.05-.82-.14-.98-.6.1-1.22.2-1.87.2-1.9 0-3.62-1.13-3.62-3.53 0-.78.28-1.42.74-1.92-.07-.18-.32-.91.07-1.9 0 0 .6-.19 1.97.74a6.8 6.8 0 0 1 3.58 0c1.37-.93 1.97-.74 1.97-.74.39.99.14 1.72.07 1.9.46.5.74 1.14.74 1.92 0 2.41-1.47 3.53-3.87 3.72.3.26.57.77.57 1.56 0 1.13-.012.04-.01 2.32 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg></a>
+</div>
+</div>
+</header>
+<div class="scrim" id="scrim" hidden></div>
+<div class="shell">
+<aside class="sidebar" id="sidebar"><div class="side-head"><span class="side-v mono">v1.0.8</span><span class="side-tag live">latest</span></div><a class="side-hub" href="../../index.html">documentation index</a><nav class="nav-tree" aria-label="Documentation"><div class="nav-repo"><span class="repo-name">llm-router</span></div><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../overview.html">Getting started</a></h2><ul><li><a href="../../overview.html">Overview</a></li><li><a href="../docs/installation.html">Installation</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../docs/env-definitions.html">Configuration</a></h2><ul><li><a href="../docs/env-definitions.html">Environment Variables</a></li><li><a href="../docs/models-config.html">Models configuration description (JSON)</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../docs/keepalive.html">Routing &amp; resilience</a></h2><ul><li><a href="../docs/keepalive.html">Keep‑Alive Utility Overview</a></li><li><a href="../docs/lb-strategies.html">Load Balancing Strategies</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../core/auditor/index.html">Security &amp; auditing</a></h2><ul><li><a href="../core/auditor/index.html">Auditing subsystem – llm-router</a></li><li><a href="../docs/authentication.html">Authentication &amp; Authorization</a></li><li><a href="../docs/rate-limiting.html">Rate Limiting</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../docs/routing-metrics.html">Observability</a></h2><ul><li><a href="../docs/routing-metrics.html">Router Prometheus Metrics</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="../index.html">REST API</a></h2><ul><li><a href="../index.html">REST API reference</a></li><li><a href="index.html" class="active">Endpoints Overview</a></li><li><a href="../docs/endpoint-dev.html">Endpoint Development Guide</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../llm-router-cli/index.html">CLI</a></h2><ul><li><a href="../../llm-router-cli/index.html">llm-router CLI — Command Reference</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../llm-router-lib/index.html">Python library</a></h2><ul><li><a href="../../llm-router-lib/index.html">llmrouterlib</a></li><li><a href="../../llm-router-lib/response-models.html">Response models</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../helm-charts/index.html">Deployment</a></h2><ul><li><a href="../../helm-charts/index.html">LLM‑Router Helm Chart</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../examples/index.html">Examples</a></h2><ul><li><a href="../../examples/index.html">Integration Examples with LLM Router</a></li><li><a href="../../examples/quickstart/index.html">Full Stack with Local Models</a></li><li><a href="../../examples/readme-llamaindex.html">Using LlamaIndex with Local Models via the LLM‑Router</a></li><li><a href="../../examples/quickstart/google-gemma3-12b-it/vllm.html">vLLM + google/gemma‑3‑12b‑it – Quick‑Start Guide (Ubuntu)</a></li><li><a href="../../examples/quickstart/speakleash-bielik-11b-v2-3-instruct/vllm.html">vLLM + speakleash/Bielik-11B-v2.3-Instruct – Przewodnik Szybkiego Startu (Ubuntu)</a></li><li><a href="../../examples/quickstart/speakleash-bielik-11b-v2-3-instruct/index.html">🚀 Przewodnik Szybkiego Startu dla speakleash/Bielik-11B-v2.3-Instruct z vLLM &amp; LLM‑Router</a></li><li><a href="../../examples/quickstart/google-gemma3-12b-it/index.html">🚀 Quick‑Start Guide for google/gemma-3-12b‑it with vLLM &amp; LLM‑Router</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../changelog.html">Release notes</a></h2><ul><li><a href="../../changelog.html">Changelog</a></li></ul></section><div class="nav-repo"><span class="repo-name">llm-router-plugins</span></div><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../plugins/index.html">Plugins overview</a></h2><ul><li><a href="../../plugins/index.html">Plugins overview</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../plugins/llm-router-plugins/maskers/fast-masker/index.html">Masker plugins</a></h2><ul><li><a href="../../plugins/llm-router-plugins/maskers/fast-masker/index.html">Overview</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../plugins/llm-router-plugins/utils/routing/agentic-routing/claude-code/index.html">Routing plugins</a></h2><ul><li><a href="../../plugins/llm-router-plugins/utils/routing/agentic-routing/claude-code/index.html">Claude Code Model Swap (agenticroutingclaude_code)</a></li><li><a href="../../plugins/llm-router-plugins/utils/routing/agentic-routing/codex/index.html">Codex CLI Routing (agenticroutingcodex)</a></li><li><a href="../../plugins/llm-router-plugins/utils/routing/semantic-biencoder/index.html">Semantic BiEncoder Routing (semanticbiencoderrouting)</a></li><li><a href="../../plugins/llm-router-plugins/utils/routing/index.html">Semantic Routing Plugins</a></li><li><a href="../../plugins/llm-router-plugins/utils/routing/simple-semantic/index.html">Simple Semantic Routing (simplesemanticrouting)</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../plugins/llm-router-plugins/utils/rag/langchain-rag.html">Utility plugins</a></h2><ul><li><a href="../../plugins/llm-router-plugins/utils/rag/langchain-rag.html">LangChain RAG Plugin for LLM‑Router</a></li></ul></section><div class="nav-repo"><span class="repo-name">llm-router-services</span></div><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../services/index.html">Services overview</a></h2><ul><li><a href="../../services/index.html">llm-router services</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../services/llm-router-services/guardrails/index.html">Guardrail services</a></h2><ul><li><a href="../../services/llm-router-services/guardrails/index.html">Guardrails Package</a></li><li><a href="../../services/llm-router-services/guardrails/speakleash/index.html">Integration of Bielik‑Guard‑0.1B as llm‑router guardrail service (Sojka)</a></li><li><a href="../../services/llm-router-services/guardrails/nask/index.html">Integration of HerBERT‑PL‑Guard with the naskpibguard_app.py Service</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../services/docker/index.html">Docker &amp; deployment</a></h2><ul><li><a href="../../services/docker/index.html">LLM‑Router Services – Docker Build &amp; Run Guide</a></li></ul></section></nav><div class="side-foot"><a href="../../../..">&larr;&nbsp;landing page</a><a class="mono" href="../../search.json">search.json</a></div></aside>
+<main class="main" id="main"><nav class="crumbs" aria-label="Breadcrumb">
+<a href="../../../..">llm-router</a><span class="sep">/</span><a href="../../index.html">docs</a><span class="sep">/</span><a href="../index.html">REST API</a><span class="sep">/</span><em>Endpoints Overview</em>
+</nav>
+<article class="prose"><h2 id="endpoints-overview">Endpoints Overview<a class="headerlink" href="#endpoints-overview" title="link to this section">#</a></h2>
+<blockquote>
+<p><strong>Creating new endpoints?</strong> See the <a href="../docs/endpoint-dev.html">Endpoint Development Guide</a>
+(<code>llm_router_api/docs/ENDPOINT_DEV.md</code>).</p>
+</blockquote>
+<p>All endpoints are exposed under the REST API service. Unless stated otherwise, methods are POST and consume/produce
+JSON.</p>
+<p>The default API prefix is <code>/api</code> (configurable via <code>LLM_ROUTER_EP_PREFIX</code>). Endpoints registered with
+<code>dont_add_api_prefix=True</code> appear without this prefix (e.g. <code>/models</code> instead of <code>/api/models</code>).</p>
+<h3 id="authentication">Authentication<a class="headerlink" href="#authentication" title="link to this section">#</a></h3>
+<p>When <code>LLM_ROUTER_AUTH_ENABLED=true</code>, endpoints are divided into <strong>public</strong> and <strong>auth‑required</strong>:</p>
+<table>
+<thead>
+<tr>
+<th>Scope</th>
+<th>Description</th>
+<th>Env var</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Public</td>
+<td>Bypass all auth checks — always accessible</td>
+<td><code>LLM_ROUTER_AUTH_PUBLIC_ENDPOINTS</code></td>
+</tr>
+<tr>
+<td>Auth‑required</td>
+<td>Return <strong>401 Unauthorized</strong> if no valid API key is provided</td>
+<td><code>LLM_ROUTER_AUTH_ENABLED=true</code></td>
+</tr>
+</tbody>
+</table>
+<p>Public endpoints (default): <code>/ping</code>, <code>/version</code>, <code>/models</code>, <code>/</code>, plus any path matching <code>/v1{public}</code> (e.g.
+<code>/v1/models</code>). All other endpoints require a valid API key with the appropriate policy permission:</p>
+<table>
+<thead>
+<tr>
+<th>Permission type</th>
+<th>What it grants access to</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>chat</code></td>
+<td>Chat completions, model listing, responses</td>
+</tr>
+<tr>
+<td><code>embedding</code></td>
+<td>Embeddings endpoints</td>
+</tr>
+<tr>
+<td><code>anthropic</code></td>
+<td>Anthropic Messages API (<code>/v1/messages</code>)</td>
+</tr>
+<tr>
+<td><code>ollama</code></td>
+<td>Ollama‑style chat completion</td>
+</tr>
+<tr>
+<td><code>builtin</code></td>
+<td>Built‑in utility endpoints (translate, generate, etc.)</td>
+</tr>
+</tbody>
+</table>
+<p>API keys are checked in order of priority:</p>
+<ol>
+<li><code>Authorization: Bearer &lt;key&gt;</code> header</li>
+<li><code>x-api-key</code> header</li>
+<li>Query parameter <code>api_key</code> or <code>api-key</code></li>
+</ol>
+<hr />
+<h3 id="health-info-public">Health &amp; Info (public)<a class="headerlink" href="#health-info-public" title="link to this section">#</a></h3>
+<ul>
+<li><strong>GET</strong> <code>/ping</code> – Simple health‑check, returns <code>"pong"</code>.</li>
+<li><strong>GET</strong> <code>/version</code> – Return the router version.</li>
+<li><strong>GET</strong> <code>/</code> – Ollama health endpoint.</li>
+<li><strong>GET</strong> <code>/tags</code> – List available Ollama model tags (public).</li>
+<li><strong>GET</strong> <code>/models</code> – List OpenAI‑compatible models (public).</li>
+<li><strong>GET</strong> <code>/v1/models</code> – List OpenAI‑compatible models (public).</li>
+<li><strong>GET</strong> <code>/api/v0/models</code> – List LM Studio models.</li>
+<li><strong>GET</strong> <code>/metrics</code> – Prometheus metrics endpoint (public; requires <code>LLM_ROUTER_USE_PROMETHEUS=1</code>).</li>
+</ul>
+<h3 id="authrequired-endpoints">Auth‑required Endpoints<a class="headerlink" href="#authrequired-endpoints" title="link to this section">#</a></h3>
+<h4 id="chat-completions">Chat completions<a class="headerlink" href="#chat-completions" title="link to this section">#</a></h4>
+<ul>
+<li><strong>POST</strong> <code>/chat/completions</code> — OpenAI‑style chat completion (requires <code>chat</code> permission).</li>
+<li><strong>POST</strong> <code>/api/chat/completions</code> — OpenAI‑style chat completion with prefix (requires <code>chat</code> permission).</li>
+<li><strong>POST</strong> <code>/v1/chat/completions</code> — vLLM‑like chat completion (requires <code>chat</code> permission).</li>
+<li><strong>POST</strong> <code>/api/chat</code> — Ollama‑style chat completion (requires <code>ollama</code> permission).</li>
+</ul>
+<h4 id="responses">Responses<a class="headerlink" href="#responses" title="link to this section">#</a></h4>
+<ul>
+<li><strong>POST</strong> <code>/responses</code> — OpenAI‑like responses endpoint (requires <code>chat</code> permission).</li>
+<li><strong>POST</strong> <code>/v1/responses</code> — OpenAI‑like responses endpoint v1 (requires <code>chat</code> permission).</li>
+</ul>
+<h4 id="embeddings">Embeddings<a class="headerlink" href="#embeddings" title="link to this section">#</a></h4>
+<ul>
+<li><strong>POST</strong> <code>/embeddings</code> — Standard embeddings (requires <code>embedding</code> permission).</li>
+<li><strong>POST</strong> <code>/api/embeddings</code> — Standard embeddings with prefix (requires <code>embedding</code> permission).</li>
+<li><strong>POST</strong> <code>/v1/embeddings</code> — OpenAI‑compatible embeddings endpoint (requires <code>embedding</code> permission).</li>
+<li><strong>POST</strong> <code>/api/embed</code> — Ollama‑native embeddings endpoint (requires <code>embedding</code> permission).</li>
+</ul>
+<h4 id="anthropic">Anthropic<a class="headerlink" href="#anthropic" title="link to this section">#</a></h4>
+<ul>
+<li><strong>POST</strong> <code>/v1/messages</code> — Anthropic Messages API compatible endpoint (requires <code>anthropic</code> permission).</li>
+</ul>
+<h4 id="chat-completions-builtin-requires-builtin-permission">Chat &amp; Completions (Built‑in, requires <code>builtin</code> permission)<a class="headerlink" href="#chat-completions-builtin-requires-builtin-permission" title="link to this section">#</a></h4>
+<ul>
+<li><strong>POST</strong> <code>/api/conversation_with_model</code> — Standard chat endpoint (OpenAI‑compatible payload).</li>
+<li><strong>POST</strong> <code>/api/extended_conversation_with_model</code> — Chat with extended fields support.</li>
+<li><strong>POST</strong> <code>/api/generative_answer</code> — Answer a question using provided context.</li>
+</ul>
+<h4 id="utility-endpoints-builtin-requires-builtin-permission">Utility Endpoints (Built‑in, requires <code>builtin</code> permission)<a class="headerlink" href="#utility-endpoints-builtin-requires-builtin-permission" title="link to this section">#</a></h4>
+<ul>
+<li><strong>POST</strong> <code>/api/generate_questions</code> — Generate questions from input texts.</li>
+<li><strong>POST</strong> <code>/api/polarity_3c</code> — Detect 3-class polarity (<code>ambivalent</code>, <code>positive</code>, <code>negative</code>) for input texts.</li>
+<li><strong>POST</strong> <code>/api/translate</code> — Translate a list of texts.</li>
+<li><strong>POST</strong> <code>/api/simplify_text</code> — Simplify input texts.</li>
+<li><strong>POST</strong> <code>/api/generate_label</code> — Generate a category name (label) from input texts. Returns a single, concise name
+  capturing the common essence of the texts.</li>
+<li><strong>POST</strong> <code>/api/generate_article_from_text</code> — Generate a short article from a single text.</li>
+<li><strong>POST</strong> <code>/api/create_full_article_from_texts</code> — Generate a full article from multiple texts.</li>
+</ul>
+<h4 id="masking-endpoint-builtin-requires-builtin-permission-when-auth-enabled">Masking Endpoint (Built‑in, requires <code>builtin</code> permission when auth enabled)<a class="headerlink" href="#masking-endpoint-builtin-requires-builtin-permission-when-auth-enabled" title="link to this section">#</a></h4>
+<ul>
+<li><strong>POST</strong> <code>/api/fast_text_mask</code> — Mask PII in plain text using the built‑in FastText masking ruleset. Accepts a <code>text</code>
+  field in the JSON body and returns masked content. Does not use guardrails or provider routing
+  (<code>EP_DONT_NEED_GUARDRAIL_AND_MASKING = True</code>).</li>
+</ul>
+<h3 id="streaming-vs-nonstreaming-responses">Streaming vs. Non‑Streaming Responses<a class="headerlink" href="#streaming-vs-nonstreaming-responses" title="link to this section">#</a></h3>
+<ul>
+<li>
+<p><strong>Streaming (<code>stream: true</code> – default)</strong>
+  The proxy opens an HTTP <strong>chunked</strong> connection and forwards each token/segment from the upstream LLM as soon as it
+  arrives. Clients can process partial output in real time (e.g., live UI updates).</p>
+</li>
+<li>
+<p><strong>Non‑Streaming (<code>stream: false</code>)</strong>
+  The proxy collects the full response from the provider, then returns a single JSON object containing the complete
+  text. Use this mode when you need the whole answer before proceeding.</p>
+</li>
+</ul>
+<p>Both modes are supported for every provider that implements the streaming interface (OpenAI, Ollama, vLLM). The <code>stream</code>
+flag lives in the request schema (<code>OpenAIChatModel</code> and analogous models) and is honoured automatically by the proxy.</p>
+<h3 id="payload-format">Payload format<a class="headerlink" href="#payload-format" title="link to this section">#</a></h3>
+<p><strong>Payload format</strong> follows the OpenAI schema (<code>model</code>, <code>messages</code>, optional <code>stream</code>, etc.) unless a custom endpoint
+overrides it.</p>
+<p>All endpoints automatically:</p>
+<ul>
+<li>Validate required arguments (via <code>REQUIRED_ARGS</code>).</li>
+<li>Resolve the appropriate provider using the configured <strong>load‑balancing strategy</strong>.</li>
+<li>Inject system prompts when <code>SYSTEM_PROMPT_NAME</code> is defined.</li>
+<li>Return a JSON response with <code>{ "status": true, "body": … }</code> or an error payload.</li>
+</ul></article>
+<nav class="pager" aria-label="Previous and next page"><a class="prev" href="../index.html"><span class="dir">&larr; previous</span><span class="pt">REST API reference</span></a><a class="next" href="../docs/endpoint-dev.html"><span class="dir">next &rarr;</span><span class="pt">Endpoint Development Guide</span></a></nav>
+<footer class="doc-meta">
+<div class="meta-row"><span class="meta-k">repository</span><a class="mono" href="https://github.com/radlab-dev-group/llm-router">llm-router</a></div>
+<div class="meta-row"><span class="meta-k">source</span><a class="mono" href="https://github.com/radlab-dev-group/llm-router/blob/v1.0.8/llm_router_api/endpoints/README.md">llm_router_api/endpoints/README.md</a></div>
+<div class="meta-row"><span class="meta-k">last commit</span><time datetime="2026-08-31T18:22:58+02:00"><a href="https://github.com/radlab-dev-group/llm-router/commit/658eb39">2026-08-31</a></time></div>
+<div class="meta-row"><span class="meta-k">built from</span><span class="mono"><a href="https://github.com/radlab-dev-group/llm-router/tree/v1.0.8">v1.0.8</a>&nbsp;@&nbsp;<a href="https://github.com/radlab-dev-group/llm-router/commit/658eb39">658eb39</a></span></div>
+<p class="hint">Generated from the Markdown file in the repository: commit a change and the next build republishes it.</p>
+</footer>
+<footer class="foot"><div class="foot-inner">
+<span class="mono">llm-router &middot; docs are generated from the repository by <code>tools/build_docs.py</code></span>
+<span class="mono"><a href="https://github.com/radlab-dev-group/llm-router/tree/v1.0.8">1.0.8</a> @ <a href="https://github.com/radlab-dev-group/llm-router/commit/658eb39">658eb39</a></span>
+</div></footer>
+</main>
+<aside class="dtoc" id="dtoc"><h2 class="toc-title">on this page</h2><div class="toc-body"><ul><li><a href="#endpoints-overview">Endpoints Overview</a><ul><li><a href="#authentication">Authentication</a></li><li><a href="#health-info-public">Health &amp;amp; Info (public)</a></li><li><a href="#authrequired-endpoints">Auth‑required Endpoints</a></li><li><a href="#streaming-vs-nonstreaming-responses">Streaming vs. Non‑Streaming Responses</a></li><li><a href="#payload-format">Payload format</a></li></ul></li></ul></div></aside>
+</div>
+</body>
+</html>
