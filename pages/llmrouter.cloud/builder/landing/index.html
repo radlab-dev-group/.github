@@ -1218,7 +1218,7 @@ $ <span class="k-str">./scripts/decrypt_auditor_logs.sh</span> 2026-09-09</pre>
 <pre><span class="c-p">$</span> docker run -d <span class="k-flag">-p</span> 5555:8080 <span class="k-flag">\</span>
     <span class="k-flag">-v</span> $PWD/models-config.json:/srv/models.json:ro <span class="k-flag">\</span>
     <span class="k-flag">-e</span> LLM_ROUTER_MODELS_CONFIG=/srv/models.json <span class="k-flag">\</span>
-    quay.io/radlab/llm-router:v1.1.0
+    quay.io/radlab/llm-router:v{{VERSION}}
 
 <span class="c-p">$</span> curl localhost:5555/version
 <span class="c-o">{&quot;version&quot;: <span class="c-s">&quot;{{VERSION}}&quot;</span>}</span></pre>
