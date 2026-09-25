@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-9KM7GYM55M"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-9KM7GYM55M');</script>
+<title>LLM‑Router Services – Docker Build &amp; Run Guide · v1.1.1 · llm-router docs</title>
+<meta name="description" content="# LLM‑Router Services – Docker Build &amp; Run Guide ## Overview This repository contains everything needed to containerise the **LLM‑Router** services with GPU support: | Component | File | Purpose | |-----------|---------------------|-------…">
+<meta name="theme-color" content="#05070a">
+<meta property="og:type" content="article">
+<meta property="og:title" content="LLM‑Router Services – Docker Build &amp; Run Guide · v1.1.1 · llm-router docs">
+<meta property="og:description" content="# LLM‑Router Services – Docker Build &amp; Run Guide ## Overview This repository contains everything needed to containerise the **LLM‑Router** services with GPU support: | Component | File | Purpose | |-----------|---------------------|-------…">
+<meta name="docs-version" content="1.1.1">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2305070a'/%3E%3Cpath d='M8 22V10M8 16h9M17 10v12M17 13h7M17 19h7' stroke='%2300e59b' stroke-width='2' stroke-linecap='round' fill='none'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="../../../assets/docs.css">
+<link rel="stylesheet" href="../../../assets/pygments.css">
+<script src="../../../assets/docs.js" defer></script>
+</head>
+<body class="page" data-version="1.1.1" data-search="../../search.json" data-latest="1.1.1" data-repo="services">
+<a class="skip" href="#main">skip to content</a>
+<header class="topbar">
+<div class="topbar-inner">
+<button class="burger" id="burger" aria-label="Toggle documentation menu" aria-expanded="false" aria-controls="sidebar">&#9776;</button>
+<a class="brand" href="../../../.."><svg width="21" height="21" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="7" fill="#0b1119" stroke="#1a232e"/><path d="M8 22V10M8 16h9M17 10v12M17 13h7M17 19h7" stroke="#00e59b" stroke-width="2" stroke-linecap="round" fill="none"/></svg><span>llm<span class="dash">-</span>router</span><span class="brand-docs">/docs</span></a>
+<div class="topbar-right">
+<form class="search" id="search" role="search" autocomplete="off">
+<span class="search-icon" aria-hidden="true">&#8981;</span>
+<input id="q" type="search" placeholder="search this version" aria-label="Search documentation" role="combobox" aria-expanded="false" aria-controls="results" aria-autocomplete="list">
+<kbd>/</kbd>
+<div class="results" id="results" role="listbox" aria-label="Search results" hidden></div>
+</form>
+<label class="vselect">
+<span class="sr-only">Documentation version</span>
+<select id="versions" aria-label="Documentation version"><option value="index.html" selected>1.1.1  · latest</option>
+<option value="../../../1.1.0/index.html">1.1.0</option>
+<option value="../../../1.0.8/index.html">1.0.8</option>
+<option value="../../../1.0.7/index.html">1.0.7</option>
+<option value="../../../1.0.6/index.html">1.0.6</option>
+<option value="../../../1.0.5/index.html">1.0.5</option>
+<option value="../../../1.0.4/index.html">1.0.4</option>
+<option value="../../../1.0.3/index.html">1.0.3</option>
+<option value="../../../1.0.1/index.html">1.0.1</option>
+<option value="../../../1.0.0/index.html">1.0.0</option>
+<option value="../../../0.9.6/index.html">0.9.6</option>
+<option value="../../../0.9.5/index.html">0.9.5</option>
+<option value="../../../0.9.4/index.html">0.9.4</option>
+<option value="../../../0.9.2/index.html">0.9.2</option>
+<option value="../../../0.9.1/index.html">0.9.1</option>
+<option value="../../../0.9.0/index.html">0.9.0</option>
+<option value="../../../0.8.0/index.html">0.8.0</option>
+<option value="../../../0.7.0/index.html">0.7.0</option>
+<option value="../../../0.6.9/index.html">0.6.9</option>
+<option value="../../../0.6.8/index.html">0.6.8</option>
+<option value="../../../0.6.7/index.html">0.6.7</option>
+<option value="../../../0.6.6/index.html">0.6.6</option>
+<option value="../../../0.6.5/index.html">0.6.5</option>
+<option value="../../../0.6.4/index.html">0.6.4</option>
+<option value="../../../0.6.3/index.html">0.6.3</option>
+<option value="../../../0.6.2/index.html">0.6.2</option>
+<option value="../../../0.6.1/index.html">0.6.1</option>
+<option value="../../../0.6.0/index.html">0.6.0</option>
+<option value="../../../0.5.2/index.html">0.5.2</option>
+<option value="../../../0.5.1/index.html">0.5.1</option>
+<option value="../../../0.5.0/index.html">0.5.0</option>
+<option value="../../../0.4.6/index.html">0.4.6</option>
+<option value="../../../0.4.5/index.html">0.4.5</option>
+<option value="../../../0.4.4/index.html">0.4.4</option>
+<option value="../../../0.4.3/index.html">0.4.3</option>
+<option value="../../../0.4.2/index.html">0.4.2</option>
+<option value="../../../0.4.1/index.html">0.4.1</option>
+<option value="../../../0.4.0/index.html">0.4.0</option>
+<option value="../../../0.3.1/index.html">0.3.1</option>
+<option value="../../../0.3.0/index.html">0.3.0</option>
+<option value="../../../0.2.3/index.html">0.2.3</option>
+<option value="../../../0.2.2/index.html">0.2.2</option>
+<option value="../../../0.2.1/index.html">0.2.1</option>
+<option value="../../../0.2.0/index.html">0.2.0</option>
+<option value="../../../0.1.1/index.html">0.1.1</option>
+<option value="../../../0.1.0/index.html">0.1.0</option></select>
+</label>
+<a class="iconbtn" href="https://github.com/radlab-dev-group/llm-router-services" aria-label="Repository on GitHub" title="Repository on GitHub"><svg width="17" height="17" viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8a8 8 0 0 0 5.47 7.59c.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.46-.53.42-.02.72.39.82.55.48.81 1.25.94 1.56.73.2-.27.6-.94.94-1.13-.01-.2-.05-.82-.14-.98-.6.1-1.22.2-1.87.2-1.9 0-3.62-1.13-3.62-3.53 0-.78.28-1.42.74-1.92-.07-.18-.32-.91.07-1.9 0 0 .6-.19 1.97.74a6.8 6.8 0 0 1 3.58 0c1.37-.93 1.97-.74 1.97-.74.39.99.14 1.72.07 1.9.46.5.74 1.14.74 1.92 0 2.41-1.47 3.53-3.87 3.72.3.26.57.77.57 1.56 0 1.13-.012.04-.01 2.32 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg></a>
+</div>
+</div>
+</header>
+<div class="scrim" id="scrim" hidden></div>
+<div class="shell">
+<aside class="sidebar" id="sidebar"><div class="side-head"><span class="side-v mono">v1.1.1</span><span class="side-tag live">latest</span></div><a class="side-hub" href="../../index.html">documentation index</a><nav class="nav-tree" aria-label="Documentation"><div class="nav-repo"><span class="repo-name">llm-router</span></div><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../overview.html">Getting started</a></h2><ul><li><a href="../../overview.html">Overview</a></li><li><a href="../../llm-router-api/docs/installation.html">Installation</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../llm-router-api/docs/env-definitions.html">Configuration</a></h2><ul><li><a href="../../llm-router-api/docs/env-definitions.html">Environment Variables</a></li><li><a href="../../llm-router-api/docs/models-config.html">Models configuration description (JSON)</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../llm-router-api/docs/keepalive.html">Routing &amp; resilience</a></h2><ul><li><a href="../../llm-router-api/docs/keepalive.html">Keep‑Alive Utility Overview</a></li><li><a href="../../llm-router-api/docs/lb-strategies.html">Load Balancing Strategies</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../llm-router-api/core/auditor/index.html">Security &amp; auditing</a></h2><ul><li><a href="../../llm-router-api/core/auditor/index.html">Auditing subsystem – llm-router</a></li><li><a href="../../llm-router-api/docs/authentication.html">Authentication &amp; Authorization</a></li><li><a href="../../llm-router-api/docs/rate-limiting.html">Rate Limiting</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../llm-router-api/docs/routing-metrics.html">Observability</a></h2><ul><li><a href="../../llm-router-api/docs/routing-metrics.html">Router Prometheus Metrics</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../llm-router-api/index.html">REST API</a></h2><ul><li><a href="../../llm-router-api/index.html">REST API reference</a></li><li><a href="../../llm-router-api/endpoints/index.html">Endpoints Overview</a></li><li><a href="../../llm-router-api/docs/endpoint-dev.html">Endpoint Development Guide</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../llm-router-cli/index.html">CLI</a></h2><ul><li><a href="../../llm-router-cli/index.html">llm-router CLI — Command Reference</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../llm-router-lib/index.html">Python library</a></h2><ul><li><a href="../../llm-router-lib/index.html">llmrouterlib</a></li><li><a href="../../llm-router-lib/response-models.html">Response models</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../helm-charts/index.html">Deployment</a></h2><ul><li><a href="../../helm-charts/index.html">LLM‑Router Helm Chart</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../examples/index.html">Examples</a></h2><ul><li><a href="../../examples/index.html">Integration Examples with LLM Router</a></li><li><a href="../../examples/quickstart/index.html">Full Stack with Local Models</a></li><li><a href="../../examples/readme-llamaindex.html">Using LlamaIndex with Local Models via the LLM‑Router</a></li><li><a href="../../examples/quickstart/google-gemma3-12b-it/vllm.html">vLLM + google/gemma‑3‑12b‑it – Quick‑Start Guide (Ubuntu)</a></li><li><a href="../../examples/quickstart/speakleash-bielik-11b-v2-3-instruct/vllm.html">vLLM + speakleash/Bielik-11B-v2.3-Instruct – Przewodnik Szybkiego Startu (Ubuntu)</a></li><li><a href="../../examples/quickstart/speakleash-bielik-11b-v2-3-instruct/index.html">🚀 Przewodnik Szybkiego Startu dla speakleash/Bielik-11B-v2.3-Instruct z vLLM &amp; LLM‑Router</a></li><li><a href="../../examples/quickstart/google-gemma3-12b-it/index.html">🚀 Quick‑Start Guide for google/gemma-3-12b‑it with vLLM &amp; LLM‑Router</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../changelog.html">Release notes</a></h2><ul><li><a href="../../changelog.html">Changelog</a></li></ul></section><div class="nav-repo"><span class="repo-name">llm-router-plugins</span></div><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../plugins/index.html">Plugins overview</a></h2><ul><li><a href="../../plugins/index.html">Plugins overview</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../plugins/llm-router-plugins/maskers/fast-masker/index.html">Masker plugins</a></h2><ul><li><a href="../../plugins/llm-router-plugins/maskers/fast-masker/index.html">Overview</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../plugins/llm-router-plugins/utils/routing/agentic-routing/claude-code/index.html">Routing plugins</a></h2><ul><li><a href="../../plugins/llm-router-plugins/utils/routing/agentic-routing/claude-code/index.html">Claude Code Model Swap (agenticroutingclaude_code)</a></li><li><a href="../../plugins/llm-router-plugins/utils/routing/agentic-routing/codex/index.html">Codex CLI Routing (agenticroutingcodex)</a></li><li><a href="../../plugins/llm-router-plugins/utils/routing/semantic-biencoder/index.html">Semantic BiEncoder Routing (semanticbiencoderrouting)</a></li><li><a href="../../plugins/llm-router-plugins/utils/routing/index.html">Semantic Routing Plugins</a></li><li><a href="../../plugins/llm-router-plugins/utils/routing/simple-semantic/index.html">Simple Semantic Routing (simplesemanticrouting)</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../plugins/llm-router-plugins/utils/rag/langchain-rag.html">Utility plugins</a></h2><ul><li><a href="../../plugins/llm-router-plugins/utils/rag/langchain-rag.html">LangChain RAG Plugin for LLM‑Router</a></li></ul></section><div class="nav-repo"><span class="repo-name">llm-router-services</span></div><section class="nav-sec"><h2 class="nav-sec-title"><a href="../index.html">Services overview</a></h2><ul><li><a href="../index.html">llm-router services</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../llm-router-services/guardrails/index.html">Guardrail services</a></h2><ul><li><a href="../llm-router-services/guardrails/index.html">Guardrails Package</a></li><li><a href="../llm-router-services/guardrails/speakleash/index.html">Integration of Bielik‑Guard‑0.1B as llm‑router guardrail service (Sojka)</a></li><li><a href="../llm-router-services/guardrails/nask/index.html">Integration of HerBERT‑PL‑Guard with the naskpibguard_app.py Service</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="index.html">Docker &amp; deployment</a></h2><ul><li><a href="index.html" class="active">LLM‑Router Services – Docker Build &amp; Run Guide</a></li></ul></section></nav><div class="side-foot"><a href="../../../..">&larr;&nbsp;landing page</a><a class="mono" href="../../search.json">search.json</a></div></aside>
+<main class="main" id="main"><nav class="crumbs" aria-label="Breadcrumb">
+<a href="../../../..">llm-router</a><span class="sep">/</span><a href="../../index.html">docs</a><span class="sep">/</span><a href="index.html">Docker &amp; deployment</a><span class="sep">/</span><em>LLM‑Router Services – Docker Build &amp; Run Guide</em>
+</nav>
+<article class="prose"><h1 id="llmrouter-services-docker-build-run-guide">LLM‑Router Services – Docker Build &amp; Run Guide<a class="headerlink" href="#llmrouter-services-docker-build-run-guide" title="link to this section">#</a></h1>
+<h2 id="overview">Overview<a class="headerlink" href="#overview" title="link to this section">#</a></h2>
+<p>This repository contains everything needed to containerise the <strong>LLM‑Router</strong> services with GPU support:</p>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>File</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Base image</strong></td>
+<td><code>Dockerfile.base</code></td>
+<td>Builds a CUDA‑enabled Ubuntu image with common utilities and PyTorch.</td>
+</tr>
+<tr>
+<td><strong>Application image</strong></td>
+<td><code>Dockerfile</code></td>
+<td>Extends the base image, pulls the service source code, installs Python dependencies, creates a non‑root user, and sets the entrypoint.</td>
+</tr>
+<tr>
+<td><strong>No-CUDA application image</strong></td>
+<td><code>Dockerfile.nocuda</code></td>
+<td>Standalone build image (Python + PyTorch, no NVIDIA/CUDA dependency). Useful for CPU-only deployment or when the CUDA base image is unavailable.</td>
+</tr>
+<tr>
+<td><strong>Entrypoint script</strong></td>
+<td><code>entrypoint.sh</code></td>
+<td>Handles optional debug mode and launches the main service script (<code>run_servcices.sh</code>).</td>
+</tr>
+</tbody>
+</table>
+<p>The steps below assume you have a recent Docker installation (Docker 20.10+ with the NVIDIA Container Toolkit for GPU access).</p>
+<hr />
+<h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="link to this section">#</a></h2>
+<table>
+<thead>
+<tr>
+<th>Requirement</th>
+<th>How to install</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Docker Engine</strong></td>
+<td>Follow the official guide: <a href="https://docs.docker.com/engine/install/" target="_blank" rel="noopener noreferrer">https://docs.docker.com/engine/install/</a></td>
+</tr>
+<tr>
+<td><strong>NVIDIA drivers</strong> (host)</td>
+<td>Install the latest driver for your GPU (e.g., <code>sudo apt install nvidia-driver-525</code>).</td>
+</tr>
+<tr>
+<td><strong>NVIDIA Container Toolkit</strong></td>
+<td><a href="https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html" target="_blank" rel="noopener noreferrer">https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html</a></td>
+</tr>
+<tr>
+<td><strong>Git</strong> (optional, for cloning the repo locally)</td>
+<td><code>sudo apt install git</code></td>
+</tr>
+</tbody>
+</table>
+<p>Verify GPU visibility inside Docker:</p>
+<p>```shell script
+docker run --gpus all nvidia/cuda:12.2.2-runtime-ubuntu22.04 nvidia-smi</p>
+<div class="codehilite"><pre><span></span><code>You should see a table with your GPU details.
+
+---  
+
+## 1. Build the Base Image  
+
+The base image provides CUDA, Ubuntu, Python 3, `pip`, and a pre‑installed PyTorch wheel.  
+It is built from **Dockerfile.base**, which accepts an optional `BASE_IMAGE` build‑arg (default:
+`nvidia/cuda:12.2.2-runtime-ubuntu22.04`). After the build the image is tagged as
+`gpu-base:cuda-12.2.2-ubuntu22.04` and can be used as a foundation for the application image.
+
+```shell script
+# From the project ROOT (not inside docker/)
+docker build -f docker/Dockerfile.base \
+  -t gpu-base:cuda-12.2.2-ubuntu22.04 .
+</code></pre></div>
+
+<blockquote>
+<p><strong>Tip</strong> – If you want to reuse the image across multiple projects, push it to a private registry:</p>
+</blockquote>
+<p>```shell script
+docker tag gpu-base:cuda-12.2.2-ubuntu22.04 my-registry.example.com/gpu-base:cuda-12.2.2-ubuntu22.04
+docker push my-registry.example.com/gpu-base:cuda-12.2.2-ubuntu22.04</p>
+<div class="codehilite"><pre><span></span><code>---  
+
+## 2. Build the Application Image  
+
+The application image is based on the **gpu‑base** image you just built (or on any image you
+specify via the `BASE_IMAGE` build‑arg). It copies the service source code, installs the
+Python package, creates a dedicated user, and sets the entrypoint.
+
+&gt; ⚠️ **Important:** The Docker build context must be the **project root** (where `setup.py` lives),
+because `COPY .` copies everything from there — including the `llm_router_services/` package directory
+and `setup.py`. The Docker file itself is passed via `-f`:
+
+```shell script
+# Run this from the project ROOT (not inside docker/)
+docker build \
+  -f docker/Dockerfile \
+  --build-arg version=prod \               # optional: override the image label
+  --build-arg USER_ID=5000 \               # optional: custom UID for the runtime user
+  --build-arg GROUP_ID=5000 \              # optional: custom GID for the runtime group
+  --build-arg BASE_IMAGE=gpu-base:cuda-12.2.2-ubuntu22.04 \  # optional: custom base image
+  -t llm-router-services:prod .
+</code></pre></div>
+
+<h3 id="common-buildtime-arguments">Common build‑time arguments<a class="headerlink" href="#common-buildtime-arguments" title="link to this section">#</a></h3>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>version</code></td>
+<td><code>prod</code></td>
+<td>Image label used for documentation / versioning.</td>
+</tr>
+<tr>
+<td><code>USER_ID</code> / <code>GROUP_ID</code></td>
+<td><code>5000</code></td>
+<td>UID/GID for the non‑root <code>llm-router</code> user inside the container.</td>
+</tr>
+<tr>
+<td><code>BASE_IMAGE</code></td>
+<td><code>gpu-base:cuda-12.2.2-ubuntu22.04</code></td>
+<td>Base image for the application; can be any compatible CUDA image.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="3-build-the-no-cuda-application-image">3. Build the No-CUDA Application Image<a class="headerlink" href="#3-build-the-no-cuda-application-image" title="link to this section">#</a></h2>
+<p>When you don't need GPU support (CPU-only deployment) or can't use the CUDA base image, use <strong>Dockerfile.nocuda</strong>.<br />
+It is a fully standalone image based on <code>python:3.14.6-trixie</code> with Python 3, PyTorch, UTF-8 locale settings, and all required utilities baked in.</p>
+<blockquote>
+<p>⚠️ Same as above — run from the <strong>project root</strong> with <code>-f docker/Dockerfile.nocuda</code>:</p>
+</blockquote>
+<p>```shell script</p>
+<h1 id="run-this-from-the-project-root-not-inside-docker">Run this from the project ROOT (not inside docker/)<a class="headerlink" href="#run-this-from-the-project-root-not-inside-docker" title="link to this section">#</a></h1>
+<p>docker build \
+  -f docker/Dockerfile.nocuda \
+  --build-arg version=prod \
+  -t llm-router-services:prod-cpu .</p>
+<div class="codehilite"><pre><span></span><code>&gt; **Note** – This image is larger than a typical multi-stage CUDA build because PyTorch and all system dependencies are installed in a single stage.  
+&gt; It does **not** require the NVIDIA Container Toolkit to run.
+
+---  
+
+## 4. Run the Container  
+
+The container expects the `entrypoint.sh` script (included in the repository) to be present at
+`/srv/llm-router-services/entrypoint.sh` inside the image. It will launch `run_servcices.sh`
+(the service starter) unless you enable debug mode.
+
+### GPU build (`llm-router-services:prod`)
+
+```shell script
+docker run -it --rm \
+  --gpus all \                         # expose GPU(s) to the container — required for CUDA builds
+  -p 5000:5000 \                       # map the service port (adjust if needed)
+  -e HF_TOKEN=YOUR_HF_TOKEN \          # **required** HuggingFace access token
+  llm-router-services:prod
+</code></pre></div>
+
+<h3 id="cpu-build-llm-router-servicesprod-cpu">CPU build (<code>llm-router-services:prod-cpu</code>)<a class="headerlink" href="#cpu-build-llm-router-servicesprod-cpu" title="link to this section">#</a></h3>
+<blockquote>
+<p>No <code>--gpus</code> flag needed — the nocuda image works on any host.</p>
+</blockquote>
+<p>```shell script
+docker run -it --rm \
+  -p 5000:5000 \
+  -e HF_TOKEN=YOUR_HF_TOKEN \
+  llm-router-services:prod-cpu</p>
+<div class="codehilite"><pre><span></span><code>### Debug / Interactive Mode
+
+For either build, add the `--debug` flag to pause inside the container (allows `docker exec`):
+
+```shell script
+docker run -it --rm \
+  -p 5000:5000 \
+  -e HF_TOKEN=YOUR_HF_TOKEN \
+  llm-router-services:prod --debug
+</code></pre></div>
+
+<p>The entrypoint will sleep indefinitely, so you can <code>docker exec -it &lt;container-id&gt; bash</code> and explore.</p>
+<hr />
+<h2 id="5-customising-runtime-behaviour">5. Customising Runtime Behaviour<a class="headerlink" href="#5-customising-runtime-behaviour" title="link to this section">#</a></h2>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Where to set</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>HF_HOME</code> (set in the image)</td>
+<td>Not required at run‑time</td>
+<td>Directory used by Hugging Face libraries for model caches (<code>/srv/cache</code>).</td>
+</tr>
+<tr>
+<td><code>HF_TOKEN</code></td>
+<td><code>docker run -e HF_TOKEN=…</code></td>
+<td><strong>Mandatory</strong> token for authenticating with the Hugging Face Hub.</td>
+</tr>
+<tr>
+<td>Additional environment variables</td>
+<td><code>docker run -e VAR=value …</code></td>
+<td>Pass any configuration needed by your service (e.g., API keys, model names).</td>
+</tr>
+<tr>
+<td>Port mapping</td>
+<td><code>-p host:container</code></td>
+<td>Change the exposed port if your service listens on a different one.</td>
+</tr>
+<tr>
+<td>Cache volume</td>
+<td><code>-v /local/path:/srv/cache</code></td>
+<td>Mount a host directory to <code>/srv/cache</code> to persist Hugging Face model downloads across container restarts.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="6-cleaning-up">6. Cleaning Up<a class="headerlink" href="#6-cleaning-up" title="link to this section">#</a></h2>
+<p>```shell script</p>
+<h1 id="remove-stopped-containers-if-any">Remove stopped containers (if any)<a class="headerlink" href="#remove-stopped-containers-if-any" title="link to this section">#</a></h1>
+<p>docker container prune -f</p>
+<h1 id="remove-images">Remove images<a class="headerlink" href="#remove-images" title="link to this section">#</a></h1>
+<p>docker image rm gpu-base:cuda-12.2.2-ubuntu22.04 llm-router-services:prod llm-router-services:prod-cpu</p>
+<div class="codehilite"><pre><span></span><code>If you pushed the images to a registry, delete them there as well.
+
+---  
+
+## 7. Troubleshooting  
+
+| Symptom | Likely Cause | Fix                                                                                                                           |
+|---------|--------------|-------------------------------------------------------------------------------------------------------------------------------|
+| `docker: Error response from daemon: could not select device driver "" with capabilities: [[gpu]]` | NVIDIA runtime not enabled | Install the NVIDIA Container Toolkit and add `"default-runtime": "nvidia"` to `/etc/docker/daemon.json`, then restart Docker. |
+| `Unable to locate package python3-pip` during build | Out‑of‑date `apt` cache | Ensure the `apt-get update` line runs before installing packages (the base Dockerfile already does this).                     |
+| `ImportError: No module named torch` at runtime | PyTorch not installed or mismatched CUDA version | Re‑build the base image; the base Dockerfile installs `torch` from PyPI, which pulls the CUDA‑compatible wheel.               |
+| Container exits immediately after start | `run_servcices.sh` missing or not executable | Verify the script is mounted correctly (`-v …:ro`) and has executable permissions (`chmod +x`).                               |
+| Debug mode does not pause | Wrong argument spelling | Use `--debug`, `debug`, `--shell`, or `shell` (any of these activate debug mode).                                             |
+| Hugging Face authentication fails | `HF_TOKEN` not set or invalid | Supply a valid token via `-e HF_TOKEN=…` when running the container and check if you have confirmed the licenses for the models used                                                |
+| Model files are re‑downloaded on each start | No persistent cache volume | Mount a host directory to `/srv/cache` (see **Cache volume** above).                                                          |
+| `torch` CUDA errors or missing GPU at runtime | Running nocuda image with `--gpus` flag | The nocuda build does not include NVIDIA support — remove the `--gpus` flag when running it.                                  |
+
+---  
+
+## 8. Quick One‑Liners (for developers)
+
+### GPU (CUDA) build &amp; run
+
+```shell script
+# Run from project ROOT (not inside docker/)
+docker build -f docker/Dockerfile.base \
+  -t gpu-base:cuda-12.2.2-ubuntu22.04 . &amp;&amp; \
+docker build -f docker/Dockerfile \
+  --build-arg version=prod \
+  -t llm-router-services:prod . &amp;&amp; \
+docker run -it --rm --gpus all -p 5000:5000 \
+  -e HF_TOKEN=YOUR_HF_TOKEN \
+  -v "$HOME/hf_cache":/srv/cache \
+  llm-router-services:prod
+</code></pre></div>
+
+<h3 id="cpu-only-build-run">CPU-only build &amp; run<a class="headerlink" href="#cpu-only-build-run" title="link to this section">#</a></h3>
+<p>```shell script</p>
+<h1 id="run-from-project-root-not-inside-docker">Run from project ROOT (not inside docker/)<a class="headerlink" href="#run-from-project-root-not-inside-docker" title="link to this section">#</a></h1>
+<p>docker build -f docker/Dockerfile.nocuda \
+  --build-arg version=prod \
+  -t llm-router-services:prod-cpu . &amp;&amp; \
+docker run -it --rm -p 5000:5000 \
+  -e HF_TOKEN=YOUR_HF_TOKEN \
+  -v "$HOME/hf_cache":/srv/cache \
+  llm-router-services:prod-cpu
+```</p>
+<p>That's it! You now have a reproducible, GPU‑enabled container ready to serve the LLM‑Router services. 🚀</p></article>
+<nav class="pager" aria-label="Previous and next page"></nav>
+<footer class="doc-meta">
+<div class="meta-row"><span class="meta-k">repository</span><a class="mono" href="https://github.com/radlab-dev-group/llm-router-services">llm-router-services</a></div>
+<div class="meta-row"><span class="meta-k">source</span><a class="mono" href="https://github.com/radlab-dev-group/llm-router-services/blob/d1b9641/docker/README.md">docker/README.md</a></div>
+<div class="meta-row"><span class="meta-k">last commit</span><time datetime="2026-07-29T20:47:32+02:00"><a href="https://github.com/radlab-dev-group/llm-router-services/commit/d1b9641">2026-07-29</a></time></div>
+<div class="meta-row"><span class="meta-k">built from</span><span class="mono"><a href="https://github.com/radlab-dev-group/llm-router-services/tree/d1b9641">refactor/guardrail-masker-cleanup</a>&nbsp;@&nbsp;<a href="https://github.com/radlab-dev-group/llm-router-services/commit/d1b9641">d1b9641</a></span></div>
+<p class="hint">Generated from the Markdown file in the repository: commit a change and the next build republishes it.</p>
+</footer>
+<footer class="foot"><div class="foot-inner">
+<span class="mono">llm-router &middot; docs are generated from the repository by <code>tools/build_docs.py</code></span>
+<span class="mono"><a href="https://github.com/radlab-dev-group/llm-router-services/tree/d1b9641">1.1.1</a> @ <a href="https://github.com/radlab-dev-group/llm-router-services/commit/d1b9641">d1b9641</a></span>
+</div></footer>
+</main>
+<aside class="dtoc" id="dtoc"><h2 class="toc-title">on this page</h2><div class="toc-body"><ul><li><a href="#overview">Overview</a></li><li><a href="#prerequisites">Prerequisites</a><ul><li><a href="#common-buildtime-arguments">Common build‑time arguments</a></li></ul></li><li><a href="#3-build-the-no-cuda-application-image">3. Build the No-CUDA Application Image</a><ul><li><a href="#cpu-build-llm-router-servicesprod-cpu">CPU build (llm-router-services:prod-cpu)</a></li></ul></li><li><a href="#5-customising-runtime-behaviour">5. Customising Runtime Behaviour</a></li><li><a href="#6-cleaning-up">6. Cleaning Up</a><ul><li><a href="#cpu-only-build-run">CPU-only build &amp;amp; run</a></li></ul></li></ul></div></aside>
+</div>
+</body>
+</html>

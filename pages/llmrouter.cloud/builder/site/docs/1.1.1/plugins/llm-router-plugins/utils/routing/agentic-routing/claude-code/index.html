@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-9KM7GYM55M"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-9KM7GYM55M');</script>
+<title>Claude Code Model Swap (agenticroutingclaude_code) · v1.1.1 · llm-router docs</title>
+<meta name="description" content="# Claude Code Model Swap (`agentic_routing_claude_code`) Model-swapping plugin for the **Anthropic-Messages-style** requests emitted by the **Claude Code** CLI. It looks at the model every request asks for, finds the Claude Code **tier** t…">
+<meta name="theme-color" content="#05070a">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Claude Code Model Swap (agenticroutingclaude_code) · v1.1.1 · llm-router docs">
+<meta property="og:description" content="# Claude Code Model Swap (`agentic_routing_claude_code`) Model-swapping plugin for the **Anthropic-Messages-style** requests emitted by the **Claude Code** CLI. It looks at the model every request asks for, finds the Claude Code **tier** t…">
+<meta name="docs-version" content="1.1.1">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2305070a'/%3E%3Cpath d='M8 22V10M8 16h9M17 10v12M17 13h7M17 19h7' stroke='%2300e59b' stroke-width='2' stroke-linecap='round' fill='none'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="../../../../../../../assets/docs.css">
+<link rel="stylesheet" href="../../../../../../../assets/pygments.css">
+<script src="../../../../../../../assets/docs.js" defer></script>
+</head>
+<body class="page" data-version="1.1.1" data-search="../../../../../../search.json" data-latest="1.1.1" data-repo="plugins">
+<a class="skip" href="#main">skip to content</a>
+<header class="topbar">
+<div class="topbar-inner">
+<button class="burger" id="burger" aria-label="Toggle documentation menu" aria-expanded="false" aria-controls="sidebar">&#9776;</button>
+<a class="brand" href="../../../../../../../.."><svg width="21" height="21" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="7" fill="#0b1119" stroke="#1a232e"/><path d="M8 22V10M8 16h9M17 10v12M17 13h7M17 19h7" stroke="#00e59b" stroke-width="2" stroke-linecap="round" fill="none"/></svg><span>llm<span class="dash">-</span>router</span><span class="brand-docs">/docs</span></a>
+<div class="topbar-right">
+<form class="search" id="search" role="search" autocomplete="off">
+<span class="search-icon" aria-hidden="true">&#8981;</span>
+<input id="q" type="search" placeholder="search this version" aria-label="Search documentation" role="combobox" aria-expanded="false" aria-controls="results" aria-autocomplete="list">
+<kbd>/</kbd>
+<div class="results" id="results" role="listbox" aria-label="Search results" hidden></div>
+</form>
+<label class="vselect">
+<span class="sr-only">Documentation version</span>
+<select id="versions" aria-label="Documentation version"><option value="index.html" selected>1.1.1  · latest</option>
+<option value="../../../../../../../1.1.0/index.html">1.1.0</option>
+<option value="../../../../../../../1.0.8/index.html">1.0.8</option>
+<option value="../../../../../../../1.0.7/index.html">1.0.7</option>
+<option value="../../../../../../../1.0.6/index.html">1.0.6</option>
+<option value="../../../../../../../1.0.5/index.html">1.0.5</option>
+<option value="../../../../../../../1.0.4/index.html">1.0.4</option>
+<option value="../../../../../../../1.0.3/index.html">1.0.3</option>
+<option value="../../../../../../../1.0.1/index.html">1.0.1</option>
+<option value="../../../../../../../1.0.0/index.html">1.0.0</option>
+<option value="../../../../../../../0.9.6/index.html">0.9.6</option>
+<option value="../../../../../../../0.9.5/index.html">0.9.5</option>
+<option value="../../../../../../../0.9.4/index.html">0.9.4</option>
+<option value="../../../../../../../0.9.2/index.html">0.9.2</option>
+<option value="../../../../../../../0.9.1/index.html">0.9.1</option>
+<option value="../../../../../../../0.9.0/index.html">0.9.0</option>
+<option value="../../../../../../../0.8.0/index.html">0.8.0</option>
+<option value="../../../../../../../0.7.0/index.html">0.7.0</option>
+<option value="../../../../../../../0.6.9/index.html">0.6.9</option>
+<option value="../../../../../../../0.6.8/index.html">0.6.8</option>
+<option value="../../../../../../../0.6.7/index.html">0.6.7</option>
+<option value="../../../../../../../0.6.6/index.html">0.6.6</option>
+<option value="../../../../../../../0.6.5/index.html">0.6.5</option>
+<option value="../../../../../../../0.6.4/index.html">0.6.4</option>
+<option value="../../../../../../../0.6.3/index.html">0.6.3</option>
+<option value="../../../../../../../0.6.2/index.html">0.6.2</option>
+<option value="../../../../../../../0.6.1/index.html">0.6.1</option>
+<option value="../../../../../../../0.6.0/index.html">0.6.0</option>
+<option value="../../../../../../../0.5.2/index.html">0.5.2</option>
+<option value="../../../../../../../0.5.1/index.html">0.5.1</option>
+<option value="../../../../../../../0.5.0/index.html">0.5.0</option>
+<option value="../../../../../../../0.4.6/index.html">0.4.6</option>
+<option value="../../../../../../../0.4.5/index.html">0.4.5</option>
+<option value="../../../../../../../0.4.4/index.html">0.4.4</option>
+<option value="../../../../../../../0.4.3/index.html">0.4.3</option>
+<option value="../../../../../../../0.4.2/index.html">0.4.2</option>
+<option value="../../../../../../../0.4.1/index.html">0.4.1</option>
+<option value="../../../../../../../0.4.0/index.html">0.4.0</option>
+<option value="../../../../../../../0.3.1/index.html">0.3.1</option>
+<option value="../../../../../../../0.3.0/index.html">0.3.0</option>
+<option value="../../../../../../../0.2.3/index.html">0.2.3</option>
+<option value="../../../../../../../0.2.2/index.html">0.2.2</option>
+<option value="../../../../../../../0.2.1/index.html">0.2.1</option>
+<option value="../../../../../../../0.2.0/index.html">0.2.0</option>
+<option value="../../../../../../../0.1.1/index.html">0.1.1</option>
+<option value="../../../../../../../0.1.0/index.html">0.1.0</option></select>
+</label>
+<a class="iconbtn" href="https://github.com/radlab-dev-group/llm-router-plugins" aria-label="Repository on GitHub" title="Repository on GitHub"><svg width="17" height="17" viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8a8 8 0 0 0 5.47 7.59c.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.46-.53.42-.02.72.39.82.55.48.81 1.25.94 1.56.73.2-.27.6-.94.94-1.13-.01-.2-.05-.82-.14-.98-.6.1-1.22.2-1.87.2-1.9 0-3.62-1.13-3.62-3.53 0-.78.28-1.42.74-1.92-.07-.18-.32-.91.07-1.9 0 0 .6-.19 1.97.74a6.8 6.8 0 0 1 3.58 0c1.37-.93 1.97-.74 1.97-.74.39.99.14 1.72.07 1.9.46.5.74 1.14.74 1.92 0 2.41-1.47 3.53-3.87 3.72.3.26.57.77.57 1.56 0 1.13-.012.04-.01 2.32 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg></a>
+</div>
+</div>
+</header>
+<div class="scrim" id="scrim" hidden></div>
+<div class="shell">
+<aside class="sidebar" id="sidebar"><div class="side-head"><span class="side-v mono">v1.1.1</span><span class="side-tag live">latest</span></div><a class="side-hub" href="../../../../../../index.html">documentation index</a><nav class="nav-tree" aria-label="Documentation"><div class="nav-repo"><span class="repo-name">llm-router</span></div><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../../../../../overview.html">Getting started</a></h2><ul><li><a href="../../../../../../overview.html">Overview</a></li><li><a href="../../../../../../llm-router-api/docs/installation.html">Installation</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../../../../../llm-router-api/docs/env-definitions.html">Configuration</a></h2><ul><li><a href="../../../../../../llm-router-api/docs/env-definitions.html">Environment Variables</a></li><li><a href="../../../../../../llm-router-api/docs/models-config.html">Models configuration description (JSON)</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../../../../../llm-router-api/docs/keepalive.html">Routing &amp; resilience</a></h2><ul><li><a href="../../../../../../llm-router-api/docs/keepalive.html">Keep‑Alive Utility Overview</a></li><li><a href="../../../../../../llm-router-api/docs/lb-strategies.html">Load Balancing Strategies</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../../../../../llm-router-api/core/auditor/index.html">Security &amp; auditing</a></h2><ul><li><a href="../../../../../../llm-router-api/core/auditor/index.html">Auditing subsystem – llm-router</a></li><li><a href="../../../../../../llm-router-api/docs/authentication.html">Authentication &amp; Authorization</a></li><li><a href="../../../../../../llm-router-api/docs/rate-limiting.html">Rate Limiting</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../../../../../llm-router-api/docs/routing-metrics.html">Observability</a></h2><ul><li><a href="../../../../../../llm-router-api/docs/routing-metrics.html">Router Prometheus Metrics</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../../../../../llm-router-api/index.html">REST API</a></h2><ul><li><a href="../../../../../../llm-router-api/index.html">REST API reference</a></li><li><a href="../../../../../../llm-router-api/endpoints/index.html">Endpoints Overview</a></li><li><a href="../../../../../../llm-router-api/docs/endpoint-dev.html">Endpoint Development Guide</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../../../../../llm-router-cli/index.html">CLI</a></h2><ul><li><a href="../../../../../../llm-router-cli/index.html">llm-router CLI — Command Reference</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../../../../../llm-router-lib/index.html">Python library</a></h2><ul><li><a href="../../../../../../llm-router-lib/index.html">llmrouterlib</a></li><li><a href="../../../../../../llm-router-lib/response-models.html">Response models</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../../../../../helm-charts/index.html">Deployment</a></h2><ul><li><a href="../../../../../../helm-charts/index.html">LLM‑Router Helm Chart</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../../../../../examples/index.html">Examples</a></h2><ul><li><a href="../../../../../../examples/index.html">Integration Examples with LLM Router</a></li><li><a href="../../../../../../examples/quickstart/index.html">Full Stack with Local Models</a></li><li><a href="../../../../../../examples/readme-llamaindex.html">Using LlamaIndex with Local Models via the LLM‑Router</a></li><li><a href="../../../../../../examples/quickstart/google-gemma3-12b-it/vllm.html">vLLM + google/gemma‑3‑12b‑it – Quick‑Start Guide (Ubuntu)</a></li><li><a href="../../../../../../examples/quickstart/speakleash-bielik-11b-v2-3-instruct/vllm.html">vLLM + speakleash/Bielik-11B-v2.3-Instruct – Przewodnik Szybkiego Startu (Ubuntu)</a></li><li><a href="../../../../../../examples/quickstart/speakleash-bielik-11b-v2-3-instruct/index.html">🚀 Przewodnik Szybkiego Startu dla speakleash/Bielik-11B-v2.3-Instruct z vLLM &amp; LLM‑Router</a></li><li><a href="../../../../../../examples/quickstart/google-gemma3-12b-it/index.html">🚀 Quick‑Start Guide for google/gemma-3-12b‑it with vLLM &amp; LLM‑Router</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../../../../../changelog.html">Release notes</a></h2><ul><li><a href="../../../../../../changelog.html">Changelog</a></li></ul></section><div class="nav-repo"><span class="repo-name">llm-router-plugins</span></div><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../../../../index.html">Plugins overview</a></h2><ul><li><a href="../../../../../index.html">Plugins overview</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../../../maskers/fast-masker/index.html">Masker plugins</a></h2><ul><li><a href="../../../../maskers/fast-masker/index.html">Overview</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="index.html">Routing plugins</a></h2><ul><li><a href="index.html" class="active">Claude Code Model Swap (agenticroutingclaude_code)</a></li><li><a href="../codex/index.html">Codex CLI Routing (agenticroutingcodex)</a></li><li><a href="../../semantic-biencoder/index.html">Semantic BiEncoder Routing (semanticbiencoderrouting)</a></li><li><a href="../../index.html">Semantic Routing Plugins</a></li><li><a href="../../simple-semantic/index.html">Simple Semantic Routing (simplesemanticrouting)</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../../rag/langchain-rag.html">Utility plugins</a></h2><ul><li><a href="../../../rag/langchain-rag.html">LangChain RAG Plugin for LLM‑Router</a></li></ul></section><div class="nav-repo"><span class="repo-name">llm-router-services</span></div><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../../../../../services/index.html">Services overview</a></h2><ul><li><a href="../../../../../../services/index.html">llm-router services</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../../../../../services/llm-router-services/guardrails/index.html">Guardrail services</a></h2><ul><li><a href="../../../../../../services/llm-router-services/guardrails/index.html">Guardrails Package</a></li><li><a href="../../../../../../services/llm-router-services/guardrails/speakleash/index.html">Integration of Bielik‑Guard‑0.1B as llm‑router guardrail service (Sojka)</a></li><li><a href="../../../../../../services/llm-router-services/guardrails/nask/index.html">Integration of HerBERT‑PL‑Guard with the naskpibguard_app.py Service</a></li></ul></section><section class="nav-sec"><h2 class="nav-sec-title"><a href="../../../../../../services/docker/index.html">Docker &amp; deployment</a></h2><ul><li><a href="../../../../../../services/docker/index.html">LLM‑Router Services – Docker Build &amp; Run Guide</a></li></ul></section></nav><div class="side-foot"><a href="../../../../../../../..">&larr;&nbsp;landing page</a><a class="mono" href="../../../../../../search.json">search.json</a></div></aside>
+<main class="main" id="main"><nav class="crumbs" aria-label="Breadcrumb">
+<a href="../../../../../../../..">llm-router</a><span class="sep">/</span><a href="../../../../../../index.html">docs</a><span class="sep">/</span><a href="index.html">Routing plugins</a><span class="sep">/</span><em>Claude Code Model Swap (agenticroutingclaude_code)</em>
+</nav>
+<article class="prose"><h1 id="claude-code-model-swap-agentic_routing_claude_code">Claude Code Model Swap (<code>agentic_routing_claude_code</code>)<a class="headerlink" href="#claude-code-model-swap-agentic_routing_claude_code" title="link to this section">#</a></h1>
+<p>Model-swapping plugin for the <strong>Anthropic-Messages-style</strong> requests emitted by the <strong>Claude Code</strong> CLI. It looks at the
+model every request asks for, finds the Claude Code <strong>tier</strong> that owns that name, and rewrites the model to the one this
+router actually serves. Sonnet traffic, Opus traffic, the Haiku calls Claude Code runs in the background and the
+<code>opusplan</code> Plan Mode phase can each land on their own model, without any per-developer configuration.</p>
+<p>The plugin exists because Claude Code has no gateway-side notion of a model mapping. Pointing it at your own backend
+used to mean setting one environment variable per tier on every host — <code>ANTHROPIC_DEFAULT_FABLE_MODEL</code>,
+<code>ANTHROPIC_DEFAULT_OPUS_MODEL</code>, <code>ANTHROPIC_DEFAULT_SONNET_MODEL</code>, <code>ANTHROPIC_DEFAULT_HAIKU_MODEL</code>,
+<code>CLAUDE_CODE_SUBAGENT_MODEL</code> — and repeating it on every laptop, container image and CI runner. Here that mapping is
+one JSON file the router reads once.</p>
+<ul>
+<li><strong>Plugin name (registry key):</strong> <code>agentic_routing_claude_code</code></li>
+<li><strong>Class:</strong> <code>llm_router_plugins.utils.routing.agentic_routing.claude_code.plugin.ClaudeCodeRoutingPlugin</code></li>
+<li><strong>Default config:</strong> <code>llm_router_plugins/resources/routing/agentic_routing_claude_code.json</code></li>
+<li><strong>Env prefix:</strong> <code>LLM_ROUTER_ROUTING_SEMANTIC_AGENTIC_CLAUDE_CODE_</code></li>
+<li><strong>Dependencies:</strong> none beyond the standard library — no embedding model, no FAISS</li>
+</ul>
+<hr />
+<h2 id="what-the-plugin-changes">What the plugin changes<a class="headerlink" href="#what-the-plugin-changes" title="link to this section">#</a></h2>
+<p><code>apply()</code> rewrites the payload in place and touches the model key(s) plus one annotation:</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>model</code></td>
+<td><code>model_name</code> of the matched tier, when the payload carried it</td>
+</tr>
+<tr>
+<td><code>model_name</code></td>
+<td>the same target, when the payload carried it</td>
+</tr>
+<tr>
+<td><code>routing</code></td>
+<td><code>plugin</code>, <code>similarity</code>, <code>mode</code>, <code>original_model</code>, <code>matched_model</code>, <code>match_type</code>, <code>field</code></td>
+</tr>
+</tbody>
+</table>
+<p>Only keys the payload already carries are rewritten, and only those configured in <code>settings.model_fields</code> are considered
+at all: a payload that names its model <code>model_name</code> never grows a <code>model</code> key, and a key outside <code>model_fields</code> keeps its
+value. Everything else — <code>messages</code>, <code>system</code>, <code>tools</code>, <code>max_tokens</code>, <code>metadata</code> — is forwarded unchanged. The plugin
+never rejects a request; it only ever picks a model.</p>
+<p><strong>Fail-open, and silent about it.</strong> A payload that is not a dict, carries no configured model key, whose model no tier
+claims, or whose tier has no <code>model_name</code>, is returned as <strong>the same object it came in as</strong> — no rewrite, no log line.
+There is deliberately nothing to grep for on that path: an unmatched model is normal traffic, not a signal. Anything
+raised inside the plugin is caught, logged once as a warning, and the request still goes out unchanged.</p>
+<p><strong>Fail-hard on configuration only.</strong> No tiers, duplicated tier names, an embedded wildcard, or one exact model name
+claimed by two tiers all raise at plugin construction, so the router refuses to start rather than misroute quietly.</p>
+<hr />
+<h2 id="quick-start">Quick start<a class="headerlink" href="#quick-start" title="link to this section">#</a></h2>
+<h3 id="1-install-the-plugin-package">1. Install the plugin package<a class="headerlink" href="#1-install-the-plugin-package" title="link to this section">#</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="c1"># from a checkout of this repository, into the environment the router runs in</span>
+pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.<span class="w">              </span><span class="c1"># this plugin needs nothing extra</span>
+</code></pre></div>
+
+<p>Unlike the semantic and Codex routing plugins, this one has no <code>[ml]</code> extra: it never embeds anything.</p>
+<h3 id="2-load-the-plugin-into-the-router">2. Load the plugin into the router<a class="headerlink" href="#2-load-the-plugin-into-the-router" title="link to this section">#</a></h3>
+<p>The plugin is a <em>utils</em> plugin: it runs inside the llm-router request pipeline and is selected by a comma-separated
+list of plugin identifiers.</p>
+<div class="codehilite"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">LLM_ROUTER_UTILS_PLUGINS_PIPELINE</span><span class="o">=</span><span class="s2">"agentic_routing_claude_code"</span>
+</code></pre></div>
+
+<p>The router resolves the name against <code>llm_router_plugins.utils.registry.MAIN_UTILS_REGISTRY</code>, instantiates it <strong>once per
+process</strong> (<code>UtilsRegistry</code>) and calls <code>apply()</code> on every prepared request. Order matters when several utils plugins are
+wired together: the first one to rewrite the model wins the downstream dispatch, so put this plugin before any semantic
+routing plugin that might answer the same request.</p>
+<h3 id="3-declare-the-models-in-the-router">3. Declare the models in the router<a class="headerlink" href="#3-declare-the-models-in-the-router" title="link to this section">#</a></h3>
+<p>Every value in <code>claude_code_modes[].model_name</code> must be a normal, active model in the llm-router model config
+(<code>LLM_ROUTER_MODELS_CONFIG</code>) with a reachable provider. A name the router does not know is a hard downstream failure
+(<code>model not found</code>), <em>not</em> a plugin error.</p>
+<p>Check one thing in your router: <strong>whether it resolves the requested model before or after the utils pipeline.</strong> If it
+resolves first, the Claude Code IDs themselves (<code>claude-sonnet-5</code>, <code>claude-opus-5-5</code>, …) must also be declared — as
+aliases is cleanest — otherwise the request is refused before this plugin ever sees it.</p>
+<h3 id="4-point-claude-code-at-the-router">4. Point Claude Code at the router<a class="headerlink" href="#4-point-claude-code-at-the-router" title="link to this section">#</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">ANTHROPIC_BASE_URL</span><span class="o">=</span><span class="s2">"http://&lt;router-host&gt;:8081/anthropic"</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">ANTHROPIC_AUTH_TOKEN</span><span class="o">=</span><span class="s2">"&lt;router API key&gt;"</span>
+claude
+</code></pre></div>
+
+<p>Keep the Claude Code tier variables at the model IDs your users expect to see (<code>/model opus</code> should still <em>say</em> Opus);
+the swap happens on the way through. That is the whole point: the CLI keeps its tier vocabulary, the router decides what
+serves it. To move a tier to another model, edit this plugin's config and restart the router — no client changes.</p>
+<h3 id="5-verify">5. Verify<a class="headerlink" href="#5-verify" title="link to this section">#</a></h3>
+<p>One log line per swapped request:</p>
+<div class="codehilite"><pre><span></span><code>Claude Code model swap: claude-sonnet-5 -&gt; qwen/Qwen3.8-Flash-Next (mode=sonnet, matched=claude-sonnet-5, match_type=literal, field=model)
+</code></pre></div>
+
+<p>No line at all means the model matched no tier — see <a href="#troubleshooting">Troubleshooting</a>. For a check without a CLI or a
+running router, see <a href="#verifying-the-plugin">Verifying the plugin</a>.</p>
+<hr />
+<h2 id="how-it-works">How it works<a class="headerlink" href="#how-it-works" title="link to this section">#</a></h2>
+<h3 id="step-1-normalize-the-requested-name">Step 1 — normalize the requested name<a class="headerlink" href="#step-1-normalize-the-requested-name" title="link to this section">#</a></h3>
+<p>Claude Code resolves its own <code>fable</code> / <code>opus</code> / <code>sonnet</code> / <code>haiku</code> aliases before sending, so the gateway sees a
+versioned ID — and the same tier arrives under several spellings. <code>normalize_model_name()</code> reduces all of them to one
+key by lower-casing and stripping, in order: a <code>[1m]</code>-style window suffix, a provider version (<code>:0</code>, <code>:v2</code>) or
+<code>@YYYYMMDD</code> revision, a vendor prefix (<code>us.anthropic.</code>, <code>anthropic/</code>), a leading path (<code>models/…</code>), a <code>-vN</code> revision and
+a <code>-YYYYMMDD</code> release date.</p>
+<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span><span class="w"> </span><span class="nn">llm_router_plugins.utils.routing.agentic_routing.claude_code</span><span class="w"> </span><span class="kn">import</span> <span class="n">normalize_model_name</span> <span class="k">as</span> <span class="n">n</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">n</span><span class="p">(</span><span class="s2">"us.anthropic.claude-sonnet-4-5-20250929-v1:0"</span><span class="p">)</span>
+<span class="s1">'claude-sonnet-4-5'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">n</span><span class="p">(</span><span class="s2">"claude-opus-5-5[1m]"</span><span class="p">)</span>
+<span class="s1">'claude-opus-5-5'</span>
+</code></pre></div>
+
+<h3 id="step-2-match-it-against-the-configured-tiers">Step 2 — match it against the configured tiers<a class="headerlink" href="#step-2-match-it-against-the-configured-tiers" title="link to this section">#</a></h3>
+<p><code>ModelMatcher</code> tries four layers in strict order, most specific first:</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Layer</th>
+<th>Configured entry</th>
+<th>Request</th>
+<th>Why it matters</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><code>literal</code></td>
+<td><code>claude-sonnet-4-5</code></td>
+<td><code>claude-sonnet-4-5</code></td>
+<td>a pin always wins, exactly as written</td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>exact</code></td>
+<td><code>claude-sonnet-4-5</code></td>
+<td><code>claude-sonnet-4-5[1m]</code></td>
+<td>the pin also covers its normalized spellings</td>
+</tr>
+<tr>
+<td>3</td>
+<td><code>wildcard</code></td>
+<td><code>claude-opus-*</code></td>
+<td><code>claude-opus-7-7</code></td>
+<td>a future release of a known line still resolves</td>
+</tr>
+<tr>
+<td>4</td>
+<td><code>family</code></td>
+<td><code>claude-haiku-*</code></td>
+<td><code>claude-3-5-haiku-20241022</code></td>
+<td>legacy names order the family differently</td>
+</tr>
+</tbody>
+</table>
+<p>Within the wildcard layer the longest literal prefix wins, so <code>claude-opus-4-*</code> beats <code>claude-opus-*</code> beats
+<code>claude-*</code>. An exact pin never claims a family: the family layer is reachable only through an explicit <code>*</code> declaration.
+Matching is case-insensitive; ties resolve by configuration order (first declaration wins).</p>
+<h3 id="step-3-rewrite-and-annotate">Step 3 — rewrite and annotate<a class="headerlink" href="#step-3-rewrite-and-annotate" title="link to this section">#</a></h3>
+<p>The matched tier's <code>model_name</code> is written into every configured model key the payload carries, and the decision goes
+into <code>payload["routing"]</code>:</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">llm_router_plugins.utils.routing.agentic_routing.claude_code</span><span class="w"> </span><span class="kn">import</span> <span class="n">ClaudeCodeRoutingPlugin</span>
+
+<span class="n">plugin</span> <span class="o">=</span> <span class="n">ClaudeCodeRoutingPlugin</span><span class="p">()</span>
+<span class="n">plugin</span><span class="o">.</span><span class="n">apply</span><span class="p">({</span><span class="s2">"model"</span><span class="p">:</span> <span class="s2">"claude-opus-9-9"</span><span class="p">,</span> <span class="s2">"messages"</span><span class="p">:</span> <span class="p">[{</span><span class="s2">"role"</span><span class="p">:</span> <span class="s2">"user"</span><span class="p">,</span> <span class="s2">"content"</span><span class="p">:</span> <span class="s2">"hi"</span><span class="p">}]})</span>
+<span class="c1"># {</span>
+<span class="c1">#   "model": "qwen/Qwen3.8-Flash-Next",</span>
+<span class="c1">#   "messages": [...],</span>
+<span class="c1">#   "routing": {</span>
+<span class="c1">#     "plugin": "agentic_routing_claude_code", "similarity": 1.0,</span>
+<span class="c1">#     "mode": "opus", "original_model": "claude-opus-9-9",</span>
+<span class="c1">#     "matched_model": "claude-opus-*", "match_type": "wildcard", "field": "model"</span>
+<span class="c1">#   }</span>
+<span class="c1"># }</span>
+</code></pre></div>
+
+<p><code>similarity</code> is a constant <code>1.0</code>: the decision is deterministic, and the value keeps the <code>routing</code> block shaped like the
+semantic plugins' for anything that reads all of them. <code>match_type</code> is the layer from the table above, which is how you
+tell a pin from a family guess when auditing a config.</p>
+<hr />
+<h2 id="configuration">Configuration<a class="headerlink" href="#configuration" title="link to this section">#</a></h2>
+<h3 id="config-file-layout">Config file layout<a class="headerlink" href="#config-file-layout" title="link to this section">#</a></h3>
+<div class="codehilite"><pre><span></span><code>// llm_router_plugins/resources/routing/agentic_routing_claude_code.json
+{
+  "description": "…",
+  "settings": {
+    "enabled": true,             // master switch: false = plugin does nothing at all
+    "match_families": true,      // false = exact matching only, wildcards are not even indexed
+    "model_fields": ["model", "model_name"],   // payload keys read *and* rewritten
+    "provider_prefixes": ["us.anthropic.", "anthropic.", "anthropic/"]
+  },
+  "claude_code_modes": [
+    {
+      "name": "opus",            // tier id, reported as routing.mode
+      "model_name": "qwen/Qwen3.8-Flash-Next",  // target; "" = pass matching requests through
+      "description": "…",        // documentation only, never matched against
+      "models": ["claude-opus-5-5", "claude-opus-*", "opus"]
+    }
+  ]
+}
+</code></pre></div>
+
+<h3 id="tiers-and-what-each-one-replaces">Tiers and what each one replaces<a class="headerlink" href="#tiers-and-what-each-one-replaces" title="link to this section">#</a></h3>
+<table>
+<thead>
+<tr>
+<th>Tier</th>
+<th>Claude Code requests</th>
+<th>Claude Code setting it replaces</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>fable</code></td>
+<td><code>claude-fable-5-1</code>, <code>claude-fable-5</code>, the <code>best</code> alias</td>
+<td><code>ANTHROPIC_DEFAULT_FABLE_MODEL</code></td>
+</tr>
+<tr>
+<td><code>opus</code></td>
+<td><code>claude-opus-5-5</code> … <code>claude-opus-4-6</code>, pinned Opus IDs</td>
+<td><code>ANTHROPIC_DEFAULT_OPUS_MODEL</code></td>
+</tr>
+<tr>
+<td><code>plan</code></td>
+<td><code>opusplan</code>, if it ever reaches the gateway unresolved</td>
+<td>the Plan Mode phase of <code>model: "opusplan"</code></td>
+</tr>
+<tr>
+<td><code>sonnet</code></td>
+<td><code>claude-sonnet-5</code>, <code>claude-sonnet-4-6</code>, <code>claude-sonnet-4-5</code></td>
+<td><code>ANTHROPIC_DEFAULT_SONNET_MODEL</code></td>
+</tr>
+<tr>
+<td><code>haiku</code></td>
+<td><code>claude-haiku-4-5</code>, <code>claude-3-5-haiku-*</code>, background calls</td>
+<td><code>ANTHROPIC_DEFAULT_HAIKU_MODEL</code> (<code>ANTHROPIC_SMALL_FAST_MODEL</code>)</td>
+</tr>
+</tbody>
+</table>
+<p>Claude Code normally resolves <code>opusplan</code> and the bare aliases itself, so the <code>plan</code> tier and the alias entries
+(<code>opus</code>, <code>sonnet</code>, <code>haiku</code>, <code>best</code>) are a safety net for gateways and wrappers that forward them verbatim. Subagent
+traffic needs no extra tier: whatever <code>CLAUDE_CODE_SUBAGENT_MODEL</code> names lands in the tier that owns that name.</p>
+<p>The two target models in the shipped file (<code>qwen/Qwen3.8-Flash-Next</code>, <code>qwen/Qwen3.8-27B</code>) are examples taken from the
+Codex plugin's config. Replace them with what your router serves.</p>
+<h3 id="environment-variables">Environment variables<a class="headerlink" href="#environment-variables" title="link to this section">#</a></h3>
+<p>All of them carry the <code>LLM_ROUTER_ROUTING_SEMANTIC_AGENTIC_CLAUDE_CODE_</code> prefix and beat the JSON file.</p>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>CONFIG</code></td>
+<td>the whole config — a raw JSON string <em>or</em> a path to a JSON file</td>
+</tr>
+<tr>
+<td><code>ENABLED</code></td>
+<td><code>1/0</code>, <code>true/false</code>, <code>yes/no</code>, <code>on/off</code> — switch the whole plugin off</td>
+</tr>
+<tr>
+<td><code>MATCH_FAMILIES</code></td>
+<td>turn wildcard and family matching off, leaving exact names only</td>
+</tr>
+<tr>
+<td><code>FIELDS</code></td>
+<td>payload keys to read and rewrite, e.g. <code>model\|model_name</code></td>
+</tr>
+<tr>
+<td><code>MODEL_&lt;TIER&gt;</code></td>
+<td>target model of one tier, e.g. <code>MODEL_OPUS=qwen/Big</code></td>
+</tr>
+<tr>
+<td><code>MODELS</code></td>
+<td>several targets at once: <code>opus=model-a\|haiku=model-b</code></td>
+</tr>
+<tr>
+<td><code>MODES</code></td>
+<td>whitelist of tier names, e.g. <code>sonnet\|haiku</code></td>
+</tr>
+<tr>
+<td><code>MODE_&lt;tier&gt;_MODELS</code></td>
+<td>replaces the names one tier answers, e.g. <code>MODE_SONNET_MODELS=claude-sonnet-9\|foo</code></td>
+</tr>
+</tbody>
+</table>
+<p>List variables accept <code>|</code> or <code>,</code> as separators. Unknown tier names are logged as warnings and otherwise ignored; unknown
+<em>models</em> are not an error, they simply never match.</p>
+<h3 id="precedence-and-linting">Precedence and linting<a class="headerlink" href="#precedence-and-linting" title="link to this section">#</a></h3>
+<p><code>CONFIG</code> (or the bundled file) is parsed first, then env overrides are applied in place, then the result is validated.
+Validation raises on: no tiers, an empty or duplicated tier name, an empty <code>model_fields</code>, an embedded wildcard, a bare
+<code>*</code>, and one exact model name claimed by two tiers.</p>
+<p><code>lint_signals()</code> reports, as warnings only:</p>
+<ul>
+<li>a tier with no <code>model_name</code> — matching requests pass through, which is usually a typo;</li>
+<li>a tier with no <code>models</code> — it can never be reached;</li>
+<li>the same wildcard declared by two tiers — only the first is ever selected.</li>
+</ul>
+<hr />
+<h2 id="tuning-and-gotchas">Tuning and gotchas<a class="headerlink" href="#tuning-and-gotchas" title="link to this section">#</a></h2>
+<ul>
+<li><strong>A wildcard needs a literal prefix.</strong> <code>claude-*</code> is fine, <code>*</code> raises: a rule that matches every model in the router
+  is a outage waiting to happen, not a default.</li>
+<li><strong><code>match_families: false</code> also drops the wildcards.</strong> Exact-only mode is exact for real: <code>claude-opus-*</code> entries are
+  not indexed at all, so every new model ID has to be pinned by name.</li>
+<li><strong>Normalization strips paths.</strong> <code>qwen/llama</code> and <code>other-org/llama</code> collapse to the same key, so they cannot both be
+  pinned in one config — validation reports the collision instead of picking one at match time.</li>
+<li><strong>Ordering is a wildcard's only risk.</strong> <code>claude-*</code> in an earlier tier beats nothing, but <code>claude-*</code> <em>alone</em> in the
+  first tier swallows every family: put broad wildcards in a late tier, or pin the exceptions before it.</li>
+<li><strong>Retired and future IDs keep working</strong> as long as the family wildcard is there, which is the reason to prefer
+  <code>claude-sonnet-*</code> plus pins over pinning every version.</li>
+<li><strong>The router still owns model availability.</strong> A tier pointing at a model the router does not serve is a downstream
+  <code>model not found</code>, not a plugin error.</li>
+</ul>
+<hr />
+<h2 id="verifying-the-plugin">Verifying the plugin<a class="headerlink" href="#verifying-the-plugin" title="link to this section">#</a></h2>
+<h3 id="offline-dry-run-no-network-no-router">Offline dry run (no network, no router)<a class="headerlink" href="#offline-dry-run-no-network-no-router" title="link to this section">#</a></h3>
+<div class="codehilite"><pre><span></span><code>python<span class="w"> </span>-<span class="w"> </span><span class="s">&lt;&lt;'PY'</span>
+<span class="s">from llm_router_plugins.utils.routing.agentic_routing.claude_code import ClaudeCodeRoutingPlugin</span>
+
+<span class="s">plugin = ClaudeCodeRoutingPlugin()</span>
+<span class="s">for model in ["claude-sonnet-5", "claude-opus-5-5", "claude-haiku-4-5",</span>
+<span class="s">              "claude-opus-4-8[1m]", "opusplan", "gpt-5"]:</span>
+<span class="s">    print(f"{model:28} -&gt; {plugin.resolve(model)}")</span>
+<span class="s">print(plugin.apply({"model": "claude-sonnet-5", "messages": []}))</span>
+<span class="s">PY</span>
+</code></pre></div>
+
+<p><code>resolve()</code> answers exactly what <code>apply()</code> would decide, without a payload: the winning tier, the configured entry that
+matched and the layer it came from. <code>gpt-5</code> printing <code>None</code> is the expected result — foreign traffic is untouched.</p>
+<h3 id="router-smoke-test">Router smoke test<a class="headerlink" href="#router-smoke-test" title="link to this section">#</a></h3>
+<p>Send an Anthropic-Messages request for a covered model and read the response's usage block, or simply watch the router
+log for <code>Claude Code model swap:</code>. Then flip <code>…_ENABLED=false</code>, restart, and confirm the request goes out with its
+original model name.</p>
+<h3 id="automated-tests">Automated tests<a class="headerlink" href="#automated-tests" title="link to this section">#</a></h3>
+<div class="codehilite"><pre><span></span><code>pytest<span class="w"> </span>tests/test_agentic_routing_claude_code.py<span class="w"> </span>-v
+</code></pre></div>
+
+<p>160 tests cover the normalizer, all four match layers and their precedence, config loading and validation, every env
+override, and the plugin's pass-through paths — including the assertion that a miss returns the <em>same object</em> and logs
+nothing at all.</p>
+<hr />
+<h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="link to this section">#</a></h2>
+<table>
+<thead>
+<tr>
+<th>Symptom</th>
+<th>Cause</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Nothing logged, model unchanged</td>
+<td>the model matches no tier</td>
+<td><code>plugin.resolve("&lt;model&gt;")</code>, then add a pin or a family wildcard</td>
+</tr>
+<tr>
+<td>Router answers <code>model not found</code> for <code>claude-*</code></td>
+<td>it resolves the model before the utils pipeline</td>
+<td>declare the incoming IDs as aliases too</td>
+</tr>
+<tr>
+<td>Startup raises <code>claimed by modes</code></td>
+<td>two tiers pin the same exact name</td>
+<td>keep one owner, or make one a wildcard</td>
+</tr>
+<tr>
+<td>Startup raises <code>no modes defined</code></td>
+<td><code>MODES</code> filtered everything out, or the config is empty</td>
+<td>check <code>MODES</code> and <code>claude_code_modes</code></td>
+</tr>
+<tr>
+<td>Every tier answers the same model</td>
+<td>a broad wildcard in the first tier</td>
+<td>move it to a late tier and pin the exceptions</td>
+</tr>
+<tr>
+<td>A tier never matches</td>
+<td>it has no <code>models</code>, or <code>match_families</code> is off with only wildcards</td>
+<td>read the lint warnings in the startup log</td>
+</tr>
+<tr>
+<td>A tier never swaps, but matches</td>
+<td>its <code>model_name</code> is empty</td>
+<td>set it, or via <code>MODEL_&lt;TIER&gt;</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="reference">Reference<a class="headerlink" href="#reference" title="link to this section">#</a></h2>
+<h3 id="module-map">Module map<a class="headerlink" href="#module-map" title="link to this section">#</a></h3>
+<table>
+<thead>
+<tr>
+<th>Module</th>
+<th>Responsibility</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>mapping.py</code></td>
+<td><code>normalize_model_name</code>, <code>model_family</code>, <code>validate_pattern</code>, <code>ModelMatcher</code>, config audits</td>
+</tr>
+<tr>
+<td><code>config.py</code></td>
+<td><code>ClaudeCodeMode</code>, <code>ClaudeCodeRoutingConfig</code> (loading, env overrides, linting)</td>
+</tr>
+<tr>
+<td><code>plugin.py</code></td>
+<td><code>ClaudeCodeRoutingPlugin</code> — resolve, rewrite, annotate</td>
+</tr>
+</tbody>
+</table>
+<h3 id="defaults-at-a-glance">Defaults at a glance<a class="headerlink" href="#defaults-at-a-glance" title="link to this section">#</a></h3>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>enabled</code></td>
+<td><code>true</code></td>
+</tr>
+<tr>
+<td><code>match_families</code></td>
+<td><code>true</code></td>
+</tr>
+<tr>
+<td><code>model_fields</code></td>
+<td><code>("model", "model_name")</code></td>
+</tr>
+<tr>
+<td><code>provider_prefixes</code></td>
+<td><code>us.</code> / <code>eu.</code> / <code>apac.</code> / <code>global.anthropic.</code>, <code>anthropic.</code>, <code>anthropic/</code></td>
+</tr>
+<tr>
+<td><code>routing.similarity</code></td>
+<td><code>1.0</code> (constant — the decision is deterministic)</td>
+</tr>
+<tr>
+<td>tiers</td>
+<td><code>fable</code>, <code>opus</code>, <code>plan</code>, <code>sonnet</code>, <code>haiku</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="see-also">See also<a class="headerlink" href="#see-also" title="link to this section">#</a></h3>
+<ul>
+<li><a href="../codex/index.html">Codex CLI Routing</a> — work-mode routing for the Codex CLI's <code>/v1/responses</code> traffic</li>
+<li><a href="../../semantic-biencoder/index.html">Bi-Encoder Routing</a> — embedding similarity routing for <code>auto</code></li>
+<li><a href="../../../../../index.html">Main README</a> — plugin architecture, pipelines and registration</li>
+</ul></article>
+<nav class="pager" aria-label="Previous and next page"><a class="next" href="../codex/index.html"><span class="dir">next &rarr;</span><span class="pt">Codex CLI Routing (agenticroutingcodex)</span></a></nav>
+<footer class="doc-meta">
+<div class="meta-row"><span class="meta-k">repository</span><a class="mono" href="https://github.com/radlab-dev-group/llm-router-plugins">llm-router-plugins</a></div>
+<div class="meta-row"><span class="meta-k">source</span><a class="mono" href="https://github.com/radlab-dev-group/llm-router-plugins/blob/eefb333/llm_router_plugins/utils/routing/agentic_routing/claude_code/README.md">llm_router_plugins/utils/routing/agentic_routing/claude_code/README.md</a></div>
+<div class="meta-row"><span class="meta-k">last commit</span><time datetime="2026-09-24T17:24:48+02:00"><a href="https://github.com/radlab-dev-group/llm-router-plugins/commit/eefb333">2026-09-24</a></time></div>
+<div class="meta-row"><span class="meta-k">built from</span><span class="mono"><a href="https://github.com/radlab-dev-group/llm-router-plugins/tree/eefb333">feat/claude_code_plugin</a>&nbsp;@&nbsp;<a href="https://github.com/radlab-dev-group/llm-router-plugins/commit/eefb333">eefb333</a></span></div>
+<p class="hint">Generated from the Markdown file in the repository: commit a change and the next build republishes it.</p>
+</footer>
+<footer class="foot"><div class="foot-inner">
+<span class="mono">llm-router &middot; docs are generated from the repository by <code>tools/build_docs.py</code></span>
+<span class="mono"><a href="https://github.com/radlab-dev-group/llm-router-plugins/tree/eefb333">1.1.1</a> @ <a href="https://github.com/radlab-dev-group/llm-router-plugins/commit/eefb333">eefb333</a></span>
+</div></footer>
+</main>
+<aside class="dtoc" id="dtoc"><h2 class="toc-title">on this page</h2><div class="toc-body"><ul><li><a href="#what-the-plugin-changes">What the plugin changes</a></li><li><a href="#quick-start">Quick start</a><ul><li><a href="#1-install-the-plugin-package">1. Install the plugin package</a></li><li><a href="#2-load-the-plugin-into-the-router">2. Load the plugin into the router</a></li><li><a href="#3-declare-the-models-in-the-router">3. Declare the models in the router</a></li><li><a href="#4-point-claude-code-at-the-router">4. Point Claude Code at the router</a></li><li><a href="#5-verify">5. Verify</a></li></ul></li><li><a href="#how-it-works">How it works</a><ul><li><a href="#step-1-normalize-the-requested-name">Step 1 — normalize the requested name</a></li><li><a href="#step-2-match-it-against-the-configured-tiers">Step 2 — match it against the configured tiers</a></li><li><a href="#step-3-rewrite-and-annotate">Step 3 — rewrite and annotate</a></li></ul></li><li><a href="#configuration">Configuration</a><ul><li><a href="#config-file-layout">Config file layout</a></li><li><a href="#tiers-and-what-each-one-replaces">Tiers and what each one replaces</a></li><li><a href="#environment-variables">Environment variables</a></li><li><a href="#precedence-and-linting">Precedence and linting</a></li></ul></li><li><a href="#tuning-and-gotchas">Tuning and gotchas</a></li><li><a href="#verifying-the-plugin">Verifying the plugin</a><ul><li><a href="#offline-dry-run-no-network-no-router">Offline dry run (no network, no router)</a></li><li><a href="#router-smoke-test">Router smoke test</a></li><li><a href="#automated-tests">Automated tests</a></li></ul></li><li><a href="#troubleshooting">Troubleshooting</a></li><li><a href="#reference">Reference</a><ul><li><a href="#module-map">Module map</a></li><li><a href="#defaults-at-a-glance">Defaults at a glance</a></li><li><a href="#see-also">See also</a></li></ul></li></ul></div></aside>
+</div>
+</body>
+</html>
