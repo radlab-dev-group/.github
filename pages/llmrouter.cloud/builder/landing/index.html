@@ -750,7 +750,7 @@ ul.ticks li b{color:#dce7f1;font-weight:600}
         <h3>Extend, don't fork</h3>
         <p>Maskers, guardrails, routers and endpoints are registered plugins. Subclass, implement
         <code>apply()</code>, ship it in <code>llm-router-plugins</code>, and the loader picks it up.
-        Typed SDK in <code>llm-router-lib</code>; integration boilerplates for LangChain, LlamaIndex,
+        Typed sync &amp; async SDK in <code>llm-router-lib</code>; integration boilerplates for LangChain, LlamaIndex,
         Haystack and LiteLLM.</p>
         <div class="tagrow"><span class="on">plugin registry</span><span>apache-2.0</span></div>
       </article>
@@ -1326,7 +1326,7 @@ $ <span class="k-str">./scripts/decrypt_auditor_logs.sh</span> 2026-09-09</pre>
       </a>
       <a class="eco-row" href="https://github.com/radlab-dev-group/llm-router" rel="noopener">
         <span class="nm">llm_router_lib</span>
-        <span class="ds">typed Python SDK: retries, token handling, exception hierarchy</span>
+        <span class="ds">typed Python SDK: sync &amp; async clients, retries, exception hierarchy</span>
         <span class="pt">subdirectory</span>
       </a>
       <a class="eco-row" href="https://github.com/radlab-dev-group/llm-router-web" rel="noopener">
@@ -1361,10 +1361,13 @@ $ <span class="k-str">./scripts/decrypt_auditor_logs.sh</span> 2026-09-09</pre>
         <h3><span class="mono-i">&larr;</span> Clients that just work</h3>
         <p class="hint">
           It speaks the OpenAI wire format, so existing client code changes base URL and key
-          &mdash; nothing else. Runnable scripts live in <code>examples/</code>.
+          &mdash; nothing else. Python adds <code>LLMRouterClient</code> and, for <code>asyncio</code>
+          apps, <code>AsyncLLMRouterClient</code> (httpx) with typed stream events.
+          Runnable scripts live in <code>examples/</code>.
         </p>
         <div class="tagrow">
-          <span class="on">OpenAI SDK</span><span class="on">LangChain</span><span class="on">LlamaIndex</span>
+          <span class="on">OpenAI SDK</span><span class="on">LLMRouterClient</span><span class="on">AsyncLLMRouterClient</span>
+          <span class="on">LangChain</span><span class="on">LlamaIndex</span>
           <span class="on">LiteLLM</span><span class="on">Haystack</span><span>embeddings</span><span>streaming</span>
         </div>
       </div>
@@ -1821,7 +1824,8 @@ $ <span class="k-str">./scripts/decrypt_auditor_logs.sh</span> 2026-09-09</pre>
     <code>/api/metrics</code> endpoint: provider latency histograms, per-pipeline-stage results, retry
     exhaustion and prompt/completion token counters. Audit logs are encrypted at rest with GPG. Ship it
     with the included non-root Dockerfile or the Helm chart, and call it from Python with the typed
-    <code>radlab-llm-router</code> SDK.
+    <code>radlab-llm-router</code> SDK: a synchronous <code>LLMRouterClient</code> and an
+    <code>asyncio</code>-native <code>AsyncLLMRouterClient</code> (httpx) with typed stream events.
   </p>
   <ul>
     <li>OpenAI-compatible <code>/v1/chat/completions</code>, <code>/v1/responses</code>,
@@ -1859,6 +1863,7 @@ $ <span class="k-str">./scripts/decrypt_auditor_logs.sh</span> 2026-09-09</pre>
       "featureList": [
         "OpenAI-compatible chat, responses, embeddings and Anthropic messages endpoints",
         "Provider adapters for vLLM, Ollama, LM Studio, Anthropic and OpenAI-compatible APIs",
+        "Typed Python SDK with synchronous LLMRouterClient and asyncio AsyncLLMRouterClient",
         "Six load-balancing strategies with health checks, per-provider retry and failover",
         "PII masking pipelines and prompt guardrails that fail closed",
         "API key management, auth policies and Redis sliding-window rate limiting",
