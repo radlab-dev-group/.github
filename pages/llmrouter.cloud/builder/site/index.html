@@ -1486,6 +1486,13 @@ $ <span class="k-str">./scripts/decrypt_auditor_logs.sh</span> 2026-09-09</pre>
             <td><span class="dot part"></span></td>
           </tr>
           <tr>
+            <td class="name">built-in task endpoints (translate / polarity / mask)</td>
+            <td class="hl"><span class="dot ok"></span><span class="st">&#9733;&#9733;</span></td>
+            <td><span class="dot no"></span></td>
+            <td><span class="dot no"></span></td>
+            <td><span class="dot no"></span></td>
+          </tr>
+          <tr>
             <td class="name">pii masking in the request path</td>
             <td class="hl"><span class="dot ok"></span></td>
             <td><span class="dot ok"></span><span class="st">&#9733;&#9733;</span></td>
@@ -1535,10 +1542,31 @@ $ <span class="k-str">./scripts/decrypt_auditor_logs.sh</span> 2026-09-09</pre>
             <td><span class="dot part"></span></td>
           </tr>
           <tr>
+            <td class="name">named-instance server supervision (cli)</td>
+            <td class="hl"><span class="dot ok"></span><span class="st">&#9733;&#9733;&#9733;</span></td>
+            <td><span class="dot no"></span></td>
+            <td><span class="dot no"></span></td>
+            <td><span class="dot no"></span></td>
+          </tr>
+          <tr>
             <td class="name">audit trail + prometheus metrics</td>
             <td class="hl"><span class="dot ok"></span></td>
             <td><span class="dot ok"></span><span class="st">&#9733;&#9733;</span></td>
             <td><span class="dot ok"></span></td>
+            <td><span class="dot part"></span></td>
+          </tr>
+          <tr>
+            <td class="name">audit log encryption (gpg at rest)</td>
+            <td class="hl"><span class="dot ok"></span><span class="st">&#9733;&#9733;</span></td>
+            <td><span class="dot no"></span></td>
+            <td><span class="dot part"></span></td>
+            <td><span class="dot no"></span></td>
+          </tr>
+          <tr>
+            <td class="name">vault-backed key store in the free core</td>
+            <td class="hl"><span class="dot ok"></span><span class="st">&#9733;&#9733;</span></td>
+            <td><span class="dot part"></span></td>
+            <td><span class="dot part"></span></td>
             <td><span class="dot part"></span></td>
           </tr>
           <tr>
@@ -1671,6 +1699,8 @@ $ <span class="k-str">./scripts/decrypt_auditor_logs.sh</span> 2026-09-09</pre>
       feature, and LiteLLM ships an MIT core with a separate enterprise edition. Everything in the
       first column is Apache-2.0 and runs on your own hardware &mdash; the guardrail plugins are
       plain HTTP clients, so NASK and S&oacute;jka are services you deploy and point them at.
+      Secret managers on LiteLLM and Bifrost, and Bifrost's audit logs, require that Enterprise
+      license as well.
     </p>
 
     <div class="split reveal">

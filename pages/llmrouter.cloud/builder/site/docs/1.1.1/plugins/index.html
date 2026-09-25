@@ -340,7 +340,7 @@ declare one; an intent with an empty adjustment is demoted a single pool step. O
 the decision lives in the log:
 <code>SimpleSemanticRouting: intent=code, complexity=simple (10 tokens) -&gt; qwen3.6:35b</code>.</p>
 <p>Configuration ships in
-<a href="https://github.com/radlab-dev-group/llm-router-plugins/blob/eefb333/llm_router_plugins/resources/routing/simple_semantic.json" target="_blank" rel="noopener noreferrer">simple_semantic.json</a>. Overrides:
+<a href="https://github.com/radlab-dev-group/llm-router-plugins/blob/31a0818/llm_router_plugins/resources/routing/simple_semantic.json" target="_blank" rel="noopener noreferrer">simple_semantic.json</a>. Overrides:
 <code>LLM_ROUTER_ROUTING_COMPLEXITY_THRESHOLDS</code> (<code>simple|medium</code>), <code>LLM_ROUTER_ROUTING_MODELS</code> (the pool),
 <code>LLM_ROUTER_ROUTING_DEFAULT_MODEL</code> and <code>LLM_ROUTER_ROUTING_INTENT_&lt;name&gt;</code> — that last one <strong>replaces</strong> an intent and
 clears its patterns and weights, and there is no <code>..._CONFIG</code> variable for this plugin.</p>
@@ -358,7 +358,7 @@ sentence-transformers BiEncoder (<code>google/embeddinggemma-300m</code> by defa
 <code>similarity_threshold</code>; the payload gains <code>routing.target_name</code> and <code>routing.similarity</code>. The index is persisted as
 <code>index.faiss</code> + <code>docstore.pkl</code> and reloaded on the next start, rebuilt automatically when the embedding model outputs a
 different dimension. Needs the <code>[ml]</code> / <code>[ml-gpu]</code> extras — and it fails hard rather than passing traffic through.</p>
-<p>Configuration ships in <a href="https://github.com/radlab-dev-group/llm-router-plugins/blob/eefb333/llm_router_plugins/resources/routing/semantic_biencoder.json" target="_blank" rel="noopener noreferrer">semantic_biencoder.json</a>.
+<p>Configuration ships in <a href="https://github.com/radlab-dev-group/llm-router-plugins/blob/31a0818/llm_router_plugins/resources/routing/semantic_biencoder.json" target="_blank" rel="noopener noreferrer">semantic_biencoder.json</a>.
 Overrides: <code>LLM_ROUTER_ROUTING_SEMANTIC_BIENCODER_CONFIG</code> (inline JSON <em>or</em> a path), <code>_MODEL</code>, <code>_TARGETS</code>,
 <code>_CHUNK_SIZE</code>, <code>_CHUNK_OVERLAP</code>, <code>_PERSIST_DIR</code>; <code>similarity_threshold</code> and <code>top_k</code> are config-only. The shipped
 <code>similarity_threshold: 0.0</code> reroutes <strong>every</strong> request — measured on the shipped targets, real matches score 0.70–0.82
@@ -427,7 +427,7 @@ optional embedding cosine-similarity lookup — and falls back to <code>implemen
 </tbody>
 </table>
 <p>Modes ship in
-<a href="https://github.com/radlab-dev-group/llm-router-plugins/blob/eefb333/llm_router_plugins/resources/routing/agentic_routing_codex.json" target="_blank" rel="noopener noreferrer">agentic_routing_codex.json</a> and are overridable with
+<a href="https://github.com/radlab-dev-group/llm-router-plugins/blob/31a0818/llm_router_plugins/resources/routing/agentic_routing_codex.json" target="_blank" rel="noopener noreferrer">agentic_routing_codex.json</a> and are overridable with
 <code>LLM_ROUTER_ROUTING_SEMANTIC_AGENTIC_CODEX_*</code> environment variables (<code>…_CONFIG</code>, <code>…_TRIGGER</code>, <code>…_MODEL_&lt;MODE&gt;</code>,
 <code>…_MODELS</code>, <code>…_MODES</code>, <code>…_FALLBACK_MODE</code>, <code>…_HEURISTIC_ENABLED</code>, <code>…_HEURISTIC_MIN_SCORE</code>, <code>…_CLASSIFY_MAX_CHARS</code>,
 <code>…_MODEL</code>, <code>…_SEMANTIC_ENABLED</code>, <code>…_SIMILARITY_THRESHOLD</code>, <code>…_TOP_K</code>, <code>…_CHUNK_SIZE</code>, <code>…_CHUNK_OVERLAP</code>,
@@ -486,7 +486,7 @@ payload carries it) plus a <code>payload["routing"]</code> block.</p>
 <code>:0</code>, <code>@YYYYMMDD</code> revision, <code>us.anthropic.</code> / <code>anthropic/</code> prefix, <code>models/</code> path and <code>-YYYYMMDD</code> release date stripped)
 and resolved through four layers, most specific first — literal, normalized exact, longest wildcard prefix
 (<code>claude-opus-*</code>), then family token (<code>claude-3-5-haiku-20241022</code> → Haiku). Configuration ships in
-<a href="https://github.com/radlab-dev-group/llm-router-plugins/blob/eefb333/llm_router_plugins/resources/routing/agentic_routing_claude_code.json" target="_blank" rel="noopener noreferrer">agentic_routing_claude_code.json</a> and is
+<a href="https://github.com/radlab-dev-group/llm-router-plugins/blob/31a0818/llm_router_plugins/resources/routing/agentic_routing_claude_code.json" target="_blank" rel="noopener noreferrer">agentic_routing_claude_code.json</a> and is
 overridable with <code>LLM_ROUTER_ROUTING_SEMANTIC_AGENTIC_CLAUDE_CODE_*</code> (<code>…_CONFIG</code>, <code>…_ENABLED</code>, <code>…_MATCH_FAMILIES</code>,
 <code>…_FIELDS</code>, <code>…_MODEL_&lt;TIER&gt;</code>, <code>…_MODELS</code>, <code>…_MODES</code>, <code>…_MODE_&lt;tier&gt;_MODELS</code>). Routing <strong>fails open and silent</strong>: a model
 no tier claims comes back as the same object it arrived as, with no log line, while an inconsistent config (duplicate tier
@@ -673,14 +673,14 @@ Context separated with double enter
 <nav class="pager" aria-label="Previous and next page"></nav>
 <footer class="doc-meta">
 <div class="meta-row"><span class="meta-k">repository</span><a class="mono" href="https://github.com/radlab-dev-group/llm-router-plugins">llm-router-plugins</a></div>
-<div class="meta-row"><span class="meta-k">source</span><a class="mono" href="https://github.com/radlab-dev-group/llm-router-plugins/blob/eefb333/README.md">README.md</a></div>
-<div class="meta-row"><span class="meta-k">last commit</span><time datetime="2026-09-24T17:24:48+02:00"><a href="https://github.com/radlab-dev-group/llm-router-plugins/commit/eefb333">2026-09-24</a></time></div>
-<div class="meta-row"><span class="meta-k">built from</span><span class="mono"><a href="https://github.com/radlab-dev-group/llm-router-plugins/tree/eefb333">feat/claude_code_plugin</a>&nbsp;@&nbsp;<a href="https://github.com/radlab-dev-group/llm-router-plugins/commit/eefb333">eefb333</a></span></div>
+<div class="meta-row"><span class="meta-k">source</span><a class="mono" href="https://github.com/radlab-dev-group/llm-router-plugins/blob/31a0818/README.md">README.md</a></div>
+<div class="meta-row"><span class="meta-k">last commit</span><time datetime="2026-09-24T17:24:48+02:00"><a href="https://github.com/radlab-dev-group/llm-router-plugins/commit/31a0818">2026-09-24</a></time></div>
+<div class="meta-row"><span class="meta-k">built from</span><span class="mono"><a href="https://github.com/radlab-dev-group/llm-router-plugins/tree/31a0818">main</a>&nbsp;@&nbsp;<a href="https://github.com/radlab-dev-group/llm-router-plugins/commit/31a0818">31a0818</a></span></div>
 <p class="hint">Generated from the Markdown file in the repository: commit a change and the next build republishes it.</p>
 </footer>
 <footer class="foot"><div class="foot-inner">
 <span class="mono">llm-router &middot; docs are generated from the repository by <code>tools/build_docs.py</code></span>
-<span class="mono"><a href="https://github.com/radlab-dev-group/llm-router-plugins/tree/eefb333">1.1.1</a> @ <a href="https://github.com/radlab-dev-group/llm-router-plugins/commit/eefb333">eefb333</a></span>
+<span class="mono"><a href="https://github.com/radlab-dev-group/llm-router-plugins/tree/31a0818">1.1.1</a> @ <a href="https://github.com/radlab-dev-group/llm-router-plugins/commit/31a0818">31a0818</a></span>
 </div></footer>
 </main>
 <aside class="dtoc" id="dtoc"><h2 class="toc-title">on this page</h2><div class="toc-body"><ul><li><a href="#overview">Overview</a></li><li><a href="#1-anonymizers-maskers">1. Anonymizers (Maskers)</a><ul><li><a href="#11-what-they-do">1.1 What they do</a></li><li><a href="#12-builtin-anonymizer-plugins">1.2 Built‑in anonymizer plugins</a></li><li><a href="#13-how-a-masker-is-used">1.3 How a masker is used</a></li></ul></li><li><a href="#2-guardrails">2. Guardrails</a><ul><li><a href="#21-what-they-do">2.1 What they do</a></li><li><a href="#22-builtin-guardrail-plugins">2.2 Built‑in guardrail plugins</a></li><li><a href="#23-how-a-guardrail-is-used">2.3 How a guardrail is used</a></li></ul></li><li><a href="#25-ml-based-pii-classification">2.5 ML-Based PII Classification</a><ul><li><a href="#how-it-complements-regex-maskers">How it complements regex maskers</a></li><li><a href="#quick-start">Quick start</a></li></ul></li><li><a href="#26-polish-identification-regex-patterns">2.6 Polish Identification Regex Patterns</a><ul><li><a href="#available-polish-rules">Available Polish rules</a></li><li><a href="#how-they-work">How they work</a></li><li><a href="#adding-rules-to-the-pipeline">Adding rules to the pipeline</a></li></ul></li><li><a href="#27-semantic-routing-model-selection">2.7 Semantic Routing (Model Selection)</a><ul><li><a href="#271-simple-semantic-routing-heuristic">2.7.1 Simple Semantic Routing (Heuristic)</a></li><li><a href="#272-bi-encoder-semantic-routing-model-selection">2.7.2 Bi-Encoder Semantic Routing (Model Selection)</a></li><li><a href="#273-codex-cli-routing-auto_codex">2.7.3 Codex CLI routing (auto_codex)</a></li><li><a href="#274-claude-code-model-swap-claude-configured-models">2.7.4 Claude Code Model Swap (claude-* → configured models)</a></li></ul></li><li><a href="#3-pipelines">3. Pipelines</a><ul><li><a href="#31-registration">3.1 Registration</a></li><li><a href="#32-configuration">3.2 Configuration</a></li></ul></li><li><a href="#4-adding-a-new-plugin">4. Adding a New Plugin</a></li><li><a href="#5-retrievalaugmented-generation-rag-support">5. Retrieval‑Augmented Generation (RAG) Support</a><ul><li><a href="#51-what-the-plugin-does">5.1 What the plugin does</a></li><li><a href="#52-environment-variables">5.2 Environment variables</a></li></ul></li></ul></div></aside>
