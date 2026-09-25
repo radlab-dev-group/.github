@@ -1,5 +1,5 @@
 {
-  "updated": "2026-09-25T01:17:30Z",
+  "updated": "2026-09-25T02:39:04Z",
   "latest": "1.1.1",
   "versions": [
     {
@@ -58,9 +58,9 @@
           "url": "https://github.com/radlab-dev-group/llm-router"
         },
         "plugins": {
-          "ref": "feat/claude_code_plugin",
-          "sha": "eefb333",
-          "date": "2026-09-24T20:17:18+02:00",
+          "ref": "main",
+          "sha": "31a0818",
+          "date": "2026-09-25T03:21:58+02:00",
           "version": "0.1.1",
           "url": "https://github.com/radlab-dev-group/llm-router-plugins"
         },
