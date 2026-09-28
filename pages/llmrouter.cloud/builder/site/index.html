@@ -404,7 +404,7 @@ ul.ticks li b{color:#dce7f1;font-weight:600}
       <a href="docs/">docs</a>
     </nav>
     <div class="nav-right">
-      <span class="chip chip-live">v1.1.1 · Apache-2.0</span>
+      <span class="chip chip-live">v1.1.4 · Apache-2.0</span>
       <a class="btn ghost" href="https://github.com/radlab-dev-group/llm-router" rel="noopener">GitHub</a>
       <a class="btn btn-primary" href="#deploy">Deploy</a>
       <button class="burger" id="burger" aria-label="Toggle navigation" aria-expanded="false">&#9776;</button>
@@ -421,10 +421,11 @@ ul.ticks li b{color:#dce7f1;font-weight:600}
       <span class="eyebrow"><i class="pulse"></i> self-hosted ai gateway</span>
       <h1>One endpoint in&nbsp;front of <span class="hl">every LLM</span> you run<span class="caret"></span></h1>
       <p class="lede">
-        LLM Router sits between your services and your models — <b>vLLM</b>, <b>Ollama</b>, <b>LM Studio</b>,
-        <b>OpenAI-compatible</b> APIs and <b>Anthropic</b> — behind a single OpenAI-compatible REST surface.
-        Auth, sliding-window rate limits, PII masking, guardrails, load balancing and Prometheus metrics
-        run <b>in your infrastructure</b>, so prompts never take a detour through someone else's cloud.
+        LLM Router sits between your services and your models — <b>vLLM</b>, <b>Ollama</b>, <b>llama.cpp</b>,
+        <b>LM Studio</b>, <b>OpenAI-compatible</b> APIs and <b>Anthropic</b> — behind a single OpenAI-compatible
+        REST surface. Auth, sliding-window rate limits, PII masking, guardrails, load balancing, provider
+        failover and Prometheus metrics run <b>in your infrastructure</b>, so prompts never take a detour
+        through someone else's cloud.
       </p>
       <div class="install" data-copy='pip install "radlab-llm-router[api]"'>
         <span class="pfx">$</span><code>pip install "radlab-llm-router[api]"</code><span class="okmsg">copied</span>
@@ -450,7 +451,7 @@ ul.ticks li b{color:#dce7f1;font-weight:600}
       </div>
       <div class="term-body">
 <div class="l"><span class="c-p">$</span> <span class="c-cmd">pip install "radlab-llm-router[api,metrics]"</span></div>
-<div class="l"><span class="c-s">&check;&nbsp;</span><span class="c-o">installed llm-router <b>1.1.1</b> · console script <span class="c-k">llm-router</span></span></div>
+<div class="l"><span class="c-s">&check;&nbsp;</span><span class="c-o">installed llm-router <b>1.1.4</b> · console script <span class="c-k">llm-router</span></span></div>
 <div class="l">&nbsp;</div>
 <div class="l"><span class="c-p">$</span> <span class="c-cmd">llm-router config discover localhost 10.0.4.21 -o models-config.json</span></div>
 <div class="l"><span class="c-s">&check;&nbsp;</span><span class="c-o">discovered <b>ollama</b>&nbsp;&nbsp;&nbsp;&nbsp;http://localhost:11434 &nbsp;<span class="c-m">(3 models)</span></span></div>
@@ -469,7 +470,7 @@ ul.ticks li b{color:#dce7f1;font-weight:600}
 <div class="l"><span class="c-m">&nbsp;&nbsp;&nbsp;&nbsp;Log&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="c-o">~/.llm-router/server.log</span></div>
 <div class="l">&nbsp;</div>
 <div class="l"><span class="c-p">$</span> <span class="c-cmd">curl -s localhost:8080/api/ping</span></div>
-<div class="l"><span class="c-o">{<span class="c-k">"status"</span>: <span class="c-s">"ok"</span>} &nbsp;<span class="c-m">HTTP/1.1 200 OK</span></span></div>
+<div class="l"><span class="c-o">{<span class="c-k">"status"</span>: <span class="c-k">true</span>, <span class="c-k">"body"</span>: <span class="c-s">"pong"</span>} &nbsp;<span class="c-m">HTTP/1.1 200 OK</span></span></div>
       </div>
     </div>
   </div>
@@ -478,11 +479,11 @@ ul.ticks li b{color:#dce7f1;font-weight:600}
 <!-- ============================================================ stats -->
 <div class="stats">
   <div class="wrap stats-grid">
-    <div class="stat"><div class="n">5</div><div class="k">provider types</div></div>
+    <div class="stat"><div class="n">6</div><div class="k">provider types</div></div>
     <div class="stat"><div class="n">6</div><div class="k">LB strategies</div></div>
     <div class="stat"><div class="n">30<span>+</span></div><div class="k">PII rule types</div></div>
     <div class="stat"><div class="n">25<span>+</span></div><div class="k">REST endpoints</div></div>
-    <div class="stat"><div class="n">~80</div><div class="k">env vars</div></div>
+    <div class="stat"><div class="n">~95</div><div class="k">env vars</div></div>
     <div class="stat"><div class="n">100<span>%</span></div><div class="k">self-hosted</div></div>
   </div>
 </div>
@@ -555,7 +556,7 @@ ul.ticks li b{color:#dce7f1;font-weight:600}
         <div class="arrow">&rarr;</div>
         <div class="node">
           <div class="idx">UPSTREAM</div><div class="nm">model provider</div>
-          <div class="ds">vLLM, Ollama, LM Studio, OpenAI-compatible, Anthropic</div>
+          <div class="ds">vLLM, Ollama, llama.cpp, LM Studio, OpenAI-compatible, Anthropic</div>
         </div>
       </div>
       </div>
@@ -618,7 +619,7 @@ ul.ticks li b{color:#dce7f1;font-weight:600}
           <li>Recognises <b>plan</b>, <b>implement</b>, <b>test</b>, <b>debug</b> and <b>review</b> modes from collaboration metadata</li>
           <li>Routes plan mode to a fast reasoning model, implementation to a larger model</li>
           <li>Uses <code>auto_codex</code> as a stable model alias &mdash; no per-developer config needed</li>
-          <li>Detects request kind (turn, subtask, search, memory, plan) and routes accordingly</li>
+          <li>Ranks real work above Codex housekeeping &mdash; <code>compaction</code> and auxiliary title calls are classified apart from main turns</li>
         </ul>
         <p class="hint" style="margin-top:8px">Enable: <code>LLM_ROUTER_UTILS_PLUGINS_PIPELINE="agentic_routing_codex"</code></p>
         <p class="hint" style="margin-top:4px;font-size:12.5px">Codex config: <code>model = "auto_codex"</code> in <code>~/.codex/config.toml</code></p>
@@ -626,9 +627,9 @@ ul.ticks li b{color:#dce7f1;font-weight:600}
 
       <div class="panel reveal">
         <h3><span class="mono-i">04</span> Claude Code model swap</h3>
-        <p class="hint">Rewrite Anthropic tier model names (Sonnet, Opus, Haiku) to the models your router actually serves.</p>
+        <p class="hint">Rewrite Anthropic tier model names (Fable, Opus, Sonnet, Haiku, Plan Mode) to the models your router actually serves.</p>
         <ul class="feature-list">
-          <li>Maps <code>claude-sonnet-*</code>, <code>claude-opus-*</code>, <code>claude-haiku-*</code> to local or custom models</li>
+          <li>Maps <code>claude-fable-*</code>, <code>claude-opus-*</code>, <code>claude-sonnet-*</code>, <code>claude-haiku-*</code> and <code>opusplan</code> to local or custom models</li>
           <li>Handles Claude Code's internal subagent model selection (<code>CLAUDE_CODE_SUBAGENT_MODEL</code>)</li>
           <li>One JSON config file on the router &mdash; no environment variables on every client host</li>
           <li>Fail-open: unmatched model names pass through unchanged</li>
@@ -643,8 +644,8 @@ ul.ticks li b{color:#dce7f1;font-weight:600}
         <h3><span class="mono-i">05</span> Semantic routing</h3>
         <p class="hint">Embedding-based routing that matches user messages against pre-configured targets.</p>
         <ul class="feature-list">
-          <li><b>simple_semantic</b> &mdash; heuristic-based routing with regex and keyword matching</li>
-          <li><b>semantic_biencoder</b> &mdash; embedding model + FAISS index for similarity-based routing</li>
+          <li><b>simple_semantic_routing</b> &mdash; two-stage heuristic: intent classification + complexity analysis</li>
+          <li><b>semantic_biencoder_routing</b> &mdash; embedding model + FAISS index for similarity-based routing</li>
           <li>Configure targets with similarity thresholds and fallback models</li>
           <li>Works with any OpenAI-compatible embedding endpoint</li>
         </ul>
@@ -679,7 +680,7 @@ ul.ticks li b{color:#dce7f1;font-weight:600}
         <p>Point existing clients at the router and keep them there: <code>/v1/chat/completions</code>,
         <code>/v1/responses</code>, <code>/v1/embeddings</code> plus native <code>/v1/messages</code>
         for Anthropic. SSE streaming honors the <code>stream</code> flag with correct cache headers.</p>
-        <div class="tagrow"><span class="on">openai</span><span class="on">anthropic</span><span>vllm</span><span>ollama</span><span>lm studio</span></div>
+        <div class="tagrow"><span class="on">openai</span><span class="on">anthropic</span><span>vllm</span><span>ollama</span><span>llama.cpp</span><span>lm studio</span></div>
       </article>
 
       <article class="card reveal">
@@ -740,10 +741,10 @@ ul.ticks li b{color:#dce7f1;font-weight:600}
       <article class="card reveal">
         <div class="ico"><svg width="16" height="16"><use href="#i-chart"/></svg></div>
         <h3>Prometheus, already wired</h3>
-        <p>Set <code>LLM_ROUTER_USE_PROMETHEUS=1</code> and scrape <code>/api/metrics</code>: provider
+        <p>Set <code>LLM_ROUTER_USE_PROMETHEUS=1</code> and scrape <code>/metrics</code>: provider
         calls, latency histograms, errors, retries, token counters and per-stage pipeline results.
         A Grafana dashboard JSON ships in the image.</p>
-        <div class="tagrow"><span class="on">/api/metrics</span><span>histograms</span><span>grafana json</span></div>
+        <div class="tagrow"><span class="on">/metrics</span><span>histograms</span><span>grafana json</span></div>
       </article>
 
       <article class="card reveal">
@@ -768,7 +769,7 @@ ul.ticks li b{color:#dce7f1;font-weight:600}
     <h2 class="reveal">One JSON file, one env file.<br>That's the whole control plane.</h2>
     <p class="sec-sub reveal" style="margin-top:12px">
       Providers live in <code>models-config.json</code> — point <code>LLM_ROUTER_MODELS_CONFIG</code>
-      at it, mount it read-only, and reload the process. Behaviour lives in ~80
+      at it, mount it read-only, and reload the process. Behaviour lives in ~95
       <code>LLM_ROUTER_*</code> variables, all documented in <code>ENV_DEFINITIONS.md</code> and all
       settable from a plain env file, systemd unit or ConfigMap. No database to migrate, no admin
       SaaS to trust.
@@ -783,7 +784,7 @@ ul.ticks li b{color:#dce7f1;font-weight:600}
 
     <div class="tabpane on reveal" id="pane-cfg" data-pane="cfg" role="tabpanel" aria-labelledby="tab-cfg">
       <div class="code">
-        <div class="code-bar"><span class="code-file">/srv/llm-router/models-config.json &mdash; groups &rarr; model &rarr; providers[]</span>
+        <div class="code-bar"><span class="code-file">/srv/llm-router/models-config.json &mdash; groups &rarr; model &rarr; providers[] / providers_sleep[] / fallback_model</span>
           <button class="copy" type="button">copy</button></div>
 <pre>{
   <span class="k-key">"google_models"</span>: {
@@ -807,7 +808,15 @@ ul.ticks li b{color:#dce7f1;font-weight:600}
           <span class="k-key">"keep_alive"</span>: <span class="k-str">"10m"</span>,
           <span class="k-key">"weight"</span>: <span class="k-num">1.0</span>
         }
-      ]
+      ],
+      <span class="k-cm">// standby providers, used only when every primary is busy or down</span>
+      <span class="k-key">"providers_sleep"</span>: [
+        { <span class="k-key">"id"</span>: <span class="k-str">"gemma27b-vllm-node-02:8000"</span>,
+          <span class="k-key">"api_host"</span>: <span class="k-str">"http://10.0.4.22:8000/"</span>,
+          <span class="k-key">"api_type"</span>: <span class="k-str">"vllm"</span> }
+      ],
+      <span class="k-cm">// last resort when no provider of this model can serve the request</span>
+      <span class="k-key">"fallback_model"</span>: <span class="k-str">"gpt-4o-mini"</span>
     }
   },
   <span class="k-key">"openai_models"</span>: {
@@ -818,8 +827,10 @@ ul.ticks li b{color:#dce7f1;font-weight:600}
       ]
     }
   },
-  <span class="k-key">"active_models"</span>: { <span class="k-key">"google_models"</span>: [<span class="k-str">"google/gemma-3-27b-it"</span>] },
-  <span class="k-key">"providers_sleep"</span>: <span class="k-num">3</span>
+  <span class="k-key">"active_models"</span>: {
+    <span class="k-key">"google_models"</span>: [<span class="k-str">"google/gemma-3-27b-it"</span>],
+    <span class="k-key">"openai_models"</span>: [<span class="k-str">"gpt-4o-mini"</span>]   <span class="k-cm">// the fallback target must be active as well</span>
+  }
 }</pre>
       </div>
     </div>
@@ -890,8 +901,11 @@ ul.ticks li b{color:#dce7f1;font-weight:600}
 
     <p class="sec-sub reveal" style="margin-top:22px;font-size:13.4px">
       Auth is <code>LLM_ROUTER_AUTH_ENABLED=false</code> by default for the happy path on a private
-      network; <code>/ping</code>, <code>/version</code>, <code>/models</code> and <code>/</code>
-      stay public when you switch it on.
+      network. Switch it on and <code>LLM_ROUTER_AUTH_PUBLIC_ENDPOINTS</code> decides what stays
+      key-free &mdash; by default <code>/</code>, <code>/models</code>, <code>/health</code> and
+      <code>/metrics</code>, plus their bare <code>/v1</code> variants. Routed endpoints live under
+      <code>LLM_ROUTER_EP_PREFIX</code> (<code>/api</code> by default), so <code>/api/ping</code> and
+      <code>/api/version</code> need a key until you add them to that list.
     </p>
   </div>
 </section>
@@ -905,9 +919,10 @@ ul.ticks li b{color:#dce7f1;font-weight:600}
     <h2 class="reveal">Pick a strategy, not a religion</h2>
     <p class="sec-sub reveal" style="margin-top:12px">
       Six strategies ship in the core. The difference is where state lives and how hard it pins a
-      provider &mdash; from cheap in-memory counters on a single box to Redis leases that hold an
-      exclusive grip on a GPU-backed replica, or a worker-slot counter that lets one provider
-      absorb several parallel requests. Switch with one env var.
+      provider &mdash; selection counters in Redis so every gunicorn worker and replica agrees
+      (in-process when Redis is absent), up to exclusive leases that hold a GPU-backed replica for
+      one request, or worker-slot leases that let one provider absorb several parallel requests.
+      Switch with one env var.
     </p>
 
     <div class="tbl-wrap reveal">
@@ -918,14 +933,14 @@ ul.ticks li b{color:#dce7f1;font-weight:600}
         <tbody>
           <tr>
             <td class="name">balanced <span class="pill mint">default</span></td>
-            <td class="mono">in-process counters</td>
-            <td>Round-robins active providers by concurrent request count; fails over on upstream error.</td>
+            <td class="mono">Redis counters, in-process fallback</td>
+            <td>Picks the least-used provider; the counters are shared across workers and replicas and degrade to in-process when Redis is missing. Rotates on any upstream error.</td>
             <td>Stateless single replica, homogeneous GPUs.</td>
           </tr>
           <tr>
             <td class="name">weighted</td>
-            <td class="mono">config <code>weight</code></td>
-            <td>Static ratios from <code>models-config.json</code> &mdash; send 2&times; traffic to the 8&times;GPU node.</td>
+            <td class="mono">config <code>weight</code> + Redis</td>
+            <td>Static ratios from <code>models-config.json</code>, walked off one global selection sequence so every replica hits the same CDF &mdash; send 2&times; traffic to the 8&times;GPU node.</td>
             <td>Known capacity differences between nodes.</td>
           </tr>
           <tr>
@@ -942,14 +957,14 @@ ul.ticks li b{color:#dce7f1;font-weight:600}
           </tr>
           <tr>
             <td class="name">first_available_optim</td>
-            <td class="mono">Redis <code>:last_host</code></td>
-            <td>Same lease plus <code>:hosts</code> / <code>:occupancy</code> keys so replicas agree without re-scanning. Falls back to <code>first_available</code>.</td>
+            <td class="mono">Redis <code>:last_host</code> / <code>:hosts</code></td>
+            <td>Same lease plus host bookkeeping (<code>:last_host</code>, <code>:hosts</code>, and <code>host:&lt;host&gt;</code> pinned for <code>LLM_ROUTER_LB_HOST_PIN_TTL_SECONDS</code>) so replicas reuse a warm host without re-scanning. Falls back to <code>first_available</code>.</td>
             <td>Many replicas, chatty provider sets.</td>
           </tr>
           <tr>
             <td class="name">first_available_optim_nworkers</td>
-            <td class="mono">Redis <code>:in_use</code> slots</td>
-            <td>Worker-slot version of <code>first_available_optim</code>: each provider serves up to <code>nworkers</code> concurrent requests (default 1). A least-loaded-with-a-free-slot step ranks busy workers and relative load before the first-available fallback waits out a release.</td>
+            <td class="mono">Redis <code>:in_use</code> slot leases</td>
+            <td>Worker-slot version of <code>first_available_optim</code>: each provider serves up to <code>nworkers</code> concurrent requests (default 1). A least-loaded-with-a-free-slot step ranks providers by <b>absolute</b> busy-worker count, so they fill in layers instead of saturating the largest one. Leases live under their own <code>fa_optim_nworkers_</code> prefix and expire, so a crashed router gives its slots back.</td>
             <td>Engines with real parallelism &mdash; vLLM / llama.cpp slots on one GPU.</td>
           </tr>
         </tbody>
@@ -958,16 +973,50 @@ ul.ticks li b{color:#dce7f1;font-weight:600}
 
     <div class="split reveal">
       <div class="panel">
-        <h3><span class="mono-i">$</span> Retry, failover, budgets</h3>
+        <h3><span class="mono-i">$</span> Provider failover, not just retries</h3>
         <p class="hint">
-          Upstream 5xx and timeouts are retried against the next provider in the resolved set.
-          <code>providers_sleep</code> spaces the attempts, <code>llm_router_retry_total</code> and
-          <code>llm_router_retry_exhausted_total</code> tell you when a model is genuinely out of
-          capacity rather than briefly grumpy.
+          Any <b>4xx/5xx</b> answer &mdash; and any transport error &mdash; is replayed on another
+          provider of the same model, streaming and non-streaming alike. The providers a request has
+          already failed on travel with it, so every attempt gets a fresh candidate, and the last
+          provider error is what finally reaches the client. Streams fail over before the first byte:
+          the first chunk is awaited, so a provider that rejects the stream is swapped before a
+          truncated answer can start &mdash; a failure <b>mid-stream</b>, after bytes were delivered,
+          is never replayed.
         </p>
-        <div class="tagrow">
-          <span class="on">per-provider retry</span><span>exhaustion counter</span><span>config sleep</span>
-        </div>
+        <ul class="ticks">
+          <li><b>Never retried</b> &mdash; <code>401</code>, <code>403</code>, <code>404</code>, <code>422</code>, plus bodies that blame the prompt: <code>context_length_exceeded</code>, <code>content_filter</code>, <code>invalid_api_key</code></li>
+          <li><b>Per endpoint</b> &mdash; <code>RETRY_ON_ANY_ERROR_STATUS</code> (default on) and <code>RETRY_WHEN_STATUS</code> on the endpoint&rsquo;s <code>RetryResponse</code></li>
+        </ul>
+        <div class="tagrow"><span class="on">provider rotation</span><span>stream-aware</span><span>per-endpoint policy</span></div>
+      </div>
+      <div class="panel">
+        <h3><span class="mono-i">&darr;</span> <code>fallback_model</code>, the last resort</h3>
+        <p class="hint">
+          A model can name another <b>active</b> model that takes over when none of its own providers
+          can serve a request &mdash; none configured, none healthy, or every one busy until the
+          selection timeout. The reroute happens <b>before load balancing</b>, so the very same
+          strategy balances over the fallback model&rsquo;s providers.
+        </p>
+        <ul class="ticks">
+          <li><b>Chains</b> &mdash; <code>a &rarr; b &rarr; c</code>; an unknown target, a self reference or a cycle aborts startup with a <code>ValueError</code></li>
+          <li><b>Standby providers</b> &mdash; <code>providers_sleep</code> keeps low-priority providers for the model itself, used when the primaries are busy or down</li>
+          <li><b>Counted</b> &mdash; <code>llm_router_model_fallback_total{model_name, fallback_model}</code></li>
+        </ul>
+        <div class="tagrow"><span class="on">model-level fallback</span><span>validated at startup</span><span>strategy-agnostic</span></div>
+      </div>
+    </div>
+
+    <div class="split reveal">
+      <div class="panel">
+        <h3><span class="mono-i">&#8635;</span> Retry budget and backoff</h3>
+        <p class="hint">
+          Failover is bounded, not endless: <code>MAX_RECONNECTIONS = 10</code> attempts with
+          exponential backoff from <code>0.1&nbsp;s</code>, capped at <code>2.0&nbsp;s</code>, plus
+          jitter. <code>llm_router_retry_total{model_name,error_code}</code> and
+          <code>llm_router_retry_exhausted_total{model_name,last_error_code}</code> tell you when a
+          model is genuinely out of capacity rather than briefly grumpy.
+        </p>
+        <div class="tagrow"><span class="on">capped attempts</span><span>backoff + jitter</span><span>exhaustion counter</span></div>
       </div>
       <div class="panel">
         <h3><span class="mono-i">;</span> Redis is optional, not required</h3>
@@ -1005,7 +1054,7 @@ ul.ticks li b{color:#dce7f1;font-weight:600}
         </p>
         <ul class="ticks">
           <li><b>Deterministic rules</b> &mdash; e-mail, IBAN, credit card, phone, MAC, IPv4/IPv6, JWT</li>
-          <li><b>PL paperwork</b> &mdash; PESEL, NIP, KRS, REGON, ID number, driving licence</li>
+          <li><b>PL paperwork</b> &mdash; PESEL, NIP, KRS, REGON, ID card, passport, NRB bank account</li>
           <li><b>ML pass</b> &mdash; names, addresses and free-text identifiers, cached per text</li>
           <li><b>Reversible</b> &mdash; <code>masking_with_audit</code> keeps the mapping for response un-masking</li>
         </ul>
@@ -1071,7 +1120,7 @@ $ <span class="k-str">./scripts/decrypt_auditor_logs.sh</span> 2026-09-09</pre>
     </div>
     <h2 class="reveal">Scrape one path. Alert on everything.</h2>
     <p class="sec-sub reveal" style="margin-top:12px">
-      Turn on <code>LLM_ROUTER_USE_PROMETHEUS=1</code> and <code>/api/metrics</code> exposes counters,
+      Turn on <code>LLM_ROUTER_USE_PROMETHEUS=1</code> and <code>/metrics</code> exposes counters,
       histograms and per-stage pipeline results in text format. Multiprocess mode is wired for
       gunicorn via <code>PROMETHEUS_MULTIPROC_DIR</code>
       (<code>~/.llm-router/metrics/prometheus/multiproc</code> by default), and a Grafana dashboard
@@ -1086,9 +1135,10 @@ $ <span class="k-str">./scripts/decrypt_auditor_logs.sh</span> 2026-09-09</pre>
           <tr><td class="name">llm_router_provider_calls_total</td><td class="mono">counter</td><td>Traffic split per provider and model &mdash; is the LB actually balancing?</td></tr>
           <tr><td class="name">llm_router_provider_latency_seconds</td><td class="mono">histogram</td><td>Upstream time in buckets: p50 for capacity review, p95/p99 for the SLO.</td></tr>
           <tr><td class="name">llm_router_provider_error_total</td><td class="mono">counter</td><td>Upstream failures by provider &mdash; page on ratio, not on absolute count.</td></tr>
-          <tr><td class="name">llm_router_lb_strategy_selected_total</td><td class="mono">counter</td><td>Which provider each strategy chose, and when a strategy was changed at runtime.</td></tr>
+          <tr><td class="name">llm_router_lb_strategy_selected_total</td><td class="mono">counter</td><td>Selection counts per strategy and model &mdash; is the strategy you configured the one actually running?</td></tr>
           <tr><td class="name">llm_router_pipeline_stage_total{stage,result}</td><td class="mono">counter</td><td><code>guardrail_request</code> pass|block, <code>masking</code> applied|skipped, <code>request_received</code>, <code>provider_resolved</code>.</td></tr>
           <tr><td class="name">llm_router_retry_total<br>llm_router_retry_exhausted_total</td><td class="mono">counter</td><td>Failover pressure vs. hard capacity loss &mdash; the difference between flaky and full.</td></tr>
+          <tr><td class="name">llm_router_model_fallback_total</td><td class="mono">counter</td><td>Requests served by a model&rsquo;s <code>fallback_model</code> &mdash; who is quietly carrying whose traffic.</td></tr>
           <tr><td class="name">llm_router_tokens_total{direction}</td><td class="mono">counter</td><td>Prompt and completion tokens &mdash; cost attribution per service or key.</td></tr>
           <tr><td class="name">llm_router_response_format_total<br>llm_router_payload_conversion_total</td><td class="mono">counter</td><td>Schema compatibility across <code>openai</code> / <code>vllm</code> / <code>ollama</code> dialects.</td></tr>
         </tbody>
@@ -1119,7 +1169,7 @@ $ <span class="k-str">./scripts/decrypt_auditor_logs.sh</span> 2026-09-09</pre>
   <b>rate</b>(llm_router_tokens_total[<u>1m</u>)
 ) * <u>60</u></div>
         <p class="hint" style="margin-top:16px">
-          <code>/api/metrics</code> requires Redis for the router-level metrics store; the Prometheus
+          <code>/metrics</code> requires Redis for the router-level metrics store; the Prometheus
           exposition itself is served from the process.
         </p>
       </div>
@@ -1175,7 +1225,7 @@ $ <span class="k-str">./scripts/decrypt_auditor_logs.sh</span> 2026-09-09</pre>
 
     <ul class="ticks reveal" style="margin-top:24px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));display:grid">
       <li><b>auth</b> &mdash; key generate | list | delete | disable | enable | rotate, policy, rate-limit</li>
-      <li><b>config</b> &mdash; scan the host for Ollama / vLLM and emit a config</li>
+      <li><b>config</b> &mdash; <code>discover</code> scans for Ollama, vLLM, LM Studio, llama.cpp, KoboldCpp and TabbyAPI and emits a config; <code>merge</code> unions two of them</li>
       <li><b>server</b> &mdash; start | stop | status | reload | log | list | rm-instance</li>
       <li><b>-i, --instance</b> &mdash; several routers on one host, state under
         <code>~/.llm-router/instances/NAME</code>; <code>status --all</code> / <code>stop --all</code>
@@ -1219,19 +1269,19 @@ $ <span class="k-str">./scripts/decrypt_auditor_logs.sh</span> 2026-09-09</pre>
 <pre><span class="c-p">$</span> docker run -d <span class="k-flag">-p</span> 5555:8080 <span class="k-flag">\</span>
     <span class="k-flag">-v</span> $PWD/models-config.json:/srv/models.json:ro <span class="k-flag">\</span>
     <span class="k-flag">-e</span> LLM_ROUTER_MODELS_CONFIG=/srv/models.json <span class="k-flag">\</span>
-    quay.io/radlab/llm-router:v1.1.1
+    quay.io/radlab/llm-router:v1.1.4
 
-<span class="c-p">$</span> curl localhost:5555/version
-<span class="c-o">{&quot;version&quot;: <span class="c-s">&quot;1.1.1&quot;</span>}</span></pre>
+<span class="c-p">$</span> curl localhost:5555/api/version
+<span class="c-o">{&quot;version&quot;: <span class="c-s">&quot;1.1.4&quot;</span>}</span></pre>
         </div>
       </div>
 
       <div class="dep reveal">
         <div class="t"><svg width="16" height="16" aria-hidden="true"><use href="#i-wheel"/></svg> helm</div>
         <div class="d">
-          Chart in-repo (<code>appVersion 1.1.1</code>), Deployment + Service + Ingress +
-          HPA, readiness on <code>/</code>, Bitnami <code>redis</code> 23.2.12 subchart
-          behind <code>redis.enabled</code>.
+          Chart in-repo (<code>appVersion 1.1.4</code>), Deployment + Service + Ingress,
+          ConfigMap built from <code>files/models-config.json</code>, readiness on <code>/</code>,
+          Bitnami <code>redis</code> 23.2.12 subchart behind <code>redis.enabled</code>.
         </div>
         <div class="code">
           <div class="code-bar"><span class="code-file">helm_charts/llm-router</span>
@@ -1271,15 +1321,15 @@ $ <span class="k-str">./scripts/decrypt_auditor_logs.sh</span> 2026-09-09</pre>
       <div class="panel reveal">
         <h3><span class="mono-i">[probe]</span> Probes, timeouts, failure budget</h3>
         <p class="hint">
-          <code>/ping</code>, <code>/health</code>, <code>/version</code>,
-          <code>/models</code> and <code>/metrics</code> are in
-          <code>public_endpoints</code> &mdash; probes never need an API key, even with
-          <code>LLM_ROUTER_AUTH_ENABLED=true</code>.
+          <code>/health</code>, <code>/metrics</code>, <code>/models</code> and <code>/</code> are
+          public by default (<code>LLM_ROUTER_AUTH_PUBLIC_ENDPOINTS</code>) &mdash; those probes never
+          need an API key, even with <code>LLM_ROUTER_AUTH_ENABLED=true</code>. Probing
+          <code>/api/ping</code> or <code>/api/version</code> instead? Add them to that list.
         </p>
         <ul class="ticks">
-          <li><code>LLM_ROUTER_PROVIDER_MONITOR_PING_TIMEOUT_SECONDS</code> &mdash; per-provider ping budget</li>
-          <li><b>max_consecutive_failures = 2</b> &mdash; one slow reply never ejects a saturated GPU replica</li>
-          <li><code>LLM_ROUTER_TIMEOUT</code> and <code>LLM_ROUTER_EXTERNAL_TIMEOUT</code> (300s) &mdash; patience set per hop</li>
+          <li><code>LLM_ROUTER_PROVIDER_MONITOR_PING_TIMEOUT_SECONDS</code> (5.0s) &mdash; per-provider ping budget</li>
+          <li><b>2 consecutive failures</b> to eject a provider (<code>LLM_ROUTER_PROVIDER_MONITOR_MAX_CONSECUTIVE_FAILURES</code>) &mdash; one slow reply never drops a saturated GPU replica, and a single success brings it back</li>
+          <li><code>LLM_ROUTER_EXTERNAL_TIMEOUT</code> (300s) for upstream calls; <code>LLM_ROUTER_TIMEOUT</code> (0 = off) bounds the router&rsquo;s own API</li>
           <li>Dead providers are removed from rotation, then re-admitted by the monitor on their own</li>
         </ul>
       </div>
@@ -1307,7 +1357,7 @@ $ <span class="k-str">./scripts/decrypt_auditor_logs.sh</span> 2026-09-09</pre>
     <div class="sec-head reveal">
       <span class="sec-num">09 / ECOSYSTEM</span>
     </div>
-    <h2 class="reveal">Seven repos, one wire format</h2>
+    <h2 class="reveal">Five repos, one wire format</h2>
     <p class="sec-sub reveal" style="margin-top:12px">
       The gateway is split so you only install what you actually run. Core library, REST surface and
       SDK ship in this repo; the UIs, plugins and guardrail services are separate deployables that
@@ -1380,8 +1430,9 @@ $ <span class="k-str">./scripts/decrypt_auditor_logs.sh</span> 2026-09-09</pre>
           sit in the same model group and share a balancing strategy.
         </p>
         <div class="tagrow">
-          <span class="on">vLLM</span><span class="on">Ollama</span><span class="on">LM Studio</span>
-          <span class="on">OpenAI-compatible</span><span class="gd">Anthropic</span><span>local GGUF</span>
+          <span class="on">vLLM</span><span class="on">Ollama</span><span class="on">llama.cpp</span>
+          <span class="on">LM Studio</span><span class="on">OpenAI-compatible</span>
+          <span class="gd">Anthropic</span><span>local GGUF</span>
         </div>
       </div>
     </div>
@@ -1705,7 +1756,7 @@ $ <span class="k-str">./scripts/decrypt_auditor_logs.sh</span> 2026-09-09</pre>
             IBAN formats, with a PL NER model you run yourself for free text</li>
           <li><b>Guardrails on your own hardware</b> &mdash; NASK HerBERT-PL-Guard and SpeakLeash
             S&oacute;jka behind services you host, no third-party API in the request path</li>
-          <li><b>Agentic routing</b> &mdash; work modes, capability gates and session affinity</li>
+          <li><b>Agentic routing</b> &mdash; Codex work modes (plan / implement / test / review / debug), request classes ranked apart from main turns, and Claude Code tier swaps</li>
           <li><b>Warm-cache routing</b> &mdash; keep talking to the host that already has the
             weights loaded instead of paying for a 30&ndash;100 GB reload elsewhere</li>
         </ul>
@@ -1814,7 +1865,7 @@ $ <span class="k-str">./scripts/decrypt_auditor_logs.sh</span> 2026-09-09</pre>
   <p>
     LLM Router is an open-source (Apache-2.0) AI gateway written in Python that sits between your
     applications and every large language model you run or rent. One OpenAI-compatible REST surface
-    fronts vLLM, Ollama, LM Studio, Anthropic and any other OpenAI-compatible upstream, so an OpenAI
+    fronts vLLM, Ollama, llama.cpp, LM Studio, Anthropic and any other OpenAI-compatible upstream, so an OpenAI
     SDK, <code>curl</code>, LangChain or LlamaIndex client keeps working when a workload moves from a
     hosted API to your own GPUs. Deploy it on-premises, in a VPC, in an air-gapped cluster or in a
     Kubernetes namespace &mdash; the process ships no telemetry and needs no external control plane.
@@ -1831,22 +1882,25 @@ $ <span class="k-str">./scripts/decrypt_auditor_logs.sh</span> 2026-09-09</pre>
     and semantic model selection for <code>model: "auto"</code> requests.
   </p>
   <p>
-    Six load-balancing strategies spread traffic across replicas: <code>balanced</code> round-robin on
-    concurrent requests, <code>weighted</code> ratios from <code>models-config.json</code>,
+    Six load-balancing strategies spread traffic across replicas: <code>balanced</code> least-used
+    selection, <code>weighted</code> ratios from <code>models-config.json</code>,
     <code>dynamic_weighted</code> latency-aware re-weighting, and <code>first_available</code> with
     <code>first_available_optim</code>, which hold an exclusive Redis lease on a GPU-backed provider so
     its KV cache stays warm, and <code>first_available_optim_nworkers</code>, which trades the
     binary lock for per-provider worker slots (<code>nworkers</code>) so a parallel engine takes
-    several requests at once. Health checks, per-provider retry and failover cover the node that fell
-    over, and answers come back as server-sent events or as a single aggregated payload.
+    several requests at once. Reliability is layered: every 4xx/5xx answer or unreachable provider
+    replays the request on another provider of the same model &mdash; streaming included, and before
+    the first byte is delivered &mdash; and only once the model has no untried provider left does its
+    <code>fallback_model</code> chain take over, all of it bounded by a capped retry budget with
+    exponential backoff. Answers come back as server-sent events or as a single aggregated payload.
   </p>
   <p>
     One <code>llm-router</code> console script supervises the gateway: start, stop, reload, status and
     tail the log of a server, run several named instances side by side on a single host &mdash; each with
     its own state directory, port and <code>config.env</code> &mdash; generate and rotate API keys and
     discover configuration. Observability is Prometheus text format plus a router-level
-    <code>/api/metrics</code> endpoint: provider latency histograms, per-pipeline-stage results, retry
-    exhaustion and prompt/completion token counters. Audit logs are encrypted at rest with GPG. Ship it
+    <code>/metrics</code> endpoint: provider latency histograms, per-pipeline-stage results, retry
+    exhaustion, model fallbacks and prompt/completion token counters. Audit logs are encrypted at rest with GPG. Ship it
     with the included non-root Dockerfile or the Helm chart, and call it from Python with the typed
     <code>radlab-llm-router</code> SDK: a synchronous <code>LLMRouterClient</code> and an
     <code>asyncio</code>-native <code>AsyncLLMRouterClient</code> (httpx) with typed stream events.
@@ -1856,6 +1910,7 @@ $ <span class="k-str">./scripts/decrypt_auditor_logs.sh</span> 2026-09-09</pre>
       <code>/v1/embeddings</code> and <code>/v1/messages</code> endpoints</li>
     <li>PII masking, prompt guardrails and GPG-encrypted audit trails for compliance-minded teams</li>
     <li>API key management, auth policies and Redis-backed rate limiting and load-balancing state</li>
+    <li>Provider failover across every provider of a model, plus model-level <code>fallback_model</code> chains</li>
     <li>Multi-instance CLI supervision, Prometheus metrics, Grafana dashboard, Docker image, Helm chart</li>
   </ul>
   <script type="application/ld+json">
@@ -1872,13 +1927,13 @@ $ <span class="k-str">./scripts/decrypt_auditor_logs.sh</span> 2026-09-09</pre>
       "@type": "SoftwareApplication",
       "name": "LLM Router",
       "alternateName": "llm-router",
-      "description": "Open-source AI gateway and LLM router: one OpenAI-compatible endpoint in front of vLLM, Ollama, LM Studio, Anthropic and any OpenAI-compatible upstream, with PII masking, guardrails, six load-balancing strategies, Redis rate limiting, Prometheus metrics and GPG-encrypted audit logs.",
+      "description": "Open-source AI gateway and LLM router: one OpenAI-compatible endpoint in front of vLLM, Ollama, llama.cpp, LM Studio, Anthropic and any OpenAI-compatible upstream, with PII masking, guardrails, six load-balancing strategies, provider failover and model-level fallback chains, Redis rate limiting, Prometheus metrics and GPG-encrypted audit logs.",
       "applicationCategory": "DeveloperApplication",
       "applicationSubCategory": "AI gateway and LLM load balancer",
       "programmingLanguage": "Python",
       "runtimePlatform": "Python >= 3.10",
       "operatingSystem": "Linux, macOS",
-      "softwareVersion": "1.1.1",
+      "softwareVersion": "1.1.4",
       "license": "https://spdx.org/licenses/Apache-2.0",
       "codeRepository": "https://github.com/radlab-dev-group/llm-router",
       "downloadUrl": "https://pypi.org/project/radlab-llm-router/",
@@ -1886,9 +1941,9 @@ $ <span class="k-str">./scripts/decrypt_auditor_logs.sh</span> 2026-09-09</pre>
       "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
       "featureList": [
         "OpenAI-compatible chat, responses, embeddings and Anthropic messages endpoints",
-        "Provider adapters for vLLM, Ollama, LM Studio, Anthropic and OpenAI-compatible APIs",
+        "Provider adapters for vLLM, Ollama, llama.cpp, LM Studio, Anthropic and OpenAI-compatible APIs",
         "Typed Python SDK with synchronous LLMRouterClient and asyncio AsyncLLMRouterClient",
-        "Six load-balancing strategies with health checks, per-provider retry and failover",
+        "Six load-balancing strategies, provider failover on any 4xx/5xx and model-level fallback_model chains",
         "PII masking pipelines and prompt guardrails that fail closed",
         "API key management, auth policies and Redis sliding-window rate limiting",
         "Prometheus metrics, Grafana dashboard and GPG-encrypted audit logs",
