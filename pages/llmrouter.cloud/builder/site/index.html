@@ -902,10 +902,10 @@ ul.ticks li b{color:#dce7f1;font-weight:600}
     <p class="sec-sub reveal" style="margin-top:22px;font-size:13.4px">
       Auth is <code>LLM_ROUTER_AUTH_ENABLED=false</code> by default for the happy path on a private
       network. Switch it on and <code>LLM_ROUTER_AUTH_PUBLIC_ENDPOINTS</code> decides what stays
-      key-free &mdash; by default <code>/</code>, <code>/models</code>, <code>/health</code> and
-      <code>/metrics</code>, plus their bare <code>/v1</code> variants. Routed endpoints live under
-      <code>LLM_ROUTER_EP_PREFIX</code> (<code>/api</code> by default), so <code>/api/ping</code> and
-      <code>/api/version</code> need a key until you add them to that list.
+      key-free &mdash; out of the box that is only <code>/health</code> and <code>/metrics</code>.
+      Everything else takes a key, and because matching happens on the raw request path, a probe on
+      a prefixed route needs its own entry:
+      <code>LLM_ROUTER_AUTH_PUBLIC_ENDPOINTS="/metrics,/health,/api/ping"</code>.
     </p>
   </div>
 </section>
@@ -984,8 +984,7 @@ ul.ticks li b{color:#dce7f1;font-weight:600}
           is never replayed.
         </p>
         <ul class="ticks">
-          <li><b>Never retried</b> &mdash; <code>401</code>, <code>403</code>, <code>404</code>, <code>422</code>, plus bodies that blame the prompt: <code>context_length_exceeded</code>, <code>content_filter</code>, <code>invalid_api_key</code></li>
-          <li><b>Per endpoint</b> &mdash; <code>RETRY_ON_ANY_ERROR_STATUS</code> (default on) and <code>RETRY_WHEN_STATUS</code> on the endpoint&rsquo;s <code>RetryResponse</code></li>
+          <li><b>Tuned per endpoint</b> &mdash; <code>RETRY_ON_ANY_ERROR_STATUS</code> is on, so rotation covers every error status; switch it off and only <code>RETRY_WHEN_STATUS</code> (<code>429, 500, 502, 503, 504</code>) retriggers</li>
         </ul>
         <div class="tagrow"><span class="on">provider rotation</span><span>stream-aware</span><span>per-endpoint policy</span></div>
       </div>
@@ -1321,10 +1320,10 @@ $ <span class="k-str">./scripts/decrypt_auditor_logs.sh</span> 2026-09-09</pre>
       <div class="panel reveal">
         <h3><span class="mono-i">[probe]</span> Probes, timeouts, failure budget</h3>
         <p class="hint">
-          <code>/health</code>, <code>/metrics</code>, <code>/models</code> and <code>/</code> are
-          public by default (<code>LLM_ROUTER_AUTH_PUBLIC_ENDPOINTS</code>) &mdash; those probes never
-          need an API key, even with <code>LLM_ROUTER_AUTH_ENABLED=true</code>. Probing
-          <code>/api/ping</code> or <code>/api/version</code> instead? Add them to that list.
+          <code>/health</code> and <code>/metrics</code> are the only paths public by default
+          (<code>LLM_ROUTER_AUTH_PUBLIC_ENDPOINTS</code>) &mdash; they never need an API key, even with
+          <code>LLM_ROUTER_AUTH_ENABLED=true</code>. Probing <code>/api/ping</code> or
+          <code>/api/version</code>? Add the exact prefixed path to that variable.
         </p>
         <ul class="ticks">
           <li><code>LLM_ROUTER_PROVIDER_MONITOR_PING_TIMEOUT_SECONDS</code> (5.0s) &mdash; per-provider ping budget</li>
