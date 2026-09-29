@@ -1,0 +1,12 @@
+# Builder + migration for radlab.dev
+#
+# Everything here is already importable on the development machine; the pins
+# exist so the migration can be re-run identically later. There is no JS
+# toolchain on purpose: syntax highlighting happens at build time via Pygments
+# and the shipped page loads no framework.
+markdown>=3.6          # Markdown -> HTML
+Jinja2>=3.1            # templates
+PyYAML>=6.0            # front matter and data files
+Pygments>=2.17         # build-time code highlighting
+beautifulsoup4>=4.12   # WordPress HTML parsing during migration
+Pillow>=10.0           # responsive image variants + OG images

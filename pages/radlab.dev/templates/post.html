@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block og_type %}article{% endblock %}
+{% block main %}
+<article class="article">
+  <div class="wrap">
+    <header class="article-head">
+      <div class="article-meta">
+        <time datetime="{{ post.date.isoformat() }}">{{ ui.published | lower }} {{ post.date | datefmt(lang) }}</time>
+        {% if post.meta.get('updated') %}<time datetime="{{ post.meta.get('updated') }}">· {{ ui.updated }} {{ post.meta.get('updated') | datefmt(lang) }}</time>{% endif %}
+        <span>· {{ post.reading_minutes }} {{ ui.reading_time }}</span>
+      </div>
+      <h1>{{ post.title }}</h1>
+      {% if post.description %}<p class="lede">{{ post.description }}</p>{% endif %}
+      {% if post.tags %}
+      <ul class="tag-row">
+        {% for tag in post.tags %}<li><span class="tag">{{ tag }}</span></li>{% endfor %}
+      </ul>
+      {% endif %}
+    </header>
+
+    {% if not counterpart %}
+    <p class="note measure" style="margin-bottom:2.5rem">{{ ui.translation_missing }}</p>
+    {% endif %}
+
+    <div class="prose">{{ content | safe }}</div>
+
+    <footer class="article-foot">
+      <a href="{{ href(cfg.blog_path) }}">← {{ ui.back_to_blog }}</a>
+      {% if counterpart %}
+      <a href="{{ cfg.href(counterpart.lang, counterpart.path) }}" hreflang="{{ site.hreflang[counterpart.lang] }}" lang="{{ counterpart.lang }}">{{ ui.read_in }} {{ 'Polski' if counterpart.lang == 'pl' else 'English' }} →</a>
+      {% endif %}
+    </footer>
+  </div>
+</article>
+{% endblock %}

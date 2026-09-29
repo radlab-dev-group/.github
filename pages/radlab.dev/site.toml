@@ -1,0 +1,31 @@
+# Builder configuration for radlab.dev
+
+[site]
+name = "RadLab"
+url = "https://radlab.dev"          # absolute base for canonical, OG, RSS, sitemap
+base_path = ""                      # set to "/preview" to build under a subpath
+default_lang = "pl"                 # Polish at the domain root
+langs = ["pl", "en"]                # English lives under /en/
+email = "hello@radlab.dev"
+phone = "+48 512 750 525"
+github = "https://github.com/radlab-dev-group"
+huggingface = "https://huggingface.co/radlab"
+linkedin = "https://www.linkedin.com/company/radlabdev"
+description = "Uczenie maszynowe i przetwarzanie języka naturalnego. Modele, zbiory danych i oprogramowanie open source dla języka polskiego."
+
+# hreflang codes; English is declared en-GB because that is the variety the
+# translations are written in.
+[site.hreflang]
+pl = "pl"
+en = "en-GB"
+
+[blog]
+path = "blog"
+per_page = 8
+
+[images]
+# Never upscaled: a variant wider than the source is skipped.
+widths = [480, 768, 1024, 1440]
+
+[serve]
+port = 8010
