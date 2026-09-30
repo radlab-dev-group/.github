@@ -50,8 +50,12 @@
       </svg>
       <span class="orb-orbit"><span class="orb"></span></span>
       {% if section.chips %}
-      <ul class="chips">
-        {% for chip in section.chips %}<li class="chip">{{ chip }}</li>{% endfor %}
+      {#- Each label rides a ring tilted in 3D around the mark, so it passes
+          behind the star and returns: the system the names orbit. -#}
+      <ul class="orbits">
+        {% for chip in section.chips %}
+        <li class="orbit"><span class="orbit-arm"><span class="chip">{{ chip }}</span></span></li>
+        {% endfor %}
       </ul>
       {% endif %}
     </div>
