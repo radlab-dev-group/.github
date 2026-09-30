@@ -514,8 +514,12 @@ hr { border: 0; border-top: 1px solid var(--border); margin: 2.5rem 0; }
 
 /* Between the stacked layout and the width where a system of six labels has
  * room to turn, they keep parked positions instead -- the same spokes without
- * the orbit. Below this the diagram would reach into the headline. */
-@media (max-width: 1279px) {
+ * the orbit. Below this the diagram would reach into the headline.
+ *
+ * The lower bound is not decoration: the parked offsets are margins, and under
+ * the stacked layout the chips are flex items again, where a percentage
+ * margin-top resolves against the column's inline size too. */
+@media (min-width: 1000px) and (max-width: 1279px) {
   .orbit, .orbit-arm { display: contents; }
   .chip {
     position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
@@ -556,14 +560,23 @@ hr { border: 0; border-top: 1px solid var(--border); margin: 2.5rem 0; }
     transform: none; animation: orb-pulse 12s ease-in-out infinite;
   }
   /* width: 100% because a centred column flex item would otherwise size to its
-   * content and let the last pill run past the screen. */
+   * content and let the last pill run past the screen. animation: none for the
+   * same reason: the roam is a drift of the star inside a square of sky, and a
+   * row of pills at the screen's edge has no such margin -- measured, it pushed
+   * the row 18px past the right gutter and 15px past the left at 360px. */
   .orbits {
     position: static; width: 100%; display: flex; flex-wrap: wrap;
-    justify-content: center; gap: 0.45rem; transform-style: flat;
+    justify-content: center; align-items: center; gap: 0.45rem;
+    transform-style: flat; animation: none;
   }
   /* The ring and its arm stop being boxes, so the labels are flex items again. */
   .orbit, .orbit-arm { display: contents; }
-  .chip { position: static; transform: none; animation: none; }
+  /* align-items above and margin: 0 together: a parked -62% margin-top on a
+   * wrapped line stretches every pill to that line's height -- a 999px radius
+   * over a 200px tall box is the column of capsules this used to render.
+   * opacity: 1 because --rest marks the labels behind the star, and in a row
+   * underneath it two of six just read as disabled. */
+  .chip { position: static; margin: 0; opacity: 1; transform: none; animation: none; }
 }
 
 .stats {
