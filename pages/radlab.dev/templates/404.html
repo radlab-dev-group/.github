@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}404 · {{ ui.error_title }} — {{ site.name }}{% endblock %}
+{% block main %}
+<div class="wrap">
+  <header class="page-head">
+    <h1>404</h1>
+    <p class="intro">{{ ui.error_title }}. {{ ui.error_body }}</p>
+    <div class="actions" style="display:flex;gap:.75rem;margin-top:2rem;flex-wrap:wrap">
+      <a class="btn btn-primary" href="{{ href('') }}">{{ ui.error_home }}</a>
+      <a class="btn btn-quiet" href="{{ href('blog') }}">{{ ui.error_blog }}</a>
+    </div>
+  </header>
+</div>
+{% endblock %}

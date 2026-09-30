@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="{{ lang }}">
+  <title>{{ site.name }} — {{ ui.blog_title }}</title>
+  <subtitle>{{ site.description }}</subtitle>
+  <link href="{{ feed_url }}" rel="self"/>
+  <link href="{{ site_url }}"/>
+  <id>{{ site_url }}</id>
+  <updated>{{ posts[0].date.isoformat() if posts else '2026-01-01' }}T00:00:00Z</updated>
+  <author><name>{{ site.name }}</name></author>
+  <rights>© {{ site.name }}</rights>
+  {% for post in posts %}
+  <entry>
+    <title>{{ post.title }}</title>
+    <link href="{{ cfg.canonical(lang, post.path) }}"/>
+    <id>{{ cfg.canonical(lang, post.path) }}</id>
+    <updated>{{ (post.meta.get('updated') or post.date).isoformat() }}T00:00:00Z</updated>
+    <published>{{ post.date.isoformat() }}T00:00:00Z</published>
+    {% for tag in post.tags %}<category term="{{ tag }}"/>{% endfor %}
+    <summary>{{ post.description }}</summary>
+    <content type="html">{{ post.html | e }}</content>
+  </entry>
+  {% endfor %}
+</feed>

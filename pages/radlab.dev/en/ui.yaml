@@ -1,0 +1,44 @@
+# Interface strings in English. Content itself lives in the Markdown files.
+
+blog_title: "Blog"
+blog_intro: "Results of our experiments, how the models were trained, and the things that did not work along the way."
+reading_time: "min read"
+reading_time_one: "min read"
+published: "Published"
+updated: "Updated"
+tag: "Tag"
+tags: "Tags"
+all_posts: "All posts"
+newer: "Newer"
+older: "Older"
+page_of: "Page {page} of {count}"
+language_switch: "Polski"
+language_switch_aria: "Switch to the Polish version"
+translation_missing: "This post has no English translation yet."
+theme_toggle_aria: "Toggle light or dark theme"
+menu: "Menu"
+skip_to_content: "Skip to content"
+share: "Share"
+back_to_blog: "All posts"
+error_title: "Page not found"
+error_body: "The address you are looking for does not exist, or it led somewhere else."
+error_home: "Back to the home page"
+error_blog: "Go to the blog"
+footer_tagline: "Machine learning and natural language processing are our interest. Software development is our everyday."
+footer_rights: "All rights reserved"
+
+# Anchors are language-neutral so one href works from / and /en/.
+nav:
+  - {id: about, label: "About", href: "#about"}
+  - {id: products, label: "Solutions", href: "#products"}
+  - {id: open-source, label: "Open source", href: "#open-source"}
+  - {id: resources, label: "Resources", href: "#resources"}
+  - {id: blog, label: "Blog", href: "/en/blog/"}
+  - {id: contact, label: "Contact", href: "#contact"}
+
+latest_title: "What we wrote recently"
+read_pl: "read in Polish"
+read_in: "read in "
+contact_label: "Contact"
+back_to_top: "Back to top"
+footer_social_label: "Code and profiles"

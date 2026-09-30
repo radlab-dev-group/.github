@@ -1,0 +1,17 @@
+# Build output
+/dist/
+
+# Raw WordPress API dumps and downloaded media cache: reproducible from
+# tools/wp.py, large, and not meant to be read as source.
+/data/wp_cache/
+
+# Image variants are generated from media/<slug>/ originals at build time.
+/media/**/*-????????.webp
+/media/**/*-????????.avif
+
+# Throwaway browser screenshots from a design pass.
+.shots/
+
+__pycache__/
+*.pyc
+.venv*/
