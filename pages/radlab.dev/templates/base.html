@@ -76,8 +76,13 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
            width="300" height="88" alt="" {% if logo %}fetchpriority="high"{% endif %}>
     </a>
     <nav class="nav" aria-label="{{ ui.menu }}">
+      {#- The anchors live on the landing page, so they are rooted there: from
+          /en/blog/ a bare "#open-source" only rewrites the hash and leaves the
+          reader where they were. -#}
+      {% set home = href('') %}
       {% for item in ui.nav %}
-      <a href="{{ item.href }}"{% if item.external %} rel="noopener"{% endif %}>{{ item.label }}</a>
+      <a href="{% if item.href.startswith('#') %}{{ home }}{{ item.href }}{% else %}{{ item.href }}{% endif %}"
+         {% if item.external %}rel="noopener"{% endif %}>{{ item.label }}</a>
       {% endfor %}
     </nav>
     <div class="header-tools">

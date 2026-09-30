@@ -13,7 +13,7 @@ wp_id: 4104
 
 Hello! Today we will describe the technical aspects. Over the past month, we have been working on [publishing](https://github.com/radlab-dev-group) some of our solutions. Today we would like to present a few of them. Some of them are working mechanisms on the [playground](https://playground.radlab.dev/), others are ideas implemented “on the side.” We have returned to the idea of developing solutions completely publicly on [GitHub](https://github.com/radlab-dev-group). Therefore, we invite you to visit our GitHub profile, which we briefly present in this post 😉
 
-![](https://en.radlab.dev/wp-content/uploads/2025/09/2025-09-26_17-03-51_7632-1024x796.avif)
+![](@media/we-make-the-codes-publicly-available-open-source/01-2025-09-26_17-03-51_7632.avif)
 
 Below are the projects with brief descriptions. Each of them has a fairly extensive README file on  [Github](https://github.com/radlab-dev-group).
 
@@ -25,9 +25,9 @@ The method enables learning transformation matrices for edges in the graph based
 
 We have already completed a series of experiments (the charts show the latest stable training sessions) and so far (according to the charts) it looks promising 😉
 
-![](https://en.radlab.dev/wp-content/uploads/2025/09/image-16-1024x467.avif)
+![](@media/we-make-the-codes-publicly-available-open-source/02-image-16.avif)
 
-![](https://en.radlab.dev/wp-content/uploads/2025/09/image-1-1024x162.avif)
+![](@media/we-make-the-codes-publicly-available-open-source/03-image-1.avif)
 
 ## [plwordnet](https://github.com/radlab-dev-group/plwordnet) (“from the side”)
 

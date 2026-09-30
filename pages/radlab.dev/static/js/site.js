@@ -73,6 +73,51 @@
   window.addEventListener('resize', onScroll, { passive: true });
   paintHeader();
 
+  /* ---------------------------------- the mark leans towards the pointer */
+
+  // Only where there is a pointer to follow and room for the orbit: below the
+  // breakpoint the stage is a stacked block with the pills under it, and a
+  // element that drifts under a fingertip is an annoyance, not a detail.
+  var stage = document.querySelector('.hero-stage');
+  var hero = stage && stage.closest ? stage.closest('.hero') : null;
+  if (stage && hero && !reduced
+      && window.matchMedia('(min-width: 1000px)').matches
+      && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+
+    var orbit = stage.querySelector('.orb-orbit');
+    var pills = stage.querySelector('.chips');
+    var want = { x: 0, y: 0 };
+    var at = { x: 0, y: 0 };
+    var frame = null;
+
+    function glide() {
+      frame = null;
+      // A damped chase rather than a direct set: the lag is what reads as
+      // weight, and it settles back to rest instead of snapping.
+      at.x += (want.x - at.x) * 0.09;
+      at.y += (want.y - at.y) * 0.09;
+      if (orbit) orbit.style.transform = 'translate3d(' + at.x.toFixed(2) + 'px,' + at.y.toFixed(2) + 'px,0)';
+      // The pills trail at a fraction of the distance: two planes, one motion.
+      if (pills) pills.style.transform = 'translate3d(' + (at.x * 0.4).toFixed(2) + 'px,' + (at.y * 0.4).toFixed(2) + 'px,0)';
+      if (Math.abs(want.x - at.x) > 0.1 || Math.abs(want.y - at.y) > 0.1) {
+        frame = window.requestAnimationFrame(glide);
+      }
+    }
+
+    function aim(event) {
+      var box = hero.getBoundingClientRect();
+      want.x = ((event.clientX - box.left) / box.width - 0.5) * 46;
+      want.y = ((event.clientY - box.top) / box.height - 0.5) * 32;
+      if (frame === null) frame = window.requestAnimationFrame(glide);
+    }
+
+    hero.addEventListener('pointermove', aim);
+    hero.addEventListener('pointerleave', function () {
+      want.x = 0; want.y = 0;
+      if (frame === null) frame = window.requestAnimationFrame(glide);
+    });
+  }
+
   /* -------------------------------------------------- reveal on the way down */
 
   // The elements that gain .reveal are the ones worth easing in; a page that

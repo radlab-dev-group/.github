@@ -377,6 +377,9 @@ hr { border: 0; border-top: 1px solid var(--border); margin: 2.5rem 0; }
  * original artwork has. */
 .hero-stage { position: relative; width: 100%; max-width: 460px; aspect-ratio: 1; margin-inline: auto; }
 
+/* The wrapper carries the pointer parallax site.js writes, so the ball keeps
+ * its own breathing transform and the two never fight over one property. */
+.orb-orbit { position: absolute; inset: 0; will-change: transform; }
 .orb {
   position: absolute; top: 50%; left: 50%; width: 56%; aspect-ratio: 1;
   transform: translate(-50%, -50%);
@@ -441,6 +444,9 @@ hr { border: 0; border-top: 1px solid var(--border); margin: 2.5rem 0; }
     display: flex; flex-direction: column; align-items: center; gap: 1.35rem;
   }
   .hero-mesh { display: none; }
+  /* The parallax wrapper steps out of the box tree so the ball is a flex item
+   * of the stage again; the pointer effect does not run at this width. */
+  .orb-orbit { position: static; display: contents; }
   .orb {
     position: relative; top: auto; left: auto; width: min(72%, 290px);
     transform: none; animation: orb-pulse 12s ease-in-out infinite;

@@ -14,7 +14,7 @@ wp_id: 4321
 
 Given the demand for computing power required to train models, not every graphics card will be suitable for this purpose (you need cards with a very large amount of VRAM). In this post we’ll show how to turn a USB drive into a **ready‑made** **computational** **environment**, to which we’ll attach an **LLM Router** as a **communication** layer for **generative** **models**.
 
-![](https://en.radlab.dev/wp-content/uploads/2026/01/obraz.avif)
+![](@media/are-crypto-mining-farms-frozen/01-obraz.avif)
 
 If you **already have** a ready **environment** for **cryptocurrency mining**, you can safely **skip** the **HiveOS Installation** step. **If** you **don’t**, going through this **step** **helps** to **prepare** the **system**. In the description a **USB** drive is used as the **system** **medium**, because **HiveOS** is **installed by default** on **USB**.
 

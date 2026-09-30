@@ -12,7 +12,7 @@ wp_id: 4142
 
 This time, we’re introducing a project that we’ve been using internally for a while. Given its high versatility, it might be useful to others as well. We encourage you to try it out and report any issues you encounter 🙂
 
-![](https://en.radlab.dev/wp-content/uploads/2025/10/llm-router-blog-1024x796.avif)
+![](@media/llm-router-a-connector-between-an-application-and-generative-models/01-llm-router-blog.avif)
 
 In the following part, we’ll briefly describe the contents of the repository, how to run the ready-made image (yes, just download and run :)), and an example configuration. In the [README](https://github.com/radlab-dev-group/llm-router/blob/main/README.md) on [Github](https://github.com/radlab-dev-group), we covered the project from a technical angle; here, we’re focusing more on usage.
 

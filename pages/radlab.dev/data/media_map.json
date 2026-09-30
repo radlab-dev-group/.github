@@ -848,5 +848,77 @@
   "status": "downloaded",
   "master": "media/zmrozone-kopalnie-kryptowalut/_featured.jpeg",
   "master_bytes": 126095
+ },
+ "https://en.radlab.dev/wp-content/uploads/2026/01/obraz.avif": {
+  "post": "are-crypto-mining-farms-frozen",
+  "served_url": "https://en.radlab.dev/wp-content/uploads/2026/01/obraz.avif",
+  "original_url": "https://en.radlab.dev/wp-content/uploads/2026/01/obraz.avif",
+  "local": "media/are-crypto-mining-farms-frozen/01-obraz.avif",
+  "resolved_via_api": false,
+  "host_was_dead": false,
+  "bytes": 116856,
+  "status": "downloaded",
+  "master": "media/are-crypto-mining-farms-frozen/01-obraz.png",
+  "master_bytes": 876621
+ },
+ "https://en.radlab.dev/wp-content/uploads/2025/10/llm-router-blog-1024x796.avif": {
+  "post": "llm-router-a-connector-between-an-application-and-generative-models",
+  "served_url": "https://en.radlab.dev/wp-content/uploads/2025/10/llm-router-blog-1024x796.avif",
+  "original_url": "https://en.radlab.dev/wp-content/uploads/2025/10/llm-router-blog-1024x796.avif",
+  "local": "media/llm-router-a-connector-between-an-application-and-generative-models/01-llm-router-blog.avif",
+  "resolved_via_api": false,
+  "host_was_dead": false,
+  "bytes": 66460,
+  "status": "downloaded",
+  "master": "media/llm-router-a-connector-between-an-application-and-generative-models/01-llm-router-blog.png",
+  "master_bytes": 594498
+ },
+ "https://en.radlab.dev/wp-content/uploads/2024/12/image-3.avif": {
+  "post": "pllama3-1-8b-czyli-srednio-duze-a-nawet-male-genai-dla-polskiego",
+  "served_url": "https://en.radlab.dev/wp-content/uploads/2024/12/image-3.avif",
+  "original_url": "https://en.radlab.dev/wp-content/uploads/2024/12/image-3.avif",
+  "local": "media/pllama3-1-8b-czyli-srednio-duze-a-nawet-male-genai-dla-polskiego/05-image-3.avif",
+  "resolved_via_api": false,
+  "host_was_dead": false,
+  "bytes": 5176,
+  "status": "downloaded",
+  "master": "media/pllama3-1-8b-czyli-srednio-duze-a-nawet-male-genai-dla-polskiego/05-image-3.png",
+  "master_bytes": 14003
+ },
+ "https://en.radlab.dev/wp-content/uploads/2025/09/2025-09-26_17-03-51_7632-1024x796.avif": {
+  "post": "we-make-the-codes-publicly-available-open-source",
+  "served_url": "https://en.radlab.dev/wp-content/uploads/2025/09/2025-09-26_17-03-51_7632-1024x796.avif",
+  "original_url": "https://en.radlab.dev/wp-content/uploads/2025/09/2025-09-26_17-03-51_7632-1024x796.avif",
+  "local": "media/we-make-the-codes-publicly-available-open-source/01-2025-09-26_17-03-51_7632.avif",
+  "resolved_via_api": false,
+  "host_was_dead": false,
+  "bytes": 192261,
+  "status": "downloaded",
+  "master": "media/we-make-the-codes-publicly-available-open-source/01-2025-09-26_17-03-51_7632.png",
+  "master_bytes": 1188273
+ },
+ "https://en.radlab.dev/wp-content/uploads/2025/09/image-16-1024x467.avif": {
+  "post": "we-make-the-codes-publicly-available-open-source",
+  "served_url": "https://en.radlab.dev/wp-content/uploads/2025/09/image-16-1024x467.avif",
+  "original_url": "https://en.radlab.dev/wp-content/uploads/2025/09/image-16-1024x467.avif",
+  "local": "media/we-make-the-codes-publicly-available-open-source/02-image-16.avif",
+  "resolved_via_api": false,
+  "host_was_dead": false,
+  "bytes": 23105,
+  "status": "downloaded",
+  "master": "media/we-make-the-codes-publicly-available-open-source/02-image-16.png",
+  "master_bytes": 120983
+ },
+ "https://en.radlab.dev/wp-content/uploads/2025/09/image-1-1024x162.avif": {
+  "post": "we-make-the-codes-publicly-available-open-source",
+  "served_url": "https://en.radlab.dev/wp-content/uploads/2025/09/image-1-1024x162.avif",
+  "original_url": "https://en.radlab.dev/wp-content/uploads/2025/09/image-1-1024x162.avif",
+  "local": "media/we-make-the-codes-publicly-available-open-source/03-image-1.avif",
+  "resolved_via_api": false,
+  "host_was_dead": false,
+  "bytes": 5130,
+  "status": "downloaded",
+  "master": "media/we-make-the-codes-publicly-available-open-source/03-image-1.png",
+  "master_bytes": 27640
  }
 }

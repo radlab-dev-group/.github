@@ -20,7 +20,7 @@ Yes… it was intentional to misspell **not-in-or-de-r** (it’s not a mistake) 
 
 We recently wrote:
 
-![](https://en.radlab.dev/wp-content/uploads/2024/12/image-3.avif)
+![](@media/pllama3-1-8b-czyli-srednio-duze-a-nawet-male-genai-dla-polskiego/05-image-3.avif)
 
 ### Intro
 

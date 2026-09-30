@@ -9,8 +9,9 @@ soft derivatives in permanently, so every image is resolved through the media
 API back to its ``source_url`` first, and only falls back to the derivative
 when no original can be found (recorded as a warning in the manifest).
 
-    python3 tools/images.py            # download what is missing
-    python3 tools/images.py --report   # what resolved where, and what did not
+    python3 tools/images.py                   # download what is missing
+    python3 tools/images.py --report          # what resolved where, and what did not
+    python3 tools/images.py hotlinks --lang en  # archive leftover absolute URLs
 """
 
 from __future__ import annotations
@@ -288,11 +289,103 @@ def cmd_upgrade(args: argparse.Namespace) -> int:
     return 0
 
 
+MD_IMAGE = re.compile(r"!\[([^\]]*)\]\((https?://[^)\s]+)\)")
+IMAGE_EXT = (".png", ".jpg", ".jpeg", ".gif", ".webp", ".avif")
+
+
+def archive_hotlinks(lang: str, *, dry_run: bool = False) -> dict:
+    """Move images a post still hotlinks into ``media/`` and rewrite the link.
+
+    The translated posts came over with their own WordPress host in the body:
+    the Polish articles reference ``@media/`` tokens, the English ones point at
+    ``https://en.radlab.dev/...``, so those pages render only for as long as the
+    legacy site answers. Same manifest shape as build(), same decodable-master
+    lookup as upgrade(). Links that are not images -- a PDF report, a screen
+    recording -- are left alone: the media pipeline has nothing to add to them.
+    """
+    manifest = json.loads(MANIFEST.read_text(encoding="utf-8")) if MANIFEST.exists() else {}
+    stats = {"rewritten": 0, "kept": 0, "failed": 0, "posts": 0}
+
+    for path in sorted((SITE_ROOT / lang / "blog" / "posts").glob("*.md")):
+        slug = path.stem
+        text = original_text = path.read_text(encoding="utf-8")
+        touched = False
+        # Continue the numbering of anything already local in this post.
+        position = max([int(n) for n in re.findall(rf"@media/{slug}/(\d+)-", text)] or [0])
+        for alt, url in MD_IMAGE.findall(text):
+            if not url.lower().rsplit("?", 1)[0].endswith(IMAGE_EXT):
+                stats["kept"] += 1
+                continue
+            position += 1
+            name = url_filename(urllib.parse.urlparse(url).path)
+            stem = stem_of(name) or "image"
+            ext = name.rsplit(".", 1)[-1].lower()
+            local_rel = f"media/{slug}/{position:02d}-{stem}.{ext}"
+            token = f"@media/{slug}/{position:02d}-{stem}.{ext}"
+
+            if dry_run:
+                stats["rewritten"] += 1
+                touched = True
+                continue
+
+            ok, size, note = download(url, SITE_ROOT / local_rel)
+            if not ok:
+                stats["failed"] += 1
+                print(f"  FAILED {slug}: {url} ({note})", file=sys.stderr)
+                continue
+
+            entry = {"post": slug, "served_url": url, "original_url": url, "local": local_rel,
+                     "resolved_via_api": False, "host_was_dead": False,
+                     "bytes": size, "status": note}
+            if ext in ("avif", "heic", "heif"):
+                master_url = find_master(url)
+                master_rel = f"media/{slug}/{position:02d}-{stem}.png"
+                if master_url:
+                    sibling_ext = master_url.rsplit(".", 1)[-1].lower()
+                    master_rel = master_rel.rsplit(".", 1)[0] + f".{sibling_ext}"
+                    ok_master, master_size, _ = download(master_url, SITE_ROOT / master_rel)
+                    entry["master"] = master_rel if ok_master else local_rel
+                    entry["master_bytes"] = master_size if ok_master else 0
+                elif decode_with_imagemagick(SITE_ROOT / local_rel, SITE_ROOT / master_rel):
+                    entry["master"] = master_rel
+                    entry["master_bytes"] = (SITE_ROOT / master_rel).stat().st_size
+                else:
+                    entry["master"] = local_rel  # linked as-is, no variants
+            else:
+                entry["master"] = local_rel
+
+            manifest[url] = entry
+            text = text.replace(f"]({url})", f"]({token})")
+            stats["rewritten"] += 1
+
+        if touched or text != original_text:
+            stats["posts"] += 1
+            if not dry_run:
+                path.write_text(text, encoding="utf-8")
+
+    if not dry_run and stats["rewritten"]:
+        MANIFEST.write_text(json.dumps(manifest, ensure_ascii=False, indent=1), encoding="utf-8")
+    return stats
+
+
+def cmd_hotlinks(args: argparse.Namespace) -> int:
+    stats = archive_hotlinks(args.lang, dry_run=args.dry_run)
+    print(f"hotlinks[{args.lang}]: {stats['rewritten']} image(s) archived across "
+          f"{stats['posts']} post(s), {stats['kept']} non-image link(s) left alone, "
+          f"{stats['failed']} failed"
+          + ("   [dry run, nothing written]" if args.dry_run else ""))
+    return 1 if stats["failed"] else 0
+
+
 def cmd_run(args: argparse.Namespace) -> int:
     manifest = build(args.lang, dry_run=args.dry_run)
     if not args.dry_run:
+        # Merging matters: a bilingual site runs this once per language, and the
+        # second run must not erase the first language's mappings.
+        existing = json.loads(MANIFEST.read_text(encoding="utf-8")) if MANIFEST.exists() else {}
+        existing.update(manifest)
         MANIFEST.parent.mkdir(parents=True, exist_ok=True)
-        MANIFEST.write_text(json.dumps(manifest, ensure_ascii=False, indent=1), encoding="utf-8")
+        MANIFEST.write_text(json.dumps(existing, ensure_ascii=False, indent=1), encoding="utf-8")
 
     body = {u: e for u, e in manifest.items() if e.get("role") != "featured"}
     featured = {u: e for u, e in manifest.items() if e.get("role") == "featured"}
@@ -327,14 +420,19 @@ def cmd_run(args: argparse.Namespace) -> int:
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__,
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("command", nargs="?", default="run", choices=("run", "upgrade"),
+    parser.add_argument("command", nargs="?", default="run", choices=("run", "upgrade", "hotlinks"),
                         help="run: download the images; upgrade: give every AVIF a "
-                             "master the build can decode")
+                             "master the build can decode; hotlinks: archive the "
+                             "absolute image URLs a language still points at")
     parser.add_argument("--lang", default="pl", choices=sorted(wp.ORIGINS))
     parser.add_argument("--report", action="store_true", help="print the full source -> local mapping")
     parser.add_argument("--dry-run", action="store_true", dest="dry_run")
     args = parser.parse_args(argv)
-    return cmd_upgrade(args) if args.command == "upgrade" else cmd_run(args)
+    if args.command == "upgrade":
+        return cmd_upgrade(args)
+    if args.command == "hotlinks":
+        return cmd_hotlinks(args)
+    return cmd_run(args)
 
 
 if __name__ == "__main__":
