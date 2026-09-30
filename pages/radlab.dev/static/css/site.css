@@ -375,7 +375,13 @@ hr { border: 0; border-top: 1px solid var(--border); margin: 2.5rem 0; }
 
 /* The circle: the logo's own mark at display size, with the sphere shading the
  * original artwork has. */
-.hero-stage { position: relative; width: 100%; max-width: 460px; aspect-ratio: 1; margin-inline: auto; }
+.hero-stage {
+  position: relative; width: 100%; max-width: 460px; aspect-ratio: 1; margin-inline: auto;
+  /* One shared 3D context for the mark and the orbits: with the labels tilted
+   * into it, the star occludes the ones that pass its far side, and the
+   * perspective scales them by distance instead of a second animation. */
+  perspective: 1500px; transform-style: preserve-3d;
+}
 
 /* The wrapper carries the pointer parallax site.js writes to `transform`, and
  * the slow roam in `translate` -- separate properties, so the animation cannot
@@ -383,6 +389,7 @@ hr { border: 0; border-top: 1px solid var(--border); margin: 2.5rem 0; }
  * keeps its own breathing transform underneath both. */
 .orb-orbit {
   position: absolute; inset: 0; will-change: transform;
+  transform-style: preserve-3d;
   animation: orb-roam 26s ease-in-out infinite;
 }
 .orb {
@@ -414,30 +421,121 @@ hr { border: 0; border-top: 1px solid var(--border); margin: 2.5rem 0; }
 .mesh-dots circle:nth-child(2n) { animation-delay: -1.6s; }
 .mesh-dots circle:nth-child(3n) { animation-delay: -3.1s; }
 
-/* Named things we actually ship, parked around the mark. Offsets are per chip
- * because a flex row of pills would say nothing that this does not. */
-.chips { position: absolute; inset: 0; margin: 0; padding: 0; list-style: none; }
+/* Named things we actually ship, in orbit around the mark. Each label rides a
+ * ring tilted away from the screen, so it travels behind the star and returns
+ * from the other side: a red dwarf with the system that gathers round it.
+ *
+ * Angles are unitless so one custom property drives both the transform (times
+ * 1deg) and the timing; --start is part of the static transform as well as the
+ * animation, which is what leaves the six parked on their rings under
+ * prefers-reduced-motion instead of collapsing onto one line. */
+.orbits {
+  position: absolute; inset: 0; margin: 0; padding: 0; list-style: none;
+  transform-style: preserve-3d;
+  --dur: 150s;
+  /* The system drifts with its star rather than the star sliding inside its own
+   * rings; `translate` again so the script's `transform` still composes. */
+  animation: orb-roam 26s ease-in-out infinite;
+}
+.orbit {
+  position: absolute; left: 50%; top: 50%; width: calc(var(--r) * 2); height: calc(var(--r) * 2);
+  margin: calc(var(--r) * -1);
+  /* The orbit itself, drawn: a dashed rule the label never leaves. Faint
+   * because six of them are a diagram, and the mark is the subject. */
+  border: 1px dashed color-mix(in srgb, var(--accent) 13%, transparent);
+  border-radius: 50%;
+  transform: rotateX(calc(var(--inc) * 1deg));
+  transform-style: preserve-3d;
+  /* Undoing the plane's tilt for the label inside. */
+  --plane-inverse: rotateX(calc(var(--inc) * -1deg));
+  /* The far-side dim, shifted so its bottom lands on theta 270 whatever angle
+   * this orbit starts at. One period is subtracted to keep the delay negative:
+   * a positive one would hold the base value until it elapsed, and a label
+   * would surface at full strength mid-transit. */
+  --far-delay: calc(((270 - var(--start)) / 360 - 1) * var(--dur));
+}
+.orbit-arm {
+  position: absolute; left: 50%; top: 50%;
+  transform: rotateZ(calc(var(--start) * 1deg)) translateX(var(--r));
+  transform-style: preserve-3d;
+  animation: orbit-run var(--dur) linear infinite;
+}
+/* The counter-turn multiplies the plane's rotations out to a pure translation:
+ * the label arrives at the tip of the arm upright and flat to the screen, while
+ * its position keeps the tilt. Perspective on the stage does the rest of the
+ * depth for free -- nearer is larger, and the star occludes the far side. */
 .chip {
-  position: absolute; left: calc(50% + var(--x, 0px)); top: calc(50% + var(--y, 0px));
-  transform: translate(-50%, -50%);
+  position: absolute; left: 0; top: 0;
+  /* Rotations pivot on the top-left corner, which is where the arm's tip is.
+   * The default centre origin would swing the label on a radius of its own
+   * half-size -- up to 63px off the orbit, worst at the far spoke. With the
+   * corner as the pivot the counter-turn cancels exactly and the innermost
+   * translate(-50%) drops it back centred on the tip. */
+  transform-origin: 0 0;
   font-family: var(--font-ui); font-size: 0.75rem; font-weight: 600; letter-spacing: 0.01em;
   white-space: nowrap; color: var(--text-muted);
   background: color-mix(in srgb, var(--bg-raised) 88%, transparent);
   border: 1px solid var(--border-strong); border-radius: 999px;
   padding: 0.32rem 0.66rem; box-shadow: var(--shadow-sm);
-  animation: chip-float 10s ease-in-out infinite;
+  transform: rotateZ(calc(var(--start) * -1deg)) var(--plane-inverse) translate(-50%, -50%);
+  /* What the far-side ones look like when motion is off and no animation is
+   * driving opacity: behind the mark, not sliced across it. */
+  opacity: var(--rest, 1);
+  /* Dimming through the far half, so a label dissolves behind the star rather
+   * than being cut mid-word by its limb. */
+  animation: orbit-upright var(--dur) linear infinite,
+             orbit-far var(--dur) linear infinite;
+  animation-delay: 0s, var(--far-delay);
 }
-/* Offsets are set so six pills sit around the mark without covering it and
- * without reaching into the headline column: percentages of the stage, pushed
- * past the orb's own radius. */
-.chips .chip:nth-child(1) { --x: -16%; --y: -62%; animation-delay: -0.4s; }
-.chips .chip:nth-child(2) { --x: 36%;  --y: -76%; animation-delay: -2.2s; }
-.chips .chip:nth-child(3) { --x: 58%;  --y: -8%;  animation-delay: -4.1s; }
-.chips .chip:nth-child(4) { --x: 44%;  --y: 64%;  animation-delay: -1.3s; }
-.chips .chip:nth-child(5) { --x: -4%;  --y: 78%;  animation-delay: -3.4s; }
-.chips .chip:nth-child(6) { --x: -40%; --y: 16%;  animation-delay: -5.2s; }
+/* One period for the whole system, so the six keep their distance for good: a
+ * wheel of spokes at 60 degrees with the widest label on the innermost ring.
+ * Differential periods here would put two of them on top of each other about
+ * a third of the time -- measured, not guessed. The radii are the largest that
+ * keep every label clear of the headline down to the 1000px breakpoint, and
+ * each tilt is set so the far side of the inner rings grazes the star's disc.
+ *
+ *   label          radius  tilt   spoke
+ *   pLLama3-8B        150    44       0
+ *   bi-encoders       160    36      60
+ *   RAG               180    46     240
+ *   LLM Router        168    42     120
+ *   QA                188    38     302
+ *   word2vec          178    34     180
+ */
+.orbits li:nth-child(1) { --r: 150px; --inc: 44; --start: 0; }
+.orbits li:nth-child(2) { --r: 160px; --inc: 36; --start: 60; }
+.orbits li:nth-child(3) { --r: 180px; --inc: 46; --start: 240; --rest: 0.45; }
+.orbits li:nth-child(4) { --r: 168px; --inc: 42; --start: 120; }
+.orbits li:nth-child(5) { --r: 188px; --inc: 38; --start: 302; --rest: 0.45; }
+.orbits li:nth-child(6) { --r: 178px; --inc: 34; --start: 180; }
 @media (max-width: 520px) {
-  .chips .chip { font-size: 0.6875rem; padding: 0.25rem 0.5rem; }
+  .orbits .chip { font-size: 0.6875rem; padding: 0.25rem 0.5rem; }
+}
+
+/* Between the stacked layout and the width where a system of six labels has
+ * room to turn, they keep parked positions instead -- the same spokes without
+ * the orbit. Below this the diagram would reach into the headline. */
+@media (max-width: 1279px) {
+  .orbit, .orbit-arm { display: contents; }
+  .chip {
+    position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+    animation: none;
+  }
+  /* --pk pulls the parked ring in where the hero column is narrow: at 376px of
+   * stage, a label at 58% hung off the edge of the window. */
+  .orbits { --pk: 1; }
+  .orbits li:nth-child(1) .chip { margin-left: calc(-16% * var(--pk)); margin-top: -62%; }
+  .orbits li:nth-child(2) .chip { margin-left: calc(36% * var(--pk));  margin-top: -76%; }
+  .orbits li:nth-child(3) .chip { margin-left: calc(58% * var(--pk));  margin-top: -8%; }
+  .orbits li:nth-child(4) .chip { margin-left: calc(44% * var(--pk));  margin-top: 64%; }
+  .orbits li:nth-child(5) .chip { margin-left: calc(-4% * var(--pk));  margin-top: 78%; }
+  .orbits li:nth-child(6) .chip { margin-left: calc(-40% * var(--pk)); margin-top: 16%; }
+}
+@media (min-width: 1000px) and (max-width: 1279px) {
+  .orbits { --pk: 0.85; }
+}
+@media (min-width: 1000px) and (max-width: 1149px) {
+  .orbits { --pk: 0.72; }
 }
 
 @media (max-width: 999px) {
@@ -459,8 +557,13 @@ hr { border: 0; border-top: 1px solid var(--border); margin: 2.5rem 0; }
   }
   /* width: 100% because a centred column flex item would otherwise size to its
    * content and let the last pill run past the screen. */
-  .chips { position: static; width: 100%; display: flex; flex-wrap: wrap; justify-content: center; gap: 0.45rem; }
-  .chips .chip { position: static; transform: none; animation: none; }
+  .orbits {
+    position: static; width: 100%; display: flex; flex-wrap: wrap;
+    justify-content: center; gap: 0.45rem; transform-style: flat;
+  }
+  /* The ring and its arm stop being boxes, so the labels are flex items again. */
+  .orbit, .orbit-arm { display: contents; }
+  .chip { position: static; transform: none; animation: none; }
 }
 
 .stats {
@@ -862,10 +965,12 @@ html.js .reveal:nth-child(4) { transition-delay: 0.21s; }
  * two axes and an off-centre turning point keep the path from reading as a
  * circle the eye can predict after one lap. */
 @keyframes orb-roam {
+  /* Roomier up and down than side to side: the hero has height in hand, while
+   * its width ends at the headline, and the labels ride along with the mark. */
   0%, 100% { translate: 0 0; }
-  22% { translate: 30px -22px; }
-  47% { translate: -20px 18px; }
-  71% { translate: -34px -14px; }
+  22% { translate: -19px 27px; }
+  47% { translate: 22px -31px; }
+  71% { translate: 12px 20px; }
 }
 /* Same breath without the centring transform, for when the orb is in flow. */
 @keyframes orb-pulse {
@@ -875,14 +980,22 @@ html.js .reveal:nth-child(4) { transition-delay: 0.21s; }
 @keyframes orb-sheen { to { transform: rotate(360deg); } }
 @keyframes mesh-dash { to { stroke-dashoffset: -160; } }
 @keyframes mesh-pulse { 0%, 100% { opacity: 0.35; } 50% { opacity: 1; } }
-@keyframes chip-float {
-  0%, 100% { transform: translate(-50%, -50%); }
-  50% { transform: translate(-50%, calc(-50% - 9px)); }
+@keyframes orbit-run {
+  from { transform: rotateZ(calc(var(--start) * 1deg)) translateX(var(--r)); }
+  to { transform: rotateZ(calc(var(--start) * 1deg + 360deg)) translateX(var(--r)); }
+}
+@keyframes orbit-far {
+  0%, 100% { opacity: 0.28; }
+  42%, 58% { opacity: 1; }
+}
+@keyframes orbit-upright {
+  from { transform: rotateZ(calc(var(--start) * -1deg)) var(--plane-inverse) translate(-50%, -50%); }
+  to { transform: rotateZ(calc(var(--start) * -1deg - 360deg)) var(--plane-inverse) translate(-50%, -50%); }
 }
 @keyframes ticker-run { to { transform: translateX(-50%); } }
 
 @media (prefers-reduced-motion: reduce) {
-  .orb-orbit, .orb, .orb::after, .mesh-lines path, .mesh-dots circle, .chip, .ticker-track {
+  .orb-orbit, .orb, .orb::after, .mesh-lines path, .mesh-dots circle, .orbit-arm, .chip, .ticker-track {
     animation: none !important;
   }
   html.js .reveal { opacity: 1; transform: none; transition: none; }

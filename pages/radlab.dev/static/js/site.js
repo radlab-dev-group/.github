@@ -84,12 +84,16 @@
       && window.matchMedia('(min-width: 1000px)').matches
       && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
 
-    var orbit = stage.querySelector('.orb-orbit');
-    var pills = stage.querySelector('.chips');
-    // Peak-to-peak travel across the hero, in pixels. The stage is 460px wide
-    // and the mark takes 258px of it, so the two together with the CSS roam
-    // still leave the ball inside the stage at the extremes.
-    var REACH = { x: 104, y: 68 };
+    var mark = stage.querySelector('.orb-orbit');
+    var system = stage.querySelector('.orbits');
+    // Peak-to-peak travel, read from the stylesheet: the orbit diagram can
+    // afford a wide swing where it has room, the parked labels cannot, and the
+    // CSS is the only place that knows which of the two is showing.
+    var declared = getComputedStyle(stage);
+    var REACH = {
+      x: parseFloat(declared.getPropertyValue('--reach-x')) || 46,
+      y: parseFloat(declared.getPropertyValue('--reach-y')) || 32
+    };
     var want = { x: 0, y: 0 };
     var at = { x: 0, y: 0 };
     var frame = null;
@@ -100,9 +104,11 @@
       // weight, and it settles back to rest instead of snapping.
       at.x += (want.x - at.x) * 0.09;
       at.y += (want.y - at.y) * 0.09;
-      if (orbit) orbit.style.transform = 'translate3d(' + at.x.toFixed(2) + 'px,' + at.y.toFixed(2) + 'px,0)';
-      // The pills trail at a fraction of the distance: two planes, one motion.
-      if (pills) pills.style.transform = 'translate3d(' + (at.x * 0.4).toFixed(2) + 'px,' + (at.y * 0.4).toFixed(2) + 'px,0)';
+      if (mark) mark.style.transform = 'translate3d(' + at.x.toFixed(2) + 'px,' + at.y.toFixed(2) + 'px,0)';
+      // The labels go where their star goes -- the rings are a system, not a
+      // second plane, and the mesh behind them, which does not move, is what
+      // gives the scene its depth.
+      if (system) system.style.transform = 'translate3d(' + at.x.toFixed(2) + 'px,' + at.y.toFixed(2) + 'px,0)';
       if (Math.abs(want.x - at.x) > 0.1 || Math.abs(want.y - at.y) > 0.1) {
         frame = window.requestAnimationFrame(glide);
       }
