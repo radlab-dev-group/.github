@@ -86,6 +86,10 @@
 
     var orbit = stage.querySelector('.orb-orbit');
     var pills = stage.querySelector('.chips');
+    // Peak-to-peak travel across the hero, in pixels. The stage is 460px wide
+    // and the mark takes 258px of it, so the two together with the CSS roam
+    // still leave the ball inside the stage at the extremes.
+    var REACH = { x: 104, y: 68 };
     var want = { x: 0, y: 0 };
     var at = { x: 0, y: 0 };
     var frame = null;
@@ -106,8 +110,8 @@
 
     function aim(event) {
       var box = hero.getBoundingClientRect();
-      want.x = ((event.clientX - box.left) / box.width - 0.5) * 46;
-      want.y = ((event.clientY - box.top) / box.height - 0.5) * 32;
+      want.x = ((event.clientX - box.left) / box.width - 0.5) * REACH.x;
+      want.y = ((event.clientY - box.top) / box.height - 0.5) * REACH.y;
       if (frame === null) frame = window.requestAnimationFrame(glide);
     }
 

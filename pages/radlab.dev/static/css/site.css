@@ -377,9 +377,14 @@ hr { border: 0; border-top: 1px solid var(--border); margin: 2.5rem 0; }
  * original artwork has. */
 .hero-stage { position: relative; width: 100%; max-width: 460px; aspect-ratio: 1; margin-inline: auto; }
 
-/* The wrapper carries the pointer parallax site.js writes, so the ball keeps
- * its own breathing transform and the two never fight over one property. */
-.orb-orbit { position: absolute; inset: 0; will-change: transform; }
+/* The wrapper carries the pointer parallax site.js writes to `transform`, and
+ * the slow roam in `translate` -- separate properties, so the animation cannot
+ * swallow the inline style the way a second `transform` would, and the ball
+ * keeps its own breathing transform underneath both. */
+.orb-orbit {
+  position: absolute; inset: 0; will-change: transform;
+  animation: orb-roam 26s ease-in-out infinite;
+}
 .orb {
   position: absolute; top: 50%; left: 50%; width: 56%; aspect-ratio: 1;
   transform: translate(-50%, -50%);
@@ -445,8 +450,9 @@ hr { border: 0; border-top: 1px solid var(--border); margin: 2.5rem 0; }
   }
   .hero-mesh { display: none; }
   /* The parallax wrapper steps out of the box tree so the ball is a flex item
-   * of the stage again; the pointer effect does not run at this width. */
-  .orb-orbit { position: static; display: contents; }
+   * of the stage again; the pointer effect does not run at this width, and
+   * neither does the roam -- there is no box left to move. */
+  .orb-orbit { position: static; display: contents; animation: none; }
   .orb {
     position: relative; top: auto; left: auto; width: min(72%, 290px);
     transform: none; animation: orb-pulse 12s ease-in-out infinite;
@@ -850,7 +856,16 @@ html.js .reveal:nth-child(4) { transition-delay: 0.21s; }
 
 @keyframes orb-breathe {
   0%, 100% { transform: translate(-50%, -50%) scale(1); }
-  50% { transform: translate(-50%, -52%) scale(1.035); }
+  50% { transform: translate(-50%, -52%) scale(1.055); }
+}
+/* The mark drifts on its own between pointer visits. Unequal distances on the
+ * two axes and an off-centre turning point keep the path from reading as a
+ * circle the eye can predict after one lap. */
+@keyframes orb-roam {
+  0%, 100% { translate: 0 0; }
+  22% { translate: 30px -22px; }
+  47% { translate: -20px 18px; }
+  71% { translate: -34px -14px; }
 }
 /* Same breath without the centring transform, for when the orb is in flow. */
 @keyframes orb-pulse {
@@ -867,7 +882,7 @@ html.js .reveal:nth-child(4) { transition-delay: 0.21s; }
 @keyframes ticker-run { to { transform: translateX(-50%); } }
 
 @media (prefers-reduced-motion: reduce) {
-  .orb, .orb::after, .mesh-lines path, .mesh-dots circle, .chip, .ticker-track {
+  .orb-orbit, .orb, .orb::after, .mesh-lines path, .mesh-dots circle, .chip, .ticker-track {
     animation: none !important;
   }
   html.js .reveal { opacity: 1; transform: none; transition: none; }
