@@ -10,7 +10,7 @@
     {% for card in page_posts %}
     {% set post = card.post %}
     <li>
-      <article class="post-item">
+      <article class="post-item{% if post.image %} post-item--media{% endif %}">
         <div class="meta">
           <time datetime="{{ post.date.isoformat() }}">{{ post.date | datefmt(lang) }}</time>
           {% if not card.missing %}<span>· {{ post.reading_minutes }} {{ ui.reading_time }}</span>{% endif %}

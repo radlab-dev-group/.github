@@ -658,20 +658,27 @@ hr { border: 0; border-top: 1px solid var(--border); margin: 2.5rem 0; }
 .thumb picture { display: block; width: 100%; height: 100%; }
 .thumb-img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; }
 .post-item:hover .thumb-img { transform: scale(1.06); }
-.post-list--compact .post-item { grid-template-columns: 5.5rem 1fr; gap: 1.15rem; padding: 1.35rem 0; }
+/* A row reads date, picture, text -- but a picture track may only be declared
+ * for an entry that renders one, because grid places children by position: an
+ * entry without a thumbnail would drop its text into the empty 6rem column and
+ * wrap every line at two words. `post-item--media` is set by the same template
+ * test that renders the picture, so the two cannot disagree. */
+.post-list--compact .post-item { grid-template-columns: 1fr; gap: 1.15rem; padding: 1.35rem 0; }
+.post-list--compact .post-item--media { grid-template-columns: 5.5rem minmax(0, 1fr); }
 .post-list--compact .post-item h2 { font-size: 1.1875rem; }
 .post-list--compact .post-body { display: flex; flex-direction: column; gap: 0.3rem; }
 .post-list--compact .meta { padding-top: 0; }
-/* Date, picture, text. The picture drops out before the layout gets cramped. */
-.post-list--index .post-item { grid-template-columns: 9rem 6rem minmax(0, 1fr); }
+.post-list--index .post-item { grid-template-columns: 9rem minmax(0, 1fr); }
+.post-list--index .post-item--media { grid-template-columns: 9rem 6rem minmax(0, 1fr); }
+/* The picture drops out before the layout gets cramped. */
 @media (max-width: 940px) {
-  .post-list--index .post-item { grid-template-columns: 9rem minmax(0, 1fr); }
+  .post-list--index .post-item--media { grid-template-columns: 9rem minmax(0, 1fr); }
   .post-list--index .thumb { display: none; }
 }
 @media (max-width: 680px) {
-  .post-list--compact .post-item { grid-template-columns: 1fr; }
+  .post-list--compact .post-item, .post-list--compact .post-item--media,
+  .post-list--index .post-item, .post-list--index .post-item--media { grid-template-columns: 1fr; }
   .post-list--compact .thumb { display: none; }
-  .post-list--index .post-item { grid-template-columns: 1fr; }
 }
 
 .feature {

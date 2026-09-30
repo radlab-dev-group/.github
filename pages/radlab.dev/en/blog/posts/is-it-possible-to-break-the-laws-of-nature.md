@@ -5,6 +5,7 @@ updated: 2025-12-27
 slug: is-it-possible-to-break-the-laws-of-nature
 description: "I don’t know, although I have a feeling […] Hello everyone!Today we’re back after two months of intensive work on publishing the LLM Router. Here’s the earlier…"
 categories: ["Bez kategorii"]
+image: media/czy-prawa-natury-mozna-zlamac/_featured.avif
 lang: en
 translation_of: czy-prawa-natury-mozna-zlamac
 wp_id: 4262

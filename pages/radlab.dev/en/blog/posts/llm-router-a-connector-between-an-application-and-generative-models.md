@@ -5,6 +5,7 @@ updated: 2025-10-24
 slug: llm-router-a-connector-between-an-application-and-generative-models
 description: "This time, we’re introducing a project that we’ve been using internally for a while. Given its high versatility, it might be useful to others as well. We…"
 categories: ["embedding", "experiment", "GenAI", "github", "MachineLearning", "method", "models", "repository"]
+image: media/llm-router/_featured.avif
 lang: en
 translation_of: llm-router
 wp_id: 4142

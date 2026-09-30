@@ -4,6 +4,7 @@ date: 2025-12-27
 slug: can-a-knowledge-base-be-easily-introduced-for-genai
 description: "Absolutely—just plug langchain_rag into the llm-router 😉 Intro Hello! Today we are showing additional capabilities of the LLM Router in the form of plugins,…"
 categories: ["Bez kategorii"]
+image: media/czy-mozna-w-prosty-sposob-wprowadzic-baze-wiedzy-dla-genai/_featured.avif
 lang: en
 translation_of: czy-mozna-w-prosty-sposob-wprowadzic-baze-wiedzy-dla-genai
 wp_id: 4270

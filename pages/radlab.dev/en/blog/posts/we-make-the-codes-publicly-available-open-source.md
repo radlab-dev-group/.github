@@ -6,6 +6,7 @@ slug: we-make-the-codes-publicly-available-open-source
 description: "Hello! Today we will describe the technical aspects. Over the past month, we have been working on publishing some of our solutions. Today we would like to…"
 tags: ["github", "huggingface", "llm", "method", "ml", "python", "transformers"]
 categories: ["embedding", "experiment", "github", "huggingface", "method", "repository"]
+image: media/upubliczniamy-kody/_featured.avif
 lang: en
 translation_of: upubliczniamy-kody
 wp_id: 4104

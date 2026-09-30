@@ -169,7 +169,7 @@
     {% if latest[1:] %}
     <ul class="post-list post-list--compact">
       {% for post in latest[1:] %}
-      <li><article class="post-item">
+      <li><article class="post-item{% if post.image %} post-item--media{% endif %}">
         {% if post.image %}
         <a class="thumb" href="{{ href(post.path) }}" tabindex="-1" aria-hidden="true">{{ image(post.image, '', 'thumb-img', '160px') }}</a>
         {% endif %}

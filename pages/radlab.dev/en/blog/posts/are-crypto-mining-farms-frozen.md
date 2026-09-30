@@ -5,6 +5,7 @@ updated: 2026-01-02
 slug: are-crypto-mining-farms-frozen
 description: "Today we’re looking at a slightly different “fairy‑tale”. Not from a production‑side technical perspective, but perhaps a proposal for a partial solution to…"
 categories: ["Crypto Mining", "GenAI", "LLM", "LLM Router", "Load Balancing", "Open Source", "SaaS"]
+image: media/zmrozone-kopalnie-kryptowalut/_featured.avif
 lang: en
 translation_of: zmrozone-kopalnie-kryptowalut
 wp_id: 4321
