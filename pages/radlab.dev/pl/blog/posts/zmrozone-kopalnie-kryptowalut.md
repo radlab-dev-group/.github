@@ -158,25 +158,7 @@ Po pobraniu, model od razu dostępny jest w lokalnej instancji Ollamy.
 
 **UWAGA**!
 
-Model
-
-gpt-oss:120b
-
-dostępny za pomocą
-
-Ollama
-
-, to skwantyzowana wersja
-
-gpt-oss-120b
-
-od
-
-OpenAI
-
-. Pomimo dużej kwantyzacji model nadal jest bardzo duży, zajmuje około 65GB na dysku (i tyle samo w pamięci kart graficznych), dlatego pendrive musi być odpowiednio duży aby lokalnie zmieścić ten model (ewentualnie można podmontować dysk z dostępnym modelem).
-
-Modelgpt-oss:120bdostępny za pomocąOllama, to skwantyzowana wersjagpt-oss-120bodOpenAI. Pomimo dużej kwantyzacji model nadal jest bardzo duży, zajmuje około 65GB na dysku (i tyle samo w pamięci kart graficznych), dlatego pendrive musi być odpowiednio duży aby lokalnie zmieścić ten model (ewentualnie można podmontować dysk z dostępnym modelem).
+Model gpt-oss:120b dostępny za pomocą Ollama to skwantyzowana wersja gpt-oss-120b od OpenAI. Pomimo dużej kwantyzacji model nadal jest bardzo duży, zajmuje około 65GB na dysku (i tyle samo w pamięci kart graficznych), dlatego pendrive musi być odpowiednio duży aby lokalnie zmieścić ten model (ewentualnie można podmontować dysk z dostępnym modelem).
 
 {{< /callout >}}
 

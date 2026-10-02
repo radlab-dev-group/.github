@@ -15,6 +15,15 @@ SPEC.loader.exec_module(builder)
 
 
 class BlogTemplateTests(unittest.TestCase):
+    def test_mining_article_warning_is_one_paragraph_without_duplicates(self):
+        source = (ROOT / "pl/blog/posts/zmrozone-kopalnie-kryptowalut.md").read_text(encoding="utf-8")
+        warning = source.split("{{< callout >}}", 1)[1].split("{{< /callout >}}", 1)[0]
+        body = builder.render_markdown("{{< callout >}}" + warning + "{{< /callout >}}", builder.load_config(ROOT / "site.toml"))
+        self.assertEqual(body.count("<p>"), 2)
+        self.assertEqual(body.count("Pomimo dużej kwantyzacji"), 1)
+        self.assertIn("Model gpt-oss:120b dostępny za pomocą Ollama", body)
+        self.assertNotIn("Modelgpt-oss", body)
+
     def render(self, body, **overrides):
         post = dict(
             title="Polish QA", description="Model overview", date=dt.date(2024, 4, 15),
