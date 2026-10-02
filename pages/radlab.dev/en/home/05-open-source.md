@@ -3,18 +3,18 @@ order: 5
 layout: grid
 anchor: open-source
 eyebrow: "Open source"
-title: "The code, models and data we give back"
-intro: "Our mission is to propagate open knowledge, software, datasets and models."
+title: "Code, models, and data we share"
+intro: "We believe open science drives real innovation. We share our code, models, and datasets with the whole community."
 columns: 2
 cards:
   - title: "GitHub"
     icon: "share"
-    text: "The source for what we build, including LLM Router. Issues and pull requests are as welcome as plain usage."
+    text: "Open-source repositories for our tools and libraries, including LLM Router. Contributions, feedback, and pull requests are always welcome."
     href: "https://github.com/radlab-dev-group"
     link_label: "radlab-dev-group"
   - title: "Hugging Face"
     icon: "spark"
-    text: "Polish language models — the pLLama family, encoders, QA models — plus the datasets they were trained on."
+    text: "Language models optimized for Polish — the pLLama family, domain encoders, QA models — along with curated training datasets."
     href: "https://huggingface.co/radlab"
     link_label: "huggingface.co/radlab"
 ---

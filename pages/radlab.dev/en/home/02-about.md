@@ -2,15 +2,15 @@
 order: 2
 layout: prose
 anchor: about
-eyebrow: "About"
-title: "What we do"
+eyebrow: "About us"
+title: "From research and experiments to production"
 ---
 
-We solve problems programmatically where machine learning is what the problem
-actually needs. From data analysis, through training models, to systems running
-for somebody else — what does not exist yet gets designed first, then built, and
-finally deployed somewhere it earns its keep day after day.
+We solve real-world engineering challenges with machine learning. We cover the entire
+journey: from curating and cleaning datasets, through model architecture and training,
+to reliable deployments in production environments. When off-the-shelf tools fall short,
+we design and build what's needed from the ground up.
 
-Most of our work is in Polish, because that is the language that asks the hardest
-questions: too little data, too few tools, too few off-the-shelf answers. It
-forces an understanding of the methods rather than calls at an API.
+A central focus of our work is the Polish language. With its rich inflection, complex grammar,
+and limited public datasets, Polish demands much more than blindly querying third-party APIs —
+it requires a deep understanding of methods and what actually happens under the hood.

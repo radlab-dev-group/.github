@@ -1,7 +1,7 @@
 # Interface strings in English. Content itself lives in the Markdown files.
 
 blog_title: "Blog"
-blog_intro: "Results of our experiments, how the models were trained, and the things that did not work along the way."
+blog_intro: "Experimental results, model training walkthroughs, and honest takeaways from things that didn't go as planned."
 reading_time: "min read"
 reading_time_one: "min read"
 published: "Published"
@@ -24,7 +24,7 @@ error_title: "Page not found"
 error_body: "The address you are looking for does not exist, or it led somewhere else."
 error_home: "Back to the home page"
 error_blog: "Go to the blog"
-footer_tagline: "Machine learning and natural language processing are our interest. Software development is our everyday."
+footer_tagline: "Developing language models and software with a passion for open science."
 footer_rights: "All rights reserved"
 
 # Anchors are language-neutral so one href works from / and /en/.
@@ -36,7 +36,7 @@ nav:
   - {id: blog, label: "Blog", href: "/en/blog/"}
   - {id: contact, label: "Contact", href: "#contact"}
 
-latest_title: "What we wrote recently"
+latest_title: "Latest from the blog"
 read_pl: "read in Polish"
 read_in: "read in "
 contact_label: "Contact"

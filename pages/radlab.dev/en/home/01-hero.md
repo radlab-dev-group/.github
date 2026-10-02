@@ -2,13 +2,13 @@
 order: 1
 layout: hero
 anchor: top
-eyebrow: "open to new technology | current with research | knowledge put to practical use"
-title: "Machine learning and natural language processing are what interest us."
+eyebrow: "Practical Machine Learning · Open Science · Modern Engineering"
+title: "We build language models and AI systems that actually work."
 intro: |
-  Software development is the everyday we weave those interests into.
-  We believe in sharing knowledge and in open resources.
+  We bridge the gap between NLP research and solid software engineering. We train models
+  for Polish, build open-source tools, and openly share what we learn along the way.
 actions:
-  - {label: "What we build", href: "#products", style: quiet}
+  - {label: "Our solutions", href: "#products", style: quiet}
   - {label: "GitHub", href: "https://github.com/radlab-dev-group", style: primary}
 stats:
   - {value: "7+", label: "years in ML/NLP"}

@@ -3,8 +3,8 @@ order: 7
 layout: contact
 anchor: contact
 eyebrow: "Contact"
-title: "Curious about something, or want to work together?"
+title: "Have a question or looking to collaborate?"
 intro: |
-  Write, call, get in touch. Questions about Polish language models are welcome
-  too, the harder the better.
+  Drop us an email or give us a call. We're happy to discuss custom AI deployments,
+  consult on architecture, or dive into the nuances of NLP for Polish.
 ---

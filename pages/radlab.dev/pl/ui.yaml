@@ -2,7 +2,7 @@
 # elementów, które nie pochodzą z plików Markdown.
 
 blog_title: "Blog"
-blog_intro: "Wyniki naszych eksperymentów, proces uczenia modeli i rzeczy, które po drodze nie zadziałały."
+blog_intro: "Wyniki eksperymentów, kulisy trenowania modeli i wnioski z tego, co po drodze poszło nie tak."
 reading_time: "min czytania"
 reading_time_one: "min czytania"
 published: "Opublikowano"
@@ -25,7 +25,7 @@ error_title: "Nie znaleziono strony"
 error_body: "Adres, którego szukasz, nie istnieje albo prowadził gdzieś indziej."
 error_home: "Wróć na stronę główną"
 error_blog: "Przejdź na blog"
-footer_tagline: "Uczenie maszynowe i przetwarzanie języka naturalnego to nasze zainteresowania. Tworzenie oprogramowania to codzienność."
+footer_tagline: "Rozwijamy modele językowe i tworzymy oprogramowanie z pasją do otwartej wiedzy."
 footer_rights: "Prawa zastrzeżone"
 
 # Nawigacja. Kotwice są językowo neutralne, żeby ten sam href działał z / i /en/;
@@ -38,7 +38,7 @@ nav:
   - {id: blog, label: "Blog", href: "/blog/"}
   - {id: contact, label: "Kontakt", href: "#contact"}
 
-latest_title: "O czym ostatnio napisaliśmy"
+latest_title: "Ostatnio na blogu"
 read_pl: "czytaj po polsku"
 read_in: ""
 contact_label: "Kontakt"

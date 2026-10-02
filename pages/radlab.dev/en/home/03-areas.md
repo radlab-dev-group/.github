@@ -3,19 +3,19 @@ order: 3
 layout: grid
 anchor: areas
 eyebrow: "Areas"
-title: "Where we work"
+title: "What we specialize in"
 columns: 2
 cards:
-  - title: "Machine learning and NLP"
+  - title: "Machine learning & NLP"
     icon: "ml"
-    text: "Machine learning is what lets us take over parts of a human's job. Drawing conclusions from observed data? Can a computer understand text?"
+    text: "We design and train language models tailored to specific tasks — from classification and semantic search to domain-specific generative systems."
   - title: "Open source projects"
     icon: "share"
-    text: "In ML/NLP solutions are usually available under an open source licence. You take it, use it, enjoy the result — but sharing it back is part of the deal, not an extra."
-  - title: "Data preparation and analysis"
+    text: "We believe in open science and transparent technology. We publish our code, architectures, and model weights to support and expand the AI community."
+  - title: "Data engineering"
     icon: "data"
-    text: "What would machine learning be without data? Methods without data are like a person without oxygen. Hard to arrange?"
-  - title: "Software development"
+    text: "Great models rely on dependable data. We collect, clean, and enrich text corpora, ensuring high quality and accurate language representation."
+  - title: "Software engineering"
     icon: "code"
-    text: "Our field is software, obviously. This is where every other piece stops being a prototype and becomes a working whole."
+    text: "We turn research prototypes into reliable software. We build scalable APIs, microservices, and apps ready for real-world production traffic."
 ---

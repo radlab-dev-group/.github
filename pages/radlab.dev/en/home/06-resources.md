@@ -3,22 +3,22 @@ order: 6
 layout: grid
 anchor: resources
 eyebrow: "Resources"
-title: "Things you can use today"
+title: "Tools and assets ready to use"
 columns: 3
 cards:
   - title: "Language models"
     icon: "ml"
-    text: "Polish-tuned Llama models (1B, 3B, 8B, 70B), bi-encoders and cross-encoders, and extractive QA models. Each with a model card describing how it was trained."
+    text: "Fine-tuned Polish Llama models (1B to 70B), semantic encoders, and extractive QA checkpoints — complete with model cards and training details."
     href: "https://huggingface.co/radlab"
-    link_label: "see them on Hugging Face"
+    link_label: "see on Hugging Face"
   - title: "Datasets"
     icon: "data"
-    text: "We redistribute Polish text resources — only those we are allowed to, of course. Including polish-sts-dataset, legal-mc4-pl, wikipedia-pl and the KGR10 corpus."
+    text: "Curated and preprocessed Polish text corpora, including polish-sts-dataset, legal-mc4-pl, wikipedia-pl, and the KGR10 corpus."
     href: "https://huggingface.co/radlab/datasets"
-    link_label: "browse the datasets"
-  - title: "Experiment log"
+    link_label: "browse datasets"
+  - title: "Engineering blog"
     icon: "book"
-    text: "Results of our internal experiments, together with how the training actually went. Including the failures, which is where most of the learning is."
+    text: "Practical insights from our experiments and training runs. We openly share what worked, what failed, and what we learned from it."
     href: "/en/blog/"
-    link_label: "go to the blog"
+    link_label: "read the blog"
 ---

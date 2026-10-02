@@ -3,8 +3,8 @@ order: 7
 layout: contact
 anchor: contact
 eyebrow: "Kontakt"
-title: "Chcesz się czegoś dowiedzieć lub nawiązać współpracę?"
+title: "Masz pytania lub pomysł na wspólny projekt?"
 intro: |
-  Napisz, zadzwoń, skontaktuj się. Odpowiadamy też na trudne pytania o polski
-  w modelach językowych.
+  Napisz do nas lub zadzwoń. Chętnie pomożemy wdrożyć AI w Twojej organizacji,
+  skonsultujemy architekturę lub podyskutujemy o niuansach przetwarzania języka polskiego.
 ---

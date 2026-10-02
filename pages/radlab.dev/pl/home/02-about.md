@@ -3,14 +3,15 @@ order: 2
 layout: prose
 anchor: about
 eyebrow: "O nas"
-title: "Czym się zajmujemy"
+title: "Od badań i eksperymentów po produkcję"
 ---
 
-Programistycznie rozwiązujemy problemy, które wymagają wykorzystania uczenia
-maszynowego. Od analizy danych, przez trenowanie modeli, po działające systemy —
-to, co nie istnieje najpierw projektujemy, potem budujemy, a na końcu uruchamiamy
-u kogoś, kto ma z tego korzystać na co dzień.
+Rozwiązujemy konkretne wyzwania technologiczne przy użyciu uczenia maszynowego.
+Przechodzimy całą drogę: od zebrania i oczyszczenia danych, przez dobór
+architektury i trenowanie modeli, aż po stabilne wdrożenie w środowisku produkcyjnym.
+Gdy brakuje gotowych narzędzi, po prostu projektujemy je i budujemy od podstaw.
 
-Na co dzień pracujemy z językiem polskim, bo to on stawia najtrudniejsze pytania:
-za mało danych, za mało narzędzi, za mało gotowych rozwiązań. Zmusza to do
-rozumienia metod, a nie tylko do wołania gotowych API.
+Szczególne miejsce w naszej pracy zajmuje język polski. Złożona gramatyka, bogata fleksja
+i mniejsza liczba gotowych zasobów sprawiają, że nie wystarczy zwykłe odpytanie
+zewnętrznego API — potrzebne jest głębokie zrozumienie metod i tego, jak modele
+działają pod maską.
