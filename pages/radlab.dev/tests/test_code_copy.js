@@ -4,7 +4,7 @@ const path = require('node:path');
 const test = require('node:test');
 const vm = require('node:vm');
 
-const source = fs.readFileSync(path.join(__dirname, '../static/js/site.js'), 'utf8');
+const source = fs.readFileSync(path.join(__dirname, '../theme/assets/js/site.js'), 'utf8');
 
 function setup({ secure = true, clipboard = true, reject = false } = {}) {
   const created = [];

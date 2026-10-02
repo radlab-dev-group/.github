@@ -1,17 +1,35 @@
 # radlab.dev
 
+## Struktura projektu
+
+```text
+content/                  # treści i lokalne media
+├── pl/                   # home/, products/, blog/posts/, ui.yaml
+└── en/                   # analogicznie
+theme/
+├── templates/            # szablony HTML i XML
+└── assets/               # css/, js/, fonts/, img/
+config/
+├── site.toml             # ustawienia serwisu
+└── translations.json     # powiązania tłumaczeń
+tests/
+dist/                     # wynik budowania — bez ręcznej edycji
+build.py
+requirements.txt
+```
+
 ## Wpisy blogowe
 
 Każdy wpis jest samodzielnym katalogiem w wybranej wersji językowej:
 
 ```text
-pl/blog/posts/<slug>/
+content/pl/blog/posts/<slug>/
 ├── index.md
 └── media/
     ├── ilustracja.png
     └── demonstracja.webm
 
-en/blog/posts/<slug>/
+content/en/blog/posts/<slug>/
 ├── index.md
 └── media/
 ```
@@ -38,7 +56,7 @@ Osadzenia YouTube pozostają zewnętrzne.
 
 Adresy artykułów nadal wynikają z daty i `slug`, a nie ze struktury źródeł:
 `/2025-10-13/przykladowy-wpis/` lub `/en/2025-10-13/przykladowy-wpis/`.
-Powiązania tłumaczeń są w `data/translations.json`.
+Powiązania tłumaczeń są w `config/translations.json`.
 
 ## Budowanie
 
@@ -54,4 +72,8 @@ Wynik trafia do `dist/`. Standardowy build generuje i ponownie wykorzystuje
 warianty WebP; `--fast` kopiuje lokalne oryginały bez konwersji. Filmy i
 załączniki są kopiowane lokalnie w obu trybach. `--check` zgłasza brakujące
 media oraz uszkodzone odnośniki. Grafiki wspólne dla całego serwisu, np. logo,
-pozostają w `static/img/`.
+znajdują się w `theme/assets/img/`. Szablony są w `theme/templates/`,
+a domyślna konfiguracja w `config/site.toml` (`--config` pozwala wskazać inną).
+Układ źródeł nie zmienia publicznych adresów stron i zasobów: wspólne zasoby
+są publikowane pod `/assets/`, a oryginalne media wpisów pod
+`/<lang>/blog/posts/<slug>/media/` — bez prefiksu `content/`.

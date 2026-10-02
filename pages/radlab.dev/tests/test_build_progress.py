@@ -20,7 +20,7 @@ class BuildProgressTests(unittest.TestCase):
     def build_output(self, verbose=False):
         output = io.StringIO()
         with tempfile.TemporaryDirectory(dir=ROOT) as directory, contextlib.redirect_stdout(output):
-            site = builder.Site(builder.load_config(ROOT / "site.toml"), fast=True, verbose=verbose)
+            site = builder.Site(builder.load_config(ROOT / "config/site.toml"), fast=True, verbose=verbose)
             site.dist = Path(directory)
             site.pipeline.dist = site.dist
             site.build()
@@ -54,7 +54,7 @@ class BuildProgressTests(unittest.TestCase):
             root = Path(directory)
             source = root / "example.png"
             Image.new("RGB", (32, 16)).save(source)
-            cfg = builder.load_config(ROOT / "site.toml")
+            cfg = builder.load_config(ROOT / "config/site.toml")
             progress = builder.BuildProgress(verbose=True)
             pipeline = builder.ImagePipeline(cfg, root / "dist", progress=progress)
             self.assertIsNotNone(pipeline.variants(source))

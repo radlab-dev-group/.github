@@ -1,16 +1,16 @@
 #!/usr/bin/env python3
 """Static site builder for radlab.dev -- a landing page plus a bilingual blog.
 
-Content lives in ``pl/`` and ``en/`` as Markdown. Each post has a directory
-``<lang>/blog/posts/<slug>/`` with ``index.md`` and local files in ``media/``.
+Content lives in ``content/pl/`` and ``content/en/`` as Markdown. Each post has a directory
+``content/<lang>/blog/posts/<slug>/`` with ``index.md`` and local files in ``media/``.
 Posts use YAML front matter; the landing page is a set of section files
-``<lang>/home/*.md`` sorted by their ``order`` key, so adding a section is adding a
+``content/<lang>/home/*.md`` sorted by their ``order`` key, so adding a section is adding a
 file and nothing needs to be registered anywhere.
 
 URLs follow the legacy WordPress layout on purpose (``/2025-10-13/llm-router/``)
 so six years of inbound links keep working without a redirect map. English sits
 under ``/en/``; the two are tied together with hreflang through
-``data/translations.json``, because five English posts were given different
+``config/translations.json``, because five English posts were given different
 slugs when they were translated and no string comparison can recover that.
 
     python3 build.py                 # build dist/
@@ -271,7 +271,7 @@ class Product:
 
 
 def load_products(cfg: Config, lang: str) -> list[Product]:
-    directory = ROOT / lang / "products"
+    directory = ROOT / "content" / lang / "products"
     if not directory.exists():
         return []
     products: list[Product] = []
@@ -286,7 +286,7 @@ def load_products(cfg: Config, lang: str) -> list[Product]:
 
 
 def load_posts(cfg: Config, lang: str, *, include_drafts: bool) -> list[Post]:
-    directory = ROOT / lang / "blog" / "posts"
+    directory = ROOT / "content" / lang / "blog" / "posts"
     posts: list[Post] = []
     for path in sorted(directory.glob("*/index.md")):
         meta, body = parse_front_matter(path.read_text(encoding="utf-8"))
@@ -301,7 +301,7 @@ def load_posts(cfg: Config, lang: str, *, include_drafts: bool) -> list[Post]:
 
 def load_sections(cfg: Config, lang: str) -> list[dict]:
     """Landing page sections, ordered by their front matter `order` key."""
-    directory = ROOT / lang / "home"
+    directory = ROOT / "content" / lang / "home"
     sections = []
     for path in sorted(directory.glob("*.md")):
         meta, body = parse_front_matter(path.read_text(encoding="utf-8"))
@@ -314,14 +314,14 @@ def load_sections(cfg: Config, lang: str) -> list[dict]:
 
 
 def load_ui(cfg: Config, lang: str) -> dict:
-    path = ROOT / lang / "ui.yaml"
+    path = ROOT / "content" / lang / "ui.yaml"
     if not path.exists():
         return {}
     return yaml.safe_load(path.read_text(encoding="utf-8")) or {}
 
 
 def load_translations() -> dict[str, dict]:
-    path = ROOT / "data" / "translations.json"
+    path = ROOT / "config" / "translations.json"
     if not path.exists():
         return {}
     raw = json.loads(path.read_text(encoding="utf-8"))
@@ -474,7 +474,7 @@ class ImagePipeline:
         return direct if direct.is_relative_to(ROOT) and direct.is_file() else None
 
     def media_url(self, source: Path) -> str:
-        relative = source.relative_to(ROOT)
+        relative = source.relative_to(ROOT / "content")
         destination = self.dist / relative
         destination.parent.mkdir(parents=True, exist_ok=True)
         shutil.copyfile(source, destination)
@@ -622,7 +622,7 @@ class Site:
         self.progress = BuildProgress(verbose=verbose)
         self.pipeline = ImagePipeline(cfg, self.dist, enabled=not fast, progress=self.progress)
         self.env = Environment(
-            loader=FileSystemLoader(str(ROOT / "templates")),
+            loader=FileSystemLoader(str(ROOT / "theme" / "templates")),
             autoescape=select_autoescape(["html", "xml"]),
             trim_blocks=True,
             lstrip_blocks=True,
@@ -713,7 +713,7 @@ class Site:
 
     def brand_image(self, name: str) -> str | None:
         """A brand asset URL, or None when tools/brand.py has not been run."""
-        path = ROOT / "static" / "img" / name
+        path = ROOT / "theme" / "assets" / "img" / name
         return f"{self.cfg.base}/assets/img/{name}" if path.exists() else None
 
     def context(self, lang: str, *, switch_href: str | None = None) -> dict:
@@ -905,12 +905,12 @@ class Site:
     def write_static(self) -> None:
         target = self.dist / "assets"
         for folder in ("css", "js", "fonts", "img"):
-            source = ROOT / "static" / folder
+            source = ROOT / "theme" / "assets" / folder
             if not source.is_dir():
                 continue
             for item in source.rglob("*"):
                 if item.is_file():
-                    destination = target / item.relative_to(ROOT / "static")
+                    destination = target / item.relative_to(ROOT / "theme" / "assets")
                     destination.parent.mkdir(parents=True, exist_ok=True)
                     shutil.copyfile(item, destination)
                     self.progress.detail(f"Copied: {destination.relative_to(self.dist)}")
@@ -1031,7 +1031,7 @@ def serve(dist: Path, port: int, base: str = "") -> None:
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__,
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("--config", type=Path, default=ROOT / "site.toml")
+    parser.add_argument("--config", type=Path, default=ROOT / "config" / "site.toml")
     parser.add_argument("--serve", action="store_true", help="serve dist/ after building")
     parser.add_argument("--port", type=int, default=8010)
     parser.add_argument("--check", action="store_true", help="verify links and assets, non-zero exit on failure")

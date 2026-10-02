@@ -18,7 +18,7 @@ SPEC.loader.exec_module(builder)
 class PostMediaTests(unittest.TestCase):
     def test_fast_build_is_complete_without_network_or_previous_output(self):
         with tempfile.TemporaryDirectory(dir=ROOT) as directory:
-            site = builder.Site(builder.load_config(ROOT / "site.toml"), fast=True)
+            site = builder.Site(builder.load_config(ROOT / "config/site.toml"), fast=True)
             site.dist = Path(directory)
             site.pipeline.dist = site.dist
             site.pipeline.out_dir = site.dist / "assets/img"
@@ -29,11 +29,11 @@ class PostMediaTests(unittest.TestCase):
             self.assertEqual(builder.check_no_media_token(site.dist), [])
 
     def test_repository_posts_have_self_contained_media(self):
-        cfg = builder.load_config(ROOT / "site.toml")
+        cfg = builder.load_config(ROOT / "config/site.toml")
         self.assertFalse((ROOT / "data/media_map.json").exists())
         self.assertFalse((ROOT / "media").exists())
         for lang in cfg.langs:
-            directory = ROOT / lang / "blog/posts"
+            directory = ROOT / "content" / lang / "blog/posts"
             self.assertFalse(list(directory.glob("*.md")))
             sources = list(directory.glob("*/index.md"))
             self.assertTrue(sources)
@@ -49,7 +49,7 @@ class PostMediaTests(unittest.TestCase):
     def test_nested_post_loads_local_image_and_video_without_manifest(self):
         with tempfile.TemporaryDirectory(dir=ROOT) as directory:
             root = Path(directory)
-            post_dir = root / "pl/blog/posts/example"
+            post_dir = root / "content/pl/blog/posts/example"
             media = post_dir / "media"
             media.mkdir(parents=True)
             Image.new("RGB", (32, 16)).save(media / "image.png")
@@ -57,7 +57,7 @@ class PostMediaTests(unittest.TestCase):
             (post_dir / "index.md").write_text(
                 '---\ntitle: Example\ndate: 2025-10-13\nimage: media/image.png\n---\n'
                 '![](media/image.png)\n\n{{< video media/demo.webm >}}', encoding="utf-8")
-            cfg = builder.load_config(ROOT / "site.toml")
+            cfg = builder.load_config(ROOT / "config/site.toml")
             cfg.raw["site"]["base_path"] = "/preview"
             with patch.object(builder, "ROOT", root):
                 posts = builder.load_posts(cfg, "pl", include_drafts=True)
@@ -72,13 +72,14 @@ class PostMediaTests(unittest.TestCase):
                         image = str(site.image(post.image))
                         self.assertNotIn("{{<", text)
                         self.assertIn('/preview/pl/blog/posts/example/media/demo.webm', text)
+                        self.assertNotIn('/preview/content/', text)
                         self.assertTrue((site.dist / "pl/blog/posts/example/media/demo.webm").exists())
                         self.assertIn("image.png" if fast else "<picture>", image)
                         self.assertEqual(site.pipeline.missing, [])
 
     def test_missing_media_fails_check(self):
         with tempfile.TemporaryDirectory(dir=ROOT) as directory:
-            site = builder.Site(builder.load_config(ROOT / "site.toml"), fast=True)
+            site = builder.Site(builder.load_config(ROOT / "config/site.toml"), fast=True)
             site.dist = Path(directory)
             site.pipeline.dist = site.dist
             site.posts = {}

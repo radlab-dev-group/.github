@@ -14,7 +14,7 @@ SPEC.loader.exec_module(builder)
 
 class SiteEnhancementTests(unittest.TestCase):
     def setUp(self):
-        self.site = builder.Site(builder.load_config(ROOT / "site.toml"), fast=True)
+        self.site = builder.Site(builder.load_config(ROOT / "config/site.toml"), fast=True)
         self.site.load()
 
     def home(self, lang):

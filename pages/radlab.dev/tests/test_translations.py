@@ -13,7 +13,7 @@ SPEC.loader.exec_module(builder)
 
 class TranslationTests(unittest.TestCase):
     def setUp(self):
-        self.site = builder.Site(builder.load_config(ROOT / "site.toml"), fast=True)
+        self.site = builder.Site(builder.load_config(ROOT / "config/site.toml"), fast=True)
         self.site.load()
 
     def test_published_english_posts_link_to_originals_in_both_directions(self):
