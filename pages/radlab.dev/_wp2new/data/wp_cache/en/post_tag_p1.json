@@ -1,0 +1,152 @@
+[
+ {
+  "id": 41,
+  "count": 1,
+  "name": "3c",
+  "slug": "3c"
+ },
+ {
+  "id": 35,
+  "count": 1,
+  "name": "bi-encoder",
+  "slug": "bi-encoder"
+ },
+ {
+  "id": 36,
+  "count": 1,
+  "name": "cross-encoder",
+  "slug": "cross-encoder"
+ },
+ {
+  "id": 14,
+  "count": 1,
+  "name": "cuda",
+  "slug": "cuda"
+ },
+ {
+  "id": 34,
+  "count": 1,
+  "name": "decoder",
+  "slug": "decoder"
+ },
+ {
+  "id": 31,
+  "count": 3,
+  "name": "dpo",
+  "slug": "dpo"
+ },
+ {
+  "id": 33,
+  "count": 1,
+  "name": "encoder",
+  "slug": "encoder"
+ },
+ {
+  "id": 30,
+  "count": 3,
+  "name": "fine-tuning",
+  "slug": "fine-tuning"
+ },
+ {
+  "id": 25,
+  "count": 4,
+  "name": "genai",
+  "slug": "genai"
+ },
+ {
+  "id": 47,
+  "count": 1,
+  "name": "github",
+  "slug": "github"
+ },
+ {
+  "id": 28,
+  "count": 2,
+  "name": "hf",
+  "slug": "hf"
+ },
+ {
+  "id": 27,
+  "count": 4,
+  "name": "huggingface",
+  "slug": "huggingface"
+ },
+ {
+  "id": 24,
+  "count": 1,
+  "name": "llama",
+  "slug": "llama"
+ },
+ {
+  "id": 37,
+  "count": 3,
+  "name": "llm",
+  "slug": "llm"
+ },
+ {
+  "id": 49,
+  "count": 1,
+  "name": "method",
+  "slug": "method"
+ },
+ {
+  "id": 50,
+  "count": 1,
+  "name": "ml",
+  "slug": "ml"
+ },
+ {
+  "id": 15,
+  "count": 1,
+  "name": "nvlink",
+  "slug": "nvlink"
+ },
+ {
+  "id": 39,
+  "count": 1,
+  "name": "playground",
+  "slug": "playground"
+ },
+ {
+  "id": 29,
+  "count": 3,
+  "name": "pllama",
+  "slug": "pllama"
+ },
+ {
+  "id": 40,
+  "count": 1,
+  "name": "polaryzacja",
+  "slug": "polaryzacja"
+ },
+ {
+  "id": 48,
+  "count": 1,
+  "name": "python",
+  "slug": "python"
+ },
+ {
+  "id": 32,
+  "count": 1,
+  "name": "rag",
+  "slug": "rag"
+ },
+ {
+  "id": 38,
+  "count": 0,
+  "name": "training",
+  "slug": "training"
+ },
+ {
+  "id": 26,
+  "count": 4,
+  "name": "transformers",
+  "slug": "transformers"
+ },
+ {
+  "id": 16,
+  "count": 2,
+  "name": "uczenie",
+  "slug": "uczenie"
+ }
+]

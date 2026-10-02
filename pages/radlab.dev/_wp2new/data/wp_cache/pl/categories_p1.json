@@ -1,0 +1,198 @@
+[
+ {
+  "id": 22,
+  "count": 0,
+  "name": "AutoGenertated",
+  "slug": "autogenertated",
+  "parent": 0
+ },
+ {
+  "id": 1,
+  "count": 0,
+  "name": "Bez kategorii",
+  "slug": "bez-kategorii",
+  "parent": 0
+ },
+ {
+  "id": 52,
+  "count": 3,
+  "name": "Bezpieczeństwo",
+  "slug": "bezpieczenstwo",
+  "parent": 0
+ },
+ {
+  "id": 3,
+  "count": 4,
+  "name": "ciekawostki",
+  "slug": "ciekawostki",
+  "parent": 0
+ },
+ {
+  "id": 63,
+  "count": 1,
+  "name": "Crypto-mining",
+  "slug": "crypto-mining",
+  "parent": 0
+ },
+ {
+  "id": 4,
+  "count": 7,
+  "name": "eksperyment",
+  "slug": "eksperyment",
+  "parent": 0
+ },
+ {
+  "id": 5,
+  "count": 7,
+  "name": "embedding",
+  "slug": "embedding",
+  "parent": 0
+ },
+ {
+  "id": 21,
+  "count": 10,
+  "name": "GenAI",
+  "slug": "genail",
+  "parent": 0
+ },
+ {
+  "id": 42,
+  "count": 2,
+  "name": "github",
+  "slug": "github",
+  "parent": 0
+ },
+ {
+  "id": 6,
+  "count": 1,
+  "name": "gpt2",
+  "slug": "gpt2",
+  "parent": 0
+ },
+ {
+  "id": 7,
+  "count": 10,
+  "name": "huggingface",
+  "slug": "huggingface",
+  "parent": 0
+ },
+ {
+  "id": 51,
+  "count": 1,
+  "name": "Klasyfikator",
+  "slug": "klasyfikator",
+  "parent": 0
+ },
+ {
+  "id": 20,
+  "count": 4,
+  "name": "llama",
+  "slug": "llama",
+  "parent": 0
+ },
+ {
+  "id": 58,
+  "count": 3,
+  "name": "LLM",
+  "slug": "llm",
+  "parent": 0
+ },
+ {
+  "id": 50,
+  "count": 3,
+  "name": "LLM Router",
+  "slug": "llm-router",
+  "parent": 0
+ },
+ {
+  "id": 53,
+  "count": 3,
+  "name": "Load balancing",
+  "slug": "load-balancing",
+  "parent": 0
+ },
+ {
+  "id": 44,
+  "count": 1,
+  "name": "metoda",
+  "slug": "metoda",
+  "parent": 0
+ },
+ {
+  "id": 8,
+  "count": 13,
+  "name": "model",
+  "slug": "model",
+  "parent": 0
+ },
+ {
+  "id": 9,
+  "count": 6,
+  "name": "narzędzia",
+  "slug": "narzedzia",
+  "parent": 0
+ },
+ {
+  "id": 61,
+  "count": 1,
+  "name": "On-prem",
+  "slug": "on-prem",
+  "parent": 0
+ },
+ {
+  "id": 48,
+  "count": 3,
+  "name": "open-source",
+  "slug": "open-source",
+  "parent": 0
+ },
+ {
+  "id": 10,
+  "count": 3,
+  "name": "Q&amp;A",
+  "slug": "qa",
+  "parent": 0
+ },
+ {
+  "id": 23,
+  "count": 2,
+  "name": "rag",
+  "slug": "rag",
+  "parent": 0
+ },
+ {
+  "id": 43,
+  "count": 3,
+  "name": "repozytorium",
+  "slug": "repozytorium",
+  "parent": 0
+ },
+ {
+  "id": 65,
+  "count": 1,
+  "name": "SaaS",
+  "slug": "saas",
+  "parent": 0
+ },
+ {
+  "id": 11,
+  "count": 1,
+  "name": "t5",
+  "slug": "t5",
+  "parent": 0
+ },
+ {
+  "id": 12,
+  "count": 15,
+  "name": "transformatory",
+  "slug": "transformatory",
+  "parent": 0
+ },
+ {
+  "id": 13,
+  "count": 2,
+  "name": "word2vec",
+  "slug": "word2vec",
+  "parent": 0
+ }
+]

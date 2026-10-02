@@ -1,0 +1,200 @@
+[
+ {
+  "id": 41,
+  "count": 1,
+  "name": "3c",
+  "slug": "3c"
+ },
+ {
+  "id": 35,
+  "count": 1,
+  "name": "bi-encoder",
+  "slug": "bi-encoder"
+ },
+ {
+  "id": 56,
+  "count": 1,
+  "name": "bielik",
+  "slug": "bielik"
+ },
+ {
+  "id": 57,
+  "count": 1,
+  "name": "bielik-guard",
+  "slug": "bielik-guard"
+ },
+ {
+  "id": 59,
+  "count": 1,
+  "name": "classification",
+  "slug": "classification"
+ },
+ {
+  "id": 36,
+  "count": 1,
+  "name": "cross-encoder",
+  "slug": "cross-encoder"
+ },
+ {
+  "id": 62,
+  "count": 1,
+  "name": "crypto-minig",
+  "slug": "crypto-minig"
+ },
+ {
+  "id": 14,
+  "count": 1,
+  "name": "cuda",
+  "slug": "cuda"
+ },
+ {
+  "id": 34,
+  "count": 1,
+  "name": "decoder",
+  "slug": "decoder"
+ },
+ {
+  "id": 31,
+  "count": 3,
+  "name": "dpo",
+  "slug": "dpo"
+ },
+ {
+  "id": 33,
+  "count": 1,
+  "name": "encoder",
+  "slug": "encoder"
+ },
+ {
+  "id": 30,
+  "count": 3,
+  "name": "fine-tuning",
+  "slug": "fine-tuning"
+ },
+ {
+  "id": 25,
+  "count": 7,
+  "name": "genai",
+  "slug": "genai"
+ },
+ {
+  "id": 45,
+  "count": 2,
+  "name": "github",
+  "slug": "github"
+ },
+ {
+  "id": 28,
+  "count": 2,
+  "name": "hf",
+  "slug": "hf"
+ },
+ {
+  "id": 27,
+  "count": 6,
+  "name": "huggingface",
+  "slug": "huggingface"
+ },
+ {
+  "id": 24,
+  "count": 1,
+  "name": "llama",
+  "slug": "llama"
+ },
+ {
+  "id": 37,
+  "count": 7,
+  "name": "llm",
+  "slug": "llm"
+ },
+ {
+  "id": 54,
+  "count": 3,
+  "name": "llm-router",
+  "slug": "llm-router"
+ },
+ {
+  "id": 55,
+  "count": 1,
+  "name": "load-labalancing",
+  "slug": "load-labalancing"
+ },
+ {
+  "id": 60,
+  "count": 2,
+  "name": "local",
+  "slug": "local"
+ },
+ {
+  "id": 47,
+  "count": 1,
+  "name": "method",
+  "slug": "method"
+ },
+ {
+  "id": 15,
+  "count": 1,
+  "name": "nvlink",
+  "slug": "nvlink"
+ },
+ {
+  "id": 49,
+  "count": 2,
+  "name": "open-source",
+  "slug": "open-source"
+ },
+ {
+  "id": 39,
+  "count": 1,
+  "name": "playground",
+  "slug": "playground"
+ },
+ {
+  "id": 29,
+  "count": 3,
+  "name": "pllama",
+  "slug": "pllama"
+ },
+ {
+  "id": 40,
+  "count": 1,
+  "name": "polaryzacja",
+  "slug": "polaryzacja"
+ },
+ {
+  "id": 46,
+  "count": 1,
+  "name": "python",
+  "slug": "python"
+ },
+ {
+  "id": 32,
+  "count": 2,
+  "name": "rag",
+  "slug": "rag"
+ },
+ {
+  "id": 64,
+  "count": 1,
+  "name": "saas",
+  "slug": "saas"
+ },
+ {
+  "id": 38,
+  "count": 0,
+  "name": "training",
+  "slug": "training"
+ },
+ {
+  "id": 26,
+  "count": 6,
+  "name": "transformers",
+  "slug": "transformers"
+ },
+ {
+  "id": 16,
+  "count": 3,
+  "name": "uczenie",
+  "slug": "uczenie"
+ }
+]

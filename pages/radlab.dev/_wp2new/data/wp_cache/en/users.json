@@ -1,0 +1,64 @@
+[
+ {
+  "id": 1,
+  "name": "pkedzia",
+  "url": "https://wp.radlab.dev",
+  "description": "",
+  "link": "https://en.radlab.dev/author/pkedzia/",
+  "slug": "pkedzia",
+  "avatar_urls": {
+   "24": "https://secure.gravatar.com/avatar/c13477a862a1cdbaf716c4aacd0db1b1f49c1655832e786fed71b7ba5d46e772?s=24&d=mm&r=g",
+   "48": "https://secure.gravatar.com/avatar/c13477a862a1cdbaf716c4aacd0db1b1f49c1655832e786fed71b7ba5d46e772?s=48&d=mm&r=g",
+   "96": "https://secure.gravatar.com/avatar/c13477a862a1cdbaf716c4aacd0db1b1f49c1655832e786fed71b7ba5d46e772?s=96&d=mm&r=g"
+  },
+  "meta": [],
+  "_links": {
+   "self": [
+    {
+     "href": "https://en.radlab.dev/wp-json/wp/v2/users/1",
+     "targetHints": {
+      "allow": [
+       "GET"
+      ]
+     }
+    }
+   ],
+   "collection": [
+    {
+     "href": "https://en.radlab.dev/wp-json/wp/v2/users"
+    }
+   ]
+  }
+ },
+ {
+  "id": 2,
+  "name": "radlab",
+  "url": "",
+  "description": "",
+  "link": "https://en.radlab.dev/author/radlab/",
+  "slug": "radlab",
+  "avatar_urls": {
+   "24": "https://secure.gravatar.com/avatar/4d719ee33bbbd5e7a11297841ef52cda6b31e01591fea59c193cf517948f6b3a?s=24&d=mm&r=g",
+   "48": "https://secure.gravatar.com/avatar/4d719ee33bbbd5e7a11297841ef52cda6b31e01591fea59c193cf517948f6b3a?s=48&d=mm&r=g",
+   "96": "https://secure.gravatar.com/avatar/4d719ee33bbbd5e7a11297841ef52cda6b31e01591fea59c193cf517948f6b3a?s=96&d=mm&r=g"
+  },
+  "meta": [],
+  "_links": {
+   "self": [
+    {
+     "href": "https://en.radlab.dev/wp-json/wp/v2/users/2",
+     "targetHints": {
+      "allow": [
+       "GET"
+      ]
+     }
+    }
+   ],
+   "collection": [
+    {
+     "href": "https://en.radlab.dev/wp-json/wp/v2/users"
+    }
+   ]
+  }
+ }
+]
