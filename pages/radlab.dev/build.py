@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """Static site builder for radlab.dev -- a landing page plus a bilingual blog.
 
-Content lives in ``pl/`` and ``en/`` as Markdown. Posts are ``<lang>/blog/posts/*.md``
-with YAML front matter; the landing page is a set of section files
+Content lives in ``pl/`` and ``en/`` as Markdown. Each post has a directory
+``<lang>/blog/posts/<slug>/`` with ``index.md`` and local files in ``media/``.
+Posts use YAML front matter; the landing page is a set of section files
 ``<lang>/home/*.md`` sorted by their ``order`` key, so adding a section is adding a
 file and nothing needs to be registered anywhere.
 
@@ -55,7 +56,6 @@ from pygments.lexers.special import TextLexer
 from pygments.util import ClassNotFound
 
 MEDIA_TOKEN = "@media"
-MEDIA_DIR = ROOT / "media"
 BUILD_STATE = ".build-state.json"
 
 
@@ -180,6 +180,7 @@ class Post:
     body_markdown: str
     html: str = ""
     url_path: str = ""
+    source_dir: Path | None = None
 
     @property
     def slug(self) -> str:
@@ -212,7 +213,10 @@ class Post:
 
     @property
     def image(self) -> str | None:
-        return self.meta.get("image")
+        value = self.meta.get("image")
+        if value and self.source_dir and value.startswith("media/"):
+            return (self.source_dir / value).relative_to(ROOT).as_posix()
+        return value
 
     @property
     def path(self) -> str:
@@ -284,10 +288,10 @@ def load_products(cfg: Config, lang: str) -> list[Product]:
 def load_posts(cfg: Config, lang: str, *, include_drafts: bool) -> list[Post]:
     directory = ROOT / lang / "blog" / "posts"
     posts: list[Post] = []
-    for path in sorted(directory.glob("*.md")):
+    for path in sorted(directory.glob("*/index.md")):
         meta, body = parse_front_matter(path.read_text(encoding="utf-8"))
-        meta.setdefault("slug", path.stem)
-        post = Post(lang=lang, meta=FrontMatter(meta), body_markdown=body)
+        meta.setdefault("slug", path.parent.name)
+        post = Post(lang=lang, meta=FrontMatter(meta), body_markdown=body, source_dir=path.parent)
         if post.draft and not include_drafts:
             continue
         posts.append(post)
@@ -328,7 +332,7 @@ def load_translations() -> dict[str, dict]:
 # ------------------------------------------------------------- markdown
 
 SHORTCODE_YOUTUBE = re.compile(r"\{\{<\s*youtube\s+([\w-]{11})\s*>}}")
-SHORTCODE_VIDEO = re.compile(r"\{\{<\s*video\s+(https?://\S+?)\s*>}}")
+SHORTCODE_VIDEO = re.compile(r"\{\{<\s*video\s+(\S+?)\s*>}}")
 SHORTCODE_DETAILS = re.compile(r"\{\{<\s*details\s+title=\"([^\"]*)\"\s*>}}(.*?)\{\{<\s*/details\s*>}}", re.S)
 SHORTCODE_CALLOUT = re.compile(r"\{\{<\s*callout\s*>}}(.*?)\{\{<\s*/callout\s*>}}", re.S)
 
@@ -411,9 +415,6 @@ def expand_shortcodes(text: str) -> str:
         return f'<aside class="callout">{inner}</aside>'
 
     def video(match: re.Match[str]) -> str:
-        # The .webm files stay on the origin rather than being mirrored --
-        # 64 MB of video for five posts is not worth the repository -- so they
-        # load lazily and never block the page.
         url = html.escape(match.group(1).strip(), quote=True)
         return (f'<div class="embed embed-video"><video controls preload="none" '
                 f'src="{url}"></video></div>')
@@ -440,7 +441,7 @@ class BuildProgress:
 
 
 class ImagePipeline:
-    """Turns ``![](@media/slug/file.png)`` into a <picture> with WebP srcset.
+    """Turns post-local images into a <picture> with WebP srcset.
 
     Sources are the archived originals; variants are generated once into
     ``dist/assets/img/`` and keyed by a content hash so an unchanged picture is
@@ -454,7 +455,6 @@ class ImagePipeline:
         self.enabled = enabled
         self.progress = progress if progress is not None else BuildProgress()
         self.out_dir = dist / "assets" / "img"
-        self.manifest = self._load_manifest()
         self.cache: dict[tuple[str, int], dict | None] = {}
         self.missing: list[str] = []
         try:  # Pillow is optional so a text-only build still works without it.
@@ -468,23 +468,17 @@ class ImagePipeline:
         except ModuleNotFoundError:
             self.available = False
 
-    @staticmethod
-    def _load_manifest() -> dict:
-        path = ROOT / "data" / "media_map.json"
-        return json.loads(path.read_text(encoding="utf-8")) if path.exists() else {}
-
     def master_for(self, token_path: str) -> Path | None:
-        """Resolve ``@media/slug/file`` to a decoded master on disk."""
-        relative = token_path[len(MEDIA_TOKEN):].lstrip("/") if token_path.startswith(MEDIA_TOKEN) else token_path
-        for entry in self.manifest.values():
-            if entry["local"] == f"media/{relative}" or entry["local"].endswith(f"/{Path(relative).name}") \
-                    and entry["post"] == Path(relative).parent.name:
-                master = entry.get("master")
-                candidate = ROOT / master if master else ROOT / entry["local"]
-                if candidate.exists():
-                    return candidate
-        direct = MEDIA_DIR / relative
-        return direct if direct.exists() else None
+        """Resolve a repository-relative source without a manifest or network."""
+        direct = (ROOT / token_path).resolve()
+        return direct if direct.is_relative_to(ROOT) and direct.is_file() else None
+
+    def media_url(self, source: Path) -> str:
+        relative = source.relative_to(ROOT)
+        destination = self.dist / relative
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(source, destination)
+        return self.cfg.base + "/" + relative.as_posix()
 
     def variants(self, source: Path) -> dict | None:
         if not self.enabled or not self.available:
@@ -537,7 +531,7 @@ class ImagePipeline:
 
         data = self.variants(source)
         if data is None:  # images disabled or Pillow unavailable: plain tag
-            path = self.cfg.base + "/media/" + token_path[len(MEDIA_TOKEN):].lstrip("/")
+            path = self.media_url(source)
             return f'<img src="{html.escape(path)}" alt="{html.escape(alt)}" loading="lazy">'
 
         srcset = ", ".join(f"{self.cfg.base}{url} {w}w" for w, url in sorted(data["webp"].items()))
@@ -559,10 +553,8 @@ class ImagePipeline:
         """OG images must be PNG or JPEG -- social crawlers do not fetch WebP."""
         if not post.image or not self.available:
             return None
-        source = self.master_for(post.image.replace("media/", f"{MEDIA_TOKEN}/"))
+        source = self.master_for(post.image)
         if source is None:
-            source = ROOT / post.image
-        if not source.exists():
             return None
         from PIL import Image
 
@@ -586,8 +578,8 @@ class ImagePipeline:
         return f"{self.cfg.base}/assets/og/{target.name}"
 
 
-def apply_images(body: str, pipeline: ImagePipeline) -> str:
-    """Rewrite every ``@media`` reference in rendered HTML to a <picture>.
+def apply_images(body: str, pipeline: ImagePipeline, source_dir: Path | None = None) -> str:
+    """Rewrite post-local image references in rendered HTML to a <picture>.
 
     Done on the output HTML rather than in Markdown so an image inside a
     shortcode, a raw HTML block or a figure caption takes exactly the same path.
@@ -596,13 +588,27 @@ def apply_images(body: str, pipeline: ImagePipeline) -> str:
     def replace_img(match: re.Match[str]) -> str:
         tag = match.group(0)
         src = re.search(r'src="([^"]*)"', tag)
-        if not src or not src.group(1).startswith(MEDIA_TOKEN):
+        if not src or not source_dir or not src.group(1).startswith("media/"):
             return tag
         alt = re.search(r'alt="([^"]*)"', tag)
-        return pipeline.picture_html(src.group(1), alt.group(1) if alt else "")
+        source = (source_dir / html.unescape(src.group(1))).resolve()
+        if not source.is_relative_to((source_dir / "media").resolve()):
+            pipeline.missing.append(f"invalid media path: {src.group(1)}")
+            return tag
+        return pipeline.picture_html(source.relative_to(ROOT).as_posix(), html.unescape(alt.group(1)) if alt else "")
 
-    # <img src> inside <source srcset> is not a thing here; only img tags.
-    return re.sub(r"<img\b[^>]*>", replace_img, body)
+    body = re.sub(r"<img\b[^>]*>", replace_img, body)
+
+    def replace_media(match: re.Match[str]) -> str:
+        if source_dir is None:
+            return match.group(0)
+        source = (source_dir / html.unescape(match.group(2))).resolve()
+        if not source.is_relative_to((source_dir / "media").resolve()) or not source.is_file():
+            pipeline.missing.append(f"unresolved media: {source}")
+            return match.group(0)
+        return f'{match.group(1)}="{html.escape(pipeline.media_url(source), quote=True)}"'
+
+    return re.sub(r'(src|href|poster)="(media/[^\"]*)"', replace_media, body)
 
 
 # ------------------------------------------------------------------ builder
@@ -699,17 +705,11 @@ class Site:
     # -- rendering
 
     def render_post_html(self, post: Post) -> str:
-        return apply_images(render_markdown(post.body_markdown, self.cfg), self.pipeline)
+        return apply_images(render_markdown(post.body_markdown, self.cfg), self.pipeline, post.source_dir)
 
     def image(self, src: str, alt: str = "", css_class: str = "", sizes: str | None = None) -> Markup:
-        """A <picture> from a template, for anything outside a post body.
-
-        Front matter writes `image: media/slug/file.png` while the pipeline
-        speaks `@media/slug/file.png`; both spellings are accepted here so the
-        template never has to know which one a field holds.
-        """
-        token = src if src.startswith(MEDIA_TOKEN) else src.replace("media/", f"{MEDIA_TOKEN}/", 1)
-        return Markup(self.pipeline.picture_html(token, alt, css_class, sizes))
+        """A <picture> from a repository-relative source outside a post body."""
+        return Markup(self.pipeline.picture_html(src, alt, css_class, sizes))
 
     def brand_image(self, name: str) -> str | None:
         """A brand asset URL, or None when tools/brand.py has not been run."""
@@ -1063,7 +1063,7 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.check:
         print("Checking internal links and assets...", flush=True)
-        problems = check_links(ROOT / "dist", cfg) + check_no_media_token(ROOT / "dist")
+        problems = site.pipeline.missing + check_links(site.dist, cfg) + check_no_media_token(site.dist)
         if problems:
             print(f"\n{len(problems)} problem(s):", file=sys.stderr)
             for line in problems[:40]:

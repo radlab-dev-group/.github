@@ -46,10 +46,15 @@ class TranslationTests(unittest.TestCase):
                     self.site.build_post(original)
                 self.assertIn(self.site.ui["pl"]["translation_missing"], write.call_args.args[1])
 
-    def test_image_manifest_is_loaded_from_migration_data(self):
-        self.assertTrue(self.site.pipeline.manifest)
-        token = "@media/czy-mozna-w-prosty-sposob-wprowadzic-baze-wiedzy-dla-genai/01-2025-12-26_22-20-09_5743.avif"
-        self.assertEqual(self.site.pipeline.master_for(token), ROOT / token.replace("@media", "media").replace(".avif", ".jpeg"))
+    def test_translated_posts_resolve_their_own_local_images(self):
+        for lang in self.site.cfg.langs:
+            for post in self.site.posts[lang] + self.site.drafts[lang]:
+                if not post.image:
+                    continue
+                with self.subTest(lang=lang, slug=post.slug):
+                    source = self.site.pipeline.master_for(post.image)
+                    self.assertIsNotNone(source)
+                    self.assertEqual(source.parent, post.source_dir / "media")
 
 
 if __name__ == "__main__":
