@@ -189,8 +189,8 @@ def main() -> int:
     # The circle rebuilt from those stops: favicon, tiles, the hero orb.
     mark = render_orb(512, stops)
     mark.save(OUT / "mark.png", "PNG", optimize=True)
-    mark.resize((32, 32), Image.LANCZOS).save(OUT / "favicon-32.png", "PNG", optimize=True)
-    (OUT / "favicon.svg").write_text(orb_svg(64, stops), encoding="utf-8")
+    mark.resize((32, 32), Image.LANCZOS).save(OUT / "small-ico.png", "PNG", optimize=True)
+    (OUT / "small-ico.png").write_text(orb_svg(64, stops), encoding="utf-8")
 
     tile = Image.new("RGB", (512, 512), APPLE_TILE)
     tile.paste(mark, (56, 56), mark)
