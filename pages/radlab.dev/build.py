@@ -444,6 +444,11 @@ class ImagePipeline:
         self.missing: list[str] = []
         try:  # Pillow is optional so a text-only build still works without it.
             from PIL import Image  # noqa: F401
+            try:
+                import pillow_heif
+                pillow_heif.register_heif_opener()
+            except ImportError:
+                pass
             self.available = enabled
         except ModuleNotFoundError:
             self.available = False

@@ -10,3 +10,4 @@ PyYAML>=6.0            # front matter and data files
 Pygments>=2.17         # build-time code highlighting
 beautifulsoup4>=4.12   # WordPress HTML parsing during migration
 Pillow>=10.0           # responsive image variants + OG images
+pillow-heif>=0.18.0     # AVIF and HEIF image decoding for Pillow
