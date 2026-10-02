@@ -109,12 +109,6 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
           <img class="brand-logo brand-logo-light" src="{{ logo | default(base ~ '/assets/img/logo.png') }}" width="300" height="88" alt="" loading="lazy">
           <img class="brand-logo brand-logo-dark" src="{{ logo_inverted | default(base ~ '/assets/img/logo-inverted.png') }}" width="300" height="88" alt="" loading="lazy">
         </a>
-        <p class="footer-tagline">{{ ui.footer_tagline }}</p>
-        <ul class="social">
-          <li><a href="{{ site.github }}" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#i-share"/></svg>GitHub</a></li>
-          <li><a href="{{ site.huggingface }}" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#i-spark"/></svg>Hugging Face</a></li>
-          <li><a href="{{ site.linkedin }}" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#i-external"/></svg>LinkedIn</a></li>
-        </ul>
       </div>
       <div>
         {#- Named on its own: this column has always been the code and social
@@ -130,14 +124,12 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
         <h4>{{ ui.blog_title }}</h4>
         <ul>
           <li><a href="{{ href('blog') }}">{{ ui.all_posts }}</a></li>
-          <li><a href="{{ href('feed.xml') }}">Atom</a></li>
         </ul>
       </div>
       <div>
         <h4>{{ ui.contact_label if ui.contact_label else 'Contact' }}</h4>
         <ul>
           <li><a href="mailto:{{ site.email }}">{{ site.email }}</a></li>
-          <li><a href="tel:{{ site.phone | replace(' ', '') }}">{{ site.phone }}</a></li>
         </ul>
       </div>
     </div>
