@@ -72,3 +72,7 @@ and switching the router to operate in knowledge‑base mode (the beginning of t
 
 Starring: *OpenWeb UI* with the *LLM‑Router* attached (with the *langchain\_rag* plugin *disabled* and *enabled*).
 **We encourage you to download, try it out, and share your impressions of using it 🙂**
+
+---
+
+> **Related Products:** Knowledge-base context augmentation is natively supported via the plugin ecosystem of [LLM Router](/en/products/llm-router/). You can also explore live demonstrations on [RDL Playground AI](/en/products/playground/).

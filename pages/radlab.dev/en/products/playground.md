@@ -47,7 +47,12 @@ The Playground demonstrates what can be achieved with budget hardware — up to 
 
 ---
 
-## Access and Experiment Details
+## Access & Related Blog Articles
 
-* **Application:** [playground.radlab.dev](https://playground.radlab.dev) — no account required.
-* **Experiments and methods:** [RadLab blog](/en/blog/).
+* **Web Application:** [playground.radlab.dev](https://playground.radlab.dev) — free, no account required.
+* **Technical Articles & Background:**
+  * [Information Browser — Automated Topic Discovery in News Media](/en/2025-05-28/przegladarka-informacji/)
+  * [Information Explorer — Precision Tool for Relationship Analysis](/en/2025-07-14/eksplorator-informacji-nie-mlotek-a-skalpel/)
+  * [3C Polarity Model Released on Hugging Face](/en/2025-06-01/polaryzacja-3c-model-z-plg-na-hf/)
+  * [Can a Knowledge Base Be Easily Introduced for GenAI?](/en/2025-12-27/can-a-knowledge-base-be-easily-introduced-for-genai/)
+  * [pLLama3.1 8B — Practical Generative AI for Polish](/en/2024-12-08/pllama3-1-8b-czyli-srednio-duze-a-nawet-male-genai-dla-polskiego/)

@@ -30,6 +30,10 @@ class TranslationTests(unittest.TestCase):
                     self.assertNotIn(self.site.ui[article.lang]["translation_missing"], text)
                     self.assertIn(f'href="{self.site.cfg.href(mate.lang, mate.path)}"', text)
                     self.assertIn(f'hreflang="{self.site.cfg.site["hreflang"][mate.lang]}"', text)
+                    self.assertIn(
+                        f'hreflang="x-default" href="{self.site.cfg.canonical(original.lang, original.path)}"',
+                        text,
+                    )
 
     def test_untranslated_drafts_keep_the_missing_translation_notice(self):
         self.assertTrue(self.site.drafts["en"])

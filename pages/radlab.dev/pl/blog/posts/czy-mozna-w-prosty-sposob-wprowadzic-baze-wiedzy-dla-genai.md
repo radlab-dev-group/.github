@@ -83,3 +83,7 @@ oraz przełączanie routera do działania w trybie bazy wiedzy (początek filmu,
 W roli głównej: *OpenWeb UI* z podpiętym *LLM-Routerem* (z *wyłączoną* i *włączoną* wtyczką *langchain\_rag*).
 
 **Zachęcamy do pobierania, sprawdzania oraz dzielenia się swoimi odczuciami z wykorzystywania 🙂**
+
+---
+
+> **Zobacz powiązane produkty:** Wzbogacanie kontekstu w oparciu o bazę wiedzy jest natywnie wspierane przez ekosystem wtyczek bramy [LLM Router](/products/llm-router/). Sprawdź także demonstrację działania na żywo w [RDL Playground AI](/products/playground/).

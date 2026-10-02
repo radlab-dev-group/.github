@@ -123,3 +123,7 @@ Poskładajmy całość do kupy 😉
 *PPS*.
 
 A już niebawem opublikujemy nasz model GenAI — pLLama, model LLama douczony na język polski 🙂
+
+---
+
+> **Narzędzia wspomagające architekturę RAG:** Aby bezpiecznie kierować ruchem zapytań do modeli lokalnych i chmurowych oraz zabezpieczyć zapytania przed wyciekiem danych osobowych, sprawdź bramę [LLM Router](/products/llm-router/) oraz system ochrony prywatności [PII Masker](/products/pii-masker/).

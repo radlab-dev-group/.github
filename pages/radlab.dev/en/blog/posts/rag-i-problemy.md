@@ -121,4 +121,8 @@ Let’s put it all together 😉
 
 And soon we will publish our GenAI model — pLLama, an LLama model trained in Polish 😉
 
+---
+
+> **Tools for RAG Architecture:** To manage request routing across local/cloud model engines and protect enterprise prompts against personal data leaks, check out [LLM Router](/en/products/llm-router/) and [PII Masker](/en/products/pii-masker/).
+
 ## Unlock the potential of your data with our ML/NLP. Bon appetit! 😉

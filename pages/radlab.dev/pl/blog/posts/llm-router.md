@@ -134,4 +134,6 @@ docker run \
 
 Jednym z miejsc, gdzie llm-router działa jest nasz playground. Każda funkcjonalność dotycząca modelu generatywnego oprogramowana jest jako dedykowany EP w llm-router.  Kody udostępniamy oczywiście na licencji Apache 2.0 — można brać i wykorzystywać komercyjnie i niekomercyjnie — smacznego!
 
-Zachęcamy do korzystania i zgłaszania swoich sugestii i uwag. A w planach dodanie load balancingu, rate limitingu oraz logowanie statystyk do Prometheusa 😉
+Zachęcamy do korzystania i zgłaszania swoich sugestii i uwag.
+
+> **Aktualizacja (Wydanie v1.1+):** Zapowiadane funkcjonalności (6 zaawansowanych strategii Load Balancingu, Redis Rate Limiting w przesuwnym oknie czasowym, metryki Prometheus oraz potok wtyczek maskowania PII i guardraili NASK/Sójka) zostały w pełni wdrożone! Zobacz [pełną specyfikację LLM Routera](/products/llm-router/).

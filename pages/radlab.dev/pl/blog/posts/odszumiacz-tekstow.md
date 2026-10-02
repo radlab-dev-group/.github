@@ -87,3 +87,7 @@ print(do_inference(text_str, model, tokenizer))
 ```
 
 Zapraszamy do korzystania, smacznego 🙂
+
+---
+
+> **Ochrona i sanitizacja promptów:** W potokach produkcyjnych do automatycznego maskowania i anonimizacji danych wrażliwych przed wysłaniem do modeli LLM sprawdź narzędzie [PII Masker](/products/pii-masker/) oraz bramę [LLM Router](/products/llm-router/).

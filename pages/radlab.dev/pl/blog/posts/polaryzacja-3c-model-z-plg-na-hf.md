@@ -83,3 +83,7 @@ A oto i wyjście:
 ## Outro
 
 Model udostępniony jest od lipca ubiegłego roku na naszym playgroundzie. Zbieramy efekty jego działania, które można podejrzeć w [statystykach](https://playground.radlab.dev/Statystyki). Na [strumieniu](https://playground.radlab.dev/Strumie%C5%84_Aktualno%C5%9Bci) przy każdym newsie, dodawana jest również informacja o polarzyacji, właśnie przez ten model. Model oczywiście za free na naszych HF: [Klik do modelu](https://huggingface.co/radlab/polarity-3c).
+
+---
+
+> **Powiązane rozwiązania:** Model ten stanowi integralną część analizy sentymentu w [Radarze Informacji](/products/radar/) oraz strumienia wiadomości na platformie [RDL Playground AI](/products/playground/).

@@ -84,4 +84,8 @@ And here’s the way out:
 
 The model has been available on our  [playground’s](https://playground.radlab.dev/) since July last year. We collect data on its performance, which can be viewed in the [statistics](https://playground.radlab.dev/Statystyki). Information about polarization is also added to each [new stream](https://playground.radlab.dev/Strumie%C5%84_Aktualno%C5%9Bci) using this model. The model is, of course, available for free on our HF:[ here is the model. ](https://huggingface.co/radlab/polarity-3c)
 
+---
+
+> **Related solutions:** This model powers sentiment and polarity analytics in [Radar Informacji](/en/products/radar/) and the live news stream on [RDL Playground AI](/en/products/playground/).
+
 ## Unlock the potential of your data with our ML/NLP. Bon appetit! 😉

@@ -56,6 +56,104 @@ Pełne zachowanie i wymagania opisuje [dokumentacja strategii balansowania](http
 
 ---
 
+## Szybki start (Quickstart)
+
+LLM Router można uruchomić jako kontener Docker i podłączyć do klienta OpenAI przez zmianę `base_url`. Obsługa konkretnych funkcji API zależy również od wybranego dostawcy modelu.
+
+### 1. Uruchomienie kontenera
+
+Przykład zakłada działający na hoście serwer vLLM na porcie `8000`, udostępniający model pod nazwą `llama-3.1-8b`. Router nie uruchamia modelu za Ciebie. Zapisz jako `config.json`:
+
+```json
+{
+  "local_models": {
+    "llama-3.1-8b": {
+      "providers": [{
+        "id": "local-vllm",
+        "api_host": "http://host.docker.internal:8000/",
+        "api_token": "",
+        "api_type": "vllm",
+        "model_path": "llama-3.1-8b",
+        "input_size": 4096,
+        "weight": 1.0,
+        "nworkers": 1
+      }]
+    }
+  },
+  "active_models": {"local_models": ["llama-3.1-8b"]}
+}
+```
+
+```bash
+docker run -d \
+  --name llm-router \
+  -p 127.0.0.1:5555:8080 \
+  --add-host=host.docker.internal:host-gateway \
+  -e LLM_ROUTER_SERVER_PORT=8080 \
+  -e LLM_ROUTER_MODELS_CONFIG=/srv/cfg.json \
+  -v "$(pwd)/config.json:/srv/cfg.json:ro" \
+  quay.io/radlab/llm-router:rc1
+```
+
+Tag `rc1` i zmienne pochodzą z [instrukcji Docker w repozytorium](https://github.com/radlab-dev-group/llm-router#-docker). Model musi być osiągalny z kontenera; na Linuksie backend nasłuchujący wyłącznie na `127.0.0.1` nie wystarczy. Przykład bramy jest dostępny tylko lokalnie; przed udostępnieniem jej w sieci włącz autoryzację i TLS zgodnie z [dokumentacją uwierzytelniania](https://github.com/radlab-dev-group/llm-router/blob/main/llm_router_api/docs/AUTHENTICATION.md).
+
+### 2. Integracja w Pythonie (OpenAI SDK)
+
+```python
+from openai import OpenAI
+
+# Wystarczy podmienić base_url na adres bramy LLM Router
+client = OpenAI(
+    base_url="http://localhost:5555/v1",
+    api_key="twoj-klucz-api"  # lub dowolny ciąg przy wyłączonej autoryzacji
+)
+
+response = client.chat.completions.create(
+    model="llama-3.1-8b",
+    messages=[
+        {"role": "system", "content": "Jesteś pomocnym asystentem inżynierskim."},
+        {"role": "user", "content": "Jak skonfigurować bezpieczny routing zapytań LLM?"}
+    ],
+    temperature=0.7,
+    stream=True
+)
+
+for chunk in response:
+    if chunk.choices and chunk.choices[0].delta.content:
+        print(chunk.choices[0].delta.content, end="", flush=True)
+```
+
+### 3. Zapytanie przez cURL
+
+```bash
+curl http://localhost:5555/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer twoj-klucz-api" \
+  -d '{
+    "model": "llama-3.1-8b",
+    "messages": [
+      {"role": "user", "content": "Cześć! Opowiedz krótko o architekturze routera."}
+    ]
+  }'
+```
+
+---
+
+## Porównanie z alternatywami (Differentiators)
+
+| Cecha / Funkcjonalność | LLM Router | LiteLLM | Ollama (standalone) | Portkey / Cloud Gateways |
+| :--- | :--- | :--- | :--- | :--- |
+| **Model wdrożenia** | Self-hosted; air-gapped z lokalnymi modelami i zależnościami | Self-hosted / usługi zarządzane | Lokalny serwer modeli | Otwarta brama self-hosted / platforma SaaS |
+| **Maskowanie PII i guardraile** | Konfigurowalne wtyczki FastMasker, RoBERTa NER, NASK Guard i Sójka Guard dla polskiego | Integracje guardraili, m.in. Presidio; zakres zależy od integracji i edycji | Wymaga dodatkowej warstwy aplikacji | Integracje guardraili; zakres zależy od wdrożenia i planu |
+| **Routing i Load Balancing** | 6 strategii; m.in. wagi, sloty workerów i koordynacja Redis | Strategie losowe/ważone, latencja, użycie i least-busy | Obsługuje własny serwer, nie zastępuje bramy wielu dostawców | Load balancing, fallback i routing warunkowy |
+| **Obsługa standardów API** | OpenAI-compatible + Anthropic `/v1/messages` | Ujednolicone API OpenAI-compatible dla wielu dostawców | Ollama API / zgodność z częścią OpenAI API | Ujednolicone API dla wielu dostawców |
+| **Obserwowalność i audyt** | Opcjonalny Prometheus `/metrics` i szyfrowany audyt GPG | Metryki, logowanie i śledzenie kosztów | Logi serwera | Funkcje obserwowalności platformy zależne od planu |
+| **Licencja** | Apache 2.0 | Rdzeń MIT; funkcje enterprise na osobnych warunkach | MIT | Otwarta brama MIT; platforma komercyjna osobno |
+
+Wyróżnikiem LLM Routera jest zestaw polskich wtyczek i kontrola nad lokalną infrastrukturą, nie wyłączność na routing czy self-hosting. Porównanie dotyczy modelu działania, nie benchmarku wydajności. Źródła: [LLM Router](https://github.com/radlab-dev-group/llm-router), [routing LiteLLM](https://docs.litellm.ai/docs/routing), [brama Portkey](https://github.com/Portkey-AI/gateway), [zgodność API Ollama](https://docs.ollama.com/api/openai-compatibility).
+
+---
+
 ## Architektura systemu
 
 ```text

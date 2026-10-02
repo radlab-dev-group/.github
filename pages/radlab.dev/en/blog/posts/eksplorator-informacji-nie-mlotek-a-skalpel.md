@@ -26,3 +26,7 @@ When reading, we recommend reading the entire document from start to finish, wit
 Eksplorator\_Informacji-Raport-techniczny-v1.0-20250714
 
 Pobierz
+
+---
+
+> **Related Products:** Graph-based entity discovery and clustering algorithms are deployed in [Radar Informacji](/en/products/radar/) and the analytics modules of [RDL Playground AI](/en/products/playground/).

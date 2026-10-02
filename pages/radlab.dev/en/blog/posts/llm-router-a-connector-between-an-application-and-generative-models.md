@@ -136,4 +136,6 @@ One of the places where Llm-Router is running is our playground.
 
 Every generative model functionality is programmed as a dedicated endpoint in llm-router. We’re sharing the code under the Apache 2.0 license—so you can use it commercially and non-commercially. Enjoy! 😊
 
-We encourage you to try it out and share your suggestions and feedback. And in the works: adding load balancing, rate limiting, and logging statistics to Prometheus!
+We encourage you to try it out and share your suggestions and feedback.
+
+> **Update (v1.1+ Release):** The planned features (6 advanced Load Balancing strategies, Redis-backed sliding-window Rate Limiting, Prometheus metrics, and the PII / NASK & Sójka guardrail plugin pipeline) are now fully available! Explore the [full LLM Router product page](/en/products/llm-router/).

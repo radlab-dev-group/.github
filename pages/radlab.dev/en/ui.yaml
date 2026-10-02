@@ -1,6 +1,10 @@
 # Interface strings in English. Content itself lives in the Markdown files.
 
 blog_title: "Blog"
+feed_label: "Subscribe to the blog (Atom / RSS)"
+copy_code: "Copy code"
+code_copied: "Copied"
+copy_failed: "Copy failed — select the code and copy it manually"
 blog_intro: "Experimental results, model training walkthroughs, and honest takeaways from things that didn't go as planned."
 reading_time: "min read"
 reading_time_one: "min read"

@@ -17,18 +17,22 @@ pills:
 cards:
   - title: "Modele i trenowanie"
     icon: "ml"
-    text: "Rozwijamy modele dla języka polskiego: generatywne, enkodery semantyczne, modele ekstrakcyjnego QA i klasyfikatory NER. Korzystamy z PyTorch i ekosystemu Hugging Face, a w lokalnych eksperymentach sprawdzamy także możliwości małych modeli."
-    tags: ["PyTorch", "Transformers", "Hugging Face", "NLP"]
+    href: "products/playground"
+    text: "Rozwijamy autorskie modele dla języka polskiego: generatywne pLLama, enkodery semantyczne, ekstrakcyjne QA oraz klasyfikatory NER. Korzystamy z PyTorch i ekosystemu Hugging Face, optymalizując je do wydajnego działania także na lokalnym sprzęcie (RDL Playground AI)."
+    tags: ["PyTorch", "Transformers", "Hugging Face", "pLLama / QA"]
   - title: "Wnioskowanie i routing LLM"
     icon: "router"
-    text: "Łączymy lokalne silniki z API chmurowymi przez interfejs zgodny z OpenAI i endpoint Anthropic. Konfigurowalne wtyczki, routing i strategie balansowania pozwalają zarządzać ruchem, a Redis wspiera koordynację dostawców i limity zapytań."
-    tags: ["vLLM", "Ollama", "llama.cpp", "LM Studio", "Redis"]
+    href: "products/llm-router"
+    text: "Architektura bramy LLM Router łączy silniki lokalne (vLLM, Ollama) z chmurą przez API OpenAI/Anthropic. Obsługuje konfigurowalne potoki wtyczek, zaawansowane strategie równoważenia obciążenia i koordynację w Redis, gwarantując pełną kontrolę on-premise."
+    tags: ["LLM Router", "vLLM", "Ollama", "Redis", "Load Balancing"]
   - title: "Wyszukiwanie i analiza informacji"
     icon: "data"
-    text: "Wyszukiwanie semantyczne opieramy na Milvusie i wektorowych reprezentacjach tekstu. Do wykrywania tematów używamy Sentence-Transformers, redukcji wymiarowości t-SNE lub UMAP i klastrowania HDBSCAN. Modele generatywne nadają tematom nazwy i tworzą podsumowania ze źródłami."
-    tags: ["Milvus", "Sentence-Transformers", "HDBSCAN", "t-SNE / UMAP"]
+    href: "products/radar"
+    text: "Silnik analityczny Radaru Informacji: wyszukiwanie semantyczne w Milvusie, ekstrakcja gęstych wektorów, nieliniowa redukcja wymiarowości (t-SNE/UMAP) oraz dynamiczne klastrowanie HDBSCAN do bezkategoryzacyjnego wykrywania trendów w strumieniach wiadomości."
+    tags: ["Radar Informacji", "Milvus", "HDBSCAN", "Sentence-Transformers"]
   - title: "Anonimizacja i ochrona danych"
     icon: "shield"
-    text: "Łączymy reguły i walidację sum kontrolnych z modelami NER dla języka polskiego. Maskowanie danych i guardraile można włączyć przed wywołaniem modelu. ONNX i kwantyzacja INT8 umożliwiają także uruchamianie modelu anonimizacji na CPU."
-    tags: ["NER", "RoBERTa", "ONNX / INT8", "PII Masking", "Guardrails"]
+    href: "products/pii-masker"
+    text: "Fundament systemu PII Masker: dwuwarstwowa ochrona danych osobowych (deterministyczny FastMasker z sumami kontrolnymi + model RoBERTa NER). Kwantyzacja ONNX INT8 umożliwia maskowanie na CPU, wspierając minimalizację danych w projektach objętych RODO/GDPR i AI Act."
+    tags: ["PII Masker", "FastMasker", "RoBERTa NER", "ONNX INT8", "RODO / GDPR"]
 ---

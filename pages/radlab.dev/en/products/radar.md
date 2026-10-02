@@ -78,10 +78,23 @@ Daily vector footprints are embedded via `article-bi-encoder-20240901`. Cosine s
 
 ---
 
+## User Interface & Dashboard Overview
+
+The Radar Informacji interface combines 2D semantic manifold projection with interactive daily topic cards:
+
+<figure>
+  <img src="/assets/img/radar-preview.svg" alt="Radar mockup: three 2D article clusters with source shares and polarity distribution for selected topic B" width="960" height="430" loading="lazy">
+  <figcaption>Illustrative mockup, not an application screenshot. Dots represent articles, colors denote clusters, and crosses indicate noise. The right panel shows source A/B/C shares (42/31/27%) and model class distribution (positive 12%, ambivalent 76%, negative 12%). All data is fictional.</figcaption>
+</figure>
+
+[Explore real topics and charts in Radar Informacji](https://radar.apps.radlab.dev).
+
+---
+
 ## Analytical Features
 
 * **Source Propagation Breakdown:** Visualizes portal distribution for each topic, revealing which publications originated or amplified the news.
-* **Sentiment & Polarity Distribution:** Evaluates emotional tone (positive, negative, ambivalent/neutral) across the cluster using `radlab/polarity-3c`.
+* **Sentiment & Polarity Distribution:** Evaluates emotional tone (positive, negative, ambivalent) across the cluster using `radlab/polarity-3c`.
 * **Historical Calendar Archive:** Navigate back to previous dates to trace how stories developed over time.
 * **Information Explorer & Graphs:** Graph-based entity and relationship extraction for in-depth intelligence discovery.
 

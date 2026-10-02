@@ -78,12 +78,25 @@ Każdy dzień poddawany jest wektoryzacji dedykowanym modelem `article-bi-encode
 
 ---
 
+## Prezentacja danych w interfejsie użytkownika
+
+Aplikacja Radar Informacji łączy rzutowanie wielowymiarowej przestrzeni semantycznej z interaktywnymi kartami podsumowań:
+
+<figure>
+  <img src="/assets/img/radar-preview.svg" alt="Makieta Radaru: trzy klastry artykułów w rzucie 2D oraz udział źródeł i polaryzacja wybranego tematu B" width="960" height="430" loading="lazy">
+  <figcaption>Makieta poglądowa, nie zrzut ekranu aplikacji. Punkty oznaczają artykuły, kolory — klastry, a krzyżyki — szum. Panel po prawej pokazuje udział źródeł A/B/C (42/31/27%) i rozkład klas modelu (pozytywna 12%, ambiwalentna 76%, negatywna 12%). Wszystkie dane są fikcyjne.</figcaption>
+</figure>
+
+[Sprawdź rzeczywiste tematy i wykresy w Radarze Informacji](https://radar.apps.radlab.dev).
+
+---
+
 ## Moduły analityczne i metryki
 
 Radar Informacji wyposażony jest w zestaw narzędzi analitycznych:
 
 * **Wykres propagacji źródeł:** Wizualizacja procentowego udziału poszczególnych portali w danym temacie, pozwalająca zbadać, które media zapoczątkowały lub zdominowały dany wątek.
-* **Wskaźnik polaryzacji emocjonalnej:** Ocena wydźwięku tekstów w klastrze (pozytywny, negatywny, neutralny) z wykorzystaniem modelu `radlab/polarity-3c`.
+* **Wskaźnik polaryzacji emocjonalnej:** Ocena wydźwięku tekstów w klastrze (pozytywny, negatywny, ambiwalentny) z wykorzystaniem modelu `radlab/polarity-3c`.
 * **Archiwum i kalendarz:** Możliwość cofnięcia się do dowolnego dnia i prześledzenia dynamiki ewolucji tematów w czasie.
 * **Wykrywanie relacji (Eksplorator):** Analiza grafowa powiązań między bytami i wątkami pojawiającymi się w wiadomościach.
 

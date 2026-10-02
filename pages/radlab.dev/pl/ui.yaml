@@ -2,6 +2,10 @@
 # elementów, które nie pochodzą z plików Markdown.
 
 blog_title: "Blog"
+feed_label: "Subskrybuj blog (Atom / RSS)"
+copy_code: "Kopiuj kod"
+code_copied: "Skopiowano"
+copy_failed: "Nie udało się skopiować — zaznacz kod i skopiuj ręcznie"
 blog_intro: "Wyniki eksperymentów, kulisy trenowania modeli i wnioski z tego, co po drodze poszło nie tak."
 reading_time: "min czytania"
 reading_time_one: "min czytania"

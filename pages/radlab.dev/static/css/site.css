@@ -812,6 +812,19 @@ hr { border: 0; border-top: 1px solid var(--border); margin: 2.5rem 0; }
 }
 @media (min-width: 920px) { .contact-card { grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr); align-items: center; } }
 .contact-card h2 { margin-bottom: 0.35em; }
+.contact-scenarios {
+  margin: 1.25rem 0 0;
+  padding: 0 0 0 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+.contact-scenarios li strong {
+  color: var(--text);
+}
 .contact-card .actions { display: flex; flex-wrap: wrap; gap: 0.75rem; }
 .contact-side { display: flex; flex-direction: column; gap: 1.5rem; }
 
@@ -1001,6 +1014,19 @@ a.tag:hover { color: var(--accent); border-color: var(--accent); }
 }
 .prose pre code { background: none; padding: 0; font-size: 0.8125rem; }
 .prose .codehilite { margin: 1.75em 0; border: 1px solid var(--border); }
+.code-copy-wrapper { display: flow-root; }
+.code-copy {
+  padding: 0.35rem 0.65rem;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--bg-surface);
+  color: var(--text);
+  font: inherit;
+  font-size: 0.8125rem;
+  cursor: pointer;
+}
+.code-copy-status { margin-inline-start: 0.65rem; font-size: 0.8125rem; }
+a.tag-tech:hover { color: var(--accent); border-color: currentColor; }
 
 .prose details {
   border: 1px solid var(--border); border-radius: var(--radius);
@@ -1301,6 +1327,7 @@ html.js .reveal:nth-child(4) { transition-delay: 0.21s; }
 }
 
 @media print {
+  .code-copy, .code-copy-status { display: none; }
   .site-header, .site-footer, .theme-toggle, .lang-switch, .hero-stage, .ticker { display: none; }
   body { background: #fff; color: #000; }
 }

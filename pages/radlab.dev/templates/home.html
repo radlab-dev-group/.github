@@ -135,7 +135,8 @@
         {% if item.tags %}
         <div class="stack-tags" aria-label="Technologie">
           {% for tag in item.tags %}
-          <span class="tag-tech">{{ tag }}</span>
+          {% if item.href %}<a class="tag-tech" href="{{ href(item.href) }}">{{ tag }}</a>
+          {% else %}<span class="tag-tech">{{ tag }}</span>{% endif %}
           {% endfor %}
         </div>
         {% endif %}
@@ -153,6 +154,14 @@
         {% if section.eyebrow %}<p class="eyebrow">{{ section.eyebrow }}</p>{% endif %}
         <h2>{{ section.title }}</h2>
         {% if section.intro %}<p class="intro">{{ section.intro | trim }}</p>{% endif %}
+        {% if section.scenarios %}
+        <ul class="contact-scenarios">
+          {% for sc in section.scenarios %}
+          <li><strong>{{ sc.title }}</strong>{% if sc.desc %} — {{ sc.desc }}{% endif %}</li>
+          {% endfor %}
+        </ul>
+        {% endif %}
+        {% if section._html %}<div class="contact-body">{{ section._html | safe }}</div>{% endif %}
       </div>
       <div class="contact-side">
         <div class="actions">

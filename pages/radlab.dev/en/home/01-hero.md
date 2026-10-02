@@ -10,6 +10,6 @@ intro: |
 actions:
   - {label: "Our solutions", href: "#products", style: quiet}
   - {label: "GitHub", href: "https://github.com/radlab-dev-group", style: primary}
-chips: ["pLLama3-8B", "bi-encoders", "RAG", "LLM Router", "QA", "word2vec"]
+chips: ["pLLama3-8B", "bi-encoders", "RAG", "LLM Router", "PII Masker", "vLLM / Ollama", "Guardrails", "Radar Informacji"]
 ticker: ["machine learning", "natural language processing", "Polish language models", "open source", "datasets", "LLM Router", "Radar Informacji", "PII Masker", "experiments", "Hugging Face"]
 ---

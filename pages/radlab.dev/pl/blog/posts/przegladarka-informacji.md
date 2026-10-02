@@ -87,3 +87,7 @@ Rozmowa do przeczytania na [Czacie Publicznym](https://playground.radlab.dev/Cza
 > ```
 
 {{< /details >}}
+
+---
+
+> **Sprawdź powiązane rozwiązania:** Zobacz pełny 8-etapowy potok przetwarzania i architekturę w opisie [Radar Informacji](/products/radar/) oraz przetestuj wersję demonstracyjną na żywo w [RDL Playground AI](/products/playground/).

@@ -47,7 +47,12 @@ Playground pokazuje, co można osiągnąć na budżetowym sprzęcie — według 
 
 ---
 
-## Dostęp i informacje o eksperymentach
+## Dostęp i powiązane artykuły na blogu
 
-* **Aplikacja:** [playground.radlab.dev](https://playground.radlab.dev) — bez zakładania konta.
-* **Eksperymenty i metody:** [blog RadLaba](/blog/).
+* **Aplikacja webowa:** [playground.radlab.dev](https://playground.radlab.dev) — bez logowania i opłat.
+* **Kulisy inżynierskie i metody na blogu:**
+  * [Przeglądarka informacji — jak automatycznie wykrywać tematy w mediach](/2025-05-28/przegladarka-informacji/)
+  * [Eksplorator Informacji – nie młotek, a skalpel w analizie powiązań](/2025-07-14/eksplorator-informacji-nie-mlotek-a-skalpel/)
+  * [Model polaryzacji 3C udostępniony na Hugging Face](/2025-06-01/polaryzacja-3c-model-z-plg-na-hf/)
+  * [Czy można w prosty sposób wprowadzić bazę wiedzy dla GenAI?](/2025-12-26/czy-mozna-w-prosty-sposob-wprowadzic-baze-wiedzy-dla-genai/)
+  * [pLLama3.1 8B — średnio-duże a nawet małe GenAI dla Polskiego](/2024-12-08/pllama3-1-8b-czyli-srednio-duze-a-nawet-male-genai-dla-polskiego/)

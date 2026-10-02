@@ -26,4 +26,6 @@ Eksplorator\_Informacji-Raport-techniczny-v1.0-20250714
 
 Pobierz
 
-##
+---
+
+> **Zobacz powiązane produkty:** Algorytmy grafowe i klastrowanie wiedzy są wdrożone w [Radarze Informacji](/products/radar/) oraz module analitycznym na platformie [RDL Playground AI](/products/playground/).

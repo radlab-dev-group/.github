@@ -91,4 +91,8 @@ Conversation available to read in [Public Chat](https://playground.radlab.dev/Cz
 
 {{< /details >}}
 
+---
+
+> **Explore related solutions:** Learn about the complete 8-stage algorithmic pipeline and architecture in the [Radar Informacji](/en/products/radar/) product overview and try the live demo on [RDL Playground AI](/en/products/playground/).
+
 ## Unlock the potential of your data with our ML/NLP. Bon appetit! 😉

@@ -690,9 +690,10 @@ class Site:
         pairs: list[tuple[str, str]] = []
         if counterpart_path:
             other = "en" if lang == self.cfg.default_lang else self.cfg.default_lang
+            default_path = path if lang == self.cfg.default_lang else counterpart_path
             pairs = [(self.cfg.site["hreflang"][lang], self.cfg.canonical(lang, path)),
                      (self.cfg.site["hreflang"][other], self.cfg.canonical(other, counterpart_path)),
-                     ("x-default", self.cfg.canonical(self.cfg.default_lang, path))]
+                     ("x-default", self.cfg.canonical(self.cfg.default_lang, default_path))]
         return pairs
 
     # -- rendering
@@ -862,7 +863,7 @@ class Site:
         for lang in self.cfg.langs:
             ctx = self.context(lang)
             ctx["posts"] = self.posts[lang][:20]
-            ctx["feed_url"] = self.cfg.canonical(lang, "feed.xml")
+            ctx["feed_url"] = self.cfg.url + self.cfg.prefix(lang) + "/feed.xml"
             ctx["site_url"] = self.cfg.canonical(lang, "")
             self.write(self.strip(f"{self.cfg.prefix(lang)}/feed.xml"), template.render(**ctx))
 

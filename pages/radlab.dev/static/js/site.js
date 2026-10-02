@@ -189,3 +189,35 @@
 
   stats.forEach(function (element) { counted.observe(element); });
 })();
+
+(function () {
+  'use strict';
+  if (!navigator.clipboard || !navigator.clipboard.writeText || !window.isSecureContext) return;
+  var labels = document.body.dataset;
+  document.querySelectorAll('.prose pre > code').forEach(function (code) {
+    var pre = code.parentNode;
+    var wrapper = document.createElement('div');
+    wrapper.className = 'code-copy-wrapper';
+    pre.parentNode.insertBefore(wrapper, pre);
+    wrapper.appendChild(pre);
+    var button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'code-copy';
+    button.textContent = labels.copyCode;
+    var status = document.createElement('span');
+    status.className = 'code-copy-status';
+    status.setAttribute('role', 'status');
+    wrapper.appendChild(button);
+    wrapper.appendChild(status);
+    button.addEventListener('click', function () {
+      button.disabled = true;
+      navigator.clipboard.writeText(code.textContent).then(function () {
+        status.textContent = labels.codeCopied;
+        button.disabled = false;
+      }, function () {
+        status.textContent = labels.copyFailed;
+        button.disabled = false;
+      });
+    });
+  });
+})();

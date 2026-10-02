@@ -89,3 +89,7 @@ print(do_inference(text_str, model, tokenizer))
 ```
 
 Feel free to use it, bon appétit 🙂
+
+---
+
+> **Prompt Sanitization & Security:** For production-grade personal data anonymization and masking before inference, explore [PII Masker](/en/products/pii-masker/) and the [LLM Router](/en/products/llm-router/) gateway.
