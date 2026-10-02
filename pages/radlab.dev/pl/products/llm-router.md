@@ -5,12 +5,12 @@ slug: "llm-router"
 description: "LLM Router to brama AI uruchamiana we własnej infrastrukturze. Udostępnia interfejs zgodny z OpenAI oraz endpoint Anthropic dla lokalnych silników i zewnętrznych API, z konfigurowalnymi wtyczkami, ochroną danych i równoważeniem obciążenia."
 icon: "router"
 status: "Open Source · Apache-2.0"
-version: "v0.2.3"
+version: "v1.1.6"
 tags: ["AI Gateway", "vLLM", "Ollama", "PII Masking", "Load Balancing", "Guardrails", "Self-Hosted"]
 actions:
   - {label: "Strona projektu (llm-router.cloud)", href: "https://llm-router.cloud", style: primary}
   - {label: "GitHub (radlab-dev-group)", href: "https://github.com/radlab-dev-group/llm-router", style: quiet}
-  - {label: "Dokumentacja techniczna", href: "https://llm-router.cloud/docs/0.2.3/overview.html", style: quiet}
+  - {label: "Dokumentacja techniczna", href: "https://llm-router.cloud/docs/", style: quiet}
 ---
 
 ## Czym jest LLM Router?
