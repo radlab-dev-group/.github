@@ -16,6 +16,7 @@ slugs when they were translated and no string comparison can recover that.
     python3 build.py --serve         # build, then serve on :8010 and rebuild on change
     python3 build.py --check         # build, then fail on broken links or assets
     python3 build.py --fast          # skip image variants (preview builds)
+    python3 build.py --verbose       # show individual content, images and output files
 """
 
 from __future__ import annotations
@@ -426,6 +427,18 @@ def expand_shortcodes(text: str) -> str:
 
 # ------------------------------------------------------------- images
 
+class BuildProgress:
+    def __init__(self, *, verbose: bool = False):
+        self.verbose = verbose
+
+    def stage(self, step: int, message: str) -> None:
+        print(f"[{step}/5] {message}", flush=True)
+
+    def detail(self, message: str) -> None:
+        if self.verbose:
+            print(f"  {message}", flush=True)
+
+
 class ImagePipeline:
     """Turns ``![](@media/slug/file.png)`` into a <picture> with WebP srcset.
 
@@ -434,10 +447,12 @@ class ImagePipeline:
     never re-encoded and a changed one never serves a stale variant.
     """
 
-    def __init__(self, cfg: Config, dist: Path, *, enabled: bool = True):
+    def __init__(self, cfg: Config, dist: Path, *, enabled: bool = True,
+                 progress: BuildProgress | None = None):
         self.cfg = cfg
         self.dist = dist
         self.enabled = enabled
+        self.progress = progress if progress is not None else BuildProgress()
         self.out_dir = dist / "assets" / "img"
         self.manifest = self._load_manifest()
         self.cache: dict[tuple[str, int], dict | None] = {}
@@ -479,6 +494,7 @@ class ImagePipeline:
 
         from PIL import Image, UnidentifiedImageError
 
+        self.progress.detail(f"Processing image: {source}")
         try:
             with Image.open(source) as image:
                 image.load()
@@ -491,10 +507,13 @@ class ImagePipeline:
                 for target in target_widths:
                     out = self.out_dir / f"{digest}-{target}.webp"
                     if not out.exists():
+                        self.progress.detail(f"Generating WebP: {out.name} ({target}px)")
                         resized = image.copy()
                         if target != width:
                             resized = image.resize((target, round(height * target / width)), Image.LANCZOS)
                         resized.save(out, "WEBP", quality=82, method=4)
+                    else:
+                        self.progress.detail(f"Reusing WebP: {out.name} ({target}px)")
                     result["webp"][target] = f"/assets/img/{out.name}"
 
                 fallback = self.out_dir / f"{digest}{source.suffix.lower()}"
@@ -503,6 +522,7 @@ class ImagePipeline:
                 result["original"] = f"/assets/img/{fallback.name}"
         except (UnidentifiedImageError, OSError, ValueError) as exc:
             self.missing.append(f"{source}: {exc}")
+            self.progress.detail(f"Image failed: {source}: {exc}")
             result = None
 
         self.cache[source] = result
@@ -550,6 +570,7 @@ class ImagePipeline:
         out.mkdir(parents=True, exist_ok=True)
         target = out / f"{post.lang}-{post.slug}.jpg"
         if not target.exists():
+            self.progress.detail(f"Generating OG image: {target.name}")
             try:
                 with Image.open(source) as image:
                     image.load()
@@ -560,6 +581,8 @@ class ImagePipeline:
                     canvas.save(target, "JPEG", quality=82)
             except OSError:
                 return None
+        else:
+            self.progress.detail(f"Reusing OG image: {target.name}")
         return f"{self.cfg.base}/assets/og/{target.name}"
 
 
@@ -585,11 +608,13 @@ def apply_images(body: str, pipeline: ImagePipeline) -> str:
 # ------------------------------------------------------------------ builder
 
 class Site:
-    def __init__(self, cfg: Config, *, fast: bool = False, include_drafts: bool = False):
+    def __init__(self, cfg: Config, *, fast: bool = False, include_drafts: bool = False,
+                 verbose: bool = False):
         self.cfg = cfg
         self.include_drafts = include_drafts
         self.dist = ROOT / "dist"
-        self.pipeline = ImagePipeline(cfg, self.dist, enabled=not fast)
+        self.progress = BuildProgress(verbose=verbose)
+        self.pipeline = ImagePipeline(cfg, self.dist, enabled=not fast, progress=self.progress)
         self.env = Environment(
             loader=FileSystemLoader(str(ROOT / "templates")),
             autoescape=select_autoescape(["html", "xml"]),
@@ -721,15 +746,22 @@ class Site:
     # -- outputs
 
     def build(self) -> None:
+        self.progress.stage(1, "Loading content and configuration...")
         self.dist.mkdir(parents=True, exist_ok=True)
         self.load()
+        image_mode = "responsive images enabled" if self.pipeline.available else "image generation disabled"
+        self.progress.stage(2, f"Rendering Markdown ({image_mode})...")
         for lang in self.cfg.langs:
             for post in self.posts[lang]:
+                self.progress.detail(f"Rendering post: {lang}/{post.path}")
                 post.html = self.render_post_html(post)
             for product in self.products[lang]:
+                self.progress.detail(f"Rendering product: {lang}/{product.path}")
                 product.html = apply_images(render_markdown(product.body_markdown, self.cfg), self.pipeline)
+        self.progress.stage(3, "Copying static assets and writing syntax highlighting CSS...")
         self.write_static()
         self.write_pygments_css()
+        self.progress.stage(4, "Generating HTML pages and social preview images...")
         for lang in self.cfg.langs:
             self.build_home(lang)
             self.build_blog_index(lang)
@@ -737,6 +769,7 @@ class Site:
                 self.build_product(product)
             for post in self.posts[lang]:
                 self.build_post(post)
+        self.progress.stage(5, "Generating feeds, sitemap and auxiliary files...")
         self.build_feeds()
         self.build_sitemap()
         self.build_misc()
@@ -750,6 +783,7 @@ class Site:
         target = self.dist / path
         target.parent.mkdir(parents=True, exist_ok=True)
         target.write_text(content, encoding="utf-8")
+        self.progress.detail(f"Wrote: {path}")
 
     def build_home(self, lang: str) -> None:
         template = self.env.get_template("home.html")
@@ -863,6 +897,7 @@ class Site:
     def build_misc(self) -> None:
         (self.dist / "robots.txt").write_text(
             f"User-agent: *\nAllow: /\nSitemap: {self.cfg.url}/sitemap.xml\n", encoding="utf-8")
+        self.progress.detail("Wrote: robots.txt")
         template = self.env.get_template("404.html")
         self.write("404.html", template.render(**self.context(self.cfg.default_lang)))
 
@@ -877,6 +912,7 @@ class Site:
                     destination = target / item.relative_to(ROOT / "static")
                     destination.parent.mkdir(parents=True, exist_ok=True)
                     shutil.copyfile(item, destination)
+                    self.progress.detail(f"Copied: {destination.relative_to(self.dist)}")
 
     def write_pygments_css(self) -> None:
         """Code colours come from CSS custom properties rather than two
@@ -884,6 +920,7 @@ class Site:
         target = self.dist / "assets" / "css"
         target.mkdir(parents=True, exist_ok=True)
         (target / "highlight.css").write_text(HIGHLIGHT_CSS, encoding="utf-8")
+        self.progress.detail("Wrote: assets/css/highlight.css")
 
     @staticmethod
     def strip(path: str) -> str:
@@ -999,6 +1036,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--check", action="store_true", help="verify links and assets, non-zero exit on failure")
     parser.add_argument("--drafts", action="store_true", help="include draft posts (unpublished)")
     parser.add_argument("--fast", action="store_true", help="skip image generation")
+    parser.add_argument("-v", "--verbose", action="store_true", help="show detailed build progress")
     parser.add_argument("--base-path", help="override site.base_path (for a subpath preview)")
     parser.add_argument("--clean", action="store_true", help="remove dist/ first")
     args = parser.parse_args(argv)
@@ -1010,7 +1048,7 @@ def main(argv: list[str] | None = None) -> int:
     if args.clean and (ROOT / "dist").exists():
         shutil.rmtree(ROOT / "dist")
 
-    site = Site(cfg, fast=args.fast, include_drafts=args.drafts)
+    site = Site(cfg, fast=args.fast, include_drafts=args.drafts, verbose=args.verbose)
     site.build()
 
     built = len(list((ROOT / "dist").rglob("*.html")))
@@ -1023,6 +1061,7 @@ def main(argv: list[str] | None = None) -> int:
             print(f"    {line}", file=sys.stderr)
 
     if args.check:
+        print("Checking internal links and assets...", flush=True)
         problems = check_links(ROOT / "dist", cfg) + check_no_media_token(ROOT / "dist")
         if problems:
             print(f"\n{len(problems)} problem(s):", file=sys.stderr)
