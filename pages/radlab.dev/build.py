@@ -1,15 +1,16 @@
 #!/usr/bin/env python3
 """Static site builder for radlab.dev -- a landing page plus a bilingual blog.
 
-Content lives in ``pl/`` and ``en/`` as Markdown. Posts are ``<lang>/blog/posts/*.md``
-with YAML front matter; the landing page is a set of section files
-``<lang>/home/*.md`` sorted by their ``order`` key, so adding a section is adding a
+Content lives in ``content/pl/`` and ``content/en/`` as Markdown. Each post has a directory
+``content/<lang>/blog/posts/<slug>/`` with ``index.md`` and local files in ``media/``.
+Posts use YAML front matter; the landing page is a set of section files
+``content/<lang>/home/*.md`` sorted by their ``order`` key, so adding a section is adding a
 file and nothing needs to be registered anywhere.
 
 URLs follow the legacy WordPress layout on purpose (``/2025-10-13/llm-router/``)
 so six years of inbound links keep working without a redirect map. English sits
 under ``/en/``; the two are tied together with hreflang through
-``data/translations.json``, because five English posts were given different
+``config/translations.json``, because five English posts were given different
 slugs when they were translated and no string comparison can recover that.
 
     python3 build.py                 # build dist/
@@ -55,7 +56,6 @@ from pygments.lexers.special import TextLexer
 from pygments.util import ClassNotFound
 
 MEDIA_TOKEN = "@media"
-MEDIA_DIR = ROOT / "media"
 BUILD_STATE = ".build-state.json"
 
 
@@ -180,6 +180,7 @@ class Post:
     body_markdown: str
     html: str = ""
     url_path: str = ""
+    source_dir: Path | None = None
 
     @property
     def slug(self) -> str:
@@ -212,7 +213,10 @@ class Post:
 
     @property
     def image(self) -> str | None:
-        return self.meta.get("image")
+        value = self.meta.get("image")
+        if value and self.source_dir and value.startswith("media/"):
+            return (self.source_dir / value).relative_to(ROOT).as_posix()
+        return value
 
     @property
     def path(self) -> str:
@@ -267,7 +271,7 @@ class Product:
 
 
 def load_products(cfg: Config, lang: str) -> list[Product]:
-    directory = ROOT / lang / "products"
+    directory = ROOT / "content" / lang / "products"
     if not directory.exists():
         return []
     products: list[Product] = []
@@ -282,12 +286,12 @@ def load_products(cfg: Config, lang: str) -> list[Product]:
 
 
 def load_posts(cfg: Config, lang: str, *, include_drafts: bool) -> list[Post]:
-    directory = ROOT / lang / "blog" / "posts"
+    directory = ROOT / "content" / lang / "blog" / "posts"
     posts: list[Post] = []
-    for path in sorted(directory.glob("*.md")):
+    for path in sorted(directory.glob("*/index.md")):
         meta, body = parse_front_matter(path.read_text(encoding="utf-8"))
-        meta.setdefault("slug", path.stem)
-        post = Post(lang=lang, meta=FrontMatter(meta), body_markdown=body)
+        meta.setdefault("slug", path.parent.name)
+        post = Post(lang=lang, meta=FrontMatter(meta), body_markdown=body, source_dir=path.parent)
         if post.draft and not include_drafts:
             continue
         posts.append(post)
@@ -297,7 +301,7 @@ def load_posts(cfg: Config, lang: str, *, include_drafts: bool) -> list[Post]:
 
 def load_sections(cfg: Config, lang: str) -> list[dict]:
     """Landing page sections, ordered by their front matter `order` key."""
-    directory = ROOT / lang / "home"
+    directory = ROOT / "content" / lang / "home"
     sections = []
     for path in sorted(directory.glob("*.md")):
         meta, body = parse_front_matter(path.read_text(encoding="utf-8"))
@@ -310,14 +314,14 @@ def load_sections(cfg: Config, lang: str) -> list[dict]:
 
 
 def load_ui(cfg: Config, lang: str) -> dict:
-    path = ROOT / lang / "ui.yaml"
+    path = ROOT / "content" / lang / "ui.yaml"
     if not path.exists():
         return {}
     return yaml.safe_load(path.read_text(encoding="utf-8")) or {}
 
 
 def load_translations() -> dict[str, dict]:
-    path = ROOT / "data" / "translations.json"
+    path = ROOT / "config" / "translations.json"
     if not path.exists():
         return {}
     raw = json.loads(path.read_text(encoding="utf-8"))
@@ -328,7 +332,7 @@ def load_translations() -> dict[str, dict]:
 # ------------------------------------------------------------- markdown
 
 SHORTCODE_YOUTUBE = re.compile(r"\{\{<\s*youtube\s+([\w-]{11})\s*>}}")
-SHORTCODE_VIDEO = re.compile(r"\{\{<\s*video\s+(https?://\S+?)\s*>}}")
+SHORTCODE_VIDEO = re.compile(r"\{\{<\s*video\s+(\S+?)\s*>}}")
 SHORTCODE_DETAILS = re.compile(r"\{\{<\s*details\s+title=\"([^\"]*)\"\s*>}}(.*?)\{\{<\s*/details\s*>}}", re.S)
 SHORTCODE_CALLOUT = re.compile(r"\{\{<\s*callout\s*>}}(.*?)\{\{<\s*/callout\s*>}}", re.S)
 
@@ -411,9 +415,6 @@ def expand_shortcodes(text: str) -> str:
         return f'<aside class="callout">{inner}</aside>'
 
     def video(match: re.Match[str]) -> str:
-        # The .webm files stay on the origin rather than being mirrored --
-        # 64 MB of video for five posts is not worth the repository -- so they
-        # load lazily and never block the page.
         url = html.escape(match.group(1).strip(), quote=True)
         return (f'<div class="embed embed-video"><video controls preload="none" '
                 f'src="{url}"></video></div>')
@@ -440,7 +441,7 @@ class BuildProgress:
 
 
 class ImagePipeline:
-    """Turns ``![](@media/slug/file.png)`` into a <picture> with WebP srcset.
+    """Turns post-local images into a <picture> with WebP srcset.
 
     Sources are the archived originals; variants are generated once into
     ``dist/assets/img/`` and keyed by a content hash so an unchanged picture is
@@ -454,7 +455,6 @@ class ImagePipeline:
         self.enabled = enabled
         self.progress = progress if progress is not None else BuildProgress()
         self.out_dir = dist / "assets" / "img"
-        self.manifest = self._load_manifest()
         self.cache: dict[tuple[str, int], dict | None] = {}
         self.missing: list[str] = []
         try:  # Pillow is optional so a text-only build still works without it.
@@ -468,23 +468,17 @@ class ImagePipeline:
         except ModuleNotFoundError:
             self.available = False
 
-    @staticmethod
-    def _load_manifest() -> dict:
-        path = ROOT / "data" / "media_map.json"
-        return json.loads(path.read_text(encoding="utf-8")) if path.exists() else {}
-
     def master_for(self, token_path: str) -> Path | None:
-        """Resolve ``@media/slug/file`` to a decoded master on disk."""
-        relative = token_path[len(MEDIA_TOKEN):].lstrip("/") if token_path.startswith(MEDIA_TOKEN) else token_path
-        for entry in self.manifest.values():
-            if entry["local"] == f"media/{relative}" or entry["local"].endswith(f"/{Path(relative).name}") \
-                    and entry["post"] == Path(relative).parent.name:
-                master = entry.get("master")
-                candidate = ROOT / master if master else ROOT / entry["local"]
-                if candidate.exists():
-                    return candidate
-        direct = MEDIA_DIR / relative
-        return direct if direct.exists() else None
+        """Resolve a repository-relative source without a manifest or network."""
+        direct = (ROOT / token_path).resolve()
+        return direct if direct.is_relative_to(ROOT) and direct.is_file() else None
+
+    def media_url(self, source: Path) -> str:
+        relative = source.relative_to(ROOT / "content")
+        destination = self.dist / relative
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(source, destination)
+        return self.cfg.base + "/" + relative.as_posix()
 
     def variants(self, source: Path) -> dict | None:
         if not self.enabled or not self.available:
@@ -537,7 +531,7 @@ class ImagePipeline:
 
         data = self.variants(source)
         if data is None:  # images disabled or Pillow unavailable: plain tag
-            path = self.cfg.base + "/media/" + token_path[len(MEDIA_TOKEN):].lstrip("/")
+            path = self.media_url(source)
             return f'<img src="{html.escape(path)}" alt="{html.escape(alt)}" loading="lazy">'
 
         srcset = ", ".join(f"{self.cfg.base}{url} {w}w" for w, url in sorted(data["webp"].items()))
@@ -559,10 +553,8 @@ class ImagePipeline:
         """OG images must be PNG or JPEG -- social crawlers do not fetch WebP."""
         if not post.image or not self.available:
             return None
-        source = self.master_for(post.image.replace("media/", f"{MEDIA_TOKEN}/"))
+        source = self.master_for(post.image)
         if source is None:
-            source = ROOT / post.image
-        if not source.exists():
             return None
         from PIL import Image
 
@@ -586,8 +578,8 @@ class ImagePipeline:
         return f"{self.cfg.base}/assets/og/{target.name}"
 
 
-def apply_images(body: str, pipeline: ImagePipeline) -> str:
-    """Rewrite every ``@media`` reference in rendered HTML to a <picture>.
+def apply_images(body: str, pipeline: ImagePipeline, source_dir: Path | None = None) -> str:
+    """Rewrite post-local image references in rendered HTML to a <picture>.
 
     Done on the output HTML rather than in Markdown so an image inside a
     shortcode, a raw HTML block or a figure caption takes exactly the same path.
@@ -596,13 +588,27 @@ def apply_images(body: str, pipeline: ImagePipeline) -> str:
     def replace_img(match: re.Match[str]) -> str:
         tag = match.group(0)
         src = re.search(r'src="([^"]*)"', tag)
-        if not src or not src.group(1).startswith(MEDIA_TOKEN):
+        if not src or not source_dir or not src.group(1).startswith("media/"):
             return tag
         alt = re.search(r'alt="([^"]*)"', tag)
-        return pipeline.picture_html(src.group(1), alt.group(1) if alt else "")
+        source = (source_dir / html.unescape(src.group(1))).resolve()
+        if not source.is_relative_to((source_dir / "media").resolve()):
+            pipeline.missing.append(f"invalid media path: {src.group(1)}")
+            return tag
+        return pipeline.picture_html(source.relative_to(ROOT).as_posix(), html.unescape(alt.group(1)) if alt else "")
 
-    # <img src> inside <source srcset> is not a thing here; only img tags.
-    return re.sub(r"<img\b[^>]*>", replace_img, body)
+    body = re.sub(r"<img\b[^>]*>", replace_img, body)
+
+    def replace_media(match: re.Match[str]) -> str:
+        if source_dir is None:
+            return match.group(0)
+        source = (source_dir / html.unescape(match.group(2))).resolve()
+        if not source.is_relative_to((source_dir / "media").resolve()) or not source.is_file():
+            pipeline.missing.append(f"unresolved media: {source}")
+            return match.group(0)
+        return f'{match.group(1)}="{html.escape(pipeline.media_url(source), quote=True)}"'
+
+    return re.sub(r'(src|href|poster)="(media/[^\"]*)"', replace_media, body)
 
 
 # ------------------------------------------------------------------ builder
@@ -616,7 +622,7 @@ class Site:
         self.progress = BuildProgress(verbose=verbose)
         self.pipeline = ImagePipeline(cfg, self.dist, enabled=not fast, progress=self.progress)
         self.env = Environment(
-            loader=FileSystemLoader(str(ROOT / "templates")),
+            loader=FileSystemLoader(str(ROOT / "theme" / "templates")),
             autoescape=select_autoescape(["html", "xml"]),
             trim_blocks=True,
             lstrip_blocks=True,
@@ -690,36 +696,38 @@ class Site:
         pairs: list[tuple[str, str]] = []
         if counterpart_path:
             other = "en" if lang == self.cfg.default_lang else self.cfg.default_lang
+            default_path = path if lang == self.cfg.default_lang else counterpart_path
             pairs = [(self.cfg.site["hreflang"][lang], self.cfg.canonical(lang, path)),
                      (self.cfg.site["hreflang"][other], self.cfg.canonical(other, counterpart_path)),
-                     ("x-default", self.cfg.canonical(self.cfg.default_lang, path))]
+                     ("x-default", self.cfg.canonical(self.cfg.default_lang, default_path))]
         return pairs
 
     # -- rendering
 
     def render_post_html(self, post: Post) -> str:
-        return apply_images(render_markdown(post.body_markdown, self.cfg), self.pipeline)
+        return apply_images(render_markdown(post.body_markdown, self.cfg), self.pipeline, post.source_dir)
 
     def image(self, src: str, alt: str = "", css_class: str = "", sizes: str | None = None) -> Markup:
-        """A <picture> from a template, for anything outside a post body.
-
-        Front matter writes `image: media/slug/file.png` while the pipeline
-        speaks `@media/slug/file.png`; both spellings are accepted here so the
-        template never has to know which one a field holds.
-        """
-        token = src if src.startswith(MEDIA_TOKEN) else src.replace("media/", f"{MEDIA_TOKEN}/", 1)
-        return Markup(self.pipeline.picture_html(token, alt, css_class, sizes))
+        """A <picture> from a repository-relative source outside a post body."""
+        return Markup(self.pipeline.picture_html(src, alt, css_class, sizes))
 
     def brand_image(self, name: str) -> str | None:
         """A brand asset URL, or None when tools/brand.py has not been run."""
-        path = ROOT / "static" / "img" / name
+        path = ROOT / "theme" / "assets" / "img" / name
         return f"{self.cfg.base}/assets/img/{name}" if path.exists() else None
 
     def context(self, lang: str, *, switch_href: str | None = None) -> dict:
+        seo = self.cfg.raw.get("seo", {})
+        localized_seo = seo.get(lang, {})
         return {
             "lang": lang,
             "ui": self.ui[lang],
             "site": self.cfg.site,
+            "seo": localized_seo,
+            "page_description": localized_seo.get("description", self.cfg.site.get("description", "")),
+            "page_keywords": localized_seo.get("keywords", []),
+            "robots": seo.get("robots", "index, follow"),
+            "language_homes": {code: self.cfg.href(code, "") for code in self.cfg.langs},
             "href": lambda path, current=lang: self.cfg.href(current, path),
             "switch_href": switch_href if switch_href is not None else self.other_index(lang),
             "base": self.cfg.base,
@@ -791,7 +799,8 @@ class Site:
         ctx["sections"] = self.sections[lang]
         # One post leads the blog block with its picture, the rest sit beside it.
         ctx["latest"] = self.posts[lang][:4]
-        ctx["page_title"] = self.cfg.site["name"]
+        ctx["page_title"] = ctx["seo"].get("title", self.cfg.site["name"])
+        ctx["language_auto"] = True
         ctx["canonical"] = self.cfg.canonical(lang, "")
         ctx["alternates"] = self.home_alternates(lang)
         self.write(self.strip(self.cfg.href(lang, "")), template.render(**ctx))
@@ -815,6 +824,7 @@ class Site:
                 "page_number": index,
                 "page_count": len(pages),
                 "page_title": self.ui[lang].get("blog_title", "Blog"),
+                "page_description": ctx["seo"].get("blog_description", ctx["page_description"]),
                 "canonical": self.cfg.canonical(lang, path),
                 "prev_url": self.cfg.href(lang, "blog" if index == 2 else f"blog/page/{index-1}"),
                 "next_url": self.cfg.href(lang, f"blog/page/{index+1}"),
@@ -832,6 +842,7 @@ class Site:
             "outline": article_outline(post.html),
             "page_title": post.title,
             "page_description": post.description,
+            "page_keywords": list(dict.fromkeys(ctx["page_keywords"] + post.meta.get("tags", []))),
             "canonical": self.cfg.canonical(post.lang, post.path),
             "og_image": self.pipeline.og_image(post),
             "counterpart": mate,
@@ -850,6 +861,7 @@ class Site:
             "content": product.html,
             "page_title": product.title,
             "page_description": product.description,
+            "page_keywords": list(dict.fromkeys(ctx["page_keywords"] + product.meta.get("tags", []))),
             "canonical": self.cfg.canonical(product.lang, product.path),
             "counterpart": mate,
             "alternates": self.alternates(path=product.path, lang=product.lang,
@@ -862,7 +874,7 @@ class Site:
         for lang in self.cfg.langs:
             ctx = self.context(lang)
             ctx["posts"] = self.posts[lang][:20]
-            ctx["feed_url"] = self.cfg.canonical(lang, "feed.xml")
+            ctx["feed_url"] = self.cfg.url + self.cfg.prefix(lang) + "/feed.xml"
             ctx["site_url"] = self.cfg.canonical(lang, "")
             self.write(self.strip(f"{self.cfg.prefix(lang)}/feed.xml"), template.render(**ctx))
 
@@ -899,17 +911,19 @@ class Site:
             f"User-agent: *\nAllow: /\nSitemap: {self.cfg.url}/sitemap.xml\n", encoding="utf-8")
         self.progress.detail("Wrote: robots.txt")
         template = self.env.get_template("404.html")
-        self.write("404.html", template.render(**self.context(self.cfg.default_lang)))
+        ctx = self.context(self.cfg.default_lang)
+        ctx.update({"robots": "noindex, follow", "canonical": self.cfg.url + self.cfg.base + "/404.html"})
+        self.write("404.html", template.render(**ctx))
 
     def write_static(self) -> None:
         target = self.dist / "assets"
         for folder in ("css", "js", "fonts", "img"):
-            source = ROOT / "static" / folder
+            source = ROOT / "theme" / "assets" / folder
             if not source.is_dir():
                 continue
             for item in source.rglob("*"):
                 if item.is_file():
-                    destination = target / item.relative_to(ROOT / "static")
+                    destination = target / item.relative_to(ROOT / "theme" / "assets")
                     destination.parent.mkdir(parents=True, exist_ok=True)
                     shutil.copyfile(item, destination)
                     self.progress.detail(f"Copied: {destination.relative_to(self.dist)}")
@@ -1030,7 +1044,7 @@ def serve(dist: Path, port: int, base: str = "") -> None:
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__,
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("--config", type=Path, default=ROOT / "site.toml")
+    parser.add_argument("--config", type=Path, default=ROOT / "config" / "site.toml")
     parser.add_argument("--serve", action="store_true", help="serve dist/ after building")
     parser.add_argument("--port", type=int, default=8010)
     parser.add_argument("--check", action="store_true", help="verify links and assets, non-zero exit on failure")
@@ -1062,7 +1076,7 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.check:
         print("Checking internal links and assets...", flush=True)
-        problems = check_links(ROOT / "dist", cfg) + check_no_media_token(ROOT / "dist")
+        problems = site.pipeline.missing + check_links(site.dist, cfg) + check_no_media_token(site.dist)
         if problems:
             print(f"\n{len(problems)} problem(s):", file=sys.stderr)
             for line in problems[:40]:

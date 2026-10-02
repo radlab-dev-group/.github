@@ -37,7 +37,7 @@ class ProductTemplateTests(unittest.TestCase):
         env = Environment(
             loader=ChoiceLoader([
                 DictLoader({"base.html": "{% block main %}{% endblock %}"}),
-                FileSystemLoader(ROOT / "templates"),
+                FileSystemLoader(ROOT / "theme/templates"),
             ]),
             autoescape=select_autoescape(["html"]),
         )

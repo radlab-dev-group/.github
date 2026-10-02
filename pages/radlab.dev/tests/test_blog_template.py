@@ -16,9 +16,9 @@ SPEC.loader.exec_module(builder)
 
 class BlogTemplateTests(unittest.TestCase):
     def test_mining_article_warning_is_one_paragraph_without_duplicates(self):
-        source = (ROOT / "pl/blog/posts/zmrozone-kopalnie-kryptowalut.md").read_text(encoding="utf-8")
+        source = (ROOT / "content/pl/blog/posts/zmrozone-kopalnie-kryptowalut/index.md").read_text(encoding="utf-8")
         warning = source.split("{{< callout >}}", 1)[1].split("{{< /callout >}}", 1)[0]
-        body = builder.render_markdown("{{< callout >}}" + warning + "{{< /callout >}}", builder.load_config(ROOT / "site.toml"))
+        body = builder.render_markdown("{{< callout >}}" + warning + "{{< /callout >}}", builder.load_config(ROOT / "config/site.toml"))
         self.assertEqual(body.count("<p>"), 2)
         self.assertEqual(body.count("Pomimo dużej kwantyzacji"), 1)
         self.assertIn("Model gpt-oss:120b dostępny za pomocą Ollama", body)
@@ -33,7 +33,7 @@ class BlogTemplateTests(unittest.TestCase):
         env = Environment(
             loader=ChoiceLoader([
                 DictLoader({"base.html": "{% block main %}{% endblock %}"}),
-                FileSystemLoader(ROOT / "templates"),
+                FileSystemLoader(ROOT / "theme/templates"),
             ]),
             autoescape=select_autoescape(["html"]),
         )
@@ -51,7 +51,7 @@ class BlogTemplateTests(unittest.TestCase):
     def test_outline_uses_markdown_anchors_and_plain_heading_text(self):
         body = builder.render_markdown(
             "## Model **QA**\n\n### A & B\n\n## Model **QA**\n\n```text\n## Not a heading\n```",
-            builder.load_config(ROOT / "site.toml"),
+            builder.load_config(ROOT / "config/site.toml"),
         )
         outline = builder.article_outline(body)
         self.assertEqual([entry["text"] for entry in outline], ["Model QA", "A & B", "Model QA"])
@@ -84,7 +84,7 @@ class BlogTemplateTests(unittest.TestCase):
         env = Environment(
             loader=ChoiceLoader([
                 DictLoader({"base.html": "{% block main %}{% endblock %}"}),
-                FileSystemLoader(ROOT / "templates"),
+                FileSystemLoader(ROOT / "theme/templates"),
             ]),
             autoescape=select_autoescape(["html"]),
         )

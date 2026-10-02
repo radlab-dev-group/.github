@@ -1,0 +1,62 @@
+# Interfejs strony w języku polskim. Treści nie są tu tłumaczone — to etykiety
+# elementów, które nie pochodzą z plików Markdown.
+
+blog_title: "Blog"
+feed_label: "Subskrybuj blog (Atom / RSS)"
+copy_code: "Kopiuj kod"
+code_copied: "Skopiowano"
+copy_failed: "Nie udało się skopiować — zaznacz kod i skopiuj ręcznie"
+consent_settings: "Ustawienia prywatności"
+consent_title: "Analityka tylko za Twoją zgodą"
+consent_description: "Za Twoją zgodą uruchomimy Google Analytics, aby mierzyć odwiedziny i sposób korzystania ze strony. Google otrzyma dane o wizycie i urządzeniu oraz może przetwarzać je poza EOG. Do czasu akceptacji nie ładujemy analityki ani nie zapisujemy jej cookies. Odmowa nie ogranicza działania strony."
+consent_privacy: "Polityka prywatności Google"
+consent_storage: "W przeglądarce zapisujemy wybór zgody na 180 dni oraz Twoje ręczne ustawienia języka i motywu. Zgodę możesz w każdej chwili zmienić lub wycofać przez „Ustawienia prywatności” w stopce. Wycofanie zatrzymuje dalsze pomiary, ale nie usuwa danych już wysłanych. Administratorem strony jest RadLab; kontakt: hello@radlab.dev."
+consent_reject: "Odrzuć analitykę"
+consent_accept: "Akceptuj analitykę"
+blog_intro: "Wyniki eksperymentów, kulisy trenowania modeli i wnioski z tego, co po drodze poszło nie tak."
+reading_time: "min czytania"
+reading_time_one: "min czytania"
+published: "Opublikowano"
+updated: "Zaktualizowano"
+tag: "Tag"
+tags: "Tagi"
+all_posts: "Wszystkie wpisy"
+newer: "Nowsze"
+older: "Starsze"
+page_of: "Strona {page} z {count}"
+language_switch: "English"
+language_switch_aria: "Przejdź na wersję angielską"
+translation_missing: "Ten wpis nie ma jeszcze wersji angielskiej."
+theme_toggle_aria: "Przełącz jasny lub ciemny motyw"
+menu: "Menu"
+skip_to_content: "Przejdź do treści"
+share: "Udostępnij"
+back_to_blog: "Wszystkie wpisy"
+on_this_page: "W tym wpisie"
+read_article: "Czytaj wpis"
+error_title: "Nie znaleziono strony"
+error_body: "Adres, którego szukasz, nie istnieje albo prowadził gdzieś indziej."
+error_home: "Wróć na stronę główną"
+error_blog: "Przejdź na blog"
+footer_tagline: "Rozwijamy modele językowe i tworzymy oprogramowanie z pasją do otwartej wiedzy."
+footer_rights: "Prawa zastrzeżone"
+
+# Nawigacja. Kotwice są językowo neutralne, żeby ten sam href działał z / i /en/;
+# etykiety są tłumaczone.
+nav:
+  - {id: about, label: "O nas", href: "#about"}
+  - {id: products, label: "Nasze rozwiązania", href: "#products"}
+  - {id: stack, label: "Technologie", href: "#stack"}
+  - {id: resources, label: "Open source i zasoby", href: "#resources"}
+  - {id: blog, label: "Blog", href: "/blog/"}
+  - {id: contact, label: "Kontakt", href: "#contact"}
+
+latest_title: "Ostatnio na blogu"
+read_pl: "czytaj po polsku"
+read_in: ""
+contact_label: "Kontakt"
+back_to_top: "Na górę"
+footer_social_label: "Kod i profile"
+
+all_products: "Nasze rozwiązania"
+product_badge: "Produkt & Rozwiązanie"

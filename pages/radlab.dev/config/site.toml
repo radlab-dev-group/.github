@@ -1,0 +1,47 @@
+# Builder configuration for radlab.dev
+
+[site]
+name = "RadLab"
+url = "https://radlab.dev"          # absolute base for canonical, OG, RSS, sitemap
+base_path = ""                      # set to "/preview" to build under a subpath
+default_lang = "pl"                 # Polish at the domain root
+langs = ["pl", "en"]                # English lives under /en/
+email = "hello@radlab.dev"
+phone = "+48 512 750 525"
+github = "https://github.com/radlab-dev-group"
+huggingface = "https://huggingface.co/radlab"
+linkedin = "https://www.linkedin.com/company/radlabdev"
+ga_code = "G-6NPWS2TQEC"             # empty string disables Google Analytics
+description = "Uczenie maszynowe i przetwarzanie języka naturalnego. Modele, zbiory danych i oprogramowanie open source dla języka polskiego."
+
+# hreflang codes; English is declared en-GB because that is the variety the
+# translations are written in.
+[site.hreflang]
+pl = "pl"
+en = "en-GB"
+
+[seo]
+robots = "index, follow, max-image-preview:large"
+
+[seo.pl]
+title = "RadLab — AI, modele językowe i NLP dla języka polskiego"
+description = "RadLab: uczenie maszynowe i NLP dla języka polskiego. Otwarte modele pLLama, LLM Router, PII Masker, Radar Informacji oraz lokalne wdrożenia RAG i AI."
+keywords = ["sztuczna inteligencja", "uczenie maszynowe", "NLP", "polskie modele językowe", "pLLama", "LLM Router", "PII Masker", "anonimizacja danych", "Radar Informacji", "RAG", "AI on-premise", "open source"]
+blog_description = "Blog RadLab: polskie modele językowe, generatywna AI, RAG, NLP, anonimizacja danych i architektura lokalnych wdrożeń LLM."
+
+[seo.en]
+title = "RadLab — AI, language models and Polish NLP"
+description = "RadLab: machine learning and Polish NLP. Open-source pLLama models, LLM Router, PII Masker, Information Radar and on-premise RAG and AI deployments."
+keywords = ["artificial intelligence", "machine learning", "Polish NLP", "Polish language models", "pLLama", "LLM Router", "PII Masker", "data anonymization", "Information Radar", "RAG", "on-premise AI", "open source"]
+blog_description = "RadLab engineering blog: Polish language models, generative AI, RAG, NLP, data anonymization and local LLM deployment architecture."
+
+[blog]
+path = "blog"
+per_page = 8
+
+[images]
+# Never upscaled: a variant wider than the source is skipped.
+widths = [480, 768, 1024, 1440]
+
+[serve]
+port = 8010
