@@ -74,7 +74,7 @@ Każde wyodrębnione skupisko artykułów przekazywane jest do modelu generatywn
 Dla każdego klastra model językowy generuje obiektywne podsumowanie o długości około **700 znaków**. Wyjściowy tekst przechodzi automatyczną weryfikację poprawności językowej i ortograficznej.
 
 ### Krok 8: Wyszukiwanie Dni Podobnych (Similar Days)
-Każdy dzień poddawany jest wektoryzacji dedykowanym modelem `article-bi-encoder-20240901`. Poprzez porównanie cosinusowe z historyczną bazą danych algorytm wskazuje 4 dni z przeszłości o najbardziej zbliżonym układzie wydarzeń.
+Każdy dzień poddawany jest wektoryzacji dedykowanym modelem `article-bi-encoder-20240901`. Poprzez porównanie cosinusowe z historyczną bazą danych algorytm wskazuje do 10 najbardziej podobnych wydarzeń z dnia poprzedzającego.
 
 ---
 

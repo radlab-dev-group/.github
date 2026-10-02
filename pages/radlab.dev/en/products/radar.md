@@ -74,7 +74,7 @@ Articles grouped into each cluster are fed into a generative language model that
 The model synthesizes a concise, factual summary of approximately **700 characters**, followed by an automated linguistic and spelling verification pass.
 
 ### Stage 8: Similar Days Retrieval (Bi-Encoder)
-Daily vector footprints are embedded via `article-bi-encoder-20240901`. Cosine similarity matching over historical records retrieves the 4 most comparable days from the past.
+Daily vector footprints are embedded via `article-bi-encoder-20240901`. Cosine similarity matching over historical records retrieves up to 10 most similar events from the day before.
 
 ---
 
