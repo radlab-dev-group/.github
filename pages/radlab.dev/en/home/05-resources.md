@@ -25,6 +25,6 @@ cards:
   - title: "Engineering blog"
     icon: "book"
     text: "In-depth insights into training dynamics, architecture trade-offs, and practical lessons from our ML experiments."
-    href: "/en/blog/"
+    href: "blog"
     link_label: "read the blog"
 ---

@@ -1001,6 +1001,107 @@ a.tag:hover { color: var(--accent); border-color: var(--accent); }
 .embed-video { position: static; aspect-ratio: auto; background: none; overflow: visible; }
 .embed-video video { width: 100%; border-radius: var(--radius); background: #000; }
 
+/* ---------------------------------------------------------------- product page */
+
+.breadcrumb {
+  margin-bottom: 1.75rem;
+}
+.breadcrumb a {
+  font-family: var(--font-ui);
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+.breadcrumb a:hover {
+  color: var(--accent);
+}
+
+.product-head {
+  margin-bottom: 2.75rem;
+  padding-bottom: 2.25rem;
+  border-bottom: 1px solid var(--border);
+}
+.product-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+}
+.badge {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+  letter-spacing: 0.02em;
+}
+.badge-accent {
+  background: var(--accent-soft);
+  color: var(--accent);
+  border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
+}
+.badge-subtle {
+  background: var(--bg-surface);
+  color: var(--text-faint);
+  border: 1px solid var(--border);
+}
+
+.product-header-content {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.25rem;
+  margin-bottom: 1rem;
+}
+.product-icon-badge {
+  flex: none;
+  width: 3.25rem;
+  height: 3.25rem;
+  border-radius: var(--radius);
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent);
+  margin-top: 0.25rem;
+}
+.product-icon-badge .icon {
+  width: 1.65rem;
+  height: 1.65rem;
+}
+
+.product-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.75rem;
+}
+
+.product-cta-box {
+  margin: 3.5rem 0 2rem;
+  padding: clamp(1.5rem, 3vw, 2.25rem);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+.product-cta-text h3 {
+  font-size: 1.25rem;
+  margin: 0 0 0.4rem;
+}
+.product-cta-text p {
+  color: var(--text-muted);
+  margin: 0;
+  max-width: 52ch;
+  font-size: 0.9375rem;
+}
+
 .article-foot {
   max-width: var(--measure); margin-top: 3.5rem; padding-top: 1.75rem;
   border-top: 1px solid var(--border);

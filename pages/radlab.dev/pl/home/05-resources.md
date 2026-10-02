@@ -25,6 +25,6 @@ cards:
   - title: "Blog inżynierski"
     icon: "book"
     text: "Rzetelne wnioski z eksperymentów, optymalizacji i trenowania modeli. Piszemy o tym, co działa i jak rozwiązujemy realne problemy."
-    href: "/blog/"
+    href: "blog"
     link_label: "czytaj na blogu"
 ---

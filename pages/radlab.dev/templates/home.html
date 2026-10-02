@@ -93,7 +93,7 @@
         <h3>{{ item.title }}</h3>
         <p>{{ item.text }}</p>
         {% if item.href %}
-        <a class="cell-link" href="{{ item.href }}"{% if item.href.startswith('http') %} rel="noopener"{% endif %}>{{ item.link_label | default(ui.read_more | default('→', true)) }}<svg class="icon icon-tiny" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+        <a class="cell-link" href="{{ item.href if item.href.startswith(('http', '#')) else href(item.href) }}"{% if item.href.startswith('http') %} rel="noopener"{% endif %}>{{ item.link_label | default(ui.read_more | default('→', true)) }}<svg class="icon icon-tiny" aria-hidden="true"><use href="#i-arrow"/></svg></a>
         {% endif %}
       </article>
       {% endfor %}
