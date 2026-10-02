@@ -6,10 +6,11 @@ const test = require('node:test');
 
 const css = fs.readFileSync(path.join(__dirname, '../theme/assets/css/site.css'), 'utf8');
 
-for (const [viewport, column] of [[1440, 460], [1100, 376]]) {
-  test(`ten orbit labels remain separated: viewport ${viewport}`, () => {
+for (const [viewport, column, count] of [[1440, 460, 8], [1440, 460, 10],
+  [1100, 376, 8], [1100, 376, 10]]) {
+  test(`${count} orbit labels remain separated: viewport ${viewport}`, () => {
     const labels = ['pLLama3-8B', 'bi-encodery', 'RAG', 'LLM Router', 'PII Masker',
-      'vLLM / Ollama', 'Guardrails', 'Radar Informacji', 'NER / ONNX', 'Open source'];
+      'vLLM / Ollama', 'Guardrails', 'Information Radar', 'NER / ONNX', 'Open source'].slice(0, count);
     const html = `<!doctype html><meta charset="utf-8"><style>${css}
       body { width: ${column}px; margin: 60px; }
       .orb-orbit, .orbits, .orb { animation: none; }
@@ -31,10 +32,18 @@ for (const [viewport, column] of [[1440, 460], [1100, 376]]) {
       }
       const animations = document.getAnimations();
       animations.forEach(animation => animation.pause());
+      let behindStar = false;
       for (let phase = 0; phase < 72; phase++) {
         animations.forEach(animation => { animation.currentTime = phase * 150000 / 72; });
         const boxes = Array.from(document.querySelectorAll('.chip'), chip => chip.getBoundingClientRect());
+        const star = document.querySelector('.orb');
+        const starBox = star.getBoundingClientRect();
         boxes.forEach((box, index) => {
+          const x = box.left + box.width / 2, y = box.top + box.height / 2;
+          if (Math.hypot(x - starBox.left - starBox.width / 2,
+              y - starBox.top - starBox.height / 2) < starBox.width / 2 - 5 &&
+              document.elementsFromPoint(x, y).find(element => element.matches('.orb, .chip')) === star)
+            behindStar = true;
           if (!box.width || !box.height || box.left < 0 || box.right > ${viewport})
             errors.push('invalid bounds at phase ' + phase + ': ' + index);
           boxes.slice(index + 1).forEach((other, offset) => {
@@ -45,6 +54,7 @@ for (const [viewport, column] of [[1440, 460], [1100, 376]]) {
           });
         });
       }
+      if (${viewport} >= 1280 && !behindStar) errors.push('labels never disappear behind the star');
       document.body.setAttribute('data-layout-result', errors.length ? errors.join('; ') : 'pass');
       </script>`;
     const result = spawnSync(process.env.CHROMIUM || 'chromium', [

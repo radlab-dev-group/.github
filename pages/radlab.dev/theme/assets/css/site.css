@@ -508,19 +508,22 @@ hr { border: 0; border-top: 1px solid var(--border); margin: 2.5rem 0; }
 .orbits li:nth-child(4) { --r: 168px; --inc: 42; --start: 120; }
 .orbits li:nth-child(5) { --r: 188px; --inc: 38; --start: 302; --rest: 0.45; }
 .orbits li:nth-child(6) { --r: 178px; --inc: 34; --start: 180; }
-/* Seven to ten labels share a flatter ring and evenly spaced spokes. */
-.orbits.orbits--extended li { --r: 196px; --inc: 10; --rest: 1; }
-.orbits--extended .chip { width: max-content; max-width: 6.5rem; white-space: normal; text-align: center; overflow-wrap: anywhere; }
-.orbits--extended li:nth-child(1) { --start: 18; }
-.orbits--extended li:nth-child(2) { --start: 54; }
-.orbits--extended li:nth-child(3) { --start: 90; }
-.orbits--extended li:nth-child(4) { --start: 126; }
-.orbits--extended li:nth-child(5) { --start: 162; }
-.orbits--extended li:nth-child(6) { --start: 198; }
-.orbits--extended li:nth-child(7) { --start: 234; }
-.orbits--extended li:nth-child(8) { --start: 270; }
-.orbits--extended li:nth-child(9) { --start: 306; }
-.orbits--extended li:nth-child(10) { --start: 342; }
+/* Seven to ten labels keep tilted, individual rings and evenly spaced spokes.
+ * The inner far sides cross behind the star, just like the six-label system. */
+.orbits--extended .chip {
+  width: max-content; max-width: 6.5rem; font-size: 0.6875rem; padding: 0.25rem 0.5rem;
+  white-space: normal; text-align: center; overflow-wrap: anywhere;
+}
+.orbits--extended li:nth-child(1) { --r: 214px; --inc: 54; --start: 18; }
+.orbits--extended li:nth-child(2) { --r: 218px; --inc: 55; --start: 54; }
+.orbits--extended li:nth-child(3) { --r: 222px; --inc: 56; --start: 90; --rest: 1; }
+.orbits--extended li:nth-child(4) { --r: 212px; --inc: 54; --start: 126; }
+.orbits--extended li:nth-child(5) { --r: 220px; --inc: 55; --start: 162; --rest: 1; }
+.orbits--extended li:nth-child(6) { --r: 216px; --inc: 54; --start: 198; }
+.orbits--extended li:nth-child(7) { --r: 220px; --inc: 56; --start: 234; --rest: 0.45; }
+.orbits--extended li:nth-child(8) { --r: 212px; --inc: 55; --start: 270; --rest: 0.45; }
+.orbits--extended li:nth-child(9) { --r: 222px; --inc: 56; --start: 306; --rest: 0.45; }
+.orbits--extended li:nth-child(10) { --r: 214px; --inc: 54; --start: 342; }
 @media (max-width: 520px) {
   .orbits .chip { font-size: 0.6875rem; padding: 0.25rem 0.5rem; }
 }
