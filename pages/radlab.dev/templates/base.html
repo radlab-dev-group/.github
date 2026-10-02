@@ -104,12 +104,6 @@ document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
 <footer class="site-footer">
   <div class="wrap">
     <div class="footer-grid">
-      <div class="footer-brand">
-        <a class="brand brand-footer" href="{{ href('') }}" aria-label="RadLab — radlab.dev">
-          <img class="brand-logo brand-logo-light" src="{{ logo | default(base ~ '/assets/img/logo.png') }}" width="300" height="88" alt="" loading="lazy">
-          <img class="brand-logo brand-logo-dark" src="{{ logo_inverted | default(base ~ '/assets/img/logo-inverted.png') }}" width="300" height="88" alt="" loading="lazy">
-        </a>
-      </div>
       <div>
         {#- Named on its own: this column has always been the code and social
             links, whatever the second nav item happens to be called. -#}

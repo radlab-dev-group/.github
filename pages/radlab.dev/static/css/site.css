@@ -1114,9 +1114,6 @@ a.tag:hover { color: var(--accent); border-color: var(--accent); }
 .site-footer { border-top: 1px solid var(--border); background: var(--bg-surface); margin-top: 0; }
 .site-footer .wrap { padding-block: clamp(2.5rem, 6vw, 4rem); }
 .footer-grid { display: grid; gap: 2.25rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr)); }
-.footer-brand { grid-column: 1 / -1; }
-@media (min-width: 900px) { .footer-brand { grid-column: auto; max-width: 30ch; } }
-.footer-brand .brand-logo { height: 2rem; margin-bottom: 1.15rem; }
 .footer-grid h4 {
   font-family: var(--font-ui); font-size: 0.75rem; font-weight: 600;
   letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-faint); margin-bottom: 0.9rem;
@@ -1125,8 +1122,6 @@ a.tag:hover { color: var(--accent); border-color: var(--accent); }
 .footer-grid li { margin-bottom: 0.5rem; }
 .footer-grid a { font-family: var(--font-ui); font-size: 0.9375rem; color: var(--text-muted); text-decoration: none; }
 .footer-grid a:hover { color: var(--accent); }
-.footer-brand .social { margin-top: 1.35rem; }
-.footer-tagline { color: var(--text-muted); max-width: 34ch; font-size: 1rem; }
 .footer-bottom {
   border-top: 1px solid var(--border); margin-top: 2.5rem; padding-top: 1.5rem;
   font-family: var(--font-ui); font-size: 0.8125rem; color: var(--text-faint);
