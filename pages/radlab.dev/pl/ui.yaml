@@ -33,8 +33,8 @@ footer_rights: "Prawa zastrzeżone"
 nav:
   - {id: about, label: "O nas", href: "#about"}
   - {id: products, label: "Nasze rozwiązania", href: "#products"}
-  - {id: open-source, label: "Open source", href: "#open-source"}
-  - {id: resources, label: "Zasoby", href: "#resources"}
+  - {id: stack, label: "Technologie", href: "#stack"}
+  - {id: resources, label: "Open source i zasoby", href: "#resources"}
   - {id: blog, label: "Blog", href: "/blog/"}
   - {id: contact, label: "Kontakt", href: "#contact"}
 

@@ -1,5 +1,5 @@
 ---
-order: 4
+order: 3
 layout: grid
 anchor: products
 eyebrow: "Our solutions"
@@ -8,7 +8,7 @@ columns: 2
 cards:
   - title: "LLM Router"
     icon: "router"
-    text: "A smart unified gateway for generative models. Your application talks to a single endpoint, while the router handles streaming, protocol translation, and routing between local engines (Ollama, vLLM) and cloud APIs."
+    text: "A high-performance open-source AI gateway uniting local engines with cloud APIs. Delivers query routing, data protection, and load balancing."
     href: "https://llm-router.cloud"
     link_label: "llm-router.cloud"
   - title: "Radar Informacji"

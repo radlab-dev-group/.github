@@ -1,5 +1,5 @@
 ---
-order: 4
+order: 3
 layout: grid
 anchor: products
 eyebrow: "Nasze rozwiązania"
@@ -8,7 +8,7 @@ columns: 2
 cards:
   - title: "LLM Router"
     icon: "router"
-    text: "Inteligentna bramka dostępowa do modeli generatywnych. Twoja aplikacja komunikuje się z jednym interfejsem, a router dba o kolejkowanie, streaming i przełączanie zapytań między lokalnymi silnikami (Ollama, vLLM) a modelami w chmurze."
+    text: "Wydajna brama AI (AI Gateway) open-source integrująca silniki lokalne z API chmurowymi. Zapewnia routing zapytań, ochronę danych i równoważenie obciążenia."
     href: "https://llm-router.cloud"
     link_label: "llm-router.cloud"
   - title: "Radar Informacji"

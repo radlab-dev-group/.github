@@ -10,10 +10,6 @@ intro: |
 actions:
   - {label: "Our solutions", href: "#products", style: quiet}
   - {label: "GitHub", href: "https://github.com/radlab-dev-group", style: primary}
-stats:
-  - {value: "7+", label: "years in ML/NLP"}
-  - {value: "20+", label: "production deployments"}
-  - {value: "100%", label: "open resources"}
 chips: ["pLLama3-8B", "bi-encoders", "RAG", "LLM Router", "QA", "word2vec"]
 ticker: ["machine learning", "natural language processing", "Polish language models", "open source", "datasets", "LLM Router", "Radar Informacji", "PII Masker", "experiments", "Hugging Face"]
 ---

@@ -718,6 +718,87 @@ hr { border: 0; border-top: 1px solid var(--border); margin: 2.5rem 0; }
 .cell-link .icon { transition: transform 0.2s ease; }
 .cell-link:hover .icon { transform: translateX(3px); }
 
+/* ---------------------------------------------------------------- tech stack */
+
+.section--stack { position: relative; }
+
+.stack-bar {
+  margin-bottom: clamp(1.75rem, 3.5vw, 2.75rem);
+  padding: clamp(0.85rem, 2vw, 1.25rem) clamp(1rem, 2.5vw, 1.75rem);
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+.stack-bar-inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem 0.85rem;
+}
+.stack-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-family: var(--font-ui);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  background: var(--bg-raised);
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  padding: 0.35rem 0.75rem;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.18s ease, border-color 0.18s ease, color 0.18s ease;
+}
+.stack-pill:hover {
+  transform: translateY(-1px);
+  border-color: var(--accent);
+  color: var(--text);
+}
+.stack-pill-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--brand-3);
+  flex-shrink: 0;
+}
+.stack-pill-name {
+  color: var(--text);
+  font-weight: 600;
+}
+.stack-pill-role {
+  font-size: 0.75rem;
+  color: var(--text-faint);
+  padding-left: 0.15rem;
+}
+.stack-grid { align-items: stretch; }
+.stack-cell { gap: 0.75rem; }
+.stack-cell h3 { font-size: 1.25rem; }
+.stack-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: auto;
+  padding-top: 0.85rem;
+}
+.tag-tech {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--text-muted);
+  background: color-mix(in srgb, var(--bg-surface) 75%, var(--bg));
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.22rem 0.55rem;
+  transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+}
+.stack-cell:hover .tag-tech {
+  border-color: var(--border-strong);
+  color: var(--text);
+}
+
 /* ---------------------------------------------------------------- contact */
 
 .contact-card {

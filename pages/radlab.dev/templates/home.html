@@ -101,6 +101,50 @@
     {% endif %}
   </div>
 </section>
+{% elif section.layout == 'stack' %}
+<section class="section section--stack" {% if section.anchor %}id="{{ section.anchor }}"{% endif %}>
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        {% if section.eyebrow %}<p class="eyebrow">{{ section.eyebrow }}</p>{% endif %}
+        <h2>{{ section.title }}</h2>
+      </div>
+      {% if section.intro %}<p class="intro">{{ section.intro | trim }}</p>{% endif %}
+    </div>
+    {% if section.pills %}
+    <div class="stack-bar" aria-label="Tech Stack">
+      <div class="stack-bar-inner">
+        {% for pill in section.pills %}
+        <div class="stack-pill">
+          <span class="stack-pill-dot" aria-hidden="true"></span>
+          <strong class="stack-pill-name">{{ pill.name }}</strong>
+          {% if pill.role %}<span class="stack-pill-role">{{ pill.role }}</span>{% endif %}
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+    {% if section.cards %}
+    <div class="grid grid--2 stack-grid">
+      {% for item in section.cards %}
+      <article class="cell stack-cell">
+        {% if item.icon %}<svg class="icon cell-icon" aria-hidden="true"><use href="#i-{{ item.icon }}"/></svg>
+        {% else %}<span class="cell-index" aria-hidden="true">{{ '%02d' | format(loop.index) }}</span>{% endif %}
+        <h3>{{ item.title }}</h3>
+        <p>{{ item.text }}</p>
+        {% if item.tags %}
+        <div class="stack-tags" aria-label="Technologie">
+          {% for tag in item.tags %}
+          <span class="tag-tech">{{ tag }}</span>
+          {% endfor %}
+        </div>
+        {% endif %}
+      </article>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </div>
+</section>
 {% elif section.layout == 'contact' %}
 <section class="section section--contact" {% if section.anchor %}id="{{ section.anchor }}"{% endif %}>
   <div class="wrap">
