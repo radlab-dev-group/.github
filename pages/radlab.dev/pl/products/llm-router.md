@@ -1,8 +1,8 @@
 ---
 title: "LLM Router"
-subtitle: "Wydajna brama AI (AI Gateway) open-source i warstwa kontrolna modeli językowych"
+subtitle: "Otwarta brama AI do zarządzania ruchem między modelami językowymi"
 slug: "llm-router"
-description: "LLM Router to brama AI typu self-hosted dla infrastruktury on-premise i chmurowej. Udostępnia ujednolicony interfejs OpenAI i Anthropic przed silnikami vLLM, Ollama, LM Studio oraz API chmurowymi z maskowaniem PII, guardrailami, routingiem i load balancingiem."
+description: "LLM Router to brama AI uruchamiana we własnej infrastrukturze. Udostępnia interfejs zgodny z OpenAI oraz endpoint Anthropic dla lokalnych silników i zewnętrznych API, z konfigurowalnymi wtyczkami, ochroną danych i równoważeniem obciążenia."
 icon: "router"
 status: "Open Source · Apache-2.0"
 version: "v0.2.3"
@@ -15,43 +15,44 @@ actions:
 
 ## Czym jest LLM Router?
 
-**LLM Router** to wysokowydajna, otwarta brama dostępowa (AI Gateway & Control Plane), którą uruchamiasz wewnątrz własnej infrastruktury — na serwerach on-premise, w prywatnej chmurze lub w środowisku air-gapped. 
+**LLM Router** to otwarta brama AI uruchamiana we własnej infrastrukturze — na serwerach lokalnych, w prywatnej chmurze lub w środowisku odciętym od sieci. Stoi pomiędzy aplikacjami a skonfigurowanymi przez Ciebie dostawcami modeli.
 
-Aplikacje biznesowe i mikroserwisy komunikują się z jednym, stabilnym punktem końcowym zgodnym ze standardami **OpenAI API** oraz **Anthropic API**. Router odpowiada za inteligentne przekazywanie zapytań do lokalnych silników wnioskowania (**vLLM**, **Ollama**, **LM Studio**) lub zewnętrznych dostawców chmurowych (**OpenAI**, **Anthropic**, **Groq**, **Mistral**), jednocześnie egzekwując polityki bezpieczeństwa, anonimizację danych i kontrolę kosztów.
+Aplikacje korzystają z jednego interfejsu zgodnego z **OpenAI API** lub natywnego endpointu **Anthropic `/v1/messages`**. Router przekazuje zapytania do lokalnych silników, takich jak **vLLM**, **Ollama**, **llama.cpp** i **LM Studio**, oraz do skonfigurowanych API zewnętrznych. Po drodze może stosować autoryzację, maskowanie danych, guardraile i wybrane reguły kierowania ruchu. Etapy potoku włącza się w konfiguracji.
 
 ---
 
 ## Kluczowe możliwości
 
-### 1. Ujednolicony interfejs API
-* **Kompatybilność drop-in:** Pełna obsługa formatów `/v1/chat/completions`, `/v1/completions`, `/v1/embeddings` oraz `/v1/models`. Możesz podmienić adres URL w istniejącym kodzie Pythona, TypeScriptu czy Go bez przepisywania logiki aplikacji.
-* **Streaming bez opóźnień:** Bezpośrednia obsługa Server-Sent Events (SSE) z narzutem przetwarzania poniżej 2 ms.
-* **Formatowanie strukturalne:** Wsparcie dla JSON Schema, wymuszania gramatyk oraz wywoływania funkcji (Tool Calling / Function Calling).
+### 1. Jeden interfejs do modeli
+Router obsługuje m.in. endpointy `/v1/chat/completions`, `/v1/responses` i `/v1/embeddings`, a także `/v1/messages` dla klientów Anthropic. Odpowiedzi mogą być przesyłane strumieniowo przez SSE. Modele, dostawców oraz działanie routera określa się w pliku konfiguracyjnym i zmiennych środowiskowych.
 
-### 2. Deterministyczny potok wtyczek (Plugin Pipeline)
-LLM Router przetwarza każde zapytanie w deterministycznym łańcuchu kroków przed wysłaniem go do modelu (*pre-inference*) oraz po odebraniu odpowiedzi (*post-inference*):
+### 2. Konfigurowalny potok wtyczek
+Wtyczki pozwalają włączać i układać etapy przetwarzania zapytań bez zmiany kodu aplikacji:
 
-* **Wielowarstwowa ochrona PII:** Automatyczne wykrywanie i maskowanie danych osobowych (PESEL, NIP, numery kart płatniczych, adresy, emaile) przed wysyłką do zewnętrznych modeli.
-* **Guardraile bezpieczeństwa:** Wykrywanie prób wstrzykiwania promptów (Prompt Injection), filtrowanie niedozwolonych treści oraz blokowanie wycieku tajemnic firmowych (kluczy API, tokenów).
-* **RAG Enrichment:** Dynamiczne wzbogacanie promptów o kontekst z baz wiedzy lub wektorowych baz danych w locie.
+* **Maskowanie PII:** `fast_masker` stosuje reguły dla identyfikatorów i danych kontaktowych; `pii_masker` może dodatkowo użyć klasyfikatora ML.
+* **Guardraile:** Wtyczki `nask_guard` i `sojka_guard` sprawdzają zapytanie przed wywołaniem modelu.
+* **Routing semantyczny:** Dla `model: "auto"` można włączyć wtyczkę dobierającą model na podstawie treści zapytania.
+* **Rozszerzenia:** Potok można uzupełnić o własne wtyczki, w tym wzbogacanie kontekstu z bazy wiedzy.
 
-### 3. 6 zaawansowanych strategii Load Balancingu
-LLM Router umożliwia precyzyjne sterowanie ruchem pomiędzy instancjami modeli:
-1. **Round Robin:** Równomierny podział zapytań między instancje.
-2. **Least Connections:** Kierowanie ruchu do węzła o najmniejszej liczbie aktywnych połączeń.
-3. **Latency-Aware:** Dynamiczny routing do instancji o najniższym czasie odpowiedzi (EMA latency).
-4. **Priority Failover:** Domyślne kierowanie zapytań do taniego modelu lokalnego (vLLM/Ollama) i automatyczny fallback do chmury w razie awarii lub przeciążenia.
-5. **Random Balancing:** Statystyczny rozkład obciążenia z wagami.
-6. **Distributed Redis Leasing:** Rezerwacja slotów i równoważenie obciążenia w klastrach wieloinstancyjnych.
+### 3. Strategie równoważenia obciążenia
+Strategia wybiera **dostawcę wskazanego modelu**, gdy ten ma więcej niż jednego dostawcę:
 
-### 4. Niezawodność i kontrola ruchu
-* **Distributed Rate Limiting:** Ograniczanie liczby zapytań i tokenów (Token Bucket / Fixed Window) na poziomie klucza API, użytkownika lub modelu z wykorzystaniem Redis.
-* **Automatyczny Health Check:** Ciągłe monitorowanie dostępności lokalnych workerów GPU i automatyczne wykluczanie niedostępnych silników z puli.
-* **Kaskadowy Fallback:** Jeśli lokalny model zgłosi błąd braku pamięci (OOM) lub przekroczy timeout, zapytanie jest natychmiast powtarzane na węźle zapasowym.
+1. **`balanced` (domyślna):** Wybiera dostawcę, który dotąd obsłużył najmniej zapytań dla danego modelu.
+2. **`weighted`:** Rozdziela ruch według skonfigurowanych, stałych wag dostawców.
+3. **`dynamic_weighted` (beta):** Dostosowuje wagi z uwzględnieniem obserwowanych opóźnień.
+4. **`first_available`:** Przydziela pierwszego dostępnego dostawcę na wyłączność; wymaga Redis do koordynacji między workerami.
+5. **`first_available_optim`:** Preferuje hosty, na których model był już uruchomiony, aby ograniczyć ponowne ładowanie; korzysta z Redis.
+6. **`first_available_optim_nworkers`:** Pozwala przydzielić dostawcy do `nworkers` równoległych zapytań i wybiera dostawcę z najmniejszą liczbą zajętych slotów; sloty są koordynowane w Redis.
 
-### 5. Obserwowalność i audytowalność
-* **Metryki Prometheusa:** Gotowe liczniki przepustowości tokenów (tokens/s), czasu do pierwszego tokena (TTFT), opóźnienia generacji oraz kosztów zapytań.
-* **Szyfrowane logi audytowe:** Opcjonalny zapis pełnego śladu zapytań szyfrowany kluczem GPG na potrzeby audytów bezpieczeństwa i zgodności z regulacjami.
+Pełne zachowanie i wymagania opisuje [dokumentacja strategii balansowania](https://github.com/radlab-dev-group/llm-router/blob/main/llm_router_api/docs/LB_STRATEGIES.md).
+
+### 4. Dostępność i kontrola ruchu
+* **Obsługa błędów dostawców:** Router próbuje kolejnych dostawców **tego samego modelu**. Dopiero gdy nie może on obsłużyć zapytania, można użyć skonfigurowanego osobno `fallback_model`. Nie jest to strategia balansowania ani automatyczne przełączanie na chmurę.
+* **Klucze i limity:** Autoryzacja opiera się na kluczach z uprawnieniami do endpointów; limity zapytań działają w oknie przesuwnym z użyciem Redis dla klucza i adresu IP.
+
+### 5. Obserwowalność i audyt
+* **Prometheus:** Po włączeniu `/metrics` udostępnia liczniki wywołań, błędów, ponowień i tokenów oraz histogramy opóźnień dostawców.
+* **Audyt GPG:** Można zapisywać zaszyfrowane wpisy o decyzjach maskowania i guardraili.
 
 ---
 
@@ -66,61 +67,21 @@ LLM Router umożliwia precyzyjne sterowanie ruchem pomiędzy instancjami modeli:
    │                                                        │
    │  ┌──────────────────────────────────────────────────┐  │
    │  │ Pre-inference Pipeline                           │  │
-   │  │ ├─ Auth & Rate Limiting (Redis)                  │  │
-   │  │ ├─ PII Masker (PESEL, karty, dane osobowe)       │  │
-   │  │ └─ Guardrails (Prompt Injection & Secrets)       │  │
+   │  │ ├─ Auth & Rate Limiting (opcjonalnie)             │  │
+   │  │ ├─ Maskowanie PII                                 │  │
+   │  │ └─ Guardraile i routing semantyczny               │  │
    │  └────────────────────────┬─────────────────────────┘  │
    │                           ▼                            │
    │  ┌──────────────────────────────────────────────────┐  │
    │  │ Routing Engine & Load Balancer                   │  │
-   │  │ (Priority Failover · Least Conn · Redis Leasing) │  │
+   │  │ (np. balanced · weighted · first_available)      │  │
    │  └────────────┬────────────────────────┬────────────┘  │
    └───────────────┼────────────────────────┼───────────────┘
                    ▼                        ▼
        [ Silniki lokalne GPU ]    [ Dostawcy chmurowi ]
-       ├─ vLLM                    ├─ OpenAI (GPT-4o)
-       ├─ Ollama (pLLama)         ├─ Anthropic (Claude)
-       └─ LM Studio / llama.cpp   └─ Groq / Mistral
-```
-
----
-
-## Szybki start
-
-LLM Router można uruchomić jako pojedynczy kontener Docker lub wdrożyć w klastrze Kubernetes za pomocą oficjalnego wykresu Helm.
-
-### Uruchomienie w Dockerze
-
-```bash
-docker run -d \
-  --name llm-router \
-  -p 8000:8000 \
-  -v $(pwd)/config.yaml:/app/config.yaml \
-  radlab/llm-router:latest
-```
-
-### Przykładowe zapytanie w Pythonie
-
-```python
-from openai import OpenAI
-
-client = OpenAI(
-    base_url="http://localhost:8000/v1",
-    api_key="your-router-key",
-)
-
-response = client.chat.completions.create(
-    model="pllama-8b",
-    messages=[
-        {"role": "system", "content": "Jesteś pomocnym asystentem technicznym."},
-        {"role": "user", "content": "Jak zoptymalizować wnioskowanie modeli LLM na GPU?"}
-    ],
-    stream=True,
-)
-
-for chunk in response:
-    if chunk.choices[0].delta.content:
-        print(chunk.choices[0].delta.content, end="", flush=True)
+       ├─ vLLM                    ├─ OpenAI
+       ├─ Ollama                  └─ Anthropic
+       └─ LM Studio / llama.cpp
 ```
 
 ---
