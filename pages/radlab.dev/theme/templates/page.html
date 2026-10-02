@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block main %}
+<article class="article">
+  <div class="wrap">
+    <nav class="breadcrumb" aria-label="{{ ui.error_home }}">
+      <a href="{{ href('') }}">← {{ ui.error_home }}</a>
+    </nav>
+    <header class="article-head">
+      <h1>{{ page_title }}</h1>
+      <p class="lede">{{ page_description }}</p>
+    </header>
+    <div class="prose">{{ content | safe }}</div>
+  </div>
+</article>
+{% endblock %}

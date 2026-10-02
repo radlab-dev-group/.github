@@ -138,6 +138,7 @@
     <div class="footer-bottom">
       <span>© {{ now.year if now else 2026 }} {{ site.name }}. {{ ui.footer_rights }}.</span>
       <span>Machine Learning · NLP · Software Engineering</span>
+      <a href="{{ href('privacy') }}">{{ ui.consent_privacy }}</a>
       {% if site.ga_code %}<button class="consent-settings" type="button" data-consent-settings aria-controls="analytics-consent" hidden>{{ ui.consent_settings }}</button>{% endif %}
       <a href="#top" class="to-top"><svg class="icon" aria-hidden="true"><use href="#i-up"/></svg>{{ ui.back_to_top }}</a>
     </div>
@@ -147,7 +148,7 @@
 <section id="analytics-consent" class="consent-panel" role="dialog" aria-modal="false"
          aria-labelledby="consent-title" aria-describedby="consent-description" data-ga-code="{{ site.ga_code }}" hidden>
   <h2 id="consent-title">{{ ui.consent_title }}</h2>
-  <p id="consent-description">{{ ui.consent_description }} <a href="https://policies.google.com/privacy" rel="noopener">{{ ui.consent_privacy }}</a></p>
+  <p id="consent-description">{{ ui.consent_description }} <a href="{{ href('privacy') }}">{{ ui.consent_privacy }}</a></p>
   <p>{{ ui.consent_storage }}</p>
   <div class="consent-actions">
     <button class="btn btn-quiet" type="button" data-consent-choice="denied">{{ ui.consent_reject }}</button>

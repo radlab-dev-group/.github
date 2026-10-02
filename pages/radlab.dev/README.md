@@ -4,7 +4,7 @@
 
 ```text
 content/                  # treści i lokalne media
-├── pl/                   # home/, products/, blog/posts/, ui.yaml
+├── pl/                   # home/, products/, pages/, blog/posts/, ui.yaml
 └── en/                   # analogicznie
 theme/
 ├── templates/            # szablony HTML i XML
@@ -58,6 +58,14 @@ Adresy artykułów nadal wynikają z daty i `slug`, a nie ze struktury źródeł
 `/2025-10-13/przykladowy-wpis/` lub `/en/2025-10-13/przykladowy-wpis/`.
 Powiązania tłumaczeń są w `config/translations.json`.
 
+## Osobne strony
+
+Polityka prywatności jest w `content/{pl,en}/pages/privacy.md` i publikuje się
+pod `/privacy/` oraz `/en/privacy/`. Baner zgód i stopka prowadzą do lokalnej
+wersji. Pliki `pages/*.md` mają front matter `title`, `description`, opcjonalne
+`slug` (domyślnie nazwa pliku) i `updated`; builder dodaje je do sitemap.
+Ten sam `slug` w obu językach łączy wersje przez hreflang i przełącznik języka.
+
 ## Budowanie
 
 Po instalacji zależności z `requirements.txt` w interpreterze projektu:
@@ -91,7 +99,10 @@ uruchomiony skrypt; nie usuwa danych już wysłanych. Zmiany są synchronizowane
 między kartami. Bez JavaScript lub przy odmowie analityka nie jest ładowana.
 Przy blokadzie zapisu zgoda dotyczy tylko bieżącej strony. Reklamowe sygnały
 Google pozostają wyłączone. Przed publikacją zweryfikuj informacje o administratorze
-i przetwarzaniu danych w `content/{pl,en}/ui.yaml` względem rzeczywistej konfiguracji GA.
+i przetwarzaniu danych w `content/{pl,en}/pages/privacy.md` oraz `ui.yaml`.
+Uzupełnij pełną tożsamość administratora, faktyczne ustawienie retencji w panelu GA4
+oraz dostawców hostingu i poczty wraz z okresami przechowywania danych; te informacje
+nie wynikają z kodu strony. Ważność decyzji przez 180 dni nie jest retencją danych GA4.
 
 Sekcje `seo.pl` i `seo.en` zawierają tytuły, opisy, hasła tematyczne oraz opisy
 bloga. Produkty i artykuły zachowują własne tytuły/opisy, a ich tagi uzupełniają

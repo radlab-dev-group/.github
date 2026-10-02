@@ -633,6 +633,7 @@ class Site:
         self.drafts: dict[str, list[Post]] = {}
         self.products: dict[str, list[Product]] = {}
         self.sections: dict[str, list[dict]] = {}
+        self.pages: dict[str, list[dict]] = {}
         self.ui: dict[str, dict] = {}
         self.translations = load_translations()
         self.problems: list[str] = []
@@ -646,6 +647,12 @@ class Site:
             self.posts[lang] = [p for p in every if not p.draft] if not self.include_drafts else every
             self.products[lang] = load_products(self.cfg, lang)
             self.sections[lang] = load_sections(self.cfg, lang)
+            self.pages[lang] = []
+            for path in sorted((ROOT / "content" / lang / "pages").glob("*.md")):
+                meta, body = parse_front_matter(path.read_text(encoding="utf-8"))
+                meta.setdefault("slug", path.stem)
+                meta["_html"] = render_markdown(body, self.cfg)
+                self.pages[lang].append(meta)
             self.ui[lang] = load_ui(self.cfg, lang)
         self.env.globals["ui"] = self.ui
 
@@ -773,6 +780,7 @@ class Site:
         for lang in self.cfg.langs:
             self.build_home(lang)
             self.build_blog_index(lang)
+            self.build_pages(lang)
             for product in self.products[lang]:
                 self.build_product(product)
             for post in self.posts[lang]:
@@ -869,6 +877,24 @@ class Site:
         })
         self.write(self.strip(self.cfg.href(product.lang, product.path)), template.render(**ctx))
 
+    def build_pages(self, lang: str) -> None:
+        template = self.env.get_template("page.html")
+        other = "en" if lang == self.cfg.default_lang else self.cfg.default_lang
+        for page in self.pages[lang]:
+            path = page["slug"]
+            mate = next((p for p in self.pages[other] if p["slug"] == path), None)
+            ctx = self.context(lang, switch_href=self.cfg.href(other, path) if mate else self.other_index(lang))
+            ctx.update({
+                "page_title": page["title"],
+                "page_description": page.get("description", ""),
+                "page_keywords": page.get("keywords", []),
+                "content": page["_html"],
+                "canonical": self.cfg.canonical(lang, path),
+                "alternates": self.alternates(path=path, lang=lang,
+                                              counterpart_path=path if mate else None),
+            })
+            self.write(self.strip(self.cfg.href(lang, path)), template.render(**ctx))
+
     def build_feeds(self) -> None:
         template = self.env.get_template("feed.xml")
         for lang in self.cfg.langs:
@@ -888,6 +914,15 @@ class Site:
             entries.append({"loc": self.cfg.canonical(lang, "blog"), "alternates": [],
                             "lastmod": None})
             other = "en" if lang == self.cfg.default_lang else self.cfg.default_lang
+            for page in self.pages[lang]:
+                path = page["slug"]
+                mate = next((p for p in self.pages[other] if p["slug"] == path), None)
+                entries.append({
+                    "loc": self.cfg.canonical(lang, path),
+                    "alternates": self.alternates(path=path, lang=lang,
+                                                  counterpart_path=path if mate else None),
+                    "lastmod": page.get("updated"),
+                })
             for product in self.products[lang]:
                 mate = next((p for p in self.products.get(other, []) if p.slug == product.slug), None)
                 entries.append({
