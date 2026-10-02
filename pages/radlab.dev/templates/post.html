@@ -1,28 +1,49 @@
 {% extends "base.html" %}
 {% block og_type %}article{% endblock %}
 {% block main %}
-<article class="article">
+<article class="article blog-post">
   <div class="wrap">
-    <header class="article-head">
-      <div class="article-meta">
-        <time datetime="{{ post.date.isoformat() }}">{{ ui.published | lower }} {{ post.date | datefmt(lang) }}</time>
-        {% if post.meta.get('updated') %}<time datetime="{{ post.meta.get('updated') }}">· {{ ui.updated }} {{ post.meta.get('updated') | datefmt(lang) }}</time>{% endif %}
-        <span>· {{ post.reading_minutes }} {{ ui.reading_time }}</span>
-      </div>
+    <nav class="breadcrumb" aria-label="{{ ui.blog_title }}">
+      <a href="{{ href(cfg.blog_path) }}">← {{ ui.back_to_blog }}</a>
+    </nav>
+    <header class="article-head blog-post-head">
+      <p class="blog-post-label">{{ ui.blog_title }} / RadLab</p>
       <h1>{{ post.title }}</h1>
       {% if post.description %}<p class="lede">{{ post.description }}</p>{% endif %}
+      <div class="article-meta">
+        <time datetime="{{ post.date.isoformat() }}">{{ ui.published }} {{ post.date | datefmt(lang) }}</time>
+        {% if post.meta.get('updated') %}<time datetime="{{ post.meta.get('updated') }}">{{ ui.updated }} {{ post.meta.get('updated') | datefmt(lang) }}</time>{% endif %}
+        <span>{{ post.reading_minutes }} {{ ui.reading_time }}</span>
+      </div>
       {% if post.tags %}
-      <ul class="tag-row">
+      <ul class="tag-row" aria-label="{{ ui.tags }}">
         {% for tag in post.tags %}<li><span class="tag">{{ tag }}</span></li>{% endfor %}
       </ul>
       {% endif %}
     </header>
 
-    {% if not counterpart %}
-    <p class="note measure" style="margin-bottom:2.5rem">{{ ui.translation_missing }}</p>
-    {% endif %}
-
-    <div class="prose">{{ content | safe }}</div>
+    <div class="blog-post-layout{% if outline | length >= 3 %} blog-post-layout--outline{% endif %}">
+      {% if outline | length >= 3 %}
+      <aside class="blog-outline">
+        <details open>
+          <summary>{{ ui.on_this_page }}</summary>
+          <nav aria-label="{{ ui.on_this_page }}">
+            <ol>
+              {% for heading in outline %}
+              <li class="outline-{{ heading.level }}"><a href="#{{ heading.id }}">{{ heading.text }}</a></li>
+              {% endfor %}
+            </ol>
+          </nav>
+        </details>
+      </aside>
+      {% endif %}
+      <div class="blog-post-body">
+        {% if not counterpart %}
+        <p class="note">{{ ui.translation_missing }}</p>
+        {% endif %}
+        <div class="prose blog-prose">{{ content | safe }}</div>
+      </div>
+    </div>
 
     <footer class="article-foot">
       <a href="{{ href(cfg.blog_path) }}">← {{ ui.back_to_blog }}</a>

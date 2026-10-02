@@ -31,6 +31,7 @@ import shutil
 import sys
 import urllib.parse
 from dataclasses import dataclass, field
+from html.parser import HTMLParser
 from pathlib import Path
 
 import yaml
@@ -357,6 +358,34 @@ def render_markdown(text: str, cfg: Config) -> str:
     )
     body = engine.convert(text)
     return body
+
+
+def article_outline(body: str) -> list[dict]:
+    class OutlineParser(HTMLParser):
+        def __init__(self):
+            super().__init__()
+            self.entries = []
+            self.heading = None
+
+        def handle_starttag(self, tag, attrs):
+            if tag in ("h2", "h3"):
+                anchor = dict(attrs).get("id")
+                self.heading = {"id": anchor, "level": tag, "text": ""} if anchor else None
+
+        def handle_data(self, data):
+            if self.heading is not None:
+                self.heading["text"] += data
+
+        def handle_endtag(self, tag):
+            if self.heading is not None and tag == self.heading["level"]:
+                self.heading["text"] = " ".join(self.heading["text"].split())
+                if self.heading["text"]:
+                    self.entries.append(self.heading)
+                self.heading = None
+
+    parser = OutlineParser()
+    parser.feed(body)
+    return parser.entries
 
 
 def expand_shortcodes(text: str) -> str:
@@ -761,6 +790,7 @@ class Site:
         ctx.update({
             "post": post,
             "content": post.html,
+            "outline": article_outline(post.html),
             "page_title": post.title,
             "page_description": post.description,
             "canonical": self.cfg.canonical(post.lang, post.path),

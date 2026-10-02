@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block main %}
-<div class="wrap">
+<div class="wrap blog-index">
   <header class="page-head">
     <h1>{{ ui.blog_title }}</h1>
     <p class="intro">{{ ui.blog_intro }}</p>
@@ -11,17 +11,17 @@
     {% set post = card.post %}
     <li>
       <article class="post-item{% if post.image %} post-item--media{% endif %}">
-        <div class="meta">
-          <time datetime="{{ post.date.isoformat() }}">{{ post.date | datefmt(lang) }}</time>
-          {% if not card.missing %}<span>· {{ post.reading_minutes }} {{ ui.reading_time }}</span>{% endif %}
-        </div>
         {% if post.image %}
         {#- The English entries without a translation link to the Polish post, so
             they keep the Polish post's picture rather than none at all. -#}
         <a class="thumb" href="{{ href(post.path) if not card.missing else cfg.href(default_lang, card.missing.path) }}"
-           tabindex="-1" aria-hidden="true">{{ image(post.image, '', 'thumb-img', '160px') }}</a>
+           tabindex="-1" aria-hidden="true">{{ image(post.image, '', 'thumb-img', '(max-width: 600px) 100vw, 240px') }}</a>
         {% endif %}
-        <div>
+        <div class="post-entry-body">
+          <div class="meta">
+            <time datetime="{{ post.date.isoformat() }}">{{ post.date | datefmt(lang) }}</time>
+            {% if not card.missing %}<span>{{ post.reading_minutes }} {{ ui.reading_time }}</span>{% endif %}
+          </div>
           {% if card.missing %}
           {#- Untranslated: the entry exists so the English index is not silently
               shorter than the Polish one, but it links to the Polish original. -#}
@@ -37,6 +37,7 @@
             {% for tag in post.tags[:5] %}<li><span class="tag">{{ tag }}</span></li>{% endfor %}
           </ul>
           {% endif %}
+          <a class="post-read-link" href="{{ href(post.path) }}">{{ ui.read_article }} <span aria-hidden="true">→</span></a>
           {% endif %}
         </div>
       </article>
