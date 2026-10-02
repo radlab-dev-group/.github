@@ -25,27 +25,20 @@ Tradycyjne wyrażenia regularne często generują dużą liczbę fałszywych ala
 
 ## Architektura dwuwarstwowa
 
-```text
-Surowy tekst z danymi wrażliwymi
-              │
-              ▼
-  ┌─────────────────────────────────────────────────────────┐
-  │ 1. FastMasker (Silnik deterministyczny & sumy kontrolne)│
-  │    ├─ Sumy kontrolne: PESEL, NIP, REGON, IBAN, Karty, VIN│
-  │    └─ Formaty: E-mail, IPv4/IPv6, URL, Telefony, Kody   │
-  └───────────────────────────┬─────────────────────────────┘
-                              │
-                              ▼
-  ┌─────────────────────────────────────────────────────────┐
-  │ 2. Anonymizer Model (Model Transformer NER dla j. pol.) │
-  │    ├─ Imiona, nazwiska, nazwy własne i stanowiska       │
-  │    └─ Adresy, lokalizacje i kontekst nieregularny       │
-  └───────────────────────────┬─────────────────────────────┘
-                              │
-                              ▼
-        Zanonimizowany tekst z tokenami zastępczymi
-              (np. {{PESEL}}, {{CREDIT_CARD}})
-```
+<div class="product-flow">
+  <div class="product-flow-endpoint">Surowy tekst z danymi wrażliwymi</div>
+  <ol class="product-flow-steps">
+    <li>
+      <h3>1. FastMasker</h3>
+      <p>Silnik deterministyczny i walidacja sum kontrolnych: PESEL, NIP, REGON, IBAN, karty płatnicze i VIN. Reguły formatów: e-mail, IPv4/IPv6, URL, telefony i kody pocztowe.</p>
+    </li>
+    <li>
+      <h3>2. Anonymizer Model</h3>
+      <p>Model Transformer NER dla języka polskiego: imiona, nazwiska, nazwy własne i stanowiska, a także adresy, lokalizacje i kontekst nieregularny.</p>
+    </li>
+  </ol>
+  <div class="product-flow-endpoint">Zanonimizowany tekst z tokenami zastępczymi, np. <code>{{PESEL}}</code>, <code>{{CREDIT_CARD}}</code></div>
+</div>
 
 ---
 

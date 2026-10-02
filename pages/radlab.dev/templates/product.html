@@ -3,55 +3,50 @@
 {% block main %}
 <article class="article product-page">
   <div class="wrap">
-    <nav class="breadcrumb" aria-label="Breadcrumb">
+    <nav class="breadcrumb" aria-label="{{ ui.all_products }}">
       <a href="{{ href('') }}#products">← {{ ui.all_products | default('Nasze rozwiązania', true) }}</a>
     </nav>
 
-    <header class="article-head product-head">
-      <div class="product-meta">
-        <span class="badge badge-accent">{{ ui.product_badge | default('Produkt', true) }}</span>
-        {% if product.meta.get('status') %}
-        <span class="badge badge-subtle">{{ product.meta.get('status') }}</span>
-        {% endif %}
-        {% if product.meta.get('version') %}
-        <span class="badge badge-subtle">{{ product.meta.get('version') }}</span>
-        {% endif %}
-      </div>
-
+    <header class="product-head">
       <div class="product-header-content">
         {% if product.icon %}
         <div class="product-icon-badge" aria-hidden="true">
           <svg class="icon product-icon"><use href="#i-{{ product.icon }}"/></svg>
         </div>
         {% endif %}
-        <div>
+        <div class="product-summary">
+          {% if product.meta.get('status') or product.meta.get('version') %}
+          <div class="product-meta">
+            {% if product.meta.get('status') %}
+            <span>{{ product.meta.get('status') }}</span>
+            {% endif %}
+            {% if product.meta.get('version') %}
+            <span class="product-version">{{ product.meta.get('version') }}</span>
+            {% endif %}
+          </div>
+          {% endif %}
           <h1>{{ product.title }}</h1>
           {% if product.subtitle %}
           <p class="lede">{{ product.subtitle }}</p>
+          {% endif %}
+          {% if product.actions %}
+          <div class="product-actions">
+            {% for act in product.actions %}
+            <a class="{% if act.style == 'primary' %}btn btn-primary{% else %}product-resource-link{% endif %}"
+               href="{{ act.href }}" rel="noopener" target="{{ '_blank' if act.href.startswith('http') else '_self' }}">
+              <span>{{ act.label }}</span>
+              <svg class="icon icon-tiny" aria-hidden="true"><use href="#i-{{ 'external' if act.href.startswith('http') else 'arrow' }}"/></svg>
+            </a>
+            {% endfor %}
+          </div>
           {% endif %}
         </div>
       </div>
 
       {% if product.tags %}
-      <ul class="tag-row">
+      <ul class="tag-row product-tags" aria-label="{{ ui.tags }}">
         {% for tag in product.tags %}<li><span class="tag">{{ tag }}</span></li>{% endfor %}
       </ul>
-      {% endif %}
-
-      {% if product.actions %}
-      <div class="product-actions">
-        {% for act in product.actions %}
-        <a class="btn {% if act.style == 'primary' %}btn-primary{% elif act.style == 'quiet' %}btn-quiet{% else %}btn-secondary{% endif %}"
-           href="{{ act.href }}"{% if act.href.startswith('http') %} rel="noopener" target="_blank"{% endif %}>
-          {{ act.label }}
-          {% if act.href.startswith('http') %}
-          <svg class="icon icon-tiny" aria-hidden="true"><use href="#i-external"/></svg>
-          {% else %}
-          <svg class="icon icon-tiny" aria-hidden="true"><use href="#i-arrow"/></svg>
-          {% endif %}
-        </a>
-        {% endfor %}
-      </div>
       {% endif %}
     </header>
 

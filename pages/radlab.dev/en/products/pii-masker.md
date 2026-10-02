@@ -25,27 +25,20 @@ Traditional regex solutions struggle with high false-positive rates or miss non-
 
 ## Two-Tier Hybrid Architecture
 
-```text
-Raw Text with Sensitive Information
-                │
-                ▼
-  ┌───────────────────────────────────────────────────────────┐
-  │ 1. FastMasker (Deterministic Engine & Checksum Validator) │
-  │    ├─ Checksums: PESEL, NIP, REGON, IBAN, Credit Cards,VIN│
-  │    └─ Formats: Email, IPv4/IPv6, URLs, Phone, Postcodes   │
-  └─────────────────────────────┬─────────────────────────────┘
-                                │
-                                ▼
-  ┌───────────────────────────────────────────────────────────┐
-  │ 2. Anonymizer Model (Transformer NER Token Classification)│
-  │    ├─ Personal names, organizations, roles                │
-  │    └─ Addresses, locations, contextual entities           │
-  └─────────────────────────────┬─────────────────────────────┘
-                                │
-                                ▼
-         Anonymized Text with Structured Placeholders
-              (e.g., {{PESEL}}, {{CREDIT_CARD}})
-```
+<div class="product-flow">
+  <div class="product-flow-endpoint">Raw text with sensitive information</div>
+  <ol class="product-flow-steps">
+    <li>
+      <h3>1. FastMasker</h3>
+      <p>Deterministic rules and checksum validation: PESEL, NIP, REGON, IBAN, credit cards and VIN. Format rules: email, IPv4/IPv6, URLs, phone numbers and postcodes.</p>
+    </li>
+    <li>
+      <h3>2. Anonymizer Model</h3>
+      <p>Transformer NER token classification: personal names, organizations and roles, as well as addresses, locations and contextual entities.</p>
+    </li>
+  </ol>
+  <div class="product-flow-endpoint">Anonymized text with structured placeholders, e.g. <code>{{PESEL}}</code>, <code>{{CREDIT_CARD}}</code></div>
+</div>
 
 ---
 
