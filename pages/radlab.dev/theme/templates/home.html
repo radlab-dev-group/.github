@@ -35,7 +35,9 @@
     </div>
     {#- Decorative, but it is the logo's own circle and gradient: the mark is
         rebuilt from the source artwork by tools/brand.py. -#}
-    <div class="hero-stage" aria-hidden="true">
+    {% set chip_count = section.chips | default([], true) | length %}
+    {% set dense_chips = chip_count > 10 %}
+    <div class="hero-stage{% if dense_chips %} hero-stage--dense{% endif %}" aria-hidden="true">
       <svg class="hero-mesh" viewBox="0 0 400 400" fill="none">
         <g class="mesh-lines" stroke="currentColor" stroke-width="1.1" stroke-linecap="round">
           <path d="M34 312C120 268 150 138 254 108"/>
@@ -51,8 +53,9 @@
       <span class="orb-orbit"><span class="orb"></span></span>
       {% if section.chips %}
       {#- Each label rides a ring tilted in 3D around the mark, so it passes
-          behind the star and returns: the system the names orbit. -#}
-      <ul class="orbits">
+          behind the star and returns. Larger lists wrap below the mark rather
+          than crowding the ten available orbit slots. -#}
+      <ul class="orbits{% if dense_chips %} orbits--wrapped{% elif chip_count > 6 %} orbits--extended{% endif %}">
         {% for chip in section.chips %}
         <li class="orbit"><span class="orbit-arm"><span class="chip">{{ chip }}</span></span></li>
         {% endfor %}

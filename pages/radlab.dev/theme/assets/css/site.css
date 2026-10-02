@@ -508,6 +508,19 @@ hr { border: 0; border-top: 1px solid var(--border); margin: 2.5rem 0; }
 .orbits li:nth-child(4) { --r: 168px; --inc: 42; --start: 120; }
 .orbits li:nth-child(5) { --r: 188px; --inc: 38; --start: 302; --rest: 0.45; }
 .orbits li:nth-child(6) { --r: 178px; --inc: 34; --start: 180; }
+/* Seven to ten labels share a flatter ring and evenly spaced spokes. */
+.orbits.orbits--extended li { --r: 196px; --inc: 10; --rest: 1; }
+.orbits--extended .chip { width: max-content; max-width: 6.5rem; white-space: normal; text-align: center; overflow-wrap: anywhere; }
+.orbits--extended li:nth-child(1) { --start: 18; }
+.orbits--extended li:nth-child(2) { --start: 54; }
+.orbits--extended li:nth-child(3) { --start: 90; }
+.orbits--extended li:nth-child(4) { --start: 126; }
+.orbits--extended li:nth-child(5) { --start: 162; }
+.orbits--extended li:nth-child(6) { --start: 198; }
+.orbits--extended li:nth-child(7) { --start: 234; }
+.orbits--extended li:nth-child(8) { --start: 270; }
+.orbits--extended li:nth-child(9) { --start: 306; }
+.orbits--extended li:nth-child(10) { --start: 342; }
 @media (max-width: 520px) {
   .orbits .chip { font-size: 0.6875rem; padding: 0.25rem 0.5rem; }
 }
@@ -540,6 +553,19 @@ hr { border: 0; border-top: 1px solid var(--border); margin: 2.5rem 0; }
 }
 @media (min-width: 1000px) and (max-width: 1149px) {
   .orbits { --pk: 0.72; }
+}
+@media (min-width: 1000px) and (max-width: 1279px) {
+  .orbits--extended li .chip { max-width: 8rem; white-space: normal; text-align: center; overflow-wrap: anywhere; }
+  .orbits--extended li:nth-child(1) .chip { margin-left: 0; margin-top: -45%; }
+  .orbits--extended li:nth-child(2) .chip { margin-left: 32%; margin-top: -36%; }
+  .orbits--extended li:nth-child(3) .chip { margin-left: 38%; margin-top: -13%; }
+  .orbits--extended li:nth-child(4) .chip { margin-left: 38%; margin-top: 13%; }
+  .orbits--extended li:nth-child(5) .chip { margin-left: 32%; margin-top: 36%; }
+  .orbits--extended li:nth-child(6) .chip { margin-left: 0; margin-top: 45%; }
+  .orbits--extended li:nth-child(7) .chip { margin-left: -32%; margin-top: 36%; }
+  .orbits--extended li:nth-child(8) .chip { margin-left: -38%; margin-top: 13%; }
+  .orbits--extended li:nth-child(9) .chip { margin-left: -38%; margin-top: -13%; }
+  .orbits--extended li:nth-child(10) .chip { margin-left: -32%; margin-top: -36%; }
 }
 
 @media (max-width: 999px) {
@@ -577,6 +603,29 @@ hr { border: 0; border-top: 1px solid var(--border); margin: 2.5rem 0; }
    * opacity: 1 because --rest marks the labels behind the star, and in a row
    * underneath it two of six just read as disabled. */
   .chip { position: static; margin: 0; opacity: 1; transform: none; animation: none; }
+}
+
+/* More than ten labels need normal flow, not additional overlapping rings.
+ * Keep the mark's square above a list that can grow by any number of rows. */
+.hero-stage--dense {
+  aspect-ratio: auto; display: flex; flex-direction: column; align-items: center; gap: 1.35rem;
+}
+@media (min-width: 1000px) {
+  .hero-stage--dense .orb-orbit {
+    position: relative; inset: auto; width: 100%; aspect-ratio: 1;
+  }
+  .hero-stage--dense .hero-mesh { height: auto; aspect-ratio: 1; }
+}
+.orbits.orbits--wrapped {
+  position: static; width: 100%; display: flex; flex-wrap: wrap;
+  justify-content: center; align-items: center; gap: 0.45rem;
+  transform-style: flat; transform: none; animation: none;
+}
+.orbits--wrapped .orbit, .orbits--wrapped .orbit-arm { display: contents; }
+.orbits.orbits--wrapped li .chip {
+  position: static; left: auto; top: auto; margin: 0; max-width: 100%;
+  white-space: normal; overflow-wrap: anywhere; text-align: center;
+  opacity: 1; transform: none; animation: none;
 }
 
 .stats {
@@ -1268,6 +1317,25 @@ a.tag-tech:hover { color: var(--accent); border-color: currentColor; }
 .to-top:hover { color: var(--accent); }
 .to-top .icon { transition: transform 0.2s ease; }
 .to-top:hover .icon { transform: translateY(-2px); }
+
+/* --------------------------------------------------------- analytics consent */
+.consent-panel[hidden], .consent-settings[hidden] { display: none; }
+.consent-panel {
+  position: fixed; z-index: 100; inset: auto 1rem 1rem; margin-inline: auto;
+  width: min(46rem, calc(100% - 2rem)); max-height: calc(100dvh - 2rem); overflow-y: auto;
+  padding: clamp(1rem, 3vw, 1.75rem); border: 1px solid var(--border-strong);
+  border-radius: var(--radius); background: var(--bg-raised); color: var(--text);
+  box-shadow: var(--shadow-sm);
+}
+.consent-panel h2 { font-size: 1.25rem; margin: 0 0 0.75rem; }
+.consent-panel p { font-size: 0.9375rem; margin: 0 0 1rem; }
+.consent-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+.consent-actions .btn { flex: 1 1 12rem; justify-content: center; }
+.consent-settings {
+  padding: 0; border: 0; background: none; color: var(--text-muted);
+  font: inherit; text-decoration: underline; cursor: pointer;
+}
+@media print { .consent-panel, .consent-settings { display: none; } }
 
 /* ---------------------------------------------------------------- motion
  * Everything below is opt-in twice over: only after site.js has marked the

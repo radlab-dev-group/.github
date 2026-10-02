@@ -82,8 +82,16 @@ są publikowane pod `/assets/`, a oryginalne media wpisów pod
 
 W `config/site.toml` pole `site.ga_code` włącza Google Analytics na wszystkich
 stronach HTML, również na stronie 404. Pusta wartość wyłącza integrację.
-Integracja nie zawiera banera ani mechanizmu zgody na analitykę — przed publikacją
-należy zapewnić odpowiednią obsługę zgód i informację o prywatności.
+Panel zgód PL/EN blokuje skrypt Google i pomiary do momentu akceptacji (basic
+consent mode, bez pingów przed zgodą). Akceptacja i odmowa są zapamiętywane
+w `localStorage` pod kluczem `radlab-analytics-consent` przez 180 dni.
+„Ustawienia prywatności” w stopce pozwalają zmienić decyzję. Wycofanie zgody
+wyłącza pomiary, usuwa dostępne cookies GA i przeładowuje stronę, aby zatrzymać
+uruchomiony skrypt; nie usuwa danych już wysłanych. Zmiany są synchronizowane
+między kartami. Bez JavaScript lub przy odmowie analityka nie jest ładowana.
+Przy blokadzie zapisu zgoda dotyczy tylko bieżącej strony. Reklamowe sygnały
+Google pozostają wyłączone. Przed publikacją zweryfikuj informacje o administratorze
+i przetwarzaniu danych w `content/{pl,en}/ui.yaml` względem rzeczywistej konfiguracji GA.
 
 Sekcje `seo.pl` i `seo.en` zawierają tytuły, opisy, hasła tematyczne oraz opisy
 bloga. Produkty i artykuły zachowują własne tytuły/opisy, a ich tagi uzupełniają

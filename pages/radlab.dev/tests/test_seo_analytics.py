@@ -32,10 +32,18 @@ class SeoAnalyticsTests(unittest.TestCase):
             texts += self.render(self.site.build_post, self.site.posts[lang][0])
         texts.append(self.site.env.get_template('404.html').render(**self.site.context('pl')))
         for text in texts:
-            self.assertIn('gtag/js?id=G-6NPWS2TQEC', text)
-            self.assertEqual(text.count("gtag('config',"), 1)
+            self.assertNotIn('googletagmanager.com', text)
+            self.assertNotIn("gtag('config',", text)
+            self.assertIn('data-ga-code="G-6NPWS2TQEC"', text)
+            self.assertIn('id="analytics-consent"', text)
+            self.assertIn('data-consent-choice="denied"', text)
+            self.assertIn('data-consent-choice="granted"', text)
+            self.assertIn('data-consent-settings', text)
+            self.assertIn('/assets/js/consent.js', text)
         self.site.cfg.site['ga_code'] = ''
-        self.assertNotIn('googletagmanager.com', self.render(self.site.build_home, 'pl')[0])
+        disabled = self.render(self.site.build_home, 'pl')[0]
+        self.assertNotIn('id="analytics-consent"', disabled)
+        self.assertNotIn('/assets/js/consent.js', disabled)
 
     def test_localized_seo_and_structured_data(self):
         for lang in self.site.cfg.langs:

@@ -49,7 +49,7 @@
       && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
 
     var mark = stage.querySelector('.orb-orbit');
-    var system = stage.querySelector('.orbits');
+    var system = stage.querySelector('.orbits:not(.orbits--wrapped)');
     // Peak-to-peak travel, read from the stylesheet: the orbit diagram can
     // afford a wide swing where it has room, the parked labels cannot, and the
     // CSS is the only place that knows which of the two is showing.

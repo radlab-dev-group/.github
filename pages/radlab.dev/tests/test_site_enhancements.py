@@ -59,6 +59,19 @@ class SiteEnhancementTests(unittest.TestCase):
                 self.assertTrue(self.site.ui[lang].get(name), name)
             self.assertIn('data-copy-code="' + self.site.ui[lang]["copy_code"] + '"', text)
 
+    def test_hero_chips_wrap_when_the_six_orbit_slots_are_exceeded(self):
+        for lang in self.site.cfg.langs:
+            hero = next(section for section in self.site.sections[lang] if section.get("layout") == "hero")
+            for count in (0, 1, 6, 7, 8, 9, 10, 11, 12, 24):
+                with self.subTest(lang=lang, count=count):
+                    hero["chips"] = [f"Technology {index}" for index in range(count)]
+                    text = self.home(lang)
+                    self.assertEqual('hero-stage--dense' in text, count > 10)
+                    self.assertEqual('orbits--wrapped' in text, count > 10)
+                    self.assertEqual('orbits--extended' in text, 6 < count <= 10)
+                    labels = re.findall(r'<span class="chip">(.*?)</span>', text)
+                    self.assertEqual(labels, hero["chips"])
+
 
 if __name__ == "__main__":
     unittest.main()

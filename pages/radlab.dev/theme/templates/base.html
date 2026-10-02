@@ -44,15 +44,6 @@
 
 {#- Preferences run before first paint; no script, nothing hidden. -#}
 <script src="{{ base }}/assets/js/preferences.js"></script>
-{% if site.ga_code %}
-<script async src="https://www.googletagmanager.com/gtag/js?id={{ site.ga_code | urlencode }}"></script>
-<script>
-window.dataLayer = window.dataLayer || [];
-function gtag(){dataLayer.push(arguments);}
-gtag('js', new Date());
-gtag('config', {{ site.ga_code | tojson }});
-</script>
-{% endif %}
 <link rel="stylesheet" href="{{ base }}/assets/css/site.css">
 <link rel="stylesheet" href="{{ base }}/assets/css/highlight.css">
 </head>
@@ -147,10 +138,24 @@ gtag('config', {{ site.ga_code | tojson }});
     <div class="footer-bottom">
       <span>© {{ now.year if now else 2026 }} {{ site.name }}. {{ ui.footer_rights }}.</span>
       <span>Machine Learning · NLP · Software Engineering</span>
+      {% if site.ga_code %}<button class="consent-settings" type="button" data-consent-settings aria-controls="analytics-consent" hidden>{{ ui.consent_settings }}</button>{% endif %}
       <a href="#top" class="to-top"><svg class="icon" aria-hidden="true"><use href="#i-up"/></svg>{{ ui.back_to_top }}</a>
     </div>
   </div>
 </footer>
+{% if site.ga_code %}
+<section id="analytics-consent" class="consent-panel" role="dialog" aria-modal="false"
+         aria-labelledby="consent-title" aria-describedby="consent-description" data-ga-code="{{ site.ga_code }}" hidden>
+  <h2 id="consent-title">{{ ui.consent_title }}</h2>
+  <p id="consent-description">{{ ui.consent_description }} <a href="https://policies.google.com/privacy" rel="noopener">{{ ui.consent_privacy }}</a></p>
+  <p>{{ ui.consent_storage }}</p>
+  <div class="consent-actions">
+    <button class="btn btn-quiet" type="button" data-consent-choice="denied">{{ ui.consent_reject }}</button>
+    <button class="btn btn-quiet" type="button" data-consent-choice="granted">{{ ui.consent_accept }}</button>
+  </div>
+</section>
+<script src="{{ base }}/assets/js/consent.js" defer></script>
+{% endif %}
 <script src="{{ base }}/assets/js/site.js" defer></script>
 </body>
 </html>
