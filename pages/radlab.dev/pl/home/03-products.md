@@ -23,7 +23,7 @@ cards:
     link_label: "Szczegóły i architektura"
   - title: "RDL Playground AI"
     icon: "flask"
-    text: "Interaktywne środowisko testowe do eksperymentów z modelami dla języka polskiego, wyposażone w gotowych agentów i praktyczne scenariusze."
+    text: "Poletko doświadczalne AI: strumień podsumowań wiadomości, artykuły tworzone na podstawie pytań i dzienne przeglądy informacji. Działa lokalnie, bez zakładania konta."
     href: "products/playground"
     link_label: "Szczegóły i moduły"
 ---

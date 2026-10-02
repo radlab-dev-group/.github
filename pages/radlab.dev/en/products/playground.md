@@ -1,73 +1,53 @@
 ---
 title: "RDL Playground AI"
-subtitle: "Interactive research sandbox and experimentation platform for Polish NLP models"
+subtitle: "An AI testing ground for analysing and summarising news"
 slug: "playground"
-description: "RDL Playground AI is an open research and demonstration platform by RadLab. It allows direct interaction with Polish-tailored pLLama models, sentiment classifiers, live news streaming analysis, and conversational AI agents in real-world NLP scenarios."
+description: "RDL Playground AI is a non-profit research project demonstrating automated news analysis: Polish-language summaries, articles generated in response to questions, and daily information overviews with sources. It runs locally and requires no account."
 icon: "flask"
 status: "Research Platform · Non-Profit"
 version: "Live Web App"
-tags: ["Playground AI", "pLLama Models", "Public Chat", "Polarity 3C", "News Stream", "NLP Research"]
+tags: ["NLP", "News Stream", "Summarization", "Information Retrieval", "Local Processing"]
 actions:
   - {label: "Launch Playground (playground.radlab.dev)", href: "https://playground.radlab.dev", style: primary}
-  - {label: "Models on Hugging Face", href: "https://huggingface.co/radlab", style: quiet}
-  - {label: "Research blog & papers", href: "/en/blog/", style: quiet}
+  - {label: "Experiments & methods on the blog", href: "/en/blog/", style: quiet}
 ---
 
 ## What is RDL Playground AI?
 
-**RDL Playground AI** is an interactive experimentation environment built by the RadLab team to test, evaluate, and showcase open language models, token classifiers, and intelligent agents developed for Polish and multilingual NLP.
+**RDL Playground AI** is RadLab’s testing ground for applying artificial intelligence methods to online news. It is a non-profit research project available without creating an account.
 
-It bridges the gap between machine learning research (R&D) and production reality. Engineers, analysts, and researchers can freely experiment with models, examining how they handle complex inflection, contextual nuance, and dense information streams.
-
----
-
-## Core Modules & Experiments
-
-```text
-┌─────────────────────────────────────────────────────────────────┐
-│                       RDL PLAYGROUND AI                         │
-├────────────────────┬────────────────────┬───────────────────────┤
-│  Public Chat       │ Live News Stream   │ Information Browser & │
-│  & AI Agents       │ & 3C Sentiment     │ Knowledge Explorer    │
-│  ├─ pLLama 1B-70B  │ ├─ Live Ingestion  │ ├─ Topic Clustering   │
-│  └─ Supervisor     │ └─ Polarity Scoring│ └─ Entity Graphs      │
-└────────────────────┴────────────────────┴───────────────────────┘
-```
-
-### 1. Public Chat & Specialized AI Agents
-* **pLLama Model Serving:** Chat directly with models tuned for Polish (ranging from lightweight 1B/3B edge models to capable 8B and 70B checkpoints).
-* **Content Supervisor Agent:** Built-in verification agents that monitor factual accuracy, detect hallucinations, and evaluate grounded responses.
-* **Session Sharing (Chat Hashes):** Share reproducible conversation states via cryptographic hash identifiers.
-
-### 2. Live News Stream & Polarity Classification (3C)
-* **Real-Time Web Feed:** Continuous ingestion from major Polish news portals and international sources.
-* **3-Class Polarity Scoring:** Incoming articles are scored in real time by the `radlab/polarity-3c` RoBERTa model:
-  * **Positive:** Constructive, progress-oriented, or optimistic reports.
-  * **Negative:** News involving crises, conflicts, or systemic issues.
-  * **Ambivalent / Neutral:** Fact-centric reporting or balanced emotional perspectives.
-
-### 3. Information Browser & Knowledge Explorer
-* **Emergent Topic Discovery:** Groups thousands of articles into coherent daily clusters without rigid manual taxonomies.
-* **Information Relationship Graphs:** Maps connections between events, entities, and sources over time.
-* **Source Propagation Analysis:** Traces which publications initiated specific coverage and how stories propagated across the digital ecosystem.
-
-### 4. Public Metrics & Observatory
-* Clear visual dashboards tracking daily emotional distributions in media, article ingestion volume, and model inference benchmarks.
+Content collection, processing, analysis, and presentation are automated. People supervise the system, with additional methods and models supporting that oversight.
 
 ---
 
-## Technical Infrastructure
+## What Can You Explore?
 
-The Playground is powered by RadLab’s internal stack:
-* **Gateway Layer:** Inbound traffic is handled by **LLM Router**, managing queues, worker balancing, and token streaming.
-* **GPU Inference:** High-throughput serving via **vLLM** and optimized precision quantizations.
-* **Open Weights:** Model checkpoints running on the Playground are released open-source on our Hugging Face organisation.
+### 1. News Stream
+Short summaries of news from Polish and international outlets, presented in Polish regardless of the source language. The system collects, analyses, summarises, and indexes content for further retrieval.
+
+Before publication, a summary must pass checks including similarity to the original for plagiarism detection and topic consistency with the source article. The stream displays recent news rather than a full archive.
+
+### 2. News Creator
+Ask a question about current news, and the Creator prepares an article summarising relevant reports. You can select the last **1, 2, or 3 days** as the source period.
+
+The article comes with a list of source pages and result statistics, including a polarity chart for the analysed texts. This lets you consult the sources and inspect the tone of the material used for the answer.
+
+### 3. Information Browser
+Automatically identifies topics in the media and presents a daily overview of key information. Each analysis covers the previous day — it is not a live view.
+
+Each item includes a topic name, a summary based on a data sample, and its sources.
 
 ---
 
-## Open Access
+## Local Processing and Small Models
 
-RDL Playground AI is completely free for researchers, developers, and students:
-* No accounts or credentials required,
-* No advertising, paywalls, or data monetization,
-* Live at: **[playground.radlab.dev](https://playground.radlab.dev)**
+The entire solution runs locally. Analysed content is not sent to external services, and news data is stored locally and is not used commercially.
+
+The Playground demonstrates what can be achieved with budget hardware — up to **PLN 6,500 including tax**, according to the project description. It uses small generative models with up to **12 billion parameters**, fitting on a graphics card with **24 GB of memory** while leaving room for context. This is a deliberate constraint of the experiment, not a showcase of the largest models.
+
+---
+
+## Access and Experiment Details
+
+* **Application:** [playground.radlab.dev](https://playground.radlab.dev) — no account required.
+* **Experiments and methods:** [RadLab blog](/en/blog/).

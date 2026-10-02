@@ -23,7 +23,7 @@ cards:
     link_label: "Details & privacy engine"
   - title: "RDL Playground AI"
     icon: "flask"
-    text: "An interactive sandbox for testing Polish language models in action, featuring ready-to-run agents and realistic scenarios."
+    text: "An AI testing ground with a news summary stream, articles generated from questions, and daily information overviews. Runs locally, with no account required."
     href: "products/playground"
     link_label: "Details & modules"
 ---
