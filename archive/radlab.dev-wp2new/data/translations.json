@@ -1,0 +1,99 @@
+{
+ "bledy-podczas-uczenia-i-douczania-transformatorow": {
+  "en": "bledy-podczas-uczenia-i-douczania-transformatorow",
+  "verified": true
+ },
+ "ciekawostki-o-transformatorach": {
+  "en": "ciekawostki-o-transformatorach",
+  "verified": true
+ },
+ "czy-mozna-w-prosty-sposob-wprowadzic-baze-wiedzy-dla-genai": {
+  "en": "can-a-knowledge-base-be-easily-introduced-for-genai",
+  "verified": true,
+  "shared_images": 5
+ },
+ "czy-prawa-natury-mozna-zlamac": {
+  "en": "is-it-possible-to-break-the-laws-of-nature",
+  "verified": true,
+  "shared_images": 7
+ },
+ "dwa-nowe-modele-encoderow-dla-polskiego": {
+  "en": "dwa-nowe-modele-encoderow-dla-polskiego",
+  "verified": true
+ },
+ "eksplorator-informacji-nie-mlotek-a-skalpel": {
+  "en": "eksplorator-informacji-nie-mlotek-a-skalpel",
+  "verified": true
+ },
+ "ekstrakcyjne-qa-nasz-model-polish-qa-v2": {
+  "en": "ekstrakcyjne-qa-nasz-model-polish-qa-v2",
+  "verified": true
+ },
+ "llm-router": {
+  "en": "llm-router-a-connector-between-an-application-and-generative-models",
+  "verified": true,
+  "shared_images": 2
+ },
+ "narzedzia-do-tworzenia-modeli-word2vec": {
+  "en": "narzedzia-do-tworzenia-modeli-word2vec",
+  "verified": true
+ },
+ "nowe-modele-gpt2": {
+  "en": "nowe-modele-gpt2",
+  "verified": true
+ },
+ "obsluga-plikow": {
+  "en": "obsluga-plikow",
+  "verified": true
+ },
+ "odszumiacz-tekstow": {
+  "en": "odszumiacz-tekstow",
+  "verified": true
+ },
+ "pllama3-1-8b-czyli-srednio-duze-a-nawet-male-genai-dla-polskiego": {
+  "en": "pllama3-1-8b-czyli-srednio-duze-a-nawet-male-genai-dla-polskiego",
+  "verified": true
+ },
+ "pllama3-2-1b-3b-male-genai-dla-polskiego": {
+  "en": "pllama3-2-1b-3b-male-genai-dla-polskiego",
+  "verified": true
+ },
+ "pllama3-8b-70b-genai-dla-polskiego": {
+  "en": "pllama3-8b-70b-genai-dla-polskiego",
+  "verified": true
+ },
+ "polaryzacja-3c-model-z-plg-na-hf": {
+  "en": "polaryzacja-3c-model-z-plg-na-hf",
+  "verified": true
+ },
+ "przegladarka-informacji": {
+  "en": "przegladarka-informacji",
+  "verified": true
+ },
+ "qa-uczenie-gpu-cpu": {
+  "en": "qa-uczenie-gpu-cpu",
+  "verified": true
+ },
+ "qa-uczenie-transformatorow": {
+  "en": "qa-uczenie-transformatorow",
+  "verified": true
+ },
+ "rag-i-problemy": {
+  "en": "rag-i-problemy",
+  "verified": true
+ },
+ "slowa-w-2d": {
+  "en": "slowa-w-2d",
+  "verified": true
+ },
+ "upubliczniamy-kody": {
+  "en": "we-make-the-codes-publicly-available-open-source",
+  "verified": true,
+  "shared_images": 2
+ },
+ "zmrozone-kopalnie-kryptowalut": {
+  "en": "are-crypto-mining-farms-frozen",
+  "verified": true,
+  "shared_images": 5
+ }
+}
