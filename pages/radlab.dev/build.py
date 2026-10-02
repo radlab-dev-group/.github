@@ -717,10 +717,17 @@ class Site:
         return f"{self.cfg.base}/assets/img/{name}" if path.exists() else None
 
     def context(self, lang: str, *, switch_href: str | None = None) -> dict:
+        seo = self.cfg.raw.get("seo", {})
+        localized_seo = seo.get(lang, {})
         return {
             "lang": lang,
             "ui": self.ui[lang],
             "site": self.cfg.site,
+            "seo": localized_seo,
+            "page_description": localized_seo.get("description", self.cfg.site.get("description", "")),
+            "page_keywords": localized_seo.get("keywords", []),
+            "robots": seo.get("robots", "index, follow"),
+            "language_homes": {code: self.cfg.href(code, "") for code in self.cfg.langs},
             "href": lambda path, current=lang: self.cfg.href(current, path),
             "switch_href": switch_href if switch_href is not None else self.other_index(lang),
             "base": self.cfg.base,
@@ -792,7 +799,8 @@ class Site:
         ctx["sections"] = self.sections[lang]
         # One post leads the blog block with its picture, the rest sit beside it.
         ctx["latest"] = self.posts[lang][:4]
-        ctx["page_title"] = self.cfg.site["name"]
+        ctx["page_title"] = ctx["seo"].get("title", self.cfg.site["name"])
+        ctx["language_auto"] = True
         ctx["canonical"] = self.cfg.canonical(lang, "")
         ctx["alternates"] = self.home_alternates(lang)
         self.write(self.strip(self.cfg.href(lang, "")), template.render(**ctx))
@@ -816,6 +824,7 @@ class Site:
                 "page_number": index,
                 "page_count": len(pages),
                 "page_title": self.ui[lang].get("blog_title", "Blog"),
+                "page_description": ctx["seo"].get("blog_description", ctx["page_description"]),
                 "canonical": self.cfg.canonical(lang, path),
                 "prev_url": self.cfg.href(lang, "blog" if index == 2 else f"blog/page/{index-1}"),
                 "next_url": self.cfg.href(lang, f"blog/page/{index+1}"),
@@ -833,6 +842,7 @@ class Site:
             "outline": article_outline(post.html),
             "page_title": post.title,
             "page_description": post.description,
+            "page_keywords": list(dict.fromkeys(ctx["page_keywords"] + post.meta.get("tags", []))),
             "canonical": self.cfg.canonical(post.lang, post.path),
             "og_image": self.pipeline.og_image(post),
             "counterpart": mate,
@@ -851,6 +861,7 @@ class Site:
             "content": product.html,
             "page_title": product.title,
             "page_description": product.description,
+            "page_keywords": list(dict.fromkeys(ctx["page_keywords"] + product.meta.get("tags", []))),
             "canonical": self.cfg.canonical(product.lang, product.path),
             "counterpart": mate,
             "alternates": self.alternates(path=product.path, lang=product.lang,
@@ -900,7 +911,9 @@ class Site:
             f"User-agent: *\nAllow: /\nSitemap: {self.cfg.url}/sitemap.xml\n", encoding="utf-8")
         self.progress.detail("Wrote: robots.txt")
         template = self.env.get_template("404.html")
-        self.write("404.html", template.render(**self.context(self.cfg.default_lang)))
+        ctx = self.context(self.cfg.default_lang)
+        ctx.update({"robots": "noindex, follow", "canonical": self.cfg.url + self.cfg.base + "/404.html"})
+        self.write("404.html", template.render(**ctx))
 
     def write_static(self) -> None:
         target = self.dist / "assets"

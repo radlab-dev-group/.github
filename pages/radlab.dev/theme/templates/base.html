@@ -1,10 +1,14 @@
 <!doctype html>
-<html lang="{{ lang }}"{% if site.url %} dir="ltr"{% endif %}>
+<html lang="{{ lang }}"{% if site.url %} dir="ltr"{% endif %}
+      data-default-lang="{{ site.default_lang }}" data-language-auto="{{ 'true' if language_auto else 'false' }}"
+      {% for code, url in language_homes.items() %}data-language-{{ code }}="{{ url }}" {% endfor %}>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{% block title %}{{ page_title }}{% if page_title != site.name %} · {{ site.name }}{% endif %}{% endblock %}</title>
 <meta name="description" content="{{ page_description | default(site.description, true) | striptags | escape }}">
+<meta name="robots" content="{{ robots }}">
+{% if page_keywords %}<meta name="keywords" content="{{ page_keywords | join(', ') }}">{% endif %}
 <link rel="canonical" href="{{ canonical | default(site.url + base + '/', true) }}">
 {#- hreflang only when a real counterpart exists; a self-only set is noise -#}
 {% for code, url in alternates | default([], true) %}
@@ -20,6 +24,17 @@
 {% set share_image = og_image | default(og_default, true) %}
 {% if share_image %}<meta property="og:image" content="{{ site.url }}{{ share_image }}">{% endif %}
 <meta name="twitter:card" content="{% if share_image %}summary_large_image{% else %}summary{% endif %}">
+{% set structured_data = {
+  '@context': 'https://schema.org', '@type': 'WebPage',
+  'name': page_title | default(site.name, true),
+  'description': page_description | default(site.description, true) | striptags,
+  'url': canonical | default(site.url + base + '/', true), 'inLanguage': lang,
+  'keywords': page_keywords,
+  'isPartOf': {'@type': 'WebSite', 'name': site.name, 'url': site.url + base + '/'},
+  'publisher': {'@type': 'Organization', 'name': site.name, 'url': site.url,
+                'sameAs': [site.github, site.huggingface, site.linkedin]}
+} %}
+<script type="application/ld+json">{{ structured_data | tojson }}</script>
 
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0e0f12">
@@ -27,15 +42,17 @@
 <link rel="apple-touch-icon" href="{{ base }}/assets/img/apple-touch.png">
 <link rel="alternate" type="application/atom+xml" title="{{ site.name }} — {{ ui.blog_title }}" href="{{ href('') }}feed.xml">
 
-{#- Applied before first paint so a stored dark choice never flashes light. The
-    .js flag is what lets reveal-on-scroll hide elements without a flash of
-    content that then jumps back: no script, nothing hidden. -#}
+{#- Preferences run before first paint; no script, nothing hidden. -#}
+<script src="{{ base }}/assets/js/preferences.js"></script>
+{% if site.ga_code %}
+<script async src="https://www.googletagmanager.com/gtag/js?id={{ site.ga_code | urlencode }}"></script>
 <script>
-(function(){document.documentElement.classList.add('js');
-try{var t=localStorage.getItem('radlab-theme');
-if(!t)t=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
-document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', {{ site.ga_code | tojson }});
 </script>
+{% endif %}
 <link rel="stylesheet" href="{{ base }}/assets/css/site.css">
 <link rel="stylesheet" href="{{ base }}/assets/css/highlight.css">
 </head>

@@ -77,3 +77,22 @@ a domyślna konfiguracja w `config/site.toml` (`--config` pozwala wskazać inną
 Układ źródeł nie zmienia publicznych adresów stron i zasobów: wspólne zasoby
 są publikowane pod `/assets/`, a oryginalne media wpisów pod
 `/<lang>/blog/posts/<slug>/media/` — bez prefiksu `content/`.
+
+## SEO, analityka i preferencje
+
+W `config/site.toml` pole `site.ga_code` włącza Google Analytics na wszystkich
+stronach HTML, również na stronie 404. Pusta wartość wyłącza integrację.
+Integracja nie zawiera banera ani mechanizmu zgody na analitykę — przed publikacją
+należy zapewnić odpowiednią obsługę zgód i informację o prywatności.
+
+Sekcje `seo.pl` i `seo.en` zawierają tytuły, opisy, hasła tematyczne oraz opisy
+bloga. Produkty i artykuły zachowują własne tytuły/opisy, a ich tagi uzupełniają
+hasła. Builder dodaje metadane i dane strukturalne Schema.org; 404 ma `noindex`.
+Google nie wykorzystuje `meta keywords` do rankingu — istotne pozostają treści,
+tytuły, opisy, poprawne adresy kanoniczne, hreflang i sitemap.
+
+Na stronach głównych język wybierany jest według kolejności `navigator.languages`
+(PL/EN, domyślnie PL). Bezpośrednie adresy produktów i artykułów nie przekierowują.
+Ręczny wybór języka i motywu jest zapamiętywany w `localStorage` i ma pierwszeństwo.
+Bez ręcznego wyboru motyw reaguje również na zmianę ustawień systemu w trakcie wizyty.
+Usunięcie kluczy `radlab-language` i `radlab-theme` przywraca automatyczny wybór.

@@ -1,49 +1,13 @@
 /* Progressive enhancements only. Everything here decorates: the theme, the
  * header and the landing page are already correct in HTML and CSS, so a blocked
- * or absent script costs a little motion and nothing else. The inline snippet in
+ * or absent script costs a little motion and nothing else. preferences.js in
  * <head> applies the stored theme and the `.js` flag before first paint; the
  * `.js` flag is what lets CSS hide-then-reveal without a flash. */
 (function () {
   'use strict';
 
-  var KEY = 'radlab-theme';
   var root = document.documentElement;
   var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  /* ------------------------------------------------------------------ theme */
-
-  function preferred() {
-    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-  }
-
-  function apply(theme) {
-    root.setAttribute('data-theme', theme);
-    var buttons = document.querySelectorAll('.theme-toggle');
-    for (var i = 0; i < buttons.length; i++) {
-      buttons[i].setAttribute('aria-pressed', theme === 'dark' ? 'true' : 'false');
-    }
-  }
-
-  // Reflect the effective theme so aria-pressed is truthful on load.
-  apply(root.getAttribute('data-theme') || preferred());
-
-  document.addEventListener('click', function (event) {
-    var button = event.target.closest ? event.target.closest('.theme-toggle') : null;
-    if (!button) return;
-    var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-    apply(next);
-    try { localStorage.setItem(KEY, next); } catch (error) { /* private mode */ }
-  });
-
-  // Follow the OS while the user has not made an explicit choice.
-  var media = window.matchMedia('(prefers-color-scheme: dark)');
-  var onChange = function (event) {
-    var stored = null;
-    try { stored = localStorage.getItem(KEY); } catch (error) { stored = null; }
-    if (!stored) apply(event.matches ? 'dark' : 'light');
-  };
-  if (media.addEventListener) media.addEventListener('change', onChange);
-  else if (media.addListener) media.addListener(onChange);
 
   /* -------------------------------------------------- header state and rule */
 
