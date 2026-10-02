@@ -1,0 +1,662 @@
+#!/usr/bin/env python3
+"""Okienko do zarządzania wpisami bloga radlab.dev.
+
+Uruchomienie (Python z rozszerzeniem Tk, np. /usr/bin/python3):
+
+    /usr/bin/python3 admin.py
+    LLM_ROUTER_API=http://127.0.0.1:8080 /usr/bin/python3 admin.py
+
+Funkcje: dodawanie, edycja i usuwanie wpisów (PL/EN) oraz tłumaczenie wpisu
+na drugi język przez LLM Router (llm_router_lib). Tłumaczenie tworzy wersję
+roboczą (draft) z skopiowanymi mediami i wpisem w config/translations.json.
+
+Logika leży w admin_core.py; to plik jest wyłącznie warstwą GUI.
+"""
+
+from __future__ import annotations
+
+import queue
+import re
+import sys
+import threading
+import traceback
+from collections import OrderedDict
+from datetime import date
+from pathlib import Path
+try:
+    import tkinter
+except ImportError:  # pragma: no cover
+    sys.stderr.write(
+        "Brak modułu tkinter — uruchom skrypt interpreterem z rozszerzeniem Tk,\n"
+        "np.: /usr/bin/python3 admin.py\n"
+    )
+    raise
+from tkinter import Tk, messagebox
+from tkinter import ttk
+
+ROOT = Path(__file__).resolve().parent
+sys.path.insert(0, str(ROOT))
+
+from admin_core import (  # noqa: E402
+    ContentStore,
+    DEFAULT_MAX_NEW_TOKENS,
+    DEFAULT_LANG,
+    LANGS,
+    LoadedPost,
+    PostError,
+    Translator,
+    translate_post,
+    today_iso,
+)
+
+DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
+LANG_LABELS = {"pl": "PL", "en": "EN"}
+
+
+class WorkerResult:
+    """Outcome of a background job, delivered to the Tk main loop."""
+
+    def __init__(self, ok: bool, message: str = "", payload: object = None,
+                 final: bool = True, show_error: bool = True,
+                 progress_value: float | None = None):
+        self.ok = ok
+        self.message = message
+        self.payload = payload
+        self.final = final
+        self.show_error = show_error
+        self.progress_value = progress_value
+
+
+class AdminApp:
+    def __init__(self, root: Tk):
+        self.root = root
+        self.store = ContentStore(ROOT)
+        self.translator: Translator | None = None
+        self.translator_lock = threading.Lock()
+        self.jobs: queue.Queue[WorkerResult] = queue.Queue()
+        self.busy = False
+        self.current: LoadedPost | None = None   # loaded from disk
+        self.current_slug: str | None = None     # slug as loaded (rename check)
+        self._loaded_id: str | None = None       # "lang:slug" shown in the editor
+        self.models: list[str] = []
+
+        root.title("RadLab — panel zarządzania blogiem")
+        root.geometry("1280x820")
+        self._build_ui()
+        self.refresh_list(select=None)
+        self.root.after(150, self._poll_jobs)
+        self._start_router_probe()
+
+    # ------------------------------------------------------------ ui layout
+
+    def _build_ui(self) -> None:
+        pad = {"padx": 6, "pady": 4}
+        body = ttk.Frame(self.root)
+        body.pack(fill="both", expand=True)
+
+        toolbar = ttk.Frame(body)
+        toolbar.pack(fill="x", **pad)
+        self.btn_new = ttk.Button(toolbar, text="Nowy wpis…", command=self.on_new)
+        self.btn_new.pack(side="left", padx=3)
+        self.btn_save = ttk.Button(toolbar, text="Zapisz", command=self.on_save, state="disabled")
+        self.btn_save.pack(side="left", padx=3)
+        self.btn_delete = ttk.Button(toolbar, text="Usuń", command=self.on_delete, state="disabled")
+        self.btn_delete.pack(side="left", padx=3)
+        self.btn_translate = ttk.Button(toolbar, text="Tłumacz…", command=self.on_translate, state="disabled")
+        self.btn_translate.pack(side="left", padx=3)
+        ttk.Button(toolbar, text="Odśwież",
+                   command=lambda: self.refresh_list(select=self.selected())).pack(side="left", padx=3)
+
+        paned = ttk.PanedWindow(body, orient="horizontal")
+        paned.pack(fill="both", expand=True, **pad)
+
+        list_frame = ttk.LabelFrame(paned, text="Wpisy")
+        paned.add(list_frame, weight=1)
+        columns = ("lang", "date", "status", "title")
+        self.tree = ttk.Treeview(list_frame, columns=columns, show="headings", selectmode="browse")
+        for key, text, width in (("lang", "J.", 36), ("date", "Data", 90),
+                                 ("status", "Status", 90), ("title", "Tytuł", 420)):
+            self.tree.heading(key, text=text)
+            self.tree.column(key, width=width, anchor="w")
+        self.tree.column("lang", stretch=False)
+        self.tree.column("status", stretch=False)
+        scroll = ttk.Scrollbar(list_frame, orient="vertical", command=self.tree.yview)
+        self.tree.configure(yscrollcommand=scroll.set)
+        self.tree.pack(side="left", fill="both", expand=True)
+        scroll.pack(side="right", fill="y")
+        self.tree.bind("<<TreeviewSelect>>", lambda _e: self.on_select())
+
+        editor = ttk.LabelFrame(paned, text="Edytor")
+        paned.add(editor, weight=3)
+        grid = ttk.Frame(editor)
+        grid.pack(fill="both", expand=True, padx=8, pady=6)
+        grid.columnconfigure(1, weight=1)
+        grid.columnconfigure(3, weight=1)
+
+        self.entry_title = self._field(grid, 0, 0, "Tytuł *")
+        self.entry_date = self._field(grid, 0, 2, "Data *", width=12)
+        self.entry_slug = self._field(grid, 1, 0, "Slug *")
+        self.entry_desc = self._field(grid, 1, 2, "Opis (SEO)")
+        self.entry_tags = self._field(grid, 2, 0, "Tagi (przecinki)")
+        self.entry_cats = self._field(grid, 2, 2, "Kategorie (przecinki)")
+        self.entry_image = self._field(grid, 3, 0, "Obraz (media/…)")
+        self.chk_draft = ttk.Checkbutton(grid, text="wersja robocza (draft)")
+        self.chk_draft.grid(row=3, column=2, sticky="w")
+
+        body_frame = ttk.LabelFrame(grid, text="Treść (Markdown)")
+        body_frame.grid(row=4, column=0, columnspan=4, sticky="nsew", pady=(6, 0))
+        grid.rowconfigure(4, weight=1)
+        self.txt_body = tkinter.Text(body_frame, wrap="none", undo=True,
+                                     font=("monospace", 10))
+        body_scroll = ttk.Scrollbar(body_frame, orient="vertical", command=self.txt_body.yview)
+        self.txt_body.configure(yscrollcommand=body_scroll.set)
+        self.txt_body.pack(side="left", fill="both", expand=True)
+        body_scroll.pack(side="right", fill="y")
+        self.txt_body.bind("<Tab>", self._insert_tab)
+
+        self.status_var = tkinter.StringVar(value="Gotowe")
+        status = ttk.Label(body, textvariable=self.status_var, relief="sunken", anchor="w")
+        status.pack(fill="x", side="bottom")
+        self.progress = ttk.Progressbar(body, mode="determinate", maximum=100)
+        self.progress.pack(fill="x", side="bottom")
+        self._update_editor_buttons()
+
+    def _field(self, parent: ttk.Frame, row: int, col: int, label: str,
+               width: int | None = None) -> ttk.Entry:
+        ttk.Label(parent, text=label).grid(row=row, column=col, sticky="w", padx=(0, 6), pady=3)
+        entry = ttk.Entry(parent)
+        if width:
+            entry.configure(width=width)
+        entry.grid(row=row, column=col + 1, sticky="ew", pady=3)
+        return entry
+
+    def _insert_tab(self, _event) -> str:
+        self.txt_body.insert("insert", "    ")
+        return "break"
+
+    # ------------------------------------------------------------- post list
+
+    def selected(self) -> str | None:
+        # item id is the "lang:slug" key set at insert time
+        item = self.tree.selection()
+        return item[0] if item else None
+
+    def refresh_list(self, select: str | None = None) -> None:
+        self.tree.delete(*self.tree.get_children())
+        for post in self.store.list_posts():
+            status = "draft" if post.draft else ("✓ tłum." if post.counterpart else "brak tłum.")
+            self.tree.insert(
+                "", "end",
+                id=f"{post.lang}:{post.slug}",
+                values=(LANG_LABELS.get(post.lang, post.lang), post.date, status, post.title),
+                tags=("draft",) if post.draft else (),
+            )
+        self.tree.tag_configure("draft", foreground="#8a6d00")
+        if select:
+            self.tree.selection_set(select)
+            self.tree.see(select)
+
+    def on_select(self) -> None:
+        selection = self.selected()
+        # re-selecting an already-loaded post would re-fire this event through
+        # refresh_list() forever; the id guard breaks the loop
+        if not selection or self.busy or self._loaded_id == selection:
+            return
+        if self._confirm_discard():
+            return
+        lang, _, slug = selection.partition(":")
+        try:
+            self._load_into_editor(self.store.load_post(lang, slug))
+            self.refresh_list(select=selection)
+        except PostError as exc:
+            messagebox.showerror("RadLab", str(exc))
+
+    def _load_into_editor(self, post: LoadedPost) -> None:
+        self.current = post
+        self.current_slug = post.slug
+        self._loaded_id = f"{post.lang}:{post.slug}" if post.slug else None
+        meta = post.meta
+        self.entry_title.delete(0, "end")
+        self.entry_title.insert(0, str(meta.get("title", "")))
+        self.entry_date.delete(0, "end")
+        date_value = meta.get("date")
+        if hasattr(date_value, "isoformat"):
+            date_value = date_value.isoformat()
+        self.entry_date.insert(0, str(date_value or today_iso())[:10])
+        self.entry_slug.delete(0, "end")
+        self.entry_slug.insert(0, str(meta.get("slug", post.slug)))
+        self.entry_desc.delete(0, "end")
+        self.entry_desc.insert(0, str(meta.get("description", "")))
+        self.entry_tags.delete(0, "end")
+        self.entry_tags.insert(0, ", ".join(str(t) for t in (meta.get("tags") or [])))
+        self.entry_cats.delete(0, "end")
+        self.entry_cats.insert(0, ", ".join(str(c) for c in (meta.get("categories") or [])))
+        self.entry_image.delete(0, "end")
+        self.entry_image.insert(0, str(meta.get("image", "")))
+        if meta.get("draft"):
+            self.chk_draft.state(["selected"])
+        else:
+            self.chk_draft.state(["!selected"])
+        self.txt_body.delete("1.0", "end")
+        self.txt_body.insert("1.0", post.body)
+        self._update_editor_buttons()
+
+    def _update_editor_buttons(self) -> None:
+        has_post = bool(self.current)
+        state = "normal" if has_post and not self.busy else "disabled"
+        self.btn_save.configure(state=state)
+        self.btn_delete.configure(state=state)
+        self.btn_translate.configure(state=state)
+
+    def _is_dirty(self) -> bool:
+        if self.current is None:
+            return False
+        meta = self.current.meta
+        meta_date = meta.get("date")
+        if hasattr(meta_date, "isoformat"):
+            meta_date = meta_date.isoformat()
+        return (
+            self.entry_title.get().strip() != str(meta.get("title", ""))
+            or self.entry_date.get().strip()[:10] != str(meta_date or "")[:10]
+            or self.entry_slug.get().strip() != str(meta.get("slug", self.current.slug))
+            or self.entry_desc.get().strip() != str(meta.get("description", ""))
+            or self.entry_tags.get().strip() != ", ".join(str(t) for t in (meta.get("tags") or []))
+            or self.entry_cats.get().strip() != ", ".join(str(c) for c in (meta.get("categories") or []))
+            or self.entry_image.get().strip() != str(meta.get("image", ""))
+            or bool(self.chk_draft.instate(["selected"])) != bool(meta.get("draft", False))
+            or self.txt_body.get("1.0", "end-1c") != self.current.body
+        )
+
+    def _confirm_discard(self) -> bool:
+        """Ask before throwing away unsaved edits; True means abort the action."""
+        if not self._is_dirty():
+            return False
+        answer = messagebox.askyesnocancel(
+            "RadLab", "Masz niezapisane zmiany. Zapisać przed kontynuowaniem?")
+        if answer is None:
+            return True
+        if answer:
+            return not self._save_current(silent=True)
+        return False
+
+    # ------------------------------------------------------------------ CRUD
+
+    def on_new(self) -> None:
+        if self.busy:
+            return
+        if self._confirm_discard():
+            return
+        dlg = LanguageDialog(self.root)
+        if dlg.run() is None:
+            return
+        lang = dlg.lang
+        post = LoadedPost(
+            lang=lang, slug="", body="", path=Path("."),
+            meta=OrderedDict([
+                ("title", ""), ("date", date.today()), ("slug", ""),
+                ("lang", lang), ("draft", True),
+            ]),
+        )
+        self._load_into_editor(post)
+        self.refresh_list()
+        self.status_var.set(f"Nowy wpis ({lang}) — uzupełnij pola i zapisz")
+        self.entry_title.focus_set()
+
+    def _collect_form(self) -> tuple[OrderedDict, str] | None:
+        if self.current is None:
+            return None
+        title = self.entry_title.get().strip()
+        date_text = self.entry_date.get().strip()
+        slug = self.entry_slug.get().strip()
+        if not title:
+            messagebox.showerror("RadLab", "Podaj tytuł wpisu.")
+            return None
+        if not DATE_RE.match(date_text):
+            messagebox.showerror("RadLab", "Data w formacie RRRR-MM-DD.")
+            return None
+        if not slug:
+            slug = slugify_title(title)
+            self.entry_slug.delete(0, "end")
+            self.entry_slug.insert(0, slug)
+        if not re.match(r"^[a-z0-9]+(-[a-z0-9]+)*$", slug):
+            messagebox.showerror("RadLab", "Slug może zawierać małe litery, cyfry i myślniki.")
+            return None
+        meta: "OrderedDict[str, object]" = OrderedDict()
+        # preserve keys we do not edit in the form (wp_id, translation_of)
+        for key, value in self.current.meta.items():
+            if key in ("wp_id", "translation_of"):
+                meta[key] = value
+        meta["title"] = title
+        meta["date"] = date_text
+        meta["updated"] = date.today()
+        meta["slug"] = slug
+        description = self.entry_desc.get().strip()
+        if description:
+            meta["description"] = description
+        tags = [t.strip() for t in self.entry_tags.get().split(",") if t.strip()]
+        if tags:
+            meta["tags"] = tags
+        categories = [c.strip() for c in self.entry_cats.get().split(",") if c.strip()]
+        if categories:
+            meta["categories"] = categories
+        image = self.entry_image.get().strip()
+        if image:
+            meta["image"] = image
+        meta["lang"] = self.current.lang
+        if self.chk_draft.instate(["selected"]):
+            meta["draft"] = True
+        body = self.txt_body.get("1.0", "end-1c")
+        return meta, body
+
+    def _save_current(self, silent: bool = False) -> bool:
+        if not self.current:
+            return False
+        collected = self._collect_form()
+        if collected is None:
+            return False
+        meta, body = collected
+        lang = str(meta.get("lang", DEFAULT_LANG))
+        new_slug = str(meta["slug"])
+        try:
+            if self.current_slug and new_slug != self.current_slug:
+                if self.store.post_exists(lang, new_slug):
+                    raise PostError(f"wpis {lang}/{new_slug} już istnieje")
+                self.store.rename_post(lang, self.current_slug, new_slug)
+            path = self.store.save_post(lang, new_slug, meta, body)
+        except PostError as exc:
+            messagebox.showerror("RadLab", str(exc))
+            return False
+        self.current = self.store.load_post(lang, new_slug)
+        self.current_slug = new_slug
+        self._loaded_id = f"{lang}:{new_slug}"
+        self.refresh_list(select=f"{lang}:{new_slug}")
+        if not silent:
+            self.status_var.set(f"Zapisano: {path.relative_to(self.store.root)}")
+        return True
+
+    def on_save(self) -> None:
+        if self.busy or not self.current:
+            return
+        self._save_current()
+
+    def on_delete(self) -> None:
+        if self.busy or not self.current:
+            return
+        if self._confirm_discard():
+            return
+        post = self.current
+        if not messagebox.askyesno(
+                "RadLab",
+                f"Usunąć wpis {post.lang}/{post.slug} razem z katalogiem mediów?"):
+            return
+        try:
+            self.store.delete_post(post.lang, post.slug)
+        except PostError as exc:
+            messagebox.showerror("RadLab", str(exc))
+            return
+        self._load_into_editor_empty()
+        self.refresh_list()
+        self.status_var.set(f"Usunięto: {post.lang}/{post.slug}")
+
+    def _load_into_editor_empty(self) -> None:
+        self.entry_title.delete(0, "end")
+        self.entry_date.delete(0, "end")
+        self.entry_date.insert(0, today_iso())
+        self.entry_slug.delete(0, "end")
+        self.entry_desc.delete(0, "end")
+        self.entry_tags.delete(0, "end")
+        self.entry_cats.delete(0, "end")
+        self.entry_image.delete(0, "end")
+        self.chk_draft.state(["selected"])
+        self.txt_body.delete("1.0", "end")
+        self.current = None
+        self.current_slug = None
+        self._loaded_id = None
+        self._update_editor_buttons()
+
+    # ------------------------------------------------------------ translation
+
+    def _start_router_probe(self) -> None:
+        self.status_var.set("Łączenie z LLM Routerem…")
+        self._spawn(self._job_probe)
+
+    def _job_probe(self) -> WorkerResult:
+        try:
+            translator = self._ensure_translator()
+            models = translator.list_models()
+            self.models = models
+            return WorkerResult(True, f"LLM Router: {translator.api} ({len(models)} modeli)")
+        except Exception as exc:  # noqa: BLE001 — router down is not fatal for CRUD
+            return WorkerResult(
+                False,
+                f"LLM Router niedostępny ({exc.__class__.__name__}) — tłumaczenie będzie dostępne po restarcie routera",
+                show_error=False,
+            )
+
+    def _ensure_translator(self) -> Translator:
+        with self.translator_lock:
+            if self.translator is None:
+                self.translator = Translator(model=None)
+            return self.translator
+
+    def on_translate(self) -> None:
+        if self.busy or not self.current:
+            return
+        source = self.current
+        target_lang = "en" if source.lang == "pl" else "pl"
+        counterpart = self.store.find_counterpart(source.lang, source.slug)
+        dlg = TranslateDialog(self.root, source, target_lang, self.models, counterpart)
+        if dlg.run() is None:
+            return
+        self._spawn(self._job_translate, dlg)
+
+    def _job_translate(self, options) -> WorkerResult:
+        try:
+            translator = self._ensure_translator()
+
+            def progress(done: int, total: int, label: str) -> None:
+                self.jobs.put(WorkerResult(
+                    True, f"Tłumaczę: {label} ({done}/{total})",
+                    final=False, show_error=False,
+                    progress_value=int(done / total * 100)))
+
+            loaded = translate_post(
+                self.store, options.source_lang, options.source_slug,
+                options.target_lang, translator,
+                model=options.model, make_draft=options.make_draft,
+                max_new_tokens=options.max_new_tokens, overwrite=options.overwrite,
+                progress=progress,
+            )
+            return WorkerResult(
+                True,
+                f"Przetłumaczono na {options.target_lang.upper()}: {loaded.slug} "
+                f"(wersja robocza, do weryfikacji)",
+                payload=(options.target_lang, loaded.slug),
+            )
+        except PostError as exc:
+            return WorkerResult(False, str(exc))
+        except Exception as exc:  # noqa: BLE001 — surface any router failure
+            return WorkerResult(False, f"Błąd tłumaczenia: {exc}")
+
+    # -------------------------------------------------------------- threading
+
+    def _spawn(self, func, *args) -> None:
+        self.busy = True
+        self.btn_new.configure(state="disabled")
+        self._update_editor_buttons()
+
+        def runner() -> None:
+            try:
+                result = func(*args)
+            except Exception as exc:  # noqa: BLE001
+                result = WorkerResult(False, f"Błąd: {exc}\n{traceback.format_exc()}")
+            self.jobs.put(result)
+
+        threading.Thread(target=runner, daemon=True).start()
+
+    def _poll_jobs(self) -> None:
+        finished = None
+        try:
+            while True:
+                result = self.jobs.get_nowait()
+                if result.message:
+                    self.status_var.set(result.message)
+                if result.progress_value is not None:
+                    self.progress.configure(value=result.progress_value)
+                if not result.final:
+                    continue
+                if result.payload is not None:
+                    lang, slug = result.payload
+                    self._load_into_editor(self.store.load_post(lang, slug))
+                    self.refresh_list(select=f"{lang}:{slug}")
+                    self.progress.configure(value=0)
+                finished = result
+        except queue.Empty:
+            pass
+        if finished is not None:
+            self.busy = False
+            self.btn_new.configure(state="normal")
+            self._update_editor_buttons()
+            if not finished.ok and finished.show_error:
+                messagebox.showerror("RadLab", finished.message or "Błąd")
+        self.root.after(150, self._poll_jobs)
+
+    def on_closing(self) -> None:
+        if self.translator is not None:
+            try:
+                self.translator.close()
+            except Exception:
+                pass
+        self.root.destroy()
+
+
+def slugify_title(title: str) -> str:
+    from admin_core import slugify
+    return slugify(title)
+
+
+class LanguageDialog:
+    def __init__(self, parent):
+        self.lang: str | None = None
+        self.window = tkinter.Toplevel(parent)
+        self.window.title("Nowy wpis")
+        self.window.transient(parent)
+        ttk.Label(self.window, text="Język wpisu:").grid(row=0, column=0, padx=10, pady=10, sticky="w")
+        self.var = tkinter.StringVar(value=DEFAULT_LANG)
+        for code in LANGS:
+            ttk.Radiobutton(self.window, text=f"{code.upper()} ({code})",
+                            value=code, variable=self.var).grid(
+                row=0, column=1, sticky="w", padx=4, pady=2)
+        ttk.Button(self.window, text="OK", command=self._ok).grid(row=1, column=0, pady=8)
+        ttk.Button(self.window, text="Anuluj", command=self.window.destroy).grid(row=1, column=1, pady=8)
+
+    def _ok(self) -> None:
+        self.lang = self.var.get()
+        self.window.destroy()
+
+    def run(self) -> "LanguageDialog | None":
+        self.window.grab_set()
+        self.window.wait_window()
+        return self if self.lang is not None else None
+
+
+class TranslateDialog:
+    def __init__(self, parent, source: LoadedPost, target_lang: str,
+                 models: list[str], counterpart: str | None):
+        self.source_lang = source.lang
+        self.source_slug = source.slug
+        self.target_lang = target_lang
+        self.model: str | None = None
+        self.make_draft = True
+        self.overwrite = False
+        self.max_new_tokens = DEFAULT_MAX_NEW_TOKENS
+
+        self.window = tkinter.Toplevel(parent)
+        self.window.title("Tłumaczenie wpisu")
+        self.window.transient(parent)
+        self.window.resizable(False, False)
+        grid = ttk.Frame(self.window)
+        grid.pack(fill="both", expand=True, padx=12, pady=10)
+        grid.columnconfigure(1, weight=1)
+
+        ttk.Label(grid, text=f"Źródło: {source.lang.upper()}/{source.slug}").grid(
+            row=0, column=0, columnspan=2, sticky="w")
+        ttk.Label(grid, text=f"Cel: {target_lang.upper()}").grid(row=1, column=0, sticky="w")
+
+        ttk.Label(grid, text="Model:").grid(row=2, column=0, sticky="w", pady=4)
+        self.model_var = tkinter.StringVar()
+        if models:
+            self.model_var.set(models[0])
+        self.model_box = ttk.Combobox(grid, textvariable=self.model_var, width=42,
+                                      values=models)
+        self.model_box.grid(row=2, column=1, sticky="ew", pady=4)
+        if not models:
+            ttk.Label(grid, text="(router niedostępny — podaj nazwę modelu ręcznie)",
+                      foreground="#888").grid(row=3, column=1, sticky="w")
+
+        ttk.Label(grid, text="Maks. tokeny (treść):").grid(row=4, column=0, sticky="w", pady=4)
+        self.tokens_var = tkinter.StringVar(value=str(DEFAULT_MAX_NEW_TOKENS))
+        ttk.Entry(grid, textvariable=self.tokens_var, width=12).grid(row=4, column=1, sticky="w", pady=4)
+
+        self.draft_var = tkinter.BooleanVar(value=True)
+        ttk.Checkbutton(grid, text="utwórz jako wersję roboczą (draft)",
+                        variable=self.draft_var).grid(row=5, column=0, columnspan=2, sticky="w")
+        overwrite_row = ttk.Frame(grid)
+        overwrite_row.grid(row=6, column=0, columnspan=2, sticky="w")
+        self.overwrite_var = tkinter.BooleanVar(value=False)
+        self.overwrite_box = ttk.Checkbutton(
+            overwrite_row,
+            text="nadpisz istniejące tłumaczenie" if counterpart
+            else "nadpisz (brak istniejącego tłumaczenia)",
+            variable=self.overwrite_var)
+        self.overwrite_box.pack(side="left")
+        if counterpart:
+            ttk.Label(overwrite_row, text=f"(obecne: {counterpart})",
+                      foreground="#888").pack(side="left", padx=6)
+
+        buttons = ttk.Frame(grid)
+        buttons.grid(row=7, column=0, columnspan=2, pady=(10, 0))
+        ttk.Button(buttons, text="Tłumacz", command=self._ok).pack(side="left", padx=4)
+        ttk.Button(buttons, text="Anuluj", command=self.window.destroy).pack(side="left", padx=4)
+
+    def _ok(self) -> None:
+        model = self.model_var.get().strip()
+        if not model:
+            messagebox.showerror("Tłumaczenie", "Podaj model.")
+            return
+        try:
+            tokens = int(self.tokens_var.get().strip())
+            if tokens <= 0:
+                raise ValueError
+        except ValueError:
+            messagebox.showerror("Tłumaczenie", "Liczba tokenów musi być dodatnią liczbą.")
+            return
+        self.model = model
+        self.max_new_tokens = tokens
+        self.make_draft = bool(self.draft_var.get())
+        self.overwrite = bool(self.overwrite_var.get())
+        self.window.destroy()
+
+    def run(self) -> "TranslateDialog | None":
+        self.window.grab_set()
+        self.window.wait_window()
+        return self
+
+
+def main() -> None:
+    root = Tk()
+    try:
+        style = ttk.Style(root)
+        if "vista" in style.theme_names():
+            style.theme_use("vista")
+        elif "clam" in style.theme_names():
+            style.theme_use("clam")
+    except Exception:
+        pass
+    app = AdminApp(root)
+    root.protocol("WM_DELETE_WINDOW", app.on_closing)
+    root.mainloop()
+
+
+if __name__ == "__main__":
+    main()
