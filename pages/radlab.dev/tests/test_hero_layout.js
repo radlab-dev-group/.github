@@ -40,9 +40,15 @@ for (const [viewport, column, count] of [[1440, 460, 8], [1440, 460, 10],
         const starBox = star.getBoundingClientRect();
         boxes.forEach((box, index) => {
           const x = box.left + box.width / 2, y = box.top + box.height / 2;
+          const chip = document.querySelectorAll('.chip')[index];
+          const arm = new DOMMatrix(getComputedStyle(chip.parentElement).transform);
+          const inclination = parseFloat(getComputedStyle(chip).getPropertyValue('--inc'));
+          // Chromium hit testing ignores the painted order of these 3D planes.
+          // Check the far-side depth, projected position and dimming instead.
           if (Math.hypot(x - starBox.left - starBox.width / 2,
               y - starBox.top - starBox.height / 2) < starBox.width / 2 - 5 &&
-              document.elementsFromPoint(x, y).find(element => element.matches('.orb, .chip')) === star)
+              arm.m42 * Math.sin(inclination * Math.PI / 180) < -100 &&
+              parseFloat(getComputedStyle(chip).opacity) < 0.5)
             behindStar = true;
           if (!box.width || !box.height || box.left < 0 || box.right > ${viewport})
             errors.push('invalid bounds at phase ' + phase + ': ' + index);
