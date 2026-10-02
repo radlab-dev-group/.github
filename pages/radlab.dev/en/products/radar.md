@@ -56,7 +56,7 @@ Raw items are cleaned and serialized into structured JSONL with key metadata:
 ### Stage 3: Dense Feature Representation (Sentence-Transformers)
 Each document is encoded into a **512-dimensional embedding** using a Sentence-Transformers model fine-tuned for Polish syntax and semantics:
 * Inputs beyond 508 tokens are safely truncated,
-* Embeddings undergo $L_2$ normalization for direct cosine metric computations,
+* Embeddings undergo L₂ normalization for direct cosine metric computations,
 * High-throughput batch inference (batch size 500) maximizes GPU throughput.
 
 ### Stage 4: Non-linear Dimensionality Reduction

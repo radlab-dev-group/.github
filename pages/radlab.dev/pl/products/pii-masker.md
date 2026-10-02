@@ -56,18 +56,18 @@ Surowy tekst z danymi wrażliwymi
 Moduł `fast_masker` aplikuje reguły w ściśle określonym porządku — od identyfikatorów o **najwyższej pewności (z walidacją sum kontrolnych)** do wzorców ogólnych:
 
 * **Identyfikatory weryfikowane sumami kontrolnymi:**
-  * **Karty kredytowe (`CreditCardRule`):** Walidacja algorytmem Luhna (13–19 cyfr) $\to$ `{{CREDIT_CARD}}`
-  * **Numery VIN (`VinRule`):** Walidacja sumy kontrolnej ISO 3779 (pozycja 9) $\to$ `{{VIN}}`
-  * **PESEL (`PeselTaggedRule` i `PeselRule`):** Weryfikacja cyfry kontrolnej PESEL oraz daty urodzenia $\to$ `{{PESEL}}`
-  * **NIP i REGON (`NipRule`, `RegonRule`):** Algorytmy wagowe dla polskich identyfikatorów podatkowych i rejestrowych $\to$ `{{NIP}}`, `{{REGON}}`
-  * **Rachunki bankowe (`IbanRule`, `NrbRule`):** Standard NRB (26 cyfr) i międzynarodowy IBAN z algorytmem modulo 97 $\to$ `{{IBAN}}`
-  * **Dokumenty tożsamości:** Polski Dowód Osobisty (`IdCardNumberRule`) i Paszport (`PassportNumberRule`) $\to$ `{{ID_CARD}}`, `{{PASSPORT}}`
-  * **Identyfikatory techniczne:** Adresy MAC, numery seryjne SIM ICCID, certyfikaty SSL, tokeny JWT $\to$ `{{MAC_ADDRESS}}`, `{{JWT}}`
+  * **Karty kredytowe (`CreditCardRule`):** Walidacja algorytmem Luhna (13–19 cyfr) → `{{CREDIT_CARD}}`
+  * **Numery VIN (`VinRule`):** Walidacja sumy kontrolnej ISO 3779 (pozycja 9) → `{{VIN}}`
+  * **PESEL (`PeselTaggedRule` i `PeselRule`):** Weryfikacja cyfry kontrolnej PESEL oraz daty urodzenia → `{{PESEL}}`
+  * **NIP i REGON (`NipRule`, `RegonRule`):** Algorytmy wagowe dla polskich identyfikatorów podatkowych i rejestrowych → `{{NIP}}`, `{{REGON}}`
+  * **Rachunki bankowe (`IbanRule`, `NrbRule`):** Standard NRB (26 cyfr) i międzynarodowy IBAN z algorytmem modulo 97 → `{{IBAN}}`
+  * **Dokumenty tożsamości:** Polski Dowód Osobisty (`IdCardNumberRule`) i Paszport (`PassportNumberRule`) → `{{ID_CARD}}`, `{{PASSPORT}}`
+  * **Identyfikatory techniczne:** Adresy MAC, numery seryjne SIM ICCID, certyfikaty SSL, tokeny JWT → `{{MAC_ADDRESS}}`, `{{JWT}}`
 * **Identyfikatory wzorcowe i telekomunikacyjne:**
-  * Adresy e-mail $\to$ `{{EMAIL}}`
-  * Adresy IPv4 i IPv6 $\to$ `{{IP_ADDRESS}}`
-  * Adresy URL i domeny $\to$ `{{URL}}`
-  * Polskie i międzynarodowe numery telefonów $\to$ `{{PHONE}}`
+  * Adresy e-mail → `{{EMAIL}}`
+  * Adresy IPv4 i IPv6 → `{{IP_ADDRESS}}`
+  * Adresy URL i domeny → `{{URL}}`
+  * Polskie i międzynarodowe numery telefonów → `{{PHONE}}`
   * Kody pocztowe, tablice rejestracyjne, kwoty pieniężne i daty
 
 ### 2. Anonymizer Model: Model NER dla języka polskiego

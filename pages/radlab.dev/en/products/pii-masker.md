@@ -56,18 +56,18 @@ Raw Text with Sensitive Information
 The `fast_masker` plugin applies validation rules in strict precedence order — from **highest certainty (checksum-verified identifiers)** down to generalized patterns:
 
 * **Checksum-Validated Identifiers:**
-  * **Credit Cards (`CreditCardRule`):** Luhn algorithm checksum verification (13–19 digits) $\to$ `{{CREDIT_CARD}}`
-  * **Vehicle Identification Numbers (`VinRule`):** ISO 3779 checksum (position 9) $\to$ `{{VIN}}`
-  * **Polish PESEL (`PeselTaggedRule`, `PeselRule`):** Formal checksum calculation and birthdate sanity check $\to$ `{{PESEL}}`
-  * **Polish Tax (NIP) & Business (REGON) IDs:** Weighted checksum validators $\to$ `{{NIP}}`, `{{REGON}}`
-  * **Bank Accounts (`IbanRule`, `NrbRule`):** Polish NRB (26 digits) and international IBAN (modulo 97) $\to$ `{{IBAN}}`
-  * **Identity Documents:** Polish National ID (`IdCardNumberRule`) and Passport numbers (`PassportNumberRule`) $\to$ `{{ID_CARD}}`, `{{PASSPORT}}`
-  * **System Credentials:** MAC addresses, SIM ICCIDs, SSL serials, and JWT tokens $\to$ `{{MAC_ADDRESS}}`, `{{JWT}}`
+  * **Credit Cards (`CreditCardRule`):** Luhn algorithm checksum verification (13–19 digits) → `{{CREDIT_CARD}}`
+  * **Vehicle Identification Numbers (`VinRule`):** ISO 3779 checksum (position 9) → `{{VIN}}`
+  * **Polish PESEL (`PeselTaggedRule`, `PeselRule`):** Formal checksum calculation and birthdate sanity check → `{{PESEL}}`
+  * **Polish Tax (NIP) & Business (REGON) IDs:** Weighted checksum validators → `{{NIP}}`, `{{REGON}}`
+  * **Bank Accounts (`IbanRule`, `NrbRule`):** Polish NRB (26 digits) and international IBAN (modulo 97) → `{{IBAN}}`
+  * **Identity Documents:** Polish National ID (`IdCardNumberRule`) and Passport numbers (`PassportNumberRule`) → `{{ID_CARD}}`, `{{PASSPORT}}`
+  * **System Credentials:** MAC addresses, SIM ICCIDs, SSL serials, and JWT tokens → `{{MAC_ADDRESS}}`, `{{JWT}}`
 * **Pattern-Based Identifiers:**
-  * Email addresses $\to$ `{{EMAIL}}`
-  * IPv4 and IPv6 addresses $\to$ `{{IP_ADDRESS}}`
-  * URLs and domains $\to$ `{{URL}}`
-  * Polish and international telephone numbers $\to$ `{{PHONE}}`
+  * Email addresses → `{{EMAIL}}`
+  * IPv4 and IPv6 addresses → `{{IP_ADDRESS}}`
+  * URLs and domains → `{{URL}}`
+  * Polish and international telephone numbers → `{{PHONE}}`
   * Postal codes, license plates, monetary amounts, and dates
 
 ### 2. Anonymizer Model: ML NER for Polish Text

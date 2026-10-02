@@ -61,14 +61,6 @@
 
     <div class="prose product-prose">{{ content | safe }}</div>
 
-    <section class="product-cta-box">
-      <div class="product-cta-text">
-        <h3>{{ ui.product_cta_title | default('Chcesz wdrożyć to rozwiązanie w swojej organizacji?', true) }}</h3>
-        <p>{{ ui.product_cta_text | default('Skontaktuj się z nami, aby porozmawiać o szczegółach technicznych, wdrożeniu on-premise lub dostosowaniu modeli do Twojej infrastruktury.', true) }}</p>
-      </div>
-      <a class="btn btn-primary" href="{{ href('') }}#contact">{{ ui.product_cta_button | default('Napisz do nas', true) }}<svg class="icon icon-tiny" aria-hidden="true"><use href="#i-arrow"/></svg></a>
-    </section>
-
     <footer class="article-foot">
       <a href="{{ href('') }}#products">← {{ ui.all_products | default('Nasze rozwiązania', true) }}</a>
       {% if counterpart %}

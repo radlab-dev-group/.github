@@ -56,7 +56,7 @@ Dane są ujednolicane do ustrukturyzowanego formatu JSONL zawierającego oczyszc
 ### Krok 3: Generowanie gęstych wektorów (Sentence-Transformers)
 Dla każdego artykułu generowany jest **512-wymiarowy wektor cech (embedding)** za pomocą dedykowanego modelu Sentence-Transformers zoptymalizowanego dla języka polskiego:
 * Teksty powyżej 508 tokenów są bezpiecznie obcinane,
-* Wektory poddawane są normalizacji $L_2$ w celu bezpośredniego wykorzystania podobieństwa cosinusowego,
+* Wektory poddawane są normalizacji L₂ w celu bezpośredniego wykorzystania podobieństwa cosinusowego,
 * Przetwarzanie wsadowe (batch size 500) gwarantuje maksymalne wykorzystanie GPU.
 
 ### Krok 4: Nieliniowa redukcja wymiarowości
