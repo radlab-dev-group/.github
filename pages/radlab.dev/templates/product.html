@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block og_type %}article{% endblock %}
+{% block main %}
+<article class="article product-page">
+  <div class="wrap">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="{{ href('') }}#products">← {{ ui.all_products | default('Nasze rozwiązania', true) }}</a>
+    </nav>
+
+    <header class="article-head product-head">
+      <div class="product-meta">
+        <span class="badge badge-accent">{{ ui.product_badge | default('Produkt', true) }}</span>
+        {% if product.meta.get('status') %}
+        <span class="badge badge-subtle">{{ product.meta.get('status') }}</span>
+        {% endif %}
+        {% if product.meta.get('version') %}
+        <span class="badge badge-subtle">{{ product.meta.get('version') }}</span>
+        {% endif %}
+      </div>
+
+      <div class="product-header-content">
+        {% if product.icon %}
+        <div class="product-icon-badge" aria-hidden="true">
+          <svg class="icon product-icon"><use href="#i-{{ product.icon }}"/></svg>
+        </div>
+        {% endif %}
+        <div>
+          <h1>{{ product.title }}</h1>
+          {% if product.subtitle %}
+          <p class="lede">{{ product.subtitle }}</p>
+          {% endif %}
+        </div>
+      </div>
+
+      {% if product.tags %}
+      <ul class="tag-row">
+        {% for tag in product.tags %}<li><span class="tag">{{ tag }}</span></li>{% endfor %}
+      </ul>
+      {% endif %}
+
+      {% if product.actions %}
+      <div class="product-actions">
+        {% for act in product.actions %}
+        <a class="btn {% if act.style == 'primary' %}btn-primary{% elif act.style == 'quiet' %}btn-quiet{% else %}btn-secondary{% endif %}"
+           href="{{ act.href }}"{% if act.href.startswith('http') %} rel="noopener" target="_blank"{% endif %}>
+          {{ act.label }}
+          {% if act.href.startswith('http') %}
+          <svg class="icon icon-tiny" aria-hidden="true"><use href="#i-external"/></svg>
+          {% else %}
+          <svg class="icon icon-tiny" aria-hidden="true"><use href="#i-arrow"/></svg>
+          {% endif %}
+        </a>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </header>
+
+    {% if not counterpart %}
+    <p class="note measure" style="margin-bottom:2.5rem">{{ ui.translation_missing }}</p>
+    {% endif %}
+
+    <div class="prose product-prose">{{ content | safe }}</div>
+
+    <footer class="article-foot">
+      <a href="{{ href('') }}#products">← {{ ui.all_products | default('Nasze rozwiązania', true) }}</a>
+      {% if counterpart %}
+      <a href="{{ cfg.href(counterpart.lang, counterpart.path) }}" hreflang="{{ site.hreflang[counterpart.lang] }}" lang="{{ counterpart.lang }}">{{ ui.read_in }} {{ 'Polski' if counterpart.lang == 'pl' else 'English' }} →</a>
+      {% endif %}
+    </footer>
+  </div>
+</article>
+{% endblock %}

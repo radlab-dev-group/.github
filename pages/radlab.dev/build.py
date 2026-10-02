@@ -223,6 +223,62 @@ class Post:
         return max(1, round(words / 200))
 
 
+@dataclass
+class Product:
+    lang: str
+    meta: FrontMatter
+    body_markdown: str
+    html: str = ""
+    url_path: str = ""
+
+    @property
+    def slug(self) -> str:
+        return self.meta.get("slug", "")
+
+    @property
+    def title(self) -> str:
+        return self.meta.get("title", self.slug)
+
+    @property
+    def subtitle(self) -> str:
+        return self.meta.get("subtitle", "")
+
+    @property
+    def description(self) -> str:
+        return self.meta.get("description", "")
+
+    @property
+    def icon(self) -> str:
+        return self.meta.get("icon", "router")
+
+    @property
+    def tags(self) -> list[str]:
+        return list(self.meta.get("tags") or [])
+
+    @property
+    def actions(self) -> list[dict]:
+        return list(self.meta.get("actions") or [])
+
+    @property
+    def path(self) -> str:
+        return f"products/{self.slug}"
+
+
+def load_products(cfg: Config, lang: str) -> list[Product]:
+    directory = ROOT / lang / "products"
+    if not directory.exists():
+        return []
+    products: list[Product] = []
+    for path in sorted(directory.glob("*.md")):
+        meta, body = parse_front_matter(path.read_text(encoding="utf-8"))
+        if not meta.get("slug"):
+            meta["slug"] = path.stem
+        prod = Product(lang=lang, meta=FrontMatter(meta), body_markdown=body)
+        prod.url_path = cfg.href(lang, prod.path)
+        products.append(prod)
+    return products
+
+
 def load_posts(cfg: Config, lang: str, *, include_drafts: bool) -> list[Post]:
     directory = ROOT / lang / "blog" / "posts"
     posts: list[Post] = []
@@ -510,6 +566,7 @@ class Site:
         self.env.filters["datefmt"] = format_date
         self.posts: dict[str, list[Post]] = {}
         self.drafts: dict[str, list[Post]] = {}
+        self.products: dict[str, list[Product]] = {}
         self.sections: dict[str, list[dict]] = {}
         self.ui: dict[str, dict] = {}
         self.translations = load_translations()
@@ -522,6 +579,7 @@ class Site:
             every = load_posts(self.cfg, lang, include_drafts=True)
             self.drafts[lang] = [p for p in every if p.draft]
             self.posts[lang] = [p for p in every if not p.draft] if not self.include_drafts else every
+            self.products[lang] = load_products(self.cfg, lang)
             self.sections[lang] = load_sections(self.cfg, lang)
             self.ui[lang] = load_ui(self.cfg, lang)
         self.env.globals["ui"] = self.ui
@@ -634,11 +692,15 @@ class Site:
         for lang in self.cfg.langs:
             for post in self.posts[lang]:
                 post.html = self.render_post_html(post)
+            for product in self.products[lang]:
+                product.html = apply_images(render_markdown(product.body_markdown, self.cfg), self.pipeline)
         self.write_static()
         self.write_pygments_css()
         for lang in self.cfg.langs:
             self.build_home(lang)
             self.build_blog_index(lang)
+            for product in self.products[lang]:
+                self.build_product(product)
             for post in self.posts[lang]:
                 self.build_post(post)
         self.build_feeds()
@@ -709,6 +771,23 @@ class Site:
         })
         self.write(self.strip(self.cfg.href(post.lang, post.path)), template.render(**ctx))
 
+    def build_product(self, product: Product) -> None:
+        template = self.env.get_template("product.html")
+        other = "en" if product.lang == self.cfg.default_lang else self.cfg.default_lang
+        mate = next((p for p in self.products.get(other, []) if p.slug == product.slug), None)
+        ctx = self.context(product.lang, switch_href=self.cfg.href(other, mate.path) if mate else self.other_index(product.lang))
+        ctx.update({
+            "product": product,
+            "content": product.html,
+            "page_title": product.title,
+            "page_description": product.description,
+            "canonical": self.cfg.canonical(product.lang, product.path),
+            "counterpart": mate,
+            "alternates": self.alternates(path=product.path, lang=product.lang,
+                                          counterpart_path=mate.path if mate else None),
+        })
+        self.write(self.strip(self.cfg.href(product.lang, product.path)), template.render(**ctx))
+
     def build_feeds(self) -> None:
         template = self.env.get_template("feed.xml")
         for lang in self.cfg.langs:
@@ -727,6 +806,15 @@ class Site:
                             "lastmod": None})
             entries.append({"loc": self.cfg.canonical(lang, "blog"), "alternates": [],
                             "lastmod": None})
+            other = "en" if lang == self.cfg.default_lang else self.cfg.default_lang
+            for product in self.products[lang]:
+                mate = next((p for p in self.products.get(other, []) if p.slug == product.slug), None)
+                entries.append({
+                    "loc": self.cfg.canonical(lang, product.path),
+                    "alternates": self.alternates(path=product.path, lang=lang,
+                                                  counterpart_path=mate.path if mate else None),
+                    "lastmod": None,
+                })
             for post in self.posts[lang]:
                 mate = self.counterpart(post)
                 entries.append({
