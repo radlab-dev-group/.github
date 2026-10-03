@@ -17,9 +17,11 @@ from __future__ import annotations
 
 import queue
 import re
+import shutil
 import sys
 import threading
 import traceback
+import webbrowser
 from collections import OrderedDict
 from datetime import date
 from pathlib import Path
@@ -31,7 +33,7 @@ except ImportError:  # pragma: no cover
         "np.: /usr/bin/python3 admin.py\n"
     )
     raise
-from tkinter import Tk, messagebox
+from tkinter import Tk, filedialog, messagebox
 from tkinter import ttk
 
 ROOT = Path(__file__).resolve().parent
@@ -51,6 +53,17 @@ from admin_core import (  # noqa: E402
 
 DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 LANG_LABELS = {"pl": "PL", "en": "EN"}
+
+MEDIA_FILETYPES = {
+    "image": ("Obrazy", "*.png *.jpg *.jpeg *.webp *.gif *.svg *.avif *.heif *.heic"),
+    "video": ("Filmy", "*.webm *.mp4 *.mov *.mkv *.avi"),
+}
+
+PREVIEW_IMAGE_RE = re.compile(r"!\[([^\]]*)\]\(([^)\s]+)\)")
+PREVIEW_LINK_RE = re.compile(r"(?<![!\w])\[([^\]]+)\]\(([^)\s]+)\)")
+PREVIEW_BOLD_RE = re.compile(r"\*\*(.+?)\*\*")
+PREVIEW_ITALIC_RE = re.compile(r"(?<!\*)\*([^*\n]+)\*(?!\*)")
+PREVIEW_CODE_RE = re.compile(r"`([^`\n]+)`")
 
 
 class WorkerResult:
@@ -78,6 +91,7 @@ class AdminApp:
         self.current: LoadedPost | None = None   # loaded from disk
         self.current_slug: str | None = None     # slug as loaded (rename check)
         self._loaded_id: str | None = None       # "lang:slug" shown in the editor
+        self.preview_links: list[tuple[tuple[int, int], tuple[int, int], str]] = []
         self.models: list[str] = []
 
         root.title("RadLab — panel zarządzania blogiem")
@@ -146,13 +160,42 @@ class AdminApp:
         body_frame = ttk.LabelFrame(grid, text="Treść (Markdown)")
         body_frame.grid(row=4, column=0, columnspan=4, sticky="nsew", pady=(6, 0))
         grid.rowconfigure(4, weight=1)
-        self.txt_body = tkinter.Text(body_frame, wrap="none", undo=True,
+
+        media_bar = ttk.Frame(body_frame)
+        media_bar.pack(fill="x", padx=4, pady=(4, 0))
+        ttk.Button(media_bar, text="Wstaw obraz…",
+                   command=lambda: self._insert_media("image")).pack(side="left", padx=3)
+        ttk.Button(media_bar, text="Wstaw film…",
+                   command=lambda: self._insert_media("video")).pack(side="left", padx=3)
+        self.lbl_media_hint = ttk.Label(media_bar, text="plik jest kopiowany do media/ wpisu",
+                                        foreground="#777")
+        self.lbl_media_hint.pack(side="left", padx=8)
+
+        self.notebook = ttk.Notebook(body_frame)
+        self.notebook.pack(fill="both", expand=True, padx=4, pady=4)
+        editor_tab = ttk.Frame(self.notebook)
+        preview_tab = ttk.Frame(self.notebook)
+        self.notebook.add(editor_tab, text="  Edycja  ")
+        self.notebook.add(preview_tab, text="  Podgląd  ")
+
+        self.txt_body = tkinter.Text(editor_tab, wrap="none", undo=True,
                                      font=("monospace", 10))
-        body_scroll = ttk.Scrollbar(body_frame, orient="vertical", command=self.txt_body.yview)
+        body_scroll = ttk.Scrollbar(editor_tab, orient="vertical", command=self.txt_body.yview)
         self.txt_body.configure(yscrollcommand=body_scroll.set)
         self.txt_body.pack(side="left", fill="both", expand=True)
         body_scroll.pack(side="right", fill="y")
         self.txt_body.bind("<Tab>", self._insert_tab)
+
+        self.txt_preview = tkinter.Text(preview_tab, wrap="word", state="disabled",
+                                        padx=10, pady=6, background="#fbfcfd")
+        preview_scroll = ttk.Scrollbar(preview_tab, orient="vertical",
+                                       command=self.txt_preview.yview)
+        self.txt_preview.configure(yscrollcommand=preview_scroll.set)
+        self.txt_preview.pack(side="left", fill="both", expand=True)
+        preview_scroll.pack(side="right", fill="y")
+        self._configure_preview_tags()
+        self.txt_preview.bind("<Button-1>", self._on_preview_click)
+        self.notebook.bind("<<NotebookTabChanged>>", self._on_tab_changed)
 
         self.status_var = tkinter.StringVar(value="Gotowe")
         status = ttk.Label(body, textvariable=self.status_var, relief="sunken", anchor="w")
@@ -173,6 +216,189 @@ class AdminApp:
     def _insert_tab(self, _event) -> str:
         self.txt_body.insert("insert", "    ")
         return "break"
+
+    # ------------------------------------------------------- preview (md)
+
+    def _configure_preview_tags(self) -> None:
+        pv = self.txt_preview
+        pv.tag_configure("h1", font=("TkDefaultFont", 16, "bold"), spacing1=6, spacing3=4)
+        pv.tag_configure("h2", font=("TkDefaultFont", 13, "bold"), spacing1=5, spacing3=3)
+        pv.tag_configure("h3", font=("TkDefaultFont", 11, "bold"), spacing1=3)
+        pv.tag_configure("bold", font=("TkDefaultFont", 10, "bold"))
+        pv.tag_configure("italic", font=("TkDefaultFont", 10, "italic"))
+        pv.tag_configure("code", font=("monospace", 9), background="#eef0f3")
+        pv.tag_configure("link", foreground="#0b57d0", underline=True)
+        pv.tag_configure("image", foreground="#8a8f98", font=("TkDefaultFont", 9, "italic"))
+        pv.tag_configure("quote", foreground="#555f6e", lmargin1=18, lmargin2=18)
+        pv.tag_configure("list", lmargin1=18, lmargin2=28)
+        pv.tag_configure("hr", foreground="#c3c8d0")
+
+    def _on_tab_changed(self, _event) -> None:
+        try:
+            selected = self.notebook.tab(self.notebook.select(), "text").strip()
+        except tkinter.TclError:
+            return
+        if selected == "Podgląd":
+            self._render_preview()
+
+    def _pv_tuple(self, index: str) -> tuple[int, int]:
+        line, _, col = index.partition(".")
+        return int(line), int(col)
+
+    def _pv_insert(self, chunk: str, base_tag: str = "") -> None:
+        if not chunk:
+            return
+        self.txt_preview.insert("end", chunk)
+        if base_tag:
+            end = self.txt_preview.index("end-1c")
+            self.txt_preview.tag_add(base_tag, f"{end}-{len(chunk)}c", end)
+
+    def _pv_placeholder(self, label: str, url: str | None) -> None:
+        self.txt_preview.insert("end", label, "image")
+        end = self.txt_preview.index("end-1c")
+        if url and url.startswith("http"):
+            start = self.txt_preview.index(f"end-{len(label)}c")
+            self.txt_preview.tag_add("link", start, end)
+            self.preview_links.append((self._pv_tuple(start), self._pv_tuple(end), url))
+
+    def _pv_inline(self, line_text: str, base_tag: str = "") -> None:
+        """Insert one line with inline Markdown styling (bold/italic/code/link/image)."""
+        spans: list[tuple[int, int, str, str]] = []
+        for regex, tag in ((PREVIEW_IMAGE_RE, "image"), (PREVIEW_LINK_RE, "link"),
+                           (PREVIEW_BOLD_RE, "bold"), (PREVIEW_ITALIC_RE, "italic"),
+                           (PREVIEW_CODE_RE, "code")):
+            for match in regex.finditer(line_text):
+                spans.append((match.start(), match.end(), tag, match.group(0)))
+        spans.sort(key=lambda s: (s[0], s[1]))
+        kept: list[tuple[int, int, str, str]] = []
+        for span in spans:
+            if kept and span[0] < kept[-1][1]:
+                continue
+            kept.append(span)
+        cursor = 0
+        for start, end, tag, raw_span in kept:
+            if start > cursor:
+                self._pv_insert(line_text[cursor:start], base_tag)
+            if tag == "image":
+                url = raw_span[raw_span.index("(") + 1:raw_span.rindex(")")]
+                self._pv_placeholder(f"[obraz: {url}]", None)
+            elif tag == "link":
+                label = raw_span[1:raw_span.index("]")]
+                url = raw_span[raw_span.index("(") + 1:raw_span.rindex(")")]
+                self._pv_placeholder(label, url)
+            else:
+                inner = raw_span[2:-2] if tag == "bold" else raw_span[1:-1]
+                self._pv_insert(inner, tag)
+            cursor = end
+        if cursor < len(line_text):
+            self._pv_insert(line_text[cursor:], base_tag)
+
+    def _render_preview(self) -> None:
+        """Simplified Markdown preview: headings, lists, quotes, code, links,
+        images/videos as placeholders. Not a full HTML render."""
+        self.txt_preview.configure(state="normal")
+        self.txt_preview.delete("1.0", "end")
+        self.preview_links = []
+        in_code = False
+        for line in self.txt_body.get("1.0", "end-1c").splitlines():
+            if line.strip().startswith("```"):
+                in_code = not in_code
+                self.txt_preview.insert("end", line + "\n", "code")
+                continue
+            if in_code:
+                self.txt_preview.insert("end", (line or " ") + "\n", "code")
+                continue
+            if not line.strip():
+                self.txt_preview.insert("end", "\n")
+                continue
+            heading = re.match(r"^(#{1,6})\s+(.*)$", line)
+            if heading:
+                level = min(len(heading.group(1)), 3)
+                self._pv_inline(heading.group(2), f"h{level}")
+                self.txt_preview.insert("end", "\n", f"h{level}")
+                continue
+            if re.match(r"^\s*(---+|\*\*\*+)\s*$", line):
+                self.txt_preview.insert("end", "— " * 24 + "\n", "hr")
+                continue
+            if line.lstrip().startswith(">"):
+                self._pv_inline(re.sub(r"^\s*>\s?", "", line), "quote")
+                self.txt_preview.insert("end", "\n", "quote")
+                continue
+            list_item = re.match(r"^(\s*)([-*+]|\d+\.)\s+(.*)$", line)
+            if list_item:
+                self._pv_insert(f"{list_item.group(1)}  {list_item.group(2)} ", "list")
+                self._pv_inline(list_item.group(3), "list")
+                self.txt_preview.insert("end", "\n", "list")
+                continue
+            video = re.match(r"^\s*\{\{<\s*video\s+(\S+?)\s*>}}\s*$", line)
+            if video:
+                self._pv_placeholder(f"[film: {video.group(1)}]", None)
+                self.txt_preview.insert("end", "\n")
+                continue
+            youtube = re.match(r"^\s*\{\{<\s*youtube\s+([\w-]{11})\s*>}}\s*$", line)
+            if youtube:
+                self._pv_placeholder("[YouTube]", f"https://www.youtube.com/watch?v={youtube.group(1)}")
+                self.txt_preview.insert("end", "\n")
+                continue
+            self._pv_inline(line)
+            self.txt_preview.insert("end", "\n")
+        self.txt_preview.configure(state="disabled")
+
+    def _on_preview_click(self, event) -> None:
+        try:
+            clicked = self._pv_tuple(self.txt_preview.index(f"@{event.x},{event.y}"))
+        except tkinter.TclError:
+            return
+        for start, end, url in self.preview_links:
+            if start <= clicked <= end:
+                webbrowser.open(url)
+                return
+
+    # ------------------------------------------------------------- media
+
+    def _insert_media(self, kind: str) -> None:
+        """Pick a file from disk, copy it into the post's media/ dir and insert
+        the Markdown snippet (image or {{< video >}} shortcode) at the cursor."""
+        if self.busy or not self.current:
+            return
+        if self._is_dirty() and not self._save_current(silent=True):
+            return
+        post = self.current
+        label, pattern = MEDIA_FILETYPES[kind]
+        chosen = filedialog.askopenfilename(
+            title=f"Wstaw do {post.lang}/{post.slug}",
+            filetypes=[(label, pattern), ("Wszystkie pliki", "*.*")],
+        )
+        if not chosen:
+            return
+        source_path = Path(chosen)
+        try:
+            media_dir = self.store.post_dir(post.lang, post.slug) / "media"
+            media_dir.mkdir(parents=True, exist_ok=True)
+            dest_name = self._unique_media_name(media_dir, source_path.name)
+            shutil.copy2(source_path, media_dir / dest_name)
+        except OSError as exc:
+            messagebox.showerror("RadLab", f"Nie udało się skopiować pliku:\n{exc}")
+            return
+        rel = f"media/{dest_name}"
+        if kind == "image":
+            self.txt_body.insert("insert", f"![{source_path.stem}]({rel})\n")
+            if not self.entry_image.get().strip():
+                self.entry_image.insert(0, rel)
+        else:
+            self.txt_body.insert("insert", "{{< video " + rel + " >}}\n")
+        self.notebook.select(0)
+        self.status_var.set(f"Wstawiono: {rel} (kopia w {post.lang}/{post.slug}/media/)")
+
+    @staticmethod
+    def _unique_media_name(directory: Path, filename: str) -> str:
+        candidate = filename
+        stem, suffix = Path(filename).stem, Path(filename).suffix
+        number = 2
+        while (directory / candidate).exists():
+            candidate = f"{stem}-{number}{suffix}"
+            number += 1
+        return candidate
 
     # ------------------------------------------------------------- post list
 
@@ -448,6 +674,8 @@ class AdminApp:
         dlg = TranslateDialog(self.root, source, target_lang, self.models, counterpart)
         if dlg.run() is None:
             return
+        self.progress.configure(mode="indeterminate")
+        self.progress.start(12)
         self._spawn(self._job_translate, dlg)
 
     def _job_translate(self, options) -> WorkerResult:
@@ -509,7 +737,9 @@ class AdminApp:
                     lang, slug = result.payload
                     self._load_into_editor(self.store.load_post(lang, slug))
                     self.refresh_list(select=f"{lang}:{slug}")
-                    self.progress.configure(value=0)
+                if self.progress.cget("mode") == "indeterminate":
+                    self.progress.stop()
+                self.progress.configure(mode="determinate", value=0)
                 finished = result
         except queue.Empty:
             pass
