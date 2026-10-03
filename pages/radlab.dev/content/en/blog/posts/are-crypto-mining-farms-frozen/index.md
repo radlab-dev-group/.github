@@ -1,10 +1,11 @@
 ---
-title: "“Are crypto mining farms frozen?”"
+title: "Are crypto mining farms frozen?"
 date: 2026-01-01
 updated: 2026-01-02
 slug: are-crypto-mining-farms-frozen
 description: "Today we’re looking at a slightly different “fairy‑tale”. Not from a production‑side technical perspective, but perhaps a proposal for a partial solution to…"
-categories: ["Crypto Mining", "GenAI", "LLM", "LLM Router", "Load Balancing", "Open Source", "SaaS"]
+tags: [crypto-mining, genai, llm, llm-router, local, open-source, saas]
+categories: ["Crypto Mining", GenAI, LLM, "LLM Router", "Load Balancing", "Open Source", SaaS]
 image: media/_featured.jpeg
 lang: en
 translation_of: zmrozone-kopalnie-kryptowalut

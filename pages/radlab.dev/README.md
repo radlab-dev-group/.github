@@ -58,6 +58,62 @@ Adresy artykułów nadal wynikają z daty i `slug`, a nie ze struktury źródeł
 `/2025-10-13/przykladowy-wpis/` lub `/en/2025-10-13/przykladowy-wpis/`.
 Powiązania tłumaczeń są w `config/translations.json`.
 
+## Panel administracyjny
+
+`admin.py` to prosty system do zarządzania wpisami — okienko Tk, w którym
+dodajesz, edytujesz i usuwasz wpisy PL/EN oraz tłumaczysz je na drugi język
+przez LLM Router (klient `llm_router_lib`). Lista grupuje wersje tego samego
+wpisu w pary (wiersz-nagłówek z podsumowaniem `PL ✓ · EN draft`); pod polami
+wpisu klikalna linijka „Wersja EN: …", przycisk „Wersja ↔" i podwójny klik na
+wierszu przełączają edytor na drugą wersję, a gdy tłumaczenia brak — od razu
+otwierają okno tłumaczenia.
+
+```bash
+# interpreter musi mieć rozszerzenie Tk (np. /usr/bin/python3)
+/usr/bin/python3 admin.py
+LLM_ROUTER_API=http://127.0.0.1:8080 LLM_ROUTER_TOKEN=... /usr/bin/python3 admin.py
+```
+
+Logika panelu jest w `admin_core.py` (bez tkintera), testy w
+`tests/test_admin_core.py`. Zapisywany jest dokładnie ten sam układ plików,
+który czyta `build.py`: katalog `content/<lang>/blog/posts/<slug>/` z
+`index.md` (front matter w stylu pozostałych wpisów) i `media/`, a powiązania
+tłumaczeń trafiają do `config/translations.json` (`verified: false` do czasu
+weryfikacji).
+
+Tłumaczenie działa w obie strony:
+
+- EN → PL: metoda `LLMRouterClient.translate` (endpoint `/api/translate`);
+- PL → EN: `extended_conversation_with_model` z systemowym promptem
+  „translate to English", bo wbudowany endpoint routera tłumaczy wyłącznie
+  na polski.
+
+Tłumaczenie tworzy wersję roboczą (`draft: true`) z przetłumaczonym tytułem,
+opisem, tagami, kategoriami i treścią oraz skopiowanymi plikami `media/`
+(ścieżki względne w Markdown zostają bez zmian). Slug wersji docelowej
+wynika z przetłumaczonego tytułu (kolejny wolny, np. `-2`, przy kolizji).
+Model wybiera się w oknie tłumaczenia (lista z routera albo nazwa ręcznie);
+tłumaczenie odbywa się w tle, z pulsującym paskiem postępu i statusem
+bieżącego pola w pasku statusu.
+
+W edytorze treści dostępne są:
+
+- **Wstaw obraz… / Wstaw film…** — wybiera plik z dysku, kopiuje go do
+  `media/` wpisu (przy kolizji nazwy dostaje `-2`, `-3`…) i wstawia w kursorze
+  odpowiedni fragment: `![alt](media/plik.png)` albo shortcode
+  `{{< video media/plik.webm >}}` (te same osadzenia, co w pozostałych
+  wpisach). Jeśli pole „Obraz (media/…)" jest puste, pierwsza wstawiona
+  grafika uzupełnia je.
+- zakładka **Podgląd** — uproszczony podgląd Markdown (nagłówki, listy,
+  cytaty, kod, pogrubienie/kursywa; obrazy i filmy jako placeholdery),
+  linki otwierają się po kliknięciu.
+- **Buduj stronę…** — wywołuje `python build.py` (opcjonalnie `--fast`,
+  `--drafts`, `--check`, `--clean`) w tle; logi budowania trafiają na żywo do
+  okna z logami (przycisk „Kopiuj log"), a pasek postępu śledzi etapy
+  `[1/5]…[5/5]` raportowane przez build.py. Interpreter z zależnościami
+  (markdown, jinja2, pygments, PIL) jest wybierany automatycznie — można go
+  nadpisać przez zmienną `BUILDER_PYTHON`.
+
 ## Osobne strony
 
 Polityka prywatności jest w `content/{pl,en}/pages/privacy.md` i publikuje się
