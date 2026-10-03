@@ -158,8 +158,13 @@ class AdminApp:
         self.entry_tags = self._field(grid, 2, 0, "Tagi (przecinki)")
         self.entry_cats = self._field(grid, 2, 2, "Kategorie (przecinki)")
         self.entry_image = self._field(grid, 3, 0, "Obraz (media/…)")
-        self.chk_draft = ttk.Checkbutton(grid, text="wersja robocza (draft)")
-        self.chk_draft.grid(row=3, column=2, sticky="w")
+        flags_row = ttk.Frame(grid)
+        flags_row.grid(row=3, column=2, sticky="w")
+        self.chk_draft = ttk.Checkbutton(flags_row, text="wersja robocza (draft)")
+        self.chk_draft.pack(side="left", padx=(0, 10))
+        self.chk_updated = ttk.Checkbutton(flags_row, text="zapisz datę aktualizacji (dziś)")
+        self.chk_updated.pack(side="left")
+        self.chk_updated.state(["selected"])
 
         self.lbl_version = ttk.Label(grid, text="", foreground="#0b57d0", cursor="hand2")
         self.lbl_version.grid(row=4, column=0, columnspan=4, sticky="w", pady=(6, 0))
@@ -526,6 +531,7 @@ class AdminApp:
             self.chk_draft.state(["selected"])
         else:
             self.chk_draft.state(["!selected"])
+        self.chk_updated.state(["selected"])
         self._update_version_label()
         self.txt_body.delete("1.0", "end")
         self.txt_body.insert("1.0", post.body)
@@ -667,7 +673,11 @@ class AdminApp:
                 meta[key] = value
         meta["title"] = title
         meta["date"] = date_text
-        meta["updated"] = date.today()
+        if self.chk_updated.instate(["selected"]):
+            meta["updated"] = date.today()
+        elif "updated" in self.current.meta:
+            meta["updated"] = self.current.meta["updated"]
+        # unchecked and never updated before: the field is left out
         meta["slug"] = slug
         description = self.entry_desc.get().strip()
         if description:
@@ -747,6 +757,7 @@ class AdminApp:
         self.entry_cats.delete(0, "end")
         self.entry_image.delete(0, "end")
         self.chk_draft.state(["selected"])
+        self.chk_updated.state(["selected"])
         self.txt_body.delete("1.0", "end")
         self.current = None
         self.current_slug = None
