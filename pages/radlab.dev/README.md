@@ -62,7 +62,11 @@ Powiązania tłumaczeń są w `config/translations.json`.
 
 `admin.py` to prosty system do zarządzania wpisami — okienko Tk, w którym
 dodajesz, edytujesz i usuwasz wpisy PL/EN oraz tłumaczysz je na drugi język
-przez LLM Router (klient `llm_router_lib`).
+przez LLM Router (klient `llm_router_lib`). Lista grupuje wersje tego samego
+wpisu w pary (wiersz-nagłówek z podsumowaniem `PL ✓ · EN draft`); pod polami
+wpisu klikalna linijka „Wersja EN: …", przycisk „Wersja ↔" i podwójny klik na
+wierszu przełączają edytor na drugą wersję, a gdy tłumaczenia brak — od razu
+otwierają okno tłumaczenia.
 
 ```bash
 # interpreter musi mieć rozszerzenie Tk (np. /usr/bin/python3)
@@ -89,8 +93,22 @@ opisem, tagami, kategoriami i treścią oraz skopiowanymi plikami `media/`
 (ścieżki względne w Markdown zostają bez zmian). Slug wersji docelowej
 wynika z przetłumaczonego tytułu (kolejny wolny, np. `-2`, przy kolizji).
 Model wybiera się w oknie tłumaczenia (lista z routera albo nazwa ręcznie);
-tłumaczenie odbywa się w tle, z paskiem postępu. Panel nie buduje strony —
-po edycjach wystarczy `python build.py`.
+tłumaczenie odbywa się w tle, z pulsującym paskiem postępu i statusem
+bieżącego pola w pasku statusu.
+
+W edytorze treści dostępne są:
+
+- **Wstaw obraz… / Wstaw film…** — wybiera plik z dysku, kopiuje go do
+  `media/` wpisu (przy kolizji nazwy dostaje `-2`, `-3`…) i wstawia w kursorze
+  odpowiedni fragment: `![alt](media/plik.png)` albo shortcode
+  `{{< video media/plik.webm >}}` (te same osadzenia, co w pozostałych
+  wpisach). Jeśli pole „Obraz (media/…)" jest puste, pierwsza wstawiona
+  grafika uzupełnia je.
+- zakładka **Podgląd** — uproszczony podgląd Markdown (nagłówki, listy,
+  cytaty, kod, pogrubienie/kursywa; obrazy i filmy jako placeholdery),
+  linki otwierają się po kliknięciu.
+
+Panel nie buduje strony — po edycjach wystarczy `python build.py`.
 
 ## Osobne strony
 

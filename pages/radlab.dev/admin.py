@@ -46,6 +46,7 @@ from admin_core import (  # noqa: E402
     LANGS,
     LoadedPost,
     PostError,
+    PostInfo,
     Translator,
     translate_post,
     today_iso,
@@ -118,6 +119,8 @@ class AdminApp:
         self.btn_delete.pack(side="left", padx=3)
         self.btn_translate = ttk.Button(toolbar, text="Tłumacz…", command=self.on_translate, state="disabled")
         self.btn_translate.pack(side="left", padx=3)
+        self.btn_switch = ttk.Button(toolbar, text="Wersja ↔", command=self._open_counterpart, state="disabled")
+        self.btn_switch.pack(side="left", padx=3)
         ttk.Button(toolbar, text="Odśwież",
                    command=lambda: self.refresh_list(select=self.selected())).pack(side="left", padx=3)
 
@@ -126,19 +129,20 @@ class AdminApp:
 
         list_frame = ttk.LabelFrame(paned, text="Wpisy")
         paned.add(list_frame, weight=1)
-        columns = ("lang", "date", "status", "title")
+        columns = ("date", "version", "status", "title")
         self.tree = ttk.Treeview(list_frame, columns=columns, show="headings", selectmode="browse")
-        for key, text, width in (("lang", "J.", 36), ("date", "Data", 90),
-                                 ("status", "Status", 90), ("title", "Tytuł", 420)):
+        for key, text, width in (("date", "Data", 90), ("version", "Wersja", 50),
+                                 ("status", "Status", 130), ("title", "Tytuł", 420)):
             self.tree.heading(key, text=text)
             self.tree.column(key, width=width, anchor="w")
-        self.tree.column("lang", stretch=False)
+        self.tree.column("version", stretch=False)
         self.tree.column("status", stretch=False)
         scroll = ttk.Scrollbar(list_frame, orient="vertical", command=self.tree.yview)
         self.tree.configure(yscrollcommand=scroll.set)
         self.tree.pack(side="left", fill="both", expand=True)
         scroll.pack(side="right", fill="y")
         self.tree.bind("<<TreeviewSelect>>", lambda _e: self.on_select())
+        self.tree.bind("<Double-1>", self._on_tree_double_click)
 
         editor = ttk.LabelFrame(paned, text="Edytor")
         paned.add(editor, weight=3)
@@ -157,9 +161,13 @@ class AdminApp:
         self.chk_draft = ttk.Checkbutton(grid, text="wersja robocza (draft)")
         self.chk_draft.grid(row=3, column=2, sticky="w")
 
+        self.lbl_version = ttk.Label(grid, text="", foreground="#0b57d0", cursor="hand2")
+        self.lbl_version.grid(row=4, column=0, columnspan=4, sticky="w", pady=(6, 0))
+        self.lbl_version.bind("<Button-1>", lambda _e: self._open_counterpart())
+
         body_frame = ttk.LabelFrame(grid, text="Treść (Markdown)")
-        body_frame.grid(row=4, column=0, columnspan=4, sticky="nsew", pady=(6, 0))
-        grid.rowconfigure(4, weight=1)
+        body_frame.grid(row=5, column=0, columnspan=4, sticky="nsew", pady=(6, 0))
+        grid.rowconfigure(5, weight=1)
 
         media_bar = ttk.Frame(body_frame)
         media_bar.pack(fill="x", padx=4, pady=(4, 0))
@@ -407,26 +415,81 @@ class AdminApp:
         item = self.tree.selection()
         return item[0] if item else None
 
+    def _group_key(self, lang: str, slug: str, translations: dict) -> str:
+        """Article identity: the PL slug, or a synthetic key for EN-only posts."""
+        if lang == DEFAULT_LANG:
+            return slug
+        return next((pl for pl, pair in translations.items()
+                     if (pair or {}).get("en") == slug), f"en:{slug}")
+
+    @staticmethod
+    def _group_summary(pl: PostInfo | None, en: PostInfo | None) -> str:
+        def mark(post: PostInfo | None) -> str:
+            if post is None:
+                return "—"
+            return "draft" if post.draft else "✓"
+        return f"PL {mark(pl)} · EN {mark(en)}"
+
     def refresh_list(self, select: str | None = None) -> None:
-        self.tree.delete(*self.tree.get_children())
+        translations = self.store.read_translations()
+        groups: dict[str, list[PostInfo]] = {}
         for post in self.store.list_posts():
-            status = "draft" if post.draft else ("✓ tłum." if post.counterpart else "brak tłum.")
-            self.tree.insert(
-                "", "end",
-                id=f"{post.lang}:{post.slug}",
-                values=(LANG_LABELS.get(post.lang, post.lang), post.date, status, post.title),
-                tags=("draft",) if post.draft else (),
-            )
+            key = self._group_key(post.lang, post.slug, translations)
+            groups.setdefault(key, []).append(post)
+        ordered = sorted(
+            ((max(p.date for p in members), key, members) for key, members in groups.items()),
+            key=lambda item: (item[0], item[1]), reverse=True,
+        )
+        self.tree.delete(*self.tree.get_children())
+        for date, key, members in ordered:
+            pl = next((p for p in members if p.lang == DEFAULT_LANG), None)
+            en = next((p for p in members if p.lang != DEFAULT_LANG), None)
+            parent_id = f"grp:{key}"
+            self.tree.insert("", "end", id=parent_id,
+                             values=(date, "", self._group_summary(pl, en),
+                                     (pl or en).title),
+                             tags=("group",))
+            for post in sorted(members, key=lambda p: (p.lang != DEFAULT_LANG, p.slug)):
+                status = "draft" if post.draft else "✓"
+                child_id = f"{post.lang}:{post.slug}"
+                self.tree.insert(parent_id, "end", id=child_id,
+                                 values=(post.date, LANG_LABELS.get(post.lang, post.lang),
+                                         status, post.title),
+                                 tags=("draft",) if post.draft else ())
+            self.tree.item(parent_id, open=True)
+        self.tree.tag_configure("group", font=("TkDefaultFont", 10, "bold"))
         self.tree.tag_configure("draft", foreground="#8a6d00")
         if select:
-            self.tree.selection_set(select)
-            self.tree.see(select)
+            target = self._resolve_select(select)
+            if target:
+                self.tree.selection_set(target)
+                self.tree.see(target)
+
+    def _resolve_select(self, select: str) -> str | None:
+        """Version id for a requested selection; a group id resolves to PL (or the only version)."""
+        if not self.tree.exists(select):
+            return None
+        if not select.startswith("grp:"):
+            return select
+        children = self.tree.get_children(select)
+        if not children:
+            return None
+        return next((child for child in children
+                     if self.tree.set(child, "version") == LANG_LABELS[DEFAULT_LANG]),
+                    children[0])
 
     def on_select(self) -> None:
         selection = self.selected()
         # re-selecting an already-loaded post would re-fire this event through
         # refresh_list() forever; the id guard breaks the loop
-        if not selection or self.busy or self._loaded_id == selection:
+        if not selection or self.busy:
+            return
+        if selection.startswith("grp:"):
+            target = self._resolve_select(selection)
+            if not target:
+                return
+            selection = target
+        if self._loaded_id == selection:
             return
         if self._confirm_discard():
             return
@@ -463,6 +526,7 @@ class AdminApp:
             self.chk_draft.state(["selected"])
         else:
             self.chk_draft.state(["!selected"])
+        self._update_version_label()
         self.txt_body.delete("1.0", "end")
         self.txt_body.insert("1.0", post.body)
         self._update_editor_buttons()
@@ -473,6 +537,55 @@ class AdminApp:
         self.btn_save.configure(state=state)
         self.btn_delete.configure(state=state)
         self.btn_translate.configure(state=state)
+        self.btn_switch.configure(state=state)
+
+    def _update_version_label(self) -> None:
+        """Clickable line under the form: open the counterpart, or translate if missing."""
+        if not self.current:
+            self.lbl_version.configure(text="")
+            return
+        other = "en" if self.current.lang == DEFAULT_LANG else DEFAULT_LANG
+        counterpart = self.store.find_counterpart(self.current.lang, self.current.slug)
+        if not counterpart:
+            self.lbl_version.configure(
+                text=f"Brak wersji {other.upper()} — kliknij, aby przetłumaczyć",
+                foreground="#8a6d00")
+            return
+        status = ""
+        try:
+            if self.store.load_post(other, counterpart).meta.get("draft"):
+                status = " (draft)"
+        except PostError:
+            status = " (brak pliku!)"
+        self.lbl_version.configure(
+            text=f"Wersja {other.upper()}: {counterpart}{status} — kliknij, aby otworzyć",
+            foreground="#0b57d0")
+
+    def _open_counterpart(self) -> None:
+        """Switch the editor to the other-language version; offer translation if missing."""
+        if self.busy or not self.current:
+            return
+        counterpart = self.store.find_counterpart(self.current.lang, self.current.slug)
+        if not counterpart:
+            self.on_translate()
+            return
+        other = "en" if self.current.lang == DEFAULT_LANG else DEFAULT_LANG
+        selection = f"{other}:{counterpart}"
+        if self._loaded_id == selection:
+            return
+        if self._confirm_discard():
+            return
+        try:
+            self._load_into_editor(self.store.load_post(other, counterpart))
+            self.refresh_list(select=selection)
+        except PostError as exc:
+            messagebox.showerror("RadLab", str(exc))
+
+    def _on_tree_double_click(self, _event) -> None:
+        selection = self.selected()
+        if not selection or selection.startswith("grp:") or self._loaded_id != selection:
+            return
+        self._open_counterpart()
 
     def _is_dirty(self) -> bool:
         if self.current is None:
@@ -638,6 +751,7 @@ class AdminApp:
         self.current = None
         self.current_slug = None
         self._loaded_id = None
+        self._update_version_label()
         self._update_editor_buttons()
 
     # ------------------------------------------------------------ translation
