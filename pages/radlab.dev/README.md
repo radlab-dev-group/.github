@@ -107,8 +107,12 @@ W edytorze treści dostępne są:
 - zakładka **Podgląd** — uproszczony podgląd Markdown (nagłówki, listy,
   cytaty, kod, pogrubienie/kursywa; obrazy i filmy jako placeholdery),
   linki otwierają się po kliknięciu.
-
-Panel nie buduje strony — po edycjach wystarczy `python build.py`.
+- **Buduj stronę…** — wywołuje `python build.py` (opcjonalnie `--fast`,
+  `--drafts`, `--check`, `--clean`) w tle; logi budowania trafiają na żywo do
+  okna z logami (przycisk „Kopiuj log"), a pasek postępu śledzi etapy
+  `[1/5]…[5/5]` raportowane przez build.py. Interpreter z zależnościami
+  (markdown, jinja2, pygments, PIL) jest wybierany automatycznie — można go
+  nadpisać przez zmienną `BUILDER_PYTHON`.
 
 ## Osobne strony
 

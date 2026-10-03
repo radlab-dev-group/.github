@@ -15,9 +15,11 @@ Logika leży w admin_core.py; to plik jest wyłącznie warstwą GUI.
 
 from __future__ import annotations
 
+import os
 import queue
 import re
 import shutil
+import subprocess
 import sys
 import threading
 import traceback
@@ -72,13 +74,14 @@ class WorkerResult:
 
     def __init__(self, ok: bool, message: str = "", payload: object = None,
                  final: bool = True, show_error: bool = True,
-                 progress_value: float | None = None):
+                 progress_value: float | None = None, log: str | None = None):
         self.ok = ok
         self.message = message
         self.payload = payload
         self.final = final
         self.show_error = show_error
         self.progress_value = progress_value
+        self.log = log
 
 
 class AdminApp:
@@ -93,6 +96,9 @@ class AdminApp:
         self.current_slug: str | None = None     # slug as loaded (rename check)
         self._loaded_id: str | None = None       # "lang:slug" shown in the editor
         self.preview_links: list[tuple[tuple[int, int], tuple[int, int], str]] = []
+        self.build_log_window: tkinter.Toplevel | None = None
+        self._builder_python: str | None = None
+        self._builder_python_checked = False
         self.models: list[str] = []
 
         root.title("RadLab — panel zarządzania blogiem")
@@ -123,6 +129,8 @@ class AdminApp:
         self.btn_switch.pack(side="left", padx=3)
         ttk.Button(toolbar, text="Odśwież",
                    command=lambda: self.refresh_list(select=self.selected())).pack(side="left", padx=3)
+        self.btn_build = ttk.Button(toolbar, text="Buduj stronę…", command=self.on_build)
+        self.btn_build.pack(side="left", padx=3)
 
         paned = ttk.PanedWindow(body, orient="horizontal")
         paned.pack(fill="both", expand=True, **pad)
@@ -831,11 +839,147 @@ class AdminApp:
         except Exception as exc:  # noqa: BLE001 — surface any router failure
             return WorkerResult(False, f"Błąd tłumaczenia: {exc}")
 
+    # ----------------------------------------------------------------- build
+
+    def _find_builder_python(self) -> str | None:
+        """An interpreter with the build.py dependencies (cached after first check)."""
+        if self._builder_python_checked:
+            return self._builder_python
+        self._builder_python_checked = True
+        candidates = [os.environ.get("BUILDER_PYTHON"), sys.executable,
+                      "/usr/local/bin/python3",
+                      "/mnt/data2/dev/develop/python-venv/bin/python3.10"]
+        seen: set[str] = set()
+        for candidate in candidates:
+            if not candidate or candidate in seen:
+                continue
+            seen.add(candidate)
+            try:
+                probe = subprocess.run(
+                    [candidate, "-c", "import markdown, jinja2, markupsafe, pygments, yaml, PIL"],
+                    capture_output=True, timeout=20)
+            except (OSError, subprocess.SubprocessError):
+                continue
+            if probe.returncode == 0:
+                self._builder_python = candidate
+                return candidate
+        return None
+
+    @staticmethod
+    def _parse_stage(line: str) -> float | None:
+        """build.py prints '[n/5] stage' — map it to a 0-100 bar value."""
+        match = re.match(r"^\[(\d+)/5\]", line)
+        if match:
+            return int(match.group(1)) / 5 * 100
+        if line.startswith("built "):
+            return 100
+        return None
+
+    def _build_log_alive(self) -> bool:
+        return (self.build_log_window is not None
+                and self.build_log_window.winfo_exists())
+
+    def _open_build_log_window(self) -> None:
+        if self._build_log_alive():
+            self.build_log_window.deiconify()
+            self.build_log_text.delete("1.0", "end")
+            self.build_log_progress.configure(value=0)
+            self.build_log_status.configure(text="Start…")
+            return
+        win = tkinter.Toplevel(self.root)
+        win.title("Budowanie strony — logi")
+        win.transient(self.root)
+        win.geometry("780x480")
+        win.minsize(560, 320)
+        frame = ttk.Frame(win)
+        frame.pack(fill="both", expand=True, padx=6, pady=6)
+        self.build_log_text = tkinter.Text(frame, state="disabled", wrap="none",
+                                           font=("monospace", 9))
+        vsb = ttk.Scrollbar(frame, orient="vertical", command=self.build_log_text.yview)
+        hsb = ttk.Scrollbar(frame, orient="horizontal", command=self.build_log_text.xview)
+        self.build_log_text.configure(yscrollcommand=vsb.set, xscrollcommand=hsb.set)
+        self.build_log_text.grid(row=0, column=0, sticky="nsew")
+        vsb.grid(row=0, column=1, sticky="ns")
+        hsb.grid(row=1, column=0, sticky="ew")
+        frame.rowconfigure(0, weight=1)
+        frame.columnconfigure(0, weight=1)
+        bar_frame = ttk.Frame(win)
+        bar_frame.pack(fill="x", padx=6, pady=(0, 4))
+        self.build_log_progress = ttk.Progressbar(bar_frame, mode="determinate", maximum=100)
+        self.build_log_progress.pack(side="left", fill="x", expand=True, padx=(0, 8))
+        self.build_log_status = ttk.Label(bar_frame, text="Start…")
+        self.build_log_status.pack(side="left")
+        buttons = ttk.Frame(win)
+        buttons.pack(fill="x", padx=6, pady=(0, 6))
+        ttk.Button(buttons, text="Kopiuj log", command=self._copy_build_log).pack(side="left")
+        ttk.Button(buttons, text="Zamknij", command=win.destroy).pack(side="right")
+        self.build_log_window = win
+
+    def _append_build_log(self, line: str) -> None:
+        if not self._build_log_alive():
+            return
+        self.build_log_text.configure(state="normal")
+        self.build_log_text.insert("end", line + "\n")
+        self.build_log_text.see("end")
+        self.build_log_text.configure(state="disabled")
+
+    def _copy_build_log(self) -> None:
+        if not self._build_log_alive():
+            return
+        self.build_log_window.clipboard_clear()
+        self.build_log_window.clipboard_append(self.build_log_text.get("1.0", "end-1c"))
+
+    def on_build(self) -> None:
+        if self.busy:
+            return
+        if self._confirm_discard():
+            return
+        dlg = BuildDialog(self.root)
+        if dlg.run() is None:
+            return
+        self._open_build_log_window()
+        self.progress.configure(mode="indeterminate")
+        self.progress.start(12)
+        self._spawn(self._job_build, dlg)
+
+    def _job_build(self, options) -> WorkerResult:
+        python = self._find_builder_python()
+        if not python:
+            return WorkerResult(
+                False,
+                "Brak interpretera z zależnościami build.py "
+                "(markdown, jinja2, pygments, PIL) — ustaw BUILDER_PYTHON.")
+        cmd = [python, str(ROOT / "build.py")]
+        if options.fast:
+            cmd.append("--fast")
+        if options.drafts:
+            cmd.append("--drafts")
+        if options.check:
+            cmd.append("--check")
+        if options.clean:
+            cmd.append("--clean")
+        self.jobs.put(WorkerResult(True, "Budowanie…", final=False,
+                                   log="$ " + " ".join(cmd)))
+        try:
+            proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+                                    text=True, cwd=str(ROOT), bufsize=1)
+        except OSError as exc:
+            return WorkerResult(False, f"Nie udało się uruchomić budowania: {exc}")
+        for line in proc.stdout:
+            line = line.rstrip("\n")
+            self.jobs.put(WorkerResult(True, line, final=False, log=line,
+                                       progress_value=self._parse_stage(line)))
+        rc = proc.wait()
+        if rc == 0:
+            return WorkerResult(True, "Budowanie zakończone pomyślnie → dist/")
+        return WorkerResult(False, f"Budowanie zakończone kodem {rc} — szczegóły w logach")
+
     # -------------------------------------------------------------- threading
 
     def _spawn(self, func, *args) -> None:
         self.busy = True
         self.btn_new.configure(state="disabled")
+        self.btn_build.configure(state="disabled")
         self._update_editor_buttons()
 
         def runner() -> None:
@@ -854,15 +998,22 @@ class AdminApp:
                 result = self.jobs.get_nowait()
                 if result.message:
                     self.status_var.set(result.message)
+                if result.log is not None:
+                    self._append_build_log(result.log)
                 if result.progress_value is not None:
+                    if str(self.progress.cget("mode")) == "indeterminate":
+                        self.progress.stop()
+                        self.progress.configure(mode="determinate")
                     self.progress.configure(value=result.progress_value)
+                    if self._build_log_alive():
+                        self.build_log_progress.configure(value=result.progress_value)
                 if not result.final:
                     continue
                 if result.payload is not None:
                     lang, slug = result.payload
                     self._load_into_editor(self.store.load_post(lang, slug))
                     self.refresh_list(select=f"{lang}:{slug}")
-                if self.progress.cget("mode") == "indeterminate":
+                if str(self.progress.cget("mode")) == "indeterminate":
                     self.progress.stop()
                 self.progress.configure(mode="determinate", value=0)
                 finished = result
@@ -871,7 +1022,10 @@ class AdminApp:
         if finished is not None:
             self.busy = False
             self.btn_new.configure(state="normal")
+            self.btn_build.configure(state="normal")
             self._update_editor_buttons()
+            if self._build_log_alive():
+                self.build_log_status.configure(text=finished.message or ("ok" if finished.ok else "błąd"))
             if not finished.ok and finished.show_error:
                 messagebox.showerror("RadLab", finished.message or "Błąd")
         self.root.after(150, self._poll_jobs)
@@ -993,6 +1147,54 @@ class TranslateDialog:
         self.window.destroy()
 
     def run(self) -> "TranslateDialog | None":
+        self.window.grab_set()
+        self.window.wait_window()
+        return self
+
+
+class BuildDialog:
+    def __init__(self, parent):
+        self.fast = False
+        self.drafts = False
+        self.check = False
+        self.clean = False
+
+        self.window = tkinter.Toplevel(parent)
+        self.window.title("Budowanie strony")
+        self.window.transient(parent)
+        self.window.resizable(False, False)
+        grid = ttk.Frame(self.window)
+        grid.pack(fill="both", expand=True, padx=12, pady=10)
+        grid.columnconfigure(0, weight=1)
+
+        ttk.Label(grid, text="Opcje (python build.py):").grid(
+            row=0, column=0, sticky="w", pady=(0, 6))
+        self.fast_var = tkinter.BooleanVar(value=False)
+        ttk.Checkbutton(grid, text="szybkie budowanie (--fast) — bez generowania wariantów obrazów",
+                        variable=self.fast_var).grid(row=1, column=0, sticky="w")
+        self.drafts_var = tkinter.BooleanVar(value=False)
+        ttk.Checkbutton(grid, text="wersje robocze (--drafts) — włączaj posty draft",
+                        variable=self.drafts_var).grid(row=2, column=0, sticky="w", pady=2)
+        self.check_var = tkinter.BooleanVar(value=False)
+        ttk.Checkbutton(grid, text="walidacja (--check) — sprawdź linki i zasoby",
+                        variable=self.check_var).grid(row=3, column=0, sticky="w")
+        self.clean_var = tkinter.BooleanVar(value=False)
+        ttk.Checkbutton(grid, text="wyczyść dist/ (--clean) — usuń poprzedni wynik",
+                        variable=self.clean_var).grid(row=4, column=0, sticky="w", pady=(2, 8))
+
+        buttons = ttk.Frame(grid)
+        buttons.grid(row=5, column=0, sticky="w")
+        ttk.Button(buttons, text="Buduj", command=self._ok).pack(side="left", padx=4)
+        ttk.Button(buttons, text="Anuluj", command=self.window.destroy).pack(side="left", padx=4)
+
+    def _ok(self) -> None:
+        self.fast = bool(self.fast_var.get())
+        self.drafts = bool(self.drafts_var.get())
+        self.check = bool(self.check_var.get())
+        self.clean = bool(self.clean_var.get())
+        self.window.destroy()
+
+    def run(self) -> "BuildDialog | None":
         self.window.grab_set()
         self.window.wait_window()
         return self
