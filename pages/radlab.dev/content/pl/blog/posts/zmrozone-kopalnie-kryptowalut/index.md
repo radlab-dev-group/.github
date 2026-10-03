@@ -3,8 +3,8 @@ title: "Zmrożone kopalnie kryptowalut?"
 date: 2026-01-01
 slug: zmrozone-kopalnie-kryptowalut
 description: "Dzisiaj nieco z innej „bajki”. Nie technicznie od strony wytwórczej, a być może propozycja częściowego rozwiązania problemu z mediów do czego można jeszcze…"
-tags: ["crypto-minig", "genai", "llm", "llm-router", "local", "open-source", "saas"]
-categories: ["Bezpieczeństwo", "Crypto-mining", "GenAI", "LLM", "LLM Router", "Load balancing", "narzędzia", "On-prem", "open-source", "SaaS"]
+tags: [crypto-mining, genai, llm, llm-router, local, open-source, saas]
+categories: ["Bezpieczeństwo", Crypto-mining, GenAI, LLM, "LLM Router", "Load balancing", "narzędzia", On-prem, open-source, SaaS]
 image: media/_featured.jpeg
 lang: pl
 wp_id: 4523
