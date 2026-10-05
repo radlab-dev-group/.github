@@ -85,8 +85,10 @@
         localStorage.setItem(key, JSON.stringify({ version: 1, choice: choice, time: Date.now() }));
       } catch (_) { /* Do not prevent a choice when persistence is blocked. */ }
       apply(choice);
-      if (returnFocus) returnFocus.focus();
-      else if (settings) settings.focus();
+      // Focus has to land somewhere once the panel is gone, but the settings
+      // button lives in the footer — let focus jump there, never the viewport.
+      var next = returnFocus || settings;
+      if (next) next.focus({ preventScroll: true });
     });
   });
 

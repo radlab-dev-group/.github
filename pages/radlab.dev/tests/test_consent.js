@@ -11,11 +11,11 @@ const saved = (choice, time = Date.now()) => JSON.stringify({ version: 1, choice
 
 function setup({ stored = null, blocked = false, enabled = true } = {}) {
   const scripts = [], cookieWrites = [], events = {};
-  let reloads = 0, focused;
+  let reloads = 0, focused, focusOptions;
   const button = choice => ({
     getAttribute() { return choice; },
     addEventListener(name, fn) { this[name] = fn; },
-    focus() { focused = choice; },
+    focus(options) { focused = choice; focusOptions = options; },
   });
   const reject = button('denied'), accept = button('granted'), settings = button('settings');
   const panel = {
@@ -39,6 +39,7 @@ function setup({ stored = null, blocked = false, enabled = true } = {}) {
   vm.runInNewContext(source, { document, window, localStorage: storage });
   return { scripts, panel, reject, accept, settings, window, cookieWrites,
     stored: () => stored, reloads: () => reloads, focused: () => focused,
+    focusOptions: () => focusOptions,
     external(value, eventKey = key) { stored = value; events.storage({ key: eventKey }); } };
 }
 
@@ -86,6 +87,18 @@ test('footer reopens settings; withdrawal disables GA, clears cookies and reload
   assert.ok(state.cookieWrites.some(cookie => cookie.includes('domain=radlab.dev')));
   assert.ok(state.cookieWrites.some(cookie => cookie.includes('path=/preview/en/blog/')));
   assert.ok(state.cookieWrites.every(cookie => cookie.startsWith('_ga')));
+});
+
+test('a choice hands focus to the footer button without dragging the viewport there', () => {
+  const first = setup();
+  first.accept.click();
+  assert.equal(first.focused(), 'settings');
+  assert.equal(first.focusOptions().preventScroll, true);
+  const reopened = setup({ stored: saved('granted') });
+  reopened.settings.click();
+  reopened.reject.click();
+  assert.equal(reopened.focused(), 'settings');
+  assert.equal(reopened.focusOptions().preventScroll, true);
 });
 
 test('expired, malformed, unknown-version and future choices require new consent', () => {
