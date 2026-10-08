@@ -50,6 +50,12 @@ python3 tools/build_docs.py --source /path/to/llm-router --all-versions
 python3 tools/build_docs.py --serve          # build, then http://localhost:8000/docs/
 ```
 
+`tools/build.sh` wraps all of this: it finds the three checkouts automatically,
+runs the builder from the repository root and verifies the generated internal
+links. Options are listed by `tools/build.sh --help`; per-machine paths go into
+`tools/build.sh.conf` (shell, not committed), which can set `ROUTER_SRC`,
+`PLUGINS_SRC`, `SERVICES_SRC` and `OUTPUT`.
+
 ## Design constraints
 
 - **Single source of truth** -- the source repositories. Docs and code ship in
@@ -74,6 +80,7 @@ python3 tools/build_docs.py --serve          # build, then http://localhost:8000
 | `--plugins` path (llm-router-plugins checkout) | tagged archives and rolling plugin documentation |
 | `--services` path (llm-router-services checkout) | rolling services documentation |
 | `tools/build_docs.py` | the whole builder: discovery, rendering, versioning, search, link check, preview server |
+| `tools/build.sh` | wrapper: resolves the three checkouts, rebuilds the site, optional preview |
 | `tools/docs.toml` | site metadata, discovery filters, navigation sections, per-page overrides, crosslinks |
 | `tools/theme/docs.css` | the docs stylesheet |
 | `tools/theme/docs.js` | client-side search, version switch, scroll spy, copy buttons |
@@ -85,6 +92,15 @@ python3 tools/build_docs.py --serve          # build, then http://localhost:8000
 | `site/` | build output -- never edited, never committed |
 
 ## Quick start
+
+```bash
+tools/build.sh                    # router + plugins + services, every release tag
+tools/build.sh --latest           # newest router tag only (a few seconds)
+tools/build.sh --fetch --clean    # refresh source tags, rebuild site/ from scratch
+tools/build.sh --latest --serve   # rebuild and open http://localhost:8000/docs/
+```
+
+The builder can also be invoked directly:
 
 ```bash
 SRC=/path/to/llm-router
