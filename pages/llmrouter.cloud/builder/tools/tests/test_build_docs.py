@@ -247,6 +247,28 @@ class BuildDocsTests(unittest.TestCase):
         self.assertIn('href="guide.html" class="active"', sidebar)
         self.assertEqual(sidebar.count('class="active"'), 1)
 
+    def test_docs_start_page(self):
+        self.build("--check-links")
+        docs = self.output / "docs"
+        source = (docs / "index.html").read_text()
+        main = source.split('<main class="main" id="main">', 1)[1]
+        self.assertIn('<h2 id="docs-start-title">Choose your documentation</h2>', main)
+        self.assertEqual(main.count('class="repo-card"'), 3)
+        for repo, target in (("router", "router/1.1.0/index.html"),
+                             ("plugins", "plugins/index.html"),
+                             ("services", "services/index.html")):
+            self.assertIn(f'href="{target}" data-docs-entry="{repo}"', main)
+        self.assertIn('<h2 id="docs-quickstart-title">Quick start</h2>', main)
+        self.assertIn('href="router/1.1.0/overview.html">Installation & overview</a>', main)
+        self.assertLess(main.index('class="docs-start"'), main.index('class="docs-quickstart"'))
+        self.assertLess(main.index('class="docs-quickstart"'), main.index('class="hub-side"'))
+        self.assertNotIn('class="sec-cards"', main)
+        self.assertNotIn('class="vline"', main)
+        for relative in ("router/1.0.0/index.html", "router/index.html", "plugins/index.html"):
+            archive = (docs / relative).read_text()
+            self.assertIn('class="sec-cards" id="sections"', archive)
+            self.assertNotIn('class="docs-start"', archive)
+
     def test_hub_version_panels(self):
         self.build("--check-links")
         docs = self.output / "docs"
@@ -299,7 +321,11 @@ class BuildDocsTests(unittest.TestCase):
         self.assertNotRegex(prerelease, r'<option [^>]*>v0\.3\.0rc1\s*· latest</option>')
         self.output = self.root / "router-only"
         self.build("--no-satellites", "--check-links")
-        self.assertNotIn("plugins", Selects((self.output / "docs/index.html").read_text()).selects)
+        source = (self.output / "docs/index.html").read_text()
+        self.assertNotIn("plugins", Selects(source).selects)
+        self.assertEqual(source.count('class="repo-card"'), 1)
+        self.assertNotIn('data-docs-entry="plugins"', source)
+        self.assertNotIn('data-docs-entry="services"', source)
 
     def test_plugins_without_tags(self):
         self.plugins = self.make_repo("untagged-plugins", [])

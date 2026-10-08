@@ -1163,6 +1163,16 @@ CARD_TEMPLATE = """<article class="sec-card">
 
 REPO_CHIP = '<span class="repo-chip mono">{repo}</span>'
 
+DOCS_HOME_TEMPLATE = """<section class="hub-hero">
+<p class="eyebrow mono">Documentation</p>
+<h1>Build and operate your AI gateway</h1>
+<p class="lede">Start with the router, extend it with plugins, or deploy supporting services. Each project has its own documentation and release history.</p>
+</section>
+<div class="hub-grid">
+<div>{start}</div>
+<aside class="hub-side">{aside}</aside>
+</div>"""
+
 
 # --------------------------------------------------------------------------- #
 # version management
@@ -1705,6 +1715,52 @@ def render_page(page: Page, release: Release, config: Config,
     )
 
 
+def render_docs_start(release: Release, href: Href) -> str:
+    cards = []
+    descriptions = {
+        "router": ("Router", "Install, configure and operate the OpenAI-compatible gateway."),
+        "plugins": ("Plugins", "Extend request handling with masking, guardrails and routing plugins."),
+        "services": ("Services", "Deploy the HTTP services used by your gateway and plugins."),
+    }
+    for repo_id, (title, description) in descriptions.items():
+        snapshot = release.snapshots.get(repo_id)
+        if snapshot is None or not snapshot.pages:
+            continue
+        target = href.to(posixpath.join(snapshot.archive_root, "index.html"))
+        cards.append(
+            f'<a class="repo-card" href="{html.escape(target, quote=True)}" data-docs-entry="{repo_id}">'
+            f'<span class="repo-card-title">{title}</span>'
+            f'<span class="repo-card-description">{description}</span>'
+            '<span class="repo-card-action mono">Read docs &rarr;</span></a>'
+        )
+
+    quick_links = []
+    for section, label in (("getting-started", "Installation & overview"),
+                           ("configuration", "Configure your models")):
+        page = next((page for page in release.pages
+                     if page.repo == "router" and page.section == section), None)
+        if page is None:
+            continue
+        target = href.to(posixpath.join(release.snapshots["router"].archive_root, page.out))
+        quick_links.append(
+            f'<a class="btn {"primary" if not quick_links else "ghost"}" '
+            f'href="{html.escape(target, quote=True)}">{label}</a>'
+        )
+    quick_start = (
+        '<section class="docs-quickstart" aria-labelledby="docs-quickstart-title">'
+        '<h2 id="docs-quickstart-title">Quick start</h2>'
+        '<p>Install the router, connect a model provider, then send your first request. '
+        'The guides below use the latest router release.</p>'
+        f'<div class="hub-actions">{"".join(quick_links)}</div></section>'
+        if quick_links else ""
+    )
+    return (
+        '<section class="docs-start" aria-labelledby="docs-start-title">'
+        '<h2 id="docs-start-title">Choose your documentation</h2>'
+        f'<div class="repo-cards">{"".join(cards)}</div></section>{quick_start}'
+    )
+
+
 def render_hub(release: Release, config: Config, versions: list[VersionEntry],
                latest: str, page_dir: str = "", search_enabled: bool = True,
                hub_base: str = "") -> str:
@@ -1920,6 +1976,8 @@ def render_hub(release: Release, config: Config, versions: list[VersionEntry],
         cards="".join(cards),
         aside=aside,
     )
+    if not page_dir:
+        main = DOCS_HOME_TEMPLATE.format(start=render_docs_start(release, href), aside=aside)
     return render_shell(
         config=config,
         release=release,

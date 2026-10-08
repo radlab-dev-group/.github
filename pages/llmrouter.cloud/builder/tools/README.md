@@ -37,6 +37,10 @@ and services links remain available. The newest stable plugin tag is marked
 unversioned satellite URLs use the newest stable tag, not uncommitted changes or
 the development branch. Repositories without tags expose only `latest` from the
 source checkout.
+The shared `/docs/` entry presents Router, Plugins and Services cards, followed by
+Quick start links for the latest router. Only available repositories are shown;
+the full document catalogs remain on the repository and release indexes.
+Documentation cards respect the selected versions when JavaScript is enabled.
 With JavaScript enabled, the chosen router, plugins and services versions travel together
 in URL query parameters. Opening a plugin archive restores the selected router
 menu instead of resetting it to latest, and vice versa. Each page still renders

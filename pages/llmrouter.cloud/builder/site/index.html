@@ -25,8 +25,8 @@
   --line:#1a232e;
   --line-soft:#131a23;
   --fg:#c6d3df;
-  --fg-dim:#8492a3;
-  --fg-faint:#5a6778;
+  --fg-dim:#a5b3c2;
+  --fg-faint:#8d9daf;
   --mint:#00e59b;
   --blue:#5aa9ff;
   --amber:#ffb44a;
@@ -42,13 +42,13 @@
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
 body{
   margin:0;background:var(--bg);color:var(--fg);
-  font-family:var(--sans);font-size:15.5px;line-height:1.65;
+  font-family:var(--sans);font-size:16px;line-height:1.65;
   -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
   overflow-x:hidden;
 }
 body::before{
   /* engineering grid */
-  content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+  content:"";position:absolute;inset:0 0 auto;height:900px;z-index:0;pointer-events:none;
   background-image:
     linear-gradient(to right,rgba(255,255,255,.028) 1px,transparent 1px),
     linear-gradient(to bottom,rgba(255,255,255,.028) 1px,transparent 1px);
@@ -57,16 +57,22 @@ body::before{
   -webkit-mask-image:radial-gradient(120% 90% at 50% 0%,#000 25%,transparent 78%);
 }
 body::after{
-  content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+  content:"";position:absolute;inset:0 0 auto;height:900px;z-index:0;pointer-events:none;
   background:
     radial-gradient(760px 420px at 12% -6%,rgba(0,229,155,.13),transparent 62%),
     radial-gradient(680px 400px at 92% 4%,rgba(90,169,255,.10),transparent 60%);
 }
 main,header,footer{position:relative;z-index:1}
+main{overflow-wrap:anywhere}
 a{color:var(--blue);text-decoration:none}
 a:hover{text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1px}
+:focus-visible{outline:2px solid var(--mint);outline-offset:4px}
+.skip-link{position:fixed;top:8px;left:16px;z-index:80;padding:10px 16px;
+  background:var(--mint);color:#032018;border-radius:8px;transform:translateY(-150%)}
+.skip-link:focus{transform:none}
 h1,h2,h3,h4,.mono{font-family:var(--mono)}
 h1,h2,h3{letter-spacing:-.025em;line-height:1.12;font-weight:600;margin:0}
+h2{font-family:var(--sans);font-size:clamp(1.65rem,3vw,2.25rem);line-height:1.22;overflow-wrap:anywhere}
 p{margin:0}
 .wrap{width:100%;max-width:var(--wrap);margin:0 auto;padding:0 24px}
 section{padding:92px 0;border-top:1px solid var(--line-soft)}
@@ -76,7 +82,7 @@ section[id]{scroll-margin-top:calc(var(--nav-h) + 14px)}
 .nav{position:sticky;top:0;z-index:60;height:var(--nav-h);
   background:rgba(5,7,10,.78);backdrop-filter:blur(14px) saturate(150%);
   border-bottom:1px solid var(--line);}
-.nav-inner{height:100%;display:flex;align-items:center;gap:26px}
+.nav-inner{height:100%;display:flex;align-items:center;gap:20px}
 .brand{display:flex;align-items:center;gap:10px;color:var(--fg);font-family:var(--mono);
   font-weight:600;font-size:15px;letter-spacing:-.02em}
 .brand:hover{text-decoration:none}
@@ -92,46 +98,49 @@ section[id]{scroll-margin-top:calc(var(--nav-h) + 14px)}
   border:1px solid var(--line);color:var(--fg-dim);white-space:nowrap}
 .chip-live{border-color:rgba(0,229,155,.35);color:var(--mint);background:rgba(0,229,155,.07)}
 .btn{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:13px;
-  padding:8px 14px;border-radius:8px;border:1px solid var(--line);color:var(--fg);
+  min-height:44px;padding:10px 16px;border-radius:8px;border:1px solid var(--line);color:var(--fg);
   background:var(--panel-2);cursor:pointer;transition:.16s;white-space:nowrap}
 .btn:hover{border-color:#2b3a4a;background:#121a23;text-decoration:none;color:#fff}
 .btn-primary{background:var(--mint);border-color:var(--mint);color:#032018;font-weight:600}
 .btn-primary:hover{background:#26ffb4;border-color:#26ffb4;color:#02170f}
 .burger{display:none;background:none;border:1px solid var(--line);border-radius:8px;
-  width:36px;height:34px;color:var(--fg);cursor:pointer;font-size:15px;line-height:1}
+  width:44px;height:44px;color:var(--fg);cursor:pointer;font-size:15px;line-height:1}
 
 /* ============================================================ hero */
-.hero{padding:82px 0 76px;border-top:0;overflow:hidden}
-.hero-grid{display:grid;grid-template-columns:minmax(0,1.03fr) minmax(0,1fr);gap:52px;align-items:center}
+.hero{padding:88px 0 40px;border-top:0;overflow:hidden}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1.03fr) minmax(0,1fr);gap:48px;align-items:center}
 .eyebrow{display:inline-flex;align-items:center;gap:9px;font-family:var(--mono);font-size:11.5px;
   text-transform:uppercase;letter-spacing:.19em;color:var(--fg-dim);
   border:1px solid var(--line);background:rgba(10,14,20,.7);padding:5px 11px;border-radius:999px}
-.pulse{width:6px;height:6px;border-radius:50%;background:var(--mint);box-shadow:0 0 0 0 rgba(0,229,155,.55);
-  animation:pulse 2.4s infinite}
-@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(0,229,155,.5)}70%{box-shadow:0 0 0 8px rgba(0,229,155,0)}100%{box-shadow:0 0 0 0 rgba(0,229,155,0)}}
-.hero h1{font-size:clamp(2.15rem,4.4vw,3.5rem);margin:22px 0 0}
+.pulse{width:6px;height:6px;border-radius:50%;background:var(--mint)}
+.hero h1{font-family:var(--sans);font-size:clamp(2.75rem,5.2vw,4.25rem);line-height:1.05;
+  letter-spacing:-.045em;margin:24px 0 0;font-weight:650}
 .hero h1 .hl{color:var(--mint)}
-.hero h1 .caret{display:inline-block;width:.5em;height:.92em;background:var(--mint);
-  margin-left:.08em;vertical-align:-.06em;animation:blink 1.15s steps(1) infinite}
-@keyframes blink{0%,49%{opacity:1}50%,100%{opacity:0}}
-.lede{margin-top:20px;font-size:16.5px;color:var(--fg-dim);max-width:60ch}
+.lede{margin-top:24px;font-size:18px;color:var(--fg-dim);max-width:52ch;line-height:1.7}
 .lede b{color:var(--fg);font-weight:600}
 .install{margin-top:28px;display:flex;align-items:center;gap:10px;background:var(--panel);
   border:1px solid var(--line);border-radius:10px;padding:11px 12px;font-family:var(--mono);
-  font-size:13.5px;max-width:min(520px,100%);overflow:hidden}
+  font-size:13px;width:100%;max-width:520px;overflow:hidden;text-align:left;min-height:48px}
 .install[data-copy]{cursor:pointer;transition:border-color .15s,background .15s}
 .install[data-copy]:hover{border-color:#2f4053;background:#121a23}
 .install[data-copy].ok{border-color:rgba(0,229,155,.45);background:rgba(0,229,155,.06)}
-.install .okmsg{margin-left:auto;flex:0 0 auto;color:var(--mint);font-size:11px;opacity:0;transition:opacity .15s}
-.install[data-copy].ok .okmsg{opacity:1}
+.install .okmsg{display:none;flex:0 0 auto;color:var(--mint);font-size:11px}
+.install .copy-hint{color:var(--fg-dim);font-size:11px}
+.install[data-copy].ok .okmsg{display:inline}
+.install[data-copy].ok .copy-hint{display:none}
 .install .pfx{color:var(--mint)}
 .install code{color:#e6f0f8;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0;flex:1 1 auto}
-.cta-row{display:flex;flex-wrap:wrap;gap:11px;margin-top:18px}
+.cta-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
+.hero .cta-row .btn{padding:12px 20px;font-size:14px}
+.provider-line{display:flex;align-items:baseline;flex-wrap:wrap;gap:12px 24px;
+  border-top:1px solid var(--line);padding:24px 0 30px;color:var(--fg-dim);font-size:13px}
+.provider-line p{font-family:var(--mono);color:var(--fg-faint);font-size:11px}
+.provider-line ul{display:flex;flex-wrap:wrap;gap:10px 24px;list-style:none;margin:0;padding:0}
 /* keep grid/flex children shrinkable: long metric names, env vars and PromQL
    must never widen a column (they scroll or wrap instead) */
 .grid>*,.split>*,.eco>*,.hero-grid>*,.dep-grid>*,.stats-grid>*,.foot-grid>*,.cta-row>*{min-width:0}
 .panel h3,.panel .hint,ul.ticks li,.dep .d,.card p,.eco-row .ds,.lede,.stat .k{overflow-wrap:anywhere}
-.badges{list-style:none;display:flex;flex-wrap:wrap;gap:7px;margin:26px 0 0;padding:0}
+.badges{list-style:none;display:flex;flex-wrap:wrap;gap:7px;margin:18px 0 0;padding:0}
 .badges li{font-family:var(--mono);font-size:11.5px;color:var(--fg-faint);
   border:1px solid var(--line-soft);background:rgba(255,255,255,.02);padding:3px 8px;border-radius:6px}
 .badges li b{color:var(--fg-dim);font-weight:500}
@@ -147,26 +156,26 @@ section[id]{scroll-margin-top:calc(var(--nav-h) + 14px)}
 .term-body{padding:16px 16px 18px;font-family:var(--mono);font-size:12.6px;line-height:1.72;
   color:#a9b8c8;overflow-x:auto}
 .term-body .l{white-space:pre}
+.hero .term-body .l{white-space:pre-wrap;overflow-wrap:anywhere}
 .c-cmd{color:#e9f2fa}.c-p{color:var(--mint)}.c-o{color:#8d9dae}.c-k{color:var(--blue)}
-.c-s{color:var(--mint)}.c-w{color:var(--amber)}.c-m{color:#5f6d7d}.c-pu{color:var(--purple)}
+.c-s{color:var(--mint)}.c-w{color:var(--amber)}.c-m{color:var(--fg-faint)}.c-pu{color:var(--purple)}
 .c-red{color:var(--red)}
 
 /* ============================================================ stats */
 .stats{border-top:1px solid var(--line-soft);border-bottom:1px solid var(--line-soft);
   background:linear-gradient(180deg,rgba(10,14,20,.85),rgba(5,7,10,.4));padding:0}
-.stats-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr))}
-.stat{padding:24px 20px;border-left:1px solid var(--line-soft)}
+.stats-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}
+.stat{padding:28px 24px;border-left:1px solid var(--line-soft)}
 .stat:first-child{border-left:0}
-.stat .n{font-family:var(--mono);font-size:25px;color:#eaf2fa;letter-spacing:-.03em;line-height:1.2}
+.stat .n{font-family:var(--sans);font-size:18px;color:#eaf2fa;letter-spacing:-.02em;line-height:1.4}
 .stat .n span{color:var(--mint);font-size:16px}
-.stat .k{font-family:var(--mono);font-size:10.8px;text-transform:uppercase;letter-spacing:.13em;
-  color:var(--fg-faint);margin-top:6px}
+.stat .k{font-size:14px;color:var(--fg-dim);margin-top:8px;line-height:1.6}
 
 /* ============================================================ section head */
 .sec-head{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin-bottom:10px}
 .sec-num{font-family:var(--mono);font-size:11.5px;color:var(--mint);letter-spacing:.14em}
 .sec-head h2{font-size:clamp(1.45rem,2.5vw,1.95rem)}
-.sec-sub{color:var(--fg-dim);max-width:78ch;font-size:15.5px}
+.sec-sub{color:var(--fg-dim);max-width:78ch;font-size:16px;overflow-wrap:anywhere}
 .sec-sub code{font-family:var(--mono);font-size:.9em;color:var(--mint)}
 .kv{color:var(--fg)}
 
@@ -196,8 +205,7 @@ section[id]{scroll-margin-top:calc(var(--nav-h) + 14px)}
   font-family:var(--mono);font-size:15px}
 .wire{position:relative;height:2px;background:var(--line);margin:20px 0 6px;border-radius:2px;overflow:hidden}
 .wire i{position:absolute;top:-1px;width:90px;height:4px;border-radius:4px;
-  background:linear-gradient(90deg,transparent,var(--mint),transparent);animation:travel 3.6s linear infinite}
-@keyframes travel{from{transform:translateX(-100px)}to{transform:translateX(1400px)}}
+  left:45%;background:linear-gradient(90deg,transparent,var(--mint),transparent)}
 .pipe-foot{display:flex;flex-wrap:wrap;gap:18px;margin-top:20px;padding-top:18px;border-top:1px dashed var(--line)}
 .pipe-foot div{font-family:var(--mono);font-size:12px;color:var(--fg-faint);min-width:0;overflow-wrap:anywhere}
 .pipe-foot b{color:var(--fg-dim);font-weight:500}
@@ -242,8 +250,8 @@ section[id]{scroll-margin-top:calc(var(--nav-h) + 14px)}
 .term-body::-webkit-scrollbar-thumb,.tbl-wrap::-webkit-scrollbar-thumb,.prom::-webkit-scrollbar-thumb{
   background:#1e2833;border-radius:8px}
 .term-body::-webkit-scrollbar-track,.tbl-wrap::-webkit-scrollbar-track,.prom::-webkit-scrollbar-track{background:transparent}
-.k-cm{color:#5f6d7d}.k-kw{color:var(--purple)}.k-str{color:var(--mint)}.k-num{color:var(--amber)}
-.k-key{color:var(--blue)}.k-flag{color:var(--amber)}.k-dim{color:#4d5a69}
+.k-cm{color:var(--fg-faint)}.k-kw{color:var(--purple)}.k-str{color:var(--mint)}.k-num{color:var(--amber)}
+.k-key{color:var(--blue)}.k-flag{color:var(--amber)}.k-dim{color:var(--fg-faint)}
 /* ============================================================ tabs */
 .tabs{display:flex;flex-wrap:wrap;gap:4px;margin-top:32px;border:1px solid var(--line);border-bottom:0;
   border-radius:10px 10px 0 0;background:var(--panel);padding:6px}
@@ -333,7 +341,8 @@ ul.ticks li b{color:#dce7f1;font-weight:600}
 .foot .fine{margin-top:32px;padding-top:22px;border-top:1px solid var(--line-soft);display:flex;
   flex-wrap:wrap;gap:14px;justify-content:space-between;font-family:var(--mono);font-size:11.4px;color:var(--fg-faint)}
 /* ============================================================ motion */
-.reveal{opacity:0;transform:translateY(14px);transition:opacity .55s ease,transform .55s ease}
+.reveal{opacity:1;transition:opacity .35s ease,transform .35s ease}
+.reveal.pending{opacity:0;transform:translateY(10px)}
 .reveal.in{opacity:1;transform:none}
 .prog{position:fixed;top:0;left:0;height:2px;width:0;z-index:70;
   background:linear-gradient(90deg,var(--mint),var(--blue))}
@@ -361,27 +370,33 @@ ul.ticks li b{color:#dce7f1;font-weight:600}
   section{padding:68px 0}
 }
 @media (max-width:640px){
-  body{font-size:15px}
   .grid{grid-template-columns:1fr}
-  .stats-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .stat{border-top:1px solid var(--line-soft)}
-  .stat:nth-child(odd){border-left:0}
-  .stat:nth-child(-n+2){border-top:0}
+  .stats-grid{grid-template-columns:1fr}
+  .stat{padding:22px 0;border-left:0}
+  .stat:nth-child(n+2){border-top:1px solid var(--line-soft)}
+  .nav-inner{gap:10px}
+  .nav-right{gap:8px}
+  .nav-right .btn{padding:8px 10px;font-size:11px}
   .nav-right .btn.ghost{display:none}
-  .hero h1{font-size:1.95rem}
+  .hero h1{font-size:clamp(2.5rem,10.5vw,3.75rem)}
+  .hero .lede{font-size:17px}
+  .hero .cta-row .btn{padding:12px 14px;font-size:13px}
+  .install{gap:8px;font-size:11px;padding:12px 10px}
+  .install code{white-space:normal;overflow-wrap:anywhere}
+  .provider-line{gap:12px}
   .pipe{padding:18px 14px}
   section{padding:58px 0}
   .cta-band{padding:62px 0}
 }
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
-  .reveal{opacity:1;transform:none;transition:none}
-  .wire i,.pulse,.caret{animation:none}
+  .reveal,.reveal.pending{opacity:1;transform:none;transition:none}
   *{transition-duration:.01ms !important}
 }
 </style>
 </head>
 <body>
+<a class="skip-link" href="#top">Skip to content</a>
 <div class="prog" id="prog"></div>
 
 <header class="nav">
@@ -390,63 +405,51 @@ ul.ticks li b{color:#dce7f1;font-weight:600}
       <svg width="22" height="22" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="7" fill="#0b1119" stroke="#1a232e"/><path d="M8 22V10M8 16h9M17 10v12M17 13h7M17 19h7" stroke="#00e59b" stroke-width="2" stroke-linecap="round" fill="none"/></svg>
       <span>llm<span class="slash">-</span>router</span>
     </a>
-    <nav class="nav-links" id="navlinks">
-      <a href="#pipeline">pipeline</a>
-      <a href="#plugins">plugins</a>
-      <a href="#features">features</a>
-      <a href="#config">config</a>
-      <a href="#balancing">balancing</a>
-      <a href="#security">security</a>
-      <a href="#metrics">metrics</a>
-      <a href="#deploy">deploy</a>
-      <a href="#compare">compare</a>
-      <a href="docs/">docs</a>
+    <nav class="nav-links" id="navlinks" aria-label="Main navigation">
+      <a href="#features">Features</a>
+      <a href="#pipeline">How it works</a>
+      <a href="#deploy">Deploy</a>
+      <a href="#compare">Compare</a>
+      <a href="docs/">Docs</a>
     </nav>
     <div class="nav-right">
-      <span class="chip chip-live">v1.1.8 · Apache-2.0</span>
       <a class="btn ghost" href="https://github.com/radlab-dev-group/llm-router" rel="noopener">GitHub</a>
-      <a class="btn btn-primary" href="#deploy">Deploy</a>
-      <button class="burger" id="burger" aria-label="Toggle navigation" aria-expanded="false">&#9776;</button>
+      <a class="btn btn-primary" href="docs/#docs-quickstart">Quick start</a>
+      <button class="burger" id="burger" type="button" aria-label="Toggle navigation" aria-controls="navlinks" aria-expanded="false">&#9776;</button>
     </div>
   </div>
 </header>
 
-<main id="top">
+<main id="top" tabindex="-1">
 
 <!-- ============================================================ hero -->
 <section class="hero">
   <div class="wrap hero-grid">
     <div>
       <span class="eyebrow"><i class="pulse"></i> self-hosted ai gateway</span>
-      <h1>One endpoint in&nbsp;front of <span class="hl">every LLM</span> you run<span class="caret"></span></h1>
+      <h1>Your models.<br>Your stack.<br><span class="hl">One endpoint.</span></h1>
       <p class="lede">
-        LLM Router sits between your services and your models — <b>vLLM</b>, <b>Ollama</b>, <b>llama.cpp</b>,
-        <b>LM Studio</b>, <b>OpenAI-compatible</b> APIs and <b>Anthropic</b> — behind a single OpenAI-compatible
-        REST surface. Auth, sliding-window rate limits, PII masking, guardrails, load balancing, provider
-        failover and Prometheus metrics run <b>in your infrastructure</b>, so prompts never take a detour
-        through someone else's cloud.
+        Route, protect and observe your LLM traffic through one <b>OpenAI-compatible API</b>.
+        An open-source gateway you run and control.
       </p>
-      <div class="install" data-copy='pip install "radlab-llm-router[api]"'>
-        <span class="pfx">$</span><code>pip install "radlab-llm-router[api]"</code><span class="okmsg">copied</span>
-      </div>
       <div class="cta-row">
-        <a class="btn btn-primary" href="#config">Get a router in 60s</a>
-        <a class="btn ghost" href="#pipeline">Read the request path</a>
-        <a class="btn ghost" href="https://pypi.org/project/radlab-llm-router/" rel="noopener">PyPI</a>
+        <a class="btn btn-primary" href="docs/#docs-quickstart">Quick start &rarr;</a>
+        <a class="btn ghost" href="docs/">Documentation</a>
       </div>
+      <button class="install" type="button" aria-label="Copy pip install command" data-copy='pip install "radlab-llm-router[api]"'>
+        <span class="pfx" aria-hidden="true">$</span><code>pip install "radlab-llm-router[api]"</code><span class="copy-hint">copy</span><span class="okmsg">copied</span>
+      </button>
       <ul class="badges">
+        <li><b>v1.1.8</b></li>
+        <li><b>Apache-2.0</b></li>
         <li><b>python</b> &ge; 3.10</li>
-        <li><b>image</b> quay.io/radlab/llm-router</li>
-        <li><b>helm</b> chart included</li>
-        <li><b>no</b> vendor lock-in</li>
-        <li><b>zero</b> telemetry</li>
       </ul>
     </div>
 
-    <div class="term" aria-label="Terminal session">
+    <div class="term" aria-label="Example terminal session">
       <div class="term-bar">
         <span class="tl r"></span><span class="tl y"></span><span class="tl g"></span>
-        <span class="term-title">ops@bastion: ~/infra/llm-router</span>
+        <span class="term-title">llm-router / example session</span>
       </div>
       <div class="term-body">
 <div class="l"><span class="c-p">$</span> <span class="c-cmd">pip install "radlab-llm-router[api,metrics]"</span></div>
@@ -461,13 +464,6 @@ ul.ticks li b{color:#dce7f1;font-weight:600}
 <div class="l"><span class="c-s">&check;&nbsp;All good</span></div>
 <div class="l"><span class="c-s">&bull;&nbsp;</span><span class="c-o">Server is running (gunicorn, 4 workers)</span></div>
 <div class="l">&nbsp;</div>
-<div class="l"><span class="c-m">&nbsp;&nbsp;Details</span></div>
-<div class="l"><span class="c-m">&nbsp;&nbsp;&nbsp;&nbsp;PID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="c-o">41207</span></div>
-<div class="l"><span class="c-m">&nbsp;&nbsp;&nbsp;&nbsp;Server&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="c-o">gunicorn</span></div>
-<div class="l"><span class="c-m">&nbsp;&nbsp;&nbsp;&nbsp;Host&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="c-o">0.0.0.0:8080</span></div>
-<div class="l"><span class="c-m">&nbsp;&nbsp;&nbsp;&nbsp;Models config&nbsp;&nbsp;&nbsp;</span><span class="c-o">/srv/models-config.json</span></div>
-<div class="l"><span class="c-m">&nbsp;&nbsp;&nbsp;&nbsp;Log&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="c-o">~/.llm-router/server.log</span></div>
-<div class="l">&nbsp;</div>
 <div class="l"><span class="c-p">$</span> <span class="c-cmd">curl -s localhost:8080/api/ping</span></div>
 <div class="l"><span class="c-o">{<span class="c-k">"status"</span>: <span class="c-k">true</span>, <span class="c-k">"body"</span>: <span class="c-s">"pong"</span>} &nbsp;<span class="c-m">HTTP/1.1 200 OK</span></span></div>
       </div>
@@ -475,15 +471,21 @@ ul.ticks li b{color:#dce7f1;font-weight:600}
   </div>
 </section>
 
+<div class="wrap">
+  <div class="provider-line">
+    <p>Connect your stack</p>
+    <ul aria-label="Supported upstreams">
+      <li>vLLM</li><li>Ollama</li><li>llama.cpp</li><li>LM Studio</li><li>OpenAI-compatible APIs</li><li>Anthropic</li>
+    </ul>
+  </div>
+</div>
+
 <!-- ============================================================ stats -->
 <div class="stats">
   <div class="wrap stats-grid">
-    <div class="stat"><div class="n">6</div><div class="k">provider types</div></div>
-    <div class="stat"><div class="n">6</div><div class="k">LB strategies</div></div>
-    <div class="stat"><div class="n">30<span>+</span></div><div class="k">PII rule types</div></div>
-    <div class="stat"><div class="n">25<span>+</span></div><div class="k">REST endpoints</div></div>
-    <div class="stat"><div class="n">~95</div><div class="k">env vars</div></div>
-    <div class="stat"><div class="n">100<span>%</span></div><div class="k">self-hosted</div></div>
+    <div class="stat"><div class="n">Route with resilience</div><div class="k">Load balancing, provider failover and model fallback chains.</div></div>
+    <div class="stat"><div class="n">Protect before inference</div><div class="k">PII masking, prompt guardrails and per-key rate limits.</div></div>
+    <div class="stat"><div class="n">Keep operations in view</div><div class="k">Prometheus metrics and encrypted audit logs in your infrastructure.</div></div>
   </div>
 </div>
 
@@ -1780,17 +1782,12 @@ $ <span class="k-str">./scripts/decrypt_auditor_logs.sh</span> 2026-09-09</pre>
   <div class="wrap inner">
     <h2 class="reveal">Point your client at <span style="color:var(--mint)">localhost:8080</span></h2>
     <p class="lede reveal">
-      Apache-2.0, no accounts, no phone-home. Install it, write one JSON file, and your prompts stop
-      taking a detour through someone else's cloud.
+      Start with your existing models and clients. Follow the setup guide, then choose
+      the routing and protection your stack needs.
     </p>
-    <div class="install reveal" data-copy='pip install "radlab-llm-router[api]"'>
-      <span class="pfx">$</span><code>pip install "radlab-llm-router[api]"</code><span class="okmsg">copied</span>
-    </div>
     <div class="cta-row reveal">
-      <a class="btn btn-primary" href="#config">Config reference</a>
-      <a class="btn ghost" href="https://github.com/radlab-dev-group/llm-router" rel="noopener">GitHub</a>
-      <a class="btn ghost" href="https://pypi.org/project/radlab-llm-router/" rel="noopener">PyPI</a>
-      <a class="btn ghost" href="docs/">Docs</a>
+      <a class="btn btn-primary" href="docs/#docs-quickstart">Quick start &rarr;</a>
+      <a class="btn ghost" href="docs/">Documentation</a>
     </div>
   </div>
 </section>
@@ -2093,12 +2090,14 @@ $ <span class="k-str">./scripts/decrypt_auditor_logs.sh</span> 2026-09-09</pre>
     var revealObserver = new IntersectionObserver(function (entries) {
       Array.prototype.forEach.call(entries, function (entry) {
         if (entry.isIntersecting) {
+          entry.target.classList.remove("pending");
           entry.target.classList.add("in");
           revealObserver.unobserve(entry.target);
         }
       });
     }, { rootMargin: "0px 0px -8% 0px", threshold: 0.08 });
     Array.prototype.forEach.call(revealables, function (el) {
+      el.classList.add("pending");
       revealObserver.observe(el);
     });
   }
@@ -2171,6 +2170,7 @@ $ <span class="k-str">./scripts/decrypt_auditor_logs.sh</span> 2026-09-09</pre>
       if (event.key === "Escape" && navList.classList.contains("open")) {
         navList.classList.remove("open");
         burger.setAttribute("aria-expanded", "false");
+        burger.focus();
       }
     });
   }
