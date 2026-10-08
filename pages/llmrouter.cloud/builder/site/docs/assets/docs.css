@@ -359,13 +359,22 @@ a:hover {
 .vselect {
   position: relative;
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 2px;
+}
+
+.vselect > span {
+  color: var(--fg-dim);
+  font-family: var(--mono);
+  font-size: 10px;
 }
 
 .vselect::after {
   content: "";
   position: absolute;
   right: 10px;
+  bottom: 13px;
   width: 7px;
   height: 7px;
   border-right: 1.5px solid var(--mint);
@@ -391,6 +400,21 @@ a:hover {
 .vselect select:hover {
   border-color: #263546;
   color: #4ff3b6;
+}
+
+/* Satellite (plugins/services) pages: the switcher is wider and shows the
+   repo name before the version. */
+.vselect[data-switch]::after {
+  right: 10px;
+}
+
+body[data-repo] .vselect select {
+  min-width: 150px;
+}
+
+body[data-repo] .vselect select:hover,
+body[data-repo] .vselect select:focus {
+  min-width: 150px;
 }
 
 .iconbtn {
@@ -481,6 +505,16 @@ a:hover {
   align-items: center;
   gap: 8px;
   margin-bottom: 12px;
+}
+
+.side-versions {
+  margin: 8px 0 12px;
+}
+
+body[data-repo] .side-versions select {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
 }
 
 .side-v {
@@ -1450,6 +1484,20 @@ a:hover {
   text-transform: uppercase;
 }
 
+.versions-box > summary {
+  cursor: pointer;
+  color: var(--fg-dim);
+}
+
+.versions-box > summary h2 {
+  display: inline;
+  margin: 0;
+}
+
+.versions-box[open] > summary {
+  margin-bottom: 9px;
+}
+
 .box p {
   margin: 0 0 8px;
   color: var(--fg-dim);
@@ -1631,13 +1679,31 @@ a:hover {
 }
 
 @media (max-width: 640px) {
+  :root {
+    --nav-h: 144px;
+  }
+
   body {
     font-size: 15px;
   }
 
   .topbar-inner {
-    gap: 8px;
-    padding: 0 12px;
+    display: grid;
+    grid-template-columns: 32px minmax(0, 1fr);
+    gap: 6px 8px;
+    padding: 6px 12px;
+  }
+
+  .brand {
+    justify-self: start;
+  }
+
+  .topbar-right {
+    display: grid;
+    grid-column: 1 / -1;
+    grid-template-columns: minmax(0, 1fr) 32px;
+    width: 100%;
+    gap: 6px;
   }
 
   .brand-docs,
@@ -1647,8 +1713,9 @@ a:hover {
   }
 
   .search {
-    flex: 1 1 96px;
-    min-width: 96px;
+    grid-column: 1 / -1;
+    min-width: 0;
+    width: 100%;
   }
 
   .search input {
@@ -1667,6 +1734,11 @@ a:hover {
 
   .vselect select {
     max-width: 108px;
+  }
+
+  body[data-repo] .vselect select {
+    min-width: 0;
+    max-width: 100%;
   }
 
   .main {
@@ -1795,20 +1867,26 @@ a:hover {
 .nav-repo {
   padding: 0.5rem 1rem 0.25rem;
   margin-top: 1rem;
-  border-top: 1px solid var(--border);
+  border-top: 1px solid var(--line);
+  cursor: pointer;
+  color: var(--fg-dim);
 }
-.nav-repo:first-child {
+[data-nav-repo]:first-child .nav-repo {
   border-top: none;
   margin-top: 0.5rem;
 }
 .nav-repo .repo-name {
-  display: block;
+  display: inline;
   font-family: var(--mono);
   font-size: 0.7rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  color: var(--muted);
+  color: var(--fg-dim);
+}
+.nav-group > .side-head,
+.nav-group > [data-router-context] {
+  margin-top: 8px;
 }
 
 /* Multi-repo: repo chip on hub cards and search results */

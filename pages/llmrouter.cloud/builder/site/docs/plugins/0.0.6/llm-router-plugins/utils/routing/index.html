@@ -1,0 +1,1059 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-9KM7GYM55M"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-9KM7GYM55M');</script>
+<title>Semantic Routing Plugins · v0.0.6 · llm-router docs</title>
+<meta name="description" content="# Semantic Routing Plugins Two routing plugins are available for **heuristic-based model selection** in the **LLM‑Router** system. Both activate when `payload[&quot;model&quot;] == &quot;auto&quot;`. --- ## Table of Contents - [1. Simple Semantic Routing (Heu…">
+<meta name="theme-color" content="#05070a">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Semantic Routing Plugins · v0.0.6 · llm-router docs">
+<meta property="og:description" content="# Semantic Routing Plugins Two routing plugins are available for **heuristic-based model selection** in the **LLM‑Router** system. Both activate when `payload[&quot;model&quot;] == &quot;auto&quot;`. --- ## Table of Contents - [1. Simple Semantic Routing (Heu…">
+<meta name="docs-version" content="0.0.6">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2305070a'/%3E%3Cpath d='M8 22V10M8 16h9M17 10v12M17 13h7M17 19h7' stroke='%2300e59b' stroke-width='2' stroke-linecap='round' fill='none'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="../../../../../assets/docs.css">
+<link rel="stylesheet" href="../../../../../assets/pygments.css">
+<script src="../../../../../assets/docs.js" defer></script>
+</head>
+<body class="page" data-version="0.0.6" data-search="../../../search.json" data-latest="1.1.8" data-repo="plugins" data-docs-root="../../../../../">
+<a class="skip" href="#main">skip to content</a>
+<header class="topbar">
+<div class="topbar-inner">
+<button class="burger" id="burger" aria-label="Toggle documentation menu" aria-expanded="false" aria-controls="sidebar">&#9776;</button>
+<a class="brand" href="../../../../../.."><svg width="21" height="21" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="7" fill="#0b1119" stroke="#1a232e"/><path d="M8 22V10M8 16h9M17 10v12M17 13h7M17 19h7" stroke="#00e59b" stroke-width="2" stroke-linecap="round" fill="none"/></svg><span>llm<span class="dash">-</span>router</span><span class="brand-docs">/docs</span></a>
+<div class="topbar-right">
+<form class="search" id="search" role="search" autocomplete="off">
+<span class="search-icon" aria-hidden="true">&#8981;</span>
+<input id="q" type="search" placeholder="search this version" aria-label="Search documentation" role="combobox" aria-expanded="false" aria-controls="results" aria-autocomplete="list">
+<kbd>/</kbd>
+<div class="results" id="results" role="listbox" aria-label="Search results" hidden></div>
+</form>
+
+<a class="iconbtn" href="https://github.com/radlab-dev-group/llm-router-plugins" aria-label="Repository on GitHub" title="Repository on GitHub"><svg width="17" height="17" viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8a8 8 0 0 0 5.47 7.59c.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.46-.53.42-.02.72.39.82.55.48.81 1.25.94 1.56.73.2-.27.6-.94.94-1.13-.01-.2-.05-.82-.14-.98-.6.1-1.22.2-1.87.2-1.9 0-3.62-1.13-3.62-3.53 0-.78.28-1.42.74-1.92-.07-.18-.32-.91.07-1.9 0 0 .6-.19 1.97.74a6.8 6.8 0 0 1 3.58 0c1.37-.93 1.97-.74 1.97-.74.39.99.14 1.72.07 1.9.46.5.74 1.14.74 1.92 0 2.41-1.47 3.53-3.87 3.72.3.26.57.77.57 1.56 0 1.13-.012.04-.01 2.32 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg></a>
+</div>
+</div>
+</header>
+<div class="scrim" id="scrim" hidden></div>
+<div class="shell">
+<aside class="sidebar" id="sidebar"><nav class="nav-tree" aria-label="Documentation"><div data-nav-repo="router"><details class="nav-group"><summary class="nav-repo"><span class="repo-name">llm-router</span></summary><div data-router-context><div class="side-head"><span class="side-v mono">v1.1.8</span><span class="side-tag live">latest</span></div><a class="side-hub" href="../../../../../router/1.1.8/index.html">documentation index</a></div><label class="vselect side-versions"><span class="sr-only">llm-router version</span><select id="versions-router" data-switch="router" aria-label="llm-router documentation version"><option value="../../../../../router/1.1.8/index.html" data-version="1.1.8" data-root="../../../../../router/1.1.8/index.html" selected>1.1.8  · latest</option>
+<option value="../../../../../router/1.1.7/index.html" data-version="1.1.7" data-root="../../../../../router/1.1.7/index.html">1.1.7</option>
+<option value="../../../../../router/1.1.6/index.html" data-version="1.1.6" data-root="../../../../../router/1.1.6/index.html">1.1.6</option>
+<option value="../../../../../router/1.1.5/index.html" data-version="1.1.5" data-root="../../../../../router/1.1.5/index.html">1.1.5</option>
+<option value="../../../../../router/1.1.4/index.html" data-version="1.1.4" data-root="../../../../../router/1.1.4/index.html">1.1.4</option>
+<option value="../../../../../router/1.1.3/index.html" data-version="1.1.3" data-root="../../../../../router/1.1.3/index.html">1.1.3</option>
+<option value="../../../../../router/1.1.2/index.html" data-version="1.1.2" data-root="../../../../../router/1.1.2/index.html">1.1.2</option>
+<option value="../../../../../router/1.1.1/index.html" data-version="1.1.1" data-root="../../../../../router/1.1.1/index.html">1.1.1</option>
+<option value="../../../../../router/1.1.0/index.html" data-version="1.1.0" data-root="../../../../../router/1.1.0/index.html">1.1.0</option>
+<option value="../../../../../router/1.0.8/index.html" data-version="1.0.8" data-root="../../../../../router/1.0.8/index.html">1.0.8</option>
+<option value="../../../../../router/1.0.7/index.html" data-version="1.0.7" data-root="../../../../../router/1.0.7/index.html">1.0.7</option>
+<option value="../../../../../router/1.0.6/index.html" data-version="1.0.6" data-root="../../../../../router/1.0.6/index.html">1.0.6</option>
+<option value="../../../../../router/1.0.5/index.html" data-version="1.0.5" data-root="../../../../../router/1.0.5/index.html">1.0.5</option>
+<option value="../../../../../router/1.0.4/index.html" data-version="1.0.4" data-root="../../../../../router/1.0.4/index.html">1.0.4</option>
+<option value="../../../../../router/1.0.3/index.html" data-version="1.0.3" data-root="../../../../../router/1.0.3/index.html">1.0.3</option>
+<option value="../../../../../router/1.0.1/index.html" data-version="1.0.1" data-root="../../../../../router/1.0.1/index.html">1.0.1</option>
+<option value="../../../../../router/1.0.0/index.html" data-version="1.0.0" data-root="../../../../../router/1.0.0/index.html">1.0.0</option>
+<option value="../../../../../router/0.9.6/index.html" data-version="0.9.6" data-root="../../../../../router/0.9.6/index.html">0.9.6</option>
+<option value="../../../../../router/0.9.5/index.html" data-version="0.9.5" data-root="../../../../../router/0.9.5/index.html">0.9.5</option>
+<option value="../../../../../router/0.9.4/index.html" data-version="0.9.4" data-root="../../../../../router/0.9.4/index.html">0.9.4</option>
+<option value="../../../../../router/0.9.2/index.html" data-version="0.9.2" data-root="../../../../../router/0.9.2/index.html">0.9.2</option>
+<option value="../../../../../router/0.9.1/index.html" data-version="0.9.1" data-root="../../../../../router/0.9.1/index.html">0.9.1</option>
+<option value="../../../../../router/0.9.0/index.html" data-version="0.9.0" data-root="../../../../../router/0.9.0/index.html">0.9.0</option>
+<option value="../../../../../router/0.8.0/index.html" data-version="0.8.0" data-root="../../../../../router/0.8.0/index.html">0.8.0</option>
+<option value="../../../../../router/0.7.0/index.html" data-version="0.7.0" data-root="../../../../../router/0.7.0/index.html">0.7.0</option>
+<option value="../../../../../router/0.6.9/index.html" data-version="0.6.9" data-root="../../../../../router/0.6.9/index.html">0.6.9</option>
+<option value="../../../../../router/0.6.8/index.html" data-version="0.6.8" data-root="../../../../../router/0.6.8/index.html">0.6.8</option>
+<option value="../../../../../router/0.6.7/index.html" data-version="0.6.7" data-root="../../../../../router/0.6.7/index.html">0.6.7</option>
+<option value="../../../../../router/0.6.6/index.html" data-version="0.6.6" data-root="../../../../../router/0.6.6/index.html">0.6.6</option>
+<option value="../../../../../router/0.6.5/index.html" data-version="0.6.5" data-root="../../../../../router/0.6.5/index.html">0.6.5</option>
+<option value="../../../../../router/0.6.4/index.html" data-version="0.6.4" data-root="../../../../../router/0.6.4/index.html">0.6.4</option>
+<option value="../../../../../router/0.6.3/index.html" data-version="0.6.3" data-root="../../../../../router/0.6.3/index.html">0.6.3</option>
+<option value="../../../../../router/0.6.2/index.html" data-version="0.6.2" data-root="../../../../../router/0.6.2/index.html">0.6.2</option>
+<option value="../../../../../router/0.6.1/index.html" data-version="0.6.1" data-root="../../../../../router/0.6.1/index.html">0.6.1</option>
+<option value="../../../../../router/0.6.0/index.html" data-version="0.6.0" data-root="../../../../../router/0.6.0/index.html">0.6.0</option>
+<option value="../../../../../router/0.5.2/index.html" data-version="0.5.2" data-root="../../../../../router/0.5.2/index.html">0.5.2</option>
+<option value="../../../../../router/0.5.1/index.html" data-version="0.5.1" data-root="../../../../../router/0.5.1/index.html">0.5.1</option>
+<option value="../../../../../router/0.5.0/index.html" data-version="0.5.0" data-root="../../../../../router/0.5.0/index.html">0.5.0</option>
+<option value="../../../../../router/0.4.6/index.html" data-version="0.4.6" data-root="../../../../../router/0.4.6/index.html">0.4.6</option>
+<option value="../../../../../router/0.4.5/index.html" data-version="0.4.5" data-root="../../../../../router/0.4.5/index.html">0.4.5</option>
+<option value="../../../../../router/0.4.4/index.html" data-version="0.4.4" data-root="../../../../../router/0.4.4/index.html">0.4.4</option>
+<option value="../../../../../router/0.4.3/index.html" data-version="0.4.3" data-root="../../../../../router/0.4.3/index.html">0.4.3</option>
+<option value="../../../../../router/0.4.2/index.html" data-version="0.4.2" data-root="../../../../../router/0.4.2/index.html">0.4.2</option>
+<option value="../../../../../router/0.4.1/index.html" data-version="0.4.1" data-root="../../../../../router/0.4.1/index.html">0.4.1</option>
+<option value="../../../../../router/0.4.0/index.html" data-version="0.4.0" data-root="../../../../../router/0.4.0/index.html">0.4.0</option>
+<option value="../../../../../router/0.3.1/index.html" data-version="0.3.1" data-root="../../../../../router/0.3.1/index.html">0.3.1</option>
+<option value="../../../../../router/0.3.0/index.html" data-version="0.3.0" data-root="../../../../../router/0.3.0/index.html">0.3.0</option>
+<option value="../../../../../router/0.2.3/index.html" data-version="0.2.3" data-root="../../../../../router/0.2.3/index.html">0.2.3</option>
+<option value="../../../../../router/0.2.2/index.html" data-version="0.2.2" data-root="../../../../../router/0.2.2/index.html">0.2.2</option>
+<option value="../../../../../router/0.2.1/index.html" data-version="0.2.1" data-root="../../../../../router/0.2.1/index.html">0.2.1</option>
+<option value="../../../../../router/0.2.0/index.html" data-version="0.2.0" data-root="../../../../../router/0.2.0/index.html">0.2.0</option>
+<option value="../../../../../router/0.1.1/index.html" data-version="0.1.1" data-root="../../../../../router/0.1.1/index.html">0.1.1</option>
+<option value="../../../../../router/0.1.0/index.html" data-version="0.1.0" data-root="../../../../../router/0.1.0/index.html">0.1.0</option></select></label><section class="nav-sec open"><h2 class="nav-sec-title"><a href="../../../../../router/1.1.8/overview.html">Getting started</a></h2><ul><li><a href="../../../../../router/1.1.8/overview.html">Overview</a></li><li><a href="../../../../../router/1.1.8/llm-router-api/docs/installation.html">Installation</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="../../../../../router/1.1.8/llm-router-api/docs/env-definitions.html">Configuration</a></h2><ul><li><a href="../../../../../router/1.1.8/llm-router-api/docs/env-definitions.html">Environment Variables</a></li><li><a href="../../../../../router/1.1.8/llm-router-api/docs/models-config.html">Models configuration description (JSON)</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="../../../../../router/1.1.8/llm-router-api/docs/keepalive.html">Routing &amp; resilience</a></h2><ul><li><a href="../../../../../router/1.1.8/llm-router-api/docs/keepalive.html">Keep‑Alive Utility Overview</a></li><li><a href="../../../../../router/1.1.8/llm-router-api/docs/lb-strategies.html">Load Balancing Strategies</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="../../../../../router/1.1.8/llm-router-api/core/auditor/index.html">Security &amp; auditing</a></h2><ul><li><a href="../../../../../router/1.1.8/llm-router-api/core/auditor/index.html">Auditing subsystem – llm-router</a></li><li><a href="../../../../../router/1.1.8/llm-router-api/docs/authentication.html">Authentication &amp; Authorization</a></li><li><a href="../../../../../router/1.1.8/llm-router-api/docs/rate-limiting.html">Rate Limiting</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="../../../../../router/1.1.8/llm-router-api/docs/routing-metrics.html">Observability</a></h2><ul><li><a href="../../../../../router/1.1.8/llm-router-api/docs/routing-metrics.html">Router Prometheus Metrics</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="../../../../../router/1.1.8/llm-router-api/index.html">REST API</a></h2><ul><li><a href="../../../../../router/1.1.8/llm-router-api/index.html">REST API reference</a></li><li><a href="../../../../../router/1.1.8/llm-router-api/endpoints/index.html">Endpoints Overview</a></li><li><a href="../../../../../router/1.1.8/llm-router-api/docs/endpoint-dev.html">Endpoint Development Guide</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="../../../../../router/1.1.8/llm-router-cli/index.html">CLI</a></h2><ul><li><a href="../../../../../router/1.1.8/llm-router-cli/index.html">llm-router CLI — Command Reference</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="../../../../../router/1.1.8/llm-router-lib/index.html">Python library</a></h2><ul><li><a href="../../../../../router/1.1.8/llm-router-lib/index.html">llmrouterlib</a></li><li><a href="../../../../../router/1.1.8/llm-router-lib/response-models.html">Response models</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="../../../../../router/1.1.8/helm-charts/index.html">Deployment</a></h2><ul><li><a href="../../../../../router/1.1.8/helm-charts/index.html">LLM‑Router Helm Chart</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="../../../../../router/1.1.8/examples/index.html">Examples</a></h2><ul><li><a href="../../../../../router/1.1.8/examples/index.html">Integration Examples with LLM Router</a></li><li><a href="../../../../../router/1.1.8/examples/quickstart/index.html">Full Stack with Local Models</a></li><li><a href="../../../../../router/1.1.8/examples/readme-llamaindex.html">Using LlamaIndex with Local Models via the LLM‑Router</a></li><li><a href="../../../../../router/1.1.8/examples/quickstart/google-gemma3-12b-it/vllm.html">vLLM + google/gemma‑3‑12b‑it – Quick‑Start Guide (Ubuntu)</a></li><li><a href="../../../../../router/1.1.8/examples/quickstart/speakleash-bielik-11b-v2-3-instruct/vllm.html">vLLM + speakleash/Bielik-11B-v2.3-Instruct – Przewodnik Szybkiego Startu (Ubuntu)</a></li><li><a href="../../../../../router/1.1.8/examples/quickstart/speakleash-bielik-11b-v2-3-instruct/index.html">🚀 Przewodnik Szybkiego Startu dla speakleash/Bielik-11B-v2.3-Instruct z vLLM &amp; LLM‑Router</a></li><li><a href="../../../../../router/1.1.8/examples/quickstart/google-gemma3-12b-it/index.html">🚀 Quick‑Start Guide for google/gemma-3-12b‑it with vLLM &amp; LLM‑Router</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="../../../../../router/1.1.8/changelog.html">Release notes</a></h2><ul><li><a href="../../../../../router/1.1.8/changelog.html">Changelog</a></li></ul></section></details></div><div data-nav-repo="plugins"><details class="nav-group"><summary class="nav-repo"><span class="repo-name">llm-router-plugins</span></summary><div class="side-head"><span class="side-v mono">v0.0.6</span><span class="side-tag old">archived</span></div><label class="vselect side-versions"><span class="sr-only">llm-router-plugins version</span><select id="versions-plugins" data-switch="plugins" aria-label="llm-router-plugins documentation version"><option value="../../../../0.1.2/llm-router-plugins/utils/routing/index.html" data-version="0.1.2" data-root="../../../../0.1.2/index.html">v0.1.2  · latest</option>
+<option value="../../../../0.1.1/llm-router-plugins/utils/routing/index.html" data-version="0.1.1" data-root="../../../../0.1.1/index.html">v0.1.1</option>
+<option value="../../../../0.1.0/llm-router-plugins/utils/routing/index.html" data-version="0.1.0" data-root="../../../../0.1.0/index.html">v0.1.0</option>
+<option value="index.html" data-version="0.0.6" data-root="../../../index.html" selected>v0.0.6</option>
+<option value="../../../../0.0.5/index.html" data-version="0.0.5" data-root="../../../../0.0.5/index.html">v0.0.5</option>
+<option value="../../../../0.0.2/index.html" data-version="0.0.2" data-root="../../../../0.0.2/index.html">v0.0.2</option>
+<option value="../../../../0.0.1/index.html" data-version="0.0.1" data-root="../../../../0.0.1/index.html">v0.0.1</option></select></label><section class="nav-sec open"><h2 class="nav-sec-title"><a href="../../../index-2.html">Plugins overview</a></h2><ul><li><a href="../../../index-2.html">Plugins overview</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="../../maskers/fast-masker/index.html">Masker plugins</a></h2><ul><li><a href="../../maskers/fast-masker/index.html">Overview</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="index.html">Routing plugins</a></h2><ul><li><a href="index.html" class="active">Semantic Routing Plugins</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="../rag/langchain-rag.html">Utility plugins</a></h2><ul><li><a href="../rag/langchain-rag.html">LangChain RAG Plugin for LLM‑Router</a></li></ul></section></details></div><div data-nav-repo="services"><details class="nav-group"><summary class="nav-repo"><span class="repo-name">llm-router-services</span></summary><div class="side-head"><span class="side-v mono">v0.0.4</span><span class="side-tag live">latest</span></div><label class="vselect side-versions"><span class="sr-only">llm-router-services version</span><select id="versions-services" data-switch="services" aria-label="llm-router-services documentation version"><option value="../../../../../services/0.0.4/index.html" data-version="0.0.4" data-root="../../../../../services/0.0.4/index.html" selected>v0.0.4  · latest</option>
+<option value="../../../../../services/0.0.3/index.html" data-version="0.0.3" data-root="../../../../../services/0.0.3/index.html">v0.0.3</option>
+<option value="../../../../../services/0.0.2/index.html" data-version="0.0.2" data-root="../../../../../services/0.0.2/index.html">v0.0.2</option>
+<option value="../../../../../services/0.0.1/index.html" data-version="0.0.1" data-root="../../../../../services/0.0.1/index.html">v0.0.1</option></select></label><section class="nav-sec open"><h2 class="nav-sec-title"><a href="../../../../../services/index-2.html">Services overview</a></h2><ul><li><a href="../../../../../services/index-2.html">llm-router services</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="../../../../../services/llm-router-services/guardrails/index.html">Guardrail services</a></h2><ul><li><a href="../../../../../services/llm-router-services/guardrails/index.html">Guardrails Package</a></li><li><a href="../../../../../services/llm-router-services/guardrails/speakleash/index.html">Integration of Bielik‑Guard‑0.1B as llm‑router guardrail service (Sojka)</a></li><li><a href="../../../../../services/llm-router-services/guardrails/nask/index.html">Integration of HerBERT‑PL‑Guard with the naskpibguard_app.py Service</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="../../../../../services/docker/index.html">Docker &amp; deployment</a></h2><ul><li><a href="../../../../../services/docker/index.html">LLM‑Router Services – Docker Build &amp; Run Guide</a></li></ul></section></details></div></nav><div class="side-foot"><a href="../../../../../..">&larr;&nbsp;landing page</a><a class="mono" href="../../../search.json">search.json</a></div></aside>
+<main class="main" id="main"><nav class="crumbs" aria-label="Breadcrumb">
+<a href="../../../../../..">llm-router</a><span class="sep">/</span><a href="../../../index.html">docs</a><span class="sep">/</span><a href="index.html">Routing plugins</a><span class="sep">/</span><em>Semantic Routing Plugins</em>
+</nav>
+<article class="prose"><h1 id="semantic-routing-plugins">Semantic Routing Plugins<a class="headerlink" href="#semantic-routing-plugins" title="link to this section">#</a></h1>
+<p>Two routing plugins are available for <strong>heuristic-based model selection</strong> in the <strong>LLM‑Router</strong> system.<br />
+Both activate when <code>payload["model"] == "auto"</code>.</p>
+<hr />
+<h2 id="table-of-contents">Table of Contents<a class="headerlink" href="#table-of-contents" title="link to this section">#</a></h2>
+<ul>
+<li><a href="#1-simple-semantic-routing-heuristic">1. Simple Semantic Routing (Heuristic)</a></li>
+<li><a href="#2-bi-encoder-semantic-routing-embedding-based">2. Bi-Encoder Semantic Routing (Embedding-based)</a></li>
+</ul>
+<hr />
+<h2 id="1-simple-semantic-routing-heuristic">1. Simple Semantic Routing (Heuristic)<a class="headerlink" href="#1-simple-semantic-routing-heuristic" title="link to this section">#</a></h2>
+<p>The <strong>Simple Semantic Routing plugin</strong> (<code>simple_semantic_routing</code>) performs
+two-stage heuristic model selection: it classifies the user's intent
+(code, math, creative, general) via weighted keywords, multi-word phrases, and
+regex patterns, then estimates input complexity (token count) to pick the most
+appropriate model from a configured pool.</p>
+<p><strong>No embedding model is required</strong> — routing is a fast, pure-text classification.</p>
+<h3 id="11-architecture">1.1 Architecture<a class="headerlink" href="#11-architecture" title="link to this section">#</a></h3>
+<h4 id="data-flow">Data Flow<a class="headerlink" href="#data-flow" title="link to this section">#</a></h4>
+<div class="codehilite"><pre><span></span><code>User Input
+    │
+    ▼
+classify_intent(text)  ← keywords + phrases + regex patterns
+    │
+    ▼
+estimate_tokens(text)  ← word_count × 1.25
+    │
+    ▼
+complexity_level(tokens)  ← simple / medium / complex
+    │
+    ▼
+select_model(intent, complexity)  ← weighted score → model index
+    │
+    ▼
+Updated payload["model"]
+</code></pre></div>
+
+<h4 id="intent-classification-algorithm">Intent Classification Algorithm<a class="headerlink" href="#intent-classification-algorithm" title="link to this section">#</a></h4>
+<p>Each intent is defined in <code>simple_semantic.json</code> with <strong>four complementary signal types</strong>:</p>
+<h5 id="a-keywords-single-words">a) Keywords — single words<a class="headerlink" href="#a-keywords-single-words" title="link to this section">#</a></h5>
+<p>Each keyword has an optional weight. If no weight is specified, the default is <strong>1.0</strong>.</p>
+<div class="codehilite"><pre><span></span><code><span class="nt">"keywords"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"code"</span><span class="p">,</span><span class="w"> </span><span class="s2">"debug"</span><span class="p">,</span><span class="w"> </span><span class="s2">"funkcja"</span><span class="p">],</span>
+<span class="nt">"weights"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">"debug"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="nt">"kod"</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="nt">"code"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">}</span>
+</code></pre></div>
+
+<p>Matching <code>"debug"</code> adds <strong>5</strong> to the score; matching <code>"code"</code> adds <strong>2</strong>.</p>
+<h5 id="b-phrases-multi-word-expressions">b) Phrases — multi-word expressions<a class="headerlink" href="#b-phrases-multi-word-expressions" title="link to this section">#</a></h5>
+<p>Phrases use the format <code>"text:weight"</code>. The default weight is <strong>2.0</strong> when omitted.</p>
+<div class="codehilite"><pre><span></span><code><span class="nt">"phrases"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"write code:5"</span><span class="p">,</span><span class="w"> </span><span class="s2">"fix bug:4"</span><span class="p">,</span><span class="w"> </span><span class="s2">"napisz funkcję:4"</span><span class="p">]</span>
+</code></pre></div>
+
+<p>Matching <code>"write code"</code> adds <strong>5</strong> to the score.</p>
+<h5 id="c-regex-patterns-structural-detection">c) Regex Patterns — structural detection<a class="headerlink" href="#c-regex-patterns-structural-detection" title="link to this section">#</a></h5>
+<p>Patterns add a flat <strong>+3.0</strong> per match, useful for detecting code structures, math formulas, and question patterns.</p>
+<div class="codehilite"><pre><span></span><code><span class="nt">"patterns"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="s2">"def\\s+\\w+\\s*\\("</span><span class="p">,</span>
+<span class="s2">"class\\s+\\w+\\s*[(:]"</span><span class="p">,</span>
+<span class="s2">"\\b\\d+\\s*[+\\-*/^]\\s*\\d+\\b"</span><span class="p">,</span>
+<span class="s2">"\\bwhat\\s+(is|are|does)\\b"</span>
+<span class="p">]</span>
+</code></pre></div>
+
+<h5 id="d-weights-keyword-importance">d) Weights — keyword importance<a class="headerlink" href="#d-weights-keyword-importance" title="link to this section">#</a></h5>
+<p>The <code>weights</code> object maps individual keywords to boost factors, allowing fine-grained control:</p>
+<div class="codehilite"><pre><span></span><code><span class="nt">"weights"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="nt">"debug"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="c1">// Very strong signal for code intent</span>
+<span class="nt">"błąd"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="c1">// Very strong signal for code intent</span>
+<span class="nt">"kod"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="c1">// Moderate signal</span>
+<span class="nt">"python"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="w">   </span><span class="c1">// Moderate signal</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<h3 id="12-intent-categories">1.2 Intent Categories<a class="headerlink" href="#12-intent-categories" title="link to this section">#</a></h3>
+<table>
+<thead>
+<tr>
+<th>Intent</th>
+<th>Description</th>
+<th>Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong><code>code</code></strong></td>
+<td>Programming, debugging, implementation</td>
+<td>"napisz funkcję", "fix bug", "debug code", "git commit"</td>
+</tr>
+<tr>
+<td><strong><code>math</code></strong></td>
+<td>Mathematics, calculations, statistics</td>
+<td>"oblicz prawdopodobieństwo", "solve equation", "calculate mean"</td>
+</tr>
+<tr>
+<td><strong><code>creative</code></strong></td>
+<td>Creative writing, editing, brainstorming</td>
+<td>"napisz opowiadanie", "write a story", "brainstorm"</td>
+</tr>
+<tr>
+<td><strong><code>general</code></strong></td>
+<td>General questions, explanations, comparisons</td>
+<td>"wyjaśnij jak", "what is the difference", "compare"</td>
+</tr>
+<tr>
+<td><strong><code>none</code></strong></td>
+<td>No specific intent (greetings, etc.)</td>
+<td>"cześć", "hello", "dziękuję"</td>
+</tr>
+</tbody>
+</table>
+<h3 id="13-model-selection-algorithm">1.3 Model Selection Algorithm<a class="headerlink" href="#13-model-selection-algorithm" title="link to this section">#</a></h3>
+<div class="codehilite"><pre><span></span><code>1. complexity_map = {"simple": 0, "medium": n//2, "complex": n-1}
+2. idx = complexity_map[complexity]
+
+3. if intent has a target in intent_adjustment:
+       intent_idx = model_index_for(intent.target)
+       idx = max(idx, intent_idx)      // boost toward intent's target
+   else:
+       idx -= 1                          // demote (no intent)
+
+4. idx = clamp(idx, 0, n-1)
+5. return models[idx]
+</code></pre></div>
+
+<p><strong>Boost / Demote Examples:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Intent</th>
+<th>Complexity</th>
+<th>Base Index</th>
+<th>Intent Adjustment</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>code</code> → <code>medium</code></td>
+<td>simple (idx=0)</td>
+<td>0</td>
+<td>intent targets index 1</td>
+<td><strong>max(0, 1) = 1</strong></td>
+</tr>
+<tr>
+<td><code>none</code></td>
+<td>complex (idx=2)</td>
+<td>2</td>
+<td>no target → demote</td>
+<td><strong>2-1 = 1</strong></td>
+</tr>
+<tr>
+<td><code>math</code> → <code>medium</code></td>
+<td>complex (idx=3)</td>
+<td>3</td>
+<td>intent targets index 1</td>
+<td><strong>max(3, 1) = 3</strong></td>
+</tr>
+<tr>
+<td><code>creative</code> → <code>simple</code></td>
+<td>medium (idx=1)</td>
+<td>1</td>
+<td>intent targets index 0</td>
+<td><strong>max(1, 0) = 1</strong></td>
+</tr>
+</tbody>
+</table>
+<h3 id="14-configuration">1.4 Configuration<a class="headerlink" href="#14-configuration" title="link to this section">#</a></h3>
+<h4 id="json-config-simple_semanticjson">JSON Config (<code>simple_semantic.json</code>)<a class="headerlink" href="#json-config-simple_semanticjson" title="link to this section">#</a></h4>
+<p>All configuration lives in <a href="https://github.com/radlab-dev-group/llm-router-plugins/blob/v0.0.6/llm_router_plugins/utils/resources/routing/simple_semantic.json" target="_blank" rel="noopener noreferrer">
+<code>llm_router_plugins/resources/routing/simple_semantic.json</code></a>.</p>
+<div class="codehilite"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">"settings"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"len_thresholds_max"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">"simple"</span><span class="p">:</span><span class="w"> </span><span class="mi">25</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"medium"</span><span class="p">:</span><span class="w"> </span><span class="mi">150</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">"default_models"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">"simple"</span><span class="p">:</span><span class="w"> </span><span class="s2">"gpt-oss:120b"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"medium"</span><span class="p">:</span><span class="w"> </span><span class="s2">"qwen3.6:35b"</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">"intent_adjustment"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">"code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"medium"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"math"</span><span class="p">:</span><span class="w"> </span><span class="s2">"medium"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"creative"</span><span class="p">:</span><span class="w"> </span><span class="s2">"simple"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"general"</span><span class="p">:</span><span class="w"> </span><span class="s2">"simple"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"none"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">"intents"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"code"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">"keywords"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="s2">"code"</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">"debug"</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">"funkcja"</span>
+<span class="w">      </span><span class="p">],</span>
+<span class="w">      </span><span class="nt">"phrases"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="s2">"write code:5"</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">"fix bug:4"</span>
+<span class="w">      </span><span class="p">],</span>
+<span class="w">      </span><span class="nt">"patterns"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="s2">"def\\s+\\w+\\s*\\("</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">"class\\s+\\w+"</span>
+<span class="w">      </span><span class="p">],</span>
+<span class="w">      </span><span class="nt">"weights"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">"debug"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">"błąd"</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">"math"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">"keywords"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="s2">"calculate"</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">"equation"</span>
+<span class="w">      </span><span class="p">],</span>
+<span class="w">      </span><span class="nt">"phrases"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="s2">"calculate:4"</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">"solve equation:4"</span>
+<span class="w">      </span><span class="p">],</span>
+<span class="w">      </span><span class="nt">"patterns"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="s2">"\\b\\d+\\s*[+\\-*/^]\\s*\\d+\\b"</span>
+<span class="w">      </span><span class="p">],</span>
+<span class="w">      </span><span class="nt">"weights"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">"calculate"</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">"solve"</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">"creative"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">"keywords"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="s2">"write"</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">"story"</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">"napisz"</span>
+<span class="w">      </span><span class="p">],</span>
+<span class="w">      </span><span class="nt">"phrases"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="s2">"write a story:4"</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">"napisz wiersz:4"</span>
+<span class="w">      </span><span class="p">],</span>
+<span class="w">      </span><span class="nt">"patterns"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="s2">"napisz\\s+(mi|ci|go|ją)"</span>
+<span class="w">      </span><span class="p">],</span>
+<span class="w">      </span><span class="nt">"weights"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">"napisz"</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">"write"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">"general"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">"keywords"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="s2">"explain"</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">"difference"</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">"wyjaśnij"</span>
+<span class="w">      </span><span class="p">],</span>
+<span class="w">      </span><span class="nt">"phrases"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="s2">"what is:4"</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">"how to:4"</span>
+<span class="w">      </span><span class="p">],</span>
+<span class="w">      </span><span class="nt">"patterns"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="s2">"\\bwhat\\s+(is|are|does)\\b"</span>
+<span class="w">      </span><span class="p">],</span>
+<span class="w">      </span><span class="nt">"weights"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">"wyjaśnij"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">"help"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">"none"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"keywords"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">      </span><span class="s2">"hello"</span><span class="p">,</span>
+<span class="w">      </span><span class="s2">"cześć"</span><span class="p">,</span>
+<span class="w">      </span><span class="s2">"thanks"</span>
+<span class="w">    </span><span class="p">],</span>
+<span class="w">    </span><span class="nt">"phrases"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">      </span><span class="s2">"hello:1"</span><span class="p">,</span>
+<span class="w">      </span><span class="s2">"thanks:1"</span>
+<span class="w">    </span><span class="p">],</span>
+<span class="w">    </span><span class="nt">"patterns"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">      </span><span class="s2">"^\\b(hello|hi|cześć)\\b"</span>
+<span class="w">    </span><span class="p">],</span>
+<span class="w">    </span><span class="nt">"weights"</span><span class="p">:</span><span class="w"> </span><span class="p">{}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<h4 id="configurable-values">Configurable Values<a class="headerlink" href="#configurable-values" title="link to this section">#</a></h4>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>len_thresholds_max.simple</code></td>
+<td>Max tokens for "simple" complexity</td>
+<td><code>25</code></td>
+</tr>
+<tr>
+<td><code>len_thresholds_max.medium</code></td>
+<td>Max tokens for "medium" complexity</td>
+<td><code>150</code></td>
+</tr>
+<tr>
+<td><code>default_models.simple</code></td>
+<td>Model for simple complexity</td>
+<td><code>gpt-oss:120b</code></td>
+</tr>
+<tr>
+<td><code>default_models.medium</code></td>
+<td>Model for medium complexity</td>
+<td><code>qwen3.6:35b</code></td>
+</tr>
+<tr>
+<td><code>intent_adjustment.code</code></td>
+<td>Target complexity for code intent</td>
+<td><code>medium</code></td>
+</tr>
+<tr>
+<td><code>intent_adjustment.math</code></td>
+<td>Target complexity for math intent</td>
+<td><code>medium</code></td>
+</tr>
+<tr>
+<td><code>intent_adjustment.creative</code></td>
+<td>Target complexity for creative intent</td>
+<td><code>simple</code></td>
+</tr>
+<tr>
+<td><code>intent_adjustment.general</code></td>
+<td>Target complexity for general intent</td>
+<td><code>simple</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="15-environment-variable-overrides">1.5 Environment Variable Overrides<a class="headerlink" href="#15-environment-variable-overrides" title="link to this section">#</a></h3>
+<p>All environment variables are prefixed with <code>LLM_ROUTER_ROUTING_</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Format</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>LLM_ROUTER_ROUTING_MODELS</code></td>
+<td><code>model-a\|model-b\|model-c</code></td>
+<td>Comma-separated model pool (pipe-delimited)</td>
+</tr>
+<tr>
+<td><code>LLM_ROUTER_ROUTING_COMPLEXITY_THRESHOLDS</code></td>
+<td><code>simple_threshold\|medium_threshold</code></td>
+<td>Token count thresholds (e.g. <code>10\|50</code>)</td>
+</tr>
+<tr>
+<td><code>LLM_ROUTER_ROUTING_DEFAULT_MODEL</code></td>
+<td><code>model-name</code></td>
+<td>Fallback model when no text content is found</td>
+</tr>
+<tr>
+<td><code>LLM_ROUTER_ROUTING_INTENT_&lt;CATEGORY&gt;</code></td>
+<td><code>kw1\|kw2:5\|phrase:3</code></td>
+<td>Override intent keywords/phrases for a category</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example:</strong></p>
+<div class="codehilite"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">LLM_ROUTER_ROUTING_MODELS</span><span class="o">=</span><span class="s2">"tiny-model\|medium-model\|large-model"</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">LLM_ROUTER_ROUTING_COMPLEXITY_THRESHOLDS</span><span class="o">=</span><span class="s2">"10\|50"</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">LLM_ROUTER_ROUTING_INTENT_CODE</span><span class="o">=</span><span class="s2">"code\|debug\|implement"</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">LLM_ROUTER_ROUTING_DEFAULT_MODEL</span><span class="o">=</span><span class="s2">"fallback-model"</span>
+</code></pre></div>
+
+<h3 id="16-usage-examples">1.6 Usage Examples<a class="headerlink" href="#16-usage-examples" title="link to this section">#</a></h3>
+<h4 id="basic-usage">Basic Usage<a class="headerlink" href="#basic-usage" title="link to this section">#</a></h4>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">llm_router_plugins.utils.routing.simple_semantic.simple_semantic_routing</span><span class="w"> </span><span class="kn">import</span> <span class="n">SimpleSemanticRoutingPlugin</span>
+
+<span class="n">plugin</span> <span class="o">=</span> <span class="n">SimpleSemanticRoutingPlugin</span><span class="p">()</span>
+
+<span class="n">payload</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">"model"</span><span class="p">:</span> <span class="s2">"auto"</span><span class="p">,</span>
+    <span class="s2">"messages"</span><span class="p">:</span> <span class="p">[{</span><span class="s2">"role"</span><span class="p">:</span> <span class="s2">"user"</span><span class="p">,</span> <span class="s2">"content"</span><span class="p">:</span> <span class="s2">"Napisz funkcję w Pythonie"</span><span class="p">}]</span>
+<span class="p">}</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">plugin</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span>
+<span class="c1"># result["model"] → selected model (e.g., "qwen3.6:35b")</span>
+</code></pre></div>
+
+<h4 id="payload-text-sources">Payload Text Sources<a class="headerlink" href="#payload-text-sources" title="link to this section">#</a></h4>
+<p>The plugin extracts text from the payload in this priority order:</p>
+<ol>
+<li><code>payload["messages"][-1]["content"]</code> — last message content</li>
+<li><code>payload["user_last_statement"]</code></li>
+<li><code>payload["query"]</code></li>
+<li><code>payload["prompt"]</code></li>
+<li><code>payload["input"]</code></li>
+</ol>
+<h4 id="logging">Logging<a class="headerlink" href="#logging" title="link to this section">#</a></h4>
+<p>When a logger is provided, the plugin logs routing decisions:</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">"llm_router"</span><span class="p">)</span>
+<span class="n">plugin</span> <span class="o">=</span> <span class="n">SimpleSemanticRoutingPlugin</span><span class="p">(</span><span class="n">logger</span><span class="o">=</span><span class="n">logger</span><span class="p">)</span>
+
+<span class="c1"># On apply:</span>
+<span class="c1"># INFO: Semantic routing: intent=code, complexity=medium (12 tokens) -&gt; qwen3.6:35b</span>
+</code></pre></div>
+
+<h3 id="17-weight-tuning-guidelines">1.7 Weight Tuning Guidelines<a class="headerlink" href="#17-weight-tuning-guidelines" title="link to this section">#</a></h3>
+<table>
+<thead>
+<tr>
+<th>Weight Range</th>
+<th>Meaning</th>
+<th>Use Case</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>1</strong></td>
+<td>Weak / baseline</td>
+<td>Generic terms that appear in many contexts</td>
+</tr>
+<tr>
+<td><strong>2–3</strong></td>
+<td>Moderate</td>
+<td>Common but not definitive signals</td>
+</tr>
+<tr>
+<td><strong>4–5</strong></td>
+<td>Strong</td>
+<td>Highly specific, unambiguous signals (e.g., "debug", "błąd" for code)</td>
+</tr>
+<tr>
+<td><strong>1 (none)</strong></td>
+<td>Neutral</td>
+<td>Greetings and filler phrases that shouldn't influence routing</td>
+</tr>
+</tbody>
+</table>
+<h3 id="18-phrase-format-guidelines">1.8 Phrase Format Guidelines<a class="headerlink" href="#18-phrase-format-guidelines" title="link to this section">#</a></h3>
+<table>
+<thead>
+<tr>
+<th>Format</th>
+<th>Weight</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>"text:weight"</code></td>
+<td>Explicit</td>
+<td><code>"write code:5"</code></td>
+</tr>
+<tr>
+<td><code>"text"</code></td>
+<td>Default (2.0)</td>
+<td><code>"fix bug"</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="19-complexity-levels">1.9 Complexity Levels<a class="headerlink" href="#19-complexity-levels" title="link to this section">#</a></h3>
+<table>
+<thead>
+<tr>
+<th>Level</th>
+<th>Token Range</th>
+<th>Model Selection</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>simple</code></td>
+<td>0 – <code>thresholds[simple]</code></td>
+<td>Cheapest / simplest model (index 0)</td>
+</tr>
+<tr>
+<td><code>medium</code></td>
+<td><code>thresholds[simple]</code> + 1 – <code>thresholds[medium]</code></td>
+<td>Middle model (index n // 2)</td>
+</tr>
+<tr>
+<td><code>complex</code></td>
+<td>&gt; <code>thresholds[medium]</code></td>
+<td>Strongest model (index n - 1)</td>
+</tr>
+</tbody>
+</table>
+<p>Token estimation: <code>round(word_count × 1.25)</code></p>
+<h3 id="110-built-in-patterns-reference">1.10 Built-in Patterns Reference<a class="headerlink" href="#110-built-in-patterns-reference" title="link to this section">#</a></h3>
+<h4 id="code-patterns">Code Patterns<a class="headerlink" href="#code-patterns" title="link to this section">#</a></h4>
+<table>
+<thead>
+<tr>
+<th>Pattern</th>
+<th>Matches</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>def\s+\w+\s*\(</code></td>
+<td>Python function definitions</td>
+</tr>
+<tr>
+<td><code>class\s+\w+\s*[(:]</code></td>
+<td>Python/class definitions</td>
+</tr>
+<tr>
+<td><code>import\s+\w+</code></td>
+<td>Import statements</td>
+</tr>
+<tr>
+<td><code>try\s*:</code>, <code>except\s*:</code></td>
+<td>Try/except blocks</td>
+</tr>
+<tr>
+<td><code>git\s+(commit\|push\|pull\|branch\|merge)</code></td>
+<td>Git commands</td>
+</tr>
+<tr>
+<td><code>npm\s+(install\|run\|start\|build)</code></td>
+<td>NPM commands</td>
+</tr>
+<tr>
+<td><code>docker\s+(build\|run\|compose)</code></td>
+<td>Docker commands</td>
+</tr>
+<tr>
+<td><code>SELECT\s+.*\s+FROM</code></td>
+<td>SQL SELECT queries</td>
+</tr>
+</tbody>
+</table>
+<h4 id="math-patterns">Math Patterns<a class="headerlink" href="#math-patterns" title="link to this section">#</a></h4>
+<table>
+<thead>
+<tr>
+<th>Pattern</th>
+<th>Matches</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>\b\d+\s*[+\-*/^]\s*\d+\b</code></td>
+<td>Arithmetic expressions</td>
+</tr>
+<tr>
+<td><code>\bsin\s*\(</code>, <code>\bcos\s*\(</code>, <code>\btan\s*\(</code></td>
+<td>Trig functions</td>
+</tr>
+<tr>
+<td><code>\bsqrt\s*\(</code>, <code>\blog\s*\(</code></td>
+<td>Math functions</td>
+</tr>
+<tr>
+<td><code>\bf\(x\)\s*=</code></td>
+<td>Function notation</td>
+</tr>
+<tr>
+<td><code>\b∑\b</code>, <code>\b∫\b</code></td>
+<td>Sigma / integral symbols</td>
+</tr>
+</tbody>
+</table>
+<h4 id="general-question-patterns">General Question Patterns<a class="headerlink" href="#general-question-patterns" title="link to this section">#</a></h4>
+<table>
+<thead>
+<tr>
+<th>Pattern</th>
+<th>Matches</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>\bwhat\s+(is\|are\|does)\b</code></td>
+<td>What questions</td>
+</tr>
+<tr>
+<td><code>\bhow\s+(to\|does\|do)\b</code></td>
+<td>How questions</td>
+</tr>
+<tr>
+<td><code>\bwhy\s+(is\|does)\b</code></td>
+<td>Why questions</td>
+</tr>
+<tr>
+<td><code>\bporównaj\s+</code></td>
+<td>Polish comparison questions</td>
+</tr>
+</tbody>
+</table>
+<h3 id="111-adding-new-intents">1.11 Adding New Intents<a class="headerlink" href="#111-adding-new-intents" title="link to this section">#</a></h3>
+<p>To add a new intent category:</p>
+<ol>
+<li><strong>Add the intent to <code>simple_semantic.json</code>:</strong></li>
+</ol>
+<div class="codehilite"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">"intents"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"my_intent"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">"keywords"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="s2">"keyword1"</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">"keyword2"</span>
+<span class="w">      </span><span class="p">],</span>
+<span class="w">      </span><span class="nt">"phrases"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="s2">"phrase one:4"</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">"phrase two:3"</span>
+<span class="w">      </span><span class="p">],</span>
+<span class="w">      </span><span class="nt">"patterns"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="s2">"pattern\\s+here"</span>
+<span class="w">      </span><span class="p">],</span>
+<span class="w">      </span><span class="nt">"weights"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">"keyword1"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">"keyword2"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">"settings"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"intent_adjustment"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">"my_intent"</span><span class="p">:</span><span class="w"> </span><span class="s2">"medium"</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<ol>
+<li><strong>Or override via environment variable:</strong></li>
+</ol>
+<div class="codehilite"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">LLM_ROUTER_ROUTING_INTENT_MY_INTENT</span><span class="o">=</span><span class="s2">"keyword1\|keyword2:5\|phrase:4"</span>
+</code></pre></div>
+
+<h3 id="112-running-tests">1.12 Running Tests<a class="headerlink" href="#112-running-tests" title="link to this section">#</a></h3>
+<div class="codehilite"><pre><span></span><code>pytest<span class="w"> </span>tests/test_simple_semantic_routing.py<span class="w"> </span>-v
+</code></pre></div>
+
+<hr />
+<h2 id="2-bi-encoder-semantic-routing-embedding-based">2. Bi-Encoder Semantic Routing (Embedding-based)<a class="headerlink" href="#2-bi-encoder-semantic-routing-embedding-based" title="link to this section">#</a></h2>
+<p>The <strong>Bi-Encoder routing plugin</strong> (<code>semantic_biencoder_routing</code>) uses a neural embedding model
+(<strong>google/embeddinggemma-300m</strong>) to compute semantic embeddings for a set of pre-configured routing targets.
+Each target has a <code>name</code>, a <code>model_name</code> (the model to route to), a <code>description</code>, and a list of <code>examples</code>.
+At query time the user message is embedded and matched against all stored target embeddings using FAISS
+(<code>IndexFlatIP</code> on L2-normalised vectors = cosine similarity). The best-matching target determines the selected model.</p>
+<h3 id="21-index-building-on-first-load-or-when-the-persist-directory-is-missing">2.1 Index Building (on first load or when the persist directory is missing)<a class="headerlink" href="#21-index-building-on-first-load-or-when-the-persist-directory-is-missing" title="link to this section">#</a></h3>
+<ul>
+<li>For each target, its <code>description</code> and <code>examples</code> are combined into text.</li>
+<li>The text is split into overlapping <strong>token chunks</strong> using a sliding window (<code>chunk_size</code> tokens, <code>chunk_overlap</code>
+  tokens overlap).</li>
+<li>Each chunk is embedded via the BiEncoder model (e.g. <code>google/embeddinggemma-300m</code>).</li>
+<li>All embedding vectors are <strong>L2-normalised</strong> to unit length.</li>
+<li>Vectors are inserted into a <code>faiss.IndexFlatIP</code> index (inner product).</li>
+<li>A docstore maps each FAISS doc ID to its target name (for reverse lookup).</li>
+</ul>
+<h3 id="22-routing-query">2.2 Routing (query)<a class="headerlink" href="#22-routing-query" title="link to this section">#</a></h3>
+<ul>
+<li>The user message is embedded and L2-normalised.</li>
+<li>FAISS performs a nearest-neighbor search returning the <code>top_k</code> closest chunks.</li>
+<li>Scores are <strong>aggregated per target</strong>: the mean cosine similarity of all chunks belonging to the same target is
+  computed.</li>
+<li>The target with the <strong>highest mean similarity</strong> wins and its <code>model_name</code> is returned.</li>
+</ul>
+<h3 id="23-persistence">2.3 Persistence<a class="headerlink" href="#23-persistence" title="link to this section">#</a></h3>
+<p>The FAISS index and docstore are saved to disk (files <code>index.faiss</code> and <code>docstore.pkl</code>) under the configured persist
+directory. On subsequent starts the index is loaded from disk — embeddings are <strong>not recomputed</strong>.
+If the embedding model changes (different output dimension) the index is automatically rebuilt.</p>
+<h3 id="24-configuration">2.4 Configuration<a class="headerlink" href="#24-configuration" title="link to this section">#</a></h3>
+<p>Configuration is loaded from <a href="https://github.com/radlab-dev-group/llm-router-plugins/blob/v0.0.6/llm_router_plugins/utils/resources/routing/semantic_biencoder.json" target="_blank" rel="noopener noreferrer">
+<code>llm_router_plugins/resources/routing/semantic_biencoder.json</code></a>.</p>
+<p>Example JSON configuration:</p>
+<div class="codehilite"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">"embedding_model"</span><span class="p">:</span><span class="w"> </span><span class="s2">"google/embeddinggemma-300m"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"settings"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"chunk_size"</span><span class="p">:</span><span class="w"> </span><span class="mi">256</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"chunk_overlap"</span><span class="p">:</span><span class="w"> </span><span class="mi">64</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"similarity_threshold"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.0</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"top_k"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"vector_store_path"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">"routing_targets"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"code-generation"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"model_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"qwen3.6:35b"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Model specialized for code-related tasks."</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"examples"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="s2">"Write a Python function..."</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">"..."</span>
+<span class="w">      </span><span class="p">]</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"math-reasoning"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"model_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"gpt-oss:120b"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Model for mathematical reasoning and calculations."</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"examples"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="s2">"Calculate the derivative of..."</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">"..."</span>
+<span class="w">      </span><span class="p">]</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<h4 id="environment-variables">Environment Variables<a class="headerlink" href="#environment-variables" title="link to this section">#</a></h4>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>LLM_ROUTER_ROUTING_SEMANTIC_BIENCODER_MODEL</code></td>
+<td>Override the embedding model name</td>
+</tr>
+<tr>
+<td><code>LLM_ROUTER_ROUTING_SEMANTIC_BIENCODER_TARGETS</code></td>
+<td>Pipe-separated list of target names</td>
+</tr>
+<tr>
+<td><code>LLM_ROUTER_ROUTING_SEMANTIC_BIENCODER_CHUNK_SIZE</code></td>
+<td>Override chunk size</td>
+</tr>
+<tr>
+<td><code>LLM_ROUTER_ROUTING_SEMANTIC_BIENCODER_CHUNK_OVERLAP</code></td>
+<td>Override chunk overlap</td>
+</tr>
+<tr>
+<td><code>LLM_ROUTER_ROUTING_SEMANTIC_BIENCODER_PERSIST_DIR</code></td>
+<td>Directory for FAISS index persistence</td>
+</tr>
+</tbody>
+</table>
+<h3 id="25-usage-examples">2.5 Usage Examples<a class="headerlink" href="#25-usage-examples" title="link to this section">#</a></h3>
+<h4 id="basic-usage_1">Basic Usage<a class="headerlink" href="#basic-usage_1" title="link to this section">#</a></h4>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">llm_router_plugins.utils.routing.semantic_biencoder.semantic_biencoder_routing</span><span class="w"> </span><span class="kn">import</span>
+    <span class="n">SemanticBiEncoderRoutingPlugin</span>
+
+<span class="n">plugin</span> <span class="o">=</span> <span class="n">SemanticBiEncoderRoutingPlugin</span><span class="p">()</span>
+
+<span class="n">payload</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">"model"</span><span class="p">:</span> <span class="s2">"auto"</span><span class="p">,</span>
+    <span class="s2">"messages"</span><span class="p">:</span> <span class="p">[{</span><span class="s2">"role"</span><span class="p">:</span> <span class="s2">"user"</span><span class="p">,</span> <span class="s2">"content"</span><span class="p">:</span> <span class="s2">"Napisz funkcję w Pythonie"</span><span class="p">}]</span>
+<span class="p">}</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">plugin</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span>
+<span class="c1"># result["model"] → selected model (e.g., "qwen3.6:35b")</span>
+</code></pre></div>
+
+<h4 id="target-examples-with-embeddings">Target Examples with Embeddings<a class="headerlink" href="#target-examples-with-embeddings" title="link to this section">#</a></h4>
+<p>Each routing target has <code>description</code> + <code>examples</code>. The plugin embeds both and computes the mean vector as the
+target's embedding. When a user query arrives:</p>
+<ol>
+<li>Query text is embedded → <strong>vector Q</strong> (L2-normalised).</li>
+<li>FAISS searches for closest vectors to <strong>Q</strong> among all target embeddings.</li>
+<li>Best match → that target's <code>model_name</code> is selected.</li>
+</ol>
+<p><strong>Example targets:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Target Name</th>
+<th>Model</th>
+<th>Description</th>
+<th>Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>code-generation</td>
+<td>qwen3.6:35b</td>
+<td>Write and debug code</td>
+<td>"Write a Python function to sort a list", "Fix my CSS layout"</td>
+</tr>
+<tr>
+<td>math-reasoning</td>
+<td>gpt-oss:120b</td>
+<td>Mathematical problems and calculations</td>
+<td>"Calculate the integral of x²", "Solve for x in 2x+3=7"</td>
+</tr>
+<tr>
+<td>creative-writing</td>
+<td>gpt-oss:120b</td>
+<td>Creative writing and storytelling</td>
+<td>"Write a short story about...", "Create a poem about..."</td>
+</tr>
+<tr>
+<td>general-knowledge</td>
+<td>gpt-oss:120b</td>
+<td>General questions and explanations</td>
+<td>"What is the capital of France?", "How does DNA work?"</td>
+</tr>
+</tbody>
+</table>
+<h3 id="26-scoring-details">2.6 Scoring Details<a class="headerlink" href="#26-scoring-details" title="link to this section">#</a></h3>
+<p>For each user query, FAISS returns <code>top_k</code> closest chunks with similarity scores. These scores are <strong>aggregated per
+target</strong> (mean of all matching chunk scores). The final score table looks like:</p>
+<table>
+<thead>
+<tr>
+<th>Target</th>
+<th>Mean Cosine Similarity</th>
+<th>Selected?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>code-generation</td>
+<td>0.85</td>
+<td>✅ Yes</td>
+</tr>
+<tr>
+<td>math-reasoning</td>
+<td>0.42</td>
+<td></td>
+</tr>
+<tr>
+<td>creative-writing</td>
+<td>0.31</td>
+<td></td>
+</tr>
+<tr>
+<td>general-knowledge</td>
+<td>0.28</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>The target with the <strong>highest mean similarity</strong> wins. If all scores fall below <code>similarity_threshold</code> (default 0.0),
+the default model is used.</p>
+<h3 id="27-running-tests">2.7 Running Tests<a class="headerlink" href="#27-running-tests" title="link to this section">#</a></h3>
+<div class="codehilite"><pre><span></span><code>pytest<span class="w"> </span>tests/test_semantic_biencoder_routing.py<span class="w"> </span>-v
+</code></pre></div>
+
+<hr />
+<h2 id="3-comparison-which-plugin-to-use">3. Comparison: Which Plugin to Use?<a class="headerlink" href="#3-comparison-which-plugin-to-use" title="link to this section">#</a></h2>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Simple Semantic Routing</th>
+<th>Bi-Encoder Semantic Routing</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Approach</strong></td>
+<td>Heuristic (keyword/phrase)</td>
+<td>Neural embeddings (FAISS)</td>
+</tr>
+<tr>
+<td><strong>Model Required</strong></td>
+<td>❌ None</td>
+<td>✅ <code>google/embeddinggemma-300m</code></td>
+</tr>
+<tr>
+<td><strong>Speed</strong></td>
+<td>Very fast (~0.1ms)</td>
+<td>Slower (~50-200ms, model dependent)</td>
+</tr>
+<tr>
+<td><strong>Accuracy</strong></td>
+<td>Rule-based, limited context</td>
+<td>Semantic understanding of meaning</td>
+</tr>
+<tr>
+<td><strong>Config Complexity</strong></td>
+<td>JSON keywords/phrases/patterns</td>
+<td>JSON targets + examples</td>
+</tr>
+<tr>
+<td><strong>Scalability</strong></td>
+<td>Linear keyword search</td>
+<td>FAISS index (efficient at scale)</td>
+</tr>
+<tr>
+<td><strong>Persistence</strong></td>
+<td>N/A</td>
+<td>✅ FAISS index saved to disk</td>
+</tr>
+<tr>
+<td><strong>Use Case</strong></td>
+<td>Fast, lightweight routing</td>
+<td>High-quality semantic matching</td>
+</tr>
+</tbody>
+</table>
+<h3 id="recommendation">Recommendation<a class="headerlink" href="#recommendation" title="link to this section">#</a></h3>
+<ul>
+<li>
+<p>Use <strong>Simple Semantic Routing</strong> when:</p>
+<ul>
+<li>You need fast, deterministic routing with no external model dependency.</li>
+<li>Your routing categories are well-defined by keywords and phrases.</li>
+<li>You want minimal infrastructure.</li>
+</ul>
+</li>
+<li>
+<p>Use <strong>Bi-Encoder Semantic Routing</strong> when:</p>
+<ul>
+<li>You need semantic understanding beyond keywords (e.g., synonyms, paraphrasing).</li>
+<li>You have diverse, nuanced use cases that keyword matching can't capture.</li>
+<li>You can afford the embedding model latency and dependencies.</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h2 id="4-file-locations">4. File Locations<a class="headerlink" href="#4-file-locations" title="link to this section">#</a></h2>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>llm_router_plugins/utils/routing/simple_semantic/</code></td>
+<td>SimpleSemanticRoutingPlugin code</td>
+</tr>
+<tr>
+<td><code>llm_router_plugins/utils/routing/semantic_biencoder/</code></td>
+<td>SemanticBiEncoderRoutingPlugin code</td>
+</tr>
+<tr>
+<td><code>llm_router_plugins/resources/routing/simple_semantic.json</code></td>
+<td>Intent definitions &amp; config</td>
+</tr>
+<tr>
+<td><code>llm_router_plugins/resources/routing/semantic_biencoder.json</code></td>
+<td>Embedding routing config</td>
+</tr>
+<tr>
+<td><code>tests/test_simple_semantic_routing.py</code></td>
+<td>Unit tests (Simple)</td>
+</tr>
+<tr>
+<td><code>tests/test_semantic_biencoder_routing.py</code></td>
+<td>Unit tests (Bi-Encoder)</td>
+</tr>
+</tbody>
+</table></article>
+<nav class="pager" aria-label="Previous and next page"></nav>
+<footer class="doc-meta">
+<div class="meta-row"><span class="meta-k">repository</span><a class="mono" href="https://github.com/radlab-dev-group/llm-router-plugins">llm-router-plugins</a></div>
+<div class="meta-row"><span class="meta-k">source</span><a class="mono" href="https://github.com/radlab-dev-group/llm-router-plugins/blob/v0.0.6/llm_router_plugins/utils/routing/README.md">llm_router_plugins/utils/routing/README.md</a></div>
+<div class="meta-row"><span class="meta-k">last commit</span><time datetime="2026-07-27T12:14:37+02:00"><a href="https://github.com/radlab-dev-group/llm-router-plugins/commit/27ee503">2026-07-27</a></time></div>
+<div class="meta-row"><span class="meta-k">built from</span><span class="mono"><a href="https://github.com/radlab-dev-group/llm-router-plugins/tree/v0.0.6">v0.0.6</a>&nbsp;@&nbsp;<a href="https://github.com/radlab-dev-group/llm-router-plugins/commit/27ee503">27ee503</a></span></div>
+<p class="hint">Generated from the Markdown file in the repository: commit a change and the next build republishes it.</p>
+</footer>
+<footer class="foot"><div class="foot-inner">
+<span class="mono">llm-router &middot; docs are generated from the repository by <code>tools/build_docs.py</code></span>
+<span class="mono"><a href="https://github.com/radlab-dev-group/llm-router-plugins/tree/v0.0.6">0.0.6</a> @ <a href="https://github.com/radlab-dev-group/llm-router-plugins/commit/27ee503">27ee503</a></span>
+</div></footer>
+</main>
+<aside class="dtoc" id="dtoc"><h2 class="toc-title">on this page</h2><div class="toc-body"><ul><li><a href="#table-of-contents">Table of Contents</a></li><li><a href="#1-simple-semantic-routing-heuristic">1. Simple Semantic Routing (Heuristic)</a><ul><li><a href="#11-architecture">1.1 Architecture</a></li><li><a href="#12-intent-categories">1.2 Intent Categories</a></li><li><a href="#13-model-selection-algorithm">1.3 Model Selection Algorithm</a></li><li><a href="#14-configuration">1.4 Configuration</a></li><li><a href="#15-environment-variable-overrides">1.5 Environment Variable Overrides</a></li><li><a href="#16-usage-examples">1.6 Usage Examples</a></li><li><a href="#17-weight-tuning-guidelines">1.7 Weight Tuning Guidelines</a></li><li><a href="#18-phrase-format-guidelines">1.8 Phrase Format Guidelines</a></li><li><a href="#19-complexity-levels">1.9 Complexity Levels</a></li><li><a href="#110-built-in-patterns-reference">1.10 Built-in Patterns Reference</a></li><li><a href="#111-adding-new-intents">1.11 Adding New Intents</a></li><li><a href="#112-running-tests">1.12 Running Tests</a></li></ul></li><li><a href="#2-bi-encoder-semantic-routing-embedding-based">2. Bi-Encoder Semantic Routing (Embedding-based)</a><ul><li><a href="#21-index-building-on-first-load-or-when-the-persist-directory-is-missing">2.1 Index Building (on first load or when the persist directory is missing)</a></li><li><a href="#22-routing-query">2.2 Routing (query)</a></li><li><a href="#23-persistence">2.3 Persistence</a></li><li><a href="#24-configuration">2.4 Configuration</a></li><li><a href="#25-usage-examples">2.5 Usage Examples</a></li><li><a href="#26-scoring-details">2.6 Scoring Details</a></li><li><a href="#27-running-tests">2.7 Running Tests</a></li></ul></li><li><a href="#3-comparison-which-plugin-to-use">3. Comparison: Which Plugin to Use?</a><ul><li><a href="#recommendation">Recommendation</a></li></ul></li><li><a href="#4-file-locations">4. File Locations</a></li></ul></div></aside>
+</div>
+</body>
+</html>

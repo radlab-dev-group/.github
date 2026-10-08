@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-9KM7GYM55M"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-9KM7GYM55M');</script>
+<title>Codex routing calibration and evaluation · v1.1.8 · llm-router docs</title>
+<meta name="description" content="# Codex routing calibration and evaluation Wersja polska: [CODEX_EVAL_HOWTO_PL.md](CODEX_EVAL_HOWTO_PL.md). ## 1. What you are actually calibrating This guide primarily covers `agentic_routing_codex` and the implementation in this reposito…">
+<meta name="theme-color" content="#05070a">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Codex routing calibration and evaluation · v1.1.8 · llm-router docs">
+<meta property="og:description" content="# Codex routing calibration and evaluation Wersja polska: [CODEX_EVAL_HOWTO_PL.md](CODEX_EVAL_HOWTO_PL.md). ## 1. What you are actually calibrating This guide primarily covers `agentic_routing_codex` and the implementation in this reposito…">
+<meta name="docs-version" content="1.1.8">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2305070a'/%3E%3Cpath d='M8 22V10M8 16h9M17 10v12M17 13h7M17 19h7' stroke='%2300e59b' stroke-width='2' stroke-linecap='round' fill='none'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="../../../../../../assets/docs.css">
+<link rel="stylesheet" href="../../../../../../assets/pygments.css">
+<script src="../../../../../../assets/docs.js" defer></script>
+</head>
+<body class="page" data-version="1.1.8" data-search="../../../../../search.json" data-latest="1.1.8" data-repo="plugins" data-docs-root="../../../../../../">
+<a class="skip" href="#main">skip to content</a>
+<header class="topbar">
+<div class="topbar-inner">
+<button class="burger" id="burger" aria-label="Toggle documentation menu" aria-expanded="false" aria-controls="sidebar">&#9776;</button>
+<a class="brand" href="../../../../../../.."><svg width="21" height="21" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="7" fill="#0b1119" stroke="#1a232e"/><path d="M8 22V10M8 16h9M17 10v12M17 13h7M17 19h7" stroke="#00e59b" stroke-width="2" stroke-linecap="round" fill="none"/></svg><span>llm<span class="dash">-</span>router</span><span class="brand-docs">/docs</span></a>
+<div class="topbar-right">
+<form class="search" id="search" role="search" autocomplete="off">
+<span class="search-icon" aria-hidden="true">&#8981;</span>
+<input id="q" type="search" placeholder="search this version" aria-label="Search documentation" role="combobox" aria-expanded="false" aria-controls="results" aria-autocomplete="list">
+<kbd>/</kbd>
+<div class="results" id="results" role="listbox" aria-label="Search results" hidden></div>
+</form>
+
+<a class="iconbtn" href="https://github.com/radlab-dev-group/llm-router-plugins" aria-label="Repository on GitHub" title="Repository on GitHub"><svg width="17" height="17" viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8a8 8 0 0 0 5.47 7.59c.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.46-.53.42-.02.72.39.82.55.48.81 1.25.94 1.56.73.2-.27.6-.94.94-1.13-.01-.2-.05-.82-.14-.98-.6.1-1.22.2-1.87.2-1.9 0-3.62-1.13-3.62-3.53 0-.78.28-1.42.74-1.92-.07-.18-.32-.91.07-1.9 0 0 .6-.19 1.97.74a6.8 6.8 0 0 1 3.58 0c1.37-.93 1.97-.74 1.97-.74.39.99.14 1.72.07 1.9.46.5.74 1.14.74 1.92 0 2.41-1.47 3.53-3.87 3.72.3.26.57.77.57 1.56 0 1.13-.012.04-.01 2.32 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg></a>
+</div>
+</div>
+</header>
+<div class="scrim" id="scrim" hidden></div>
+<div class="shell">
+<aside class="sidebar" id="sidebar"><nav class="nav-tree" aria-label="Documentation"><div data-nav-repo="router"><details class="nav-group"><summary class="nav-repo"><span class="repo-name">llm-router</span></summary><div data-router-context><div class="side-head"><span class="side-v mono">v1.1.8</span><span class="side-tag live">latest</span></div><a class="side-hub" href="../../../../../../router/1.1.8/index.html">documentation index</a></div><label class="vselect side-versions"><span class="sr-only">llm-router version</span><select id="versions-router" data-switch="router" aria-label="llm-router documentation version"><option value="../../../../../../router/1.1.8/index.html" data-version="1.1.8" data-root="../../../../../../router/1.1.8/index.html" selected>1.1.8  · latest</option>
+<option value="../../../../../../router/1.1.7/index.html" data-version="1.1.7" data-root="../../../../../../router/1.1.7/index.html">1.1.7</option>
+<option value="../../../../../../router/1.1.6/index.html" data-version="1.1.6" data-root="../../../../../../router/1.1.6/index.html">1.1.6</option>
+<option value="../../../../../../router/1.1.5/index.html" data-version="1.1.5" data-root="../../../../../../router/1.1.5/index.html">1.1.5</option>
+<option value="../../../../../../router/1.1.4/index.html" data-version="1.1.4" data-root="../../../../../../router/1.1.4/index.html">1.1.4</option>
+<option value="../../../../../../router/1.1.3/index.html" data-version="1.1.3" data-root="../../../../../../router/1.1.3/index.html">1.1.3</option>
+<option value="../../../../../../router/1.1.2/index.html" data-version="1.1.2" data-root="../../../../../../router/1.1.2/index.html">1.1.2</option>
+<option value="../../../../../../router/1.1.1/index.html" data-version="1.1.1" data-root="../../../../../../router/1.1.1/index.html">1.1.1</option>
+<option value="../../../../../../router/1.1.0/index.html" data-version="1.1.0" data-root="../../../../../../router/1.1.0/index.html">1.1.0</option>
+<option value="../../../../../../router/1.0.8/index.html" data-version="1.0.8" data-root="../../../../../../router/1.0.8/index.html">1.0.8</option>
+<option value="../../../../../../router/1.0.7/index.html" data-version="1.0.7" data-root="../../../../../../router/1.0.7/index.html">1.0.7</option>
+<option value="../../../../../../router/1.0.6/index.html" data-version="1.0.6" data-root="../../../../../../router/1.0.6/index.html">1.0.6</option>
+<option value="../../../../../../router/1.0.5/index.html" data-version="1.0.5" data-root="../../../../../../router/1.0.5/index.html">1.0.5</option>
+<option value="../../../../../../router/1.0.4/index.html" data-version="1.0.4" data-root="../../../../../../router/1.0.4/index.html">1.0.4</option>
+<option value="../../../../../../router/1.0.3/index.html" data-version="1.0.3" data-root="../../../../../../router/1.0.3/index.html">1.0.3</option>
+<option value="../../../../../../router/1.0.1/index.html" data-version="1.0.1" data-root="../../../../../../router/1.0.1/index.html">1.0.1</option>
+<option value="../../../../../../router/1.0.0/index.html" data-version="1.0.0" data-root="../../../../../../router/1.0.0/index.html">1.0.0</option>
+<option value="../../../../../../router/0.9.6/index.html" data-version="0.9.6" data-root="../../../../../../router/0.9.6/index.html">0.9.6</option>
+<option value="../../../../../../router/0.9.5/index.html" data-version="0.9.5" data-root="../../../../../../router/0.9.5/index.html">0.9.5</option>
+<option value="../../../../../../router/0.9.4/index.html" data-version="0.9.4" data-root="../../../../../../router/0.9.4/index.html">0.9.4</option>
+<option value="../../../../../../router/0.9.2/index.html" data-version="0.9.2" data-root="../../../../../../router/0.9.2/index.html">0.9.2</option>
+<option value="../../../../../../router/0.9.1/index.html" data-version="0.9.1" data-root="../../../../../../router/0.9.1/index.html">0.9.1</option>
+<option value="../../../../../../router/0.9.0/index.html" data-version="0.9.0" data-root="../../../../../../router/0.9.0/index.html">0.9.0</option>
+<option value="../../../../../../router/0.8.0/index.html" data-version="0.8.0" data-root="../../../../../../router/0.8.0/index.html">0.8.0</option>
+<option value="../../../../../../router/0.7.0/index.html" data-version="0.7.0" data-root="../../../../../../router/0.7.0/index.html">0.7.0</option>
+<option value="../../../../../../router/0.6.9/index.html" data-version="0.6.9" data-root="../../../../../../router/0.6.9/index.html">0.6.9</option>
+<option value="../../../../../../router/0.6.8/index.html" data-version="0.6.8" data-root="../../../../../../router/0.6.8/index.html">0.6.8</option>
+<option value="../../../../../../router/0.6.7/index.html" data-version="0.6.7" data-root="../../../../../../router/0.6.7/index.html">0.6.7</option>
+<option value="../../../../../../router/0.6.6/index.html" data-version="0.6.6" data-root="../../../../../../router/0.6.6/index.html">0.6.6</option>
+<option value="../../../../../../router/0.6.5/index.html" data-version="0.6.5" data-root="../../../../../../router/0.6.5/index.html">0.6.5</option>
+<option value="../../../../../../router/0.6.4/index.html" data-version="0.6.4" data-root="../../../../../../router/0.6.4/index.html">0.6.4</option>
+<option value="../../../../../../router/0.6.3/index.html" data-version="0.6.3" data-root="../../../../../../router/0.6.3/index.html">0.6.3</option>
+<option value="../../../../../../router/0.6.2/index.html" data-version="0.6.2" data-root="../../../../../../router/0.6.2/index.html">0.6.2</option>
+<option value="../../../../../../router/0.6.1/index.html" data-version="0.6.1" data-root="../../../../../../router/0.6.1/index.html">0.6.1</option>
+<option value="../../../../../../router/0.6.0/index.html" data-version="0.6.0" data-root="../../../../../../router/0.6.0/index.html">0.6.0</option>
+<option value="../../../../../../router/0.5.2/index.html" data-version="0.5.2" data-root="../../../../../../router/0.5.2/index.html">0.5.2</option>
+<option value="../../../../../../router/0.5.1/index.html" data-version="0.5.1" data-root="../../../../../../router/0.5.1/index.html">0.5.1</option>
+<option value="../../../../../../router/0.5.0/index.html" data-version="0.5.0" data-root="../../../../../../router/0.5.0/index.html">0.5.0</option>
+<option value="../../../../../../router/0.4.6/index.html" data-version="0.4.6" data-root="../../../../../../router/0.4.6/index.html">0.4.6</option>
+<option value="../../../../../../router/0.4.5/index.html" data-version="0.4.5" data-root="../../../../../../router/0.4.5/index.html">0.4.5</option>
+<option value="../../../../../../router/0.4.4/index.html" data-version="0.4.4" data-root="../../../../../../router/0.4.4/index.html">0.4.4</option>
+<option value="../../../../../../router/0.4.3/index.html" data-version="0.4.3" data-root="../../../../../../router/0.4.3/index.html">0.4.3</option>
+<option value="../../../../../../router/0.4.2/index.html" data-version="0.4.2" data-root="../../../../../../router/0.4.2/index.html">0.4.2</option>
+<option value="../../../../../../router/0.4.1/index.html" data-version="0.4.1" data-root="../../../../../../router/0.4.1/index.html">0.4.1</option>
+<option value="../../../../../../router/0.4.0/index.html" data-version="0.4.0" data-root="../../../../../../router/0.4.0/index.html">0.4.0</option>
+<option value="../../../../../../router/0.3.1/index.html" data-version="0.3.1" data-root="../../../../../../router/0.3.1/index.html">0.3.1</option>
+<option value="../../../../../../router/0.3.0/index.html" data-version="0.3.0" data-root="../../../../../../router/0.3.0/index.html">0.3.0</option>
+<option value="../../../../../../router/0.2.3/index.html" data-version="0.2.3" data-root="../../../../../../router/0.2.3/index.html">0.2.3</option>
+<option value="../../../../../../router/0.2.2/index.html" data-version="0.2.2" data-root="../../../../../../router/0.2.2/index.html">0.2.2</option>
+<option value="../../../../../../router/0.2.1/index.html" data-version="0.2.1" data-root="../../../../../../router/0.2.1/index.html">0.2.1</option>
+<option value="../../../../../../router/0.2.0/index.html" data-version="0.2.0" data-root="../../../../../../router/0.2.0/index.html">0.2.0</option>
+<option value="../../../../../../router/0.1.1/index.html" data-version="0.1.1" data-root="../../../../../../router/0.1.1/index.html">0.1.1</option>
+<option value="../../../../../../router/0.1.0/index.html" data-version="0.1.0" data-root="../../../../../../router/0.1.0/index.html">0.1.0</option></select></label><section class="nav-sec open"><h2 class="nav-sec-title"><a href="../../../../../../router/1.1.8/overview.html">Getting started</a></h2><ul><li><a href="../../../../../../router/1.1.8/overview.html">Overview</a></li><li><a href="../../../../../../router/1.1.8/llm-router-api/docs/installation.html">Installation</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="../../../../../../router/1.1.8/llm-router-api/docs/env-definitions.html">Configuration</a></h2><ul><li><a href="../../../../../../router/1.1.8/llm-router-api/docs/env-definitions.html">Environment Variables</a></li><li><a href="../../../../../../router/1.1.8/llm-router-api/docs/models-config.html">Models configuration description (JSON)</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="../../../../../../router/1.1.8/llm-router-api/docs/keepalive.html">Routing &amp; resilience</a></h2><ul><li><a href="../../../../../../router/1.1.8/llm-router-api/docs/keepalive.html">Keep‑Alive Utility Overview</a></li><li><a href="../../../../../../router/1.1.8/llm-router-api/docs/lb-strategies.html">Load Balancing Strategies</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="../../../../../../router/1.1.8/llm-router-api/core/auditor/index.html">Security &amp; auditing</a></h2><ul><li><a href="../../../../../../router/1.1.8/llm-router-api/core/auditor/index.html">Auditing subsystem – llm-router</a></li><li><a href="../../../../../../router/1.1.8/llm-router-api/docs/authentication.html">Authentication &amp; Authorization</a></li><li><a href="../../../../../../router/1.1.8/llm-router-api/docs/rate-limiting.html">Rate Limiting</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="../../../../../../router/1.1.8/llm-router-api/docs/routing-metrics.html">Observability</a></h2><ul><li><a href="../../../../../../router/1.1.8/llm-router-api/docs/routing-metrics.html">Router Prometheus Metrics</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="../../../../../../router/1.1.8/llm-router-api/index.html">REST API</a></h2><ul><li><a href="../../../../../../router/1.1.8/llm-router-api/index.html">REST API reference</a></li><li><a href="../../../../../../router/1.1.8/llm-router-api/endpoints/index.html">Endpoints Overview</a></li><li><a href="../../../../../../router/1.1.8/llm-router-api/docs/endpoint-dev.html">Endpoint Development Guide</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="../../../../../../router/1.1.8/llm-router-cli/index.html">CLI</a></h2><ul><li><a href="../../../../../../router/1.1.8/llm-router-cli/index.html">llm-router CLI — Command Reference</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="../../../../../../router/1.1.8/llm-router-lib/index.html">Python library</a></h2><ul><li><a href="../../../../../../router/1.1.8/llm-router-lib/index.html">llmrouterlib</a></li><li><a href="../../../../../../router/1.1.8/llm-router-lib/response-models.html">Response models</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="../../../../../../router/1.1.8/helm-charts/index.html">Deployment</a></h2><ul><li><a href="../../../../../../router/1.1.8/helm-charts/index.html">LLM‑Router Helm Chart</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="../../../../../../router/1.1.8/examples/index.html">Examples</a></h2><ul><li><a href="../../../../../../router/1.1.8/examples/index.html">Integration Examples with LLM Router</a></li><li><a href="../../../../../../router/1.1.8/examples/quickstart/index.html">Full Stack with Local Models</a></li><li><a href="../../../../../../router/1.1.8/examples/readme-llamaindex.html">Using LlamaIndex with Local Models via the LLM‑Router</a></li><li><a href="../../../../../../router/1.1.8/examples/quickstart/google-gemma3-12b-it/vllm.html">vLLM + google/gemma‑3‑12b‑it – Quick‑Start Guide (Ubuntu)</a></li><li><a href="../../../../../../router/1.1.8/examples/quickstart/speakleash-bielik-11b-v2-3-instruct/vllm.html">vLLM + speakleash/Bielik-11B-v2.3-Instruct – Przewodnik Szybkiego Startu (Ubuntu)</a></li><li><a href="../../../../../../router/1.1.8/examples/quickstart/speakleash-bielik-11b-v2-3-instruct/index.html">🚀 Przewodnik Szybkiego Startu dla speakleash/Bielik-11B-v2.3-Instruct z vLLM &amp; LLM‑Router</a></li><li><a href="../../../../../../router/1.1.8/examples/quickstart/google-gemma3-12b-it/index.html">🚀 Quick‑Start Guide for google/gemma-3-12b‑it with vLLM &amp; LLM‑Router</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="../../../../../../router/1.1.8/changelog.html">Release notes</a></h2><ul><li><a href="../../../../../../router/1.1.8/changelog.html">Changelog</a></li></ul></section></details></div><div data-nav-repo="plugins"><details class="nav-group"><summary class="nav-repo"><span class="repo-name">llm-router-plugins</span></summary><div class="side-head"><span class="side-v mono">v0.1.2</span><span class="side-tag live">latest</span></div><label class="vselect side-versions"><span class="sr-only">llm-router-plugins version</span><select id="versions-plugins" data-switch="plugins" aria-label="llm-router-plugins documentation version"><option value="../../../../../0.1.2/llm-router-plugins/utils/routing/agentic-routing/codex/codex-eval-howto-en.html" data-version="0.1.2" data-root="../../../../../0.1.2/index.html" selected>v0.1.2  · latest</option>
+<option value="../../../../../0.1.1/index.html" data-version="0.1.1" data-root="../../../../../0.1.1/index.html">v0.1.1</option>
+<option value="../../../../../0.1.0/index.html" data-version="0.1.0" data-root="../../../../../0.1.0/index.html">v0.1.0</option>
+<option value="../../../../../0.0.6/index.html" data-version="0.0.6" data-root="../../../../../0.0.6/index.html">v0.0.6</option>
+<option value="../../../../../0.0.5/index.html" data-version="0.0.5" data-root="../../../../../0.0.5/index.html">v0.0.5</option>
+<option value="../../../../../0.0.2/index.html" data-version="0.0.2" data-root="../../../../../0.0.2/index.html">v0.0.2</option>
+<option value="../../../../../0.0.1/index.html" data-version="0.0.1" data-root="../../../../../0.0.1/index.html">v0.0.1</option></select></label><section class="nav-sec open"><h2 class="nav-sec-title"><a href="../../../../../index-2.html">Plugins overview</a></h2><ul><li><a href="../../../../../index-2.html">Plugins overview</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="../../../../maskers/fast-masker/index.html">Masker plugins</a></h2><ul><li><a href="../../../../maskers/fast-masker/index.html">Overview</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="../claude-code/index.html">Routing plugins</a></h2><ul><li><a href="../claude-code/index.html">Claude Code Model Swap (agenticroutingclaude_code)</a></li><li><a href="index.html">Codex CLI Routing (agenticroutingcodex)</a></li><li><a href="codex-eval-howto-en.html" class="active">Codex routing calibration and evaluation</a></li><li><a href="codex-eval-howto-pl.html">Kalibracja i ewaluacja routingu Codexa</a></li><li><a href="../../semantic-biencoder/index.html">Semantic BiEncoder Routing (semanticbiencoderrouting)</a></li><li><a href="../../index.html">Semantic Routing Plugins</a></li><li><a href="../../simple-semantic/index.html">Simple Semantic Routing (simplesemanticrouting)</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="../../../rag/langchain-rag.html">Utility plugins</a></h2><ul><li><a href="../../../rag/langchain-rag.html">LangChain RAG Plugin for LLM‑Router</a></li></ul></section></details></div><div data-nav-repo="services"><details class="nav-group"><summary class="nav-repo"><span class="repo-name">llm-router-services</span></summary><div class="side-head"><span class="side-v mono">v0.0.4</span><span class="side-tag live">latest</span></div><label class="vselect side-versions"><span class="sr-only">llm-router-services version</span><select id="versions-services" data-switch="services" aria-label="llm-router-services documentation version"><option value="../../../../../../services/0.0.4/index.html" data-version="0.0.4" data-root="../../../../../../services/0.0.4/index.html" selected>v0.0.4  · latest</option>
+<option value="../../../../../../services/0.0.3/index.html" data-version="0.0.3" data-root="../../../../../../services/0.0.3/index.html">v0.0.3</option>
+<option value="../../../../../../services/0.0.2/index.html" data-version="0.0.2" data-root="../../../../../../services/0.0.2/index.html">v0.0.2</option>
+<option value="../../../../../../services/0.0.1/index.html" data-version="0.0.1" data-root="../../../../../../services/0.0.1/index.html">v0.0.1</option></select></label><section class="nav-sec open"><h2 class="nav-sec-title"><a href="../../../../../../services/index-2.html">Services overview</a></h2><ul><li><a href="../../../../../../services/index-2.html">llm-router services</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="../../../../../../services/llm-router-services/guardrails/index.html">Guardrail services</a></h2><ul><li><a href="../../../../../../services/llm-router-services/guardrails/index.html">Guardrails Package</a></li><li><a href="../../../../../../services/llm-router-services/guardrails/speakleash/index.html">Integration of Bielik‑Guard‑0.1B as llm‑router guardrail service (Sojka)</a></li><li><a href="../../../../../../services/llm-router-services/guardrails/nask/index.html">Integration of HerBERT‑PL‑Guard with the naskpibguard_app.py Service</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="../../../../../../services/docker/index.html">Docker &amp; deployment</a></h2><ul><li><a href="../../../../../../services/docker/index.html">LLM‑Router Services – Docker Build &amp; Run Guide</a></li></ul></section></details></div></nav><div class="side-foot"><a href="../../../../../../..">&larr;&nbsp;landing page</a><a class="mono" href="../../../../../search.json">search.json</a></div></aside>
+<main class="main" id="main"><nav class="crumbs" aria-label="Breadcrumb">
+<a href="../../../../../../..">llm-router</a><span class="sep">/</span><a href="../../../../../index.html">docs</a><span class="sep">/</span><a href="../claude-code/index.html">Routing plugins</a><span class="sep">/</span><em>Codex routing calibration and evaluation</em>
+</nav>
+<article class="prose"><h1 id="codex-routing-calibration-and-evaluation">Codex routing calibration and evaluation<a class="headerlink" href="#codex-routing-calibration-and-evaluation" title="link to this section">#</a></h1>
+<p>Wersja polska: <a href="codex-eval-howto-pl.html">CODEX_EVAL_HOWTO_PL.md</a>.</p>
+<h2 id="1-what-you-are-actually-calibrating">1. What you are actually calibrating<a class="headerlink" href="#1-what-you-are-actually-calibrating" title="link to this section">#</a></h2>
+<p>This guide primarily covers <code>agentic_routing_codex</code> and the implementation in this repository described during the October 6–7, 2026 verification. The values and results below are reference points from that review, not a guarantee that they remain current after subsequent configuration or code changes.</p>
+<p><strong>The goal is to identify the current work mode correctly, and only then select the model assigned to it.</strong> You are not tuning routing around the name of a particular response-generating model.</p>
+<p>There are three independent mechanisms:</p>
+<ol>
+<li><strong>Structural rules and work phase</strong> — an explicit mode, Plan Mode, titles, compaction, tool calls, and their results.</li>
+<li><strong>Heuristics</strong> — scoring keywords, phrases, and regular expressions.</li>
+<li><strong>Semantics</strong> — embedding similarity between the current activity and mode descriptions and examples.</li>
+</ol>
+<p>Optional phase memory in Redis complements these mechanisms.</p>
+<p>Resolution order:</p>
+<div class="codehilite"><pre><span></span><code>explicit mode
+→ request class: title / compaction
+→ Plan Mode declaration
+→ current phase / trustworthy phase memory
+→ heuristics
+→ embeddings
+→ fallback
+→ mode-to-model mapping
+</code></pre></div>
+
+<p><strong>Important:</strong> if heuristics already make an incorrect decision, lowering the embedding threshold will not fix it. The semantic layer is not consulted in that case.</p>
+<p>Calibration in the current system <strong>does not mean training or fine-tuning the embedding model</strong>. It means selecting an embedding model, descriptions, examples, indexing parameters, and acceptance thresholds.</p>
+<h2 id="2-what-the-configuration-files-and-settings-are-for">2. What the configuration files and settings are for<a class="headerlink" href="#2-what-the-configuration-files-and-settings-are-for" title="link to this section">#</a></h2>
+<table>
+<thead>
+<tr>
+<th>File / setting</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>llm_router_plugins/resources/routing/agentic_routing_codex.json</code></td>
+<td>Codex modes, rules, semantic examples, thresholds, and mode-to-model mappings.</td>
+</tr>
+<tr>
+<td><code>tests/data/codex_routing_quality.json</code></td>
+<td>Requests with expected modes. Used for evaluation; not automatically added to the embedding index.</td>
+</tr>
+<tr>
+<td><code>tests/data/codex_routing_baseline.json</code></td>
+<td>Frozen earlier predictions for comparisons on common cases.</td>
+</tr>
+<tr>
+<td><code>codex-routing-holdout-verification.json</code></td>
+<td>Saved output from a particular replay. A report, not configuration.</td>
+</tr>
+<tr>
+<td><code>LLM_ROUTER_MODELS_CONFIG</code></td>
+<td>Model configuration in the router application: availability, provider, serving parameters, etc. Does not define examples for work-mode classification.</td>
+</tr>
+<tr>
+<td><code>simple_semantic.json</code></td>
+<td>Configuration for a separate heuristic plugin. Despite its name, it does not require embeddings.</td>
+</tr>
+<tr>
+<td><code>semantic_biencoder.json</code></td>
+<td>Configuration for a separate embedding-based general routing plugin. Does not replace the Codex configuration.</td>
+</tr>
+<tr>
+<td><code>agentic_routing_claude_code.json</code></td>
+<td>Configuration for a different plugin, for Claude Code.</td>
+</tr>
+</tbody>
+</table>
+<p>Changing <code>semantic_biencoder.json</code> <strong>does not automatically calibrate Codex</strong>. The embedding engine is shared, but the configurations and decision layers are separate.</p>
+<h3 id="key-codex-configuration-fields">Key Codex configuration fields<a class="headerlink" href="#key-codex-configuration-fields" title="link to this section">#</a></h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>embedding_model</code></td>
+<td>The model that creates vectors; a local path or model identifier. Not the model answering the user.</td>
+</tr>
+<tr>
+<td><code>settings.trigger_model</code></td>
+<td>The alias that activates the plugin, <code>auto_codex</code> by default.</td>
+</tr>
+<tr>
+<td><code>settings.fallback_mode</code></td>
+<td>Mode selected when no mechanism resolves the request, currently <code>implement</code>.</td>
+</tr>
+<tr>
+<td><code>codex_modes[].name</code></td>
+<td>Mode name, such as <code>review</code>.</td>
+</tr>
+<tr>
+<td><code>codex_modes[].model_name</code></td>
+<td>Model used after this mode is selected.</td>
+</tr>
+<tr>
+<td><code>codex_modes[].description</code></td>
+<td>Description of the mode's meaning, indexed semantically.</td>
+</tr>
+<tr>
+<td><code>codex_modes[].examples</code></td>
+<td>Examples of activities belonging to the mode, indexed semantically.</td>
+</tr>
+<tr>
+<td><code>keywords</code>, <code>phrases</code>, <code>patterns</code>, <code>weights</code></td>
+<td>Heuristic signals, not embedding examples.</td>
+</tr>
+<tr>
+<td><code>settings.phase</code></td>
+<td>Activity interpretation rules: commands, tools, test paths, announcements, etc.</td>
+</tr>
+<tr>
+<td><code>settings.semantic</code></td>
+<td>Indexing and semantic acceptance parameters.</td>
+</tr>
+<tr>
+<td><code>settings.vector_store_path</code></td>
+<td>Optional directory for a persistent semantic index. Not session memory.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Redis is a separate mechanism.</strong> Configure its connection using independent environment variables, not by adding connection details to the embedding configuration or automatically reusing Redis settings for auth.</p>
+<h2 id="3-understanding-scores-and-similarity">3. Understanding scores and similarity<a class="headerlink" href="#3-understanding-scores-and-similarity" title="link to this section">#</a></h2>
+<h3 id="heuristic-scoring">Heuristic scoring<a class="headerlink" href="#heuristic-scoring" title="link to this section">#</a></h3>
+<p>Current default weights:</p>
+<div class="codehilite"><pre><span></span><code>keyword = 1
+phrase  = 2
+pattern = 3
+</code></pre></div>
+
+<p>You can change them through <code>settings.heuristic_weights</code>, and override the weight of an individual keyword or phrase.</p>
+<p>Example syntax for fields within one mode:</p>
+<div class="codehilite"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">"keywords"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"pytest"</span><span class="p">],</span>
+<span class="w">  </span><span class="nt">"weights"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">"pytest"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">},</span>
+<span class="w">  </span><span class="nt">"phrases"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"run unit tests:4"</span><span class="p">],</span>
+<span class="w">  </span><span class="nt">"patterns"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"\\brun\\s+tests\\b"</span><span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>Overlapping matches are deduplicated: <strong>do not assume every matching rule always adds to the total</strong>. Repeating a single word does not increase the score indefinitely either.</p>
+<p>Acceptance requires:</p>
+<div class="codehilite"><pre><span></span><code>best score &gt; 0
+best score &gt;= heuristic_min_score
+best score &gt; second score
+best score - second score &gt;= heuristic_min_margin
+</code></pre></div>
+
+<p>Current configuration:</p>
+<div class="codehilite"><pre><span></span><code>heuristic_min_score  = 3.0
+heuristic_min_margin = 1.0
+</code></pre></div>
+
+<p>For heuristics, <code>routing.similarity</code> is a transformation:</p>
+<div class="codehilite"><pre><span></span><code>similarity = score / (score + 1)
+
+score = 3 → similarity = 0.75
+</code></pre></div>
+
+<p><strong>This does not mean a “75% chance that the mode is correct.”</strong></p>
+<h3 id="embedding-scores">Embedding scores<a class="headerlink" href="#embedding-scores" title="link to this section">#</a></h3>
+<p>Descriptions and examples are converted into normalized vectors. The engine compares them with the request vector using cosine similarity.</p>
+<p>With <code>aggregation: "per_target_top_k"</code>:</p>
+<ol>
+<li>Similarities are retrieved for all indexed chunks.</li>
+<li>The same number of best chunks is selected for each mode.</li>
+<li>Their similarities are averaged.</li>
+<li>This produces the <code>all_scores</code> mode ranking.</li>
+</ol>
+<p>The effective number of chunks per mode is:</p>
+<div class="codehilite"><pre><span></span><code>min(top_k, number of chunks in the smallest class)
+</code></pre></div>
+
+<p>Therefore, <code>top_k: 4</code> <strong>does not mean four modes in the result</strong>. It means up to four best chunks for each mode.</p>
+<p>Acceptance requires:</p>
+<div class="codehilite"><pre><span></span><code>s1 &gt;= threshold
+s1 &gt; s2
+s1 - s2 &gt;= min_margin
+</code></pre></div>
+
+<p>Here, <code>s1</code> is the best mode's score and <code>s2</code> is the second-best score.</p>
+<p>Current settings:</p>
+<div class="codehilite"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">"threshold"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.44</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"min_margin"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.005</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"aggregation"</span><span class="p">:</span><span class="w"> </span><span class="s2">"per_target_top_k"</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>Examples:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">Best score</th>
+<th style="text-align: right;">Second score</th>
+<th>Decision with the current thresholds</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;"><code>0.62</code></td>
+<td style="text-align: right;"><code>0.54</code></td>
+<td>Accept: sufficient score and margin.</td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>0.62</code></td>
+<td style="text-align: right;"><code>0.615</code></td>
+<td>Reject: insufficient margin.</td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>0.40</code></td>
+<td style="text-align: right;"><code>0.35</code></td>
+<td>Reject: score too low.</td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>0.62</code></td>
+<td style="text-align: right;"><code>0.62</code></td>
+<td>Reject: tie.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>A cosine similarity of <code>0.62</code> does not mean a 62% probability of correctness either.</strong> Do not compare it directly with heuristic <code>0.75</code> or structural <code>1.0</code>.</p>
+<h2 id="4-what-actually-goes-into-embeddings">4. What actually goes into embeddings<a class="headerlink" href="#4-what-actually-goes-into-embeddings" title="link to this section">#</a></h2>
+<p>The mode index contains:</p>
+<ul>
+<li>the mode name and its <code>description</code>;</li>
+<li>texts from <code>examples</code>.</li>
+</ul>
+<p>Names of assigned response-generating models are not semantic evidence. <code>aux_title</code> and <code>compaction</code> are resolved structurally and do not participate in the main-mode semantic ranking.</p>
+<p>The semantic query includes separate sections for:</p>
+<ul>
+<li>the intent of the current user instruction;</li>
+<li>current phase context: the agent's latest message and a structured description of tool activity.</li>
+</ul>
+<p><strong>Raw contents of a read file or tool result are not added as the phase description.</strong> This prevents the file's subject matter from replacing information about what the agent is doing.</p>
+<p>Intent and phase sections are embedded separately, then their vectors are averaged and normalized.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>What it controls</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>intent_max_chars</code></td>
+<td>Character limit for the intent section; currently <code>2000</code>.</td>
+</tr>
+<tr>
+<td><code>phase_max_chars</code></td>
+<td>Character limit for the phase section; currently <code>2000</code>.</td>
+</tr>
+<tr>
+<td><code>classify_max_chars</code></td>
+<td>Separate history-parser budget; not an intent-versus-phase weight.</td>
+</tr>
+<tr>
+<td><code>chunk_size</code></td>
+<td>Chunk size for indexed descriptions/examples; currently <code>256</code>.</td>
+</tr>
+<tr>
+<td><code>chunk_overlap</code></td>
+<td>Chunk overlap; currently <code>64</code>.</td>
+</tr>
+<tr>
+<td><code>top_k</code></td>
+<td>Number of best chunks considered per mode; currently <code>4</code>.</td>
+</tr>
+</tbody>
+</table>
+<p>Increasing <code>phase_max_chars</code> does not directly mean “give the phase twice the weight.” It changes how much text is available.</p>
+<h2 id="5-preparing-a-good-calibration-dataset">5. Preparing a good calibration dataset<a class="headerlink" href="#5-preparing-a-good-calibration-dataset" title="link to this section">#</a></h2>
+<p>You already have <code>tests/data/codex_routing_quality.json</code>. Use it as a starting point, but stronger evaluation requires more independent sessions.</p>
+<p>Minimal example of a separate dataset:</p>
+<div class="codehilite"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">"schema_version"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"cases"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"cal-review-001"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"split"</span><span class="p">:</span><span class="w"> </span><span class="s2">"calibration"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"source_session"</span><span class="p">:</span><span class="w"> </span><span class="s2">"session-cal-001"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"expected_mode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"review"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"ambiguous"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"input"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"message"</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"role"</span><span class="p">:</span><span class="w"> </span><span class="s2">"user"</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"content"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">              </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"input_text"</span><span class="p">,</span>
+<span class="w">              </span><span class="nt">"text"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Review this module's error handling and describe the issues. Do not change files."</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">          </span><span class="p">]</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="p">]</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"holdout-review-001"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"split"</span><span class="p">:</span><span class="w"> </span><span class="s2">"holdout"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"source_session"</span><span class="p">:</span><span class="w"> </span><span class="s2">"session-holdout-001"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"expected_mode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"review"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"ambiguous"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"input"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"message"</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"role"</span><span class="p">:</span><span class="w"> </span><span class="s2">"user"</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"content"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">              </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"input_text"</span><span class="p">,</span>
+<span class="w">              </span><span class="nt">"text"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Assess the validator's correctness and identify risks without preparing a fix."</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">          </span><span class="p">]</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="p">]</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>For phase sequences, add:</p>
+<ul>
+<li>a shared <code>sequence</code> value;</li>
+<li><code>session_id</code>, <code>thread_id</code>, <code>agent_name</code>, and <code>turn_id</code> in the case's <code>metadata</code> field;</li>
+<li>actual history prefixes: tool calls, identifiers, and results;</li>
+<li>optional <code>payload</code> for other request fields, such as <code>tools</code>, response format, and Codex metadata.</li>
+</ul>
+<p><strong>Note:</strong> during replay, the case's <code>metadata</code> is added to the request's <code>client_metadata</code>. An explicit mode override can be retained in <code>payload</code>.</p>
+<p>Labeling rules:</p>
+<ol>
+<li>The expected mode must follow solely from information available <strong>before the decision</strong>.</li>
+<li>A label describes the current activity, not the overall task subject.</li>
+<li>A historical router decision is not automatically a correct label.</li>
+<li>A complete session belongs to either <code>calibration</code> or <code>holdout</code> — do not split nearly identical prefixes across the two sets.</li>
+<li>Mark genuinely unresolved cases as <code>ambiguous: true</code>; do not use this to hide errors.</li>
+<li>Remove secrets, but preserve the structure needed to recognize the phase.</li>
+</ol>
+<p>Include difficult contrasts, such as:</p>
+<ul>
+<li>adding a mock in production code versus writing tests;</li>
+<li>GitHub integration versus Git history analysis;</li>
+<li>developing a testing strategy versus running tests;</li>
+<li>assessing code versus preparing a fix;</li>
+<li>a neutral file read after running tests;</li>
+<li>the phase sequence <code>implement → test → debug → implement</code>.</li>
+</ul>
+<h2 id="6-running-evaluate">6. Running evaluate<a class="headerlink" href="#6-running-evaluate" title="link to this section">#</a></h2>
+<h3 id="automated-tuning-and-evaluation">Automated tuning and evaluation<a class="headerlink" href="#automated-tuning-and-evaluation" title="link to this section">#</a></h3>
+<p>The Bash script runs the complete workflow (requires <code>jq</code>, Python with the project and <code>[ml]</code> dependencies):</p>
+<div class="codehilite"><pre><span></span><code>bash<span class="w"> </span>scripts/codex-tune-eval.sh<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--python<span class="w"> </span>/path/to/venv/bin/python<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--thresholds<span class="w"> </span><span class="s2">"0.40 0.44 0.48 0.52 0.56"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--margins<span class="w"> </span><span class="s2">"0.001 0.005 0.02 0.05"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--output-dir<span class="w"> </span>./workdir/codex-tuning-01
+</code></pre></div>
+
+<p>Use <code>--config</code>, <code>--dataset</code> and <code>--baseline</code> for custom files; <code>--help</code> lists all options. The output directory must be new. Without <code>--output-dir</code>, a new <code>codex-eval-*</code> directory is created in the repository. User-supplied paths are relative to the invocation directory; the script can run from any directory.</p>
+<p>The script evaluates the source configuration, then every <code>threshold</code>/<code>min_margin</code> pair <strong>on calibration only</strong>. It selects the highest <code>cascade.main_mode_accuracy</code>, then fewer missed and unnecessary mode switches, then higher <code>mode_accuracy</code>. An exact tie retains the source configuration. Only after freezing selection does it evaluate source and selected configurations on holdout. It does not train embeddings, improve examples or tune heuristics.</p>
+<p>Outputs include <code>selection.json</code> (candidate ranking), <code>selected-config.json</code>, <code>holdout-comparison.json</code>, full reports and separate logs for every replay. Source configuration and dataset snapshots are retained. The production configuration is never overwritten and the winner is not deployed automatically — inspect precision/recall, special cases and holdout regressions before deployment.</p>
+<p>Each candidate performs a real replay and reloads the embedding model, so the default grid can be expensive. Errors stop the workflow; logs and partial reports remain for diagnosis. Use <code>--no-semantic</code> for evaluation without embeddings: it skips tuning and reports deterministic variants on both splits. The script neither installs dependencies nor uses production Redis.</p>
+<p>Run the following commands from the repository root. <code>python</code> should point to a stable interpreter in the project's PyCharm environment.</p>
+<p>Semantic evaluation requires optional dependencies:</p>
+<div class="codehilite"><pre><span></span><code>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span><span class="s1">'.[ml]'</span>
+</code></pre></div>
+
+<p>This is an installation instruction for you, not a record of an installation performed. Earlier semantic verification was blocked by an environment using Python <code>3.11.0rc1</code>; use a compatible, stable interpreter for these measurements.</p>
+<h3 id="a-reference-run-without-embeddings">A. Reference run without embeddings<a class="headerlink" href="#a-reference-run-without-embeddings" title="link to this section">#</a></h3>
+<div class="codehilite"><pre><span></span><code>python<span class="w"> </span>-m<span class="w"> </span>llm_router_plugins.utils.routing.agentic_routing.codex.evaluation<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--config<span class="w"> </span>llm_router_plugins/resources/routing/agentic_routing_codex.json<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--dataset<span class="w"> </span>tests/data/codex_routing_quality.json<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--split<span class="w"> </span>calibration<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--no-semantic<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>&gt;<span class="w"> </span>codex-calibration-deterministic.json
+</code></pre></div>
+
+<p>This produces the <code>deterministic</code> and <code>stateful</code> variants.</p>
+<h3 id="b-embedding-evaluation-on-calibration">B. Embedding evaluation on calibration<a class="headerlink" href="#b-embedding-evaluation-on-calibration" title="link to this section">#</a></h3>
+<div class="codehilite"><pre><span></span><code>python<span class="w"> </span>-m<span class="w"> </span>llm_router_plugins.utils.routing.agentic_routing.codex.evaluation<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--config<span class="w"> </span>llm_router_plugins/resources/routing/agentic_routing_codex.json<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--dataset<span class="w"> </span>tests/data/codex_routing_quality.json<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--split<span class="w"> </span>calibration<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>&gt;<span class="w"> </span>codex-calibration-semantic.json
+</code></pre></div>
+
+<p>This evaluation adds <code>cascade</code> and <code>semantic_only</code>.</p>
+<h3 id="c-final-holdout-evaluation">C. Final holdout evaluation<a class="headerlink" href="#c-final-holdout-evaluation" title="link to this section">#</a></h3>
+<p>After tuning is complete:</p>
+<div class="codehilite"><pre><span></span><code>python<span class="w"> </span>-m<span class="w"> </span>llm_router_plugins.utils.routing.agentic_routing.codex.evaluation<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--config<span class="w"> </span>llm_router_plugins/resources/routing/agentic_routing_codex.json<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--dataset<span class="w"> </span>tests/data/codex_routing_quality.json<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--split<span class="w"> </span>holdout<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--baseline<span class="w"> </span>tests/data/codex_routing_baseline.json<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>&gt;<span class="w"> </span>codex-holdout-semantic.json
+</code></pre></div>
+
+<p><code>--split holdout</code> is the default, but specifying it explicitly is helpful. Use <code>--split all</code> for overall diagnostics, not for choosing thresholds using the control set.</p>
+<h3 id="important-evaluator-behavior">Important evaluator behavior<a class="headerlink" href="#important-evaluator-behavior" title="link to this section">#</a></h3>
+<ul>
+<li>It reads the specified <code>JSON</code> file; it does not apply the normal routing configuration overrides from environment variables.</li>
+<li>It builds a fresh in-memory index; it does not use the production persistent index.</li>
+<li>It does not call response-generating models.</li>
+<li>It does not use production Redis. Memory is replayed in an isolated local store per sequence.</li>
+<li>Without <code>--no-semantic</code>, it requires enabled semantic routing and <code>aggregation: "per_target_top_k"</code>.</li>
+<li>An embedding loading or lookup failure should abort evaluation rather than masquerade as a successful fallback evaluation.</li>
+</ul>
+<p><strong>Therefore, setting a threshold through an environment variable does not change this CLI's result. For an experiment, write the threshold into the file passed through <code>--config</code>.</strong></p>
+<h2 id="7-reading-report-variants">7. Reading report variants<a class="headerlink" href="#7-reading-report-variants" title="link to this section">#</a></h2>
+<table>
+<thead>
+<tr>
+<th>Variant</th>
+<th>What it measures</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>deterministic</code></td>
+<td>The cascade without embeddings or session memory.</td>
+</tr>
+<tr>
+<td><code>stateful</code></td>
+<td>The deterministic cascade with phase-memory replay.</td>
+</tr>
+<tr>
+<td><code>cascade</code></td>
+<td>The cascade with embeddings but without session memory.</td>
+</tr>
+<tr>
+<td><code>semantic_only</code></td>
+<td>Embeddings for main requests; titles and compaction still use structural routing.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>The current evaluator does not report a separate “memory + semantics” variant.</strong> Do not treat <code>cascade</code> as a complete production simulation with Redis enabled.</p>
+<p><code>semantic_only</code> helps reveal ranking quality itself. It is not the “maximum possible result,” because it deliberately bypasses some stronger structural signals.</p>
+<h3 id="key-metrics">Key metrics<a class="headerlink" href="#key-metrics" title="link to this section">#</a></h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Interpretation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>mode_accuracy</code></td>
+<td>Fraction of correct modes among labeled cases.</td>
+</tr>
+<tr>
+<td><code>main_mode_accuracy</code></td>
+<td>Accuracy for main work, excluding titles and compaction.</td>
+</tr>
+<tr>
+<td><code>per_mode.precision</code></td>
+<td>Of the predictions of a particular mode, how many were correct?</td>
+</tr>
+<tr>
+<td><code>per_mode.recall</code></td>
+<td>Of the cases requiring a particular mode, how many were detected?</td>
+</tr>
+<tr>
+<td><code>mode_confusion</code></td>
+<td>Row: expected mode; column: predicted mode.</td>
+</tr>
+<tr>
+<td><code>sources</code></td>
+<td>Which layer made the decisions.</td>
+</tr>
+<tr>
+<td><code>fallback_reasons</code></td>
+<td>Reasons for fallback decisions recorded by the variant.</td>
+</tr>
+<tr>
+<td><code>semantic_acceptance_rate</code></td>
+<td>Fraction of labeled cases resolved by the <code>semantic</code> source; not semantic precision or the acceptance rate restricted to lookups.</td>
+</tr>
+<tr>
+<td><code>special_cases</code></td>
+<td>Separate results for titles and compaction.</td>
+</tr>
+<tr>
+<td><code>ambiguous_count</code></td>
+<td>Cases excluded from accuracy because of ambiguity.</td>
+</tr>
+<tr>
+<td><code>mean_routing_ms</code></td>
+<td>Mean replay time for a variant, not total production latency.</td>
+</tr>
+</tbody>
+</table>
+<p>For example, high <code>test</code> recall and low <code>test</code> precision mean tests are detected, but this mode also captures unrelated tasks.</p>
+<p>For sequences, pay particular attention to:</p>
+<ul>
+<li><code>unnecessary_switches</code> — a mode change when the expected phase did not change;</li>
+<li><code>missed_switches</code> — no change when a transition was expected;</li>
+<li><code>mean_switch_delay</code> — delay in detecting a new phase, measured in subsequent requests, not milliseconds;</li>
+<li><code>censored_switches</code> — transitions for which the correct phase was not reached before the available fragment ended.</li>
+</ul>
+<p>Correct switch counts alone do not prove correct mode selection. Always read them together with accuracy and the confusion matrix.</p>
+<p><strong>Do not select a configuration based on <code>model_accuracy</code>.</strong> If multiple modes share one model, an incorrect mode may look like a correct model selection.</p>
+<h2 id="8-a-practical-embedding-calibration-procedure">8. A practical embedding calibration procedure<a class="headerlink" href="#8-a-practical-embedding-calibration-procedure" title="link to this section">#</a></h2>
+<h3 id="step-1-freeze-a-reference-point">Step 1: freeze a reference point<a class="headerlink" href="#step-1-freeze-a-reference-point" title="link to this section">#</a></h3>
+<p>Save a report for the current configuration on <code>calibration</code>. Preserve the configuration and dataset used for the measurement.</p>
+<p>The report includes their hashes in <code>metadata</code>. Also record the code version, embedding weights revision, and dependency versions — a configuration hash cannot detect replacement of model files at the same path.</p>
+<h3 id="step-2-identify-where-errors-occur">Step 2: identify where errors occur<a class="headerlink" href="#step-2-identify-where-errors-occur" title="link to this section">#</a></h3>
+<p>Start by comparing <code>deterministic</code> with <code>cascade</code>.</p>
+<ul>
+<li>Error from <code>heuristic</code> → improve the heuristic.</li>
+<li>Error from <code>phase</code> → inspect activity rules and the parser.</li>
+<li>Error from <code>memory</code> → inspect metadata and phase lifecycle.</li>
+<li>Semantic error or unresolved fallback → inspect the embedding ranking.</li>
+</ul>
+<p>Example for reading rankings if <code>jq</code> is available:</p>
+<div class="codehilite"><pre><span></span><code>jq<span class="w"> </span><span class="s1">'.records[]</span>
+<span class="s1">  | select(.ambiguous == false)</span>
+<span class="s1">  | select(.semantic_only.all_scores != null)</span>
+<span class="s1">  | {</span>
+<span class="s1">      id,</span>
+<span class="s1">      expected: .expected_mode,</span>
+<span class="s1">      selected: .semantic_only.mode,</span>
+<span class="s1">      source: .semantic_only.source,</span>
+<span class="s1">      margin: .semantic_only.margin,</span>
+<span class="s1">      ranking: .semantic_only.all_scores</span>
+<span class="s1">    }'</span><span class="w"> </span>codex-calibration-semantic.json
+</code></pre></div>
+
+<p>Do not assess only the final mode: <code>implement</code> may be correctly selected as a fallback even though semantics accepted no class.</p>
+<h3 id="step-3-improve-descriptions-and-examples">Step 3: improve descriptions and examples<a class="headerlink" href="#step-3-improve-descriptions-and-examples" title="link to this section">#</a></h3>
+<p>Good examples describe <strong>the activity and the mode's boundaries</strong>, not the repository's subject matter.</p>
+<p>Example distinctions:</p>
+<div class="codehilite"><pre><span></span><code>plan:
+“Develop a testing strategy; do not write tests yet.”
+
+test:
+“Add unit tests for the validator and run them.”
+
+review:
+“Assess the validator's correctness and describe issues without editing.”
+
+implement:
+“Add input validation to the existing module.”
+</code></pre></div>
+
+<p>Recommendations:</p>
+<ul>
+<li>use representative Polish and English phrasing;</li>
+<li>add varied paraphrases, not dozens of nearly identical sentences;</li>
+<li>explain distinctions in <code>description</code>;</li>
+<li>do not use preferred model names as classification clues;</li>
+<li>do not copy <code>holdout</code> cases into <code>examples</code>;</li>
+<li>avoid copying evaluation prompts verbatim even from calibration — use them to identify missing categories of phrasing.</li>
+</ul>
+<p>If the correct class regularly ranks second, lowering <code>threshold</code> alone usually will not help: the wrong class will still win.</p>
+<h3 id="step-4-select-threshold-and-margin">Step 4: select threshold and margin<a class="headerlink" href="#step-4-select-threshold-and-margin" title="link to this section">#</a></h3>
+<p>Once descriptions are stable, test a small grid of values, for example:</p>
+<div class="codehilite"><pre><span></span><code>threshold:  0.40, 0.44, 0.48, 0.52, 0.56
+min_margin: 0.001, 0.005, 0.02, 0.05
+</code></pre></div>
+
+<p>This is <strong>an example experimental range</strong>, not a recommended optimum. A different embedding model may require a different range.</p>
+<ul>
+<li>Higher <code>threshold</code>: usually fewer acceptances and more fallbacks.</li>
+<li>Lower <code>threshold</code>: more acceptances, but potentially incorrect confident decisions.</li>
+<li>Higher <code>min_margin</code>: rejects competing classes with similar scores.</li>
+<li>Lower <code>min_margin</code>: accepts more borderline cases.</li>
+</ul>
+<p>Example of creating a candidate configuration:</p>
+<div class="codehilite"><pre><span></span><code>jq<span class="w"> </span><span class="s1">'.settings.semantic.threshold = 0.55</span>
+<span class="s1">    | .settings.semantic.min_margin = 0.08'</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>llm_router_plugins/resources/routing/agentic_routing_codex.json<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>&gt;<span class="w"> </span>codex-candidate.json
+</code></pre></div>
+
+<p>Then:</p>
+<div class="codehilite"><pre><span></span><code>python<span class="w"> </span>-m<span class="w"> </span>llm_router_plugins.utils.routing.agentic_routing.codex.evaluation<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--config<span class="w"> </span>codex-candidate.json<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--dataset<span class="w"> </span>tests/data/codex_routing_quality.json<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--split<span class="w"> </span>calibration<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>&gt;<span class="w"> </span>codex-candidate-calibration.json
+</code></pre></div>
+
+<p>The CLI has no separate <code>--threshold</code> or <code>--min-margin</code> options and no automatic tuning. Supply parameters through configuration.</p>
+<p><strong>Cost optimization:</strong> when only thresholds change, the <code>all_scores</code> ranking remains the same. You can screen threshold pairs offline using saved rankings instead of loading the model every time. However, confirm the selected configuration with an actual replay of the complete cascade.</p>
+<h3 id="step-5-tune-other-parameters-only-afterward">Step 5: tune other parameters only afterward<a class="headerlink" href="#step-5-tune-other-parameters-only-afterward" title="link to this section">#</a></h3>
+<p>Check these separately:</p>
+<ul>
+<li><code>top_k</code>, such as <code>1</code>, <code>3</code>, <code>5</code>;</li>
+<li>intent and phase section lengths;</li>
+<li><code>chunk_size</code> and <code>chunk_overlap</code>;</li>
+<li>other embedding models.</li>
+</ul>
+<p>Do not change everything at once — you will lose track of what caused an improvement.</p>
+<p>After changing the embedding model, calibrate thresholds again. The same cosine value need not have the same diagnostic meaning for different models.</p>
+<h3 id="step-6-select-configuration-by-quality-not-acceptance-count">Step 6: select configuration by quality, not acceptance count<a class="headerlink" href="#step-6-select-configuration-by-quality-not-acceptance-count" title="link to this section">#</a></h3>
+<p>Priorities:</p>
+<ol>
+<li>Fewer incorrect modes in main work.</li>
+<li>Fewer unnecessary and missed switches.</li>
+<li>No degradation in particularly important classes.</li>
+<li>No regressions in explicit overrides, Plan Mode, titles, or compaction.</li>
+<li>Acceptable routing cost and latency.</li>
+</ol>
+<p><strong>Fewer fallbacks do not automatically mean better routing.</strong> An incorrect semantic decision may be worse than a cautious fallback.</p>
+<h2 id="9-calibrating-heuristics">9. Calibrating heuristics<a class="headerlink" href="#9-calibrating-heuristics" title="link to this section">#</a></h2>
+<p>Tune heuristics separately, starting with a <code>--no-semantic</code> report.</p>
+<p>Common actions:</p>
+<ul>
+<li>remove overly broad keywords that capture unrelated activities;</li>
+<li>add more unambiguous phrases;</li>
+<li>reduce the weight of an ambiguous signal;</li>
+<li>increase <code>heuristic_min_margin</code> if competing classes have similar scores;</li>
+<li>check local negations, such as “do not run tests”;</li>
+<li>account for Polish spelling both with and without diacritics.</li>
+</ul>
+<p><code>CodexModeScorer.rank_modes()</code> exposes a ranking with raw scores and <code>SignalMatch</code> matches. This is the right place to investigate “which word added points.” The CLI report does not contain a complete heuristic ranking.</p>
+<p>Not all configured modes are heuristic candidates. In particular, merely adding keywords to <code>plan</code> does not make it a heuristic winner in the current cascade; planning has structural signals and a semantic path.</p>
+<p>After improving heuristics, rerun the embedding evaluation too — changing an earlier layer changes the requests that reach semantics.</p>
+<h2 id="10-confirming-results-and-deploying-configuration">10. Confirming results and deploying configuration<a class="headerlink" href="#10-confirming-results-and-deploying-configuration" title="link to this section">#</a></h2>
+<p>After choosing a candidate on <code>calibration</code>, run the old and new configurations on <strong>the same independent holdout</strong>. Compare not just summaries, but individual lost and recovered cases.</p>
+<p>If you change configuration to address errors after inspecting the holdout, that dataset is no longer an independent check. Keep it as regression coverage and prepare a new holdout.</p>
+<p>The current corpus is small and has already been analyzed while implementing fixes. It is useful for regressions, but is not strong evidence of quality on new sessions.</p>
+<h3 id="deployment">Deployment<a class="headerlink" href="#deployment" title="link to this section">#</a></h3>
+<p>Example of selecting a ready configuration file:</p>
+<div class="codehilite"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">LLM_ROUTER_ROUTING_SEMANTIC_AGENTIC_CODEX_CONFIG</span><span class="o">=</span>/path/to/codex-candidate.json
+</code></pre></div>
+
+<p>Selected production overrides:</p>
+<div class="codehilite"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">LLM_ROUTER_ROUTING_SEMANTIC_AGENTIC_CODEX_SEMANTIC_ENABLED</span><span class="o">=</span><span class="nb">true</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">LLM_ROUTER_ROUTING_SEMANTIC_AGENTIC_CODEX_SIMILARITY_THRESHOLD</span><span class="o">=</span><span class="m">0</span>.55
+<span class="nb">export</span><span class="w"> </span><span class="nv">LLM_ROUTER_ROUTING_SEMANTIC_AGENTIC_CODEX_MODEL</span><span class="o">=</span>/path/to/embedding-model
+</code></pre></div>
+
+<p>Here, <code>MODEL</code> means the embedding model. <code>MODEL_TEST</code>, <code>MODEL_REVIEW</code>, etc. mean response-generating models assigned to modes.</p>
+<p><code>semantic.min_margin</code>, <code>aggregation</code>, and section budgets currently have no individual environment variable overrides; set them in <code>JSON</code>.</p>
+<p>Changes are loaded when the plugin is created, so they require recreating the plugin / restarting workers.</p>
+<h3 id="persistent-index">Persistent index<a class="headerlink" href="#persistent-index" title="link to this section">#</a></h3>
+<p>If you use <code>vector_store_path</code> or <code>PERSIST_DIR</code>, after changing:</p>
+<ul>
+<li>the embedding model;</li>
+<li>the set of modes;</li>
+<li>descriptions or examples;</li>
+<li>text chunking parameters;</li>
+</ul>
+<p><strong>build a new index</strong>. The safest approach is to specify a new, versioned directory. The current engine does not guarantee automatic index invalidation after every configuration change.</p>
+<p>Changing only <code>threshold</code>, <code>min_margin</code>, <code>top_k</code>, or query budgets does not require re-embedding descriptions.</p>
+<p>The <code>FAISS</code> index and Redis memory are independent. Do not clear all of Redis when calibrating embeddings.</p>
+<h2 id="11-what-the-current-report-tells-you">11. What the current report tells you<a class="headerlink" href="#11-what-the-current-report-tells-you" title="link to this section">#</a></h2>
+<p>In <code>codex-routing-holdout-verification.json</code> from the earlier verification:</p>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th style="text-align: right;"><code>deterministic</code></th>
+<th style="text-align: right;"><code>stateful</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Mode accuracy</td>
+<td style="text-align: right;"><code>26/35 = 74.3%</code></td>
+<td style="text-align: right;"><code>29/35 = 82.9%</code></td>
+</tr>
+<tr>
+<td>Main-work accuracy</td>
+<td style="text-align: right;"><code>23/32 = 71.9%</code></td>
+<td style="text-align: right;"><code>26/32 = 81.25%</code></td>
+</tr>
+<tr>
+<td>Unnecessary switches</td>
+<td style="text-align: right;"><code>2</code></td>
+<td style="text-align: right;"><code>0</code></td>
+</tr>
+<tr>
+<td>Missed switches</td>
+<td style="text-align: right;"><code>1</code></td>
+<td style="text-align: right;"><code>0</code></td>
+</tr>
+<tr>
+<td><code>review</code> recall</td>
+<td style="text-align: right;"><code>25%</code></td>
+<td style="text-align: right;"><code>25%</code></td>
+</tr>
+<tr>
+<td><code>plan</code> recall</td>
+<td style="text-align: right;"><code>33.3%</code></td>
+<td style="text-align: right;"><code>33.3%</code></td>
+</tr>
+</tbody>
+</table>
+<p>This demonstrates an improvement from memory on these cases. <strong>It does not demonstrate embedding quality</strong> — neither variant uses embeddings, and <code>semantic_acceptance_rate</code> is <code>0</code>.</p>
+<p>Low <code>review</code> and <code>plan</code> recall identifies areas to investigate, not an automatic reason to lower the threshold. First check whether the incorrect mode comes from a heuristic or whether the correct mode ranks highly in the semantic ranking.</p>
+<p>The current baseline also has unverified historical provenance. Use it as a frozen regression snapshot, not as evidence of results “before the entire implementation.” <code>--baseline</code> compares only common cases with consistent labels.</p>
+<h2 id="12-short-workflow-checklist">12. Short workflow checklist<a class="headerlink" href="#12-short-workflow-checklist" title="link to this section">#</a></h2>
+<div class="codehilite"><pre><span></span><code>1. Check that the interpreter and embedding model work.
+2. Prepare calibration and holdout sets separated by session.
+3. Save results for the current configuration without semantics.
+4. Save results for the current configuration with semantics.
+5. Identify the layer responsible for errors.
+6. Improve descriptions / examples or the relevant layer's rules.
+7. Tune threshold and min_margin on calibration.
+8. Check incorrect modes, precision/recall, and switches.
+9. Confirm the selected candidate on an independent holdout.
+10. Deploy configuration and a fresh index, then inspect production logs.
+</code></pre></div>
+
+<p><strong>The key rule: optimize correctness of the current work mode, not high similarity, low fallback usage, or model-name accuracy.</strong></p></article>
+<nav class="pager" aria-label="Previous and next page"><a class="prev" href="index.html"><span class="dir">&larr; previous</span><span class="pt">Codex CLI Routing (agenticroutingcodex)</span></a><a class="next" href="codex-eval-howto-pl.html"><span class="dir">next &rarr;</span><span class="pt">Kalibracja i ewaluacja routingu Codexa</span></a></nav>
+<footer class="doc-meta">
+<div class="meta-row"><span class="meta-k">repository</span><a class="mono" href="https://github.com/radlab-dev-group/llm-router-plugins">llm-router-plugins</a></div>
+<div class="meta-row"><span class="meta-k">source</span><a class="mono" href="https://github.com/radlab-dev-group/llm-router-plugins/blob/v0.1.2/llm_router_plugins/utils/routing/agentic_routing/codex/CODEX_EVAL_HOWTO_EN.md">llm_router_plugins/utils/routing/agentic_routing/codex/CODEX_EVAL_HOWTO_EN.md</a></div>
+<div class="meta-row"><span class="meta-k">last commit</span><time datetime="2026-10-08T12:46:44+02:00"><a href="https://github.com/radlab-dev-group/llm-router-plugins/commit/88ce6b6">2026-10-08</a></time></div>
+<div class="meta-row"><span class="meta-k">built from</span><span class="mono"><a href="https://github.com/radlab-dev-group/llm-router-plugins/tree/v0.1.2">v0.1.2</a>&nbsp;@&nbsp;<a href="https://github.com/radlab-dev-group/llm-router-plugins/commit/88ce6b6">88ce6b6</a></span></div>
+<p class="hint">Generated from the Markdown file in the repository: commit a change and the next build republishes it.</p>
+</footer>
+<footer class="foot"><div class="foot-inner">
+<span class="mono">llm-router &middot; docs are generated from the repository by <code>tools/build_docs.py</code></span>
+<span class="mono"><a href="https://github.com/radlab-dev-group/llm-router-plugins/tree/v0.1.2">1.1.8</a> @ <a href="https://github.com/radlab-dev-group/llm-router-plugins/commit/88ce6b6">88ce6b6</a></span>
+</div></footer>
+</main>
+<aside class="dtoc" id="dtoc"><h2 class="toc-title">on this page</h2><div class="toc-body"><ul><li><a href="#1-what-you-are-actually-calibrating">1. What you are actually calibrating</a></li><li><a href="#2-what-the-configuration-files-and-settings-are-for">2. What the configuration files and settings are for</a><ul><li><a href="#key-codex-configuration-fields">Key Codex configuration fields</a></li></ul></li><li><a href="#3-understanding-scores-and-similarity">3. Understanding scores and similarity</a><ul><li><a href="#heuristic-scoring">Heuristic scoring</a></li><li><a href="#embedding-scores">Embedding scores</a></li></ul></li><li><a href="#4-what-actually-goes-into-embeddings">4. What actually goes into embeddings</a></li><li><a href="#5-preparing-a-good-calibration-dataset">5. Preparing a good calibration dataset</a></li><li><a href="#6-running-evaluate">6. Running evaluate</a><ul><li><a href="#automated-tuning-and-evaluation">Automated tuning and evaluation</a></li><li><a href="#a-reference-run-without-embeddings">A. Reference run without embeddings</a></li><li><a href="#b-embedding-evaluation-on-calibration">B. Embedding evaluation on calibration</a></li><li><a href="#c-final-holdout-evaluation">C. Final holdout evaluation</a></li><li><a href="#important-evaluator-behavior">Important evaluator behavior</a></li></ul></li><li><a href="#7-reading-report-variants">7. Reading report variants</a><ul><li><a href="#key-metrics">Key metrics</a></li></ul></li><li><a href="#8-a-practical-embedding-calibration-procedure">8. A practical embedding calibration procedure</a><ul><li><a href="#step-1-freeze-a-reference-point">Step 1: freeze a reference point</a></li><li><a href="#step-2-identify-where-errors-occur">Step 2: identify where errors occur</a></li><li><a href="#step-3-improve-descriptions-and-examples">Step 3: improve descriptions and examples</a></li><li><a href="#step-4-select-threshold-and-margin">Step 4: select threshold and margin</a></li><li><a href="#step-5-tune-other-parameters-only-afterward">Step 5: tune other parameters only afterward</a></li><li><a href="#step-6-select-configuration-by-quality-not-acceptance-count">Step 6: select configuration by quality, not acceptance count</a></li></ul></li><li><a href="#9-calibrating-heuristics">9. Calibrating heuristics</a></li><li><a href="#10-confirming-results-and-deploying-configuration">10. Confirming results and deploying configuration</a><ul><li><a href="#deployment">Deployment</a></li><li><a href="#persistent-index">Persistent index</a></li></ul></li><li><a href="#11-what-the-current-report-tells-you">11. What the current report tells you</a></li><li><a href="#12-short-workflow-checklist">12. Short workflow checklist</a></li></ul></div></aside>
+</div>
+</body>
+</html>

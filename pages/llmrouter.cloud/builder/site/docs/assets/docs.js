@@ -75,18 +75,168 @@
     });
   }
 
-  /* ---- version switcher ---------------------------------------------- */
-  function initVersions() {
-    var select = doc.getElementById("versions");
-    if (!select) {
-      return;
+  /* ---- repository navigation state ---------------------------------- */
+  function initSidebar() {
+    var root = new URL(body.getAttribute("data-docs-root"), window.location.href);
+    var key = "docs-sidebar:" + root.href;
+    var reveal = new URL(window.location.href).searchParams.get("reveal") === "search";
+    var state = {};
+    try {
+      state = JSON.parse(window.sessionStorage.getItem(key)) || {};
+    } catch (error) {
+      // Storage may be unavailable; navigation remains usable without it.
     }
-    select.addEventListener("change", function () {
-      var target = select.value;
-      if (target) {
-        window.location.href = target;
+    all("[data-nav-repo]").forEach(function (group) {
+      var details = group.querySelector("details.nav-group");
+      var repo = group.getAttribute("data-nav-repo");
+      if (details && typeof state[repo] === "boolean") {
+        details.open = state[repo];
+      }
+      if (details && reveal && group.querySelector(".nav-sec li a.active")) {
+        details.open = true;
       }
     });
+
+    function save() {
+      var current = {};
+      all("[data-nav-repo]").forEach(function (group) {
+        var details = group.querySelector("details.nav-group");
+        if (details) {
+          current[group.getAttribute("data-nav-repo")] = details.open;
+        }
+      });
+      try {
+        window.sessionStorage.setItem(key, JSON.stringify(current));
+      } catch (error) {
+        // Storage may be unavailable; keep the current menu state.
+      }
+    }
+    doc.addEventListener("toggle", function (event) {
+      if (event.target.matches("details.nav-group")) {
+        save();
+      }
+    }, true);
+    window.addEventListener("pagehide", save);
+    if (reveal) {
+      save();
+    }
+  }
+
+  /* ---- version switcher ---------------------------------------------- */
+  function initVersions() {
+    var here = new URL(window.location.href);
+    var docsRoot = new URL(body.getAttribute("data-docs-root"), here);
+    var context = {};
+
+    function withVersions(target) {
+      var url = new URL(target, here);
+      Object.keys(context).forEach(function (repo) {
+        url.searchParams.set(repo, context[repo]);
+      });
+      return url.href;
+    }
+
+    all("select[data-switch]").forEach(function (select) {
+      var repo = select.getAttribute("data-switch");
+      var selected = select.options[select.selectedIndex];
+      var requested = here.searchParams.get(repo);
+      var option = selected;
+      if (repo !== body.getAttribute("data-repo") && requested) {
+        option = Array.prototype.find.call(select.options, function (entry) {
+          return entry.getAttribute("data-version") === requested;
+        }) || selected;
+      }
+      if (!option) {
+        return;
+      }
+      context[repo] = option.getAttribute("data-version");
+      if (option !== selected) {
+        select.value = option.value;
+        var root = new URL(option.getAttribute("data-root"), here);
+        var selector = '[data-nav-repo="' + repo + '"]';
+        fetch(root.href).then(function (response) {
+          if (!response.ok) {
+            throw new Error("Documentation navigation unavailable");
+          }
+          return response.text();
+        }).then(function (source) {
+          var parsed = new DOMParser().parseFromString(source, "text/html");
+          var group = parsed.querySelector(selector);
+          var current = doc.querySelector(selector);
+          if (!group || !current) {
+            throw new Error("Documentation navigation missing");
+          }
+          var versionsSelector = '[data-versions-repo="' + repo + '"]';
+          var versionsPanel = parsed.querySelector(versionsSelector);
+          var currentVersionsPanel = doc.querySelector(versionsSelector);
+          var currentDetails = current.querySelector("details.nav-group");
+          var groupDetails = group.querySelector("details.nav-group");
+          if (currentDetails && groupDetails) {
+            groupDetails.open = currentDetails.open;
+          }
+          all("a[href]", group).forEach(function (link) {
+            link.setAttribute("href", new URL(link.getAttribute("href"), root).href);
+          });
+          all("option[value]", group).forEach(function (entry) {
+            entry.value = new URL(entry.value, root).href;
+            entry.setAttribute("data-root", new URL(entry.getAttribute("data-root"), root).href);
+          });
+          all(".active", group).forEach(function (link) {
+            link.classList.remove("active");
+          });
+          if (versionsPanel && currentVersionsPanel) {
+            versionsPanel.open = currentVersionsPanel.open;
+            all("a[href]", versionsPanel).forEach(function (link) {
+              link.setAttribute("href", new URL(link.getAttribute("href"), root).href);
+            });
+            currentVersionsPanel.replaceWith(versionsPanel);
+          }
+          if (repo === "router") {
+            var releasePanel = parsed.querySelector("[data-router-release]");
+            var currentReleasePanel = doc.querySelector("[data-router-release]");
+            if (releasePanel && currentReleasePanel) {
+              all("a[href]", releasePanel).forEach(function (link) {
+                link.setAttribute("href", new URL(link.getAttribute("href"), root).href);
+              });
+              currentReleasePanel.replaceWith(releasePanel);
+            }
+          }
+          current.replaceWith(group);
+        }).catch(function () {
+          // Do not leave links pointing at a different release if loading fails.
+          select.value = selected.value;
+          context[repo] = selected.getAttribute("data-version");
+        });
+      }
+    });
+
+    doc.addEventListener("change", function (event) {
+      var select = event.target;
+      var repo = select.getAttribute("data-switch");
+      if (repo && select.value) {
+        context[repo] = select.options[select.selectedIndex].getAttribute("data-version");
+        window.location.href = withVersions(select.value);
+      }
+    });
+
+    function preserveVersions(event) {
+      var link = event.target && event.target.closest ? event.target.closest("a[href]") : null;
+      if (!link || link.getAttribute("href").charAt(0) === "#") {
+        return;
+      }
+      var target = new URL(link.getAttribute("href"), here);
+      if (target.origin === docsRoot.origin && target.pathname.indexOf(docsRoot.pathname) === 0 &&
+          (target.pathname.endsWith(".html") || target.pathname.endsWith("/"))) {
+        var destination = new URL(withVersions(target.href));
+        var versionRepo = link.getAttribute("data-version-repo");
+        if (versionRepo) {
+          destination.searchParams.set(versionRepo, link.getAttribute("data-version"));
+        }
+        link.setAttribute("href", destination.href);
+      }
+    }
+    doc.addEventListener("click", preserveVersions, true);
+    doc.addEventListener("auxclick", preserveVersions, true);
   }
 
   /* ---- code blocks: copy button -------------------------------------- */
@@ -237,7 +387,9 @@
     var cursor = -1;
 
     function pageHref(page) {
-      return escapeHtml(base + text(page.k));
+      var url = new URL(base + text(page.k), window.location.href);
+      url.searchParams.set("reveal", "search");
+      return url.href;
     }
 
     function load() {
@@ -472,6 +624,7 @@
 
   function init() {
     initDrawer();
+    initSidebar();
     initVersions();
     initCopyButtons();
     initTables();
