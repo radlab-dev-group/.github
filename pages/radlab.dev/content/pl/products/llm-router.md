@@ -5,7 +5,7 @@ slug: "llm-router"
 description: "LLM Router to brama AI uruchamiana we własnej infrastrukturze. Udostępnia interfejs zgodny z OpenAI oraz endpoint Anthropic dla lokalnych silników i zewnętrznych API, z konfigurowalnymi wtyczkami, ochroną danych i równoważeniem obciążenia."
 icon: "router"
 status: "Open Source · Apache-2.0"
-version: "v1.1.6"
+version: "v1.1.8"
 tags: ["AI Gateway", "vLLM", "Ollama", "PII Masking", "Load Balancing", "Guardrails", "Self-Hosted"]
 actions:
   - {label: "Strona projektu (llm-router.cloud)", href: "https://llm-router.cloud", style: primary}
