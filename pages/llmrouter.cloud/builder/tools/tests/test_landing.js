@@ -70,7 +70,7 @@ async function main() {
   await command('Page.enable');
   await command('Page.bringToFront');
   await command('Emulation.setEmulatedMedia', {features: [{name: 'prefers-reduced-motion', value: 'reduce'}]});
-  for (const width of [1440, 1024, 768, 390, 320]) {
+  for (const width of [1440, 1024, 1001, 1000, 768, 390, 320]) {
     await command('Emulation.setDeviceMetricsOverride', {width, height: 1100, deviceScaleFactor: 1, mobile: false});
     await command('Page.navigate', {url: pathToFileURL(preview).href});
     for (let attempt = 0; attempt < 100; attempt++) {
@@ -103,6 +103,35 @@ async function main() {
     assert.deepEqual(state.duplicateIds, []);
     assert.equal(state.hiddenContent, 0);
     assert.equal(state.animations, 0);
+    const pipeline = await evaluate(`(() => {
+      const nodes = [...document.querySelectorAll('.pipe-flow .node')];
+      const rects = nodes.map(el => el.getBoundingClientRect());
+      const connectors = [...document.querySelectorAll('.pipe-link')].map(el => el.getBoundingClientRect());
+      return {
+        groups: [...document.querySelectorAll('.pipe-group h3')].map(el => el.textContent.trim()),
+        names: nodes.map(el => el.querySelector('.nm').textContent),
+        horizontal: rects.every(r => Math.abs(r.top - rects[0].top) < 1),
+        vertical: rects.every((r, i) => !i || (r.top > rects[i - 1].bottom && Math.abs(r.left - rects[0].left) < 1)),
+        clipped: [...document.querySelectorAll('.pipe-flow, .node .nm, .node .ds, .node .impl, .pipe-branch')].some(el => el.scrollWidth > el.clientWidth + 1),
+        outside: rects.some(r => r.left < 0 || r.right > innerWidth),
+        connected: connectors.length === 6 && connectors.every((r, i) => innerWidth > 1000
+          ? Math.abs(r.left - rects[i].right) <= 2 && Math.abs(r.right - rects[i + 1].left) <= 2
+          : Math.abs(r.top - rects[i].bottom) <= 2 && Math.abs(r.bottom - rects[i + 1].top) <= 2),
+        blocked: document.querySelector('.node.guard .pipe-branch').textContent,
+        oldTrack: !!document.querySelector('.pipe-scroll, .wire'),
+        grid: [getComputedStyle(document.body, '::before').position, getComputedStyle(document.body, '::before').maskImage],
+        glow: getComputedStyle(document.body, '::after').position
+      };
+    })()`);
+    assert.deepEqual(pipeline.groups, ['01 Entry', '02 Processing', '03 Routing']);
+    assert.deepEqual(pipeline.names, ['Client', 'Auth', 'Mask', 'Guard', 'Enrich', 'Balance', 'Provider']);
+    assert.equal(width > 1000 ? pipeline.horizontal : pipeline.vertical, true, `pipeline direction at ${width}`);
+    assert.equal(pipeline.clipped || pipeline.outside, false, `pipeline overflow at ${width}`);
+    assert.equal(pipeline.connected, true, `pipeline connections at ${width}`);
+    assert.match(pipeline.blocked, /Blocked.*4xx.*no provider call/);
+    assert.equal(pipeline.oldTrack, false);
+    assert.deepEqual(pipeline.grid, ['fixed', 'none']);
+    assert.equal(pipeline.glow, 'absolute');
     if (width <= 1024) {
       assert.equal(await evaluate(`document.getElementById('burger').click(); document.getElementById('navlinks').classList.contains('open')`), true);
       await command('Input.dispatchKeyEvent', {type: 'keyDown', key: 'Escape', code: 'Escape', windowsVirtualKeyCode: 27});
@@ -124,8 +153,37 @@ async function main() {
       await evaluate(`document.activeElement.blur(); window.scrollTo(0, 0)`);
       const {data} = await command('Page.captureScreenshot', {format: 'png'});
       fs.writeFileSync(path.join(__dirname, `.landing-${width}.png`), Buffer.from(data, 'base64'));
+      await evaluate(`document.querySelector('#pipeline').scrollIntoView({behavior: 'instant'})`);
+      const clip = await evaluate(`(() => {
+        const r = document.querySelector('#pipeline').getBoundingClientRect();
+        return {x: r.left + scrollX, y: r.top + scrollY, width: r.width, height: r.height, scale: 1};
+      })()`);
+      const shot = await command('Page.captureScreenshot', {format: 'png', clip, captureBeyondViewport: true});
+      fs.writeFileSync(path.join(__dirname, `.pipeline-${width}.png`), Buffer.from(shot.data, 'base64'));
     }
-    console.log(`Landing ${width}px: layout, links, navigation, tabs and copy OK`);
+    await command('Emulation.setEmulatedMedia', {features: [{name: 'prefers-reduced-motion', value: 'no-preference'}]});
+    const motion = await evaluate(`(() => {
+      const pulses = [...document.querySelectorAll('.pipe-link i')];
+      return pulses.map(el => {
+        const animation = el.getAnimations()[0];
+        const delay = animation.effect.getTiming().delay;
+        animation.pause();
+        animation.currentTime = delay + 200;
+        const start = new DOMMatrix(getComputedStyle(el).transform);
+        animation.currentTime = delay + 600;
+        const end = new DOMMatrix(getComputedStyle(el).transform);
+        return {name: animation.animationName, delay, dx: end.m41 - start.m41, dy: end.m42 - start.m42};
+      });
+    })()`);
+    assert.equal(motion.length, 6);
+    motion.forEach((pulse, index) => {
+      assert.equal(pulse.name, width > 1000 ? 'pipe-flow-x' : 'pipe-flow-y');
+      assert.ok(Math.abs(pulse.delay - index * 800) < 1e-6, 'staggered pulse delay in milliseconds');
+      assert.ok(width > 1000 ? pulse.dx > 0 && pulse.dy === 0 : pulse.dy > 0 && pulse.dx === 0);
+    });
+    await command('Emulation.setEmulatedMedia', {features: [{name: 'prefers-reduced-motion', value: 'reduce'}]});
+    assert.equal(await evaluate(`document.querySelector('.pipe-flow').getAnimations({subtree: true}).length`), 0);
+    console.log(`Landing ${width}px: layout, pipeline, motion, links, navigation, tabs and copy OK`);
   }
   await command('Emulation.setEmulatedMedia', {features: []});
   await command('Page.reload');

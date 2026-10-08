@@ -48,13 +48,11 @@ body{
 }
 body::before{
   /* engineering grid */
-  content:"";position:absolute;inset:0 0 auto;height:900px;z-index:0;pointer-events:none;
+  content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
   background-image:
     linear-gradient(to right,rgba(255,255,255,.028) 1px,transparent 1px),
     linear-gradient(to bottom,rgba(255,255,255,.028) 1px,transparent 1px);
   background-size:56px 56px;
-  mask-image:radial-gradient(120% 90% at 50% 0%,#000 25%,transparent 78%);
-  -webkit-mask-image:radial-gradient(120% 90% at 50% 0%,#000 25%,transparent 78%);
 }
 body::after{
   content:"";position:absolute;inset:0 0 auto;height:900px;z-index:0;pointer-events:none;
@@ -181,31 +179,49 @@ section[id]{scroll-margin-top:calc(var(--nav-h) + 14px)}
 
 /* ============================================================ pipeline */
 .pipe{margin-top:34px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:26px 22px}
-.pipe-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:11px}
-.pipe-hint{font-family:var(--mono);font-size:10.5px;color:var(--fg-faint);letter-spacing:.13em;white-space:nowrap}
-.pipe-scroll{position:relative}
-.pipe-scroll::after{content:"";position:absolute;right:0;top:0;width:74px;height:calc(100% - 10px);
-  pointer-events:none;background:linear-gradient(270deg,var(--panel) 5%,rgba(10,14,20,0) 100%)}
-.pipe-row{display:flex;align-items:stretch;gap:0;overflow-x:auto;padding-bottom:6px;
-  scrollbar-width:thin;scrollbar-color:#22303d transparent}
-.pipe-row::-webkit-scrollbar{height:6px}
-.pipe-row::-webkit-scrollbar-track{background:transparent}
-.pipe-row::-webkit-scrollbar-thumb{background:#22303d;border-radius:6px}
-.pipe-row::-webkit-scrollbar-thumb:hover{background:#2f4052}
-.node{flex:1 0 152px;min-width:152px;border:1px solid var(--line);border-radius:9px;background:var(--panel-2);
-  padding:13px 13px 14px;position:relative;transition:.2s}
-.node:hover{border-color:#2c3d4e;transform:translateY(-2px)}
-.node .idx{font-family:var(--mono);font-size:10px;color:var(--fg-faint);letter-spacing:.12em}
-.node .nm{font-family:var(--mono);font-size:12.4px;color:#e6eff7;margin-top:5px;letter-spacing:-.01em}
-.node .ds{font-size:12px;color:var(--fg-faint);margin-top:6px;line-height:1.5}
-.node.accent{border-color:rgba(0,229,155,.34);background:rgba(0,229,155,.055)}
-.node.accent2{border-color:rgba(90,169,255,.32);background:rgba(90,169,255,.05)}
-.node.accent3{border-color:rgba(199,146,234,.3);background:rgba(199,146,234,.05)}
-.arrow{flex:0 0 34px;display:flex;align-items:center;justify-content:center;color:#33475a;
-  font-family:var(--mono);font-size:15px}
-.wire{position:relative;height:2px;background:var(--line);margin:20px 0 6px;border-radius:2px;overflow:hidden}
-.wire i{position:absolute;top:-1px;width:90px;height:4px;border-radius:4px;
-  left:45%;background:linear-gradient(90deg,transparent,var(--mint),transparent)}
+.pipe-flow{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:24px}
+.pipe-group{--phase:var(--mint);grid-column:span 2;min-width:0;display:grid;grid-template-rows:auto 1fr}
+.pipe-group.processing{--phase:var(--blue);grid-column:span 3}
+.pipe-group.routing{--phase:var(--purple)}
+.pipe-group h3{font-size:11px;line-height:20px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--phase);padding-bottom:12px;margin-bottom:16px;border-bottom:1px solid var(--line)}
+.pipe-group h3 span{color:var(--fg-faint);margin-right:8px}
+.pipe-steps{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;list-style:none;margin:0;padding:0}
+.processing .pipe-steps{grid-template-columns:repeat(3,minmax(0,1fr))}
+.node{min-width:0;border:1px solid var(--line);border-radius:9px;background:var(--panel-2);
+  padding:16px 12px;position:relative}
+.node:hover{border-color:#2c3d4e}
+.node .ico{display:grid;place-items:center;width:32px;height:32px;border:1px solid var(--line);
+  border-radius:8px;color:var(--phase);background:var(--panel)}
+.node .ico svg{width:18px;height:18px}
+.node .nm{font-size:15px;color:#e6eff7;margin:16px 0 0;letter-spacing:-.01em}
+.node .ds{font-size:13px;color:var(--fg-dim);margin-top:8px;line-height:1.55}
+.node .impl{display:block;font-family:var(--mono);font-size:10.5px;line-height:1.6;
+  color:var(--fg-faint);margin-top:12px;overflow-wrap:anywhere}
+.node.guard{border-color:rgba(90,169,255,.35)}
+.pipe-link{position:absolute;left:100%;top:25px;width:26px;height:14px;overflow:hidden;pointer-events:none}
+.pipe-link::before{content:"";position:absolute;left:0;right:2px;top:6px;height:1px;background:#405769}
+.pipe-link::after{content:"";position:absolute;right:3px;top:3px;width:7px;height:7px;
+  border-top:1px solid var(--mint);border-right:1px solid var(--mint);transform:rotate(45deg)}
+.pipe-link i{position:absolute;left:0;top:5px;width:100%;height:3px;opacity:0;
+  background:linear-gradient(90deg,transparent,var(--mint),transparent);
+  animation:pipe-flow-x 6s linear infinite;animation-delay:calc(var(--hop) * .8s)}
+@keyframes pipe-flow-x{
+  0%{transform:translateX(-100%);opacity:0}
+  3%{opacity:.9}
+  13%{opacity:.9}
+  16%,100%{transform:translateX(100%);opacity:0}
+}
+@keyframes pipe-flow-y{
+  0%{transform:translateY(-100%);opacity:0}
+  3%{opacity:.9}
+  13%{opacity:.9}
+  16%,100%{transform:translateY(100%);opacity:0}
+}
+.pipe-branch{position:relative;margin:16px 0 0 4px;padding-left:16px;font-size:11px;line-height:1.5;color:var(--fg-dim)}
+.pipe-branch::before{content:"";position:absolute;left:0;top:-5px;width:10px;height:14px;
+  border-left:1px solid var(--red);border-bottom:1px solid var(--red);border-radius:0 0 0 4px}
+.pipe-branch b{display:block;font-family:var(--mono);font-weight:500;color:var(--red)}
 .pipe-foot{display:flex;flex-wrap:wrap;gap:18px;margin-top:20px;padding-top:18px;border-top:1px dashed var(--line)}
 .pipe-foot div{font-family:var(--mono);font-size:12px;color:var(--fg-faint);min-width:0;overflow-wrap:anywhere}
 .pipe-foot b{color:var(--fg-dim);font-weight:500}
@@ -363,6 +379,22 @@ ul.ticks li b{color:#dce7f1;font-weight:600}
   .burger{display:block}
   .nav-right .chip{display:none}
 }
+@media (max-width:1000px){
+  .pipe-flow{grid-template-columns:1fr;gap:24px}
+  .pipe-group,.pipe-group.processing{grid-column:auto}
+  .pipe-group h3{margin-left:52px;padding-bottom:0;border:0}
+  .pipe-steps,.processing .pipe-steps{grid-template-columns:1fr;gap:28px}
+  .node{padding-left:64px;min-height:100px}
+  .node .ico{position:absolute;left:16px;top:16px}
+  .node .nm{margin-top:2px}
+  .node .impl{margin-top:8px}
+  .pipe-link{left:25px;top:100%;width:14px;height:30px}
+  .pipe-group:not(:last-child) .node:last-child .pipe-link{height:62px}
+  .pipe-link::before{left:6px;right:auto;top:0;bottom:2px;width:1px;height:auto}
+  .pipe-link::after{left:3px;right:auto;top:auto;bottom:3px;transform:rotate(135deg)}
+  .pipe-link i{left:5px;top:0;width:3px;height:100%;
+    background:linear-gradient(180deg,transparent,var(--mint),transparent);animation-name:pipe-flow-y}
+}
 @media (max-width:900px){
   .hero{padding:54px 0 58px}
   .hero-grid{grid-template-columns:1fr;gap:36px}
@@ -391,6 +423,7 @@ ul.ticks li b{color:#dce7f1;font-weight:600}
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
   .reveal,.reveal.pending{opacity:1;transform:none;transition:none}
+  .pipe-link i{animation:none;opacity:0}
   *{transition-duration:.01ms !important}
 }
 </style>
@@ -522,46 +555,72 @@ ul.ticks li b{color:#dce7f1;font-weight:600}
     </p>
 
     <div class="pipe reveal">
-      <div class="pipe-top"><span></span><span class="pipe-hint">7 STAGES &middot; SCROLL &rarr;</span></div>
-      <div class="pipe-scroll">
-      <div class="pipe-row">
-        <div class="node">
-          <div class="idx">INBOUND</div><div class="nm">client</div>
-          <div class="ds">OpenAI SDK, curl, LangChain, LlamaIndex, your service</div>
+      <div class="pipe-flow" role="group" aria-label="Request flow from client to provider">
+        <div class="pipe-group" role="group" aria-labelledby="pipe-entry">
+          <h3 id="pipe-entry"><span>01</span> Entry</h3>
+          <ol class="pipe-steps">
+            <li class="node">
+              <span class="ico"><svg aria-hidden="true"><use href="#i-api"/></svg></span>
+              <h4 class="nm">Client</h4>
+              <p class="ds">Send a request through one compatible API.</p>
+              <span class="impl">SDK / curl / your app</span>
+              <span class="pipe-link" style="--hop:0" aria-hidden="true"><i></i></span>
+            </li>
+            <li class="node">
+              <span class="ico"><svg aria-hidden="true"><use href="#i-key"/></svg></span>
+              <h4 class="nm">Auth</h4>
+              <p class="ds">Check keys, permissions and rate limits.</p>
+              <span class="impl">AuthMiddleware</span>
+              <span class="pipe-link" style="--hop:1" aria-hidden="true"><i></i></span>
+            </li>
+          </ol>
         </div>
-        <div class="arrow">&rarr;</div>
-        <div class="node accent">
-          <div class="idx">MIDDLEWARE</div><div class="nm">AuthMiddleware</div>
-          <div class="ds">Bearer key &rarr; key store &rarr; permission engine &rarr; rate limiter</div>
+        <div class="pipe-group processing" role="group" aria-labelledby="pipe-processing">
+          <h3 id="pipe-processing"><span>02</span> Processing</h3>
+          <ol class="pipe-steps" start="3">
+            <li class="node">
+              <span class="ico"><svg aria-hidden="true"><use href="#i-mask"/></svg></span>
+              <h4 class="nm">Mask</h4>
+              <p class="ds">Remove sensitive data before inference.</p>
+              <span class="impl">MaskerPipeline</span>
+              <span class="pipe-link" style="--hop:2" aria-hidden="true"><i></i></span>
+            </li>
+            <li class="node guard">
+              <span class="ico"><svg aria-hidden="true"><use href="#i-shield"/></svg></span>
+              <h4 class="nm">Guard</h4>
+              <p class="ds">Only let requests that pass policy continue.</p>
+              <span class="impl">GuardrailPipeline</span>
+              <p class="pipe-branch"><b>Blocked</b>4xx &middot; no provider call</p>
+              <span class="pipe-link" style="--hop:3" aria-hidden="true"><i></i></span>
+            </li>
+            <li class="node">
+              <span class="ico"><svg aria-hidden="true"><use href="#i-plug"/></svg></span>
+              <h4 class="nm">Enrich</h4>
+              <p class="ds">Add RAG context or run custom tasks.</p>
+              <span class="impl">UtilsPipeline</span>
+              <span class="pipe-link" style="--hop:4" aria-hidden="true"><i></i></span>
+            </li>
+          </ol>
         </div>
-        <div class="arrow">&rarr;</div>
-        <div class="node accent2">
-          <div class="idx">STAGE 1</div><div class="nm">MaskerPipeline</div>
-          <div class="ds">fast_masker regex, then pii_masker ML token classifier</div>
-        </div>
-        <div class="arrow">&rarr;</div>
-        <div class="node accent3">
-          <div class="idx">STAGE 2</div><div class="nm">GuardrailPipeline</div>
-          <div class="ds">classifier check &rarr; pass or block with 4xx</div>
-        </div>
-        <div class="arrow">&rarr;</div>
-        <div class="node">
-          <div class="idx">STAGE 3</div><div class="nm">UtilsPipeline</div>
-          <div class="ds">RAG enrichment, built-in tasks, custom endpoints</div>
-        </div>
-        <div class="arrow">&rarr;</div>
-        <div class="node accent">
-          <div class="idx">RESOLVE</div><div class="nm">load_balancer</div>
-          <div class="ds">strategy pick, provider lease, retry &amp; failover</div>
-        </div>
-        <div class="arrow">&rarr;</div>
-        <div class="node">
-          <div class="idx">UPSTREAM</div><div class="nm">model provider</div>
-          <div class="ds">vLLM, Ollama, llama.cpp, LM Studio, OpenAI-compatible, Anthropic</div>
+        <div class="pipe-group routing" role="group" aria-labelledby="pipe-routing">
+          <h3 id="pipe-routing"><span>03</span> Routing</h3>
+          <ol class="pipe-steps" start="6">
+            <li class="node">
+              <span class="ico"><svg aria-hidden="true"><use href="#i-lb"/></svg></span>
+              <h4 class="nm">Balance</h4>
+              <p class="ds">Pick a provider, with retries and failover.</p>
+              <span class="impl">load_balancer</span>
+              <span class="pipe-link" style="--hop:5" aria-hidden="true"><i></i></span>
+            </li>
+            <li class="node">
+              <span class="ico"><svg aria-hidden="true"><use href="#i-cpu"/></svg></span>
+              <h4 class="nm">Provider</h4>
+              <p class="ds">Run inference on your chosen model.</p>
+              <span class="impl">Local or cloud LLM</span>
+            </li>
+          </ol>
         </div>
       </div>
-      </div>
-      <div class="wire"><i></i></div>
       <div class="pipe-foot">
         <div><b>plugin registry</b> — opt in per stage via env</div>
         <div><b>reload</b> — llm-router server reload</div>
