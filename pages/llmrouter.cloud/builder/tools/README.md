@@ -15,12 +15,15 @@ Three repositories feed the documentation site:
 
 | Repository            | Role                                 | Versioning                                     | URL prefix                                           |
 |-----------------------|--------------------------------------|------------------------------------------------|------------------------------------------------------|
-| `llm-router`          | Core gateway docs                    | Per release tag (frozen archives)              | `/docs/<version>/...`                                |
+| `llm-router`          | Core gateway docs                    | Per release tag (frozen archives)              | `/docs/router/<version>/...`                         |
 | `llm-router-plugins`  | Maskers, guardrails, routing plugins | Independent release tags + latest stable mount | `/docs/plugins/<version>/...`, `/docs/plugins/...`   |
 | `llm-router-services` | HTTP services (guardrails, masker)   | Independent release tags + latest stable mount | `/docs/services/<version>/...`, `/docs/services/...` |
 
 Router, plugins and services releases are independent: each release tag gets a frozen copy
-of its own Markdown. All three version selectors live under their repository
+of its own Markdown under its repository directory. `/docs/` remains the shared entry page;
+`/docs/router/` opens the newest router documentation index. After migrating
+from the old layout, rebuild with `--all-versions --clean` to remove old archives.
+All three version selectors live under their repository
 names in left-sidebar sections collapsed by default, including on `/docs`.
 Expanded sections stay expanded when navigating documents or switching versions
 in the same browser tab. Each expanded repository shows all its document categories.

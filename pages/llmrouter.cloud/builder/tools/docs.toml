@@ -3,7 +3,7 @@
 #
 # Multi-repo layout:
 #   Router  -- the version spine. Every release tag keeps a frozen copy of its
-#              documentation at /docs/<version>/....
+#              documentation at /docs/router/<version>/....
 #   Plugins -- independent release archives at /docs/plugins/<version>/...,
 #              plus latest stable docs at /docs/plugins/....
 #   Services-- independent release archives with latest at /docs/services/....
@@ -71,6 +71,7 @@ id = "router"
 name = "llm-router"
 repo_url = "https://github.com/radlab-dev-group/llm-router"
 primary = true
+mount = "router"
 versions = "all"
 
 [[repos]]

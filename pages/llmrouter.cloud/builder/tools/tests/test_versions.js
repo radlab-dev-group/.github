@@ -20,7 +20,7 @@ function select(repo, versions, selected, base) {
   const el = element({'data-switch': repo});
   el.options = versions.map(version => element({
     'data-version': version,
-    'data-root': new URL(`${repo === 'router' ? '' : repo + '/'}${version === 'latest' ? '' : version + '/'}index.html`, base).href,
+    'data-root': new URL(`${repo}/${version === 'latest' ? '' : version + '/'}index.html`, base).href,
   }));
   el.options.forEach(option => { option.value = option.getAttribute('data-root'); });
   el.selectedIndex = versions.indexOf(selected);
@@ -100,7 +100,7 @@ async function fixture(url, active, routerVersion, pluginVersion, serviceVersion
 }
 
 (async () => {
-  const first = await fixture('https://example.invalid/sub/docs/1.0.0/index.html', 'router', '1.0.0', '0.2.0');
+  const first = await fixture('https://example.invalid/sub/docs/router/1.0.0/index.html', 'router', '1.0.0', '0.2.0');
   const target = first.change(first.plugins, '0.1.0');
   assert.equal(target.pathname, '/sub/docs/plugins/0.1.0/index.html');
   assert.equal(target.searchParams.get('router'), '1.0.0', 'plugin switch must retain the router release');
@@ -108,17 +108,18 @@ async function fixture(url, active, routerVersion, pluginVersion, serviceVersion
 
   const second = await fixture(target.href, 'plugins', '1.1.0', '0.1.0');
   assert.equal(second.router.options[second.router.selectedIndex].getAttribute('data-version'), '1.0.0');
-  assert.deepEqual(second.requests, ['https://example.invalid/sub/docs/1.0.0/index.html']);
-  assert.equal(second.groups.router.link.getAttribute('href'), 'https://example.invalid/sub/docs/1.0.0/overview.html');
+  assert.deepEqual(second.requests, ['https://example.invalid/sub/docs/router/1.0.0/index.html']);
+  assert.equal(second.groups.router.link.getAttribute('href'), 'https://example.invalid/sub/docs/router/1.0.0/overview.html');
   assert.ok(second.groups.router.routerContext, 'router heading must be restored inside its navigation group');
   assert.equal(second.groups.router.details.open, false, 'restoring a release must retain the collapsed menu');
   assert.equal(second.groups.routerVersions.open, true, 'restoring a release must retain the expanded version list');
   assert.ok(second.groups.routerVersions, 'router versions panel must follow the selected router');
-  assert.equal(second.groups.routerVersions.link.getAttribute('href'), 'https://example.invalid/sub/docs/1.0.0/overview.html');
+  assert.equal(second.groups.routerVersions.link.getAttribute('href'), 'https://example.invalid/sub/docs/router/1.0.0/overview.html');
   assert.equal(second.groups.pluginsVersions, undefined, 'router restoration must not replace the plugins panel');
   assert.ok(second.groups.routerRelease, 'router release panel must follow the selected router on plugin hubs');
-  assert.equal(second.groups.routerRelease.link.getAttribute('href'), 'https://example.invalid/sub/docs/1.0.0/overview.html');
+  assert.equal(second.groups.routerRelease.link.getAttribute('href'), 'https://example.invalid/sub/docs/router/1.0.0/overview.html');
   const routerTarget = second.change(second.router, '1.1.0');
+  assert.equal(routerTarget.pathname, '/sub/docs/router/1.1.0/index.html');
   assert.equal(routerTarget.searchParams.get('plugins'), '0.1.0', 'router switch must retain plugins');
 
   const third = await fixture(routerTarget.href, 'router', '1.1.0', '0.2.0');
@@ -134,7 +135,7 @@ async function fixture(url, active, routerVersion, pluginVersion, serviceVersion
   const versionTarget = new URL(versionLink.getAttribute('href'));
   assert.equal(versionTarget.searchParams.get('router'), '1.1.0');
   assert.equal(versionTarget.searchParams.get('plugins'), '0.2.0', 'version link must override only its own selection');
-  const link = element({href: 'https://example.invalid/sub/docs/1.1.0/guide.html#example'});
+  const link = element({href: 'https://example.invalid/sub/docs/router/1.1.0/guide.html#example'});
   link.closest = () => link;
   third.handlers.click({target: link});
   assert.equal(new URL(link.getAttribute('href')).searchParams.get('plugins'), '0.1.0');
@@ -152,7 +153,7 @@ async function fixture(url, active, routerVersion, pluginVersion, serviceVersion
   third.handlers.auxclick({target: newTab});
   assert.equal(new URL(newTab.getAttribute('href')).searchParams.get('router'), '1.1.0');
 
-  const rolling = await fixture('https://example.invalid/sub/docs/1.0.0/index.html?plugins=rolling', 'router', '1.0.0', '0.2.0');
+  const rolling = await fixture('https://example.invalid/sub/docs/router/1.0.0/index.html?plugins=rolling', 'router', '1.0.0', '0.2.0');
   assert.equal(rolling.change(rolling.router, '1.1.0').searchParams.get('plugins'), '0.2.0');
 
   const serviceTarget = third.change(third.services, '0.4.0');
@@ -161,7 +162,7 @@ async function fixture(url, active, routerVersion, pluginVersion, serviceVersion
   assert.equal(serviceTarget.searchParams.get('plugins'), '0.1.0');
   const servicePage = await fixture(serviceTarget.href, 'services', '1.1.0', '0.2.0', '0.4.0');
   assert.equal(servicePage.change(servicePage.plugins, '0.2.0').searchParams.get('services'), '0.4.0');
-  const restored = await fixture('https://example.invalid/sub/docs/1.0.0/index.html?services=0.4.0', 'router', '1.0.0', '0.2.0');
+  const restored = await fixture('https://example.invalid/sub/docs/router/1.0.0/index.html?services=0.4.0', 'router', '1.0.0', '0.2.0');
   assert.deepEqual(restored.requests, ['https://example.invalid/sub/docs/services/0.4.0/index.html']);
   assert.ok(restored.groups.servicesVersions, 'services panel must follow the selected services');
   assert.equal(restored.groups.services.link.getAttribute('href'), 'https://example.invalid/sub/docs/services/0.4.0/overview.html');
@@ -173,7 +174,7 @@ async function fixture(url, active, routerVersion, pluginVersion, serviceVersion
   assert.equal(invalid.plugins.options[invalid.plugins.selectedIndex].getAttribute('data-version'), '0.1.0');
   for (const repo of ['router', 'plugins', 'services']) {
     const active = repo === 'plugins' ? 'router' : 'plugins';
-    const opened = await fixture(`https://example.invalid/sub/docs/${active === 'router' ? '1.1.0' : 'plugins/0.2.0'}/guide.html?router=1.0.0&plugins=0.1.0&services=0.4.0`,
+    const opened = await fixture(`https://example.invalid/sub/docs/${active === 'router' ? 'router/1.1.0' : 'plugins/0.2.0'}/guide.html?router=1.0.0&plugins=0.1.0&services=0.4.0`,
       active, '1.1.0', '0.2.0', '0.5.0', [repo]);
     assert.equal(opened.groups[repo].details.open, true,
       'asynchronous navigation restoration must retain an expanded repository');

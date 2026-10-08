@@ -17,7 +17,7 @@ function fixture(storage, root = 'https://example.invalid/docs/', query = '', ac
     return group;
   });
   const handlers = {};
-  const window = {location: {href: root + '1.1.0/index.html' + query}, sessionStorage: storage,
+  const window = {location: {href: root + 'router/1.1.0/index.html' + query}, sessionStorage: storage,
     addEventListener(name, fn) { handlers[name] = fn; }};
   const doc = {addEventListener(name, fn, capture) {
     handlers[name] = fn;

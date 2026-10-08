@@ -2,7 +2,7 @@
 """Generate the llm-router documentation site from Markdown in the source
 repository and its satellite repositories (plugins, services).
 
-Every router release tag keeps a frozen copy at /docs/<version>/....
+Every router release tag keeps a frozen copy at /docs/router/<version>/....
 Plugins and services are versioned independently at /docs/<mount>/<version>/...,
 with the latest stable tag at /docs/<mount>/. Satellite archives can be enabled
 with versions = "all" in the repository configuration.
@@ -342,6 +342,10 @@ def read_content(repo: Repo, ref: str, source: str) -> str:
 # --------------------------------------------------------------------------- #
 # releases
 # --------------------------------------------------------------------------- #
+def router_archive_root(version: str) -> str:
+    return posixpath.join(PRIMARY_REPO.mount if PRIMARY_REPO else "", version)
+
+
 @dataclass
 class Snapshot:
     """One repository's content pinned for a single documentation release."""
@@ -357,7 +361,7 @@ class Snapshot:
     @property
     def archive_root(self) -> str:
         if self.repo.primary:
-            return self.version
+            return posixpath.join(self.repo.mount, self.version)
         return self.repo.mount if self.worktree or self.mounted_latest else posixpath.join(self.repo.mount, self.version)
 
     @property
@@ -858,26 +862,15 @@ def rewrite_links(
             wants.append(root)
         link = ""
         blob = f"{repo.url}/blob/{quote(snapshot.link_ref)}"
-        mount = repo.mount if repo.mount and page.repo != "router" else ""
         for want in wants:
             stem_only = bool(want) and not posixpath.splitext(want)[1]
             with_md = want + ".md"
-            if mount:
-                # Satellite archive index: out paths are relative to the
-                # archive root; the on-disk dir adds mount (and version).
-                if want in index:
-                    out = posixpath.join(snapshot.archive_root, index[want].out)
-                    return f"{prefix}{href.to(out)}{anchor_suffix}{suffix}"
-                if stem_only and with_md in index:
-                    out = posixpath.join(snapshot.archive_root, index[with_md].out)
-                    return f"{prefix}{href.to(out)}{anchor_suffix}{suffix}"
-            else:
-                if want in index:
-                    out = index[want].out
-                    return f"{prefix}{href.versioned(release.version, out)}{anchor_suffix}{suffix}"
-                if stem_only and with_md in index:
-                    out = index[with_md].out
-                    return f"{prefix}{href.versioned(release.version, out)}{anchor_suffix}{suffix}"
+            if want in index:
+                out = posixpath.join(snapshot.archive_root, index[want].out)
+                return f"{prefix}{href.to(out)}{anchor_suffix}{suffix}"
+            if stem_only and with_md in index:
+                out = posixpath.join(snapshot.archive_root, index[with_md].out)
+                return f"{prefix}{href.to(out)}{anchor_suffix}{suffix}"
             if want in tree_dirs:
                 link = f"{repo.url}/tree/{quote(snapshot.link_ref)}/{quote(want)}"
                 break
@@ -1205,7 +1198,8 @@ class VersionEntry:
             }
         return VersionEntry(
             version=release.version,
-            entry=posixpath.join(release.version, "index.html"),
+            entry=posixpath.join(release.snapshots["router"].archive_root
+                                 if "router" in release.snapshots else release.version, "index.html"),
             date=release.date,
             prerelease=release.prerelease,
             ref=release.ref,
@@ -1222,7 +1216,7 @@ class VersionEntry:
         version = str(raw["version"])
         return VersionEntry(
             version=version,
-            entry=str(raw.get("entry") or posixpath.join(version, "index.html")),
+            entry=str(raw.get("entry") or posixpath.join(router_archive_root(version), "index.html")),
             date=str(raw.get("date", "")),
             prerelease=bool(raw.get("prerelease", False)),
             ref=str(raw.get("ref", "")),
@@ -1325,7 +1319,7 @@ def render_version_options(page_source, release, versions, latest, page_dir,
     for entry in versions:
         target = entry.entry
         if page_source and page_source in entry.pages:
-            target = posixpath.join(entry.version, entry.pages[page_source])
+            target = posixpath.join(posixpath.dirname(entry.entry), entry.pages[page_source])
         root = href.to(entry.entry)
         attrs = [f'value="{html.escape(href.to(target), quote=True)}"',
                  f'data-version="{html.escape(entry.version, quote=True)}"',
@@ -1345,7 +1339,7 @@ def render_sidebar(release, config, current, page_dir, latest, versions,
                    search_enabled=True, snapshot=None):
     """Sidebar with repo groups."""
     href = Href(page_dir)
-    version_dir = release.version
+    version_dir = router_archive_root(release.version)
     # The active repository uses its own snapshot; other repository groups
     # retain the router navigation context and rolling satellite links.
     if snapshot is not None:
@@ -1354,7 +1348,7 @@ def render_sidebar(release, config, current, page_dir, latest, versions,
                 snapshot = None
     nav_release = release.navigation_release or release
     side_tag = "latest" if nav_release.version == latest else "archived"
-    hub_link = href.versioned(nav_release.version, "index.html")
+    hub_link = href.versioned(router_archive_root(nav_release.version), "index.html")
     nav_snapshots = dict(nav_release.snapshots)
     for repo in REPOS.values():
         if repo.rolling_snapshot is not None:
@@ -1371,7 +1365,7 @@ def render_sidebar(release, config, current, page_dir, latest, versions,
     parts: list[str] = ['<nav class="nav-tree" aria-label="Documentation">']
 
     def page_link(repo_id: str, page: Page) -> str:
-        # Router pages live in /docs/<router-version>/.... Satellite pages
+        # Router pages live in /docs/router/<router-version>/.... Satellite pages
         # (rolling or frozen tag) live in their own archive; the sidebar is
         # rendered from the current page's directory, so a relative link
         # keeps every group inside the right archive.
@@ -1497,11 +1491,11 @@ def render_shell(config, release, versions, latest, page_dir, title, description
 
     # Determine commit/tree links
     snapshot = page_snapshot or release.snapshots.get(repo_id)
-    # Satellite search stays within the rolling or frozen archive.
-    if snapshot is not None and repo_id != "router":
+    # Search stays within the repository's archive.
+    if snapshot is not None:
         search_href = href.to(posixpath.join(snapshot.archive_root, "search.json"))
     else:
-        search_href = href.to(posixpath.join(release.version, "search.json"))
+        search_href = href.to(posixpath.join(router_archive_root(release.version), "search.json"))
     if snapshot:
         blob = f"{snapshot.repo.url}/tree/{quote(snapshot.link_ref)}"
         commit = f"{snapshot.repo.url}/commit/{snapshot.sha}"
@@ -1577,7 +1571,7 @@ def render_page(page: Page, release: Release, config: Config,
     if snapshot is None:
         raise SystemExit(f"[docs] no snapshot for {page.repo}")
     # page_dir is relative to the docs root.
-    #   router:   <version>/<subdir>   e.g. 1.1.8/llm-router-api
+    #   router:   router/<version>/<subdir>   e.g. router/1.1.8/llm-router-api
     #   rolling:  <mount>/<out-dir>    e.g. plugins/llm-router-plugins
     #   frozen:   <mount>/<ver>/<out-dir>  e.g. plugins/0.1.2/llm-router-plugins
     page_dir = posixpath.dirname(posixpath.join(snapshot.archive_root, page.out))
@@ -1692,7 +1686,7 @@ def render_hub(release: Release, config: Config, versions: list[VersionEntry],
     use_version_prefix = release.snapshots.get("router") is not None
     hub_snapshot = None if use_version_prefix else next(iter(release.snapshots.values()))
     hub_repo_url = hub_snapshot.repo.url if hub_snapshot else config.repo_url
-    hub_root = hub_snapshot.archive_root if hub_snapshot else release.version
+    hub_root = hub_snapshot.archive_root if hub_snapshot else router_archive_root(release.version)
     grouped: dict[str, dict[str, list[Page]]] = {}
     for page in release.pages:
         grouped.setdefault(page.repo, {}).setdefault(page.section, []).append(page)
@@ -1934,7 +1928,7 @@ def searchable_text(fragment: str, limit: int) -> str:
 def search_index(release: Release, config: Config, index_root: str | None = None) -> str:
     """Search index with keys relative to the directory hosting search.json."""
     documents = []
-    index_root = release.version if index_root is None else index_root
+    index_root = router_archive_root(release.version) if index_root is None else index_root
     for page in release.pages:
         repo = REPOS.get(page.repo)
         repo_name = repo.name if repo else page.repo
@@ -2010,7 +2004,8 @@ def read_versions(path: Path, docs_root: Path, clean: bool) -> dict[str, Version
             entry = VersionEntry.from_json(item)
         except (KeyError, TypeError, ValueError):
             continue
-        if (docs_root / entry.version).is_dir():
+        if (posixpath.dirname(entry.entry) == router_archive_root(entry.version)
+                and (docs_root / entry.entry).is_file()):
             entries[entry.version] = entry
     return entries
 
@@ -2027,7 +2022,7 @@ def write_versions(path: Path, entries: list[VersionEntry], latest: str, dry_run
 def build_site(config, output, releases, entries, latest, search_scope, dry_run):
     """Render every release into site/docs.
 
-    Router pages are written to /docs/<router-version>/.... Satellite
+    Router pages are written to /docs/router/<router-version>/.... Satellite
     (plugins/services) pages follow their own versioning: each satellite
     tag gets a frozen copy at /docs/<mount>/<sat-version>/..., and the
     latest stable tag is mounted at /docs/<mount>/... under the newest
@@ -2054,22 +2049,17 @@ def build_site(config, output, releases, entries, latest, search_scope, dry_run)
     for release in releases:
         enabled = search_for(release.version)
         for page in release.pages:
-            if page.repo == "router":
-                write_file(docs_root / release.version / page.out,
-                           render_page(page, release, config, versions, latest, enabled),
-                           dry_run)
-            else:
-                snap = release.snapshots[page.repo]
-                write_file(docs_root / snap.archive_root / page.out,
-                           render_page(page, release, config, versions, latest, enabled),
-                           dry_run)
+            snap = release.snapshots[page.repo]
+            write_file(docs_root / snap.archive_root / page.out,
+                       render_page(page, release, config, versions, latest, enabled),
+                       dry_run)
             written += 1
-        hub = render_hub(release, config, versions, latest, page_dir=release.version, search_enabled=enabled)
-        write_file(docs_root / release.version / "index.html", hub, dry_run)
+        hub = render_hub(release, config, versions, latest, page_dir=router_archive_root(release.version), search_enabled=enabled)
+        write_file(docs_root / router_archive_root(release.version) / "index.html", hub, dry_run)
         written += 1
         if enabled:
             index = search_index(release, config)
-            write_file(docs_root / release.version / "search.json", index, dry_run)
+            write_file(docs_root / router_archive_root(release.version) / "search.json", index, dry_run)
             written += 1
         for repo_id, snap in release.snapshots.items():
             if repo_id == "router" or snap.archive_root != snap.repo.mount:
@@ -2138,6 +2128,11 @@ def build_site(config, output, releases, entries, latest, search_scope, dry_run)
         root_hub = render_hub(newest, config, versions, latest, page_dir="", search_enabled=search_for(newest.version))
         write_file(docs_root / "index.html", root_hub, dry_run)
         written += 1
+        if PRIMARY_REPO and PRIMARY_REPO.mount:
+            router_hub = render_hub(newest, config, versions, latest,
+                                    page_dir=PRIMARY_REPO.mount, search_enabled=search_for(newest.version))
+            write_file(docs_root / PRIMARY_REPO.mount / "index.html", router_hub, dry_run)
+            written += 1
 
     written += len(write_assets(docs_root, dry_run))
     write_versions(docs_root / VERSIONS_FILE, versions, latest, dry_run)

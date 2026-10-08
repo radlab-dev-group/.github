@@ -136,6 +136,27 @@ class BuildDocsTests(unittest.TestCase):
         options = Selects(page.read_text()).selects["plugins"]
         self.assertTrue(any(o["value"] == "../../0.1.0/index.html" for o in options))
 
+    def test_router_mount_and_incremental_versions(self):
+        self.build("--check-links")
+        docs = self.output / "docs"
+        self.assertTrue((docs / "index.html").is_file())
+        self.assertTrue((docs / "router/index.html").is_file())
+        for version in ("1.0.0", "1.1.0"):
+            archive = docs / "router" / version
+            self.assertTrue((archive / "overview.html").is_file())
+            self.assertFalse((docs / version).exists())
+            guide = (archive / "guides/guide.html").read_text()
+            self.assertIn('href="../overview.html"', guide)
+            options = Selects(guide).selects["router"]
+            for option in options:
+                self.assertEqual((archive / "guides" / option["value"]).resolve(),
+                                 (docs / "router" / option["data-version"] / "guides/guide.html").resolve())
+        self.build("--max-versions", "1", "--check-links")
+        versions = json.loads((docs / "versions.json").read_text())["versions"]
+        self.assertEqual({v["entry"] for v in versions},
+                         {"router/1.0.0/index.html", "router/1.1.0/index.html"})
+        self.assertEqual(len(Selects((docs / "index.html").read_text()).selects["router"]), 2)
+
     def test_latest_nested_links(self):
         config = self.root / "docs.toml"
         config.write_text((TOOLS / "docs.toml").read_text() + '\n[[crosslinks]]\n'
@@ -167,7 +188,7 @@ class BuildDocsTests(unittest.TestCase):
 
     def test_document_sidebar_keeps_all_categories_visible(self):
         self.build()
-        for relative in ("1.1.0/index.html", "1.1.0/guides/guide.html",
+        for relative in ("router/1.1.0/index.html", "router/1.1.0/guides/guide.html",
                          "plugins/guides/guide.html", "services/guides/guide.html"):
             with self.subTest(relative=relative):
                 source = (self.output / "docs" / relative).read_text()
@@ -178,7 +199,7 @@ class BuildDocsTests(unittest.TestCase):
     def test_hubs_keep_router_release_and_omit_versions_toc(self):
         self.build("--check-links")
         for relative, router_version in (("index.html", "1.1.0"),
-                                         ("1.0.0/index.html", "1.0.0"),
+                                         ("router/1.0.0/index.html", "1.0.0"),
                                          ("plugins/index.html", "1.1.0"),
                                          ("plugins/0.1.0/index.html", "1.1.0"),
                                          ("services/index.html", "1.1.0"),
@@ -196,7 +217,7 @@ class BuildDocsTests(unittest.TestCase):
     def test_sidebar_versions_and_latest_plugin_status(self):
         self.build("--check-links")
         docs = self.output / "docs"
-        for relative in ("index.html", "1.1.0/index.html",
+        for relative in ("index.html", "router/1.1.0/index.html",
                          "plugins/0.2.0/index.html", "plugins/0.2.0/guides/guide.html",
                          "plugins/0.1.0/index.html", "plugins/index.html"):
             source = (docs / relative).read_text()
@@ -222,14 +243,14 @@ class BuildDocsTests(unittest.TestCase):
             self.assertIn(f'class="side-tag {"old" if status == "archived" else "live"}"', side_head)
         guide = (docs / "plugins/0.2.0/guides/guide.html").read_text()
         sidebar = guide.split('<aside class="sidebar"', 1)[1].split('</aside>', 1)[0]
-        self.assertIn('href="../../../1.1.0/overview.html"', sidebar)
+        self.assertIn('href="../../../router/1.1.0/overview.html"', sidebar)
         self.assertIn('href="guide.html" class="active"', sidebar)
         self.assertEqual(sidebar.count('class="active"'), 1)
 
     def test_hub_version_panels(self):
         self.build("--check-links")
         docs = self.output / "docs"
-        for relative in ("index.html", "1.0.0/index.html",
+        for relative in ("index.html", "router/1.0.0/index.html",
                          "plugins/0.1.0/index.html", "plugins/index.html"):
             source = (docs / relative).read_text()
             router_panel = source.split('data-versions-repo="router">', 1)[1].split('</ul></details>', 1)[0]
@@ -241,7 +262,7 @@ class BuildDocsTests(unittest.TestCase):
             self.assertIn('>v0.1.0</a>', plugins_panel)
             self.assertNotIn('rolling', plugins_panel)
             self.assertRegex(plugins_panel, r'class="vrow[^"]* latest"[^\n]*>v0\.2\.0</a>')
-            selected_router = "1.0.0" if relative.startswith("1.0.0/") else "1.1.0"
+            selected_router = "1.0.0" if relative.startswith("router/1.0.0/") else "1.1.0"
             selected_plugins = "0.1.0" if relative.startswith("plugins/0.1.0/") else "0.2.0"
             self.assertRegex(router_panel, rf'class="vrow current[^\n]*data-version="{selected_router}"')
             self.assertRegex(plugins_panel, rf'class="vrow current[^\n]*data-version="{selected_plugins}"')

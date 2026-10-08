@@ -16,7 +16,7 @@ async function fixture(indexUrl) {
   const form = element();
   const input = element();
   const box = element();
-  const window = {location: {href: 'https://example.invalid/sub/docs/1.1.0/index.html'}};
+  const window = {location: {href: 'https://example.invalid/sub/docs/router/1.1.0/index.html'}};
   const doc = {getElementById(id) { return {search: form, q: input, results: box}[id]; },
     addEventListener() {}};
   vm.runInNewContext(searchCode + '\ninitSearch();', {
@@ -33,7 +33,7 @@ async function fixture(indexUrl) {
 }
 
 (async () => {
-  for (const indexUrl of ['search.json', '../plugins/search.json', '../services/0.4.0/search.json']) {
+  for (const indexUrl of ['search.json', '../../plugins/search.json', '../../services/0.4.0/search.json']) {
     const result = await fixture(indexUrl);
     const href = result.box.innerHTML.match(/href="([^"]+)"/)[1].replace(/&amp;/g, '&');
     const url = new URL(href, result.window.location.href);
@@ -42,7 +42,7 @@ async function fixture(indexUrl) {
     assert.equal(url.pathname, new URL(indexUrl.replace('search.json', 'guides/guide.html'),
       result.window.location.href).pathname);
     for (const keyboardSelection of [false, true]) {
-      result.window.location.href = 'https://example.invalid/sub/docs/1.1.0/index.html';
+      result.window.location.href = 'https://example.invalid/sub/docs/router/1.1.0/index.html';
       if (keyboardSelection) result.input.handlers.keydown({key: 'ArrowDown', preventDefault() {}});
       result.form.handlers.submit({preventDefault() {}});
       assert.equal(new URL(result.window.location.href).href, url.href,
