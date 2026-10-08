@@ -24,6 +24,8 @@ of its own Markdown. All three version selectors live under their repository
 names in left-sidebar sections collapsed by default, including on `/docs`.
 Expanded sections stay expanded when navigating documents or switching versions
 in the same browser tab. Each expanded repository shows all its document categories.
+Opening a search result by click or Enter expands its repository section to reveal
+the selected document highlighted in the sidebar.
 Switching within a repository keeps the same document when available, otherwise
 it opens that release's documentation index. Plugin archives keep the shared
 sidebar: only the plugin section uses the selected plugin release, while router

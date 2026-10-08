@@ -7,16 +7,17 @@ const source = fs.readFileSync(path.join(__dirname, '../theme/docs.js'), 'utf8')
 const sidebarCode = source.slice(source.indexOf('  function initSidebar()'),
   source.indexOf('  /* ---- version switcher'));
 
-function fixture(storage, root = 'https://example.invalid/docs/') {
+function fixture(storage, root = 'https://example.invalid/docs/', query = '', active = '') {
   const groups = ['router', 'plugins', 'services'].map(repo => {
     const group = {getAttribute() { return repo; }};
     const details = {open: false, closest() { return group; },
       matches(selector) { return selector === 'details.nav-group'; }};
-    group.querySelector = () => details;
+    group.querySelector = selector => selector === 'details.nav-group' ? details :
+      (selector === '.nav-sec li a.active' && repo === active ? {className: 'active'} : null);
     return group;
   });
   const handlers = {};
-  const window = {location: {href: root + '1.1.0/index.html'}, sessionStorage: storage,
+  const window = {location: {href: root + '1.1.0/index.html' + query}, sessionStorage: storage,
     addEventListener(name, fn) { handlers[name] = fn; }};
   const doc = {addEventListener(name, fn, capture) {
     handlers[name] = fn;
@@ -25,7 +26,7 @@ function fixture(storage, root = 'https://example.invalid/docs/') {
   vm.runInNewContext(sidebarCode + '\ninitSidebar();', {
     window, doc, URL, body: {getAttribute() { return root; }}, all() { return groups; },
   });
-  return {groups, handlers, details: groups.map(group => group.querySelector())};
+  return {groups, handlers, details: groups.map(group => group.querySelector('details.nav-group'))};
 }
 
 const values = new Map();
@@ -50,4 +51,22 @@ assert.deepEqual(fixture(storage, 'https://example.invalid/other/docs/').details
 assert.doesNotThrow(() => fixture({getItem() { throw new Error('blocked'); },
   setItem() { throw new Error('blocked'); }}).handlers.pagehide());
 assert.doesNotThrow(() => fixture({getItem() { return '{invalid'; }, setItem() {}}));
+for (const repo of ['router', 'plugins', 'services']) {
+  const isolated = new Map();
+  const stored = {getItem(key) { return isolated.get(key) ?? null; },
+    setItem(key, value) { isolated.set(key, value); }};
+  const result = fixture(stored, undefined, '?reveal=search', repo);
+  assert.equal(result.groups.find(group => group.getAttribute() === repo)
+    .querySelector('details.nav-group').open, true,
+  'search navigation must reveal the active document repository');
+  assert.deepEqual(fixture(stored).details.map(d => d.open),
+    ['router', 'plugins', 'services'].map(name => name === repo),
+    'revealed menu must stay expanded on subsequent navigation');
+  assert.deepEqual(fixture({getItem() { return null; }, setItem() {}}, undefined, '', repo)
+    .details.map(d => d.open), [false, false, false],
+    'ordinary document navigation must not force a section open');
+}
+assert.equal(fixture({getItem() { throw new Error('blocked'); },
+  setItem() { throw new Error('blocked'); }}, undefined, '?reveal=search', 'plugins')
+  .details[1].open, true, 'search reveal must work without storage');
 console.log('Sidebar navigation state: OK');

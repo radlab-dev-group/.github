@@ -79,6 +79,7 @@
   function initSidebar() {
     var root = new URL(body.getAttribute("data-docs-root"), window.location.href);
     var key = "docs-sidebar:" + root.href;
+    var reveal = new URL(window.location.href).searchParams.get("reveal") === "search";
     var state = {};
     try {
       state = JSON.parse(window.sessionStorage.getItem(key)) || {};
@@ -90,6 +91,9 @@
       var repo = group.getAttribute("data-nav-repo");
       if (details && typeof state[repo] === "boolean") {
         details.open = state[repo];
+      }
+      if (details && reveal && group.querySelector(".nav-sec li a.active")) {
+        details.open = true;
       }
     });
 
@@ -113,6 +117,9 @@
       }
     }, true);
     window.addEventListener("pagehide", save);
+    if (reveal) {
+      save();
+    }
   }
 
   /* ---- version switcher ---------------------------------------------- */
@@ -380,7 +387,9 @@
     var cursor = -1;
 
     function pageHref(page) {
-      return escapeHtml(base + text(page.k));
+      var url = new URL(base + text(page.k), window.location.href);
+      url.searchParams.set("reveal", "search");
+      return url.href;
     }
 
     function load() {
