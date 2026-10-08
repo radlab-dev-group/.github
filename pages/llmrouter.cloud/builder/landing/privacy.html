@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Privacy policy — LLM Router</title>
+<meta name="description" content="What the llmrouter.cloud website measures: a consent gate, basic Google Analytics page statistics, and nothing else. The llm-router software itself ships with zero telemetry.">
+<meta name="robots" content="index,follow">
+<meta name="theme-color" content="#05070a">
+<link rel="canonical" href="https://llmrouter.cloud/privacy.html">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2305070a'/%3E%3Cpath d='M8 22V10M8 16h9M17 10v12M17 13h7M17 19h7' stroke='%2300e59b' stroke-width='2' stroke-linecap='round' fill='none'/%3E%3C/svg%3E">
+{{GA}}
+<style>
+:root{
+  --bg:#05070a;--panel:#0a0e14;--panel-2:#0d131a;
+  --line:#1a232e;--line-soft:#131a23;
+  --fg:#c6d3df;--fg-dim:#8492a3;--fg-faint:#5a6778;
+  --mint:#00e59b;--blue:#5aa9ff;
+  --mono:ui-monospace,"JetBrains Mono","SFMono-Regular",Menlo,Consolas,"Liberation Mono",monospace;
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --r:10px;--nav-h:58px;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  margin:0;background:var(--bg);color:var(--fg);
+  font-family:var(--sans);font-size:15.5px;line-height:1.65;
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+}
+a{color:var(--blue);text-decoration:none}
+a:hover{text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1px}
+h1,h2,h3,.mono{font-family:var(--mono)}
+h1,h2{letter-spacing:-.02em;line-height:1.15;font-weight:600;margin:0}
+p{margin:0}
+.wrap{width:100%;max-width:860px;margin:0 auto;padding:0 24px}
+.nav{position:sticky;top:0;z-index:50;height:var(--nav-h);
+  background:rgba(5,7,10,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line-soft)}
+.nav-inner{max-width:var(--wrap);margin:0 auto;padding:0 24px;height:100%;
+  display:flex;align-items:center;gap:22px}
+.brand{display:flex;align-items:center;gap:10px;color:#e8f1f9;font-family:var(--mono);
+  font-size:14.5px;letter-spacing:-.01em}
+.brand:hover{text-decoration:none}
+.brand .slash{color:var(--mint)}
+.nav-links{display:flex;gap:18px;margin-left:auto;font-family:var(--mono);font-size:12.5px}
+.nav-links a{color:var(--fg-dim)}
+.nav-links a:hover{color:#e8f1f9;text-decoration:none}
+main{padding:64px 0 40px}
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--mint);margin-bottom:14px}
+h1{font-size:clamp(1.7rem,4.2vw,2.5rem);color:#eef5fb}
+.sub{margin-top:14px;color:var(--fg-dim);font-size:14.5px;max-width:62ch}
+.note{margin-top:26px;border:1px solid var(--line);border-left:2px solid var(--mint);
+  border-radius:0 var(--r) var(--r) 0;background:var(--panel);padding:16px 18px;
+  font-size:14px;color:var(--fg-dim)}
+.note b{color:var(--fg);font-weight:600}
+section{padding:44px 0;border-top:1px solid var(--line-soft)}
+section:first-of-type{border-top:0;padding-top:36px}
+h2{font-size:16.5px;color:#e8f1f9}
+h2 .num{color:var(--fg-faint);margin-right:10px;font-size:13px}
+h3{font-size:13.5px;color:var(--fg);margin:22px 0 8px}
+section p{margin-top:12px;color:var(--fg-dim);max-width:70ch}
+section p b{color:var(--fg);font-weight:600}
+ul.plain{margin:12px 0 0;padding-left:20px;color:var(--fg-dim);max-width:70ch}
+ul.plain li{margin-top:6px}
+ul.plain li::marker{color:var(--fg-faint)}
+table{width:100%;border-collapse:collapse;margin-top:16px;font-size:13.5px}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line-soft);vertical-align:top}
+th{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--fg-faint);font-weight:500}
+td{color:var(--fg-dim)}
+td:first-child{color:var(--fg);white-space:nowrap;font-family:var(--mono);font-size:12.5px}
+.mono{font-family:var(--mono)}
+.btn{display:inline-block;border:1px solid var(--line);border-radius:8px;background:var(--panel-2);
+  color:var(--fg);font-family:var(--mono);font-size:12.5px;padding:9px 16px;cursor:pointer}
+.btn:hover{border-color:var(--mint);color:#eef5fb;text-decoration:none}
+.consent-row{margin-top:14px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.fine{margin-top:18px;font-family:var(--mono);font-size:11.4px;color:var(--fg-faint)}
+.foot{border-top:1px solid var(--line);padding:34px 0 44px;background:#04060a}
+.foot-inner{max-width:var(--wrap);margin:0 auto;padding:0 24px;display:flex;flex-wrap:wrap;
+  gap:12px;justify-content:space-between;font-family:var(--mono);font-size:11.4px;color:var(--fg-faint)}
+.foot-inner a{color:var(--fg-dim)}
+@media (max-width:640px){
+  .nav-links{gap:14px}
+  table{display:block;overflow-x:auto;white-space:nowrap}
+}
+</style>
+</head>
+<body>
+<header class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="index.html">
+      <svg width="22" height="22" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="7" fill="#0b1119" stroke="#1a232e"/><path d="M8 22V10M8 16h9M17 10v12M17 13h7M17 19h7" stroke="#00e59b" stroke-width="2" stroke-linecap="round" fill="none"/></svg>
+      <span>llm<span class="slash">-</span>router</span>
+    </a>
+    <nav class="nav-links">
+      <a href="index.html">overview</a>
+      <a href="docs/">docs</a>
+      <a href="privacy.html">privacy</a>
+      <a href="https://github.com/radlab-dev-group/llm-router" rel="noopener">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<div class="wrap">
+
+<p class="eyebrow">llmrouter.cloud &middot; legal</p>
+<h1>Privacy policy</h1>
+<p class="sub">
+  What this website measures, who runs it, and the rights you have.
+  Last updated: 2026-10-08.
+</p>
+
+<div class="note">
+  <b>The short version:</b> this site is a static page. It runs no ad networks,
+  no cross-site trackers and no forms, and it collects
+  <b>nothing before you choose</b>. If you accept, it loads one script —
+  Google Analytics — which records basic, aggregate page statistics only.
+  The llm-router software itself ships with <b>zero telemetry</b>; this policy
+  covers the website, not the software.
+</div>
+
+<section id="controller">
+<h2><span class="num">01</span>Who runs this site</h2>
+<p>
+  The site is operated by the <span class="mono">radlab-dev-group</span>
+  community, the maintainers of the open-source
+  <a href="https://github.com/radlab-dev-group/llm-router" rel="noopener">llm-router</a>
+  project. The website is published from a public GitHub repository and
+  hosted for free on GitHub Pages (GitHub, Inc.).
+</p>
+<p>
+  Questions about this policy can be sent to
+  <a href="https://github.com/radlab-dev-group/llm-router/issues" rel="noopener">GitHub issues</a>
+  on the project repository.
+</p>
+</section>
+
+<section id="what">
+<h2><span class="num">02</span>What we collect, and why</h2>
+<p>
+  With your consent, the page loads
+  <b>Google Analytics 4</b> (measurement id <span class="mono">G-9KM7GYM55M</span>).
+  It records a deliberately minimal set of data:
+</p>
+<table>
+  <thead>
+    <tr><th>data point</th><th>why</th><th>kept by</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>page viewed (URL, title)</td><td>see which pages are actually used</td><td>Google</td></tr>
+    <tr><td>referring page</td><td>see how visitors arrive</td><td>Google</td></tr>
+    <tr><td>device, browser, OS, screen size, language</td><td>make sure the site works everywhere</td><td>Google</td></tr>
+    <tr><td>approximate country/region (from IP)</td><td>aggregate usage by region</td><td>Google</td></tr>
+    <tr><td>timestamps, session and engagement time</td><td>aggregate usage over time</td><td>Google</td></tr>
+    <tr><td>client ID (random, e.g. <span class="mono">_ga</span>)</td><td>count distinct visitors; not linked to a person</td><td>Google</td></tr>
+  </tbody>
+</table>
+<p>
+  We do <b>not</b> enable Google Signals, advertising products or
+  cross-site / cross-device tracking, and we do not send any personally
+  identifiable data to analytics. No content on this site is personalised.
+</p>
+</section>
+
+<section id="cookies">
+<h2><span class="num">03</span>Cookies and local storage</h2>
+<p>The only storage this site uses:</p>
+<table>
+  <thead>
+    <tr><th>name</th><th>who sets it</th><th>where</th><th>why / how long</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>llmrouter.analytics.consent.v1</td><td>this site</td><td>localStorage</td><td>your consent choice, until you clear it or pick again</td></tr>
+    <tr><td>docs-sidebar:*</td><td>docs site</td><td>sessionStorage</td><td>which sidebar sections you expanded; gone when the tab closes</td></tr>
+    <tr><td>_ga</td><td>Google Analytics</td><td>cookie</td><td>visitor counter, 13 months</td></tr>
+    <tr><td>_ga_9KM7GYM55M</td><td>Google Analytics</td><td>cookie</td><td>per-property visitor counter, 13 months</td></tr>
+  </tbody>
+</table>
+<p>
+  If you decline, the only thing stored is your refusal. The
+  <span class="mono">docs-sidebar:*</span> entry is a plain UI preference and
+  never leaves your browser.
+</p>
+<div class="consent-row">
+  <button class="btn" type="button" data-consent-open>Change analytics consent</button>
+  <span class="fine">the choice can be changed on every page, at any time</span>
+</div>
+</section>
+
+<section id="legal">
+<h2><span class="num">04</span>Legal basis</h2>
+<ul class="plain">
+  <li>Storing and reading the analytics cookies needs your <b>consent</b> under the ePrivacy rules; the consent banner implements it and can be withdrawn at any time.</li>
+  <li>Once you consent, the processing rests on <b>Art. 6(1)(f) GDPR</b>: our legitimate interest in understanding basic, aggregate usage of a public project site so it can be kept useful. The processing is limited to that purpose.</li>
+</ul>
+<p>
+  If you are not in the EEA, the same minimal practices apply; where local
+  law grants comparable rights (e.g. California), they apply to you too.
+</p>
+</section>
+
+<section id="retention">
+<h2><span class="num">05</span>Retention</h2>
+<p>
+  We do not keep analytics data longer than necessary: Google Analytics
+  deletes or anonymises the underlying event data after a
+  <b>14-month retention window</b>. Your consent choice stays in your browser
+  until you change or clear it. Hosting logs kept by GitHub are governed by
+  GitHub&rsquo;s own privacy policy.
+</p>
+</section>
+
+<section id="sharing">
+<h2><span class="num">06</span>Who we share data with</h2>
+<p>
+  Only two parties ever see anything: <b>Google</b>, which processes the
+  analytics events under its standard terms, and <b>GitHub</b>, which hosts
+  this site and keeps basic access logs for security. We do not sell, rent
+  or trade any data, and no advertising networks are involved.
+</p>
+</section>
+
+<section id="rights">
+<h2><span class="num">07</span>Your rights</h2>
+<p>
+  You may ask us to access, correct or delete anything we hold about you,
+  to restrict or object to processing, or to hand the data over to another
+  controller. Withdraw consent by clicking
+  <b>Change analytics consent</b> on any page (or clearing site data).
+  Requests go through the contact in section 01. If you believe something
+  went wrong, you can also complain to your local data-protection authority
+  — in Poland, the UODO.
+</p>
+</section>
+
+<section id="changes">
+<h2><span class="num">08</span>Changes to this policy</h2>
+<p>
+  If this policy changes, the date above is updated and the change is
+  published on this page. Material changes will be announced on the landing
+  page.
+</p>
+</section>
+
+</div>
+</main>
+
+<footer class="foot">
+  <div class="foot-inner">
+    <span>&copy; 2026 radlab-dev-group &middot; Apache-2.0</span>
+    <span>
+      <a href="index.html">landing</a>
+      &middot;
+      <a href="docs/">docs</a>
+      &middot;
+      <a href="privacy.html">privacy policy</a>
+    </span>
+  </div>
+</footer>
+</body>
+</html>

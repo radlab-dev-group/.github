@@ -311,5 +311,33 @@ class BuildDocsTests(unittest.TestCase):
         self.assertNotIn("rolling", (self.output / "docs/plugins/index.html").read_text())
 
 
+    def test_privacy_page_and_consent_gate(self):
+        self.build("--check-links")
+        docs = self.output / "docs"
+
+        privacy = (self.output / "privacy.html").read_text()
+        self.assertIn("Privacy policy", privacy)
+        self.assertIn('src="docs/assets/consent.js"', privacy)
+        self.assertNotIn("googletagmanager", privacy)
+
+        index = (self.output / "index.html").read_text()
+        self.assertIn("docs/assets/consent.js", index)
+        self.assertNotIn("googletagmanager", index)
+
+        root_docs = (docs / "index.html").read_text()
+        self.assertIn('src="./assets/consent.js"', root_docs)
+        self.assertIn('href="../privacy.html"', root_docs)
+
+        page = (docs / "router/1.1.0/guides/guide.html").read_text()
+        self.assertIn('src="../../../assets/consent.js"', page)
+        self.assertIn('href="../../../../privacy.html"', page)
+        self.assertNotIn("googletagmanager", page)
+
+        consent = (docs / "assets/consent.js").read_text()
+        self.assertIn("G-9KM7GYM55M", consent)
+        self.assertIn("llmRouterConsent", consent)
+        self.assertNotIn("var GA_PAYLOAD = @@GA@@;", consent)
+
+
 if __name__ == "__main__":
     unittest.main()

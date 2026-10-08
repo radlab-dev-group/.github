@@ -48,6 +48,8 @@ BOOTSTRAP_FLAG = "LLM_ROUTER_DOCS_BOOTSTRAPPED"
 DOCS_DIR_NAME = "docs"
 ASSETS_DIR_NAME = "assets"
 VERSIONS_FILE = "versions.json"
+PRIVACY_PAGE_NAME = "privacy.html"
+CONSENT_TEMPLATE_NAME = "consent.js"
 PRERELEASE_MARKER = "-"
 PYGMENTS_STYLE = "one-dark"
 
@@ -1077,7 +1079,7 @@ SHELL_TEMPLATE = """<!DOCTYPE html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-@@GA@@
+{analytics}
 <title>{title}</title>
 <meta name="description" content="{description}">
 <meta name="theme-color" content="#05070a">
@@ -1115,6 +1117,7 @@ SHELL_TEMPLATE = """<!DOCTYPE html>
 <footer class="foot"><div class="foot-inner">
 <span class="mono">llm-router &middot; docs are generated from the repository by <code>tools/build_docs.py</code></span>
 <span class="mono"><a href="{blob}">{version}</a> @ <a href="{commit}">{sha}</a></span>
+<span class="mono"><a href="{privacy}">privacy</a> &middot; <a href="{privacy}#cookies" data-consent-open>cookie settings</a></span>
 </div></footer>
 </main>
 <aside class="dtoc" id="dtoc">{toc}</aside>
@@ -1466,12 +1469,36 @@ def render_sidebar(release, config, current, page_dir, latest, versions,
 
 @functools.lru_cache(maxsize=1)
 def ga_snippet() -> str:
-    """Google Analytics snippet shared by the landing and every docs page."""
+    """Google Analytics payload shared by the landing and every docs page.
+
+    The raw script is never embedded directly: it is injected into
+    theme/consent.js, so the browser only requests it after the visitor has
+    accepted the consent gate.
+    """
     source = REPO_ROOT / "tools" / "ga_code.txt"
     if not source.exists():
         print("[docs] warning: tools/ga_code.txt not found; GA snippet omitted", file=sys.stderr)
         return ""
     return source.read_text(encoding="utf-8").strip()
+
+
+def consent_asset() -> str:
+    """Render theme/consent.js with the GA payload embedded as a JS string."""
+    source = THEME_DIR / CONSENT_TEMPLATE_NAME
+    if not source.exists():
+        raise SystemExit(f"[docs] missing theme file: {source}")
+    payload = json.dumps(ga_snippet()).replace("<", "\\u003c").replace(">", "\\u003e")
+    return source.read_text(encoding="utf-8").replace(
+        "var GA_PAYLOAD = @@GA@@;", f"var GA_PAYLOAD = {payload};"
+    )
+
+
+def analytics_snippet(assets_url: str, privacy_url: str) -> str:
+    """Script tag for the consent gate, with page-relative asset and policy links."""
+    return (
+        f'<script src="{html.escape(assets_url, quote=True)}" defer '
+        f'data-privacy="{html.escape(privacy_url, quote=True)}"></script>'
+    )
 
 
 def render_shell(config, release, versions, latest, page_dir, title, description,
@@ -1508,6 +1535,7 @@ def render_shell(config, release, versions, latest, page_dir, title, description
     # Assets live at the docs root; compute the climb from the page dir.
     depth = len([part for part in page_dir.split("/") if part])
     climb = "/".join([".."] * depth) if depth else "."
+    privacy_url = posixpath.join(*([".."] * (depth + 1)), PRIVACY_PAGE_NAME)
     shell = SHELL_TEMPLATE.format(
         lang=html.escape(str(config.site.get("language", "en")), quote=True),
         title=html.escape(title, quote=True),
@@ -1518,6 +1546,9 @@ def render_shell(config, release, versions, latest, page_dir, title, description
         syntax=posixpath.join(climb, ASSETS_DIR_NAME, "pygments.css"),
         js=posixpath.join(climb, ASSETS_DIR_NAME, "docs.js"),
         docs_root=climb + "/",
+        analytics=analytics_snippet(
+            posixpath.join(climb, ASSETS_DIR_NAME, CONSENT_TEMPLATE_NAME), privacy_url
+        ),
         body_class=html.escape(body_class, quote=True),
         version=html.escape(release.version, quote=True),
         search=html.escape(search_href if search_enabled else "", quote=True),
@@ -1534,8 +1565,9 @@ def render_shell(config, release, versions, latest, page_dir, title, description
         commit=html.escape(commit, quote=True),
         sha=html.escape(sha, quote=True),
         repo_id=html.escape(repo_id, quote=True),
+        privacy=html.escape(privacy_url, quote=True),
     )
-    return shell.replace("@@GA@@", ga_snippet())
+    return shell
 
 
 # --------------------------------------------------------------------------- #
@@ -1983,6 +2015,8 @@ def write_assets(docs_root: Path, dry_run: bool) -> list[str]:
             (docs_root / ASSETS_DIR_NAME).mkdir(parents=True, exist_ok=True)
             shutil.copyfile(source, docs_root / ASSETS_DIR_NAME / name)
         written.append(f"{ASSETS_DIR_NAME}/{name}")
+    write_file(docs_root / ASSETS_DIR_NAME / CONSENT_TEMPLATE_NAME, consent_asset(), dry_run)
+    written.append(f"{ASSETS_DIR_NAME}/{CONSENT_TEMPLATE_NAME}")
     write_file(docs_root / ASSETS_DIR_NAME / "pygments.css", pygments_css(), dry_run)
     written.append(f"{ASSETS_DIR_NAME}/pygments.css")
     return written
@@ -2145,21 +2179,31 @@ def build_site(config, output, releases, entries, latest, search_scope, dry_run)
     return written
 
 
-def copy_landing(output: Path, latest: str, dry_run: bool) -> bool:
-    source = REPO_ROOT / "landing" / "index.html"
-    if not source.exists():
-        return False
-    if not dry_run:
-        output.mkdir(parents=True, exist_ok=True)
-        html = source.read_text(encoding="utf-8")
-        if "{{VERSION}}" not in html:
-            print("[docs] warning: landing has no {{VERSION}} token", file=sys.stderr)
-        else:
-            html = html.replace("{{VERSION}}", latest)
-        if "{{GA}}" in html:
-            html = html.replace("{{GA}}", ga_snippet())
-        (output / "index.html").write_text(html, encoding="utf-8")
-    return True
+def copy_landing(output: Path, latest: str, dry_run: bool) -> dict[str, bool]:
+    """Copy the hand-written landing pages to the site root, substituting the
+    {{VERSION}} and {{GA}} tokens (the GA token becomes the consent-gated
+    analytics script, never the raw payload)."""
+    copied: dict[str, bool] = {}
+    for name in ("index.html", PRIVACY_PAGE_NAME):
+        source = REPO_ROOT / "landing" / name
+        if not source.exists():
+            copied[name] = False
+            continue
+        if not dry_run:
+            output.mkdir(parents=True, exist_ok=True)
+            page = source.read_text(encoding="utf-8")
+            if name == "index.html" and "{{VERSION}}" not in page:
+                print("[docs] warning: landing has no {{VERSION}} token", file=sys.stderr)
+            page = page.replace("{{VERSION}}", latest).replace(
+                "{{GA}}",
+                analytics_snippet(
+                    posixpath.join(DOCS_DIR_NAME, ASSETS_DIR_NAME, CONSENT_TEMPLATE_NAME),
+                    PRIVACY_PAGE_NAME,
+                ),
+            )
+            (output / name).write_text(page, encoding="utf-8")
+        copied[name] = True
+    return copied
 
 
 ATTR_RE = re.compile(r'(?:href|src)\s*=\s*"([^"]+)"')
@@ -2362,7 +2406,8 @@ def main(argv: list[str] | None = None) -> int:
                 sat_desc += f" (+{len(tagged)} satellite tags)" if sat_desc else f"{len(tagged)} satellite tags"
             print(f"[docs]   v{release.version:<9} {len(release.pages):>3} pages from {release.ref} ({sat_desc or 'no satellites'})")
         print(f"[docs]   {len(entries):>16} versions indexed, latest is v{latest}")
-        print(f"[docs] landing page: {'included' if landing else 'not found'}")
+        print(f"[docs] landing page: {'included' if landing.get('index.html') else 'not found'}")
+        print(f"[docs] privacy page: {'included' if landing.get('privacy.html') else 'not found'}")
 
     status = 0
     if args.check_links:

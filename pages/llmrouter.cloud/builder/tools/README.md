@@ -110,10 +110,14 @@ links. Options are listed by `tools/build.sh --help`; per-machine paths go into
 | `tools/docs.toml`                                | site metadata, discovery filters, navigation sections, per-page overrides, crosslinks   |
 | `tools/theme/docs.css`                           | the docs stylesheet                                                                     |
 | `tools/theme/docs.js`                            | client-side search, version switch, scroll spy, copy buttons                            |
+| `tools/theme/consent.js`                         | analytics consent gate (banner + GA loader), rendered into `docs/assets/consent.js`     |
+| `tools/ga_code.txt`                              | the Google Analytics payload, injected into `consent.js` at build time                  |
 | `tools/requirements-docs.txt`                    | `markdown` + `pygments`, the only build dependencies                                    |
 | `tools/README.md`                                | this document -- dogfooding the pipeline, published as `/docs/website.html`             |
 | `tools/tests/test_build_docs.py`                 | integration tests using temporary local Git repositories                                |
-| `landing/index.html`                             | marketing landing page, copied verbatim to the site root                                |
+| `tools/tests/test_consent.js`                    | consent-gate behaviour tests (Node, run with `node tools/tests/test_consent.js`)        |
+| `landing/index.html`                             | marketing landing page, copied to the site root ({{VERSION}}/{{GA}} substituted)        |
+| `landing/privacy.html`                           | privacy policy, copied to the site root ({{GA}} substituted)                            |
 | `gh-action/docs.yml`                             | CI template: build + deploy to GitHub Pages (three checkouts)                           |
 | `site/`                                          | build output -- never edited, never committed                                           |
 
@@ -182,6 +186,21 @@ The `from` field is optional (glob, default: any). The `link` field must match
 the link exactly as written in the source document (relative path or full
 GitHub URL). The `to` field is `"<repo-id>:<repo-relative-path>[#anchor]"`.
 If the target page is not built for the current version, normal resolution (GitHub blob fallback) applies.
+
+## Analytics & privacy
+
+The site runs Google Analytics, but the raw payload from `tools/ga_code.txt`
+is never embedded into the pages. The builder injects it into
+`tools/theme/consent.js` (the `@@GA@@` token) and writes the result to
+`docs/assets/consent.js`; every page loads only that small gate.
+
+- First visit: a consent panel asks for acceptance; nothing is requested from
+  Google before the choice.
+- Accept: the stored decision (localStorage) loads the GA payload.
+- Decline: the refusal is stored, nothing is ever loaded.
+- The panel can be reopened from the "cookie settings" links (any element with
+  `data-consent-open`) in the landing footer and the docs footer; the policy
+  itself lives at `privacy.html`.
 
 ## Commit links
 
