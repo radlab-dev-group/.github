@@ -376,6 +376,7 @@ class Release:
     date: str
     prerelease: bool
     snapshots: dict[str, Snapshot] = field(default_factory=dict)
+    navigation_release: "Release | None" = None
 
     @property
     def pages(self) -> list["Page"]:
@@ -1110,7 +1111,7 @@ SHELL_TEMPLATE = """<!DOCTYPE html>
 <link rel="stylesheet" href="{syntax}">
 <script src="{js}" defer></script>
 </head>
-<body class="{body_class}" data-version="{version}" data-search="{search}" data-latest="{latest}" data-repo="{repo_id}">
+<body class="{body_class}" data-version="{version}" data-search="{search}" data-latest="{latest}" data-repo="{repo_id}" data-docs-root="{docs_root}">
 <a class="skip" href="#main">skip to content</a>
 <header class="topbar">
 <div class="topbar-inner">
@@ -1271,6 +1272,19 @@ def short_date(value: str) -> str:
         return value or "unknown"
 
 
+def latest_satellite_tag(repo):
+    return next((tag for tag in repo.tags
+                 if not is_prerelease(tag.removeprefix("v"))), "")
+
+
+def snapshot_status(snapshot, latest):
+    if snapshot.worktree:
+        return "rolling"
+    if snapshot.repo.primary:
+        return "latest" if snapshot.version == latest else "archived"
+    return "latest" if snapshot.ref == latest_satellite_tag(snapshot.repo) else "archived"
+
+
 def render_version_options(page_source, release, versions, latest, page_dir,
                            repo_id="router", snapshot=None, active=True):
     """Version switcher options for one repo.
@@ -1292,13 +1306,17 @@ def render_version_options(page_source, release, versions, latest, page_dir,
             abs_target = posixpath.join(
                 repo.mount, version, out or "index.html"
             )
-            attrs = [f'value="{html.escape(href.to(abs_target), quote=True)}"']
+            root = href.to(posixpath.join(repo.mount, version, "index.html"))
+            attrs = [f'value="{html.escape(href.to(abs_target), quote=True)}"',
+                     f'data-version="{html.escape(version, quote=True)}"',
+                     f'data-root="{html.escape(root, quote=True)}"']
             if is_prerelease(version):
                 attrs.append('data-kind="pre"')
             if active and snapshot is not None and not snapshot.worktree and snapshot.ref == tag:
                 attrs.append("selected")
+            suffix = "  \u00b7 latest" if tag == latest_satellite_tag(repo) else ""
             options.append(
-                f'<option {" ".join(attrs)}>v{html.escape(version)}</option>'
+                f'<option {" ".join(attrs)}>v{html.escape(version)}{suffix}</option>'
             )
         rolling = repo.rolling_snapshot
         if rolling is not None and rolling.worktree:
@@ -1308,7 +1326,10 @@ def render_version_options(page_source, release, versions, latest, page_dir,
                     if page.source == page_source:
                         abs_target = posixpath.join(repo.mount, page.out)
                         break
-            attrs = [f'value="{html.escape(href.to(abs_target), quote=True)}"']
+            root = href.to(posixpath.join(repo.mount, "index.html"))
+            attrs = [f'value="{html.escape(href.to(abs_target), quote=True)}"',
+                     'data-version="rolling"',
+                     f'data-root="{html.escape(root, quote=True)}"']
             if active and (snapshot is None or snapshot.worktree):
                 attrs.append("selected")
             options.append(
@@ -1319,7 +1340,10 @@ def render_version_options(page_source, release, versions, latest, page_dir,
         target = entry.entry
         if page_source and page_source in entry.pages:
             target = posixpath.join(entry.version, entry.pages[page_source])
-        attrs = [f'value="{html.escape(href.to(target), quote=True)}"']
+        root = href.to(entry.entry)
+        attrs = [f'value="{html.escape(href.to(target), quote=True)}"',
+                 f'data-version="{html.escape(entry.version, quote=True)}"',
+                 f'data-root="{html.escape(root, quote=True)}"']
         if active and entry.version == release.version:
             attrs.append("selected")
         if entry.prerelease:
@@ -1336,36 +1360,37 @@ def render_sidebar(release, config, current, page_dir, latest, versions,
     """Sidebar with repo groups."""
     href = Href(page_dir)
     version_dir = release.version
-    # Satellite pages (rolling or frozen tag) render their sidebar from the
-    # snapshot's own page tree with relative links inside the archive.
+    # The active repository uses its own snapshot; other repository groups
+    # retain the router navigation context and rolling satellite links.
     if snapshot is not None:
         if current is not None:
             if current.repo != snapshot.repo.id:
                 snapshot = None
+    nav_release = release.navigation_release or release
+    side_tag = "latest" if nav_release.version == latest else "archived"
+    hub_link = href.versioned(nav_release.version, "index.html")
+    nav_snapshots = dict(nav_release.snapshots)
+    for repo in REPOS.values():
+        if repo.rolling_snapshot is not None:
+            nav_snapshots.setdefault(repo.id, repo.rolling_snapshot)
     if snapshot is not None:
-        nav_release_pages = snapshot.pages
-        nav_release_version = snapshot.version
-        side_tag = "live" if snapshot.worktree else "tag"
-        # The hub lives at the top of the snapshot's page tree (the mount
-        # dir for rolling, <mount>/<version>/ for frozen tags). Compute the
-        # relative climb from the current page's directory.
-        hub_link = href.to(posixpath.join(snapshot.archive_root, "index.html"))
-    else:
-        nav_release_pages = release.pages
-        nav_release_version = release.version
-        side_tag = "live" if release.version == latest else "old"
-        hub_link = href.versioned(version_dir, "index.html")
+        nav_snapshots[snapshot.repo.id] = snapshot
     grouped_by_repo: dict[str, dict[str, list[Page]]] = {}
-    for page in nav_release_pages:
-        grouped_by_repo.setdefault(page.repo, {}).setdefault(page.section, []).append(page)
+    for repo_id, nav_snapshot in nav_snapshots.items():
+        if ":" in repo_id:
+            continue
+        for page in nav_snapshot.pages:
+            grouped_by_repo.setdefault(page.repo, {}).setdefault(page.section, []).append(page)
 
     parts: list[str] = [
+        '<div data-router-context>',
         '<div class="side-head">',
-        f'<span class="side-v mono">{html.escape("rolling" if snapshot and snapshot.worktree else "v" + nav_release_version)}</span>',
-        f'<span class="side-tag {"live" if side_tag == "live" else "old"}">'
-        f'{"latest" if side_tag == "live" else "archived"}</span>',
+        f'<span class="side-v mono">v{html.escape(nav_release.version)}</span>',
+        f'<span class="side-tag {"old" if side_tag == "archived" else "live"}">'
+        f'{side_tag}</span>',
         "</div>",
         f'<a class="side-hub" href="{hub_link}">documentation index</a>',
+        '</div>',
         '<nav class="nav-tree" aria-label="Documentation">',
     ]
 
@@ -1374,7 +1399,7 @@ def render_sidebar(release, config, current, page_dir, latest, versions,
         # (rolling or frozen tag) live in their own archive; the sidebar is
         # rendered from the current page's directory, so a relative link
         # keeps every group inside the right archive.
-        target_snapshot = snapshot or release.snapshots[repo_id]
+        target_snapshot = nav_snapshots[repo_id]
         return href.to(posixpath.join(target_snapshot.archive_root, page.out))
 
     # Render groups in order: router first, then satellites in config order
@@ -1387,8 +1412,30 @@ def render_sidebar(release, config, current, page_dir, latest, versions,
         repo_name = repo.name if repo else repo_id
         # Group header
         parts.append(
+            f'<div data-nav-repo="{html.escape(repo_id, quote=True)}">'
             f'<div class="nav-repo"><span class="repo-name">{html.escape(repo_name)}</span></div>'
         )
+        if repo_id != "router":
+            nav_snapshot = nav_snapshots[repo_id]
+            status = snapshot_status(nav_snapshot, latest)
+            version_label = "rolling" if nav_snapshot.worktree else "v" + nav_snapshot.version
+            parts.append(
+                '<div class="side-head">'
+                f'<span class="side-v mono">{html.escape(version_label)}</span>'
+                f'<span class="side-tag {"old" if status == "archived" else "live"}">{status}</span>'
+                '</div>'
+            )
+            options = render_version_options(
+                current.source if current and current.repo == repo_id else "",
+                nav_release, versions, latest, page_dir, repo_id,
+                snapshot=nav_snapshot,
+            )
+            label = html.escape(repo_name, quote=True)
+            parts.append(
+                f'<label class="vselect side-versions"><span class="sr-only">{label} version</span>'
+                f'<select id="versions-{repo_id}" data-switch="{repo_id}" '
+                f'aria-label="{label} documentation version">{options}</select></label>'
+            )
         # Sections for this repo
         for section in config.sections:
             if section.repo != repo_id:
@@ -1405,13 +1452,14 @@ def render_sidebar(release, config, current, page_dir, latest, versions,
                 f"{html.escape(section.title)}</a></h2><ul>"
             )
             for page in pages:
-                active = ' class="active"' if current is not None and current.out == page.out else ""
+                active = ' class="active"' if current is not None and current.repo == repo_id and current.out == page.out else ""
                 link = page_link(repo_id, page)
                 parts.append(
                     f'<li><a href="{link}"{active}>'
                     f"{html.escape(page.title)}</a></li>"
                 )
             parts.append("</ul></section>")
+        parts.append("</div>")
 
     parts.append("</nav>")
     if snapshot is not None:
@@ -1459,17 +1507,15 @@ def render_shell(config, release, versions, latest, page_dir, title, description
         target = html.escape(posixpath.join(config.site_url, canonical), quote=True)
         canonical_tag = f'\n<link rel="canonical" href="{target}">'
     controls = []
+    nav_release = release.navigation_release or release
     for switch_repo in REPOS.values():
-        if switch_repo.id != "router" and (
-            switch_repo.rolling_snapshot is None or
-            (switch_repo.id != "plugins" and switch_repo.id != repo_id)
-        ):
+        if switch_repo.id != "router":
             continue
         options = render_version_options(
             page_source if switch_repo.id == repo_id else "",
-            release, versions, latest, page_dir, switch_repo.id,
+            nav_release, versions, latest, page_dir, switch_repo.id,
             page_snapshot if switch_repo.id == repo_id else None,
-            active=switch_repo.id == repo_id,
+            active=True,
         )
         label = html.escape(switch_repo.name, quote=True)
         select_id = "versions" if switch_repo.id == "router" else f"versions-{switch_repo.id}"
@@ -1511,6 +1557,7 @@ def render_shell(config, release, versions, latest, page_dir, title, description
         css=posixpath.join(climb, ASSETS_DIR_NAME, "docs.css"),
         syntax=posixpath.join(climb, ASSETS_DIR_NAME, "pygments.css"),
         js=posixpath.join(climb, ASSETS_DIR_NAME, "docs.js"),
+        docs_root=climb + "/",
         body_class=html.escape(body_class, quote=True),
         version=html.escape(release.version, quote=True),
         search=html.escape(search_href if search_enabled else "", quote=True),
@@ -1771,9 +1818,10 @@ def render_hub(release: Release, config: Config, versions: list[VersionEntry],
                                              snap.date, is_prerelease(snap.version)))
             for snap in hub_snapshot.repo.tag_snapshots.values()
         ]
+    hub_latest = latest_satellite_tag(hub_snapshot.repo).removeprefix("v") if hub_snapshot else latest
     for entry in hub_versions:
         current = " current" if entry.version == release.version else ""
-        flag = " latest" if entry.version == latest else ""
+        flag = " latest" if entry.version == hub_latest else ""
         listings.append(
             f'<li class="vrow{current}{flag}">'
             f'<a href="{href.to(entry.entry if use_version_prefix else posixpath.join(hub_snapshot.repo.mount, entry.entry))}">'
@@ -1819,7 +1867,12 @@ def render_hub(release: Release, config: Config, versions: list[VersionEntry],
         ]
     )
 
-    eyebrow = "operator documentation" if release.version == latest else "archived documentation"
+    status = snapshot_status(hub_snapshot, latest) if hub_snapshot else (
+        "latest" if release.version == latest else "archived"
+    )
+    eyebrow = "archived documentation" if status == "archived" else (
+        "rolling documentation" if status == "rolling" else "operator documentation"
+    )
     snapshot = release.snapshots.get("router") or hub_snapshot
     if snapshot:
         tree_link = f"{snapshot.repo.url}/tree/{quote(snapshot.link_ref)}"
@@ -2030,7 +2083,7 @@ def build_site(config, output, releases, entries, latest, search_scope, dry_run)
             if repo_id == "router" or not snap.worktree:
                 continue
             sat_release = Release(snap.version, snap.ref, snap.sha, snap.date, False,
-                                  snapshots={repo_id: snap})
+                                  snapshots={repo_id: snap}, navigation_release=release)
             sat_hub = render_hub(sat_release, config, versions, latest,
                                  page_dir=snap.repo.mount, search_enabled=enabled)
             write_file(docs_root / snap.repo.mount / "index.html", sat_hub, dry_run)
@@ -2058,6 +2111,7 @@ def build_site(config, output, releases, entries, latest, search_scope, dry_run)
                 sha=snapshot.sha,
                 date=snapshot.date,
                 prerelease=False,
+                navigation_release=latest_release,
             )
             tag_release.snapshots[repo.id] = snapshot
             unresolved.extend(render_documents(tag_release, config))

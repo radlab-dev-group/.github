@@ -20,12 +20,22 @@ Three repositories feed the documentation site:
 | `llm-router-services` | HTTP services (guardrails, masker) | Rolling (latest working tree) | `/docs/services/...` |
 
 Router and plugins releases are independent: each release tag gets a frozen copy
-of its own Markdown. The topbar offers separate version selectors for both
-repositories, including on `/docs`. Switching within a repository keeps the same
-document when available, otherwise it opens that release's documentation index.
-The plugins selector also offers `rolling (working tree)`; services remain rolling.
-Satellite rolling docs are linked from the newest router index only, while the
-plugins version selector is available on older router pages too.
+of its own Markdown. The topbar selects the router version; satellite selectors
+live under their repository names in the left sidebar, including on `/docs`.
+Switching within a repository keeps the same document when available, otherwise
+it opens that release's documentation index. Plugin archives keep the shared
+sidebar: only the plugin section uses the selected plugin release, while router
+and services links remain available. The newest stable plugin tag is marked
+`latest`; older tags are `archived`. The separate `rolling (working tree)` option
+is marked `rolling`, not `latest`; services remain rolling.
+With JavaScript enabled, the chosen router and plugins versions travel together
+in URL query parameters. Opening a plugin archive restores the selected router
+menu instead of resetting it to latest, and vice versa. Each page still renders
+its own repository's version from its archive path; query parameters only select
+the other repository's navigation. The heading above the router menu and its
+documentation index always follow the selected router version; satellite version
+badges live in their own menu sections. Without JavaScript, static archive links
+remain usable with the default navigation context.
 
 Set `versions = "all"` in a satellite's `[[repos]]` entry to build its release
 archives, or `versions = "latest"` for rolling docs only. The plugins checkout

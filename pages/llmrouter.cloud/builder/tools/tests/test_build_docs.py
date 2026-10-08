@@ -104,6 +104,9 @@ class BuildDocsTests(unittest.TestCase):
             for item in index["pages"]:
                 self.assertTrue((archive / item["k"]).is_file(), item)
         for path in docs.rglob("*.html"):
+            source = path.read_text()
+            root = re.search(r'data-docs-root="([^"]+)"', source)
+            self.assertEqual((path.parent / root[1]).resolve(), docs.resolve())
             for options in Selects(path.read_text()).selects.values():
                 for option in options:
                     if "disabled" in option:
@@ -111,6 +114,12 @@ class BuildDocsTests(unittest.TestCase):
                         continue
                     self.assertTrue((path.parent / option["value"]).is_file(),
                                     (path, option))
+                    self.assertTrue((path.parent / option["data-root"]).is_file(),
+                                    (path, option))
+                    self.assertIn("data-version", option)
+                    hub = (path.parent / option["data-root"]).read_text()
+                    for repo_id in ("router", "plugins", "services"):
+                        self.assertIn(f'data-nav-repo="{repo_id}"', hub)
             search = re.search(r'data-search="([^"]+)"', path.read_text())
             if search:
                 index_path = path.parent / search[1]
@@ -124,9 +133,45 @@ class BuildDocsTests(unittest.TestCase):
         options = Selects(page.read_text()).selects["plugins"]
         self.assertTrue(any(o["value"] == "../../0.1.0/index.html" for o in options))
 
+    def test_sidebar_versions_and_latest_plugin_status(self):
+        self.build("--check-links")
+        docs = self.output / "docs"
+        for relative in ("index.html", "1.1.0/index.html",
+                         "plugins/0.2.0/index.html", "plugins/0.2.0/guides/guide.html",
+                         "plugins/0.1.0/index.html", "plugins/index.html"):
+            source = (docs / relative).read_text()
+            sidebar = source.split('<aside class="sidebar"', 1)[1].split('</aside>', 1)[0]
+            self.assertIn('data-switch="plugins"', sidebar)
+            self.assertIn('llm-router</span>', sidebar)
+            self.assertIn('llm-router-plugins</span>', sidebar)
+            self.assertIn('llm-router-services</span>', sidebar)
+            self.assertRegex(source, r'<option [^>]*>v0\.2\.0\s*· latest</option>')
+            self.assertNotIn('data-switch="plugins"', source.split('<aside class="sidebar"', 1)[0])
+        for relative, status in (("plugins/0.2.0/index.html", "latest"),
+                                 ("plugins/0.2.0/guides/guide.html", "latest"),
+                                 ("plugins/0.1.0/index.html", "archived"),
+                                 ("plugins/index.html", "rolling")):
+            source = (docs / relative).read_text()
+            router_context = source.split('<div data-router-context>', 1)[1].split('</a></div>', 1)[0]
+            self.assertIn('>v1.1.0</span>', router_context)
+            self.assertIn('>latest</span>', router_context)
+            self.assertNotIn('>archived</span>', router_context)
+            plugin_group = source.split('<div data-nav-repo="plugins">', 1)[1]
+            side_head = plugin_group.split('<div class="side-head">', 1)[1].split('</div>', 1)[0]
+            self.assertIn(f'>{status}</span>', side_head)
+            self.assertIn(f'class="side-tag {"old" if status == "archived" else "live"}"', side_head)
+        guide = (docs / "plugins/0.2.0/guides/guide.html").read_text()
+        sidebar = guide.split('<aside class="sidebar"', 1)[1].split('</aside>', 1)[0]
+        self.assertIn('href="../../../1.1.0/overview.html"', sidebar)
+        self.assertIn('href="guide.html" class="active"', sidebar)
+        self.assertEqual(sidebar.count('class="active"'), 1)
+
     def test_prereleases_and_no_satellites(self):
         self.build("--include-prerelease")
         self.assertTrue((self.output / "docs/plugins/0.3.0rc1/index.html").is_file())
+        prerelease = (self.output / "docs/plugins/0.3.0rc1/index.html").read_text()
+        self.assertRegex(prerelease, r'<option [^>]*>v0\.2\.0\s*· latest</option>')
+        self.assertNotRegex(prerelease, r'<option [^>]*>v0\.3\.0rc1\s*· latest</option>')
         self.output = self.root / "router-only"
         self.build("--no-satellites", "--check-links")
         self.assertNotIn("plugins", Selects((self.output / "docs/index.html").read_text()).selects)

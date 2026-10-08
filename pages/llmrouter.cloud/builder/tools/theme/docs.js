@@ -77,14 +77,100 @@
 
   /* ---- version switcher ---------------------------------------------- */
   function initVersions() {
-    all("select[data-switch]").forEach(function (select) {
-      select.addEventListener("change", function () {
-        var target = select.value;
-        if (target) {
-          window.location.href = target;
-        }
+    var here = new URL(window.location.href);
+    var docsRoot = new URL(body.getAttribute("data-docs-root"), here);
+    var context = {};
+
+    function withVersions(target) {
+      var url = new URL(target, here);
+      Object.keys(context).forEach(function (repo) {
+        url.searchParams.set(repo, context[repo]);
       });
+      return url.href;
+    }
+
+    all("select[data-switch]").forEach(function (select) {
+      var repo = select.getAttribute("data-switch");
+      var selected = select.options[select.selectedIndex];
+      var requested = here.searchParams.get(repo);
+      var option = selected;
+      if (repo !== body.getAttribute("data-repo") && requested) {
+        option = Array.prototype.find.call(select.options, function (entry) {
+          return entry.getAttribute("data-version") === requested;
+        }) || selected;
+      }
+      if (!option) {
+        return;
+      }
+      context[repo] = option.getAttribute("data-version");
+      if (option !== selected) {
+        select.value = option.value;
+        var root = new URL(option.getAttribute("data-root"), here);
+        var selector = '[data-nav-repo="' + repo + '"]';
+        fetch(root.href).then(function (response) {
+          if (!response.ok) {
+            throw new Error("Documentation navigation unavailable");
+          }
+          return response.text();
+        }).then(function (source) {
+          var parsed = new DOMParser().parseFromString(source, "text/html");
+          var group = parsed.querySelector(selector);
+          var current = doc.querySelector(selector);
+          if (!group || !current) {
+            throw new Error("Documentation navigation missing");
+          }
+          var routerContext = repo === "router" ? parsed.querySelector("[data-router-context]") : null;
+          var currentRouterContext = repo === "router" ? doc.querySelector("[data-router-context]") : null;
+          if (repo === "router" && (!routerContext || !currentRouterContext)) {
+            throw new Error("Router version heading missing");
+          }
+          all("a[href]", group).forEach(function (link) {
+            link.setAttribute("href", new URL(link.getAttribute("href"), root).href);
+          });
+          all("option[value]", group).forEach(function (entry) {
+            entry.value = new URL(entry.value, root).href;
+            entry.setAttribute("data-root", new URL(entry.getAttribute("data-root"), root).href);
+          });
+          all(".active", group).forEach(function (link) {
+            link.classList.remove("active");
+          });
+          if (routerContext) {
+            all("a[href]", routerContext).forEach(function (link) {
+              link.setAttribute("href", new URL(link.getAttribute("href"), root).href);
+            });
+            currentRouterContext.replaceWith(routerContext);
+          }
+          current.replaceWith(group);
+        }).catch(function () {
+          // Do not leave links pointing at a different release if loading fails.
+          select.value = selected.value;
+          context[repo] = selected.getAttribute("data-version");
+        });
+      }
     });
+
+    doc.addEventListener("change", function (event) {
+      var select = event.target;
+      var repo = select.getAttribute("data-switch");
+      if (repo && select.value) {
+        context[repo] = select.options[select.selectedIndex].getAttribute("data-version");
+        window.location.href = withVersions(select.value);
+      }
+    });
+
+    function preserveVersions(event) {
+      var link = event.target && event.target.closest ? event.target.closest("a[href]") : null;
+      if (!link || link.getAttribute("href").charAt(0) === "#") {
+        return;
+      }
+      var target = new URL(link.getAttribute("href"), here);
+      if (target.origin === docsRoot.origin && target.pathname.indexOf(docsRoot.pathname) === 0 &&
+          (target.pathname.endsWith(".html") || target.pathname.endsWith("/"))) {
+        link.setAttribute("href", withVersions(target.href));
+      }
+    }
+    doc.addEventListener("click", preserveVersions, true);
+    doc.addEventListener("auxclick", preserveVersions, true);
   }
 
   /* ---- code blocks: copy button -------------------------------------- */

@@ -507,6 +507,16 @@ body[data-repo] .vselect select:focus {
   margin-bottom: 12px;
 }
 
+.side-versions {
+  margin: 8px 0 12px;
+}
+
+body[data-repo] .side-versions select {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+}
+
 .side-v {
   font-size: 13px;
   color: var(--fg);
@@ -1677,7 +1687,7 @@ body[data-repo] .vselect select:focus {
   .topbar-right {
     display: grid;
     grid-column: 1 / -1;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 32px;
+    grid-template-columns: minmax(0, 1fr) 32px;
     width: 100%;
     gap: 6px;
   }
@@ -1845,7 +1855,7 @@ body[data-repo] .vselect select:focus {
   margin-top: 1rem;
   border-top: 1px solid var(--border);
 }
-.nav-repo:first-child {
+[data-nav-repo]:first-child .nav-repo {
   border-top: none;
   margin-top: 0.5rem;
 }
