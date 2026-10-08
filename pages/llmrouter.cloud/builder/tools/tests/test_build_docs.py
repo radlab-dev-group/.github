@@ -166,6 +166,28 @@ class BuildDocsTests(unittest.TestCase):
         self.assertIn('href="guide.html" class="active"', sidebar)
         self.assertEqual(sidebar.count('class="active"'), 1)
 
+    def test_hub_version_panels(self):
+        self.build("--check-links")
+        docs = self.output / "docs"
+        for relative in ("index.html", "1.0.0/index.html",
+                         "plugins/0.1.0/index.html", "plugins/index.html"):
+            source = (docs / relative).read_text()
+            router_panel = source.split('data-versions-repo="router">', 1)[1].split('</ul></div>', 1)[0]
+            plugins_panel = source.split('data-versions-repo="plugins">', 1)[1].split('</ul></div>', 1)[0]
+            self.assertIn('<h2>Router all versions</h2>', router_panel)
+            self.assertIn('<h2>Plugins all versions</h2>', plugins_panel)
+            self.assertIn('>v1.0.0</a>', router_panel)
+            self.assertNotIn('>v0.1.0</a>', router_panel)
+            self.assertIn('>v0.1.0</a>', plugins_panel)
+            self.assertIn('>rolling</a>', plugins_panel)
+            self.assertRegex(plugins_panel, r'class="vrow[^"]* latest"[^\n]*>v0\.2\.0</a>')
+            selected_router = "1.0.0" if relative.startswith("1.0.0/") else "1.1.0"
+            selected_plugins = "0.1.0" if relative.startswith("plugins/0.1.0/") else "rolling"
+            self.assertRegex(router_panel, rf'class="vrow current[^\n]*data-version="{selected_router}"')
+            self.assertRegex(plugins_panel, rf'class="vrow current[^\n]*data-version="{selected_plugins}"')
+        plugin_hub = (docs / "plugins/0.1.0/index.html").read_text()
+        self.assertIn('<h2>Plugins release</h2>', plugin_hub)
+
     def test_prereleases_and_no_satellites(self):
         self.build("--include-prerelease")
         self.assertTrue((self.output / "docs/plugins/0.3.0rc1/index.html").is_file())

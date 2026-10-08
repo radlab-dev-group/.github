@@ -1810,24 +1810,49 @@ def render_hub(release: Release, config: Config, versions: list[VersionEntry],
     )
 
     # Version listings
-    listings = []
-    hub_versions = versions
-    if hub_snapshot is not None:
-        hub_versions = [
+    nav_release = release.navigation_release or release
+
+    def version_box(repo_id: str, title: str) -> str:
+        repo = REPOS.get(repo_id)
+        if repo is None:
+            return ""
+        selected_snapshot = release.snapshots.get(repo_id) or repo.rolling_snapshot
+        selected_version = nav_release.version if repo_id == "router" else (
+            "rolling" if selected_snapshot and selected_snapshot.worktree else
+            selected_snapshot.version if selected_snapshot else ""
+        )
+        entries = versions if repo_id == "router" else [
             VersionEntry.from_release(Release(snap.version, snap.ref, snap.sha,
                                              snap.date, is_prerelease(snap.version)))
-            for snap in hub_snapshot.repo.tag_snapshots.values()
+            for snap in repo.tag_snapshots.values()
         ]
-    hub_latest = latest_satellite_tag(hub_snapshot.repo).removeprefix("v") if hub_snapshot else latest
-    for entry in hub_versions:
-        current = " current" if entry.version == release.version else ""
-        flag = " latest" if entry.version == hub_latest else ""
-        listings.append(
-            f'<li class="vrow{current}{flag}">'
-            f'<a href="{href.to(entry.entry if use_version_prefix else posixpath.join(hub_snapshot.repo.mount, entry.entry))}">'
-            f"v{html.escape(entry.version)}</a>"
-            f'<span class="mono">{short_date(entry.date)}</span>'
-            f'{"<em>latest</em>" if flag else ""}</li>'
+        newest = latest if repo_id == "router" else latest_satellite_tag(repo).removeprefix("v")
+        listings = []
+        for entry in entries:
+            current = " current" if entry.version == selected_version else ""
+            flag = " latest" if entry.version == newest else ""
+            target = entry.entry if repo_id == "router" else posixpath.join(repo.mount, entry.entry)
+            listings.append(
+                f'<li class="vrow{current}{flag}">'
+                f'<a href="{href.to(target)}" data-version-repo="{repo_id}" '
+                f'data-version="{html.escape(entry.version, quote=True)}">'
+                f"v{html.escape(entry.version)}</a>"
+                f'<span class="mono">{short_date(entry.date)}</span>'
+                f'{"<em>latest</em>" if flag else ""}</li>'
+            )
+        if repo_id != "router" and repo.rolling_snapshot:
+            current = " current" if selected_version == "rolling" else ""
+            listings.append(
+                f'<li class="vrow{current}"><a href="{href.to(posixpath.join(repo.mount, "index.html"))}" '
+                f'data-version-repo="{repo_id}" data-version="rolling">rolling</a>'
+                '<span class="mono">working tree</span></li>'
+            )
+        if not listings:
+            return ""
+        return (
+            f'<div class="box" data-versions-repo="{repo_id}"><h2>{title} all versions</h2>'
+            '<p class="tiny">Older releases keep the documentation of their own branch.</p>'
+            f'<ul class="vlist">{"".join(listings)}</ul></div>'
         )
 
     # Repositories box
@@ -1849,16 +1874,15 @@ def render_hub(release: Release, config: Config, versions: list[VersionEntry],
 
     aside = "".join(
         [
-            '<div class="box"><h2>this release</h2><dl>',
+            f'<div class="box"><h2>{"Plugins" if hub_snapshot and hub_snapshot.repo.id == "plugins" else "Services" if hub_snapshot else "Router"} release</h2><dl>',
             f'<dt>version</dt><dd class="mono">{html.escape(release.version)}</dd>',
             f'<dt>released</dt><dd class="mono">{short_date(release.date)}</dd>',
             f'<dt>release</dt><dd class="mono"><a href="{hub_repo_url}/tree/{quote(release.ref)}">{html.escape(release.ref)}</a></dd>',
             f'<dt>documents</dt><dd class="mono">{len(release.pages)}</dd>',
             "</dl></div>",
             repo_box,
-            '<div class="box"><h2>all versions</h2>'
-            '<p class="tiny">Older releases keep the documentation of their own branch.</p>',
-            f'<ul class="vlist" id="versions-list">{"".join(listings)}</ul></div>',
+            version_box("router", "Router"),
+            version_box("plugins", "Plugins"),
             '<div class="box note"><h2>how this works</h2><p>Every page here is '
             "rendered from a Markdown file committed in the repository. Nothing is "
             "copied by hand: the builder discovers <code>*.md</code> files, groups "

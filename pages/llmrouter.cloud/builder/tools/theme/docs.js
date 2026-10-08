@@ -124,6 +124,9 @@
           if (repo === "router" && (!routerContext || !currentRouterContext)) {
             throw new Error("Router version heading missing");
           }
+          var versionsSelector = '[data-versions-repo="' + repo + '"]';
+          var versionsPanel = parsed.querySelector(versionsSelector);
+          var currentVersionsPanel = doc.querySelector(versionsSelector);
           all("a[href]", group).forEach(function (link) {
             link.setAttribute("href", new URL(link.getAttribute("href"), root).href);
           });
@@ -139,6 +142,12 @@
               link.setAttribute("href", new URL(link.getAttribute("href"), root).href);
             });
             currentRouterContext.replaceWith(routerContext);
+          }
+          if (versionsPanel && currentVersionsPanel) {
+            all("a[href]", versionsPanel).forEach(function (link) {
+              link.setAttribute("href", new URL(link.getAttribute("href"), root).href);
+            });
+            currentVersionsPanel.replaceWith(versionsPanel);
           }
           current.replaceWith(group);
         }).catch(function () {
@@ -166,7 +175,12 @@
       var target = new URL(link.getAttribute("href"), here);
       if (target.origin === docsRoot.origin && target.pathname.indexOf(docsRoot.pathname) === 0 &&
           (target.pathname.endsWith(".html") || target.pathname.endsWith("/"))) {
-        link.setAttribute("href", withVersions(target.href));
+        var destination = new URL(withVersions(target.href));
+        var versionRepo = link.getAttribute("data-version-repo");
+        if (versionRepo) {
+          destination.searchParams.set(versionRepo, link.getAttribute("data-version"));
+        }
+        link.setAttribute("href", destination.href);
       }
     }
     doc.addEventListener("click", preserveVersions, true);

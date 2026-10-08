@@ -36,6 +36,10 @@ the other repository's navigation. The heading above the router menu and its
 documentation index always follow the selected router version; satellite version
 badges live in their own menu sections. Without JavaScript, static archive links
 remain usable with the default navigation context.
+Documentation index pages show separate `Router all versions` and
+`Plugins all versions` panels. Each highlights its selected version, and links
+switch only that project while preserving the other selection. Release details
+are labeled with the project name (`Router release` or `Plugins release`).
 
 Set `versions = "all"` in a satellite's `[[repos]]` entry to build its release
 archives, or `versions = "latest"` for rolling docs only. The plugins checkout
