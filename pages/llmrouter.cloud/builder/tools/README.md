@@ -16,19 +16,21 @@ Three repositories feed the documentation site:
 | Repository | Role | Versioning | URL prefix |
 |---|---|---|---|
 | `llm-router` | Core gateway docs | Per release tag (frozen archives) | `/docs/<version>/...` |
-| `llm-router-plugins` | Maskers, guardrails, routing plugins | Independent release tags + rolling working tree | `/docs/plugins/<version>/...`, `/docs/plugins/...` |
-| `llm-router-services` | HTTP services (guardrails, masker) | Rolling (latest working tree) | `/docs/services/...` |
+| `llm-router-plugins` | Maskers, guardrails, routing plugins | Independent release tags + latest stable mount | `/docs/plugins/<version>/...`, `/docs/plugins/...` |
+| `llm-router-services` | HTTP services (guardrails, masker) | Independent release tags + latest stable mount | `/docs/services/<version>/...`, `/docs/services/...` |
 
-Router and plugins releases are independent: each release tag gets a frozen copy
+Router, plugins and services releases are independent: each release tag gets a frozen copy
 of its own Markdown. The topbar selects the router version; satellite selectors
 live under their repository names in the left sidebar, including on `/docs`.
 Switching within a repository keeps the same document when available, otherwise
 it opens that release's documentation index. Plugin archives keep the shared
 sidebar: only the plugin section uses the selected plugin release, while router
 and services links remain available. The newest stable plugin tag is marked
-`latest`; older tags are `archived`. The separate `rolling (working tree)` option
-is marked `rolling`, not `latest`; services remain rolling.
-With JavaScript enabled, the chosen router and plugins versions travel together
+`latest`; older tags are `archived`. There is no separate rolling option: the
+unversioned satellite URLs use the newest stable tag, not uncommitted changes or
+the development branch. Repositories without tags expose only `latest` from the
+source checkout.
+With JavaScript enabled, the chosen router, plugins and services versions travel together
 in URL query parameters. Opening a plugin archive restores the selected router
 menu instead of resetting it to latest, and vice versa. Each page still renders
 its own repository's version from its archive path; query parameters only select
@@ -37,15 +39,15 @@ documentation index always follow the selected router version; satellite version
 badges live in their own menu sections. Without JavaScript, static archive links
 remain usable with the default navigation context.
 Documentation index pages show separate `Router all versions` and
-`Plugins all versions` panels. Each highlights its selected version, and links
+`Plugins all versions` and `Services all versions` panels. Each highlights its selected version, and links
 switch only that project while preserving the other selection. Release details
-are labeled with the project name (`Router release` or `Plugins release`).
+are labeled with the project name (`Router release`, `Plugins release` or `Services release`).
 
 Set `versions = "all"` in a satellite's `[[repos]]` entry to build its release
-archives, or `versions = "latest"` for rolling docs only. The plugins checkout
+archives, or `versions = "latest"` for the latest tag only. Both satellite checkouts
 must include tags (`git fetch --tags`; CI uses `fetch-depth: 0`). Router flags
-`--all-versions` and `--max-versions` do not limit independent plugin archives.
-`--include-prerelease` applies to both repositories.
+`--all-versions` and `--max-versions` do not limit independent satellite archives.
+`--include-prerelease` applies to all three repositories; latest still prefers a stable tag.
 
 ## Repository resolution
 

@@ -3,9 +3,8 @@
 repository and its satellite repositories (plugins, services).
 
 Every router release tag keeps a frozen copy at /docs/<version>/....
-Plugins are versioned independently at /docs/plugins/<version>/..., with
-the current working tree at /docs/plugins/ (rolling). Services remain
-rolling at /docs/services/ by default. Satellite archives can be enabled
+Plugins and services are versioned independently at /docs/<mount>/<version>/...,
+with the latest stable tag at /docs/<mount>/. Satellite archives can be enabled
 with versions = "all" in the repository configuration.
 
 Repository sources are configured in tools/docs.toml ([[repos]]) and can be
@@ -353,12 +352,13 @@ class Snapshot:
     version: str
     worktree: bool
     pages: list["Page"] = field(default_factory=list)
+    mounted_latest: bool = False
 
     @property
     def archive_root(self) -> str:
         if self.repo.primary:
             return self.version
-        return self.repo.mount if self.worktree else posixpath.join(self.repo.mount, self.version)
+        return self.repo.mount if self.worktree or self.mounted_latest else posixpath.join(self.repo.mount, self.version)
 
     @property
     def link_ref(self) -> str:
@@ -1279,7 +1279,7 @@ def latest_satellite_tag(repo):
 
 def snapshot_status(snapshot, latest):
     if snapshot.worktree:
-        return "rolling"
+        return "latest"
     if snapshot.repo.primary:
         return "latest" if snapshot.version == latest else "archived"
     return "latest" if snapshot.ref == latest_satellite_tag(snapshot.repo) else "archived"
@@ -1298,7 +1298,7 @@ def render_version_options(page_source, release, versions, latest, page_dir,
     if not active:
         options.append('<option value="" disabled selected>choose version</option>')
     if repo_id != "router":
-        # Independent satellite tags followed by the rolling working tree.
+        # Independent satellite tags; the default mount uses the latest stable tag.
         pages_by_tag = getattr(repo, "tag_pages", {})
         for tag in getattr(repo, "tags", []):
             version = tag[1:] if tag.startswith("v") else tag
@@ -1312,14 +1312,14 @@ def render_version_options(page_source, release, versions, latest, page_dir,
                      f'data-root="{html.escape(root, quote=True)}"']
             if is_prerelease(version):
                 attrs.append('data-kind="pre"')
-            if active and snapshot is not None and not snapshot.worktree and snapshot.ref == tag:
+            if active and snapshot is not None and snapshot.ref == tag:
                 attrs.append("selected")
             suffix = "  \u00b7 latest" if tag == latest_satellite_tag(repo) else ""
             options.append(
                 f'<option {" ".join(attrs)}>v{html.escape(version)}{suffix}</option>'
             )
         rolling = repo.rolling_snapshot
-        if rolling is not None and rolling.worktree:
+        if rolling is not None and not repo.tags:
             abs_target = posixpath.join(repo.mount, "index.html")
             if page_source:
                 for page in rolling.pages:
@@ -1328,12 +1328,12 @@ def render_version_options(page_source, release, versions, latest, page_dir,
                         break
             root = href.to(posixpath.join(repo.mount, "index.html"))
             attrs = [f'value="{html.escape(href.to(abs_target), quote=True)}"',
-                     'data-version="rolling"',
+                     'data-version="latest"',
                      f'data-root="{html.escape(root, quote=True)}"']
             if active and (snapshot is None or snapshot.worktree):
                 attrs.append("selected")
             options.append(
-                f'<option {" ".join(attrs)}>rolling (working tree)</option>'
+                f'<option {" ".join(attrs)}>latest</option>'
             )
         return "\n".join(options)
     for entry in versions:
@@ -1418,7 +1418,7 @@ def render_sidebar(release, config, current, page_dir, latest, versions,
         if repo_id != "router":
             nav_snapshot = nav_snapshots[repo_id]
             status = snapshot_status(nav_snapshot, latest)
-            version_label = "rolling" if nav_snapshot.worktree else "v" + nav_snapshot.version
+            version_label = "latest" if nav_snapshot.worktree else "v" + nav_snapshot.version
             parts.append(
                 '<div class="side-head">'
                 f'<span class="side-v mono">{html.escape(version_label)}</span>'
@@ -1818,7 +1818,7 @@ def render_hub(release: Release, config: Config, versions: list[VersionEntry],
             return ""
         selected_snapshot = release.snapshots.get(repo_id) or repo.rolling_snapshot
         selected_version = nav_release.version if repo_id == "router" else (
-            "rolling" if selected_snapshot and selected_snapshot.worktree else
+            "latest" if selected_snapshot and selected_snapshot.worktree else
             selected_snapshot.version if selected_snapshot else ""
         )
         entries = versions if repo_id == "router" else [
@@ -1840,12 +1840,12 @@ def render_hub(release: Release, config: Config, versions: list[VersionEntry],
                 f'<span class="mono">{short_date(entry.date)}</span>'
                 f'{"<em>latest</em>" if flag else ""}</li>'
             )
-        if repo_id != "router" and repo.rolling_snapshot:
-            current = " current" if selected_version == "rolling" else ""
+        if repo_id != "router" and repo.rolling_snapshot and not entries:
+            current = " current" if selected_version == "latest" else ""
             listings.append(
                 f'<li class="vrow{current}"><a href="{href.to(posixpath.join(repo.mount, "index.html"))}" '
-                f'data-version-repo="{repo_id}" data-version="rolling">rolling</a>'
-                '<span class="mono">working tree</span></li>'
+                f'data-version-repo="{repo_id}" data-version="latest">latest</a>'
+                '<span class="mono">source checkout</span></li>'
             )
         if not listings:
             return ""
@@ -1883,6 +1883,7 @@ def render_hub(release: Release, config: Config, versions: list[VersionEntry],
             repo_box,
             version_box("router", "Router"),
             version_box("plugins", "Plugins"),
+            version_box("services", "Services"),
             '<div class="box note"><h2>how this works</h2><p>Every page here is '
             "rendered from a Markdown file committed in the repository. Nothing is "
             "copied by hand: the builder discovers <code>*.md</code> files, groups "
@@ -2062,7 +2063,7 @@ def build_site(config, output, releases, entries, latest, search_scope, dry_run)
     Router pages are written to /docs/<router-version>/.... Satellite
     (plugins/services) pages follow their own versioning: each satellite
     tag gets a frozen copy at /docs/<mount>/<sat-version>/..., and the
-    rolling working tree is mounted at /docs/<mount>/... under the newest
+    latest stable tag is mounted at /docs/<mount>/... under the newest
     router version.
     """
     docs_root = output / DOCS_DIR_NAME
@@ -2104,7 +2105,7 @@ def build_site(config, output, releases, entries, latest, search_scope, dry_run)
             write_file(docs_root / release.version / "search.json", index, dry_run)
             written += 1
         for repo_id, snap in release.snapshots.items():
-            if repo_id == "router" or not snap.worktree:
+            if repo_id == "router" or snap.archive_root != snap.repo.mount:
                 continue
             sat_release = Release(snap.version, snap.ref, snap.sha, snap.date, False,
                                   snapshots={repo_id: snap}, navigation_release=release)
@@ -2344,7 +2345,7 @@ def main(argv: list[str] | None = None) -> int:
                     print(f"[docs] warning: {e}", file=sys.stderr)
 
     # Attach satellite snapshots.
-    #  - the rolling working tree goes to the latest router release only
+    #  - the latest stable tag goes to the latest router release only
     #  - every satellite release tag gets its own frozen snapshot attached
     #    to the newest router release (satellites version independently of
     #    the router; the archives are written to /docs/<mount>/<tag>/)
@@ -2356,10 +2357,14 @@ def main(argv: list[str] | None = None) -> int:
             if repo.root is None or not repo.root.is_dir():
                 continue
             try:
-                snap = satellite_snapshot(repo)
+                repo.tags = satellite_tags(repo, args.include_prerelease)
+                latest_tag = latest_satellite_tag(repo) or (repo.tags[0] if repo.tags else None)
+                if repo.versions != "all":
+                    repo.tags = [latest_tag] if latest_tag else []
+                snap = satellite_snapshot(repo, ref=latest_tag)
+                snap.mounted_latest = True
                 latest_release.snapshots[repo_id] = snap
                 repo.rolling_snapshot = snap
-                repo.tags = satellite_tags(repo, args.include_prerelease) if repo.versions == "all" else []
                 for tag in repo.tags:
                     try:
                         tag_snap = satellite_snapshot(repo, ref=tag)

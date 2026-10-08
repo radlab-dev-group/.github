@@ -39,7 +39,7 @@ class BuildDocsTests(unittest.TestCase):
         self.root = Path(self.temp.name)
         self.router = self.make_repo("router", ["1.0.0", "1.1.0"])
         self.plugins = self.make_repo("plugins", ["v0.1.0", "v0.2.0", "v0.3.0rc1"])
-        self.services = self.make_repo("services", [])
+        self.services = self.make_repo("services", ["v0.4.0", "v0.5.0"])
         self.output = self.root / "site"
 
     def git(self, root, *args):
@@ -92,7 +92,7 @@ class BuildDocsTests(unittest.TestCase):
             selected = [o for o in select["plugins"] if "selected" in o]
             self.assertEqual(len(selected), 1)
             self.assertEqual(selected[0]["value"], "index-2.html")
-            self.assertIn("rolling", source)
+            self.assertNotIn("rolling", source)
             self.assertNotIn("0.3.0rc1", source)
             hub_option = Selects((archive / "index.html").read_text()).selects["plugins"][0]
             self.assertEqual((archive / hub_option["value"]).resolve(),
@@ -150,7 +150,7 @@ class BuildDocsTests(unittest.TestCase):
         for relative, status in (("plugins/0.2.0/index.html", "latest"),
                                  ("plugins/0.2.0/guides/guide.html", "latest"),
                                  ("plugins/0.1.0/index.html", "archived"),
-                                 ("plugins/index.html", "rolling")):
+                                 ("plugins/index.html", "latest")):
             source = (docs / relative).read_text()
             router_context = source.split('<div data-router-context>', 1)[1].split('</a></div>', 1)[0]
             self.assertIn('>v1.1.0</span>', router_context)
@@ -179,14 +179,35 @@ class BuildDocsTests(unittest.TestCase):
             self.assertIn('>v1.0.0</a>', router_panel)
             self.assertNotIn('>v0.1.0</a>', router_panel)
             self.assertIn('>v0.1.0</a>', plugins_panel)
-            self.assertIn('>rolling</a>', plugins_panel)
+            self.assertNotIn('rolling', plugins_panel)
             self.assertRegex(plugins_panel, r'class="vrow[^"]* latest"[^\n]*>v0\.2\.0</a>')
             selected_router = "1.0.0" if relative.startswith("1.0.0/") else "1.1.0"
-            selected_plugins = "0.1.0" if relative.startswith("plugins/0.1.0/") else "rolling"
+            selected_plugins = "0.1.0" if relative.startswith("plugins/0.1.0/") else "0.2.0"
             self.assertRegex(router_panel, rf'class="vrow current[^\n]*data-version="{selected_router}"')
             self.assertRegex(plugins_panel, rf'class="vrow current[^\n]*data-version="{selected_plugins}"')
         plugin_hub = (docs / "plugins/0.1.0/index.html").read_text()
         self.assertIn('<h2>Plugins release</h2>', plugin_hub)
+
+    def test_latest_tags_and_services_versions(self):
+        self.build("--check-links")
+        docs = self.output / "docs"
+        for repo, newest, older in (("plugins", "0.2.0", "0.1.0"),
+                                   ("services", "0.5.0", "0.4.0")):
+            latest_page = (docs / repo / "guides/guide.html").read_text()
+            self.assertIn(f"Guide v{newest}", latest_page)
+            self.assertNotIn("Guide rolling", latest_page)
+            for relative in ("index.html", f"{repo}/index.html", f"{repo}/{older}/index.html"):
+                source = (docs / relative).read_text()
+                options = Selects(source).selects[repo]
+                self.assertEqual({o["data-version"] for o in options}, {newest, older})
+                self.assertNotIn("rolling", source)
+                panel = source.split(f'data-versions-repo="{repo}">', 1)[1].split('</ul></div>', 1)[0]
+                self.assertIn(f'<h2>{repo.title()} all versions</h2>', panel)
+                self.assertIn(f'>v{older}</a>', panel)
+                self.assertRegex(panel, rf'class="vrow[^\"]* latest"[^\n]*>v{re.escape(newest)}</a>')
+            archive = (docs / repo / older / "guides/guide.html").read_text()
+            self.assertIn(f"Guide v{older}", archive)
+            self.assertIn('>archived</span>', archive)
 
     def test_prereleases_and_no_satellites(self):
         self.build("--include-prerelease")
@@ -204,6 +225,8 @@ class BuildDocsTests(unittest.TestCase):
         options = Selects((self.output / "docs/plugins/guides/guide.html").read_text()).selects["plugins"]
         self.assertEqual(len(options), 1)
         self.assertIn("selected", options[0])
+        self.assertEqual(options[0]["data-version"], "latest")
+        self.assertNotIn("rolling", (self.output / "docs/plugins/index.html").read_text())
 
 
 if __name__ == "__main__":

@@ -5,8 +5,8 @@
 #   Router  -- the version spine. Every release tag keeps a frozen copy of its
 #              documentation at /docs/<version>/....
 #   Plugins -- independent release archives at /docs/plugins/<version>/...,
-#              plus rolling working-tree docs at /docs/plugins/....
-#   Services-- rolling working-tree docs at /docs/services/....
+#              plus latest stable docs at /docs/plugins/....
+#   Services-- independent release archives with latest at /docs/services/....
 #
 # Repository sources are configured in [[repos]] below. Paths can be supplied
 # via CLI flags (--source, --plugins, --services), environment variables
@@ -86,7 +86,7 @@ id = "services"
 name = "llm-router-services"
 repo_url = "https://github.com/radlab-dev-group/llm-router-services"
 mount = "services"
-versions = "latest"
+versions = "all"
 fallback_section = "services-other"
 
 # ---------------------------------------------------------------------------
