@@ -4,10 +4,9 @@
 # Multi-repo layout:
 #   Router  -- the version spine. Every release tag keeps a frozen copy of its
 #              documentation at /docs/<version>/....
-#   Plugins -- rolling docs (llm-router-plugins working tree) mounted into the
-#              newest version at /docs/<latest>/plugins/....
-#   Services-- rolling docs (llm-router-services working tree) mounted into the
-#              newest version at /docs/<latest>/services/....
+#   Plugins -- independent release archives at /docs/plugins/<version>/...,
+#              plus rolling working-tree docs at /docs/plugins/....
+#   Services-- rolling working-tree docs at /docs/services/....
 #
 # Repository sources are configured in [[repos]] below. Paths can be supplied
 # via CLI flags (--source, --plugins, --services), environment variables
@@ -56,6 +55,10 @@ exclude = [
   "radlab/**",
   # Local ops scratch note with machine-specific paths.
   "scripts/MEDUSA_README.md",
+  # Local working notes from the llm-router-plugins checkout.
+  "improve-codex-work-mode-routing.md",
+  "improve-codex-work-mode-routing-review.md",
+  "improve-codex-work-mode-routing-verification.md",
 ]
 fallback_section = "other"
 
@@ -75,7 +78,7 @@ id = "plugins"
 name = "llm-router-plugins"
 repo_url = "https://github.com/radlab-dev-group/llm-router-plugins"
 mount = "plugins"
-versions = "latest"
+versions = "all"
 fallback_section = "plugins-other"
 
 [[repos]]

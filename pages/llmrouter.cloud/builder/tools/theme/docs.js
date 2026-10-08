@@ -77,15 +77,13 @@
 
   /* ---- version switcher ---------------------------------------------- */
   function initVersions() {
-    var select = doc.getElementById("versions");
-    if (!select) {
-      return;
-    }
-    select.addEventListener("change", function () {
-      var target = select.value;
-      if (target) {
-        window.location.href = target;
-      }
+    all("select[data-switch]").forEach(function (select) {
+      select.addEventListener("change", function () {
+        var target = select.value;
+        if (target) {
+          window.location.href = target;
+        }
+      });
     });
   }
 

@@ -2,10 +2,11 @@
 """Generate the llm-router documentation site from Markdown in the source
 repository and its satellite repositories (plugins, services).
 
-The router repository is the version spine: every release tag keeps a frozen
-copy of its documentation at /docs/<version>/.... The plugins and services
-repositories are mounted as rolling documentation into the newest version
-only, at /docs/<latest>/plugins/... and /docs/<latest>/services/....
+Every router release tag keeps a frozen copy at /docs/<version>/....
+Plugins are versioned independently at /docs/plugins/<version>/..., with
+the current working tree at /docs/plugins/ (rolling). Services remain
+rolling at /docs/services/ by default. Satellite archives can be enabled
+with versions = "all" in the repository configuration.
 
 Repository sources are configured in tools/docs.toml ([[repos]]) and can be
 overridden with --source, --plugins, --services CLI flags or environment
@@ -121,6 +122,12 @@ class Repo:
     primary: bool = False
     versions: str = "latest"
     fallback_section: str = "other"
+    # Satellite release tags (independent versioning); populated in main().
+    tags: list[str] = field(default_factory=list)
+    current_tag: str = ""
+    tag_pages: dict[str, dict[str, str]] = field(default_factory=dict)
+    tag_snapshots: dict[str, "Snapshot"] = field(default_factory=dict)
+    rolling_snapshot: "Snapshot | None" = None
 
 
 @dataclass
@@ -348,6 +355,12 @@ class Snapshot:
     pages: list["Page"] = field(default_factory=list)
 
     @property
+    def archive_root(self) -> str:
+        if self.repo.primary:
+            return self.version
+        return self.repo.mount if self.worktree else posixpath.join(self.repo.mount, self.version)
+
+    @property
     def link_ref(self) -> str:
         """Ref to use in blob/tree links: tag/branch name or short sha."""
         if self.worktree:
@@ -371,10 +384,16 @@ class Release:
         primary = self.snapshots.get("router")
         if primary:
             result.extend(primary.pages)
-        for repo_id in sorted(self.snapshots.keys()):
-            if repo_id == "router":
+        for key in sorted(self.snapshots.keys()):
+            if key == "router":
                 continue
-            result.extend(self.snapshots[repo_id].pages)
+            base = key.split(":", 1)[0]
+            if ":" in key:
+                if base != "router":
+                    # Frozen satellite tag snapshot: excluded from the
+                    # navigation; its pages live in their own archive.
+                    continue
+            result.extend(self.snapshots[key].pages)
         return result
 
     @property
@@ -386,29 +405,41 @@ class Release:
 
 def version_key(version: str) -> tuple:
     core, _, extra = version.partition(PRERELEASE_MARKER)
+    match = re.match(r"^(\d+(?:\.\d+)*)(?:a|b|rc|alpha|beta|pre|preview|dev)(\d*)$", core, re.I)
+    if match:
+        core, extra = match.group(1), core[len(match.group(1)):]
     numbers = tuple(int(part) for part in re.findall(r"\d+", core)[:4])
     return (numbers, extra == "", extra)
 
 
 def is_prerelease(version: str) -> bool:
-    return PRERELEASE_MARKER in version
+    return PRERELEASE_MARKER in version or bool(
+        re.search(r"\d(?:a|b|rc|alpha|beta|pre|preview|dev)\d*$", version, re.I)
+    )
 
 
-def satellite_snapshot(repo: Repo, release_date: str = "") -> Snapshot:
-    """Build a working-tree snapshot for a rolling satellite repo."""
+def satellite_snapshot(repo: Repo, ref: str | None = None) -> Snapshot:
+    """Build a snapshot for a satellite repo: the working tree, or a tag/commit ref."""
     if repo.root is None:
         raise SystemExit(f"[docs] satellite repo {repo.id} has no root")
-    version_file = repo.root / ".version"
-    version = (
-        version_file.read_text(encoding="utf-8").strip()
-        if version_file.exists()
-        else "0.0.0"
-    )
     if not git_ok(repo):
+        if ref is not None:
+            raise SystemExit(f"[docs] satellite repo {repo.id} is not a git checkout")
+        version_file = repo.root / ".version"
+        version = (
+            version_file.read_text(encoding="utf-8").strip()
+            if version_file.exists()
+            else "0.0.0"
+        )
         return Snapshot(
             repo=repo, ref="source", sha="unknown", date="unknown",
             version=version, worktree=True,
         )
+    if ref is not None:
+        tag = ref[1:] if ref.startswith("v") else ref
+        sha = git(repo, "rev-parse", "--short", f"{ref}^{{commit}}").strip()
+        date = git(repo, "log", "-1", "--format=%cI", ref).strip()
+        return Snapshot(repo=repo, ref=ref, sha=sha, date=date, version=tag, worktree=False)
     branch = git(repo, "rev-parse", "--abbrev-ref", "HEAD").strip()
     if branch == "HEAD":
         branch = (
@@ -417,7 +448,22 @@ def satellite_snapshot(repo: Repo, release_date: str = "") -> Snapshot:
         )
     sha = git(repo, "rev-parse", "--short", "HEAD").strip()
     date = git(repo, "log", "-1", "--format=%cI", "HEAD").strip()
-    return Snapshot(repo=repo, ref=branch, sha=sha, date=date, version=version, worktree=True)
+    return Snapshot(repo=repo, ref=branch, sha=sha, date=date, version="main", worktree=True)
+
+
+def satellite_tags(repo: Repo, include_prerelease: bool = True) -> list[str]:
+    """All release tags of a satellite repository, newest first."""
+    if repo.root is None or not git_ok(repo):
+        return []
+    tags = git(repo, "tag").split()
+    releases = []
+    for tag in tags:
+        version = tag[1:] if tag.startswith("v") else tag
+        if is_prerelease(version) and not include_prerelease:
+            continue
+        releases.append((version_key(version), tag))
+    releases.sort(reverse=True)
+    return [tag for _, tag in releases]
 
 
 def tag_snapshot(repo: Repo, tag: str) -> Snapshot:
@@ -750,8 +796,14 @@ def resolve_crosslink(config: Config, page_source: str, target: str, release: Re
         # Find the page for target_path in this snapshot
         for p in snapshot.pages:
             if p.source == target_path or target_path.rstrip("/").endswith("/" + p.source):
-                # Target found — caller will compute the relative link
-                return p.out
+                # Target found — caller will compute the relative link.
+                # Satellite pages are mounted under /docs/<mount>/...; frozen
+                # tag archives add the satellite version on top.
+                out = p.out
+                target_repo = REPOS.get(repo_id)
+                if target_repo:
+                    out = posixpath.join(snapshot.archive_root, out)
+                return out
     return None
 
 
@@ -765,12 +817,19 @@ def rewrite_links(
     config: Config,
     unresolved: list[str],
 ) -> str:
-    from_dir = posixpath.dirname(page.out)
-    href = Href(from_dir)
     snapshot = release.snapshots.get(page.repo)
     if snapshot is None:
         raise SystemExit(f"[docs] page {page.source} has no snapshot")
     repo = snapshot.repo
+    # The page's on-disk directory: router pages live in the version dir;
+    # satellite pages under their archive (rolling mount or frozen tag).
+    if page.repo == "router":
+        from_dir = posixpath.join(release.version, posixpath.dirname(page.out))
+    elif snapshot.worktree:
+        from_dir = posixpath.join(repo.mount, posixpath.dirname(page.out))
+    else:
+        from_dir = posixpath.join(repo.mount, snapshot.version, posixpath.dirname(page.out))
+    href = Href(from_dir)
     def replace(match: re.Match) -> str:
         prefix, target, attrs, close = (
             match.group(1), match.group(2), match.group(3), match.group(4)
@@ -804,15 +863,34 @@ def rewrite_links(
             wants.append(root)
         link = ""
         blob = f"{repo.url}/blob/{quote(snapshot.link_ref)}"
+        mount = repo.mount if repo.mount and page.repo != "router" else ""
         for want in wants:
             stem_only = bool(want) and not posixpath.splitext(want)[1]
             with_md = want + ".md"
-            if want in index:
-                out = index[want].out
-                return f"{prefix}{href.to(out)}{anchor_suffix}{suffix}"
-            if stem_only and with_md in index:
-                out = index[with_md].out
-                return f"{prefix}{href.to(out)}{anchor_suffix}{suffix}"
+            if mount:
+                # Satellite archive index: out paths are relative to the
+                # archive root; the on-disk dir adds mount (and version).
+                if want in index:
+                    out = index[want].out
+                    if snapshot.worktree:
+                        out = posixpath.join(mount, out)
+                    else:
+                        out = posixpath.join(mount, snapshot.version, out)
+                    return f"{prefix}{href.to(out)}{anchor_suffix}{suffix}"
+                if stem_only and with_md in index:
+                    out = index[with_md].out
+                    if snapshot.worktree:
+                        out = posixpath.join(mount, out)
+                    else:
+                        out = posixpath.join(mount, snapshot.version, out)
+                    return f"{prefix}{href.to(out)}{anchor_suffix}{suffix}"
+            else:
+                if want in index:
+                    out = index[want].out
+                    return f"{prefix}{href.versioned(release.version, out)}{anchor_suffix}{suffix}"
+                if stem_only and with_md in index:
+                    out = index[with_md].out
+                    return f"{prefix}{href.versioned(release.version, out)}{anchor_suffix}{suffix}"
             if want in tree_dirs:
                 link = f"{repo.url}/tree/{quote(snapshot.link_ref)}/{quote(want)}"
                 break
@@ -916,9 +994,6 @@ def collect_pages_for_snapshot(release: Release, snapshot: Snapshot, config: Con
         extracted, _ = first_heading(document)
         title = override.title or extracted or slug_part(source).replace("-", " ").title()
         out = output_path(source, override)
-        # Mount prefix for satellite repos
-        if repo.mount:
-            out = posixpath.join(repo.mount, out)
         out = unique_output(out, used)
         pages.append(
             Page(
@@ -940,9 +1015,20 @@ def collect_pages_for_snapshot(release: Release, snapshot: Snapshot, config: Con
 
 def collect_pages(release: Release, config: Config) -> None:
     """Collect pages for all snapshots in a release."""
-    used: set[str] = {"index.html"}
-    for snapshot in release.snapshots.values():
-        collect_pages_for_snapshot(release, snapshot, config, used)
+    used: dict[str, set[str]] = {}
+    for key, snapshot in release.snapshots.items():
+        group = snapshot.repo.id  # rolling + tag snapshots of one repo share
+        # the same mount namespace, so out paths must stay unique per repo.
+        collect_pages_for_snapshot(
+            release, snapshot, config, used.setdefault(group, {"index.html"})
+        )
+        repo = REPOS.get(snapshot.repo.id)
+        if repo is not None and ":" in key:
+            tag = key.split(":", 1)[1]
+            repo.tag_pages.setdefault(tag, {}).update(
+                {p.source: p.out for p in snapshot.pages}
+            )
+            repo.tag_snapshots[tag] = snapshot
 
 def flatten_toc(tokens: list) -> list[dict]:
     flat: list[dict] = []
@@ -961,7 +1047,7 @@ def render_documents_for_snapshot(snapshot: Snapshot, release: Release, config: 
     for p in snapshot.pages:
         index[p.source] = p
     for page in snapshot.pages:
-        body = engine.convert(page.markdown)
+        body = engine.reset().convert(page.markdown)
         page.toc = list(getattr(engine, "toc_tokens", []))
         page.headings = [str(token["name"]) for token in flatten_toc(page.toc)]
         page.html_body = rewrite_links(
@@ -1037,10 +1123,7 @@ SHELL_TEMPLATE = """<!DOCTYPE html>
 <kbd>/</kbd>
 <div class="results" id="results" role="listbox" aria-label="Search results" hidden></div>
 </form>
-<label class="vselect">
-<span class="sr-only">Documentation version</span>
-<select id="versions" aria-label="Documentation version">{versions}</select>
-</label>
+{version_controls}
 <a class="iconbtn" href="{repo}" aria-label="Repository on GitHub" title="Repository on GitHub">{github}</a>
 </div>
 </div>
@@ -1111,6 +1194,7 @@ class VersionEntry:
     sha: str = ""
     pages: dict[str, str] = field(default_factory=dict)
     sources: dict = field(default_factory=dict)
+    satellites: dict[str, str] = field(default_factory=dict)
 
     @property
     def label(self) -> str:
@@ -1141,6 +1225,9 @@ class VersionEntry:
             sha=release.sha,
             pages=pages,
             sources=sources,
+            satellites={
+                sid: snap.version for sid, snap in release.snapshots.items() if sid != "router"
+            },
         )
 
     @staticmethod
@@ -1155,6 +1242,7 @@ class VersionEntry:
             sha=str(raw.get("sha", "")),
             pages=raw.get("pages", {}),
             sources=raw.get("sources", {}),
+            satellites={str(k): str(v) for k, v in raw.get("satellites", {}).items()},
         )
 
     def as_json(self) -> dict:
@@ -1163,6 +1251,7 @@ class VersionEntry:
             "entry": self.entry,
             "date": self.date,
             "prerelease": self.prerelease,
+            "satellites": self.satellites,
             "ref": self.ref,
             "sha": self.sha,
             "pages": self.pages,
@@ -1182,15 +1271,56 @@ def short_date(value: str) -> str:
         return value or "unknown"
 
 
-def render_version_options(page_source, release, versions, latest, page_dir):
+def render_version_options(page_source, release, versions, latest, page_dir,
+                           repo_id="router", snapshot=None, active=True):
+    """Version switcher options for one repo.
+
+    Router pages switch router versions; satellite pages switch that
+    satellite's own releases (independent versioning).
+    """
     href = Href(page_dir)
+    repo = REPOS.get(repo_id)
     options: list[str] = []
+    if not active:
+        options.append('<option value="" disabled selected>choose version</option>')
+    if repo_id != "router":
+        # Independent satellite tags followed by the rolling working tree.
+        pages_by_tag = getattr(repo, "tag_pages", {})
+        for tag in getattr(repo, "tags", []):
+            version = tag[1:] if tag.startswith("v") else tag
+            out = pages_by_tag.get(tag, {}).get(page_source) if page_source else None
+            abs_target = posixpath.join(
+                repo.mount, version, out or "index.html"
+            )
+            attrs = [f'value="{html.escape(href.to(abs_target), quote=True)}"']
+            if is_prerelease(version):
+                attrs.append('data-kind="pre"')
+            if active and snapshot is not None and not snapshot.worktree and snapshot.ref == tag:
+                attrs.append("selected")
+            options.append(
+                f'<option {" ".join(attrs)}>v{html.escape(version)}</option>'
+            )
+        rolling = repo.rolling_snapshot
+        if rolling is not None and rolling.worktree:
+            abs_target = posixpath.join(repo.mount, "index.html")
+            if page_source:
+                for page in rolling.pages:
+                    if page.source == page_source:
+                        abs_target = posixpath.join(repo.mount, page.out)
+                        break
+            attrs = [f'value="{html.escape(href.to(abs_target), quote=True)}"']
+            if active and (snapshot is None or snapshot.worktree):
+                attrs.append("selected")
+            options.append(
+                f'<option {" ".join(attrs)}>rolling (working tree)</option>'
+            )
+        return "\n".join(options)
     for entry in versions:
         target = entry.entry
         if page_source and page_source in entry.pages:
             target = posixpath.join(entry.version, entry.pages[page_source])
         attrs = [f'value="{html.escape(href.to(target), quote=True)}"']
-        if entry.version == release.version:
+        if active and entry.version == release.version:
             attrs.append("selected")
         if entry.prerelease:
             attrs.append('data-kind="pre"')
@@ -1201,23 +1331,51 @@ def render_version_options(page_source, release, versions, latest, page_dir):
     return "\n".join(options)
 
 
-def render_sidebar(release, config, current, page_dir, latest, versions, search_enabled=True):
+def render_sidebar(release, config, current, page_dir, latest, versions,
+                   search_enabled=True, snapshot=None):
     """Sidebar with repo groups."""
     href = Href(page_dir)
     version_dir = release.version
+    # Satellite pages (rolling or frozen tag) render their sidebar from the
+    # snapshot's own page tree with relative links inside the archive.
+    if snapshot is not None:
+        if current is not None:
+            if current.repo != snapshot.repo.id:
+                snapshot = None
+    if snapshot is not None:
+        nav_release_pages = snapshot.pages
+        nav_release_version = snapshot.version
+        side_tag = "live" if snapshot.worktree else "tag"
+        # The hub lives at the top of the snapshot's page tree (the mount
+        # dir for rolling, <mount>/<version>/ for frozen tags). Compute the
+        # relative climb from the current page's directory.
+        hub_link = href.to(posixpath.join(snapshot.archive_root, "index.html"))
+    else:
+        nav_release_pages = release.pages
+        nav_release_version = release.version
+        side_tag = "live" if release.version == latest else "old"
+        hub_link = href.versioned(version_dir, "index.html")
     grouped_by_repo: dict[str, dict[str, list[Page]]] = {}
-    for page in release.pages:
+    for page in nav_release_pages:
         grouped_by_repo.setdefault(page.repo, {}).setdefault(page.section, []).append(page)
 
-    is_latest = release.version == latest
     parts: list[str] = [
         '<div class="side-head">',
-        f'<span class="side-v mono">v{html.escape(release.version)}</span>',
-        f'<span class="side-tag {"live" if is_latest else "old"}">{"latest" if is_latest else "archived"}</span>',
+        f'<span class="side-v mono">{html.escape("rolling" if snapshot and snapshot.worktree else "v" + nav_release_version)}</span>',
+        f'<span class="side-tag {"live" if side_tag == "live" else "old"}">'
+        f'{"latest" if side_tag == "live" else "archived"}</span>',
         "</div>",
-        f'<a class="side-hub" href="{href.versioned(version_dir, "index.html")}">documentation index</a>',
+        f'<a class="side-hub" href="{hub_link}">documentation index</a>',
         '<nav class="nav-tree" aria-label="Documentation">',
     ]
+
+    def page_link(repo_id: str, page: Page) -> str:
+        # Router pages live in /docs/<router-version>/.... Satellite pages
+        # (rolling or frozen tag) live in their own archive; the sidebar is
+        # rendered from the current page's directory, so a relative link
+        # keeps every group inside the right archive.
+        target_snapshot = snapshot or release.snapshots[repo_id]
+        return href.to(posixpath.join(target_snapshot.archive_root, page.out))
 
     # Render groups in order: router first, then satellites in config order
     repo_order = ["router"] + [r.id for r in REPOS.values() if r.id != "router"]
@@ -1239,27 +1397,38 @@ def render_sidebar(release, config, current, page_dir, latest, versions, search_
             if not pages:
                 continue
             is_open = bool(current and current.section == section.id) or current is None
+            section_link = page_link(repo_id, pages[0])
             parts.append(
                 f'<section class="nav-sec{" open" if is_open else ""}">'
                 f'<h2 class="nav-sec-title">'
-                f'<a href="{href.versioned(version_dir, pages[0].out)}">'
+                f'<a href="{section_link}">'
                 f"{html.escape(section.title)}</a></h2><ul>"
             )
             for page in pages:
-                active = ' class="active"' if current and current.out == page.out else ""
+                active = ' class="active"' if current is not None and current.out == page.out else ""
+                link = page_link(repo_id, page)
                 parts.append(
-                    f'<li><a href="{href.versioned(version_dir, page.out)}"{active}>'
+                    f'<li><a href="{link}"{active}>'
                     f"{html.escape(page.title)}</a></li>"
                 )
             parts.append("</ul></section>")
 
     parts.append("</nav>")
-    search_link = (
-        f'<a class="mono" href="{href.versioned(version_dir, "search.json")}">'
-        "search.json</a>"
-        if search_enabled
-        else ""
-    )
+    if snapshot is not None:
+        # Search index lives at the archive root.
+        search_href = href.to(posixpath.join(snapshot.archive_root, "search.json"))
+        search_link = (
+            f'<a class="mono" href="{search_href}">search.json</a>'
+            if search_enabled
+            else ""
+        )
+    else:
+        search_link = (
+            f'<a class="mono" href="{href.versioned(version_dir, "search.json")}">'
+            "search.json</a>"
+            if search_enabled
+            else ""
+        )
     parts.append(
         '<div class="side-foot">'
         f'<a href="{href.to(str(config.site.get("home_url", "../")))}">'
@@ -1282,22 +1451,45 @@ def ga_snippet() -> str:
 
 def render_shell(config, release, versions, latest, page_dir, title, description,
                  sidebar, main, toc="", body_class="", canonical="", page_source="",
-                 search_enabled=True, repo_id="router"):
+                 search_enabled=True, repo_id="router", page_snapshot=None):
     """Render the full HTML shell for a page."""
     href = Href(page_dir)
     canonical_tag = ""
     if config.site_url and canonical:
         target = html.escape(posixpath.join(config.site_url, canonical), quote=True)
         canonical_tag = f'\n<link rel="canonical" href="{target}">'
-    search_href = href.to(posixpath.join(release.version, "search.json"))
-    options = render_version_options(page_source, release, versions, latest, page_dir)
+    controls = []
+    for switch_repo in REPOS.values():
+        if switch_repo.id != "router" and (
+            switch_repo.rolling_snapshot is None or
+            (switch_repo.id != "plugins" and switch_repo.id != repo_id)
+        ):
+            continue
+        options = render_version_options(
+            page_source if switch_repo.id == repo_id else "",
+            release, versions, latest, page_dir, switch_repo.id,
+            page_snapshot if switch_repo.id == repo_id else None,
+            active=switch_repo.id == repo_id,
+        )
+        label = html.escape(switch_repo.name, quote=True)
+        select_id = "versions" if switch_repo.id == "router" else f"versions-{switch_repo.id}"
+        controls.append(
+            f'<label class="vselect"><span>{label}</span>'
+            f'<select id="{select_id}" data-switch="{switch_repo.id}" '
+            f'aria-label="{label} documentation version">{options}</select></label>'
+        )
 
     # Determine repo URL for topbar button
     repo = REPOS.get(repo_id)
     repo_url = repo.url if repo else config.repo_url
 
     # Determine commit/tree links
-    snapshot = release.snapshots.get(repo_id)
+    snapshot = page_snapshot or release.snapshots.get(repo_id)
+    # Satellite search stays within the rolling or frozen archive.
+    if snapshot is not None and repo_id != "router":
+        search_href = href.to(posixpath.join(snapshot.archive_root, "search.json"))
+    else:
+        search_href = href.to(posixpath.join(release.version, "search.json"))
     if snapshot:
         blob = f"{snapshot.repo.url}/tree/{quote(snapshot.link_ref)}"
         commit = f"{snapshot.repo.url}/commit/{snapshot.sha}"
@@ -1307,22 +1499,25 @@ def render_shell(config, release, versions, latest, page_dir, title, description
         commit = f"{config.repo_url}/commit/{release.sha}"
         sha = release.sha
 
+    # Assets live at the docs root; compute the climb from the page dir.
+    depth = len([part for part in page_dir.split("/") if part])
+    climb = "/".join([".."] * depth) if depth else "."
     shell = SHELL_TEMPLATE.format(
         lang=html.escape(str(config.site.get("language", "en")), quote=True),
         title=html.escape(title, quote=True),
         description=html.escape(description, quote=True),
         canonical=canonical_tag,
         favicon=FAVICON,
-        css=href.to(posixpath.join(ASSETS_DIR_NAME, "docs.css")),
-        syntax=href.to(posixpath.join(ASSETS_DIR_NAME, "pygments.css")),
-        js=href.to(posixpath.join(ASSETS_DIR_NAME, "docs.js")),
+        css=posixpath.join(climb, ASSETS_DIR_NAME, "docs.css"),
+        syntax=posixpath.join(climb, ASSETS_DIR_NAME, "pygments.css"),
+        js=posixpath.join(climb, ASSETS_DIR_NAME, "docs.js"),
         body_class=html.escape(body_class, quote=True),
         version=html.escape(release.version, quote=True),
         search=html.escape(search_href if search_enabled else "", quote=True),
         latest=html.escape(latest, quote=True),
         home=href.to(str(config.site.get("home_url", "../"))),
         brand=BRAND_SVG,
-        versions=options,
+        version_controls="".join(controls),
         repo=html.escape(repo_url, quote=True),
         github=GITHUB_SVG,
         sidebar=sidebar,
@@ -1365,34 +1560,51 @@ def render_toc_panel(page: Page) -> str:
 
 def render_page(page: Page, release: Release, config: Config,
                 versions: list[VersionEntry], latest: str, search_enabled: bool = True) -> str:
-    page_dir = "/".join(part for part in (release.version, posixpath.dirname(page.out)) if part)
+    snapshot = release.snapshots.get(page.repo)
+    if snapshot is None:
+        raise SystemExit(f"[docs] no snapshot for {page.repo}")
+    # page_dir is relative to the docs root.
+    #   router:   <version>/<subdir>   e.g. 1.1.8/llm-router-api
+    #   rolling:  <mount>/<out-dir>    e.g. plugins/llm-router-plugins
+    #   frozen:   <mount>/<ver>/<out-dir>  e.g. plugins/0.1.2/llm-router-plugins
+    page_dir = posixpath.dirname(posixpath.join(snapshot.archive_root, page.out))
     href = Href(page_dir)
-    version_dir = release.version
     section = config.section(page.section)
-    siblings = [item for item in release.pages if item.section == page.section and item.repo == page.repo]
+    nav_pages = snapshot.pages if snapshot is not None else []
+    if not nav_pages and page in release.pages:
+        nav_pages = release.pages
+    siblings = [item for item in nav_pages if item.section == page.section and item.repo == page.repo]
+    if page not in siblings:
+        siblings = [page]
     position = siblings.index(page)
+
+    def sibling_link(sibling: Page) -> str:
+        return href.to(posixpath.join(snapshot.archive_root, sibling.out))
+
     pager: list[str] = []
     if position:
         previous = siblings[position - 1]
         pager.append(
-            f'<a class="prev" href="{href.versioned(version_dir, previous.out)}">'
+            f'<a class="prev" href="{sibling_link(previous)}">'
             f'<span class="dir">&larr; previous</span>'
             f'<span class="pt">{html.escape(previous.title)}</span></a>'
         )
     if position + 1 < len(siblings):
         following = siblings[position + 1]
         pager.append(
-            f'<a class="next" href="{href.versioned(version_dir, following.out)}">'
+            f'<a class="next" href="{sibling_link(following)}">'
             f'<span class="dir">next &rarr;</span>'
             f'<span class="pt">{html.escape(following.title)}</span></a>'
         )
 
-    snapshot = release.snapshots.get(page.repo)
     if snapshot is None:
         raise SystemExit(f"[docs] no snapshot for {page.repo}")
     repo = snapshot.repo
 
-    modified, modified_sha = page_modified(repo, snapshot.ref, page.source, release.date)
+    if snapshot.worktree:
+        modified, modified_sha = release.date, snapshot.sha
+    else:
+        modified, modified_sha = page_modified(repo, snapshot.ref, page.source, snapshot.date or release.date)
     modified_link = ""
     if modified_sha:
         modified_link = short_date(modified)
@@ -1403,10 +1615,12 @@ def render_page(page: Page, release: Release, config: Config,
     commit_link = f"{repo.url}/commit/{snapshot.sha}"
     source_link = f"{repo.url}/blob/{quote(snapshot.link_ref)}/{quote(page.source)}"
 
+    section_href = sibling_link(siblings[0])
+    hub_href = href.to(posixpath.join(snapshot.archive_root, "index.html"))
     main = PAGE_TEMPLATE.format(
         home=href.to(str(config.site.get("home_url", "../"))),
-        hub=href.to(posixpath.join(version_dir, "index.html")),
-        section_href=href.to(posixpath.join(version_dir, siblings[0].out)),
+        hub=hub_href,
+        section_href=section_href,
         section=html.escape(section.title),
         title=html.escape(page.title),
         body=page.html_body,
@@ -1437,26 +1651,42 @@ def render_page(page: Page, release: Release, config: Config,
         page_dir=page_dir,
         title=f"{page.title} \u00b7 v{release.version} \u00b7 llm-router docs",
         description=description[:300],
-        sidebar=render_sidebar(release, config, page, page_dir, latest, versions, search_enabled),
+        sidebar=render_sidebar(
+            release, config, page, page_dir, latest, versions, search_enabled,
+            snapshot=snapshot,
+        ),
         main=main,
         toc=render_toc_panel(page),
         body_class=body_class,
-        canonical=page.out,
-        page_source=page.key,
+        canonical=page_dir,
+        page_source=page.source,
         search_enabled=search_enabled,
         repo_id=page.repo,
+        page_snapshot=snapshot,
     )
 
 
 def render_hub(release: Release, config: Config, versions: list[VersionEntry],
-               latest: str, page_dir: str = "", search_enabled: bool = True) -> str:
-    """Landing page of a version with repo grouping."""
+               latest: str, page_dir: str = "", search_enabled: bool = True,
+               hub_base: str = "") -> str:
+    """Landing page of a version with repo grouping.
+
+    `hub_base` is the directory prefix for page links (default: release
+    version). Satellite tag hubs pass their own base so links stay inside
+    the tag archive.
+    """
     href = Href(page_dir)
-    version_dir = posixpath.join(release.version, "index.html")
+    use_version_prefix = release.snapshots.get("router") is not None
+    hub_snapshot = None if use_version_prefix else next(iter(release.snapshots.values()))
+    hub_repo_url = hub_snapshot.repo.url if hub_snapshot else config.repo_url
+    hub_root = hub_snapshot.archive_root if hub_snapshot else release.version
     grouped: dict[str, dict[str, list[Page]]] = {}
     for page in release.pages:
         grouped.setdefault(page.repo, {}).setdefault(page.section, []).append(page)
 
+    def card_link(page: Page) -> str:
+        snapshot = release.snapshots[page.repo]
+        return href.to(posixpath.join(snapshot.archive_root, page.out))
     # Cards grouped by repo
     cards: list[str] = []
     repo_order = ["router"] + [r.id for r in REPOS.values() if r.id != "router"]
@@ -1475,21 +1705,21 @@ def render_hub(release: Release, config: Config, versions: list[VersionEntry],
                 continue
             shown = pages[:5]
             links = "".join(
-                f'<li><a href="{href.to(posixpath.join(release.version, page.out))}">'
+                f'<li><a href="{card_link(page)}">'
                 f"{html.escape(page.title)}</a></li>"
                 for page in shown
             )
             remaining = len(pages) - len(shown)
             more = (
                 f'<a class="more mono" '
-                f'href="{href.versioned(release.version, pages[0].out)}">'
+                f'href="{card_link(pages[0])}">'
                 f"+{remaining} more</a>"
                 if remaining > 0
                 else ""
             )
             cards.append(
                 CARD_TEMPLATE.format(
-                    href=href.to(posixpath.join(release.version, pages[0].out)),
+                    href=card_link(pages[0]),
                     title=html.escape(section.title),
                     summary=html.escape(section.summary or pages[0].summary),
                     links=links,
@@ -1509,37 +1739,45 @@ def render_hub(release: Release, config: Config, versions: list[VersionEntry],
     satellite_info = " ".join(satellite_parts)
 
     actions = [
-        f'<a class="btn primary" href="{href.versioned(release.version, "index.html")}'
-        f'#sections">browse {len(release.pages)} documents</a>'
+        f'<a class="btn primary" href="{href.to(posixpath.join(hub_root, "index.html"))}#sections">'
+        f'browse {len(release.pages)} documents</a>'
     ]
     overview = next((page for page in release.pages if page.source == "README.md" and page.repo == "router"), None)
     if overview is not None:
         actions.insert(
             0,
             f'<a class="btn primary" '
-            f'href="{href.versioned(release.version, overview.out)}">'
+            f'href="{card_link(overview)}">'
             "start with the overview</a>",
         )
     changelog = next((page for page in release.pages if "CHANGELOG" in page.source), None)
     if changelog is not None:
         actions.append(
             f'<a class="btn ghost" '
-            f'href="{href.versioned(release.version, changelog.out)}">'
+            f'href="{card_link(changelog)}">'
             "release notes</a>"
         )
     actions.append(
-        f'<a class="btn ghost" href="{html.escape(config.repo_url, quote=True)}">'
+        f'<a class="btn ghost" href="{html.escape(hub_repo_url, quote=True)}">'
         "repository</a>"
     )
 
     # Version listings
     listings = []
-    for entry in versions:
+    hub_versions = versions
+    if hub_snapshot is not None:
+        hub_versions = [
+            VersionEntry.from_release(Release(snap.version, snap.ref, snap.sha,
+                                             snap.date, is_prerelease(snap.version)))
+            for snap in hub_snapshot.repo.tag_snapshots.values()
+        ]
+    for entry in hub_versions:
         current = " current" if entry.version == release.version else ""
         flag = " latest" if entry.version == latest else ""
         listings.append(
             f'<li class="vrow{current}{flag}">'
-            f'<a href="{href.to(entry.entry)}">v{html.escape(entry.version)}</a>'
+            f'<a href="{href.to(entry.entry if use_version_prefix else posixpath.join(hub_snapshot.repo.mount, entry.entry))}">'
+            f"v{html.escape(entry.version)}</a>"
             f'<span class="mono">{short_date(entry.date)}</span>'
             f'{"<em>latest</em>" if flag else ""}</li>'
         )
@@ -1566,7 +1804,7 @@ def render_hub(release: Release, config: Config, versions: list[VersionEntry],
             '<div class="box"><h2>this release</h2><dl>',
             f'<dt>version</dt><dd class="mono">{html.escape(release.version)}</dd>',
             f'<dt>released</dt><dd class="mono">{short_date(release.date)}</dd>',
-            f'<dt>release</dt><dd class="mono"><a href="{config.repo_url}/releases/tag/{quote(release.ref)}">{html.escape(release.ref)}</a></dd>',
+            f'<dt>release</dt><dd class="mono"><a href="{hub_repo_url}/tree/{quote(release.ref)}">{html.escape(release.ref)}</a></dd>',
             f'<dt>documents</dt><dd class="mono">{len(release.pages)}</dd>',
             "</dl></div>",
             repo_box,
@@ -1582,7 +1820,7 @@ def render_hub(release: Release, config: Config, versions: list[VersionEntry],
     )
 
     eyebrow = "operator documentation" if release.version == latest else "archived documentation"
-    snapshot = release.snapshots.get("router")
+    snapshot = release.snapshots.get("router") or hub_snapshot
     if snapshot:
         tree_link = f"{snapshot.repo.url}/tree/{quote(snapshot.link_ref)}"
         commit_link = f"{snapshot.repo.url}/commit/{snapshot.sha}"
@@ -1615,7 +1853,8 @@ def render_hub(release: Release, config: Config, versions: list[VersionEntry],
         page_dir=page_dir,
         title=f"{config.title} \u00b7 v{release.version}",
         description=str(config.site.get("description", config.title)),
-        sidebar=render_sidebar(release, config, None, page_dir, latest, versions, search_enabled),
+        sidebar=render_sidebar(release, config, None, page_dir, latest, versions,
+                               search_enabled, snapshot=hub_snapshot),
         main=main,
         toc=(
             '<h2 class="toc-title">versions</h2>'
@@ -1623,7 +1862,15 @@ def render_hub(release: Release, config: Config, versions: list[VersionEntry],
             f" &middot; {len(release.pages)} documents</p></div>"
         ),
         body_class="hub",
-        canonical=version_dir if page_dir else "index.html",
+        repo_id=hub_snapshot.repo.id if hub_snapshot else "router",
+        page_snapshot=hub_snapshot,
+        canonical=(
+            posixpath.join(hub_base, "index.html")
+            if hub_base
+            else posixpath.join(page_dir, "index.html")
+            if page_dir
+            else "index.html"
+        ),
     )
 
 
@@ -1639,13 +1886,17 @@ def searchable_text(fragment: str, limit: int) -> str:
     return plain_text(TAG_RE.sub(" ", fragment), limit)
 
 
-def search_index(release: Release, config: Config) -> str:
+def search_index(release: Release, config: Config, index_root: str | None = None) -> str:
+    """Search index with keys relative to the directory hosting search.json."""
     documents = []
+    index_root = release.version if index_root is None else index_root
     for page in release.pages:
         repo = REPOS.get(page.repo)
         repo_name = repo.name if repo else page.repo
+        snapshot = release.snapshots[page.repo]
+        key = posixpath.relpath(posixpath.join(snapshot.archive_root, page.out), index_root)
         doc = {
-            "k": page.out,
+            "k": key,
             "t": page.title,
             "s": config.section(page.section).title,
             "x": page.excerpt[:240],
@@ -1729,7 +1980,14 @@ def write_versions(path: Path, entries: list[VersionEntry], latest: str, dry_run
 
 
 def build_site(config, output, releases, entries, latest, search_scope, dry_run):
-    """Render every release into site/docs."""
+    """Render every release into site/docs.
+
+    Router pages are written to /docs/<router-version>/.... Satellite
+    (plugins/services) pages follow their own versioning: each satellite
+    tag gets a frozen copy at /docs/<mount>/<sat-version>/..., and the
+    rolling working tree is mounted at /docs/<mount>/... under the newest
+    router version.
+    """
     docs_root = output / DOCS_DIR_NAME
 
     def search_for(version):
@@ -1747,11 +2005,19 @@ def build_site(config, output, releases, entries, latest, search_scope, dry_run)
     versions = sort_versions(list(entries.values()))
 
     written = 0
+    satellite_hubs: dict[str, str] = {}
     for release in releases:
         enabled = search_for(release.version)
         for page in release.pages:
-            document = render_page(page, release, config, versions, latest, enabled)
-            write_file(docs_root / release.version / page.out, document, dry_run)
+            if page.repo == "router":
+                write_file(docs_root / release.version / page.out,
+                           render_page(page, release, config, versions, latest, enabled),
+                           dry_run)
+            else:
+                snap = release.snapshots[page.repo]
+                write_file(docs_root / snap.archive_root / page.out,
+                           render_page(page, release, config, versions, latest, enabled),
+                           dry_run)
             written += 1
         hub = render_hub(release, config, versions, latest, page_dir=release.version, search_enabled=enabled)
         write_file(docs_root / release.version / "index.html", hub, dry_run)
@@ -1760,6 +2026,66 @@ def build_site(config, output, releases, entries, latest, search_scope, dry_run)
             index = search_index(release, config)
             write_file(docs_root / release.version / "search.json", index, dry_run)
             written += 1
+        for repo_id, snap in release.snapshots.items():
+            if repo_id == "router" or not snap.worktree:
+                continue
+            sat_release = Release(snap.version, snap.ref, snap.sha, snap.date, False,
+                                  snapshots={repo_id: snap})
+            sat_hub = render_hub(sat_release, config, versions, latest,
+                                 page_dir=snap.repo.mount, search_enabled=enabled)
+            write_file(docs_root / snap.repo.mount / "index.html", sat_hub, dry_run)
+            written += 1
+            if enabled:
+                satellite_hubs[repo_id] = search_index(sat_release, config, snap.archive_root)
+
+    for repo_id, index in satellite_hubs.items():
+        write_file(docs_root / REPOS[repo_id].mount / "search.json", index, dry_run)
+        written += 1
+    # Frozen satellite tag archives: /docs/<mount>/<sat-version>/...
+    # (satellites version independently of the router; each archive is
+    # rendered against its own tag release, not the newest router release)
+    latest_release = max(releases, key=lambda item: version_key(item.version))
+    for repo in REPOS.values():
+        if repo.id == "router":
+            continue
+        for tag in repo.tags:
+            snapshot = repo.tag_snapshots.get(tag)
+            if snapshot is None:
+                continue
+            tag_release = Release(
+                version=snapshot.version,
+                ref=snapshot.ref,
+                sha=snapshot.sha,
+                date=snapshot.date,
+                prerelease=False,
+            )
+            tag_release.snapshots[repo.id] = snapshot
+            unresolved.extend(render_documents(tag_release, config))
+            # Hub for the tag archive: only this tag's pages, relative links.
+            hub = render_hub(tag_release, config, versions, latest,
+                             page_dir=posixpath.join(repo.mount, snapshot.version),
+                             search_enabled=search_for(latest_release.version),
+                             )
+            write_file(docs_root / repo.mount / snapshot.version / "index.html",
+                       hub, dry_run)
+            written += 1
+            for page in snapshot.pages:
+                write_file(
+                    docs_root / repo.mount / snapshot.version / page.out,
+                    render_page(page, tag_release, config, versions, latest,
+                                search_for(latest_release.version)),
+                    dry_run,
+                )
+                written += 1
+            # Per-archive search index (keys are archive-relative).
+            if search_for(latest_release.version):
+                index = search_index(tag_release, config, snapshot.archive_root)
+                write_file(
+                    docs_root / repo.mount / snapshot.version / "search.json",
+                    index,
+                    dry_run,
+                )
+                written += 1
 
     if releases:
         newest = max(releases, key=lambda item: version_key(item.version))
@@ -1939,7 +2265,11 @@ def main(argv: list[str] | None = None) -> int:
                 if not args.quiet:
                     print(f"[docs] warning: {e}", file=sys.stderr)
 
-    # Attach satellite snapshots to the latest release only
+    # Attach satellite snapshots.
+    #  - the rolling working tree goes to the latest router release only
+    #  - every satellite release tag gets its own frozen snapshot attached
+    #    to the newest router release (satellites version independently of
+    #    the router; the archives are written to /docs/<mount>/<tag>/)
     if not args.no_satellites:
         latest_release = releases[0]
         for repo_id, repo in REPOS.items():
@@ -1950,6 +2280,18 @@ def main(argv: list[str] | None = None) -> int:
             try:
                 snap = satellite_snapshot(repo)
                 latest_release.snapshots[repo_id] = snap
+                repo.rolling_snapshot = snap
+                repo.tags = satellite_tags(repo, args.include_prerelease) if repo.versions == "all" else []
+                for tag in repo.tags:
+                    try:
+                        tag_snap = satellite_snapshot(repo, ref=tag)
+                        collect_pages_for_snapshot(latest_release, tag_snap, config, {"index.html"})
+                        repo.tag_snapshots[tag] = tag_snap
+                        repo.tag_pages[tag] = {p.source: p.out for p in tag_snap.pages}
+                    except SystemExit as e:
+                        if not args.quiet:
+                            print(f"[docs] warning: {e}", file=sys.stderr)
+                repo.current_tag = repo.tags[0] if repo.tags else ""
             except SystemExit as e:
                 if not args.quiet:
                     print(f"[docs] warning: {e}", file=sys.stderr)
@@ -1966,8 +2308,14 @@ def main(argv: list[str] | None = None) -> int:
         print(f"[docs] source: {PRIMARY_REPO.root} (latest tag {newest.ref})")
         print(f"[docs] {prefix} {written} files into {output}")
         for release in releases:
-            snap_count = len(release.snapshots) - 1  # exclude router
-            print(f"[docs]   v{release.version:<9} {len(release.pages):>3} pages from {release.ref} ({snap_count} satellites)")
+            rolling = [sid for sid in release.snapshots if ":" not in sid and sid != "router"]
+            tagged = [sid.split(":", 1)[1] for sid in release.snapshots if ":" in sid]
+            sat_desc = ", ".join(
+                f"{sid} v{release.snapshots[sid].version}" for sid in rolling
+            )
+            if tagged:
+                sat_desc += f" (+{len(tagged)} satellite tags)" if sat_desc else f"{len(tagged)} satellite tags"
+            print(f"[docs]   v{release.version:<9} {len(release.pages):>3} pages from {release.ref} ({sat_desc or 'no satellites'})")
         print(f"[docs]   {len(entries):>16} versions indexed, latest is v{latest}")
         print(f"[docs] landing page: {'included' if landing else 'not found'}")
 

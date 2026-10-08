@@ -16,14 +16,22 @@ Three repositories feed the documentation site:
 | Repository | Role | Versioning | URL prefix |
 |---|---|---|---|
 | `llm-router` | Core gateway docs | Per release tag (frozen archives) | `/docs/<version>/...` |
-| `llm-router-plugins` | Maskers, guardrails, routing plugins | Rolling (latest working tree) | `/docs/<latest>/plugins/...` |
-| `llm-router-services` | HTTP services (guardrails, masker) | Rolling (latest working tree) | `/docs/<latest>/services/...` |
+| `llm-router-plugins` | Maskers, guardrails, routing plugins | Independent release tags + rolling working tree | `/docs/plugins/<version>/...`, `/docs/plugins/...` |
+| `llm-router-services` | HTTP services (guardrails, masker) | Rolling (latest working tree) | `/docs/services/...` |
 
-The router repository is the version spine: every release tag gets a frozen copy
-of its documentation. The plugins and services repositories are mounted into the
-newest version only, always reflecting their current working tree. This gives
-historical accuracy for the core product while keeping satellite documentation
-current.
+Router and plugins releases are independent: each release tag gets a frozen copy
+of its own Markdown. The topbar offers separate version selectors for both
+repositories, including on `/docs`. Switching within a repository keeps the same
+document when available, otherwise it opens that release's documentation index.
+The plugins selector also offers `rolling (working tree)`; services remain rolling.
+Satellite rolling docs are linked from the newest router index only, while the
+plugins version selector is available on older router pages too.
+
+Set `versions = "all"` in a satellite's `[[repos]]` entry to build its release
+archives, or `versions = "latest"` for rolling docs only. The plugins checkout
+must include tags (`git fetch --tags`; CI uses `fetch-depth: 0`). Router flags
+`--all-versions` and `--max-versions` do not limit independent plugin archives.
+`--include-prerelease` applies to both repositories.
 
 ## Repository resolution
 
@@ -48,9 +56,8 @@ python3 tools/build_docs.py --serve          # build, then http://localhost:8000
   the same commit, the same tag and the same PR; this repo never keeps a copy.
 - **Static output only** -- plain HTML/CSS/JS, no bundler, no node_modules, no
   runtime. It can be served from any web server, object storage or GitHub Pages.
-- **Versioned by git** -- `/docs` is built exclusively from the router's release
-  tags; every tag keeps a frozen copy. Satellite docs are mounted into the
-  latest tag only.
+- **Versioned by git** -- router and plugins tags each keep their own frozen
+  documentation; rolling satellite docs remain available separately.
 - **All links relative** -- the site works under a project sub-path without
   configuration.
 - **Cross-repo link map** -- links from one repository to documentation that
@@ -64,7 +71,7 @@ python3 tools/build_docs.py --serve          # build, then http://localhost:8000
 | Path | Role |
 |---|---|
 | `--source` path (llm-router checkout) | the source repo: Markdown, git tags |
-| `--plugins` path (llm-router-plugins checkout) | rolling plugin documentation |
+| `--plugins` path (llm-router-plugins checkout) | tagged archives and rolling plugin documentation |
 | `--services` path (llm-router-services checkout) | rolling services documentation |
 | `tools/build_docs.py` | the whole builder: discovery, rendering, versioning, search, link check, preview server |
 | `tools/docs.toml` | site metadata, discovery filters, navigation sections, per-page overrides, crosslinks |
@@ -72,6 +79,7 @@ python3 tools/build_docs.py --serve          # build, then http://localhost:8000
 | `tools/theme/docs.js` | client-side search, version switch, scroll spy, copy buttons |
 | `tools/requirements-docs.txt` | `markdown` + `pygments`, the only build dependencies |
 | `tools/README.md` | this document -- dogfooding the pipeline, published as `/docs/website.html` |
+| `tools/tests/test_build_docs.py` | integration tests using temporary local Git repositories |
 | `landing/index.html` | marketing landing page, copied verbatim to the site root |
 | `gh-action/docs.yml` | CI template: build + deploy to GitHub Pages (three checkouts) |
 | `site/` | build output -- never edited, never committed |
