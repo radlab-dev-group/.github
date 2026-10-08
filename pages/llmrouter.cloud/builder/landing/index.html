@@ -462,8 +462,9 @@ ul.ticks li b{color:#dce7f1;font-weight:600}
       <span class="eyebrow"><i class="pulse"></i> self-hosted ai gateway</span>
       <h1>Your models.<br>Your stack.<br><span class="hl">One endpoint.</span></h1>
       <p class="lede">
-        Route, protect and observe your LLM traffic through one <b>OpenAI-compatible API</b>.
-        An open-source gateway you run and control.
+        Keep your <b>Ollama, OpenAI-compatible or Anthropic API</b>. Connect your app to llm-router
+        and let it translate requests and responses between provider formats — no API migration required.
+        Route, protect and observe your traffic through an open-source gateway you run and control.
       </p>
       <div class="cta-row">
         <a class="btn btn-primary" href="docs/#docs-quickstart">Quick start &rarr;</a>
@@ -562,7 +563,7 @@ ul.ticks li b{color:#dce7f1;font-weight:600}
             <li class="node">
               <span class="ico"><svg aria-hidden="true"><use href="#i-api"/></svg></span>
               <h4 class="nm">Client</h4>
-              <p class="ds">Send a request through one compatible API.</p>
+              <p class="ds">Send requests using your app’s existing API format.</p>
               <span class="impl">SDK / curl / your app</span>
               <span class="pipe-link" style="--hop:0" aria-hidden="true"><i></i></span>
             </li>
@@ -596,7 +597,9 @@ ul.ticks li b{color:#dce7f1;font-weight:600}
             <li class="node">
               <span class="ico"><svg aria-hidden="true"><use href="#i-plug"/></svg></span>
               <h4 class="nm">Enrich</h4>
-              <p class="ds">Add RAG context or run custom tasks.</p>
+              <p class="ds">Use plugins for RAG, custom tasks and agent-aware model routing for
+                <a href="docs/plugins/llm-router-plugins/utils/routing/agentic-routing/claude-code/index.html">Claude Code</a>
+                and <a href="docs/plugins/llm-router-plugins/utils/routing/agentic-routing/codex/index.html">Codex CLI</a>.</p>
               <span class="impl">UtilsPipeline</span>
               <span class="pipe-link" style="--hop:4" aria-hidden="true"><i></i></span>
             </li>
