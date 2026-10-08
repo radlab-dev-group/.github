@@ -21,7 +21,7 @@ Three repositories feed the documentation site:
 
 Router, plugins and services releases are independent: each release tag gets a frozen copy
 of its own Markdown. All three version selectors live under their repository
-names in collapsible left-sidebar sections, including on `/docs`.
+names in left-sidebar sections collapsed by default, including on `/docs`.
 Switching within a repository keeps the same document when available, otherwise
 it opens that release's documentation index. Plugin archives keep the shared
 sidebar: only the plugin section uses the selected plugin release, while router
@@ -43,8 +43,8 @@ Documentation index pages show separate `Router all versions` and
 switch only that project while preserving the other selection. These panels are
 collapsed by default and expand by clicking their headings, also without JavaScript.
 The repositories panel links to release tags rather than commits; repositories
-without tags link to their source branch. Release details
-are labeled with the project name (`Router release`, `Plugins release` or `Services release`).
+without tags link to their source branch. The `Router release` panel always shows
+the selected router release, including on plugin and service documentation indexes.
 
 Set `versions = "all"` in a satellite's `[[repos]]` entry to build its release
 archives, or `versions = "latest"` for the latest tag only. Both satellite checkouts

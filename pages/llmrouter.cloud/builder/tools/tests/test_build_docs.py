@@ -156,7 +156,7 @@ class BuildDocsTests(unittest.TestCase):
                                ("plugins", "llm-router-plugins", "v0.2.0"),
                                ("services", "llm-router-services", "v0.5.0")):
             group = sidebar.split(f'<div data-nav-repo="{repo}">', 1)[1].split('</details>', 1)[0]
-            self.assertIn('<details class="nav-group" open>', group)
+            self.assertIn('<details class="nav-group">', group)
             self.assertIn(f'<summary class="nav-repo"><span class="repo-name">{name}</span></summary>', group)
             self.assertLess(group.index('class="repo-name"'), group.index('class="side-head"'))
             self.assertIn(f'data-switch="{repo}"', group)
@@ -164,6 +164,24 @@ class BuildDocsTests(unittest.TestCase):
             self.assertIn(f'/releases/tag/{tag}', source)
         repositories = source.split('<h2>repositories</h2>', 1)[1].split('</div></div>', 1)[0]
         self.assertNotIn('/commit/', repositories)
+
+    def test_hubs_keep_router_release_and_omit_versions_toc(self):
+        self.build("--check-links")
+        for relative, router_version in (("index.html", "1.1.0"),
+                                         ("1.0.0/index.html", "1.0.0"),
+                                         ("plugins/index.html", "1.1.0"),
+                                         ("plugins/0.1.0/index.html", "1.1.0"),
+                                         ("services/index.html", "1.1.0"),
+                                         ("services/0.4.0/index.html", "1.1.0")):
+            with self.subTest(relative=relative):
+                source = (self.output / "docs" / relative).read_text()
+                self.assertNotIn('<h2 class="toc-title">versions</h2>', source)
+                self.assertNotIn('<details class="nav-group" open>', source)
+                panel = source.split('<div class="box" data-router-release>', 1)[1].split('</dl></div>', 1)[0]
+                self.assertIn('<h2>Router release</h2>', panel)
+                self.assertIn(f'<dt>version</dt><dd class="mono">{router_version}</dd>', panel)
+                self.assertIn(f'/releases/tag/{router_version}', panel)
+                self.assertIn('<dt>documents</dt><dd class="mono">4</dd>', panel)
 
     def test_sidebar_versions_and_latest_plugin_status(self):
         self.build("--check-links")
@@ -218,7 +236,8 @@ class BuildDocsTests(unittest.TestCase):
             self.assertRegex(router_panel, rf'class="vrow current[^\n]*data-version="{selected_router}"')
             self.assertRegex(plugins_panel, rf'class="vrow current[^\n]*data-version="{selected_plugins}"')
         plugin_hub = (docs / "plugins/0.1.0/index.html").read_text()
-        self.assertIn('<h2>Plugins release</h2>', plugin_hub)
+        self.assertIn('<h2>Router release</h2>', plugin_hub)
+        self.assertNotIn('<h2>Plugins release</h2>', plugin_hub)
 
     def test_latest_tags_and_services_versions(self):
         self.build("--check-links")

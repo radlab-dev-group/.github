@@ -1389,7 +1389,7 @@ def render_sidebar(release, config, current, page_dir, latest, versions,
         # Group header
         parts.append(
             f'<div data-nav-repo="{html.escape(repo_id, quote=True)}">'
-            '<details class="nav-group" open>'
+            '<details class="nav-group">'
             f'<summary class="nav-repo"><span class="repo-name">{html.escape(repo_name)}</span></summary>'
         )
         nav_snapshot = nav_snapshots[repo_id]
@@ -1846,11 +1846,11 @@ def render_hub(release: Release, config: Config, versions: list[VersionEntry],
 
     aside = "".join(
         [
-            f'<div class="box"><h2>{"Plugins" if hub_snapshot and hub_snapshot.repo.id == "plugins" else "Services" if hub_snapshot else "Router"} release</h2><dl>',
-            f'<dt>version</dt><dd class="mono">{html.escape(release.version)}</dd>',
-            f'<dt>released</dt><dd class="mono">{short_date(release.date)}</dd>',
-            f'<dt>release</dt><dd class="mono"><a href="{hub_repo_url}/tree/{quote(release.ref)}">{html.escape(release.ref)}</a></dd>',
-            f'<dt>documents</dt><dd class="mono">{len(release.pages)}</dd>',
+            '<div class="box" data-router-release><h2>Router release</h2><dl>',
+            f'<dt>version</dt><dd class="mono">{html.escape(nav_release.version)}</dd>',
+            f'<dt>released</dt><dd class="mono">{short_date(nav_release.date)}</dd>',
+            f'<dt>release</dt><dd class="mono"><a href="{config.repo_url}/releases/tag/{quote(nav_release.ref, safe="")}">{html.escape(nav_release.ref)}</a></dd>',
+            f'<dt>documents</dt><dd class="mono">{sum(page.repo == "router" for page in nav_release.pages)}</dd>',
             "</dl></div>",
             repo_box,
             version_box("router", "Router"),
@@ -1906,11 +1906,7 @@ def render_hub(release: Release, config: Config, versions: list[VersionEntry],
         sidebar=render_sidebar(release, config, None, page_dir, latest, versions,
                                search_enabled, snapshot=hub_snapshot),
         main=main,
-        toc=(
-            '<h2 class="toc-title">versions</h2>'
-            f'<div class="toc-body"><p class="tiny">v{html.escape(release.version)}'
-            f" &middot; {len(release.pages)} documents</p></div>"
-        ),
+        toc="",
         body_class="hub",
         repo_id=hub_snapshot.repo.id if hub_snapshot else "router",
         page_snapshot=hub_snapshot,

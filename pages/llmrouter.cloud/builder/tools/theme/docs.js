@@ -144,6 +144,16 @@
             });
             currentVersionsPanel.replaceWith(versionsPanel);
           }
+          if (repo === "router") {
+            var releasePanel = parsed.querySelector("[data-router-release]");
+            var currentReleasePanel = doc.querySelector("[data-router-release]");
+            if (releasePanel && currentReleasePanel) {
+              all("a[href]", releasePanel).forEach(function (link) {
+                link.setAttribute("href", new URL(link.getAttribute("href"), root).href);
+              });
+              currentReleasePanel.replaceWith(releasePanel);
+            }
+          }
           current.replaceWith(group);
         }).catch(function () {
           // Do not leave links pointing at a different release if loading fails.
