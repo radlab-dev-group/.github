@@ -75,6 +75,46 @@
     });
   }
 
+  /* ---- repository navigation state ---------------------------------- */
+  function initSidebar() {
+    var root = new URL(body.getAttribute("data-docs-root"), window.location.href);
+    var key = "docs-sidebar:" + root.href;
+    var state = {};
+    try {
+      state = JSON.parse(window.sessionStorage.getItem(key)) || {};
+    } catch (error) {
+      // Storage may be unavailable; navigation remains usable without it.
+    }
+    all("[data-nav-repo]").forEach(function (group) {
+      var details = group.querySelector("details.nav-group");
+      var repo = group.getAttribute("data-nav-repo");
+      if (details && typeof state[repo] === "boolean") {
+        details.open = state[repo];
+      }
+    });
+
+    function save() {
+      var current = {};
+      all("[data-nav-repo]").forEach(function (group) {
+        var details = group.querySelector("details.nav-group");
+        if (details) {
+          current[group.getAttribute("data-nav-repo")] = details.open;
+        }
+      });
+      try {
+        window.sessionStorage.setItem(key, JSON.stringify(current));
+      } catch (error) {
+        // Storage may be unavailable; keep the current menu state.
+      }
+    }
+    doc.addEventListener("toggle", function (event) {
+      if (event.target.matches("details.nav-group")) {
+        save();
+      }
+    }, true);
+    window.addEventListener("pagehide", save);
+  }
+
   /* ---- version switcher ---------------------------------------------- */
   function initVersions() {
     var here = new URL(window.location.href);
@@ -575,6 +615,7 @@
 
   function init() {
     initDrawer();
+    initSidebar();
     initVersions();
     initCopyButtons();
     initTables();

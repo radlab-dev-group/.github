@@ -13,15 +13,17 @@ appropriate source repository.
 
 Three repositories feed the documentation site:
 
-| Repository | Role | Versioning | URL prefix |
-|---|---|---|---|
-| `llm-router` | Core gateway docs | Per release tag (frozen archives) | `/docs/<version>/...` |
-| `llm-router-plugins` | Maskers, guardrails, routing plugins | Independent release tags + latest stable mount | `/docs/plugins/<version>/...`, `/docs/plugins/...` |
-| `llm-router-services` | HTTP services (guardrails, masker) | Independent release tags + latest stable mount | `/docs/services/<version>/...`, `/docs/services/...` |
+| Repository            | Role                                 | Versioning                                     | URL prefix                                           |
+|-----------------------|--------------------------------------|------------------------------------------------|------------------------------------------------------|
+| `llm-router`          | Core gateway docs                    | Per release tag (frozen archives)              | `/docs/<version>/...`                                |
+| `llm-router-plugins`  | Maskers, guardrails, routing plugins | Independent release tags + latest stable mount | `/docs/plugins/<version>/...`, `/docs/plugins/...`   |
+| `llm-router-services` | HTTP services (guardrails, masker)   | Independent release tags + latest stable mount | `/docs/services/<version>/...`, `/docs/services/...` |
 
 Router, plugins and services releases are independent: each release tag gets a frozen copy
 of its own Markdown. All three version selectors live under their repository
 names in left-sidebar sections collapsed by default, including on `/docs`.
+Expanded sections stay expanded when navigating documents or switching versions
+in the same browser tab. Each expanded repository shows all its document categories.
 Switching within a repository keeps the same document when available, otherwise
 it opens that release's documentation index. Plugin archives keep the shared
 sidebar: only the plugin section uses the selected plugin release, while router
@@ -93,22 +95,22 @@ links. Options are listed by `tools/build.sh --help`; per-machine paths go into
 
 ## Layout
 
-| Path | Role |
-|---|---|
-| `--source` path (llm-router checkout) | the source repo: Markdown, git tags |
-| `--plugins` path (llm-router-plugins checkout) | tagged archives and rolling plugin documentation |
-| `--services` path (llm-router-services checkout) | rolling services documentation |
-| `tools/build_docs.py` | the whole builder: discovery, rendering, versioning, search, link check, preview server |
-| `tools/build.sh` | wrapper: resolves the three checkouts, rebuilds the site, optional preview |
-| `tools/docs.toml` | site metadata, discovery filters, navigation sections, per-page overrides, crosslinks |
-| `tools/theme/docs.css` | the docs stylesheet |
-| `tools/theme/docs.js` | client-side search, version switch, scroll spy, copy buttons |
-| `tools/requirements-docs.txt` | `markdown` + `pygments`, the only build dependencies |
-| `tools/README.md` | this document -- dogfooding the pipeline, published as `/docs/website.html` |
-| `tools/tests/test_build_docs.py` | integration tests using temporary local Git repositories |
-| `landing/index.html` | marketing landing page, copied verbatim to the site root |
-| `gh-action/docs.yml` | CI template: build + deploy to GitHub Pages (three checkouts) |
-| `site/` | build output -- never edited, never committed |
+| Path                                             | Role                                                                                    |
+|--------------------------------------------------|-----------------------------------------------------------------------------------------|
+| `--source` path (llm-router checkout)            | the source repo: Markdown, git tags                                                     |
+| `--plugins` path (llm-router-plugins checkout)   | tagged archives and rolling plugin documentation                                        |
+| `--services` path (llm-router-services checkout) | rolling services documentation                                                          |
+| `tools/build_docs.py`                            | the whole builder: discovery, rendering, versioning, search, link check, preview server |
+| `tools/build.sh`                                 | wrapper: resolves the three checkouts, rebuilds the site, optional preview              |
+| `tools/docs.toml`                                | site metadata, discovery filters, navigation sections, per-page overrides, crosslinks   |
+| `tools/theme/docs.css`                           | the docs stylesheet                                                                     |
+| `tools/theme/docs.js`                            | client-side search, version switch, scroll spy, copy buttons                            |
+| `tools/requirements-docs.txt`                    | `markdown` + `pygments`, the only build dependencies                                    |
+| `tools/README.md`                                | this document -- dogfooding the pipeline, published as `/docs/website.html`             |
+| `tools/tests/test_build_docs.py`                 | integration tests using temporary local Git repositories                                |
+| `landing/index.html`                             | marketing landing page, copied verbatim to the site root                                |
+| `gh-action/docs.yml`                             | CI template: build + deploy to GitHub Pages (three checkouts)                           |
+| `site/`                                          | build output -- never edited, never committed                                           |
 
 ## Quick start
 
@@ -139,8 +141,8 @@ that do not match any `[[sections]]` pattern land in that repository's
 ## Navigation sections
 
 Sections are declared in `[[sections]]` in `tools/docs.toml`, evaluated in
-order; the first matching glob wins. Each section belongs to one repository
-(`repo` field, default `"router"`). Sections for one repository must be
+order; the first matching glob wins. Each section belongs to one repository (`repo` field, default `"router"`). Sections
+for one repository must be
 contiguous in the configuration file.
 
 ## Per-document overrides
@@ -174,8 +176,7 @@ to = "plugins:README.md#1-anonymizers-maskers"
 The `from` field is optional (glob, default: any). The `link` field must match
 the link exactly as written in the source document (relative path or full
 GitHub URL). The `to` field is `"<repo-id>:<repo-relative-path>[#anchor]"`.
-If the target page is not built for the current version, normal resolution
-(GitHub blob fallback) applies.
+If the target page is not built for the current version, normal resolution (GitHub blob fallback) applies.
 
 ## Commit links
 
@@ -189,9 +190,9 @@ a link to the corresponding GitHub URL:
 
 ## Troubleshooting
 
-| Symptom | Likely cause |
-|---|---|
-| page missing from the sidebar | it is in an `exclude` path, or its section pattern is shadowed by an earlier `match` |
-| link is a GitHub blob URL | the target does not exist as a documentation page; the builder falls back to the raw file |
-| search is empty | the `search.json` index was not built for this version (check `--search` flag) |
-| `--check-links` fails on external URLs | the checker only validates internal links; external URLs are not followed |
+| Symptom                                | Likely cause                                                                              |
+|----------------------------------------|-------------------------------------------------------------------------------------------|
+| page missing from the sidebar          | it is in an `exclude` path, or its section pattern is shadowed by an earlier `match`      |
+| link is a GitHub blob URL              | the target does not exist as a documentation page; the builder falls back to the raw file |
+| search is empty                        | the `search.json` index was not built for this version (check `--search` flag)            |
+| `--check-links` fails on external URLs | the checker only validates internal links; external URLs are not followed                 |

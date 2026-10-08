@@ -31,7 +31,7 @@ function select(repo, versions, selected, base) {
   return el;
 }
 
-async function fixture(url, active, routerVersion, pluginVersion, serviceVersion = '0.5.0') {
+async function fixture(url, active, routerVersion, pluginVersion, serviceVersion = '0.5.0', opened = []) {
   const base = 'https://example.invalid/sub/docs/';
   const router = select('router', ['1.1.0', '1.0.0'], routerVersion, base);
   const plugins = select('plugins', ['0.2.0', '0.1.0'], pluginVersion, base);
@@ -65,7 +65,7 @@ async function fixture(url, active, routerVersion, pluginVersion, serviceVersion
     }
   }
   for (const repo of ['router', 'plugins', 'services']) {
-    groups[`[data-nav-repo="${repo}"]`] = {querySelector() { return {open: false}; }, replaceWith(group) {
+    groups[`[data-nav-repo="${repo}"]`] = {querySelector() { return {open: opened.includes(repo)}; }, replaceWith(group) {
       groups[repo] = group;
     }};
     groups[`[data-versions-repo="${repo}"]`] = {open: true, replaceWith(group) {
@@ -171,5 +171,12 @@ async function fixture(url, active, routerVersion, pluginVersion, serviceVersion
   const invalid = await fixture('https://example.invalid/sub/docs/plugins/0.1.0/index.html?router=bogus&plugins=0.2.0', 'plugins', '1.1.0', '0.1.0');
   assert.equal(invalid.requests.length, 0);
   assert.equal(invalid.plugins.options[invalid.plugins.selectedIndex].getAttribute('data-version'), '0.1.0');
+  for (const repo of ['router', 'plugins', 'services']) {
+    const active = repo === 'plugins' ? 'router' : 'plugins';
+    const opened = await fixture(`https://example.invalid/sub/docs/${active === 'router' ? '1.1.0' : 'plugins/0.2.0'}/guide.html?router=1.0.0&plugins=0.1.0&services=0.4.0`,
+      active, '1.1.0', '0.2.0', '0.5.0', [repo]);
+    assert.equal(opened.groups[repo].details.open, true,
+      'asynchronous navigation restoration must retain an expanded repository');
+  }
   console.log('Independent version navigation: OK');
 })().catch(error => { console.error(error); process.exitCode = 1; });

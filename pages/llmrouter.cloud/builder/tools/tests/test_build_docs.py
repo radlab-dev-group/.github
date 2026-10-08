@@ -165,6 +165,16 @@ class BuildDocsTests(unittest.TestCase):
         repositories = source.split('<h2>repositories</h2>', 1)[1].split('</div></div>', 1)[0]
         self.assertNotIn('/commit/', repositories)
 
+    def test_document_sidebar_keeps_all_categories_visible(self):
+        self.build()
+        for relative in ("1.1.0/index.html", "1.1.0/guides/guide.html",
+                         "plugins/guides/guide.html", "services/guides/guide.html"):
+            with self.subTest(relative=relative):
+                source = (self.output / "docs" / relative).read_text()
+                sidebar = source.split('<nav class="nav-tree"', 1)[1].split('</nav>', 1)[0]
+                self.assertIn('<section class="nav-sec open">', sidebar)
+                self.assertNotIn('<section class="nav-sec">', sidebar)
+
     def test_hubs_keep_router_release_and_omit_versions_toc(self):
         self.build("--check-links")
         for relative, router_version in (("index.html", "1.1.0"),

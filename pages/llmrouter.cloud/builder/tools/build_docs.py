@@ -1427,10 +1427,9 @@ def render_sidebar(release, config, current, page_dir, latest, versions,
             pages = repo_groups.get(section.id)
             if not pages:
                 continue
-            is_open = bool(current and current.section == section.id) or current is None
             section_link = page_link(repo_id, pages[0])
             parts.append(
-                f'<section class="nav-sec{" open" if is_open else ""}">'
+                '<section class="nav-sec open">'
                 f'<h2 class="nav-sec-title">'
                 f'<a href="{section_link}">'
                 f"{html.escape(section.title)}</a></h2><ul>"
