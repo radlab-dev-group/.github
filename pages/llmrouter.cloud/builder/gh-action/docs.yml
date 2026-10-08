@@ -44,19 +44,19 @@ jobs:
           path: llm-router
           fetch-depth: 0
 
-      - name: Checkout plugins source
+      - name: Checkout plugins source (tags included)
         uses: actions/checkout@v4
         with:
           repository: ${{ env.PLUGINS_REPO }}
           path: llm-router-plugins
-          fetch-depth: 1
+          fetch-depth: 0
 
-      - name: Checkout services source
+      - name: Checkout services source (tags included)
         uses: actions/checkout@v4
         with:
           repository: ${{ env.SERVICES_REPO }}
           path: llm-router-services
-          fetch-depth: 1
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v5
