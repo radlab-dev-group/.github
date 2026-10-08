@@ -3,8 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-9KM7GYM55M"></script>
-<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-9KM7GYM55M');</script>
+<script src="../../../../../assets/consent.js" defer data-privacy="../../../../../../privacy.html"></script>
 <title>Semantic BiEncoder Routing (semanticbiencoderrouting) · v1.1.8 · llm-router docs</title>
 <meta name="description" content="# Semantic BiEncoder Routing (`semantic_biencoder_routing`) Embedding-based model selection. A set of **routing targets** — each one a name, a model and a pile of natural-language examples — is embedded once at startup into a FAISS index. …">
 <meta name="theme-color" content="#05070a">
@@ -647,6 +646,7 @@ python<span class="w"> </span>-m<span class="w"> </span>pytest<span class="w"> <
 <footer class="foot"><div class="foot-inner">
 <span class="mono">llm-router &middot; docs are generated from the repository by <code>tools/build_docs.py</code></span>
 <span class="mono"><a href="https://github.com/radlab-dev-group/llm-router-plugins/tree/v0.1.2">1.1.8</a> @ <a href="https://github.com/radlab-dev-group/llm-router-plugins/commit/88ce6b6">88ce6b6</a></span>
+<span class="mono"><a href="../../../../../../privacy.html">privacy</a> &middot; <a href="../../../../../../privacy.html#cookies" data-consent-open>cookie settings</a></span>
 </div></footer>
 </main>
 <aside class="dtoc" id="dtoc"><h2 class="toc-title">on this page</h2><div class="toc-body"><ul><li><a href="#what-the-plugin-changes">What the plugin changes</a></li><li><a href="#quick-start">Quick start</a><ul><li><a href="#1-install-with-the-ml-extras">1. Install with the ML extras</a></li><li><a href="#2-load-the-plugin-into-the-router">2. Load the plugin into the router</a></li><li><a href="#3-make-the-embedding-weights-available">3. Make the embedding weights available</a></li><li><a href="#4-declare-the-models-in-the-router-model-config">4. Declare the models in the router model config</a></li><li><a href="#5-verify">5. Verify</a></li></ul></li><li><a href="#how-it-works">How it works</a><ul><li><a href="#startup-constructor">Startup (constructor)</a></li><li><a href="#request-path">Request path</a></li><li><a href="#measured-behaviour">Measured behaviour</a></li></ul></li><li><a href="#configuration">Configuration</a><ul><li><a href="#config-file-layout">Config file layout</a></li><li><a href="#environment-variables">Environment variables</a></li><li><a href="#startup-failures">Startup failures</a></li></ul></li><li><a href="#tuning-and-gotchas">Tuning and gotchas</a></li><li><a href="#verifying-the-plugin">Verifying the plugin</a><ul><li><a href="#live-check-loads-the-embedding-model">Live check (loads the embedding model)</a></li><li><a href="#router-smoke-test">Router smoke test</a></li><li><a href="#automated-tests">Automated tests</a></li></ul></li><li><a href="#troubleshooting">Troubleshooting</a></li><li><a href="#reference">Reference</a><ul><li><a href="#module-map">Module map</a></li><li><a href="#defaults-at-a-glance">Defaults at a glance</a></li><li><a href="#see-also">See also</a></li></ul></li></ul></div></aside>

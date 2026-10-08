@@ -3,8 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-9KM7GYM55M"></script>
-<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-9KM7GYM55M');</script>
+<script src="../../../../../../assets/consent.js" defer data-privacy="../../../../../../../privacy.html"></script>
 <title>Simple Semantic Routing (simplesemanticrouting) · v0.1.2 · llm-router docs</title>
 <meta name="description" content="# Simple Semantic Routing (`simple_semantic_routing`) Heuristic, two-stage model selection: it classifies the **intent** of the last user message (code / math / creative / general) with weighted keywords, phrases and regexes, estimates the…">
 <meta name="theme-color" content="#05070a">
@@ -701,6 +700,7 @@ SimpleSemanticRouting: intent=general, complexity=simple (5 tokens) -&gt; gpt-os
 <footer class="foot"><div class="foot-inner">
 <span class="mono">llm-router &middot; docs are generated from the repository by <code>tools/build_docs.py</code></span>
 <span class="mono"><a href="https://github.com/radlab-dev-group/llm-router-plugins/tree/v0.1.2">0.1.2</a> @ <a href="https://github.com/radlab-dev-group/llm-router-plugins/commit/88ce6b6">88ce6b6</a></span>
+<span class="mono"><a href="../../../../../../../privacy.html">privacy</a> &middot; <a href="../../../../../../../privacy.html#cookies" data-consent-open>cookie settings</a></span>
 </div></footer>
 </main>
 <aside class="dtoc" id="dtoc"><h2 class="toc-title">on this page</h2><div class="toc-body"><ul><li><a href="#what-the-plugin-changes">What the plugin changes</a></li><li><a href="#quick-start">Quick start</a><ul><li><a href="#1-install">1. Install</a></li><li><a href="#2-load-the-plugin-into-the-router">2. Load the plugin into the router</a></li><li><a href="#3-declare-the-models-in-the-router-model-config">3. Declare the models in the router model config</a></li><li><a href="#4-verify">4. Verify</a></li></ul></li><li><a href="#how-it-works">How it works</a><ul><li><a href="#where-it-runs">Where it runs</a></li><li><a href="#text-extraction">Text extraction</a></li><li><a href="#stage-1-intent-classification">Stage 1 — intent classification</a></li><li><a href="#stage-2-complexity-estimation">Stage 2 — complexity estimation</a></li><li><a href="#stage-3-model-selection">Stage 3 — model selection</a></li></ul></li><li><a href="#configuration">Configuration</a><ul><li><a href="#config-file-layout">Config file layout</a></li><li><a href="#environment-variables">Environment variables</a></li><li><a href="#validation">Validation</a></li></ul></li><li><a href="#tuning-and-gotchas">Tuning and gotchas</a></li><li><a href="#verifying-the-plugin">Verifying the plugin</a><ul><li><a href="#offline-dry-run">Offline dry run</a></li><li><a href="#router-smoke-test">Router smoke test</a></li><li><a href="#automated-tests">Automated tests</a></li></ul></li><li><a href="#troubleshooting">Troubleshooting</a></li><li><a href="#reference">Reference</a><ul><li><a href="#defaults-at-a-glance">Defaults at a glance</a></li><li><a href="#files">Files</a></li><li><a href="#see-also">See also</a></li></ul></li></ul></div></aside>

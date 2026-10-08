@@ -3,8 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-9KM7GYM55M"></script>
-<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-9KM7GYM55M');</script>
+<script src="../../../assets/consent.js" defer data-privacy="../../../../privacy.html"></script>
 <title>Response models · v1.1.2 · llm-router docs</title>
 <meta name="description" content="# Response models ## Introduction The router speaks JSON, and every endpoint emits a *different* shape. Before these models, `LLMRouterClient` handed that JSON straight back as a raw `dict`, so the knowledge of each response schema lived o…">
 <meta name="theme-color" content="#05070a">
@@ -561,6 +560,7 @@ partial/<code>status</code>‑wrapped body (<code>{"status": true, "response": �
 <footer class="foot"><div class="foot-inner">
 <span class="mono">llm-router &middot; docs are generated from the repository by <code>tools/build_docs.py</code></span>
 <span class="mono"><a href="https://github.com/radlab-dev-group/llm-router/tree/v1.1.2">1.1.2</a> @ <a href="https://github.com/radlab-dev-group/llm-router/commit/94b41da">94b41da</a></span>
+<span class="mono"><a href="../../../../privacy.html">privacy</a> &middot; <a href="../../../../privacy.html#cookies" data-consent-open>cookie settings</a></span>
 </div></footer>
 </main>
 <aside class="dtoc" id="dtoc"><h2 class="toc-title">on this page</h2><div class="toc-body"><ul><li><a href="#introduction">Introduction</a></li><li><a href="#where-the-models-live-and-how-to-import-them">📦 Where the models live and how to import them</a></li><li><a href="#client-method-response-model">🗺️ Client method → response model</a></li><li><a href="#class-hierarchy">🧱 Class hierarchy</a></li><li><a href="#model-reference">📚 Model reference</a><ul><li><a href="#health-meta">Health / meta</a></li><li><a href="#conversation">Conversation</a></li><li><a href="#pertext-list-utilities">Per‑text (list) utilities</a></li><li><a href="#singleoutput-utilities">Single‑output utilities</a></li><li><a href="#article-utilities">Article utilities</a></li></ul></li><li><a href="#design-decisions">🎨 Design decisions</a></li><li><a href="#usage-examples">🚀 Usage examples</a><ul><li><a href="#access-fields-typed">Access fields (typed)</a></li><li><a href="#serialize-export">Serialize / export</a></li><li><a href="#roundtrip-validate-a-storedstatuswrapped-body">Round‑trip (validate a stored/status‑wrapped body)</a></li></ul></li><li><a href="#backward-compatibility">🔁 Backward compatibility</a></li><li><a href="#adding-a-new-endpoint-model">➕ Adding a new endpoint model</a></li><li><a href="#testing-notes">✅ Testing notes</a></li><li><a href="#file-map">🧾 File map</a></li></ul></div></aside>

@@ -3,8 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-9KM7GYM55M"></script>
-<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-9KM7GYM55M');</script>
+<script src="../../../../assets/consent.js" defer data-privacy="../../../../../privacy.html"></script>
 <title>Authentication &amp; Authorization · v0.9.4 · llm-router docs</title>
 <meta name="description" content="# Authentication &amp; Authorization API-key-based authentication with per-endpoint policies, rate limiting, audit trail, and Prometheus metrics. **Enabled by default: `LLM_ROUTER_AUTH_ENABLED=false`** — set to `&quot;true&quot;` to enforce authenticati…">
 <meta name="theme-color" content="#05070a">
@@ -765,6 +764,7 @@ curl<span class="w"> </span>-H<span class="w"> </span><span class="s2">"x-api-ke
 <footer class="foot"><div class="foot-inner">
 <span class="mono">llm-router &middot; docs are generated from the repository by <code>tools/build_docs.py</code></span>
 <span class="mono"><a href="https://github.com/radlab-dev-group/llm-router/tree/v0.9.4">0.9.4</a> @ <a href="https://github.com/radlab-dev-group/llm-router/commit/40488c4">40488c4</a></span>
+<span class="mono"><a href="../../../../../privacy.html">privacy</a> &middot; <a href="../../../../../privacy.html#cookies" data-consent-open>cookie settings</a></span>
 </div></footer>
 </main>
 <aside class="dtoc" id="dtoc"><h2 class="toc-title">on this page</h2><div class="toc-body"><ul><li><a href="#architecture">Architecture</a><ul><li><a href="#components">Components</a></li></ul></li><li><a href="#environment-variables">Environment Variables</a></li><li><a href="#cli-commands">CLI Commands</a><ul><li><a href="#key-management">Key Management</a></li><li><a href="#policy-management">Policy Management</a></li><li><a href="#rate-limit">Rate Limit</a></li></ul></li><li><a href="#seed-file-memory-store">Seed File (Memory Store)</a><ul><li><a href="#seed-file-format">Seed File Format</a></li><li><a href="#how-it-works">How It Works</a></li><li><a href="#default-location">Default Location</a></li></ul></li><li><a href="#permission-engine">Permission Engine</a><ul><li><a href="#builtin-policies">Builtin Policies</a></li></ul></li><li><a href="#prometheus-metrics">Prometheus Metrics</a></li><li><a href="#key-format">Key Format</a></li><li><a href="#deployment-options">Deployment Options</a><ul><li><a href="#1-in-memory-store-development-quick-start">1️⃣ In-Memory Store — Development / Quick Start</a></li><li><a href="#2-redis-store-multi-process-stateful-single-node">2️⃣ Redis Store — Multi-Process / Stateful Single-Node</a></li><li><a href="#3-hashicorp-vault-production-multi-cluster-enterprise">3️⃣ HashiCorp Vault — Production / Multi-Cluster / Enterprise</a></li><li><a href="#comparison-matrix">Comparison Matrix</a></li></ul></li><li><a href="#see-also">See Also</a></li></ul></div></aside>

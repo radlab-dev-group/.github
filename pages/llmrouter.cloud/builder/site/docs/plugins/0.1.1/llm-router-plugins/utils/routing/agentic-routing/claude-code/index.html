@@ -3,8 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-9KM7GYM55M"></script>
-<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-9KM7GYM55M');</script>
+<script src="../../../../../../../assets/consent.js" defer data-privacy="../../../../../../../../privacy.html"></script>
 <title>Claude Code Model Swap (agenticroutingclaude_code) · v0.1.1 · llm-router docs</title>
 <meta name="description" content="# Claude Code Model Swap (`agentic_routing_claude_code`) Model-swapping plugin for the **Anthropic-Messages-style** requests emitted by the **Claude Code** CLI. It looks at the model every request asks for, finds the Claude Code **tier** t…">
 <meta name="theme-color" content="#05070a">
@@ -566,6 +565,7 @@ nothing at all.</p>
 <footer class="foot"><div class="foot-inner">
 <span class="mono">llm-router &middot; docs are generated from the repository by <code>tools/build_docs.py</code></span>
 <span class="mono"><a href="https://github.com/radlab-dev-group/llm-router-plugins/tree/v0.1.1">0.1.1</a> @ <a href="https://github.com/radlab-dev-group/llm-router-plugins/commit/31a0818">31a0818</a></span>
+<span class="mono"><a href="../../../../../../../../privacy.html">privacy</a> &middot; <a href="../../../../../../../../privacy.html#cookies" data-consent-open>cookie settings</a></span>
 </div></footer>
 </main>
 <aside class="dtoc" id="dtoc"><h2 class="toc-title">on this page</h2><div class="toc-body"><ul><li><a href="#what-the-plugin-changes">What the plugin changes</a></li><li><a href="#quick-start">Quick start</a><ul><li><a href="#1-install-the-plugin-package">1. Install the plugin package</a></li><li><a href="#2-load-the-plugin-into-the-router">2. Load the plugin into the router</a></li><li><a href="#3-declare-the-models-in-the-router">3. Declare the models in the router</a></li><li><a href="#4-point-claude-code-at-the-router">4. Point Claude Code at the router</a></li><li><a href="#5-verify">5. Verify</a></li></ul></li><li><a href="#how-it-works">How it works</a><ul><li><a href="#step-1-normalize-the-requested-name">Step 1 — normalize the requested name</a></li><li><a href="#step-2-match-it-against-the-configured-tiers">Step 2 — match it against the configured tiers</a></li><li><a href="#step-3-rewrite-and-annotate">Step 3 — rewrite and annotate</a></li></ul></li><li><a href="#configuration">Configuration</a><ul><li><a href="#config-file-layout">Config file layout</a></li><li><a href="#tiers-and-what-each-one-replaces">Tiers and what each one replaces</a></li><li><a href="#environment-variables">Environment variables</a></li><li><a href="#precedence-and-linting">Precedence and linting</a></li></ul></li><li><a href="#tuning-and-gotchas">Tuning and gotchas</a></li><li><a href="#verifying-the-plugin">Verifying the plugin</a><ul><li><a href="#offline-dry-run-no-network-no-router">Offline dry run (no network, no router)</a></li><li><a href="#router-smoke-test">Router smoke test</a></li><li><a href="#automated-tests">Automated tests</a></li></ul></li><li><a href="#troubleshooting">Troubleshooting</a></li><li><a href="#reference">Reference</a><ul><li><a href="#module-map">Module map</a></li><li><a href="#defaults-at-a-glance">Defaults at a glance</a></li><li><a href="#see-also">See also</a></li></ul></li></ul></div></aside>

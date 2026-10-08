@@ -3,8 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-9KM7GYM55M"></script>
-<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-9KM7GYM55M');</script>
+<script src="../../../../assets/consent.js" defer data-privacy="../../../../../privacy.html"></script>
 <title>Router Prometheus Metrics · v1.1.3 · llm-router docs</title>
 <meta name="description" content="# Router Prometheus Metrics Additional Prometheus metrics for the LLM router core (routing, provider lifecycle, pipeline funnel). Enabling these metrics requires `LLM_ROUTER_USE_PROMETHEUS=true` and the `metrics` extra (`pip install .[metr…">
 <meta name="theme-color" content="#05070a">
@@ -343,6 +342,7 @@ llm_router_payload_conversion_total{from_type="anthropic", to_type="openai"} 180
 <footer class="foot"><div class="foot-inner">
 <span class="mono">llm-router &middot; docs are generated from the repository by <code>tools/build_docs.py</code></span>
 <span class="mono"><a href="https://github.com/radlab-dev-group/llm-router/tree/v1.1.3">1.1.3</a> @ <a href="https://github.com/radlab-dev-group/llm-router/commit/f28e847">f28e847</a></span>
+<span class="mono"><a href="../../../../../privacy.html">privacy</a> &middot; <a href="../../../../../privacy.html#cookies" data-consent-open>cookie settings</a></span>
 </div></footer>
 </main>
 <aside class="dtoc" id="dtoc"><h2 class="toc-title">on this page</h2><div class="toc-body"><ul><li><a href="#overview">Overview</a></li><li><a href="#a-routing-provider-metrics">A. Routing &amp;amp; Provider Metrics</a><ul><li><a href="#llm_router_provider_calls_total-counter">llm_router_provider_calls_total (Counter)</a></li><li><a href="#llm_router_provider_latency_seconds-histogram">llm_router_provider_latency_seconds (Histogram)</a></li><li><a href="#llm_router_provider_error_total-counter">llm_router_provider_error_total (Counter)</a></li><li><a href="#llm_router_lb_strategy_selected_total-counter">llm_router_lb_strategy_selected_total (Counter)</a></li></ul></li><li><a href="#b-pipeline-request-funnel-metrics">B. Pipeline / Request Funnel Metrics</a><ul><li><a href="#llm_router_pipeline_stage_total-counter">llm_router_pipeline_stage_total (Counter)</a></li><li><a href="#llm_router_retry_total-counter">llm_router_retry_total (Counter)</a></li><li><a href="#llm_router_retry_exhausted_total-counter">llm_router_retry_exhausted_total (Counter)</a></li></ul></li><li><a href="#c-token-usage-metric">C. Token Usage Metric</a><ul><li><a href="#llm_router_tokens_total-counter">llm_router_tokens_total (Counter)</a></li></ul></li><li><a href="#d-streaming-response-format-metrics">D. Streaming &amp;amp; Response Format Metrics</a><ul><li><a href="#llm_router_response_format_total-counter">llm_router_response_format_total (Counter)</a></li><li><a href="#llm_router_payload_conversion_total-counter">llm_router_payload_conversion_total (Counter)</a></li></ul></li><li><a href="#grafana-dashboard-snippet">Grafana Dashboard Snippet</a></li><li><a href="#implementation-notes">Implementation Notes</a></li></ul></div></aside>
