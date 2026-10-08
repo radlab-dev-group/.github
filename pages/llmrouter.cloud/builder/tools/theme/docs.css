@@ -1484,6 +1484,20 @@ body[data-repo] .side-versions select {
   text-transform: uppercase;
 }
 
+.versions-box > summary {
+  cursor: pointer;
+  color: var(--fg-dim);
+}
+
+.versions-box > summary h2 {
+  display: inline;
+  margin: 0;
+}
+
+.versions-box[open] > summary {
+  margin-bottom: 9px;
+}
+
 .box p {
   margin: 0 0 8px;
   color: var(--fg-dim);
@@ -1853,20 +1867,26 @@ body[data-repo] .side-versions select {
 .nav-repo {
   padding: 0.5rem 1rem 0.25rem;
   margin-top: 1rem;
-  border-top: 1px solid var(--border);
+  border-top: 1px solid var(--line);
+  cursor: pointer;
+  color: var(--fg-dim);
 }
 [data-nav-repo]:first-child .nav-repo {
   border-top: none;
   margin-top: 0.5rem;
 }
 .nav-repo .repo-name {
-  display: block;
+  display: inline;
   font-family: var(--mono);
   font-size: 0.7rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  color: var(--muted);
+  color: var(--fg-dim);
+}
+.nav-group > .side-head,
+.nav-group > [data-router-context] {
+  margin-top: 8px;
 }
 
 /* Multi-repo: repo chip on hub cards and search results */

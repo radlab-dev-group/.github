@@ -20,8 +20,8 @@ Three repositories feed the documentation site:
 | `llm-router-services` | HTTP services (guardrails, masker) | Independent release tags + latest stable mount | `/docs/services/<version>/...`, `/docs/services/...` |
 
 Router, plugins and services releases are independent: each release tag gets a frozen copy
-of its own Markdown. The topbar selects the router version; satellite selectors
-live under their repository names in the left sidebar, including on `/docs`.
+of its own Markdown. All three version selectors live under their repository
+names in collapsible left-sidebar sections, including on `/docs`.
 Switching within a repository keeps the same document when available, otherwise
 it opens that release's documentation index. Plugin archives keep the shared
 sidebar: only the plugin section uses the selected plugin release, while router
@@ -40,7 +40,10 @@ badges live in their own menu sections. Without JavaScript, static archive links
 remain usable with the default navigation context.
 Documentation index pages show separate `Router all versions` and
 `Plugins all versions` and `Services all versions` panels. Each highlights its selected version, and links
-switch only that project while preserving the other selection. Release details
+switch only that project while preserving the other selection. These panels are
+collapsed by default and expand by clicking their headings, also without JavaScript.
+The repositories panel links to release tags rather than commits; repositories
+without tags link to their source branch. Release details
 are labeled with the project name (`Router release`, `Plugins release` or `Services release`).
 
 Set `versions = "all"` in a satellite's `[[repos]]` entry to build its release

@@ -58,6 +58,9 @@ class BuildDocsTests(unittest.TestCase):
             (root / "guides").mkdir(exist_ok=True)
             (root / "guides/guide.md").write_text(
                 f"# Guide\n\nGuide {version}\n\n[Overview](../README.md)\n")
+            (root / "guides/nested").mkdir(exist_ok=True)
+            (root / "guides/nested/index.md").write_text(
+                f"# Nested guide\n\nNested {version}\n\n[Overview](../../README.md)\n")
             if version != "v0.1.0":
                 (root / "guides/new.md").write_text("# New page\n\nNew content\n")
             self.git(root, "add", ".")
@@ -133,6 +136,35 @@ class BuildDocsTests(unittest.TestCase):
         options = Selects(page.read_text()).selects["plugins"]
         self.assertTrue(any(o["value"] == "../../0.1.0/index.html" for o in options))
 
+    def test_latest_nested_links(self):
+        config = self.root / "docs.toml"
+        config.write_text((TOOLS / "docs.toml").read_text() + '\n[[crosslinks]]\n'
+                          'from = "guides/nested/index.md"\n'
+                          'link = "../../README.md"\n'
+                          'to = "services:README.md"\n')
+        self.build("--config", str(config), "--check-links")
+        for version in ("", "0.5.0/"):
+            page = self.output / f"docs/services/{version}guides/nested/index.html"
+            self.assertIn('href="../../index-2.html"', page.read_text())
+
+    def test_collapsible_navigation_and_tag_links(self):
+        self.build()
+        source = (self.output / "docs/index.html").read_text()
+        sidebar = source.split('<aside class="sidebar"', 1)[1].split('</aside>', 1)[0]
+        self.assertNotIn('data-switch="router"', source.split('<aside class="sidebar"', 1)[0])
+        for repo, name, tag in (("router", "llm-router", "1.1.0"),
+                               ("plugins", "llm-router-plugins", "v0.2.0"),
+                               ("services", "llm-router-services", "v0.5.0")):
+            group = sidebar.split(f'<div data-nav-repo="{repo}">', 1)[1].split('</details>', 1)[0]
+            self.assertIn('<details class="nav-group" open>', group)
+            self.assertIn(f'<summary class="nav-repo"><span class="repo-name">{name}</span></summary>', group)
+            self.assertLess(group.index('class="repo-name"'), group.index('class="side-head"'))
+            self.assertIn(f'data-switch="{repo}"', group)
+            self.assertIn(f'<details class="box versions-box" data-versions-repo="{repo}">', source)
+            self.assertIn(f'/releases/tag/{tag}', source)
+        repositories = source.split('<h2>repositories</h2>', 1)[1].split('</div></div>', 1)[0]
+        self.assertNotIn('/commit/', repositories)
+
     def test_sidebar_versions_and_latest_plugin_status(self):
         self.build("--check-links")
         docs = self.output / "docs"
@@ -172,8 +204,8 @@ class BuildDocsTests(unittest.TestCase):
         for relative in ("index.html", "1.0.0/index.html",
                          "plugins/0.1.0/index.html", "plugins/index.html"):
             source = (docs / relative).read_text()
-            router_panel = source.split('data-versions-repo="router">', 1)[1].split('</ul></div>', 1)[0]
-            plugins_panel = source.split('data-versions-repo="plugins">', 1)[1].split('</ul></div>', 1)[0]
+            router_panel = source.split('data-versions-repo="router">', 1)[1].split('</ul></details>', 1)[0]
+            plugins_panel = source.split('data-versions-repo="plugins">', 1)[1].split('</ul></details>', 1)[0]
             self.assertIn('<h2>Router all versions</h2>', router_panel)
             self.assertIn('<h2>Plugins all versions</h2>', plugins_panel)
             self.assertIn('>v1.0.0</a>', router_panel)
@@ -201,7 +233,7 @@ class BuildDocsTests(unittest.TestCase):
                 options = Selects(source).selects[repo]
                 self.assertEqual({o["data-version"] for o in options}, {newest, older})
                 self.assertNotIn("rolling", source)
-                panel = source.split(f'data-versions-repo="{repo}">', 1)[1].split('</ul></div>', 1)[0]
+                panel = source.split(f'data-versions-repo="{repo}">', 1)[1].split('</ul></details>', 1)[0]
                 self.assertIn(f'<h2>{repo.title()} all versions</h2>', panel)
                 self.assertIn(f'>v{older}</a>', panel)
                 self.assertRegex(panel, rf'class="vrow[^\"]* latest"[^\n]*>v{re.escape(newest)}</a>')

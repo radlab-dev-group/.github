@@ -119,14 +119,14 @@
           if (!group || !current) {
             throw new Error("Documentation navigation missing");
           }
-          var routerContext = repo === "router" ? parsed.querySelector("[data-router-context]") : null;
-          var currentRouterContext = repo === "router" ? doc.querySelector("[data-router-context]") : null;
-          if (repo === "router" && (!routerContext || !currentRouterContext)) {
-            throw new Error("Router version heading missing");
-          }
           var versionsSelector = '[data-versions-repo="' + repo + '"]';
           var versionsPanel = parsed.querySelector(versionsSelector);
           var currentVersionsPanel = doc.querySelector(versionsSelector);
+          var currentDetails = current.querySelector("details.nav-group");
+          var groupDetails = group.querySelector("details.nav-group");
+          if (currentDetails && groupDetails) {
+            groupDetails.open = currentDetails.open;
+          }
           all("a[href]", group).forEach(function (link) {
             link.setAttribute("href", new URL(link.getAttribute("href"), root).href);
           });
@@ -137,13 +137,8 @@
           all(".active", group).forEach(function (link) {
             link.classList.remove("active");
           });
-          if (routerContext) {
-            all("a[href]", routerContext).forEach(function (link) {
-              link.setAttribute("href", new URL(link.getAttribute("href"), root).href);
-            });
-            currentRouterContext.replaceWith(routerContext);
-          }
           if (versionsPanel && currentVersionsPanel) {
+            versionsPanel.open = currentVersionsPanel.open;
             all("a[href]", versionsPanel).forEach(function (link) {
               link.setAttribute("href", new URL(link.getAttribute("href"), root).href);
             });
