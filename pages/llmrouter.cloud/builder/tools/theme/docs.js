@@ -127,6 +127,7 @@
     var here = new URL(window.location.href);
     var docsRoot = new URL(body.getAttribute("data-docs-root"), here);
     var context = {};
+    var entryRoots = {};
 
     function withVersions(target) {
       var url = new URL(target, here);
@@ -150,6 +151,7 @@
         return;
       }
       context[repo] = option.getAttribute("data-version");
+      entryRoots[repo] = new URL(option.getAttribute("data-root"), here).href;
       if (option !== selected) {
         select.value = option.value;
         var root = new URL(option.getAttribute("data-root"), here);
@@ -206,6 +208,7 @@
           // Do not leave links pointing at a different release if loading fails.
           select.value = selected.value;
           context[repo] = selected.getAttribute("data-version");
+          entryRoots[repo] = new URL(selected.getAttribute("data-root"), here).href;
         });
       }
     });
@@ -224,7 +227,8 @@
       if (!link || link.getAttribute("href").charAt(0) === "#") {
         return;
       }
-      var target = new URL(link.getAttribute("href"), here);
+      var entryRepo = link.getAttribute("data-docs-entry");
+      var target = new URL(entryRoots[entryRepo] || link.getAttribute("href"), here);
       if (target.origin === docsRoot.origin && target.pathname.indexOf(docsRoot.pathname) === 0 &&
           (target.pathname.endsWith(".html") || target.pathname.endsWith("/"))) {
         var destination = new URL(withVersions(target.href));

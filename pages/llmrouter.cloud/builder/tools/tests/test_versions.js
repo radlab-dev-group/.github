@@ -169,6 +169,22 @@ async function fixture(url, active, routerVersion, pluginVersion, serviceVersion
   assert.equal(restored.groups.routerContext, undefined);
   assert.equal(restored.groups.routerRelease, undefined, 'restoring services must not replace the router release panel');
 
+  const home = await fixture('https://example.invalid/sub/docs/?plugins=0.1.0&services=0.4.0',
+    'router', '1.1.0', '0.2.0');
+  for (const [repo, version] of [['router', '1.1.0'], ['plugins', '0.1.0'], ['services', '0.4.0']]) {
+    for (const event of ['click', 'auxclick']) {
+      const card = element({href: `https://example.invalid/sub/docs/${repo}/index.html`, 'data-docs-entry': repo});
+      card.closest = () => card;
+      home.handlers[event]({target: card});
+      const destination = new URL(card.getAttribute('href'));
+      assert.equal(destination.pathname, `/sub/docs/${repo}/${version}/index.html`,
+        'documentation cards must open the selected archive, not reset it to latest');
+      assert.equal(destination.searchParams.get('router'), '1.1.0');
+      assert.equal(destination.searchParams.get('plugins'), '0.1.0');
+      assert.equal(destination.searchParams.get('services'), '0.4.0');
+    }
+  }
+
   const invalid = await fixture('https://example.invalid/sub/docs/plugins/0.1.0/index.html?router=bogus&plugins=0.2.0', 'plugins', '1.1.0', '0.1.0');
   assert.equal(invalid.requests.length, 0);
   assert.equal(invalid.plugins.options[invalid.plugins.selectedIndex].getAttribute('data-version'), '0.1.0');
