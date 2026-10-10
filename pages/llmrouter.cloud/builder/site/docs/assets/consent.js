@@ -47,6 +47,24 @@
   }
 
   /* ---- analytics loader ----------------------------------------------- */
+  /* Parsing a snippet as text/html hoists <script>, <link> and <meta> into the
+     parsed document's <head>, so the payload never lands in <body> alone. Both
+     roots are scanned, head first, to keep the original snippet order. */
+  function payloadNodes(parsed) {
+    var nodes = [];
+    [parsed.head, parsed.body].forEach(function (root) {
+      if (!root) {
+        return;
+      }
+      Array.prototype.slice.call(root.childNodes).forEach(function (node) {
+        if (node.nodeType === 1) {
+          nodes.push(node);
+        }
+      });
+    });
+    return nodes;
+  }
+
   function inject(payload) {
     var parsed;
     try {
@@ -54,10 +72,7 @@
     } catch (err) {
       return;
     }
-    Array.prototype.slice.call(parsed.body.childNodes).forEach(function (node) {
-      if (node.nodeType !== 1) {
-        return;
-      }
+    payloadNodes(parsed).forEach(function (node) {
       if (node.tagName.toLowerCase() === "script") {
         /* a cloned script stays inert until it is re-created in the document */
         var script = doc.createElement("script");

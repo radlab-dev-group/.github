@@ -71,20 +71,27 @@ function find(node, id) {
   return null;
 }
 
+/* A real browser parsing a snippet as text/html hoists <script>, <link> and
+   <meta> into <head>; only other elements stay in <body>. The mock follows the
+   same rule, otherwise the loader could pass by relying on the wrong root. */
+const HEAD_ONLY = /^(script|link|meta|title)$/;
+
 function DOMParser() {}
 DOMParser.prototype.parseFromString = function (payload) {
+  const head = element('head');
   const body = element('body');
+  head.childNodes = head.children;
   body.childNodes = body.children;
-  const scripts = /<script([^>]*)>([\s\S]*?)<\/script>/g;
+  const tags = /<(script|link|meta|title|noscript)([^>]*)>([\s\S]*?)<\/\1>/g;
   let match;
-  while ((match = scripts.exec(payload))) {
-    const script = element('script');
-    const src = /src="([^"]*)"/.exec(match[1]);
-    if (src) script.setAttribute('src', src[1]);
-    script.textContent = match[2];
-    body.appendChild(script);
+  while ((match = tags.exec(payload))) {
+    const node = element(match[1]);
+    const src = /src="([^"]*)"/.exec(match[2]);
+    if (src) node.setAttribute('src', src[1]);
+    node.textContent = match[3];
+    (HEAD_ONLY.test(match[1]) ? head : body).appendChild(node);
   }
-  return {body};
+  return {head, body};
 };
 
 function collect(node) {
@@ -174,5 +181,35 @@ assert.equal(visitor.state(), '');
 assert.equal(visitor.window.llmRouterConsent.state(), '');
 visitor.window.llmRouterConsent.decide('denied');
 assert.equal(visitor.state(), 'denied');
+
+/* ---- a payload that spans both parsed roots is injected in order --------- */
+const MIXED_SAMPLE =
+  '<script src="https://www.googletagmanager.com/gtag/js?id=G-MIX"></scr' + 'ipt>\n' +
+  '<noscript><img src="https://www.example.com/collect"></noscript>';
+const mixedCode = source.replace('var GA_PAYLOAD = @@GA@@;',
+  'var GA_PAYLOAD = ' + JSON.stringify(MIXED_SAMPLE) + ';');
+(function mixedRoots() {
+  const values = new Map();
+  const head = element('head');
+  const body = element('body');
+  const window = {localStorage: {
+    getItem: () => JSON.stringify({state: 'granted'}),
+    setItem: (key, value) => values.set(key, value),
+  }};
+  const doc = {
+    head, body, currentScript: null,
+    createElement: tag => element(tag),
+    getElementById: id => find(head, id) || find(body, id),
+    importNode: node => node,
+    addEventListener: () => {},
+  };
+  vm.runInNewContext(mixedCode,
+    {window, document: doc, DOMParser, JSON, Date, Array, Object, String});
+  const loaded = head.children.filter(node => node.tagName !== 'STYLE');
+  assert.equal(loaded.length, 2, 'a head/body split payload is not injected');
+  assert.equal(loaded[0].getAttribute('src'),
+    'https://www.googletagmanager.com/gtag/js?id=G-MIX');
+  assert.equal(loaded[1].tagName, 'NOSCRIPT', 'the body-root node was dropped');
+})();
 
 console.log('consent gate ok');
