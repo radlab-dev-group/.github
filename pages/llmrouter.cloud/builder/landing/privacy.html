@@ -171,7 +171,7 @@ td:first-child{color:var(--fg);white-space:nowrap;font-family:var(--mono);font-s
     <tr><th>name</th><th>who sets it</th><th>where</th><th>why / how long</th></tr>
   </thead>
   <tbody>
-    <tr><td>llmrouter.analytics.consent.v1</td><td>this site</td><td>localStorage</td><td>your consent choice, until you clear it or pick again</td></tr>
+    <tr><td>llmrouter.analytics.consent.v1</td><td>this site</td><td>localStorage</td><td>your consent choice; a "decide later" choice lasts 30 days, an accept or decline until you change it</td></tr>
     <tr><td>docs-sidebar:*</td><td>docs site</td><td>sessionStorage</td><td>which sidebar sections you expanded; gone when the tab closes</td></tr>
     <tr><td>_ga</td><td>Google Analytics</td><td>cookie</td><td>visitor counter, 13 months</td></tr>
     <tr><td>_ga_9KM7GYM55M</td><td>Google Analytics</td><td>cookie</td><td>per-property visitor counter, 13 months</td></tr>
@@ -191,7 +191,8 @@ td:first-child{color:var(--fg);white-space:nowrap;font-family:var(--mono);font-s
 <section id="legal">
 <h2><span class="num">04</span>Legal basis</h2>
 <ul class="plain">
-  <li>Storing and reading the analytics cookies needs your <b>consent</b> under the ePrivacy rules; the consent banner implements it and can be withdrawn at any time.</li>
+  <li>Storing and reading the analytics cookies needs your <b>consent</b> under the ePrivacy rules; the consent banner implements it and can be withdrawn at any time. Closing the banner with &#8220;decide later&#8221; is <b>not</b> consent: nothing is measured and we simply ask again after 30 days.</li>
+  <li>Analytics runs on Google&apos;s <b>Consent Mode</b>. The consent state is set before the measurement tag loads, and accepting grants the analytics purpose only &mdash; the advertising categories stay denied, because this site serves no advertising.</li>
   <li>Once you consent, the processing rests on <b>Art. 6(1)(f) GDPR</b>: our legitimate interest in understanding basic, aggregate usage of a public project site so it can be kept useful. The processing is limited to that purpose.</li>
 </ul>
 <p>

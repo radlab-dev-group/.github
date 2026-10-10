@@ -9,8 +9,23 @@ const GA_SAMPLE =
 
 const source = fs.readFileSync(path.join(__dirname, '../theme/consent.js'), 'utf8');
 assert.ok(source.includes('var GA_PAYLOAD = @@GA@@;'), 'consent.js lost its payload token');
-const code = source.replace('var GA_PAYLOAD = @@GA@@;',
-  'var GA_PAYLOAD = ' + JSON.stringify(GA_SAMPLE) + ';');
+const KEY = 'llmrouter.analytics.consent.v1';
+const DAY = 24 * 60 * 60 * 1000;
+const BASE_TIME = Date.UTC(2026, 0, 1, 12, 0, 0);
+
+function codeFor(payload, loadWithoutConsent) {
+  const rendered = source.replace('var GA_PAYLOAD = @@GA@@;',
+    'var GA_PAYLOAD = ' + JSON.stringify(payload) + ';');
+  if (!loadWithoutConsent) {
+    return rendered;
+  }
+  assert.ok(rendered.includes('var LOAD_WITHOUT_CONSENT = false;'),
+    'consent.js lost its LOAD_WITHOUT_CONSENT flag');
+  return rendered.replace('var LOAD_WITHOUT_CONSENT = false;',
+    'var LOAD_WITHOUT_CONSENT = true;');
+}
+
+const code = codeFor(GA_SAMPLE);
 
 function matches(node, selector) {
   if (selector === '[data-consent-open]') return node.getAttribute('data-consent-open') !== null;
@@ -98,8 +113,9 @@ function collect(node) {
   return [node, ...node.children.flatMap(collect)];
 }
 
-function run(stored, privacy = '../../privacy.html') {
-  const values = new Map(stored === null ? [] : [['llmrouter.analytics.consent.v1', stored]]);
+function run(stored, privacy = '../../privacy.html', options = {}) {
+  const clock = {now: options.now === undefined ? BASE_TIME : options.now};
+  const values = new Map(stored === null ? [] : [[KEY, stored]]);
   const head = element('head');
   const body = element('body');
   const handlers = {};
@@ -119,14 +135,19 @@ function run(stored, privacy = '../../privacy.html') {
     importNode: node => node,
     addEventListener: (name, fn) => { handlers[name] = fn; },
   };
-  vm.runInNewContext(code, {window, document: doc, DOMParser, JSON, Date, Array, Object, String});
+  vm.runInNewContext(options.code || code, {
+    window, document: doc, DOMParser, JSON, Array, Object, String,
+    Date: {now: () => clock.now},
+  });
   const api = {
     window,
     values,
+    clock,
     handlers,
     panel: () => find(body, 'llmrc-panel'),
     scripts: () => head.children.filter(node => node.tagName === 'SCRIPT'),
-    state: () => (values.size ? JSON.parse(values.get('llmrouter.analytics.consent.v1')).state : ''),
+    record: () => JSON.parse(values.get(KEY)),
+    state: () => (values.size ? JSON.parse(values.get(KEY)).state : ''),
   };
   api.choice = choice => {
     const buttons = collect(find(body, 'llmrc-panel'))
@@ -145,7 +166,7 @@ assert.equal(panel.getAttribute('role'), 'dialog');
 assert.equal(fresh.scripts().length, 0, 'analytics loaded before consent');
 const choices = collect(panel).filter(node => node.getAttribute && node.getAttribute('data-choice') !== null)
   .map(node => node.getAttribute('data-choice'));
-assert.deepEqual(choices, ['granted', 'denied', 'later']);
+assert.deepEqual(choices, ['granted', 'denied', 'postponed']);
 const link = collect(panel).find(node => node.tagName === 'A');
 assert.equal(link.href, '../../privacy.html');
 
@@ -154,7 +175,15 @@ fresh.choice('granted');
 assert.equal(fresh.state(), 'granted');
 assert.equal(fresh.panel(), null, 'panel stays open after a decision');
 assert.deepEqual(fresh.scripts().map(node => node.getAttribute('src') || ''),
-  ['https://www.googletagmanager.com/gtag/js?id=G-TEST', '']);
+  ['', 'https://www.googletagmanager.com/gtag/js?id=G-TEST', '']);
+
+/* Consent Mode v2: analytics is granted, the advertising categories are not */
+const defaults = fresh.scripts()[0].textContent;
+assert.ok(defaults.includes("gtag('consent','default'"), 'no consent defaults');
+assert.ok(defaults.includes("'analytics_storage':'granted'"), 'analytics not granted');
+['ad_storage', 'ad_user_data', 'ad_personalization'].forEach(name => {
+  assert.ok(defaults.includes("'" + name + "':'denied'"), name + ' should stay denied');
+});
 
 /* ---- declined: never loads, never asks again -------------------------- */
 const declined = run(JSON.stringify({state: 'denied'}));
@@ -164,7 +193,7 @@ assert.equal(declined.scripts().length, 0, 'analytics loaded after a refusal');
 /* ---- accepted earlier: loads straight away, no panel ------------------ */
 const accepted = run(JSON.stringify({state: 'granted'}));
 assert.equal(accepted.panel(), null);
-assert.equal(accepted.scripts().length, 2);
+assert.equal(accepted.scripts().length, 3);
 
 /* ---- footer links reopen the panel without changing the decision ------ */
 const trigger = element('a');
@@ -203,13 +232,47 @@ const mixedCode = source.replace('var GA_PAYLOAD = @@GA@@;',
     importNode: node => node,
     addEventListener: () => {},
   };
-  vm.runInNewContext(mixedCode,
-    {window, document: doc, DOMParser, JSON, Date, Array, Object, String});
-  const loaded = head.children.filter(node => node.tagName !== 'STYLE');
+  vm.runInNewContext(mixedCode, {
+    window, document: doc, DOMParser, JSON, Array, Object, String,
+    Date: {now: () => BASE_TIME},
+  });
+  const loaded = head.children.filter(node => node.tagName !== 'STYLE' &&
+    !node.textContent.includes("gtag('consent','default'"));
   assert.equal(loaded.length, 2, 'a head/body split payload is not injected');
   assert.equal(loaded[0].getAttribute('src'),
     'https://www.googletagmanager.com/gtag/js?id=G-MIX');
   assert.equal(loaded[1].tagName, 'NOSCRIPT', 'the body-root node was dropped');
 })();
+
+/* ---- "decide later": stored, silent, and it expires ------------------- */
+const later = run(null);
+later.choice('postponed');
+assert.equal(later.state(), 'postponed');
+assert.equal(later.scripts().length, 0, 'a postponed choice loaded analytics');
+assert.equal(later.panel(), null, 'the panel stayed open after postponing');
+assert.equal(later.record().until, BASE_TIME + 30 * DAY, 'quiet period is not 30 days');
+
+const postponed = JSON.stringify(later.record());
+const quiet = run(postponed, '../../privacy.html', {now: BASE_TIME + 29 * DAY});
+assert.equal(quiet.panel(), null, 'the panel nags during the quiet period');
+assert.equal(quiet.scripts().length, 0, 'analytics loaded while postponed');
+
+const elapsed = run(postponed, '../../privacy.html', {now: BASE_TIME + 31 * DAY});
+assert.ok(elapsed.panel(), 'the panel does not return once the quiet period ends');
+assert.equal(elapsed.scripts().length, 0, 'analytics loaded before a fresh choice');
+elapsed.choice('granted');
+assert.equal(elapsed.state(), 'granted');
+assert.equal(elapsed.scripts().length, 3, 'the payload did not follow the fresh yes');
+
+/* ---- optional consent-state pings for visitors who never accept ------- */
+const pings = run(null, '../../privacy.html', {code: codeFor(GA_SAMPLE, true)});
+assert.ok(pings.panel(), 'the panel must still ask when pings are enabled');
+assert.equal(pings.scripts().length, 3, 'the denied-state payload was not loaded');
+assert.ok(pings.scripts()[0].textContent.includes("'analytics_storage':'denied'"),
+  'analytics must default to denied without a choice');
+pings.choice('granted');
+const updates = pings.scripts().slice(3).map(node => node.textContent);
+assert.deepEqual(updates, ["gtag('consent','update',{'analytics_storage':'granted'});"]);
+assert.equal(pings.scripts().length, 4, 'the payload was injected twice');
 
 console.log('consent gate ok');

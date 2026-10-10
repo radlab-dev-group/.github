@@ -202,6 +202,14 @@ is never embedded into the pages. The builder injects it into
   Google before the choice.
 - Accept: the stored decision (localStorage) loads the GA payload.
 - Decline: the refusal is stored, nothing is ever loaded.
+- Decide later: stored as `postponed`, nothing is loaded, and the panel stays
+  quiet for `LATER_QUIET_PERIOD` (30 days) before it asks again.
+- Consent Mode v2: a `gtag('consent', 'default', ...)` call is injected before
+  the payload with every category denied, and accepting grants
+  `analytics_storage` only, so analytics consent never implies ad storage.
+- `LOAD_WITHOUT_CONSENT` (top of `tools/theme/consent.js`, off by default) also
+  loads the tag for undecided and declining visitors in a denied consent
+  state, which gives Google the consent signal behind modelled traffic.
 - The panel can be reopened from the "cookie settings" links (any element with
   `data-consent-open`) in the landing footer and the docs footer; the policy
   itself lives at `privacy.html`.
