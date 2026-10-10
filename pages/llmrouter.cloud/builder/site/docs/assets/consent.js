@@ -4,9 +4,14 @@
    injects it into this file (the @@GA@@ token below) and writes the result to
    docs/assets/consent.js, which every page loads. Nothing is requested from
    Google until the visitor has chosen: accepted -> the payload is injected,
-   declined -> nothing is ever loaded, undecided -> the panel shows again on
-   the next page view. The decision is stored in localStorage and any element
-   carrying a data-consent-open attribute reopens the panel.
+   declined -> nothing is ever loaded, postponed ("decide later") -> nothing is
+   loaded and the panel stays quiet for LATER_QUIET_PERIOD. The decision is
+   stored in localStorage and any element carrying a data-consent-open
+   attribute reopens the panel.
+
+   The payload is always preceded by a Google Consent Mode v2 default that
+   denies every category. Accepting grants analytics_storage only, so an
+   analytics consent never implies advertising storage.
    No dependencies, no build step; shared by the landing page and the docs.
    ========================================================================== */
 (function () {
@@ -15,6 +20,15 @@
   var doc = document;
   var GA_PAYLOAD = "\u003cscript async src=\"https://www.googletagmanager.com/gtag/js?id=G-9KM7GYM55M\"\u003e\u003c/script\u003e\n\u003cscript\u003ewindow.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-9KM7GYM55M');\u003c/script\u003e";
   var STORAGE_KEY = "llmrouter.analytics.consent.v1";
+  /* "decide later" silences the panel for this long without granting anything */
+  var LATER_QUIET_PERIOD = 30 * 24 * 60 * 60 * 1000;
+  /* Google Consent Mode v2 categories, always denied unless granted below */
+  var CONSENT_CATEGORIES = ["ad_storage", "analytics_storage", "ad_user_data",
+    "ad_personalization"];
+  /* Set to true to load GA for undecided and declining visitors as well, in a
+     denied consent state (no cookies, only the consent signal Google needs for
+     modelled traffic). Left false: nothing leaves the browser without a choice. */
+  var LOAD_WITHOUT_CONSENT = false;
   var STYLE_ID = "llmrc-style";
   var PANEL_ID = "llmrc-panel";
 
@@ -22,25 +36,42 @@
   var privacyHref = own ? own.getAttribute("data-privacy") || "" : "";
   var injected = false;
 
-  function state() {
-    var stored;
+  function stored() {
+    var value;
     try {
-      stored = JSON.parse(window.localStorage.getItem(STORAGE_KEY) || "");
+      value = JSON.parse(window.localStorage.getItem(STORAGE_KEY) || "");
     } catch (err) {
+      return null;
+    }
+    if (!value || typeof value !== "object") {
+      return null;
+    }
+    if (value.state !== "granted" && value.state !== "denied" &&
+        value.state !== "postponed") {
+      return null;
+    }
+    return value;
+  }
+
+  function state() {
+    var value = stored();
+    if (!value) {
       return "";
     }
-    if (!stored || (stored.state !== "granted" && stored.state !== "denied")) {
+    if (value.state === "postponed" && !(Number(value.until) > Date.now())) {
+      /* the quiet period elapsed, so the panel asks again */
       return "";
     }
-    return stored.state;
+    return value.state;
   }
 
   function remember(choice) {
+    var value = {state: choice, at: Date.now()};
+    if (choice === "postponed") {
+      value.until = Date.now() + LATER_QUIET_PERIOD;
+    }
     try {
-      window.localStorage.setItem(STORAGE_KEY, JSON.stringify({
-        state: choice,
-        at: new Date().toISOString()
-      }));
+      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(value));
     } catch (err) {
       /* private mode: the choice then lives for this page view only */
     }
@@ -89,11 +120,36 @@
     });
   }
 
-  function loadAnalytics() {
-    if (injected || !GA_PAYLOAD) {
+  function inlineScript(source) {
+    var script = doc.createElement("script");
+    script.textContent = source;
+    doc.head.appendChild(script);
+  }
+
+  function consentDefaults(granted) {
+    var pairs = CONSENT_CATEGORIES.map(function (name) {
+      var value = granted && name === "analytics_storage" ? "granted" : "denied";
+      return "'" + name + "':'" + value + "'";
+    });
+    return "window.dataLayer=window.dataLayer||[];" +
+      "function gtag(){dataLayer.push(arguments)};" +
+      "gtag('consent','default',{" + pairs.join(",") + "});";
+  }
+
+  /* The default is set before the payload so the first hit already carries the
+     right state; the later update only covers a mid-page change of mind. */
+  function loadAnalytics(granted) {
+    if (!GA_PAYLOAD) {
+      return;
+    }
+    if (injected) {
+      if (granted) {
+        inlineScript("gtag('consent','update',{'analytics_storage':'granted'});");
+      }
       return;
     }
     injected = true;
+    inlineScript(consentDefaults(granted));
     inject(GA_PAYLOAD);
   }
 
@@ -181,8 +237,9 @@
 
     var later = element("button", "llmrc-x", "&#10005;");
     later.type = "button";
-    later.setAttribute("data-choice", "later");
-    later.setAttribute("aria-label", "Close, decide later");
+    later.setAttribute("data-choice", "postponed");
+    later.setAttribute("aria-label", "Decide later");
+    later.title = "Ask me again in 30 days. Nothing is measured in the meantime.";
     box.appendChild(later);
     return box;
   }
@@ -211,23 +268,28 @@
   }
 
   function decide(choice) {
-    if (choice === "granted" || choice === "denied") {
-      remember(choice);
+    if (choice !== "granted" && choice !== "denied" && choice !== "postponed") {
       close();
-      if (choice === "granted") {
-        loadAnalytics();
-      }
       return;
     }
+    remember(choice);
     close();
+    if (choice === "granted") {
+      loadAnalytics(true);
+    }
   }
 
   /* ---- wiring --------------------------------------------------------- */
-  var stored = state();
-  if (stored === "granted") {
-    loadAnalytics();
-  } else if (!stored) {
-    open();
+  var choice = state();
+  if (choice === "granted") {
+    loadAnalytics(true);
+  } else {
+    if (LOAD_WITHOUT_CONSENT) {
+      loadAnalytics(false);
+    }
+    if (!choice) {
+      open();
+    }
   }
 
   doc.addEventListener("click", function (event) {
