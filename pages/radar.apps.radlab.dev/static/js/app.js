@@ -104,6 +104,11 @@ function toggleBookmark(key, data) {
     if (idx >= 0) { b.splice(idx, 1); } else { b.push({ key, ...data, saved: new Date().toISOString() }); }
     saveBookmarks(b);
 }
+function removeBookmark(key) {
+    let b = getBookmarks();
+    b = b.filter(x => x.key !== key);
+    saveBookmarks(b);
+}
 
 let allClusters = [];
 let currentDate = null;
@@ -411,13 +416,22 @@ function renderBookmarkPanel() {
     }
     list.innerHTML = bms.slice().reverse().map(b => `
         <div class="bookmark-item" data-key="${escapeHtml(b.key)}">
-            <div>
-                <div class="bk-title">${escapeHtml(b.keywords)}</div>
-                <div class="bk-date">${formatDatePl(b.date)}</div>
+            <div class="bookmark-item-row">
+                <div>
+                    <div class="bk-title">${escapeHtml(b.keywords)}</div>
+                    <div class="bk-date">${formatDatePl(b.date)}</div>
+                </div>
+                <div class="d-flex gap-2 flex-shrink-0 bookmark-item-actions">
+                    <button class="btn btn-link link-btn">Otwórz</button>
+                    <button class="btn btn-link bookmark-remove" data-key="${escapeHtml(b.key)}" title="Usuń z zapisanych" aria-label="Usuń z zapisanych"><i class="bi bi-trash3"></i></button>
+                </div>
             </div>
-            <div class="d-flex gap-2 flex-shrink-0">
-                <button class="btn btn-link link-btn">Otwórz</button>
-                <button class="btn btn-link bookmark-remove" data-key="${escapeHtml(b.key)}" title="Usuń"><i class="bi bi-trash3"></i></button>
+            <div class="bookmark-confirm-row">
+                <span>Usunąć z zapisanych?</span>
+                <div class="bk-confirm-btns">
+                    <button type="button" class="btn btn-danger btn-sm bk-confirm-yes" data-key="${escapeHtml(b.key)}">Usuń</button>
+                    <button type="button" class="btn btn-secondary btn-sm bk-confirm-no">Anuluj</button>
+                </div>
             </div>
         </div>`).join('');
 }
@@ -555,15 +569,39 @@ function initBookmarks() {
             renderBookmarkPanel();
             return;
         }
+
         const rmBtn = e.target.closest('.bookmark-remove');
         if (rmBtn) {
-            toggleBookmark(rmBtn.dataset.key, {});
+            const item = rmBtn.closest('.bookmark-item');
+            if (item) {
+                document.querySelectorAll('.bookmark-item.confirming').forEach(el => {
+                    if (el !== item) el.classList.remove('confirming');
+                });
+                item.classList.add('confirming');
+            }
+            return;
+        }
+
+        const cancelBtn = e.target.closest('.bk-confirm-no');
+        if (cancelBtn) {
+            const item = cancelBtn.closest('.bookmark-item');
+            if (item) item.classList.remove('confirming');
+            return;
+        }
+
+        const confirmYesBtn = e.target.closest('.bk-confirm-yes');
+        if (confirmYesBtn) {
+            const key = confirmYesBtn.dataset.key;
+            removeBookmark(key);
             renderBookmarkPanel();
-            document.querySelectorAll(`.bookmark-btn[data-bookkey="${rmBtn.dataset.key}"]`).forEach(b => {
-                b.classList.remove('saved'); b.innerHTML = '<i class="bi bi-bookmark"></i>';
+            document.querySelectorAll(`.bookmark-btn[data-bookkey="${key}"]`).forEach(b => {
+                b.classList.remove('saved');
+                b.title = 'Zapisz temat';
+                b.innerHTML = '<i class="bi bi-bookmark"></i>';
             });
             return;
         }
+
         const okBtn = e.target.closest('.link-btn');
         if (okBtn) {
             const item = okBtn.closest('.bookmark-item');

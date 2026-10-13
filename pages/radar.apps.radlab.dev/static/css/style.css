@@ -750,6 +750,11 @@ body {
     padding: 0.75rem 0;
     border-bottom: 1px solid var(--paper-border);
     display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+}
+.bookmark-item-row {
+    display: flex;
     justify-content: space-between;
     align-items: center;
     gap: 0.75rem;
@@ -758,6 +763,46 @@ body {
 .bookmark-item .bk-date { font-size: 0.78rem; color: var(--ink-muted); }
 .bookmark-item .btn-link { padding: 0; font-size: 0.82rem; text-decoration: none; }
 .bookmark-item .bookmark-remove { color: var(--negative); }
+.bookmark-item .bookmark-remove:hover { color: #821e1e; }
+.bookmark-confirm-row {
+    display: none;
+    background: var(--negative-soft);
+    border: 1px solid rgba(160,48,48,0.22);
+    border-radius: 8px;
+    padding: 0.45rem 0.65rem;
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: var(--negative);
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    animation: fadeIn 0.15s ease-out;
+}
+.bookmark-item.confirming .bookmark-confirm-row { display: flex; }
+.bookmark-item.confirming .bookmark-item-actions { display: none; }
+.bk-confirm-btns { display: flex; gap: 0.35rem; flex-shrink: 0; }
+.bk-confirm-btns .btn {
+    font-size: 0.75rem;
+    padding: 0.2rem 0.55rem;
+    border-radius: 6px;
+    font-weight: 600;
+}
+.bk-confirm-btns .btn-danger {
+    background: var(--negative);
+    border-color: var(--negative);
+    color: #fff;
+}
+.bk-confirm-btns .btn-danger:hover {
+    filter: brightness(0.9);
+}
+.bk-confirm-btns .btn-secondary {
+    background: transparent;
+    border-color: var(--paper-rule);
+    color: var(--ink);
+}
+.bk-confirm-btns .btn-secondary:hover {
+    background: rgba(0,0,0,0.05);
+}
 .compare-stats-box {
     padding: 0.75rem 0.9rem;
     background: var(--paper-bg-alt);
