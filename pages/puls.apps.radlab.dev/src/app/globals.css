@@ -1,0 +1,175 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+    Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", "Cascadia Code",
+    Menlo, Consolas, monospace;
+  --font-editorial: "Iowan Old Style", "Palatino Linotype", "Book Antiqua",
+    "Source Serif Pro", "Charter", Georgia, "Times New Roman", serif;
+
+  /* Warm "paper" palette — easy on the eyes for longer reading. */
+  --color-paper-50: #fdfcfa;
+  --color-paper-100: #faf7f2;
+  --color-paper-200: #f3eee6;
+  --color-paper-300: #e8e1d6;
+  --color-paper-400: #d6ccbd;
+
+  --color-ink-950: #1b1a17;
+  --color-ink-900: #2a2824;
+  --color-ink-700: #4a4640;
+  --color-ink-500: #6f6a62;
+  --color-ink-400: #8f897f;
+
+  --color-accent-50: #eef6f3;
+  --color-accent-100: #d9ebe4;
+  --color-accent-200: #b5d7ca;
+  --color-accent-600: #1f6f5c;
+  --color-accent-700: #175b4b;
+  --color-accent-800: #11493c;
+
+  --color-sun-100: #fdf1dc;
+  --color-sun-200: #f8e0b4;
+  --color-sun-700: #8a5a12;
+
+  --animate-blink: blink 1.4s ease-in-out infinite;
+  --animate-fade-up: fade-up 0.5s ease-out both;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.45; }
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+:root {
+  color-scheme: light;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-paper-100);
+  color: var(--color-ink-700);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Soft warm backdrop with a gentle glow at the top of the page. */
+.bg-reading-room {
+  background:
+    radial-gradient(1200px 500px at 50% -200px, rgba(31, 111, 92, 0.10), transparent 70%),
+    radial-gradient(800px 400px at 100% 0%, rgba(248, 224, 180, 0.35), transparent 70%),
+    var(--color-paper-100);
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-paper-400) transparent;
+}
+
+::selection {
+  background: var(--color-accent-100);
+  color: var(--color-accent-800);
+}
+
+button:not(:disabled), a, summary {
+  cursor: pointer;
+}
+
+:where(button, a, textarea, summary):focus-visible {
+  outline: 3px solid var(--color-accent-600);
+  outline-offset: 3px;
+  border-radius: 0.5rem;
+}
+
+/* A sheet of paper: the main card surface used across the page. */
+.paper {
+  background: var(--color-paper-50);
+  border: 1px solid var(--color-paper-300);
+  box-shadow:
+    0 1px 2px rgba(27, 26, 23, 0.04),
+    0 12px 40px -24px rgba(27, 26, 23, 0.25);
+}
+
+.paper-soft {
+  background: var(--color-paper-200);
+  border: 1px solid var(--color-paper-300);
+}
+
+.hairline {
+  background: var(--color-paper-300);
+}
+
+/* ------------------------------------------------------------------ */
+/* Article typography                                                  */
+/* ------------------------------------------------------------------ */
+
+.article-body {
+  font-family: var(--font-editorial);
+  color: var(--color-ink-900);
+  overflow-wrap: anywhere;
+  hyphens: auto;
+}
+
+.article-body p,
+.article-body li {
+  font-size: 1.1875rem;
+  line-height: 1.8;
+}
+
+.article-body > p:first-of-type {
+  font-size: 1.3125rem;
+  line-height: 1.7;
+  color: var(--color-ink-700);
+}
+
+.article-body > p:first-of-type::first-letter {
+  float: left;
+  margin: 0.08em 0.12em 0 0;
+  font-size: 3.6em;
+  line-height: 0.85;
+  font-weight: 600;
+  color: var(--color-accent-700);
+}
+
+.article-body h3,
+.article-body h4 {
+  font-family: var(--font-editorial);
+}
+
+@media (min-width: 640px) {
+  .article-body p,
+  .article-body li {
+    font-size: 1.25rem;
+  }
+
+  .article-body > p:first-of-type {
+    font-size: 1.4375rem;
+  }
+}
+
+/* Fine, understated scrollbar for horizontal source "wire". */
+.scroll-wire::-webkit-scrollbar {
+  height: 6px;
+}
+
+.scroll-wire::-webkit-scrollbar-thumb {
+  background: var(--color-paper-400);
+  border-radius: 999px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}
