@@ -1,6 +1,13 @@
 **Radar Informacji**
 
-A professional web application for browsing and analyzing news from a specific day. Data is fetched from the RADLAB backend via an internal API.
+A reader-friendly web application for browsing daily news summaries. Data is fetched from the RADLAB backend via an internal API.
+
+The UI is a single-column "daily edition" layout designed for reading: a masthead with the date and a one-sentence
+summary of the day, a mood bar (share of positive / neutral / negative coverage), a two-tier table of contents
+(the few most-covered topics as a numbered list, the remaining ~30 as compact collapsible chips), and each topic
+rendered as an article with comfortable typography. Sources (grouped by site), related days and technical details
+are collapsed under each article so they don't distract from the text. Dark mode, bookmarks, search and a
+sentiment filter are available.
 
 ## Structure
 
@@ -18,7 +25,7 @@ radar/
 │   └── algorithm.html  # Technical algorithm description
 └── static/
     ├── css/
-    │   └── style.css   # Newspaper‑style CSS
+    │   └── style.css   # Reader-edition CSS (light + dark theme)
     └── js/
         └── app.js      # Front‑end logic (API calls, rendering)
 ```
