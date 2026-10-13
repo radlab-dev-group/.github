@@ -17,6 +17,11 @@ if [ ! -f .env.local ] && [ -f .env.example ]; then
     cp .env.example .env.local
 fi
 
+# NVM - local download
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+
 # 2. Instalacja zależności npm
 if [ ! -d "node_modules" ]; then
     echo "[INFO] Instalowanie zależności..."
