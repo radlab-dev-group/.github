@@ -1,0 +1,392 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div id="top" class="space-y-8">
+    <!-- Intro Hero Section -->
+    <section id="intro-hero" class="animate-fade-up text-center">
+        <p class="mb-4 text-xs font-semibold uppercase tracking-[0.18em] text-accent-700">
+            {{ t('intro_eyebrow', lang) }}
+        </p>
+        <h2 class="mx-auto max-w-3xl font-editorial text-4xl font-semibold leading-[1.1] tracking-tight text-ink-950 sm:text-6xl">
+            {{ t('intro_title', lang) }}
+        </h2>
+        <p class="mx-auto mt-5 max-w-2xl text-lg leading-relaxed text-ink-500 sm:text-xl">
+            {{ t('intro_description', lang) }}
+        </p>
+
+        <ol class="mx-auto mt-8 grid max-w-3xl gap-3 text-left sm:grid-cols-3">
+            {% for step_key in ['intro_step_1', 'intro_step_2', 'intro_step_3'] %}
+            <li class="flex items-start gap-3 rounded-2xl bg-paper-50/70 px-4 py-3 ring-1 ring-paper-300/70">
+                <span class="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-accent-700 font-editorial text-sm font-semibold text-white">
+                    {{ loop.index }}
+                </span>
+                <span class="text-sm leading-relaxed text-ink-700">{{ t(step_key, lang) }}</span>
+            </li>
+            {% endfor %}
+        </ol>
+    </section>
+
+    <div class="min-w-0 space-y-6">
+    <!-- Compact Query Bar (shown when article is rendered) -->
+    <section id="query-bar-compact" class="hidden paper rounded-2xl px-4 py-3 sm:px-5 animate-fade-up">
+        <div class="flex flex-wrap items-center gap-3">
+            <div class="min-w-0 flex-1">
+                <div class="text-[11px] font-semibold uppercase tracking-wider text-ink-400">
+                    {{ t('article_topic', lang) }}
+                </div>
+                <button type="button" id="compact-query-title" class="block w-full truncate text-left font-editorial text-base text-ink-900 transition hover:text-accent-700">
+                    <!-- Dynamic topic -->
+                </button>
+            </div>
+            <span id="compact-meta-pill" class="hidden shrink-0 rounded-full bg-paper-200 px-3 py-1 text-xs text-ink-500 sm:inline">
+                <!-- Simple / 1 dzień -->
+            </span>
+            <button type="button" id="btn-compact-new-topic" class="shrink-0 rounded-full border border-paper-300 bg-paper-50 px-4 py-2 text-xs font-medium text-ink-700 transition hover:border-accent-200 hover:text-accent-800">
+                {{ t('btn_new_topic', lang) }}
+            </button>
+            <button type="button" id="btn-compact-run-again" class="shrink-0 rounded-full bg-accent-700 px-4 py-2 text-xs font-semibold text-white transition hover:bg-accent-800 disabled:opacity-60">
+                {{ t('btn_run_again', lang) }}
+            </button>
+        </div>
+    </section>
+
+    <!-- Full Query Panel -->
+    <section id="query-panel" class="paper relative overflow-hidden rounded-3xl p-5 sm:p-8">
+        <form id="creator-form" onsubmit="return false;">
+            <!-- Textarea -->
+            <div>
+                <label for="query-input" class="mb-4 block font-editorial text-2xl font-semibold tracking-tight text-ink-950">
+                    {{ t('query_label', lang) }}
+                </label>
+                <div class="relative">
+                    <textarea id="query-input" name="query" rows="3"
+                              class="w-full resize-y rounded-2xl border border-paper-300 bg-paper-50 px-5 py-4 font-editorial text-lg leading-relaxed text-ink-950 shadow-inner placeholder:text-ink-400 transition focus:border-accent-600 focus:bg-white focus:outline-none disabled:opacity-60 sm:text-xl"
+                              placeholder="{{ t('query_placeholder', lang) }}"></textarea>
+                </div>
+
+                <div id="query-error" class="hidden mt-2 text-xs font-medium text-rose-700"></div>
+            </div>
+
+            <!-- Suggestions -->
+            <div id="suggestions-box" class="mt-5">
+                <div class="flex flex-wrap items-center gap-2">
+                    <span class="text-sm font-medium text-ink-700">{{ t('suggestions_title', lang) }}</span>
+                    <span class="hidden text-sm text-ink-400 sm:inline">· {{ t('suggestions_hint', lang) }}</span>
+                    <button type="button" id="btn-shuffle-suggestions" class="ml-auto rounded-full px-3 py-1.5 text-xs font-medium text-accent-700 transition hover:bg-accent-50 hover:text-accent-800">
+                        ⟳ {{ t('suggestions_refresh', lang) }}
+                    </button>
+                </div>
+                <div id="suggestions-list" class="mt-3 flex flex-wrap gap-2">
+                    {% for suggestion in suggestions %}
+                    <button type="button" class="btn-suggestion max-w-full rounded-full border border-paper-300 bg-paper-50 px-4 py-2 text-left text-sm leading-snug text-ink-700 transition hover:border-accent-200 hover:bg-accent-50/60 hover:text-ink-950" data-text="{{ suggestion }}">
+                        {{ suggestion }}
+                    </button>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Options Grid (Style + Lookback) -->
+            <div class="mt-7 grid gap-6 border-t border-paper-300 pt-6 md:grid-cols-[1fr_auto]">
+                <!-- Style Selection -->
+                <fieldset class="min-w-0">
+                    <legend class="mb-2.5 text-sm font-medium text-ink-700">
+                        {{ t('style_label', lang) }}
+                    </legend>
+                    <div class="grid gap-2 sm:grid-cols-2">
+                        <label class="style-card relative flex cursor-pointer items-start gap-3 rounded-2xl border border-accent-600 bg-accent-50 px-4 py-3 text-left text-accent-800 transition" data-value="simple">
+                            <input type="radio" name="style" value="simple" checked class="sr-only">
+                            <span aria-hidden="true" class="mt-0.5 text-lg leading-none">☕</span>
+                            <span class="min-w-0">
+                                <span class="block text-sm font-semibold">{{ t('style_simple', lang) }}</span>
+                                <span class="block text-xs text-ink-500">{{ t('style_simple_desc', lang) }}</span>
+                            </span>
+                        </label>
+                        <label class="style-card relative flex cursor-pointer items-start gap-3 rounded-2xl border border-paper-300 bg-paper-50 px-4 py-3 text-left text-ink-700 transition hover:border-paper-400 hover:text-ink-950" data-value="formal">
+                            <input type="radio" name="style" value="formal" class="sr-only">
+                            <span aria-hidden="true" class="mt-0.5 text-lg leading-none">🏛</span>
+                            <span class="min-w-0">
+                                <span class="block text-sm font-semibold">{{ t('style_formal', lang) }}</span>
+                                <span class="block text-xs text-ink-500">{{ t('style_formal_desc', lang) }}</span>
+                            </span>
+                        </label>
+                    </div>
+                </fieldset>
+
+                <!-- Time Range Selection -->
+                <fieldset class="min-w-0">
+                    <legend class="mb-2.5 text-sm font-medium text-ink-700">
+                        {{ t('last_days_label', lang) }}
+                    </legend>
+                    <div class="flex gap-1 rounded-full border border-paper-300 bg-paper-200 p-1">
+                        <button type="button" class="btn-last-days min-w-16 rounded-full bg-paper-50 px-4 py-2 text-sm font-semibold text-accent-800 shadow-sm transition" data-days="1" aria-pressed="true">
+                            {{ t('day_1', lang) }}
+                        </button>
+                        <button type="button" class="btn-last-days min-w-16 rounded-full px-4 py-2 text-sm text-ink-500 transition hover:text-ink-950" data-days="2" aria-pressed="false">
+                            {{ t('day_2', lang) }}
+                        </button>
+                        <button type="button" class="btn-last-days min-w-16 rounded-full px-4 py-2 text-sm text-ink-500 transition hover:text-ink-950" data-days="7" aria-pressed="false">
+                            {{ t('day_7', lang) }}
+                        </button>
+                    </div>
+                </fieldset>
+            </div>
+
+            <!-- Submit Button & Action row -->
+            <div class="mt-7 flex flex-col gap-3 sm:flex-row sm:items-center">
+                <button type="submit" id="btn-submit-creator" class="inline-flex items-center justify-center gap-2 rounded-full bg-accent-700 px-7 py-3.5 text-base font-semibold text-white shadow-md shadow-accent-700/20 transition hover:-translate-y-px hover:bg-accent-800 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0">
+                    <span id="btn-submit-spinner" class="hidden h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"></span>
+                    <span id="btn-submit-text">{{ t('btn_run', lang) }}</span>
+                    <span aria-hidden="true">→</span>
+                </button>
+                <span class="text-xs text-ink-400">{{ t('shortcut_hint', lang) }}</span>
+            </div>
+        </form>
+    </section>
+
+    <!-- Sources Index Accordion Panel -->
+    <aside id="sources-panel" aria-label="{{ t('sources_title', lang) }}" class="px-2 text-sm text-ink-500">
+        <div id="sources-loading-msg" class="flex items-center gap-2 text-sm text-ink-500">
+            <span aria-hidden="true" class="h-2 w-2 rounded-full bg-sun-700 animate-blink"></span>
+            {{ t('loading_categories', lang) }}
+        </div>
+
+        <div id="sources-error-msg" class="hidden rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700"></div>
+
+        <details id="sources-details" class="group/sources hidden">
+            <summary class="flex flex-wrap items-center gap-x-2 gap-y-1 rounded-lg py-1 leading-relaxed cursor-pointer select-none [&::-webkit-details-marker]:hidden">
+                <span aria-hidden="true" class="h-2 w-2 shrink-0 rounded-full bg-accent-600"></span>
+                <span id="sources-count-label"></span>
+                <span aria-hidden="true" class="text-paper-400">·</span>
+                <span class="font-medium text-accent-700 underline-offset-4 group-hover/sources:underline">
+                    <span class="group-open/sources:hidden">{{ t('sources_show', lang) }}</span>
+                    <span class="hidden group-open/sources:inline">{{ t('sources_hide', lang) }}</span>
+                </span>
+            </summary>
+
+            <div class="paper mt-3 rounded-2xl p-4 sm:p-5">
+                <p class="mb-4 text-sm leading-relaxed text-ink-500">
+                    {{ t('sources_hint', lang) }}
+                </p>
+                <div id="sources-categories-container" class="max-h-72 space-y-4 overflow-y-auto pr-1">
+                    <!-- Populated by JS -->
+                </div>
+
+                <div class="mt-4 flex items-center gap-2 border-t border-paper-300 pt-3 text-xs text-accent-700">
+                    <span aria-hidden="true" class="h-1.5 w-1.5 shrink-0 rounded-full bg-accent-600"></span>
+                    {{ t('all_sources_active', lang) }}
+                </div>
+            </div>
+        </details>
+    </aside>
+
+    <!-- Pipeline Progress Strip -->
+    <section id="pipeline-panel" class="hidden paper-soft rounded-2xl px-5 py-4 animate-fade-up">
+        <ol class="grid grid-cols-2 gap-x-4 gap-y-3 sm:grid-cols-4">
+            <li id="pipeline-step-1" class="flex min-w-0 items-center gap-2.5">
+                <div class="step-num flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-semibold bg-accent-700 text-white">1</div>
+                <span class="step-label truncate text-sm font-medium text-ink-900">{{ t('step_query', lang) }}</span>
+            </li>
+            <li id="pipeline-step-2" class="flex min-w-0 items-center gap-2.5">
+                <div class="step-num flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-semibold bg-paper-300 text-ink-500">2</div>
+                <span class="step-label truncate text-sm text-ink-400">{{ t('step_search', lang) }}</span>
+            </li>
+            <li id="pipeline-step-3" class="flex min-w-0 items-center gap-2.5">
+                <div class="step-num flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-semibold bg-paper-300 text-ink-500">3</div>
+                <span class="step-label truncate text-sm text-ink-400">{{ t('step_index', lang) }}</span>
+            </li>
+            <li id="pipeline-step-4" class="flex min-w-0 items-center gap-2.5">
+                <div class="step-num flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-semibold bg-paper-300 text-ink-500">4</div>
+                <span class="step-label truncate text-sm text-ink-400">{{ t('step_gen', lang) }}</span>
+            </li>
+        </ol>
+        <div id="pipeline-status-text" role="status" class="mt-3 border-t border-paper-300 pt-3 text-sm leading-relaxed text-accent-800"></div>
+    </section>
+
+    <!-- Error / Notice Box -->
+    <div id="app-notice" class="hidden rounded-2xl border border-paper-300 bg-paper-50 p-4 text-sm text-ink-700 animate-fade-up"></div>
+
+    <!-- Article Placeholder -->
+    <section id="article-skeleton" aria-busy="true" class="hidden paper relative overflow-hidden rounded-3xl">
+        <div aria-hidden="true" class="h-1.5 w-full bg-gradient-to-r from-accent-700 via-accent-600 to-sun-200 opacity-60"></div>
+        <div class="mx-auto max-w-[72ch] px-5 pb-10 pt-8 sm:px-10 sm:pt-12">
+            <div class="mb-6 text-xs font-semibold uppercase tracking-[0.14em] text-accent-700/70">{{ t('article_onair', lang) }}</div>
+            <div aria-hidden="true" class="mb-3 h-10 w-4/5 rounded-lg bg-paper-300 motion-safe:animate-pulse"></div>
+            <div aria-hidden="true" class="mb-8 h-10 w-1/2 rounded-lg bg-paper-200 motion-safe:animate-pulse"></div>
+            <div aria-hidden="true" class="mb-8 h-px w-full bg-paper-300"></div>
+            <div aria-hidden="true" class="space-y-4">
+                <div class="h-3.5 rounded bg-paper-200 motion-safe:animate-pulse" style="width: 100%"></div>
+                <div class="h-3.5 rounded bg-paper-200 motion-safe:animate-pulse" style="width: 96%; animation-delay: 120ms"></div>
+                <div class="h-3.5 rounded bg-paper-200 motion-safe:animate-pulse" style="width: 88%; animation-delay: 240ms"></div>
+                <div class="h-3.5 rounded bg-paper-200 motion-safe:animate-pulse" style="width: 92%; animation-delay: 360ms"></div>
+                <div class="h-3.5 rounded bg-paper-200 motion-safe:animate-pulse" style="width: 72%; animation-delay: 480ms"></div>
+                <div class="h-3.5 rounded bg-paper-200 motion-safe:animate-pulse" style="width: 90%; animation-delay: 600ms"></div>
+                <div class="h-3.5 rounded bg-paper-200 motion-safe:animate-pulse" style="width: 60%; animation-delay: 720ms"></div>
+            </div>
+            <div role="status" class="mt-10 flex items-start gap-3 rounded-2xl bg-accent-50 px-4 py-3 text-sm text-accent-800">
+                <span aria-hidden="true" class="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-accent-600 motion-safe:animate-blink"></span>
+                <span class="min-w-0 break-words leading-relaxed">{{ t('progress_gen', lang) }}</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Article Result Sheet -->
+    <section id="article-section" class="hidden paper animate-fade-up relative overflow-hidden rounded-3xl">
+        <div aria-hidden="true" class="h-1.5 w-full bg-gradient-to-r from-accent-700 via-accent-600 to-sun-200"></div>
+
+        <div class="mx-auto max-w-[72ch] px-5 pb-10 pt-8 sm:px-10 sm:pb-14 sm:pt-12">
+            <div class="mb-6 flex flex-wrap items-center gap-x-3 gap-y-2 text-xs font-semibold uppercase tracking-[0.14em] text-accent-700">
+                <span>{{ t('article_onair', lang) }}</span>
+            </div>
+
+            <h2 id="article-headline" class="mb-6 break-words font-editorial text-4xl font-semibold leading-[1.12] tracking-tight text-ink-950 sm:text-[3.1rem]"></h2>
+
+            <div class="mb-10 flex flex-wrap items-center gap-x-3 gap-y-2 border-y border-paper-300 py-4 text-sm text-ink-500">
+                <span id="article-reading-time" class="font-medium text-ink-700"></span>
+                <span aria-hidden="true" class="text-paper-400">·</span>
+                <span>
+                    {{ t('based_on', lang) }}
+                    <a href="#sources-results" id="article-sources-link" class="font-medium text-accent-700 underline-offset-4 hover:underline"></a>
+                </span>
+                <span aria-hidden="true" class="text-paper-400">·</span>
+                <span id="article-date"></span>
+
+                <div class="ml-auto hidden sm:flex items-center gap-2">
+                    <button type="button" class="btn-copy-article rounded-full border border-paper-300 bg-paper-50 px-4 py-2 text-xs font-medium text-ink-700 transition hover:border-accent-200 hover:bg-accent-50 hover:text-accent-800">
+                        ⧉ {{ t('copy', lang) }}
+                    </button>
+                    <button type="button" class="btn-download-article rounded-full border border-paper-300 bg-paper-50 px-4 py-2 text-xs font-medium text-ink-700 transition hover:border-accent-200 hover:bg-accent-50 hover:text-accent-800">
+                        ↓ {{ t('download', lang) }}
+                    </button>
+                </div>
+            </div>
+
+            <article id="article-body-content" class="article-body"></article>
+
+            <div class="mt-12 rounded-2xl bg-paper-200 px-5 py-4 sm:flex sm:items-center sm:justify-between sm:gap-6">
+                <p class="text-sm text-ink-700">{{ t('article_actions_hint', lang) }}</p>
+                <div class="mt-3 sm:mt-0 flex items-center gap-2">
+                    <button type="button" class="btn-copy-article rounded-full border border-paper-300 bg-paper-50 px-4 py-2 text-xs font-medium text-ink-700 transition hover:border-accent-200 hover:bg-accent-50 hover:text-accent-800">
+                        ⧉ {{ t('copy', lang) }}
+                    </button>
+                    <button type="button" class="btn-download-article rounded-full border border-paper-300 bg-paper-50 px-4 py-2 text-xs font-medium text-ink-700 transition hover:border-accent-200 hover:bg-accent-50 hover:text-accent-800">
+                        ↓ {{ t('download', lang) }}
+                    </button>
+                </div>
+            </div>
+
+            <!-- Tech Details Disclosure -->
+            <details class="group mt-6 text-sm text-ink-500">
+                <summary class="inline-flex items-center gap-2 rounded-full py-1 text-xs font-medium text-ink-400 transition hover:text-ink-700 [&::-webkit-details-marker]:hidden">
+                    <span aria-hidden="true" class="transition group-open:rotate-90">▸</span>
+                    {{ t('tech_details', lang) }}
+                </summary>
+                <dl class="mt-3 grid gap-x-6 gap-y-2 border-t border-paper-300 pt-3 text-xs sm:grid-cols-2">
+                    <div class="flex justify-between gap-4 sm:block">
+                        <dt class="text-ink-400">{{ t('article_topic', lang) }}</dt>
+                        <dd id="tech-topic" class="break-words text-right text-ink-700 sm:text-left"></dd>
+                    </div>
+                    <div class="flex justify-between gap-4 sm:block">
+                        <dt class="text-ink-400">{{ t('news_used', lang) }}</dt>
+                        <dd id="tech-news-count" class="text-ink-700"></dd>
+                    </div>
+                    <div class="flex justify-between gap-4 sm:block">
+                        <dt class="text-ink-400">{{ t('gen_model', lang) }}</dt>
+                        <dd id="tech-model" class="break-words text-right text-ink-700 sm:text-left"></dd>
+                    </div>
+                    <div class="flex justify-between gap-4 sm:block">
+                        <dt class="text-ink-400">{{ t('gen_time', lang) }}</dt>
+                        <dd id="tech-time" class="text-ink-700"></dd>
+                    </div>
+                    <div class="flex justify-between gap-4 sm:block">
+                        <dt class="text-ink-400">{{ t('word_count', lang) }}</dt>
+                        <dd id="tech-words" class="text-ink-700"></dd>
+                    </div>
+                    <div class="flex justify-between gap-4 sm:block">
+                        <dt class="text-ink-400">{{ t('when_generated', lang) }}</dt>
+                        <dd id="tech-when" class="text-ink-700"></dd>
+                    </div>
+                </dl>
+            </details>
+        </div>
+    </section>
+
+    <!-- Source Material (Wire / List) Section -->
+    <section id="sources-results" class="hidden paper animate-fade-up scroll-mt-24 rounded-3xl px-5 py-6 sm:px-8 sm:py-8">
+        <div class="flex flex-col gap-3 sm:flex-row sm:items-start">
+            <div class="min-w-0 flex-1">
+                <div class="flex flex-wrap items-center gap-3">
+                    <h3 class="font-editorial text-2xl font-semibold tracking-tight text-ink-950">
+                        {{ t('material_title', lang) }}
+                    </h3>
+                    <span id="sources-results-count" class="rounded-full bg-paper-200 px-2.5 py-0.5 text-xs font-medium text-ink-500">0</span>
+                </div>
+                <p class="mt-2 max-w-prose text-sm leading-relaxed text-ink-500">
+                    {{ t('material_hint', lang) }}
+                </p>
+            </div>
+
+            <!-- View mode switch -->
+            <div class="flex items-center gap-1 self-start rounded-full border border-paper-300 bg-paper-200 p-1">
+                <button type="button" id="btn-view-wire" class="rounded-full px-3.5 py-1.5 text-sm font-medium transition bg-paper-50 text-accent-800 shadow-sm">
+                    ⇢ {{ t('view_wire', lang) }}
+                </button>
+                <button type="button" id="btn-view-list" class="rounded-full px-3.5 py-1.5 text-sm transition text-ink-500 hover:text-ink-950">
+                    ≡ {{ t('view_list', lang) }}
+                </button>
+            </div>
+        </div>
+
+        <div class="mt-6 flex flex-col gap-5 border-t border-paper-300 pt-6 lg:flex-row lg:items-start">
+            <!-- Polarity Bar -->
+            <div id="polarity-container" class="w-full min-w-0 lg:w-auto lg:min-w-[220px]">
+                <div class="mb-2 flex items-center justify-between gap-3 text-xs text-ink-500">
+                    <span class="font-medium text-ink-700">{{ t('polarity_title', lang) }}</span>
+                    <span id="polarity-total-count">0</span>
+                </div>
+                <div aria-hidden="true" class="flex h-2.5 w-full overflow-hidden rounded-full bg-paper-200">
+                    <div id="pol-bar-pos" class="h-full bg-emerald-600 transition-all" style="width: 0%"></div>
+                    <div id="pol-bar-neg" class="h-full bg-rose-600 transition-all" style="width: 0%"></div>
+                    <div id="pol-bar-amb" class="h-full bg-paper-400 transition-all" style="width: 0%"></div>
+                </div>
+                <div class="mt-2 flex flex-wrap gap-x-3 gap-y-1.5 text-xs">
+                    <span class="flex items-center gap-1">
+                        <span class="h-1.5 w-1.5 rounded-full bg-emerald-600"></span>
+                        <span class="text-emerald-700">{{ t('pos', lang) }}</span>
+                        <span id="pol-pct-pos" class="text-ink-400">0%</span>
+                    </span>
+                    <span class="flex items-center gap-1">
+                        <span class="h-1.5 w-1.5 rounded-full bg-rose-600"></span>
+                        <span class="text-rose-700">{{ t('neg', lang) }}</span>
+                        <span id="pol-pct-neg" class="text-ink-400">0%</span>
+                    </span>
+                    <span class="flex items-center gap-1">
+                        <span class="h-1.5 w-1.5 rounded-full bg-paper-400"></span>
+                        <span class="text-ink-500">{{ t('amb', lang) }}</span>
+                        <span id="pol-pct-amb" class="text-ink-400">0%</span>
+                    </span>
+                </div>
+            </div>
+
+            <!-- Categories Filter Tabs -->
+            <div id="category-filter-tabs" class="flex flex-wrap gap-1.5 lg:ml-auto lg:max-w-[60%] lg:justify-end">
+                <button type="button" class="btn-cat-filter active rounded-full px-3 py-1 text-xs font-medium transition bg-accent-700 text-white" data-category="__all__">
+                    {{ t('all_categories', lang) }}
+                </button>
+            </div>
+        </div>
+
+        <!-- Wire Horizontal Scroll View -->
+        <div id="sources-wire-view" class="mt-6">
+            <div id="sources-wire-scroller" class="scroll-wire -mx-2 flex snap-x snap-mandatory gap-3 overflow-x-auto px-2 pb-3">
+                <!-- Dynamically rendered wire cards -->
+            </div>
+        </div>
+
+        <!-- List View -->
+        <div id="sources-list-view" class="hidden mt-6 divide-y divide-paper-300 overflow-hidden rounded-2xl border border-paper-300">
+            <!-- Dynamically rendered list rows -->
+        </div>
+    </section>
+    </div>
+</div>
+{% endblock %}

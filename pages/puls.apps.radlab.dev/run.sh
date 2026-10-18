@@ -1,47 +1,45 @@
 #!/usr/bin/env bash
 # ================================================================
-# Puls Informacji by RadLab — News Creator
-# Skrypt budowania i uruchomienia aplikacji Next.js
+# Puls Informacji by RadLab — News Creator (Flask Edition)
+# Uruchomienie aplikacji Flask
 # ================================================================
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$SCRIPT_DIR"
 
-# --- Konfiguracja środowiska ---
-export PORT="${PORT:-3000}"
-
-# 1. Konfiguracja zmiennych środowiskowych (.env.local)
-if [ ! -f .env.local ] && [ -f .env.example ]; then
-    echo "[INFO] Tworzenie .env.local na podstawie .env.example..."
-    cp .env.example .env.local
+# --- Wczytaj zmienne ze środowiska lub .env ---
+if [ -f .env ]; then
+    set -a
+    # shellcheck disable=SC1091
+    source .env
+    set +a
 fi
 
-# NVM - local download
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+export PORT="${PORT:-5200}"
+export FLASK_DEBUG="${FLASK_DEBUG:-0}"
 
-# 2. Instalacja zależności npm
-if [ ! -d "node_modules" ]; then
-    echo "[INFO] Instalowanie zależności..."
-    npm install
+# --- Sprawdź czy zależności są zainstalowane ---
+if ! python3 -m flask --version &>/dev/null; then
+    echo "[INFO] Instalowanie zależności Pythona..."
+    pip3 install --user -q -r requirements.txt || pip install --user -q -r requirements.txt
 fi
 
-# 3. Budowanie produkcyjne aplikacji
-echo "[INFO] Budowanie aplikacji produkcyjnej (npm run build)..."
-npm run build
-
-# --- Wyświetlenie informacji ---
+# --- Wyświetl informację ---
 echo "================================================="
-echo " Puls Informacji by RadLab"
+echo " Puls Informacji by RadLab (Flask App)"
 echo "================================================="
 echo " Port:       ${PORT}"
+echo " Debug:      ${FLASK_DEBUG}"
 echo " URL:        http://localhost:${PORT}"
 echo "================================================="
 echo " Naciśnij Ctrl+C aby zakończyć"
 echo "================================================="
 echo ""
 
-# 4. Uruchomienie serwera produkcyjnego
-exec npm run start -- -p "${PORT}"
+# --- Uruchom serwer produkcyjny (Gunicorn) lub developerski (Flask) ---
+if [ "${FLASK_DEBUG}" = "1" ]; then
+    exec python3 -m flask --app app run --host 0.0.0.0 --port "${PORT}"
+else
+    exec gunicorn -w 4 -b "0.0.0.0:${PORT}" app:app
+fi

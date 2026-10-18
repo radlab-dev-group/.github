@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="{{ lang }}" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ t('app_title', lang) }} — {{ t('app_tagline', lang) }}</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/logo-circle.png') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="bg-reading-room min-h-screen text-ink-700 antialiased selection:bg-accent-100 selection:text-accent-800">
+    <!-- Header -->
+    <header class="sticky top-0 z-20 border-b border-paper-300/80 bg-paper-50/85 backdrop-blur-md">
+        <div class="mx-auto flex max-w-5xl flex-wrap items-center gap-4 px-4 py-4 sm:px-6">
+            <a href="#top" class="flex min-w-0 items-center gap-3 rounded-xl transition hover:opacity-90">
+                <div class="relative h-11 w-11 shrink-0 overflow-hidden rounded-full ring-2 ring-paper-300">
+                    <img src="{{ url_for('static', filename='img/logo-circle.png') }}" alt="RadLab" class="h-full w-full object-cover">
+                </div>
+                <div class="leading-tight">
+                    <h1 class="font-editorial text-xl font-semibold tracking-tight text-ink-950 sm:text-2xl">
+                        {{ t('app_title', lang) }}
+                    </h1>
+                    <p class="mt-0.5 text-xs text-ink-500 sm:text-sm">
+                        {{ t('app_tagline', lang) }}
+                    </p>
+                </div>
+            </a>
+
+            <div class="ml-auto flex items-center gap-3">
+                <!-- Status Badge -->
+                <div id="sources-live-badge" class="hidden items-center gap-2 rounded-full px-3 py-1.5 text-xs font-medium sm:flex bg-sun-100 text-sun-700" role="status">
+                    <span id="sources-live-dot" class="h-2 w-2 rounded-full bg-sun-700 animate-blink"></span>
+                    <span id="sources-live-text">{{ t('live_badge_wait', lang) }}</span>
+                </div>
+
+                <!-- Language switcher -->
+                <div class="flex items-center rounded-full border border-paper-300 bg-paper-200 p-1">
+                    {% for item in LANGS %}
+                    <a href="?lang={{ item.code }}"
+                       class="rounded-full px-3 py-1.5 text-xs font-medium transition {% if lang == item.code %}bg-paper-50 text-accent-800 shadow-sm{% else %}text-ink-500 hover:text-ink-900{% endif %}"
+                       title="{{ item.label }}">
+                        {{ item.flag }} {{ item.code|upper }}
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="mx-auto max-w-4xl space-y-8 px-4 py-10 sm:px-6 sm:py-14">
+        {% block content %}{% endblock %}
+
+        <!-- Footer -->
+        <footer class="border-t border-paper-300 pt-8">
+            <p class="mx-auto max-w-2xl text-center text-sm leading-relaxed text-ink-500">{{ t('footer_disclaimer', lang) }}</p>
+            <div class="mt-6 flex flex-col items-center justify-between gap-3 text-xs leading-relaxed text-ink-400 sm:flex-row">
+                <span>{{ t('footer_note', lang) }}</span>
+                <span class="flex items-center gap-2">
+                    <span class="h-1.5 w-1.5 shrink-0 rounded-full bg-accent-600"></span>
+                    {{ t('index_note', lang) }}
+                </span>
+            </div>
+        </footer>
+    </main>
+
+    <!-- Translations & Config for JS -->
+    <script>
+        window.CURRENT_LANG = "{{ lang }}";
+        window.I18N = {
+            live_badge: "{{ t('live_badge', lang) }}",
+            live_badge_wait: "{{ t('live_badge_wait', lang) }}",
+            progress_search: "{{ t('progress_search', lang) }}",
+            progress_gen: "{{ t('progress_gen', lang) }}",
+            progress_ready: "{{ t('progress_ready', lang) }}",
+            progress_search_short: "{{ t('progress_search_short', lang) }}",
+            progress_gen_short: "{{ t('progress_gen_short', lang) }}",
+            no_data_found: "{{ t('no_data_found', lang) }}",
+            api_error: "{{ t('api_error', lang) }}",
+            categories_error: "{{ t('categories_error', lang) }}",
+            no_query_error: "{{ t('no_query_error', lang) }}",
+            sources_show: "{{ t('sources_show', lang) }}",
+            sources_hide: "{{ t('sources_hide', lang) }}",
+            sources_scope_count: "{{ t('sources_scope_count', lang) }}",
+            copied: "{{ t('copied', lang) }}",
+            copy: "{{ t('copy', lang) }}",
+            reading_time_long: "{{ t('reading_time_long', lang) }}",
+            sources_used: "{{ t('sources_used', lang) }}",
+            based_on: "{{ t('based_on', lang) }}",
+            polarity_title: "{{ t('polarity_title', lang) }}",
+            pos: "{{ t('pos', lang) }}",
+            neg: "{{ t('neg', lang) }}",
+            amb: "{{ t('amb', lang) }}",
+            no_polarity: "{{ t('no_polarity', lang) }}",
+            view_wire: "{{ t('view_wire', lang) }}",
+            view_list: "{{ t('view_list', lang) }}",
+            all_categories: "{{ t('all_categories', lang) }}",
+            open_source: "{{ t('open_source', lang) }}",
+            article_empty: "{{ t('article_empty', lang) }}",
+            download: "{{ t('download', lang) }}",
+            btn_new_topic: "{{ t('btn_new_topic', lang) }}",
+            btn_run_again: "{{ t('btn_run_again', lang) }}",
+            style_simple: "{{ t('style_simple', lang) }}",
+            style_formal: "{{ t('style_formal', lang) }}",
+            day_1: "{{ t('day_1', lang) }}",
+            day_2: "{{ t('day_2', lang) }}",
+            day_7: "{{ t('day_7', lang) }}"
+        };
+    </script>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
