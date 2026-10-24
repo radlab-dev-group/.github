@@ -26,4 +26,9 @@ cards:
     text: "An AI testing ground with a news summary stream, articles generated from questions, and daily information overviews. Runs locally, with no account required."
     href: "products/playground"
     link_label: "Details & modules"
+  - title: "Puls Informacji"
+    icon: "spark"
+    text: "Your topic-focused news briefing: one article drawn from multiple outlets, with a choice of writing style and time window. Puls combines RadLab's own index with AI generation, source links, sentiment analysis, and text export."
+    href: "products/puls"
+    link_label: "Details & live app"
 ---

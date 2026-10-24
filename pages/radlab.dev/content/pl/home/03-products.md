@@ -26,4 +26,9 @@ cards:
     text: "Poletko doświadczalne AI: strumień podsumowań wiadomości, artykuły tworzone na podstawie pytań i dzienne przeglądy informacji. Działa lokalnie, bez zakładania konta."
     href: "products/playground"
     link_label: "Szczegóły i moduły"
+  - title: "Puls Informacji"
+    icon: "spark"
+    text: "Twój przegląd aktualności na wybrany temat: jeden artykuł z wiadomości z wielu serwisów, z wyborem stylu i zakresu czasowego. Puls łączy własny indeks RadLab z generowaniem AI, udostępnia źródła, analizę wydźwięku i eksport tekstu."
+    href: "products/puls"
+    link_label: "Szczegóły i aplikacja"
 ---
