@@ -31,4 +31,9 @@ cards:
     text: "Your topic-focused news briefing: one article drawn from multiple outlets, with a choice of writing style and time window. Puls combines RadLab's own index with AI generation, source links, sentiment analysis, and text export."
     href: "products/puls"
     link_label: "Details & live app"
+  - title: "Semantic Search Engine"
+    icon: "data"
+    text: "Search and a knowledge base built on your own documents. Combines semantic and full-text retrieval with AI answers based on matching passages. Includes a backend API and a web interface for managing collections, indexing documents, and searching their content."
+    href: "products/semantic-search-engine"
+    link_label: "Details & repositories"
 ---

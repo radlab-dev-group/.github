@@ -31,4 +31,9 @@ cards:
     text: "Twój przegląd aktualności na wybrany temat: jeden artykuł z wiadomości z wielu serwisów, z wyborem stylu i zakresu czasowego. Puls łączy własny indeks RadLab z generowaniem AI, udostępnia źródła, analizę wydźwięku i eksport tekstu."
     href: "products/puls"
     link_label: "Szczegóły i aplikacja"
+  - title: "Semantic Search Engine"
+    icon: "data"
+    text: "Wyszukiwarka i baza wiedzy oparta na własnych dokumentach. Łączy wyszukiwanie semantyczne i pełnotekstowe z odpowiedziami AI na podstawie znalezionych fragmentów. Obejmuje backend API oraz panel do zarządzania kolekcjami, indeksowania i przeszukiwania treści."
+    href: "products/semantic-search-engine"
+    link_label: "Szczegóły i repozytoria"
 ---
