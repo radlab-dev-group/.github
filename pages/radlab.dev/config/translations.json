@@ -34,6 +34,10 @@
   "verified": true,
   "shared_images": 2
  },
+ "lokalni-agenci-auto-codex-auto-claude": {
+  "en": "lokalni-agenci-auto-codex-auto-claude",
+  "verified": true
+ },
  "narzedzia-do-tworzenia-modeli-word2vec": {
   "en": "narzedzia-do-tworzenia-modeli-word2vec",
   "verified": true
