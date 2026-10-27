@@ -474,7 +474,7 @@ ul.ticks li b{color:#dce7f1;font-weight:600}
         <span class="pfx" aria-hidden="true">$</span><code>pip install "radlab-llm-router[api]"</code><span class="copy-hint">copy</span><span class="okmsg">copied</span>
       </button>
       <ul class="badges">
-        <li><b>v1.1.8</b></li>
+        <li><b>v1.1.10</b></li>
         <li><b>Apache-2.0</b></li>
         <li><b>python</b> &ge; 3.10</li>
       </ul>
@@ -487,7 +487,7 @@ ul.ticks li b{color:#dce7f1;font-weight:600}
       </div>
       <div class="term-body">
 <div class="l"><span class="c-p">$</span> <span class="c-cmd">pip install "radlab-llm-router[api,metrics]"</span></div>
-<div class="l"><span class="c-s">&check;&nbsp;</span><span class="c-o">installed llm-router <b>1.1.8</b> · console script <span class="c-k">llm-router</span></span></div>
+<div class="l"><span class="c-s">&check;&nbsp;</span><span class="c-o">installed llm-router <b>1.1.10</b> · console script <span class="c-k">llm-router</span></span></div>
 <div class="l">&nbsp;</div>
 <div class="l"><span class="c-p">$</span> <span class="c-cmd">llm-router config discover localhost 10.0.4.21 -o models-config.json</span></div>
 <div class="l"><span class="c-s">&check;&nbsp;</span><span class="c-o">discovered <b>ollama</b>&nbsp;&nbsp;&nbsp;&nbsp;http://localhost:11434 &nbsp;<span class="c-m">(3 models)</span></span></div>
@@ -1331,17 +1331,17 @@ $ <span class="k-str">./scripts/decrypt_auditor_logs.sh</span> 2026-09-09</pre>
 <pre><span class="c-p">$</span> docker run -d <span class="k-flag">-p</span> 5555:8080 <span class="k-flag">\</span>
     <span class="k-flag">-v</span> $PWD/models-config.json:/srv/models.json:ro <span class="k-flag">\</span>
     <span class="k-flag">-e</span> LLM_ROUTER_MODELS_CONFIG=/srv/models.json <span class="k-flag">\</span>
-    quay.io/radlab/llm-router:v1.1.8
+    quay.io/radlab/llm-router:v1.1.10
 
 <span class="c-p">$</span> curl localhost:5555/api/version
-<span class="c-o">{&quot;version&quot;: <span class="c-s">&quot;1.1.8&quot;</span>}</span></pre>
+<span class="c-o">{&quot;version&quot;: <span class="c-s">&quot;1.1.10&quot;</span>}</span></pre>
         </div>
       </div>
 
       <div class="dep reveal">
         <div class="t"><svg width="16" height="16" aria-hidden="true"><use href="#i-wheel"/></svg> helm</div>
         <div class="d">
-          Chart in-repo (<code>appVersion 1.1.8</code>), Deployment + Service + Ingress,
+          Chart in-repo (<code>appVersion 1.1.10</code>), Deployment + Service + Ingress,
           ConfigMap built from <code>files/models-config.json</code>, readiness on <code>/</code>,
           Bitnami <code>redis</code> 23.2.12 subchart behind <code>redis.enabled</code>.
         </div>
@@ -1997,7 +1997,7 @@ $ <span class="k-str">./scripts/decrypt_auditor_logs.sh</span> 2026-09-09</pre>
       "programmingLanguage": "Python",
       "runtimePlatform": "Python >= 3.10",
       "operatingSystem": "Linux, macOS",
-      "softwareVersion": "1.1.8",
+      "softwareVersion": "1.1.10",
       "license": "https://spdx.org/licenses/Apache-2.0",
       "codeRepository": "https://github.com/radlab-dev-group/llm-router",
       "downloadUrl": "https://pypi.org/project/radlab-llm-router/",

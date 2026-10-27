@@ -1,18 +1,18 @@
 {
-  "updated": "2026-10-10T11:51:18Z",
-  "latest": "1.1.8",
+  "updated": "2026-10-27T23:15:04Z",
+  "latest": "1.1.10",
   "versions": [
     {
-      "version": "1.1.8",
-      "entry": "router/1.1.8/index.html",
-      "date": "2026-10-08T13:07:40+02:00",
+      "version": "1.1.10",
+      "entry": "router/1.1.10/index.html",
+      "date": "2026-10-28T00:06:18+01:00",
       "prerelease": false,
       "satellites": {
-        "plugins": "0.1.2",
+        "plugins": "0.1.5",
         "services": "0.0.4"
       },
-      "ref": "v1.1.8",
-      "sha": "c3528ea",
+      "ref": "v1.1.10",
+      "sha": "39af7ad",
       "pages": {
         "README.md": "overview.html",
         "llm_router_api/docs/INSTALLATION.md": "llm-router-api/docs/installation.html",
@@ -48,7 +48,22 @@
         "plugins/llm_router_plugins/utils/routing/semantic_biencoder/README.md": "llm-router-plugins/utils/routing/semantic-biencoder/index.html",
         "plugins/llm_router_plugins/utils/routing/README.md": "llm-router-plugins/utils/routing/index.html",
         "plugins/llm_router_plugins/utils/routing/simple_semantic/README.md": "llm-router-plugins/utils/routing/simple-semantic/index.html",
+        "plugins/llm_router_plugins/utils/knowledge/agentic_knowledge/README.md": "llm-router-plugins/utils/knowledge/agentic-knowledge/index.html",
         "plugins/llm_router_plugins/utils/rag/LANGCHAIN_RAG.md": "llm-router-plugins/utils/rag/langchain-rag.html",
+        "plugins/scripts/plugins/auto_codex/eval/README.md": "scripts/plugins/auto-codex/eval/index.html",
+        "plugins/scripts/plugins/auto_codex/payload_parser/README.md": "scripts/plugins/auto-codex/payload-parser/index.html",
+        "plugins/docs/plugin-agentic_routing_claude_code.md": "docs/plugin-agentic-routing-claude-code.html",
+        "plugins/docs/plugin-agentic_routing_codex.md": "docs/plugin-agentic-routing-codex.html",
+        "plugins/docs/plugin-semantic_biencoder_routing.md": "docs/plugin-semantic-biencoder-routing.html",
+        "plugins/CHANGELOG.md": "changelog.html",
+        "plugins/docs/plugin-fast_masker.md": "docs/plugin-fast-masker.html",
+        "plugins/docs/knowledge-base.en.md": "docs/knowledge-base.en.html",
+        "plugins/docs/plugin-langchain_rag.md": "docs/plugin-langchain-rag.html",
+        "plugins/docs/plugin-nask_guard.md": "docs/plugin-nask-guard.html",
+        "plugins/docs/plugin-pii_masker.md": "docs/plugin-pii-masker.html",
+        "plugins/docs/knowledge-base.pl.md": "docs/knowledge-base.pl.html",
+        "plugins/docs/plugin-simple_semantic_routing.md": "docs/plugin-simple-semantic-routing.html",
+        "plugins/docs/plugin-sojka_guard.md": "docs/plugin-sojka-guard.html",
         "services/README.md": "index-2.html",
         "services/llm_router_services/guardrails/README.md": "llm-router-services/guardrails/index.html",
         "services/llm_router_services/guardrails/speakleash/README.md": "llm-router-services/guardrails/speakleash/index.html",
@@ -57,17 +72,17 @@
       },
       "sources": {
         "router": {
-          "ref": "v1.1.8",
-          "sha": "c3528ea",
-          "date": "2026-10-08T13:07:40+02:00",
-          "version": "1.1.8",
+          "ref": "v1.1.10",
+          "sha": "39af7ad",
+          "date": "2026-10-28T00:06:18+01:00",
+          "version": "1.1.10",
           "url": "https://github.com/radlab-dev-group/llm-router"
         },
         "plugins": {
-          "ref": "v0.1.2",
-          "sha": "88ce6b6",
-          "date": "2026-10-08T12:52:11+02:00",
-          "version": "0.1.2",
+          "ref": "v0.1.5",
+          "sha": "1d09a29",
+          "date": "2026-10-27T18:02:23+01:00",
+          "version": "0.1.5",
           "url": "https://github.com/radlab-dev-group/llm-router-plugins"
         },
         "services": {
@@ -76,6 +91,96 @@
           "date": "2026-05-10T11:33:31+02:00",
           "version": "0.0.4",
           "url": "https://github.com/radlab-dev-group/llm-router-services"
+        }
+      }
+    },
+    {
+      "version": "1.1.9",
+      "entry": "router/1.1.9/index.html",
+      "date": "2026-10-23T11:20:03+02:00",
+      "prerelease": false,
+      "satellites": {},
+      "ref": "v1.1.9",
+      "sha": "6c130f0",
+      "pages": {
+        "README.md": "overview.html",
+        "llm_router_api/docs/INSTALLATION.md": "llm-router-api/docs/installation.html",
+        "llm_router_api/docs/ENV_DEFINITIONS.md": "llm-router-api/docs/env-definitions.html",
+        "llm_router_api/docs/MODELS_CONFIG.md": "llm-router-api/docs/models-config.html",
+        "llm_router_api/docs/KEEPALIVE.md": "llm-router-api/docs/keepalive.html",
+        "llm_router_api/docs/LB_STRATEGIES.md": "llm-router-api/docs/lb-strategies.html",
+        "llm_router_api/core/auditor/README.md": "llm-router-api/core/auditor/index.html",
+        "llm_router_api/docs/AUTHENTICATION.md": "llm-router-api/docs/authentication.html",
+        "llm_router_api/docs/RATE_LIMITING.md": "llm-router-api/docs/rate-limiting.html",
+        "llm_router_api/docs/ROUTING_METRICS.md": "llm-router-api/docs/routing-metrics.html",
+        "llm_router_api/README.md": "llm-router-api/index.html",
+        "llm_router_api/endpoints/README.md": "llm-router-api/endpoints/index.html",
+        "llm_router_api/docs/ENDPOINT_DEV.md": "llm-router-api/docs/endpoint-dev.html",
+        "llm_router_cli/README.md": "llm-router-cli/index.html",
+        "llm_router_lib/README.md": "llm-router-lib/index.html",
+        "llm_router_lib/RESPONSE_MODELS.md": "llm-router-lib/response-models.html",
+        "helm_charts/README.md": "helm-charts/index.html",
+        "examples/README.md": "examples/index.html",
+        "examples/quickstart/README.md": "examples/quickstart/index.html",
+        "examples/README_LLAMAINDEX.md": "examples/readme-llamaindex.html",
+        "examples/quickstart/google-gemma3-12b-it/VLLM.md": "examples/quickstart/google-gemma3-12b-it/vllm.html",
+        "examples/quickstart/speakleash-bielik-11b-v2_3-Instruct/VLLM.md": "examples/quickstart/speakleash-bielik-11b-v2-3-instruct/vllm.html",
+        "examples/quickstart/speakleash-bielik-11b-v2_3-Instruct/README.md": "examples/quickstart/speakleash-bielik-11b-v2-3-instruct/index.html",
+        "examples/quickstart/google-gemma3-12b-it/README.md": "examples/quickstart/google-gemma3-12b-it/index.html",
+        "CHANGELOG.md": "changelog.html"
+      },
+      "sources": {
+        "router": {
+          "ref": "v1.1.9",
+          "sha": "6c130f0",
+          "date": "2026-10-23T11:20:03+02:00",
+          "version": "1.1.9",
+          "url": "https://github.com/radlab-dev-group/llm-router"
+        }
+      }
+    },
+    {
+      "version": "1.1.8",
+      "entry": "router/1.1.8/index.html",
+      "date": "2026-10-08T13:07:40+02:00",
+      "prerelease": false,
+      "satellites": {},
+      "ref": "v1.1.8",
+      "sha": "c3528ea",
+      "pages": {
+        "README.md": "overview.html",
+        "llm_router_api/docs/INSTALLATION.md": "llm-router-api/docs/installation.html",
+        "llm_router_api/docs/ENV_DEFINITIONS.md": "llm-router-api/docs/env-definitions.html",
+        "llm_router_api/docs/MODELS_CONFIG.md": "llm-router-api/docs/models-config.html",
+        "llm_router_api/docs/KEEPALIVE.md": "llm-router-api/docs/keepalive.html",
+        "llm_router_api/docs/LB_STRATEGIES.md": "llm-router-api/docs/lb-strategies.html",
+        "llm_router_api/core/auditor/README.md": "llm-router-api/core/auditor/index.html",
+        "llm_router_api/docs/AUTHENTICATION.md": "llm-router-api/docs/authentication.html",
+        "llm_router_api/docs/RATE_LIMITING.md": "llm-router-api/docs/rate-limiting.html",
+        "llm_router_api/docs/ROUTING_METRICS.md": "llm-router-api/docs/routing-metrics.html",
+        "llm_router_api/README.md": "llm-router-api/index.html",
+        "llm_router_api/endpoints/README.md": "llm-router-api/endpoints/index.html",
+        "llm_router_api/docs/ENDPOINT_DEV.md": "llm-router-api/docs/endpoint-dev.html",
+        "llm_router_cli/README.md": "llm-router-cli/index.html",
+        "llm_router_lib/README.md": "llm-router-lib/index.html",
+        "llm_router_lib/RESPONSE_MODELS.md": "llm-router-lib/response-models.html",
+        "helm_charts/README.md": "helm-charts/index.html",
+        "examples/README.md": "examples/index.html",
+        "examples/quickstart/README.md": "examples/quickstart/index.html",
+        "examples/README_LLAMAINDEX.md": "examples/readme-llamaindex.html",
+        "examples/quickstart/google-gemma3-12b-it/VLLM.md": "examples/quickstart/google-gemma3-12b-it/vllm.html",
+        "examples/quickstart/speakleash-bielik-11b-v2_3-Instruct/VLLM.md": "examples/quickstart/speakleash-bielik-11b-v2-3-instruct/vllm.html",
+        "examples/quickstart/speakleash-bielik-11b-v2_3-Instruct/README.md": "examples/quickstart/speakleash-bielik-11b-v2-3-instruct/index.html",
+        "examples/quickstart/google-gemma3-12b-it/README.md": "examples/quickstart/google-gemma3-12b-it/index.html",
+        "CHANGELOG.md": "changelog.html"
+      },
+      "sources": {
+        "router": {
+          "ref": "v1.1.8",
+          "sha": "c3528ea",
+          "date": "2026-10-08T13:07:40+02:00",
+          "version": "1.1.8",
+          "url": "https://github.com/radlab-dev-group/llm-router"
         }
       }
     },

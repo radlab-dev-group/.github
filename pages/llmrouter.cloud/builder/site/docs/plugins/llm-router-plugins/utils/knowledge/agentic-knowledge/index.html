@@ -1,0 +1,1288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../../../../../assets/consent.js" defer data-privacy="../../../../../../privacy.html"></script>
+<title>Agentic knowledge layer (agentic_knowledge) · v1.1.10 · llm-router docs</title>
+<meta name="description" content="# Agentic knowledge layer (`agentic_knowledge`) A knowledge layer for coding agents that lives **in the proxy, with no cooperation from the agent**. It reads the work state the routing plugin has already derived (work mode, phase evidence,…">
+<meta name="theme-color" content="#05070a">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Agentic knowledge layer (agentic_knowledge) · v1.1.10 · llm-router docs">
+<meta property="og:description" content="# Agentic knowledge layer (`agentic_knowledge`) A knowledge layer for coding agents that lives **in the proxy, with no cooperation from the agent**. It reads the work state the routing plugin has already derived (work mode, phase evidence,…">
+<meta name="docs-version" content="1.1.10">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2305070a'/%3E%3Cpath d='M8 22V10M8 16h9M17 10v12M17 13h7M17 19h7' stroke='%2300e59b' stroke-width='2' stroke-linecap='round' fill='none'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="../../../../../assets/docs.css">
+<link rel="stylesheet" href="../../../../../assets/pygments.css">
+<script src="../../../../../assets/docs.js" defer></script>
+</head>
+<body class="page" data-version="1.1.10" data-search="../../../../search.json" data-latest="1.1.10" data-repo="plugins" data-docs-root="../../../../../">
+<a class="skip" href="#main">skip to content</a>
+<header class="topbar">
+<div class="topbar-inner">
+<button class="burger" id="burger" aria-label="Toggle documentation menu" aria-expanded="false" aria-controls="sidebar">&#9776;</button>
+<a class="brand" href="../../../../../.."><svg width="21" height="21" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="7" fill="#0b1119" stroke="#1a232e"/><path d="M8 22V10M8 16h9M17 10v12M17 13h7M17 19h7" stroke="#00e59b" stroke-width="2" stroke-linecap="round" fill="none"/></svg><span>llm<span class="dash">-</span>router</span><span class="brand-docs">/docs</span></a>
+<div class="topbar-right">
+<form class="search" id="search" role="search" autocomplete="off">
+<span class="search-icon" aria-hidden="true">&#8981;</span>
+<input id="q" type="search" placeholder="search this version" aria-label="Search documentation" role="combobox" aria-expanded="false" aria-controls="results" aria-autocomplete="list">
+<kbd>/</kbd>
+<div class="results" id="results" role="listbox" aria-label="Search results" hidden></div>
+</form>
+
+<a class="iconbtn" href="https://github.com/radlab-dev-group/llm-router-plugins" aria-label="Repository on GitHub" title="Repository on GitHub"><svg width="17" height="17" viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8a8 8 0 0 0 5.47 7.59c.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.46-.53.42-.02.72.39.82.55.48.81 1.25.94 1.56.73.2-.27.6-.94.94-1.13-.01-.2-.05-.82-.14-.98-.6.1-1.22.2-1.87.2-1.9 0-3.62-1.13-3.62-3.53 0-.78.28-1.42.74-1.92-.07-.18-.32-.91.07-1.9 0 0 .6-.19 1.97.74a6.8 6.8 0 0 1 3.58 0c1.37-.93 1.97-.74 1.97-.74.39.99.14 1.72.07 1.9.46.5.74 1.14.74 1.92 0 2.41-1.47 3.53-3.87 3.72.3.26.57.77.57 1.56 0 1.13-.012.04-.01 2.32 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg></a>
+</div>
+</div>
+</header>
+<div class="scrim" id="scrim" hidden></div>
+<div class="shell">
+<aside class="sidebar" id="sidebar"><nav class="nav-tree" aria-label="Documentation"><div data-nav-repo="router"><details class="nav-group"><summary class="nav-repo"><span class="repo-name">llm-router</span></summary><div data-router-context><div class="side-head"><span class="side-v mono">v1.1.10</span><span class="side-tag live">latest</span></div><a class="side-hub" href="../../../../../router/1.1.10/index.html">documentation index</a></div><label class="vselect side-versions"><span class="sr-only">llm-router version</span><select id="versions-router" data-switch="router" aria-label="llm-router documentation version"><option value="../../../../../router/1.1.10/index.html" data-version="1.1.10" data-root="../../../../../router/1.1.10/index.html" selected>1.1.10  · latest</option>
+<option value="../../../../../router/1.1.9/index.html" data-version="1.1.9" data-root="../../../../../router/1.1.9/index.html">1.1.9</option>
+<option value="../../../../../router/1.1.8/index.html" data-version="1.1.8" data-root="../../../../../router/1.1.8/index.html">1.1.8</option>
+<option value="../../../../../router/1.1.7/index.html" data-version="1.1.7" data-root="../../../../../router/1.1.7/index.html">1.1.7</option>
+<option value="../../../../../router/1.1.6/index.html" data-version="1.1.6" data-root="../../../../../router/1.1.6/index.html">1.1.6</option>
+<option value="../../../../../router/1.1.5/index.html" data-version="1.1.5" data-root="../../../../../router/1.1.5/index.html">1.1.5</option>
+<option value="../../../../../router/1.1.4/index.html" data-version="1.1.4" data-root="../../../../../router/1.1.4/index.html">1.1.4</option>
+<option value="../../../../../router/1.1.3/index.html" data-version="1.1.3" data-root="../../../../../router/1.1.3/index.html">1.1.3</option>
+<option value="../../../../../router/1.1.2/index.html" data-version="1.1.2" data-root="../../../../../router/1.1.2/index.html">1.1.2</option>
+<option value="../../../../../router/1.1.1/index.html" data-version="1.1.1" data-root="../../../../../router/1.1.1/index.html">1.1.1</option>
+<option value="../../../../../router/1.1.0/index.html" data-version="1.1.0" data-root="../../../../../router/1.1.0/index.html">1.1.0</option>
+<option value="../../../../../router/1.0.8/index.html" data-version="1.0.8" data-root="../../../../../router/1.0.8/index.html">1.0.8</option>
+<option value="../../../../../router/1.0.7/index.html" data-version="1.0.7" data-root="../../../../../router/1.0.7/index.html">1.0.7</option>
+<option value="../../../../../router/1.0.6/index.html" data-version="1.0.6" data-root="../../../../../router/1.0.6/index.html">1.0.6</option>
+<option value="../../../../../router/1.0.5/index.html" data-version="1.0.5" data-root="../../../../../router/1.0.5/index.html">1.0.5</option>
+<option value="../../../../../router/1.0.4/index.html" data-version="1.0.4" data-root="../../../../../router/1.0.4/index.html">1.0.4</option>
+<option value="../../../../../router/1.0.3/index.html" data-version="1.0.3" data-root="../../../../../router/1.0.3/index.html">1.0.3</option>
+<option value="../../../../../router/1.0.1/index.html" data-version="1.0.1" data-root="../../../../../router/1.0.1/index.html">1.0.1</option>
+<option value="../../../../../router/1.0.0/index.html" data-version="1.0.0" data-root="../../../../../router/1.0.0/index.html">1.0.0</option>
+<option value="../../../../../router/0.9.6/index.html" data-version="0.9.6" data-root="../../../../../router/0.9.6/index.html">0.9.6</option>
+<option value="../../../../../router/0.9.5/index.html" data-version="0.9.5" data-root="../../../../../router/0.9.5/index.html">0.9.5</option>
+<option value="../../../../../router/0.9.4/index.html" data-version="0.9.4" data-root="../../../../../router/0.9.4/index.html">0.9.4</option>
+<option value="../../../../../router/0.9.2/index.html" data-version="0.9.2" data-root="../../../../../router/0.9.2/index.html">0.9.2</option>
+<option value="../../../../../router/0.9.1/index.html" data-version="0.9.1" data-root="../../../../../router/0.9.1/index.html">0.9.1</option>
+<option value="../../../../../router/0.9.0/index.html" data-version="0.9.0" data-root="../../../../../router/0.9.0/index.html">0.9.0</option>
+<option value="../../../../../router/0.8.0/index.html" data-version="0.8.0" data-root="../../../../../router/0.8.0/index.html">0.8.0</option>
+<option value="../../../../../router/0.7.0/index.html" data-version="0.7.0" data-root="../../../../../router/0.7.0/index.html">0.7.0</option>
+<option value="../../../../../router/0.6.9/index.html" data-version="0.6.9" data-root="../../../../../router/0.6.9/index.html">0.6.9</option>
+<option value="../../../../../router/0.6.8/index.html" data-version="0.6.8" data-root="../../../../../router/0.6.8/index.html">0.6.8</option>
+<option value="../../../../../router/0.6.7/index.html" data-version="0.6.7" data-root="../../../../../router/0.6.7/index.html">0.6.7</option>
+<option value="../../../../../router/0.6.6/index.html" data-version="0.6.6" data-root="../../../../../router/0.6.6/index.html">0.6.6</option>
+<option value="../../../../../router/0.6.5/index.html" data-version="0.6.5" data-root="../../../../../router/0.6.5/index.html">0.6.5</option>
+<option value="../../../../../router/0.6.4/index.html" data-version="0.6.4" data-root="../../../../../router/0.6.4/index.html">0.6.4</option>
+<option value="../../../../../router/0.6.3/index.html" data-version="0.6.3" data-root="../../../../../router/0.6.3/index.html">0.6.3</option>
+<option value="../../../../../router/0.6.2/index.html" data-version="0.6.2" data-root="../../../../../router/0.6.2/index.html">0.6.2</option>
+<option value="../../../../../router/0.6.1/index.html" data-version="0.6.1" data-root="../../../../../router/0.6.1/index.html">0.6.1</option>
+<option value="../../../../../router/0.6.0/index.html" data-version="0.6.0" data-root="../../../../../router/0.6.0/index.html">0.6.0</option>
+<option value="../../../../../router/0.5.2/index.html" data-version="0.5.2" data-root="../../../../../router/0.5.2/index.html">0.5.2</option>
+<option value="../../../../../router/0.5.1/index.html" data-version="0.5.1" data-root="../../../../../router/0.5.1/index.html">0.5.1</option>
+<option value="../../../../../router/0.5.0/index.html" data-version="0.5.0" data-root="../../../../../router/0.5.0/index.html">0.5.0</option>
+<option value="../../../../../router/0.4.6/index.html" data-version="0.4.6" data-root="../../../../../router/0.4.6/index.html">0.4.6</option>
+<option value="../../../../../router/0.4.5/index.html" data-version="0.4.5" data-root="../../../../../router/0.4.5/index.html">0.4.5</option>
+<option value="../../../../../router/0.4.4/index.html" data-version="0.4.4" data-root="../../../../../router/0.4.4/index.html">0.4.4</option>
+<option value="../../../../../router/0.4.3/index.html" data-version="0.4.3" data-root="../../../../../router/0.4.3/index.html">0.4.3</option>
+<option value="../../../../../router/0.4.2/index.html" data-version="0.4.2" data-root="../../../../../router/0.4.2/index.html">0.4.2</option>
+<option value="../../../../../router/0.4.1/index.html" data-version="0.4.1" data-root="../../../../../router/0.4.1/index.html">0.4.1</option>
+<option value="../../../../../router/0.4.0/index.html" data-version="0.4.0" data-root="../../../../../router/0.4.0/index.html">0.4.0</option>
+<option value="../../../../../router/0.3.1/index.html" data-version="0.3.1" data-root="../../../../../router/0.3.1/index.html">0.3.1</option>
+<option value="../../../../../router/0.3.0/index.html" data-version="0.3.0" data-root="../../../../../router/0.3.0/index.html">0.3.0</option>
+<option value="../../../../../router/0.2.3/index.html" data-version="0.2.3" data-root="../../../../../router/0.2.3/index.html">0.2.3</option>
+<option value="../../../../../router/0.2.2/index.html" data-version="0.2.2" data-root="../../../../../router/0.2.2/index.html">0.2.2</option>
+<option value="../../../../../router/0.2.1/index.html" data-version="0.2.1" data-root="../../../../../router/0.2.1/index.html">0.2.1</option>
+<option value="../../../../../router/0.2.0/index.html" data-version="0.2.0" data-root="../../../../../router/0.2.0/index.html">0.2.0</option>
+<option value="../../../../../router/0.1.1/index.html" data-version="0.1.1" data-root="../../../../../router/0.1.1/index.html">0.1.1</option>
+<option value="../../../../../router/0.1.0/index.html" data-version="0.1.0" data-root="../../../../../router/0.1.0/index.html">0.1.0</option></select></label><section class="nav-sec open"><h2 class="nav-sec-title"><a href="../../../../../router/1.1.10/overview.html">Getting started</a></h2><ul><li><a href="../../../../../router/1.1.10/overview.html">Overview</a></li><li><a href="../../../../../router/1.1.10/llm-router-api/docs/installation.html">Installation</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="../../../../../router/1.1.10/llm-router-api/docs/env-definitions.html">Configuration</a></h2><ul><li><a href="../../../../../router/1.1.10/llm-router-api/docs/env-definitions.html">Environment Variables</a></li><li><a href="../../../../../router/1.1.10/llm-router-api/docs/models-config.html">Models configuration description (JSON)</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="../../../../../router/1.1.10/llm-router-api/docs/keepalive.html">Routing &amp; resilience</a></h2><ul><li><a href="../../../../../router/1.1.10/llm-router-api/docs/keepalive.html">Keep‑Alive Utility Overview</a></li><li><a href="../../../../../router/1.1.10/llm-router-api/docs/lb-strategies.html">Load Balancing Strategies</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="../../../../../router/1.1.10/llm-router-api/core/auditor/index.html">Security &amp; auditing</a></h2><ul><li><a href="../../../../../router/1.1.10/llm-router-api/core/auditor/index.html">Auditing subsystem – llm-router</a></li><li><a href="../../../../../router/1.1.10/llm-router-api/docs/authentication.html">Authentication &amp; Authorization</a></li><li><a href="../../../../../router/1.1.10/llm-router-api/docs/rate-limiting.html">Rate Limiting</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="../../../../../router/1.1.10/llm-router-api/docs/routing-metrics.html">Observability</a></h2><ul><li><a href="../../../../../router/1.1.10/llm-router-api/docs/routing-metrics.html">Router Prometheus Metrics</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="../../../../../router/1.1.10/llm-router-api/index.html">REST API</a></h2><ul><li><a href="../../../../../router/1.1.10/llm-router-api/index.html">REST API reference</a></li><li><a href="../../../../../router/1.1.10/llm-router-api/endpoints/index.html">Endpoints Overview</a></li><li><a href="../../../../../router/1.1.10/llm-router-api/docs/endpoint-dev.html">Endpoint Development Guide</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="../../../../../router/1.1.10/llm-router-cli/index.html">CLI</a></h2><ul><li><a href="../../../../../router/1.1.10/llm-router-cli/index.html">llm-router CLI — Command Reference</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="../../../../../router/1.1.10/llm-router-lib/index.html">Python library</a></h2><ul><li><a href="../../../../../router/1.1.10/llm-router-lib/index.html">llmrouterlib</a></li><li><a href="../../../../../router/1.1.10/llm-router-lib/response-models.html">Response models</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="../../../../../router/1.1.10/helm-charts/index.html">Deployment</a></h2><ul><li><a href="../../../../../router/1.1.10/helm-charts/index.html">LLM‑Router Helm Chart</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="../../../../../router/1.1.10/examples/index.html">Examples</a></h2><ul><li><a href="../../../../../router/1.1.10/examples/index.html">Integration Examples with LLM Router</a></li><li><a href="../../../../../router/1.1.10/examples/quickstart/index.html">Full Stack with Local Models</a></li><li><a href="../../../../../router/1.1.10/examples/readme-llamaindex.html">Using LlamaIndex with Local Models via the LLM‑Router</a></li><li><a href="../../../../../router/1.1.10/examples/quickstart/google-gemma3-12b-it/vllm.html">vLLM + google/gemma‑3‑12b‑it – Quick‑Start Guide (Ubuntu)</a></li><li><a href="../../../../../router/1.1.10/examples/quickstart/speakleash-bielik-11b-v2-3-instruct/vllm.html">vLLM + speakleash/Bielik-11B-v2.3-Instruct – Przewodnik Szybkiego Startu (Ubuntu)</a></li><li><a href="../../../../../router/1.1.10/examples/quickstart/speakleash-bielik-11b-v2-3-instruct/index.html">🚀 Przewodnik Szybkiego Startu dla speakleash/Bielik-11B-v2.3-Instruct z vLLM &amp; LLM‑Router</a></li><li><a href="../../../../../router/1.1.10/examples/quickstart/google-gemma3-12b-it/index.html">🚀 Quick‑Start Guide for google/gemma-3-12b‑it with vLLM &amp; LLM‑Router</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="../../../../../router/1.1.10/changelog.html">Release notes</a></h2><ul><li><a href="../../../../../router/1.1.10/changelog.html">Changelog</a></li></ul></section></details></div><div data-nav-repo="plugins"><details class="nav-group"><summary class="nav-repo"><span class="repo-name">llm-router-plugins</span></summary><div class="side-head"><span class="side-v mono">v0.1.5</span><span class="side-tag live">latest</span></div><label class="vselect side-versions"><span class="sr-only">llm-router-plugins version</span><select id="versions-plugins" data-switch="plugins" aria-label="llm-router-plugins documentation version"><option value="../../../../0.1.5/llm-router-plugins/utils/knowledge/agentic-knowledge/index.html" data-version="0.1.5" data-root="../../../../0.1.5/index.html" selected>v0.1.5  · latest</option>
+<option value="../../../../0.1.4/llm-router-plugins/utils/knowledge/agentic-knowledge/index.html" data-version="0.1.4" data-root="../../../../0.1.4/index.html">v0.1.4</option>
+<option value="../../../../0.1.3/index.html" data-version="0.1.3" data-root="../../../../0.1.3/index.html">v0.1.3</option>
+<option value="../../../../0.1.2/index.html" data-version="0.1.2" data-root="../../../../0.1.2/index.html">v0.1.2</option>
+<option value="../../../../0.1.1/index.html" data-version="0.1.1" data-root="../../../../0.1.1/index.html">v0.1.1</option>
+<option value="../../../../0.1.0/index.html" data-version="0.1.0" data-root="../../../../0.1.0/index.html">v0.1.0</option>
+<option value="../../../../0.0.6/index.html" data-version="0.0.6" data-root="../../../../0.0.6/index.html">v0.0.6</option>
+<option value="../../../../0.0.5/index.html" data-version="0.0.5" data-root="../../../../0.0.5/index.html">v0.0.5</option>
+<option value="../../../../0.0.2/index.html" data-version="0.0.2" data-root="../../../../0.0.2/index.html">v0.0.2</option>
+<option value="../../../../0.0.1/index.html" data-version="0.0.1" data-root="../../../../0.0.1/index.html">v0.0.1</option></select></label><section class="nav-sec open"><h2 class="nav-sec-title"><a href="../../../../index-2.html">Plugins overview</a></h2><ul><li><a href="../../../../index-2.html">Plugins overview</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="../../../maskers/fast-masker/index.html">Masker plugins</a></h2><ul><li><a href="../../../maskers/fast-masker/index.html">Overview</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="../../routing/agentic-routing/claude-code/index.html">Routing plugins</a></h2><ul><li><a href="../../routing/agentic-routing/claude-code/index.html">Claude Code Model Swap (agenticroutingclaude_code)</a></li><li><a href="../../routing/agentic-routing/codex/index.html">Codex CLI Routing (agenticroutingcodex)</a></li><li><a href="../../routing/agentic-routing/codex/codex-eval-howto-en.html">Codex routing calibration and evaluation</a></li><li><a href="../../routing/agentic-routing/codex/codex-eval-howto-pl.html">Kalibracja i ewaluacja routingu Codexa</a></li><li><a href="../../routing/semantic-biencoder/index.html">Semantic BiEncoder Routing (semanticbiencoderrouting)</a></li><li><a href="../../routing/index.html">Semantic Routing Plugins</a></li><li><a href="../../routing/simple-semantic/index.html">Simple Semantic Routing (simplesemanticrouting)</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="index.html">Utility plugins</a></h2><ul><li><a href="index.html" class="active">Agentic knowledge layer (agentic_knowledge)</a></li><li><a href="../../rag/langchain-rag.html">LangChain RAG Plugin for LLM‑Router</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="../../../../scripts/plugins/auto-codex/eval/index.html">Plugin scripts</a></h2><ul><li><a href="../../../../scripts/plugins/auto-codex/eval/index.html">Codex routing — offline corpus and replay</a></li><li><a href="../../../../scripts/plugins/auto-codex/payload-parser/index.html">Codex routing — per-request payload export</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="../../../../docs/plugin-agentic-routing-claude-code.html">Other plugins docs</a></h2><ul><li><a href="../../../../docs/plugin-agentic-routing-claude-code.html">Agentic Claude Code routing guide</a></li><li><a href="../../../../docs/plugin-agentic-routing-codex.html">Agentic Codex routing guide</a></li><li><a href="../../../../docs/plugin-semantic-biencoder-routing.html">Bi-encoder semantic routing guide</a></li><li><a href="../../../../changelog.html">Changelog</a></li><li><a href="../../../../docs/plugin-fast-masker.html">FastMasker plugin guide</a></li><li><a href="../../../../docs/knowledge-base.en.html">Knowledge base operator guide</a></li><li><a href="../../../../docs/plugin-langchain-rag.html">LangChain RAG plugin guide</a></li><li><a href="../../../../docs/plugin-nask-guard.html">NASK guardrail guide</a></li><li><a href="../../../../docs/plugin-pii-masker.html">PII masker plugin guide</a></li><li><a href="../../../../docs/knowledge-base.pl.html">Przewodnik operatora bazy wiedzy</a></li><li><a href="../../../../docs/plugin-simple-semantic-routing.html">Simple semantic routing guide</a></li><li><a href="../../../../docs/plugin-sojka-guard.html">Sojka guardrail guide</a></li></ul></section></details></div><div data-nav-repo="services"><details class="nav-group"><summary class="nav-repo"><span class="repo-name">llm-router-services</span></summary><div class="side-head"><span class="side-v mono">v0.0.4</span><span class="side-tag live">latest</span></div><label class="vselect side-versions"><span class="sr-only">llm-router-services version</span><select id="versions-services" data-switch="services" aria-label="llm-router-services documentation version"><option value="../../../../../services/0.0.4/index.html" data-version="0.0.4" data-root="../../../../../services/0.0.4/index.html" selected>v0.0.4  · latest</option>
+<option value="../../../../../services/0.0.3/index.html" data-version="0.0.3" data-root="../../../../../services/0.0.3/index.html">v0.0.3</option>
+<option value="../../../../../services/0.0.2/index.html" data-version="0.0.2" data-root="../../../../../services/0.0.2/index.html">v0.0.2</option>
+<option value="../../../../../services/0.0.1/index.html" data-version="0.0.1" data-root="../../../../../services/0.0.1/index.html">v0.0.1</option></select></label><section class="nav-sec open"><h2 class="nav-sec-title"><a href="../../../../../services/index-2.html">Services overview</a></h2><ul><li><a href="../../../../../services/index-2.html">llm-router services</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="../../../../../services/llm-router-services/guardrails/index.html">Guardrail services</a></h2><ul><li><a href="../../../../../services/llm-router-services/guardrails/index.html">Guardrails Package</a></li><li><a href="../../../../../services/llm-router-services/guardrails/speakleash/index.html">Integration of Bielik‑Guard‑0.1B as llm‑router guardrail service (Sojka)</a></li><li><a href="../../../../../services/llm-router-services/guardrails/nask/index.html">Integration of HerBERT‑PL‑Guard with the naskpibguard_app.py Service</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="../../../../../services/docker/index.html">Docker &amp; deployment</a></h2><ul><li><a href="../../../../../services/docker/index.html">LLM‑Router Services – Docker Build &amp; Run Guide</a></li></ul></section></details></div></nav><div class="side-foot"><a href="../../../../../..">&larr;&nbsp;landing page</a><a class="mono" href="../../../../search.json">search.json</a></div></aside>
+<main class="main" id="main"><nav class="crumbs" aria-label="Breadcrumb">
+<a href="../../../../../..">llm-router</a><span class="sep">/</span><a href="../../../../index.html">docs</a><span class="sep">/</span><a href="index.html">Utility plugins</a><span class="sep">/</span><em>Agentic knowledge layer (agentic_knowledge)</em>
+</nav>
+<article class="prose"><h1 id="agentic-knowledge-layer-agentic_knowledge">Agentic knowledge layer (<code>agentic_knowledge</code>)<a class="headerlink" href="#agentic-knowledge-layer-agentic_knowledge" title="link to this section">#</a></h1>
+<p>A knowledge layer for coding agents that lives <strong>in the proxy, with no cooperation from the agent</strong>. It reads the
+work state the routing plugin has already derived (work mode, phase evidence, request class), retrieves what this
+repository has already learned from the <strong>Semantic Search Engine</strong> (SSE), injects it into the request, and learns from
+the traffic itself: verified fixes, dead ends, and the window that a compaction is about to throw away. The retrieval
+result becomes a routing signal as well — an agent spinning in a loop with no known fix is moved to a stronger model
+(<em>knowledge-or-escalate</em>).</p>
+<ul>
+<li><strong>Plugin name (registry key):</strong> <code>agentic_knowledge</code></li>
+<li><strong>Class:</strong> <code>llm_router_plugins.utils.knowledge.agentic_knowledge.plugin.AgenticKnowledgePlugin</code></li>
+<li><strong>Default config:</strong> <code>llm_router_plugins/resources/knowledge/agentic_knowledge.json</code></li>
+<li><strong>Env prefix:</strong> <code>LLM_ROUTER_KNOWLEDGE_AGENTIC_</code></li>
+<li><strong>Worker:</strong> <code>llm-router-agentic-kb-worker</code></li>
+<li><strong>Requires:</strong> the SSE client and Redis — both optional, see <a href="#1-install">Install</a></li>
+</ul>
+<p>It is designed to stand <strong>behind</strong> <code>agentic_routing_codex</code> in the utils pipeline: it reads <code>payload["routing"]</code>,
+<code>payload["agent_mode"]</code> and <code>payload["model"]</code> as the router left them, and never touches the classifier.</p>
+<hr />
+<h2 id="what-the-plugin-changes">What the plugin changes<a class="headerlink" href="#what-the-plugin-changes" title="link to this section">#</a></h2>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>input</code> / <code>system</code></td>
+<td>one extra context block when knowledge was found (adapter-specific)</td>
+</tr>
+<tr>
+<td><code>model</code></td>
+<td>the escalation model, only when the escalation policy fired</td>
+</tr>
+<tr>
+<td><code>routing.knowledge</code></td>
+<td>annotation of what this plugin did (see <a href="#annotation">Annotation</a>)</td>
+</tr>
+<tr>
+<td><code>routing.model_before_knowledge</code></td>
+<td>previous <code>model</code>, only when this plugin replaced it</td>
+</tr>
+</tbody>
+</table>
+<p>Everything else is forwarded unchanged. The plugin never rejects a request.</p>
+<p><strong>Fail-open everywhere except the config file.</strong> A non-dict payload, an unclaimed payload, a parse error, an SSE
+timeout, <code>SSEAPIError</code>, a missing <code>sse_lib</code>, a Redis outage — all return the payload as it came, with at most one
+warning that carries no document content. Malformed Redis connection settings disable the features that need Redis and
+keep the policy. A malformed <strong>policy</strong> (unknown key, out-of-range weight, non-positive budget) raises at startup, the
+same fail-hard rule the Codex router uses.</p>
+<hr />
+<h2 id="quick-start">Quick start<a class="headerlink" href="#quick-start" title="link to this section">#</a></h2>
+<h3 id="1-install">1. Install<a class="headerlink" href="#1-install" title="link to this section">#</a></h3>
+<div class="codehilite"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span><span class="s2">".[agentic-knowledge]"</span><span class="w">               </span><span class="c1"># sse-lib&gt;=0.1.0 + redis&gt;=5</span>
+</code></pre></div>
+
+<p><code>sse_lib</code> depends only on <code>requests</code>. Without it, and without a configured host, the plugin loads and does nothing.
+Documentation uploads require both the client and SSE server to support the <code>upload_files(file_metadata=...)</code>
+contract; update both together. Older clients cannot preserve documentation metadata through file uploads.</p>
+<h3 id="2-load-it-into-the-pipeline-after-routing">2. Load it into the pipeline, after routing<a class="headerlink" href="#2-load-it-into-the-pipeline-after-routing" title="link to this section">#</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">LLM_ROUTER_UTILS_PLUGINS_PIPELINE</span><span class="o">=</span><span class="s2">"agentic_routing_codex,agentic_knowledge"</span>
+</code></pre></div>
+
+<p>Knowledge needs the routing decision, so it must run after the routing plugin. Registered in
+<code>MAIN_UTILS_REGISTRY</code> under <code>agentic_knowledge</code>; instantiated once per process.</p>
+<h3 id="3-point-it-at-sse-and-redis">3. Point it at SSE and Redis<a class="headerlink" href="#3-point-it-at-sse-and-redis" title="link to this section">#</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">LLM_ROUTER_KNOWLEDGE_AGENTIC_SSE_API_HOST</span><span class="o">=</span><span class="s2">"https://sse.internal"</span>
+<span class="c1"># A pre-issued token, or a login for an engine that authenticates by username and password</span>
+<span class="c1"># (the client logs in on its first call; a token, when set, wins).</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">LLM_ROUTER_KNOWLEDGE_AGENTIC_SSE_API_TOKEN</span><span class="o">=</span><span class="s2">"…"</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">LLM_ROUTER_KNOWLEDGE_AGENTIC_SSE_API_USERNAME</span><span class="o">=</span><span class="s2">"…"</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">LLM_ROUTER_KNOWLEDGE_AGENTIC_SSE_API_PASSWORD</span><span class="o">=</span><span class="s2">"…"</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">LLM_ROUTER_KNOWLEDGE_AGENTIC_REDIS_HOST</span><span class="o">=</span><span class="s2">"redis.internal"</span>
+</code></pre></div>
+
+<p>No <code>SSE_API_HOST</code> ⇒ <strong>no reads</strong> (requests pass through). No <code>REDIS_HOST</code> ⇒ <strong>no writes</strong>, and the generation cache
+falls back to one that lives in the process only (reads stay stateless across workers, see <a href="#stateless-mode">Stateless mode</a>).</p>
+<h3 id="4-run-the-indexing-worker">4. Run the indexing worker<a class="headerlink" href="#4-run-the-indexing-worker" title="link to this section">#</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">LLM_ROUTER_KNOWLEDGE_AGENTIC_SSE_EMBEDDER</span><span class="o">=</span><span class="s2">"&lt;embedder served by your SSE&gt;"</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">LLM_ROUTER_KNOWLEDGE_AGENTIC_SSE_RERANKER</span><span class="o">=</span><span class="s2">"&lt;reranker served by your SSE&gt;"</span>
+llm-router-agentic-kb-worker
+</code></pre></div>
+
+<p>Without a worker the layer only reads: nothing new is ever learned. The embedder and reranker are required because the
+worker creates a collection the first time a scope produces knowledge.</p>
+<p>The worker is a second process, started by the operator — the router never spawns it. The <code>llm-router</code> checkout
+wraps that for a deployment whose configuration lives in the router's own run script:
+<code>scripts/plugins/agentic_knowledge/run-agentic-kb-worker.sh</code> reads that script's assignments (never executes
+it, so no second server starts), exports them, and runs the worker with the rest of its arguments.</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># from the llm-router checkout (sibling of this one)</span>
+bash<span class="w"> </span>scripts/plugins/agentic_knowledge/run-agentic-kb-worker.sh<span class="w"> </span><span class="o">[</span>ROUTER_SCRIPT<span class="o">]</span><span class="w"> </span><span class="o">[</span>--once<span class="w"> </span><span class="p">|</span><span class="w"> </span>--no-retain<span class="w"> </span><span class="p">|</span><span class="w"> </span>--log-level<span class="w"> </span>…<span class="o">]</span>
+</code></pre></div>
+
+<p>Run it with <code>--once</code> from cron to drain a backlog, or without it as a daemon. <code>--once</code> logs what the batch did,
+because otherwise a cron run that indexed nothing and a cron run that did nothing are indistinguishable.</p>
+<h3 id="5-verify">5. Verify<a class="headerlink" href="#5-verify" title="link to this section">#</a></h3>
+<div class="codehilite"><pre><span></span><code>python<span class="w"> </span>-m<span class="w"> </span>pytest<span class="w"> </span>tests<span class="w"> </span>-q<span class="w"> </span>-k<span class="w"> </span>agentic_knowledge
+bash<span class="w"> </span>scripts/agentic-kb-eval.sh<span class="w"> </span>--enable-escalation
+</code></pre></div>
+
+<p>The evaluation script replays recorded sessions offline (no SSE, no Redis) and prints a JSON report; see
+<a href="#evaluation">Evaluation</a>.</p>
+<hr />
+<h2 id="how-it-works">How it works<a class="headerlink" href="#how-it-works" title="link to this section">#</a></h2>
+<div class="codehilite"><pre><span></span><code>graph LR
+  P[Payload] --&gt; R[agentic_routing_codex]
+  R --&gt;|routing, agent_mode| K[agentic_knowledge]
+  K --&gt; A[AgentAdapter Codex / Claude Code]
+  A --&gt;|AgentTurn| M[EpisodeMiner]
+  A --&gt;|AgentTurn| Q[QueryBuilder per mode]
+  Q --&gt; C[ContextAssembler]
+  C --&gt;|search| S[SSE]
+  C --&gt; RC[Redis generation cache]
+  M --&gt;|XADD| ST[Redis Stream]
+  ST --&gt; W[Worker CLI]
+  W --&gt; FM[FastMasker]
+  W --&gt;|index_documents / upload_files| S
+  C --&gt; E[EscalationPolicy]
+  E --&gt; O[Payload + context + routing.knowledge]
+</code></pre></div>
+
+<p>One request passes through: <strong>adapter selection → parse → mine once → publish once → read (cache → search → assemble)
+→ inject → escalate → annotate</strong>. Mining and publishing happen exactly once per request — the write path never
+re-annotates, so an escalation decision cannot be overwritten by it.</p>
+<p>A request the router classified <code>aux_title</code> is returned before any of this — a title generation has no repository
+knowledge to use, and none is mined from it, so it carries no annotation.</p>
+<table>
+<thead>
+<tr>
+<th>Module</th>
+<th>Responsibility</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>plugin.py</code></td>
+<td><code>AgenticKnowledgePlugin</code> — the whole request path, fail-open, annotation</td>
+</tr>
+<tr>
+<td><code>config.py</code></td>
+<td>policy JSON + ENV, validation, availability properties</td>
+</tr>
+<tr>
+<td><code>adapters/base.py</code></td>
+<td><code>AgentAdapter</code> (ABC), <code>AgentTurn</code>, <code>KnowledgeEvent</code>, <code>InjectionSpec</code></td>
+</tr>
+<tr>
+<td><code>adapters/codex.py</code></td>
+<td>Codex: reuses <code>codex.payload</code>, <code>codex.phase</code>; full read <strong>and</strong> write</td>
+</tr>
+<tr>
+<td><code>adapters/claude_code.py</code></td>
+<td>Claude Code: scope, latest user text, injection into <code>system</code>; read-only</td>
+</tr>
+<tr>
+<td><code>scope.py</code></td>
+<td>repository scope from the declared working directory; collection names</td>
+</tr>
+<tr>
+<td><code>signature.py</code></td>
+<td>error/stack trace → stable signature + hash</td>
+</tr>
+<tr>
+<td><code>query.py</code></td>
+<td>query and SSE filters per work mode</td>
+</tr>
+<tr>
+<td><code>assembler.py</code></td>
+<td>weighted voting over sources, dedup, character budget, rendering</td>
+</tr>
+<tr>
+<td><code>cache.py</code></td>
+<td><code>GenerationContextCache</code> (Redis) + in-process one when Redis is absent</td>
+</tr>
+<tr>
+<td><code>redisclient.py</code></td>
+<td><code>RedisClientHandle</code>: lazy, fork-aware Redis client shared by cache and pub</td>
+</tr>
+<tr>
+<td><code>miner.py</code></td>
+<td><code>EpisodeMiner</code>: recipe / playbook / deadend / loop / compaction → <code>KnowledgeEvent</code></td>
+</tr>
+<tr>
+<td><code>docs_ingestor.py</code></td>
+<td>scans the repository's markdown into <code>doc</code> documents and keeps them current</td>
+</tr>
+<tr>
+<td><code>doc_context.py</code></td>
+<td>the standing map of that documentation a session carries, and where it lives</td>
+</tr>
+<tr>
+<td><code>events.py</code></td>
+<td><code>KnowledgeEventPublisher</code>: <code>SET NX</code> dedup + <code>XADD</code></td>
+</tr>
+<tr>
+<td><code>escalation.py</code></td>
+<td><code>EscalationPolicy.decide</code></td>
+</tr>
+<tr>
+<td><code>sse.py</code></td>
+<td><code>KnowledgeStore</code>: thin fail-open façade over <code>sse_lib</code></td>
+</tr>
+<tr>
+<td><code>documents.py</code></td>
+<td>document kinds, names, metadata contract</td>
+</tr>
+<tr>
+<td><code>evaluation.py</code></td>
+<td>counterfactual replay over recorded sessions</td>
+</tr>
+</tbody>
+</table>
+<h3 id="scope">Scope<a class="headerlink" href="#scope" title="link to this section">#</a></h3>
+<p>Knowledge is only worth retrieving inside the repository that produced it. The CLI announces no repository, so the
+identifier is the one the agent itself prints: <code>&lt;cwd&gt;</code> in Codex's <code>&lt;environment_context&gt;</code>, the <code>Working directory</code> line
+in Claude Code's <code>system</code>. A compaction re-sends the whole conversation, and that block then sits behind the
+developer instructions — so the leading messages are searched (a fraction of a millisecond, bounded) rather than the
+first item assumed. A directory quoted in a tool output is not a declaration: only what the agent sends as a message
+names a repository. That path becomes a path-free <strong>scope key</strong> (<code>scope.strategy</code>):</p>
+<ul>
+<li><code>repo_basename</code> (default) — the name of the checked-out directory;</li>
+<li><code>parent_directory</code> — <code>&lt;parent&gt;/&lt;repo&gt;</code>, for monorepos under a common parent;</li>
+<li><code>scope.overrides</code> — an explicit <code>declared path → scope key</code> table, for checkouts that share a basename.</li>
+</ul>
+<p>One collection per scope keeps isolation out of the query: a search of one repository cannot return a document of
+another, even if a metadata filter is forgotten. The absolute path itself is never indexed. With no declared directory
+the scope is unknown, and both reads and writes are skipped (<code>scope: ""</code> in the annotation).</p>
+<h3 id="collections-and-documents">Collections and documents<a class="headerlink" href="#collections-and-documents" title="link to this section">#</a></h3>
+<table>
+<thead>
+<tr>
+<th>Kind</th>
+<th>Category (engine)</th>
+<th>Produced by</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>recipe</code></td>
+<td><code>recipe</code></td>
+<td><code>test_failure → patch → test pass</code></td>
+</tr>
+<tr>
+<td><code>playbook</code></td>
+<td><code>playbook</code></td>
+<td><code>patch → test pass</code> with no failure in between — the correct steps</td>
+</tr>
+<tr>
+<td><code>deadend</code></td>
+<td><code>deadend</code></td>
+<td>a repeated failure, a dead end</td>
+</tr>
+<tr>
+<td><code>doc</code></td>
+<td><code>doc</code></td>
+<td>the repository's markdown — <a href="#documentation-doc">Documentation</a></td>
+</tr>
+<tr>
+<td><code>session_archive</code></td>
+<td><code>session_archive</code></td>
+<td>a request classified <code>compaction</code></td>
+</tr>
+</tbody>
+</table>
+<p>One collection per repository, <code>&lt;prefix&gt;_&lt;scope&gt;</code>: every kind above is
+written into it, told apart by its engine <strong>category</strong> rather than by the name
+of the collection. The separation is as hard as a collection was — a search
+names the categories it asks for, and the engine resolves them to a set of
+document names <em>before</em> the vector leg scores anything
+(<code>semantic.py</code>: <code>documents_names_from_categories</code> → <code>search_in_documents</code>), so
+a request that did not ask for the documentation never sees it, and its
+<code>max_results</code> is spent within what survived the cut. One embedder, one
+chunking and one <code>min_similarity</code> already served all three collections, so the
+layout gives up nothing the reader used, and it leaves behind two collections
+per repository to create, prune and monitor.</p>
+<p><code>"collection_layout": "split"</code> keeps the older three-collections spelling —
+<code>&lt;prefix&gt;_&lt;scope&gt;</code> for mined knowledge, <code>&lt;prefix&gt;_&lt;scope&gt;_sessions</code> for the
+archive, <code>&lt;prefix&gt;_&lt;scope&gt;_docs</code> for the documentation — for a deployment that
+was indexed with it: it changes only the names, and a search restricted to one
+collection and a search restricted to the matching categories of one collection
+return the same documents. The layout is a property of the data at rest, so a
+deployment switching it switches both the reader and the writer at once.</p>
+<p>Default <code>&lt;prefix&gt;</code> is <code>agentic_kb</code>. The engine's character set — letters,
+digits, <code>_</code>, <code>.</code> — is enforced at configuration time, <strong>on both the prefix and
+the scope</strong>, because the scope is a checkout's directory name and the engine
+refuses a hyphen (a 500) in a collection name: <code>llm-router</code> becomes
+<code>&lt;prefix&gt;_llm_router</code>. A document is named <code>&lt;kind&gt;:&lt;YYYYMMDD&gt;:&lt;fingerprint&gt;</code> —
+the day bucket is what retention ages on. Every entry is one document with its
+metadata in <code>metadata_json</code>, filtered by <code>eq</code>/<code>in</code>.</p>
+<h3 id="read-path-retrieval-per-work-mode">Read path: retrieval per work mode<a class="headerlink" href="#read-path-retrieval-per-work-mode" title="link to this section">#</a></h3>
+<p><code>QueryBuilder</code> builds a query from what the mode is actually doing:</p>
+<table>
+<thead>
+<tr>
+<th>Mode</th>
+<th>Query</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>debug</code></td>
+<td>signature of the last <code>test_failure</code> + the latest user text</td>
+</tr>
+<tr>
+<td><code>test</code></td>
+<td>the test command + touched paths</td>
+</tr>
+<tr>
+<td><code>implement</code></td>
+<td>latest user text + touched paths</td>
+</tr>
+<tr>
+<td><code>plan</code></td>
+<td>latest user text</td>
+</tr>
+<tr>
+<td><code>git_review</code>, <code>review</code></td>
+<td>paths from patches</td>
+</tr>
+<tr>
+<td><code>*</code> (fallback)</td>
+<td>the general composition: user text + paths + failure, for a mode routing did not resolve</td>
+</tr>
+</tbody>
+</table>
+<p>Each mode has a policy — the sources it reads, their weights, <code>max_items</code>, and a character budget:</p>
+<div class="codehilite"><pre><span></span><code>"debug": {
+  "max_chars": 6000,
+  "sources": [
+    {"category": "recipe",          "weight": 1.0, "max_items": 3},
+    {"category": "deadend",         "weight": 0.9, "max_items": 3},
+    {"category": "playbook",        "weight": 0.5, "max_items": 2},
+    {"category": "session_archive", "weight": 0.6, "max_items": 3},
+    {"category": "doc", "weight": 0.4, "max_items": 2, "doc_types": ["guide", "note"]}
+  ],
+  "escalation_model_name": "qwen/Qwen3.8-27B"
+}
+</code></pre></div>
+
+<p>A mode with no policy of its own — routing resolved none, or a name this policy
+does not know — falls back to the one named <code>*</code>, so the request is asked of the
+base rather than served empty.  An explicit policy always wins; a configuration
+without a <code>*</code> entry behaves as before (such a request is mined, but not read).
+The shipped policy reads every kind the miner can write — including
+<code>playbook</code>, where the mode is about doing rather than un-breaking — and reads
+documentation in the modes that previously read none of it: <code>debug</code> asks for the
+guide and the notes about the module the failure sits in, <code>test</code> for the guide
+and the contributing rules the change has to keep, and <code>implement</code> for the
+dead ends it would otherwise walk back into.</p>
+<p>A source may also restrict the <strong>phases</strong> it is read in — the work the episode was
+doing (<code>test</code>, <code>implement</code>, …), which is <em>not</em> the document kind: a <code>recipe</code> mined
+while <code>implement</code>ing is still a recipe — or its <strong>modes</strong>, the routing mode the
+router resolved for the request that produced it.  An empty list — the default —
+reads the source in every phase or mode.  The restriction becomes engine-side
+<code>metadata_filters</code> on <code>phase</code> (or <code>mode</code>), one filter per name, which the engine
+unions; it intersects with the source's categories.  Phases and modes share the
+single metadata slot the engine allows, so a policy may restrict one dimension
+but not both in one request (configuration error), an archived source never
+carries either — its <code>thread_id</code> filter owns the slot — and one source without a
+restriction leaves the whole request unrestricted (sources of one collection are
+retrieved by one search).</p>
+<p>The <code>doc</code> source carries a third dimension of the same kind: <strong><code>doc_types</code></strong>,
+the documentation kinds it reads — <code>readme</code>, <code>guide</code>, <code>changelog</code>,
+<code>contributing</code>, <code>security</code>, <code>license</code>, <code>agent</code>, <code>note</code>.  One <code>eq</code> filter per
+kind, the engine unions them.  It is the <code>doc</code> source's own restriction, in its
+own collection and its own request, so it never collides with the phase and
+mode dimensions above; a <code>doc</code> source that also lists phases or modes is a
+configuration error, as is a <code>doc_types</code> list on any other source (a mined
+episode carries no <code>doc_type</code>, and the filter would read as empty).  The
+shipped policy is deliberate per work mode: <code>implement</code> reads <code>readme</code>, <code>guide</code>
+and <code>contributing</code>, <code>plan</code> adds <code>changelog</code> and <code>note</code>, and <code>review</code> reads
+<code>guide</code>, <code>contributing</code> and <code>security</code>.  <code>agent</code> (an <code>AGENTS.md</code>) is in no
+list: the agent already receives that file in its own context, and retrieving
+it again would only spend the mode's budget on words it has been given.</p>
+<div class="codehilite"><pre><span></span><code>{"category": "recipe", "weight": 1.0, "max_items": 3, "phases": ["test", "debug"]}
+{"category": "deadend", "weight": 0.9, "modes": ["debug"]}
+{"category": "doc", "weight": 0.8, "max_items": 3, "doc_types": ["guide", "contributing", "security"]}
+</code></pre></div>
+
+<p><code>ContextAssembler</code> normalizes SSE's <code>score_normalized</code>, multiplies by the source weight, adds a bonus when a document's
+error signature or paths match the current turn, and a further documentation bonus when a retrieved guide
+<strong>documents a file the turn is touching</strong> — <code>docs/export.md</code> for an edited <code>src/export.py</code> — a link no retrieval leg
+can see, deduplicates by document name, and cuts to the budget. A <code>doc</code> hit whose declared kind the mode does not read
+is dropped on the client, as the second voice of the engine's own <code>doc_type</code> filter. Sections are
+rendered in a fixed order inside constant markers:</p>
+<div class="codehilite"><pre><span></span><code>&lt;agentic_knowledge&gt;
+## Verified fixes in this repo
+## Verified procedures in this repo
+## Known dead ends (do not repeat)
+## Exact context from before compaction
+## Conventions
+&lt;/agentic_knowledge&gt;
+</code></pre></div>
+
+<p>Every entry is cited with the phase it was learned in — <code>[recipe · in test · 2026-10-12 · src/a.py]</code>,
+<code>[playbook · in test · 2026-10-12 · src/a.py]</code> — so the agent can tell a fix it verified in a test run from one it
+learned by editing. A procedure is never the "strong recipe" that holds a looping model in place: it carries no
+failure signature, and what was never broken is not evidence about what is.</p>
+<p>A repository whose first episode has not been indexed yet has no collection at all, and the engine says so with an error code rather than an empty list; the read path answers it as an empty one (nothing known yet, no warning per request) until the worker creates the collection on that first event.</p>
+<p>The block is injected as <strong>the last element of <code>input</code></strong> (Codex: a <code>developer</code> message) — not into <code>instructions</code>, so
+the prompt cache prefix of the CLI survives and the block stays removable. The client does not echo our element back,
+so the same block is re-injected for the whole command generation from the cache. If <code>&lt;agentic_knowledge&gt;</code> is already
+in the payload the injection is skipped, which keeps a second pass through the pipeline idempotent. Empty result ⇒ no
+element at all.</p>
+<h3 id="generation-cache">Generation cache<a class="headerlink" href="#generation-cache" title="link to this section">#</a></h3>
+<p><code>GenerationContextCache</code> stores the injected set under <code>&lt;key_prefix&gt;:ctx:&lt;scope&gt;:&lt;generation&gt;</code> (<code>generation</code> =
+the Codex <code>turn_id</code>, the same identity the Codex memory treats as one command generation; when the CLI sends none,
+the adapter falls back to a hash of <code>thread_id</code> + input items, then to <code>root_turn_id</code>) with <code>cache_ttl_seconds</code>
+(default 3600). A hit
+returns byte-identical text and issues <strong>zero</strong> SSE calls. The entry is refreshed when the mode changes or the phase
+evidence fingerprint moved. The escalated model is stored with the entry, so a loop escalated earlier in a generation
+stays escalated even when a later request no longer repeats the loop by itself.</p>
+<h3 id="write-path">Write path<a class="headerlink" href="#write-path" title="link to this section">#</a></h3>
+<p><code>EpisodeMiner</code> reads the turn's phase evidence — <code>collect_phase_evidence</code> from the Codex package, no second parser —
+and emits <code>recipe</code> for a <code>test_failure → patch → test pass</code> episode, <code>playbook</code> for a <code>patch → test pass</code> episode
+that no failure opened, and <code>deadend</code> for a failure that repeats with an identical signature. A turn that went right
+from the first try writes no recipe — there was no failure to file it under — and before the <code>playbook</code> kind it
+wrote nothing at all: the correct steps of most tasks never reached the base. A playbook is therefore read back
+where the question is how this repository does a thing that has not gone wrong yet, not where a failure is the
+question: the body leads with what was asked for, then what was changed, then the command that proved the change.
+A stretch that a verified recipe already covers (the recipe keeps every patch that followed its failure, so the
+last, wider test run is usually inside its diff) is not written twice. A stretch a test run never accepted is not
+written either: an intention indexed as a verified procedure is a guess the next session would trust.  Each event carries the <strong>phase</strong> its own evidence names — the mode most of its items are in,
+the newest one breaking a tie, the turn's mode when it names none — which the worker writes into the document
+header and into <code>metadata_json.phase</code>, verbatim (it is a filter key, like <code>thread_id</code>). Codex resends the whole history with every request, so episodes are recomputed each time and
+deduplicated before publishing: <code>SET NX &lt;fingerprint&gt; EX &lt;dedup_ttl_seconds&gt;</code> in front of <code>XADD</code>, and <code>XADD … MAXLEN ~
+&lt;max_stream_len&gt;</code>. If <code>XADD</code> fails the dedup key is released, so the episode is retried rather than silently lost.
+A request whose repository is unknown publishes nothing: its documents would have no repository's collection to live
+in — the reader asks for a scope's collection, never the bare prefix — and every scope-less checkout would archive
+into that one prefix, which is the isolation the scope exists to prevent.</p>
+<p>A green command verifies a recipe only when its full test scope can be established as equivalent to the failing
+command. A subset, selection filter, unknown option, or shell composition is conservatively rejected; command
+comparison is not truncated. This may omit valid fixes using unsupported runners/options rather than certify them
+without evidence. Each failed attempt owns its patches and resulting failure: in <code>failure → patch 1 → failure →
+patch 2 → pass</code>, the dead end contains only patch 1, while the recipe retains the cumulative patch history.</p>
+<p>The worker (<code>llm-router-agentic-kb-worker</code>) consumes the stream with a consumer group, masks every document with
+<code>FastMasker</code> and <strong>discards the mappings</strong> (no re-identification is possible downstream) — the filter keys
+(<code>thread_id</code>, <code>scope</code>, <code>kind</code>, <code>mode</code>, <code>phase</code>, …) are written verbatim so a document can be read back — creates the
+collection on first use, then sends mined events through <code>index_documents</code> and documentation through <code>upload_files</code>,
+preserving <code>category</code> and <code>options</code> metadata in both paths. Logs never contain document text. Retention
+deletes only this plugin's own documents older than the configured TTL (<code>session_archive</code> on <code>archive.ttl_seconds</code>).
+Events with an unknown version are acknowledged and logged; an indexing error is retried up to a bounded number of
+attempts and then dropped with a log, so one poison event cannot stall the stream.
+Masking is <strong>fail closed for writes</strong>: an exception or an invalid masker result for the body, signature, or masked
+metadata prevents indexing the entire document and follows that same bounded retry path. There is no raw-text
+fallback or new quarantine queue; after the retry limit the event is dropped. The user's request is not blocked.</p>
+<h3 id="compaction-archive">Compaction archive<a class="headerlink" href="#compaction-archive" title="link to this section">#</a></h3>
+<p>A request classified <code>compaction</code> is <strong>written, never read from</strong>: the full window is chunked at message/tool-result
+boundaries (<code>archive.max_chunk_chars</code>) and indexed into the repository's collection with category
+<code>session_archive</code> and the metadata <code>thread_id</code>, <code>window_id</code> and <code>position</code>. The next <code>main</code> request of the same
+thread reads that category filtered by <code>thread_id</code>, so the exact lines a summary dropped come back as
+<code>## Exact context from before compaction</code>. The filter is what keeps the archive to one thread: the mined knowledge in
+the same collection carries a <code>thread_id</code> of its own, so a request that asked for both categories and one thread
+would silently narrow the knowledge to that thread — which is why the builder never does.</p>
+<h3 id="documentation-doc">Documentation (<code>doc</code>)<a class="headerlink" href="#documentation-doc" title="link to this section">#</a></h3>
+<p>The <code>doc</code> category is the repository's own documentation: <code>README</code>, <code>CONTRIBUTING</code>, everything under <code>docs/</code>. It is the
+cheapest project-specific knowledge there is, it is already written, and the miner cannot produce it — so the layer
+reads the directory the request declared and publishes it.</p>
+<div class="codehilite"><pre><span></span><code>llm-router-agentic-kb-docs<span class="w"> </span>--path<span class="w"> </span>/repo/webapp<span class="w"> </span>--dry-run<span class="w">    </span><span class="c1"># what would be published</span>
+llm-router-agentic-kb-docs<span class="w"> </span>--path<span class="w"> </span>/repo/webapp<span class="w">              </span><span class="c1"># publish it to the stream</span>
+</code></pre></div>
+
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>What happens</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Scan</td>
+<td><code>docs.patterns</code> below <code>repo_root</code>, skipping <code>docs.excluded_dirs</code> and never <code>.git</code>, symlinks or deep trees</td>
+</tr>
+<tr>
+<td>Publish</td>
+<td>one <code>doc</code> event per whole file, without local splitting, to the same stream the miner uses</td>
+</tr>
+<tr>
+<td>Upload</td>
+<td>the worker masks the snapshot and sends it as a UTF-8 <code>.txt</code> attachment through <code>sse_lib.SSEClient.upload_files</code>; files for one collection share a request, including on retry</td>
+</tr>
+<tr>
+<td>Index</td>
+<td>SSE splits each uploaded document using <code>indexing_options</code> identical to collection <code>chunking</code>; <code>file_metadata</code> carries <code>category=doc</code> and <code>options</code>, including <code>source_file</code>, <code>doc_type</code> and <code>heading</code></td>
+</tr>
+</tbody>
+</table>
+<p>A file is republished when its <strong>content</strong> changes, not when it is looked at: the digest of the whole file feeds its
+document fingerprint and the scan state (Redis, one key per scope: <code>&lt;key_prefix&gt;:docs:&lt;scope&gt;</code>) compares digests, so
+<code>touch</code> and a branch checkout across ten unchanged files publish nothing. A file whose content changed gets a new
+document name — the digest is part of it — and the scan then publishes a <code>docs_prune</code> control message asking the worker
+to retire the name it superseded, which is also what removes the documents of a file that was deleted. <strong>A scan that
+hit <code>max_files</code> or <code>max_total_bytes</code> publishes no prune at all</strong>: pruning against a partial listing would delete the
+documentation the scan never reached, and the outcome says <code>truncated: true</code>.</p>
+<p>Switching to uploads does not automatically rewrite already-indexed, unchanged files: the scan still compares
+content digests. Their existing documents remain searchable; a content change publishes the replacement through
+the new upload path and prunes the old names. <code>docs.max_section_chars</code> and <code>DOCS_MAX_SECTION_CHARS</code> no longer control
+indexing — chunk sizes are configured on the worker instead.</p>
+<p>The documentation lives apart from mined knowledge, and the state says so: a listing records the collection it was
+written for, and a policy that moves the documentation to another collection finds no listing at all and republishes
+the repository where it now belongs, instead of believing files are indexed in a collection nobody searches.</p>
+<p>The scan runs on the request path and is bounded by <code>docs.rescan_interval_seconds</code> per process (a repository is looked
+at once per interval, not once per request) and by the byte and file ceilings. It reads the filesystem <strong>as the router
+sees it</strong>: where the router does not run next to the agents, <code>repo_root</code> is not a directory it can open, the scan
+reports <code>skipped: no-such-directory</code>, and documentation is published with the command above from a machine that can.</p>
+<p><code>docs.auto_index: false</code> keeps the category and the retrieval but takes the filesystem away from the request path: only
+<code>llm-router-agentic-kb-docs</code> (or the CLI's own <code>--dry-run</code>) publishes then.</p>
+<p>The documentation request is not the knowledge request.  Mined knowledge is asked with the mode's query — the failure
+signature in <code>debug</code>, the test command in <code>test</code> — because that is what a recipe is filed under; documentation is prose
+about the code, filed under the module and the concept, so it is searched with the user's own words plus the touched
+paths and their stems.  The failure signature never rides on a documentation search, and the citation says where the
+quoted section came from: <code>[doc · guide · docs/export.md › Export helpers]</code>.</p>
+<h3 id="standing-documentation-context-doc_context">Standing documentation context (<code>doc_context</code>)<a class="headerlink" href="#standing-documentation-context-doc_context" title="link to this section">#</a></h3>
+<p>Retrieval answers a question. A <strong>digest</strong> answers the question the agent has before it has one:
+what this project is, which documentation it keeps, and what the pages cover. It is injected on
+every request a mode reads documentation in, whether or not this turn's query matched anything, so
+a long session stops re-learning the same shape of a repository command after command.</p>
+<div class="codehilite"><pre><span></span><code>## Documentation in this repository
+This repository documents itself; the map below is what it has written down, and any of it can be
+asked for in full.
+- README.md (readme): Demo Service; Install; Deploy
+- docs/guide.md (guide): Guide; Export helpers; Rollback
+</code></pre></div>
+
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>What it means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Structural</td>
+<td><strong>paths, kinds and headings — no prose.</strong> The write path masks a document before indexing it; a digest of README sentences built on the request path would carry them unmasked to a model. A heading is what the layer already files unmasked, and it is enough to aim a question.</td>
+</tr>
+<tr>
+<td>Stable</td>
+<td>Kept <strong>per repository</strong>, not per request or generation. It changes when the documentation's outline changes; rewording a paragraph moves its fingerprint, not its text, so the prompt under the provider's cache does not move either.</td>
+</tr>
+<tr>
+<td>Budgeted first</td>
+<td>Charged against <code>modes.&lt;mode&gt;.max_chars</code> <strong>before</strong> anything is retrieved; a digest that will not fit the mode is not injected at all rather than squeezing the block.</td>
+</tr>
+<tr>
+<td>Cheap</td>
+<td>Built from the listing the scan already made, and read from Redis (<code>&lt;key_prefix&gt;:docs:context:&lt;scope&gt;</code>, TTL <code>docs.context_ttl_seconds</code>) by every other request of the session — one <code>GET</code>, no filesystem walk per command.</td>
+</tr>
+</tbody>
+</table>
+<p>Two levels, by design: the <strong>map</strong> (always present, <code>docs.context_max_chars</code>) and the <strong>deep
+chunks</strong> (what the query matches, in the repository's collection under category <code>doc</code>). The annotation reports which was
+injected:</p>
+<div class="codehilite"><pre><span></span><code>"doc_context": {"level": "digest", "chars": 187, "source_files": ["README.md", "docs/guide.md"]}
+</code></pre></div>
+
+<p>The digest is refreshed by the scan that already runs (<code>docs.rescan_interval_seconds</code>) and by
+<code>llm-router-agentic-kb-docs</code>, so a repository whose router runs on another machine still gets its
+map — the command writes it while it publishes. <code>docs.context_enabled: false</code> returns the layer to
+retrieval alone.</p>
+<h3 id="linking-knowledge-to-documentation">Linking knowledge to documentation<a class="headerlink" href="#linking-knowledge-to-documentation" title="link to this section">#</a></h3>
+<p>A mined fix and a written rule about the same module are two halves of one
+answer, and neither search connects them: a recipe is filed under the failure it
+fixed, a page under the module it explains. The map the request already carries
+resolves the link — a recipe that names <code>src/export.py</code> is rendered with a
+pointer to <code>docs/export.md</code>, the page that shares the file's stem:</p>
+<div class="codehilite"><pre><span></span><code>## Verified fixes in this repo
+- [recipe · 2026-10-16 · src/export.py] flush the queue before closing the writer. → docs/export.md
+</code></pre></div>
+
+<p>The pointer is resolved on the <strong>reader</strong> side, against the documentation map of
+the scope, so it works whether or not this turn's query retrieved the page — no
+extra search, no extra request. A documentation entry points at nothing (it is
+the pointed-at), and a mined entry whose files no page documents gets no tail:
+a citation is worth its characters only when it leads somewhere. The link
+follows the same rule the stem bonus does: a named page (<code>docs/export.md</code>)
+matches by file stem (<code>src/export.py</code>), a generic page (<code>README.md</code>,
+<code>AGENTS.md</code>) documents the directory it sits in and matches only inside it — a
+root <code>README.md</code> is not documentation of everything, and a page an entry
+already cites is not pointed at a second time. The tail is charged against
+<code>modes.&lt;mode&gt;.max_chars</code> like the rest of the line.</p>
+<p>Two deliberate limits. The link is <strong>not</strong> stored in the document's metadata:
+the engine does not return document metadata on a search hit, so a stored
+<code>related_docs</code> would be write-only — resolved where it is read instead of where
+nobody can read it. And a documentation page <strong>never counts toward
+<code>best_recipe_score</code></strong>: a README is not a verified fix, and documentation must
+not push a mode past its escalation threshold.</p>
+<h3 id="knowledge-or-escalate">Knowledge-or-escalate<a class="headerlink" href="#knowledge-or-escalate" title="link to this section">#</a></h3>
+<p><code>EscalationPolicy.decide(...)</code> considers escalation only when enabled and <strong>all</strong> of these hold:</p>
+<ol>
+<li><code>routing_source != "explicit"</code> — the operator who named a model is never overridden;</li>
+<li>the mode has an <code>escalation_model_name</code>;</li>
+<li><code>loop_count &gt;= loop_threshold</code> (default <code>3</code>) — the same error signature failed that many times in the generation;</li>
+<li>no eligible recipe trial remains for this failure.</li>
+</ol>
+<p>Retrieval relevance (<code>best_recipe_score</code>) is <strong>not</strong> recipe reliability. To earn a trial, a recipe must actually
+be injected, match the current <code>signature_hash</code>, declare a nonempty <code>test_command</code>, and meet <code>strong_recipe_score</code>
+(default <code>0.75</code>). This is a minimum verification-provenance check, not a count of independent confirmations;
+legacy documents lacking these fields remain readable but cannot hold back escalation.</p>
+<p>The generation cache records the failure count at the first qualifying injection, even before the loop threshold.
+After the threshold is reached, a higher count means <code>recipe_did_not_resolve_loop</code> and permits escalation regardless
+of newly retrieved recipes. Replaying the same evidence does not consume the trial. This detects failure after
+<strong>exposure</strong>, not proof that the agent applied the advice. Without exposure history (including a cache outage),
+a recipe can keep the model only at <code>loop_threshold</code>; beyond it, <code>recipe_trial_limit</code> prevents indefinite suppression.</p>
+<p>Outcomes are <code>none</code>, <code>keep</code> (a qualifying recipe still has its trial) and <code>escalate</code>, with reasons <code>disabled</code>,
+<code>explicit_mode</code>, <code>no_loop</code>, <code>no_escalation_model</code>, <code>strong_recipe</code>, <code>loop_without_recipe</code>,
+<code>recipe_did_not_resolve_loop</code>, <code>recipe_trial_limit</code>. On <code>escalate</code> the adapter
+sets the model and <code>routing.model_before_knowledge</code> records the previous one. The policy is <strong>off in the shipped
+config</strong> (<code>escalation.enabled=false</code>) — enable it only after the replay shows the loop detection is right, because a
+flaky test looks exactly like a loop. The "already tried" list comes from the current turn's dead ends plus retrieved
+<code>deadend</code> hits and lands in <code>## Known dead ends (do not repeat)</code>.</p>
+<h3 id="annotation">Annotation<a class="headerlink" href="#annotation" title="link to this section">#</a></h3>
+<p><code>payload["routing"]["knowledge"]</code> — safe for logs: no document text, no tokens, no hosts, no full session ids.</p>
+<div class="codehilite"><pre><span></span><code>{
+  "plugin": "agentic_knowledge",
+  "adapter": "codex",
+  "scope": "webapp",
+  "injected": 3,
+  "chars": 1180,
+  "sources": {"recipe": 2, "deadend": 1},
+  "cache": "hit",                  // hit | miss | disabled
+  "loop_count": 3,
+  "escalation": {"action": "escalate", "reason": "loop_without_recipe",
+                  "from": "auto_codex", "to": "qwen/Qwen3.8-27B"},
+  "write": {"published": 1, "deduplicated": 0, "errors": 0, "status": "ok"},  // ok | partial | unavailable | disabled
+  "docs": {"status": "ok", "files": 12, "published": 1, "pruned": 1},
+  "doc_context": {"level": "digest", "chars": 187,
+                   "source_files": ["README.md", "docs/guide.md"]}
+                    // the standing documentation map injected for the session;
+                    // absent when docs.context_enabled is off or nothing is scanned
+                    // absent when documentation is off or no repository is known;
+                    // status ok | skipped | disabled | unavailable, `reason` when it
+                    // did not run, `truncated: true` when a ceiling cut the scan
+}
+</code></pre></div>
+
+<hr />
+<h2 id="configuration">Configuration<a class="headerlink" href="#configuration" title="link to this section">#</a></h2>
+<p>Policy is JSON (reviewable, versionable, no secrets); every connection is ENV only. Precedence: <strong>ENV → JSON →
+built-in defaults</strong>. A value present but malformed is an error, except connection settings, where a missing host just
+means the feature is unavailable.  <code>read.timeout_seconds</code> is the budget a whole request may spend on the engine, and a
+search starts only while a whole call — <code>SSE_API_TIMEOUT</code> — still fits before it ends.  It is therefore a <em>sum</em> of
+calls, not a per-call number: the shipped policy asks up to three questions of the repository's collection per mode
+and budgets three calls of the
+two-second default.  A budget that equals one call is raised at validation by a small margin, because the deadline is
+read from the clock a moment before a call is made and a budget with no room over it would start no search of any
+request.  When the budget cannot hold every call of a mode, the later ones are not started and the plugin says so once
+per repository, naming both numbers.</p>
+<div class="codehilite"><pre><span></span><code>{
+  "adapters": ["codex", "claude_code"],
+  "collection_prefix": "agentic_kb",
+  "scope": {"strategy": "repo_basename", "overrides": {}, "default": ""},
+  "read": {"enabled": true, "timeout_seconds": 1.5, "min_similarity": 0.35,
+            "hybrid_search": true, "rerank_results": false,
+            "cache_ttl_seconds": 3600, "max_lookups_per_generation": 20},
+  "modes": { "debug": {…}, "test": {…}, "implement": {…},
+              "plan": {…}, "git_review": {…}, "review": {…} },
+  "claude_code": {"mode_map": {}},
+  "write": {"enabled": true, "stream_key": "agentic_kb:events",
+             "max_stream_len": 100000, "dedup_ttl_seconds": 604800,
+             "max_patch_chars": 4000,
+             "archive": {"enabled": true, "max_chunk_chars": 2000,
+                          "ttl_seconds": 1209600}},
+  "escalation": {"enabled": false, "loop_threshold": 3, "strong_recipe_score": 0.75},
+  "docs": {"enabled": true, "auto_index": true,
+            "patterns": ["*.md", "*.markdown", "*.mdx"],
+            "excluded_dirs": ["node_modules", "dist", "build", "vendor"],
+            "max_files": 200, "max_file_bytes": 200000,
+            "max_total_bytes": 2000000,
+            "rescan_interval_seconds": 21600, "state_ttl_seconds": 7776000,
+            "context_enabled": true, "context_max_chars": 700,
+            "context_ttl_seconds": 86400}
+}
+</code></pre></div>
+
+<p>The retrieval legs of one search are <code>read.hybrid_search</code> and <code>read.rerank_results</code>,
+switched by <code>…_HYBRID_SEARCH</code> and <code>…_RERANK_RESULTS</code>.  They also decide the scale every score comes
+back on — the engine's <code>results.score_scale</code>: a squashed cross-encoder logit with the reranker on,
+a Reciprocal Rank Fusion rank in a plain hybrid search, and a cosine similarity when the legs are
+off — so <code>escalation.strong_recipe_score</code> is a threshold on that scale: a reranker logit under
+<code>rerank_results: true</code>, an RRF rank otherwise.  Raising it against an RRF scale is a no-op in
+practice, which is why the reranker stays off by default: it costs a model call per search and a
+collection whose engine serves no reranker answers nothing with it on.</p>
+<h3 id="how-one-request-reads-the-engine">How one request reads the engine<a class="headerlink" href="#how-one-request-reads-the-engine" title="link to this section">#</a></h3>
+<p>A mode asks <strong>one question per collection</strong> it reads — mined knowledge, the session archive, the
+repository's documentation — and the questions are asked one after another.  Two numbers bound what
+that costs, and they are not the same number:</p>
+<table>
+<thead>
+<tr>
+<th>Knob</th>
+<th>Means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>…_SSE_API_TIMEOUT</code></td>
+<td>what <strong>one call</strong> to the engine may take</td>
+</tr>
+<tr>
+<td><code>…_READ_TIMEOUT_SECONDS</code></td>
+<td>what <strong>one request</strong> may spend on the engine in total</td>
+</tr>
+</tbody>
+</table>
+<p>A search is started only while a whole call still fits before the budget runs out, so
+<code>…_READ_TIMEOUT_SECONDS</code> is the ceiling a request really waits rather than a per-call figure
+multiplied by the number of sources.  It is never allowed below the per-call timeout — a budget in
+which no call fits would read nothing and report an empty knowledge base.  When a budget is spent
+mid-request the remaining sources are skipped and one warning names the scope and how many were
+lost; raise the budget or shorten the mode's sources.  Measured against a real engine on another
+host, a hybrid search takes a median of ~1.7 s, which is why a 1.5 s per-call ceiling lost every
+search it made.</p>
+<p>The plugin also asks the engine <strong>not to guess the language of the query</strong>
+(<code>…_SSE_IGNORE_LANGUAGE_DETECT</code>, on by default).  The engine otherwise detects the language of the
+question and applies it twice: as a metadata filter on the vector leg (<code>text_language == &lt;lang&gt;</code>)
+and as the name of the PostgreSQL full-text configuration (<code>pl</code> → <code>polish</code>).  Neither fits a
+knowledge base, which is indexed in the language of the code and asked in the language of the
+operator — the first filters the answers away, and a cluster without that configuration answers the
+full-text leg with an HTTP 500 rather than with nothing.  With the guess off the engine drops the
+filter and uses <code>simple</code>, which exists everywhere.</p>
+<p>A mode accepts <code>max_chars</code>, <code>sources</code>, <code>escalation_model_name</code> and <code>cheap_model_name</code>. The last one is parsed and
+kept, but no policy in the code reads it yet — it is the model a strong recipe would recommend — so setting it
+changes nothing: routing stays as the router left it.</p>
+<h3 id="environment-variables">Environment variables<a class="headerlink" href="#environment-variables" title="link to this section">#</a></h3>
+<p>All use the prefix <code>LLM_ROUTER_KNOWLEDGE_AGENTIC_</code>. Booleans accept <code>1/0</code>, <code>true/false</code>, <code>yes/no</code>, <code>on/off</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Default</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>…_ENABLED</code></td>
+<td><code>true</code></td>
+<td>master switch for the whole plugin</td>
+</tr>
+<tr>
+<td><code>…_CONFIG</code></td>
+<td>bundled JSON</td>
+<td>raw JSON string <strong>or</strong> path to a policy file</td>
+</tr>
+<tr>
+<td><code>…_READ_ENABLED</code></td>
+<td><code>true</code></td>
+<td>injection on/off (writes may stay on)</td>
+</tr>
+<tr>
+<td><code>…_WRITE_ENABLED</code></td>
+<td><code>true</code></td>
+<td>publishing on/off (reads may stay on)</td>
+</tr>
+<tr>
+<td><code>…_ARCHIVE_ENABLED</code></td>
+<td><code>true</code></td>
+<td>compaction archiving on/off</td>
+</tr>
+<tr>
+<td><code>…_ESCALATION_ENABLED</code></td>
+<td><strong><code>false</code></strong></td>
+<td>model escalation on/off</td>
+</tr>
+<tr>
+<td><code>…_COLLECTION_PREFIX</code></td>
+<td><code>agentic_kb</code></td>
+<td>prefix of every SSE collection (letters/digits/<code>_</code>/<code>.</code> only)</td>
+</tr>
+<tr>
+<td><code>…_KEY_PREFIX</code></td>
+<td><code>agentic-kb</code></td>
+<td>Redis key namespace</td>
+</tr>
+<tr>
+<td><code>…_SSE_API_HOST</code></td>
+<td><strong>empty</strong></td>
+<td><strong>empty ⇒ no reads</strong></td>
+</tr>
+<tr>
+<td><code>…_SSE_API_PREFIX</code></td>
+<td><strong>empty</strong></td>
+<td>empty ⇒ <code>sse_lib.endpoints.DEFAULT_API_PREFIX</code> (<code>api</code>); set it only when the engine is mounted elsewhere</td>
+</tr>
+<tr>
+<td><code>…_SSE_API_TOKEN</code></td>
+<td>empty</td>
+<td>SSE token (never logged); when set, it wins over a login</td>
+</tr>
+<tr>
+<td><code>…_SSE_API_USERNAME</code> / <code>…_SSE_API_PASSWORD</code></td>
+<td>empty</td>
+<td>engine login for an engine that authenticates by login rather than by a token; the client logs in on its first call; neither is ever logged</td>
+</tr>
+<tr>
+<td><code>…_SSE_API_TIMEOUT</code></td>
+<td><code>2.0</code></td>
+<td>ceiling of one call to the engine, clamped to <code>0.1…10</code> s</td>
+</tr>
+<tr>
+<td><code>…_SSE_VERIFY</code></td>
+<td><code>true</code></td>
+<td>TLS certificate verification</td>
+</tr>
+<tr>
+<td><code>…_READ_TIMEOUT_SECONDS</code></td>
+<td><code>4.0</code></td>
+<td>read budget: what one request may spend on the engine <strong>in total</strong>; never smaller than <code>…_SSE_API_TIMEOUT</code>, so one call always fits</td>
+</tr>
+<tr>
+<td><code>…_SSE_IGNORE_LANGUAGE_DETECT</code></td>
+<td><code>true</code></td>
+<td>ask the engine not to guess the language of the query (it would filter the vector leg to it and name the full-text configuration after it)</td>
+</tr>
+<tr>
+<td><code>…_MIN_SIMILARITY</code></td>
+<td><code>0.35</code></td>
+<td>floor for a hit</td>
+</tr>
+<tr>
+<td><code>…_HYBRID_SEARCH</code></td>
+<td><code>true</code></td>
+<td>fuse the vector leg with the full-text leg</td>
+</tr>
+<tr>
+<td><code>…_RERANK_RESULTS</code></td>
+<td><strong><code>false</code></strong></td>
+<td>re-score the hits with the collection's cross-encoder</td>
+</tr>
+<tr>
+<td><code>…_CACHE_TTL_SECONDS</code></td>
+<td><code>3600</code></td>
+<td>lifetime of one generation's context</td>
+</tr>
+<tr>
+<td><code>…_MAX_LOOKUPS_PER_GENERATION</code></td>
+<td><code>20</code></td>
+<td>per-process ceiling on searches, applied with or without Redis</td>
+</tr>
+<tr>
+<td><code>…_MAX_STREAM_LEN</code></td>
+<td><code>100000</code></td>
+<td><code>XADD MAXLEN ~</code></td>
+</tr>
+<tr>
+<td><code>…_DEDUP_TTL_SECONDS</code></td>
+<td><code>604800</code></td>
+<td>episode dedup window</td>
+</tr>
+<tr>
+<td><code>…_MAX_PATCH_CHARS</code></td>
+<td><code>4000</code></td>
+<td>patch text admitted into an event</td>
+</tr>
+<tr>
+<td><code>…_ARCHIVE_MAX_CHUNK_CHARS</code></td>
+<td><code>2000</code></td>
+<td>archive chunk size</td>
+</tr>
+<tr>
+<td><code>…_ARCHIVE_TTL_SECONDS</code></td>
+<td><code>1209600</code></td>
+<td>archive retention</td>
+</tr>
+<tr>
+<td><code>…_DOCS_ENABLED</code></td>
+<td><code>true</code></td>
+<td>repository documentation is part of the knowledge base</td>
+</tr>
+<tr>
+<td><code>…_DOCS_AUTO_INDEX</code></td>
+<td><code>true</code></td>
+<td>a request may trigger a scan; <code>false</code> ⇒ only the CLI publishes</td>
+</tr>
+<tr>
+<td><code>…_DOCS_MAX_FILES</code></td>
+<td><code>200</code></td>
+<td>files read per scan; a scan that hits it prunes nothing</td>
+</tr>
+<tr>
+<td><code>…_DOCS_MAX_FILE_BYTES</code></td>
+<td><code>200000</code></td>
+<td>largest documentation file read</td>
+</tr>
+<tr>
+<td><code>…_DOCS_MAX_TOTAL_BYTES</code></td>
+<td><code>2000000</code></td>
+<td>bytes read per scan</td>
+</tr>
+<tr>
+<td><code>…_DOCS_RESCAN_INTERVAL_SECONDS</code></td>
+<td><code>21600</code></td>
+<td>per-process interval between scans of one repository</td>
+</tr>
+<tr>
+<td><code>…_DOCS_STATE_TTL_SECONDS</code></td>
+<td><code>7776000</code></td>
+<td>lifetime of a scope's scan state (90 days)</td>
+</tr>
+<tr>
+<td><code>…_DOCS_CONTEXT_ENABLED</code></td>
+<td><code>true</code></td>
+<td>the session carries the standing documentation map</td>
+</tr>
+<tr>
+<td><code>…_DOCS_CONTEXT_MAX_CHARS</code></td>
+<td><code>700</code></td>
+<td>ceiling of the map injected into a request</td>
+</tr>
+<tr>
+<td><code>…_DOCS_CONTEXT_TTL_SECONDS</code></td>
+<td><code>86400</code></td>
+<td>how long a scope's map survives without a refresh</td>
+</tr>
+<tr>
+<td><code>…_LOOP_THRESHOLD</code></td>
+<td><code>3</code></td>
+<td>repetitions of one signature that make a loop</td>
+</tr>
+<tr>
+<td><code>…_STRONG_RECIPE_SCORE</code></td>
+<td><code>0.75</code></td>
+<td>a recipe this good keeps the routed model</td>
+</tr>
+<tr>
+<td><code>…_REDIS_HOST</code></td>
+<td><strong>empty</strong></td>
+<td><strong>empty ⇒ no writes, no cache</strong></td>
+</tr>
+<tr>
+<td><code>…_REDIS_PORT</code> / <code>…_REDIS_DB</code> / <code>…_REDIS_PROTOCOL</code></td>
+<td><code>6379</code> / <code>0</code> / <code>3</code></td>
+<td>Redis connection</td>
+</tr>
+<tr>
+<td><code>…_REDIS_USERNAME</code> / <code>…_REDIS_PASSWORD</code></td>
+<td>empty</td>
+<td>optional ACL / AUTH</td>
+</tr>
+<tr>
+<td><code>…_REDIS_SSL</code>, <code>…_REDIS_SSL_*</code></td>
+<td>off</td>
+<td>TLS and its material (same contract as Codex memory)</td>
+</tr>
+<tr>
+<td><code>…_REDIS_SOCKET_CONNECT_TIMEOUT</code> / <code>…_REDIS_SOCKET_TIMEOUT</code></td>
+<td><code>1.0</code></td>
+<td>short positive timeouts</td>
+</tr>
+</tbody>
+</table>
+<p>Redis settings come from these fixed variables only — never from JSON, a Redis URL, <code>REDIS_*</code>, <code>LLM_ROUTER_REDIS_*</code> or
+<code>AUTH_REDIS_*</code>. They are read through <code>connection_from_env(prefix)</code> reused from <code>codex/state.py</code>.</p>
+<h3 id="worker-environment">Worker environment<a class="headerlink" href="#worker-environment" title="link to this section">#</a></h3>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Default</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>…_WORKER_GROUP</code></td>
+<td><code>agentic-kb</code></td>
+<td>consumer group name</td>
+</tr>
+<tr>
+<td><code>…_WORKER_CONSUMER</code></td>
+<td><code>worker-&lt;ts&gt;-&lt;pid&gt;</code></td>
+<td>this consumer's name in the group</td>
+</tr>
+<tr>
+<td><code>…_WORKER_BATCH</code></td>
+<td><code>32</code></td>
+<td>events claimed per read</td>
+</tr>
+<tr>
+<td><code>…_WORKER_BLOCK_MS</code></td>
+<td><code>5000</code></td>
+<td>how long a read waits for work; the worker's own socket timeout is raised above this automatically, so an idle block does not surface as a <code>TimeoutError</code></td>
+</tr>
+<tr>
+<td><code>…_MAX_PENDING</code></td>
+<td><code>1000</code></td>
+<td>pending length above which the worker warns</td>
+</tr>
+<tr>
+<td><code>…_SSE_EMBEDDER</code></td>
+<td>empty</td>
+<td><strong>required</strong> to create a collection</td>
+</tr>
+<tr>
+<td><code>…_SSE_RERANKER</code></td>
+<td>empty</td>
+<td><strong>required</strong> to create a collection</td>
+</tr>
+<tr>
+<td><code>…_SSE_INDEX_TYPE</code></td>
+<td><code>HNSW</code></td>
+<td><code>HNSW</code> or <code>IVF_FLAT</code></td>
+</tr>
+<tr>
+<td><code>…_SSE_CHUNK_TOKENS</code></td>
+<td><code>400</code></td>
+<td>chunk size sent on collection creation and every indexing request; <code>0</code> leaves the engine default (500 tokens, embedded text cut at 508)</td>
+</tr>
+<tr>
+<td><code>…_SSE_CHUNK_OVERLAP</code></td>
+<td><code>60</code></td>
+<td>chunk overlap in tokens, must be <code>&lt; SSE_CHUNK_TOKENS</code></td>
+</tr>
+<tr>
+<td><code>…_RETENTION_INTERVAL_SECONDS</code></td>
+<td><code>21600</code></td>
+<td>seconds between retention passes; <code>0</code> disables</td>
+</tr>
+</tbody>
+</table>
+<p>The same <code>max_tokens_in_chunk</code> and <code>number_of_overlap_tokens</code> are sent when a collection is <strong>created</strong> and on every
+indexing request. Changing <code>…_SSE_CHUNK_TOKENS</code>/<code>…_SSE_CHUNK_OVERLAP</code> does not rewrite an existing collection or its
+documents: recreate and re-index the affected collection to keep it consistent. The
+default 400/60 sits under the 508 tokens the embedder cuts at, which a chunk of the engine's 500 default does not.</p>
+<p>CLI (worker): <code>--config &lt;path&gt;</code>, <code>--once</code> (drain one batch and exit — cron friendly), <code>--no-retain</code>, <code>--clean-redis-memory-cache</code>, <code>--log-level</code>.</p>
+<p><code>--clean-redis-memory-cache</code> drops the layer's cached state in Redis before the worker starts: assembled generations, the scan state of the documentation (and its standing digest), and the deduplication claims that say which events were already published. Use it after you delete a collection — the scan state still says the documentation is indexed and the claims still say its events were seen, so nothing is written again until every TTL expires on its own, and the clean turns the next scan into a real re-index. The event stream, its consumer group and the per-entry attempt counters are deliberately left alone: they are a queue and its bookkeeping, and emptying them would lose episodes that were published and not yet indexed. A clean that fails stops the run with a log rather than indexing on a cache that was not cleared.</p>
+<p>The worker logs its configuration block (engine, stream, group, consumer, chunking, retention) on start and then:
+a per-batch summary with read/indexed/dropped counts and elapsed time, per-event details at <code>DEBUG</code>
+(kind, scope, thread, fingerprint), collection creation, retention deletions, docs pruning, and an
+idle heartbeat every five minutes. The level comes from <code>--log-level</code>, else from
+<code>LLM_ROUTER_IN_DEBUG</code> (on → <code>DEBUG</code>), else from <code>LLM_ROUTER_LOG_LEVEL</code>, else <code>INFO</code> — the last two
+being what the router's run script already exports, so a debug deployment gets a debug worker
+without repeating the switch. Failures are logged with the engine's own message, not just the
+exception class, and credentials are reported by their kind (<code>auth=token</code>), never by their value.</p>
+<h3 id="documentation-command">Documentation command<a class="headerlink" href="#documentation-command" title="link to this section">#</a></h3>
+<div class="codehilite"><pre><span></span><code>llm-router-agentic-kb-docs<span class="w"> </span>--path<span class="w"> </span>/repo/webapp<span class="w"> </span>--dry-run<span class="w">   </span><span class="c1"># list, publish nothing</span>
+llm-router-agentic-kb-docs<span class="w"> </span>--path<span class="w"> </span>/repo/webapp<span class="w"> </span>--json<span class="w">      </span><span class="c1"># publish, machine-readable outcome</span>
+llm-router-agentic-kb-docs<span class="w"> </span>--path<span class="w"> </span>/repo/webapp<span class="w"> </span>--no-prune<span class="w">  </span><span class="c1"># publish, keep superseded documents</span>
+llm-router-agentic-kb-docs<span class="w"> </span>--path<span class="w"> </span>/repo/webapp<span class="w"> </span>--force<span class="w">    </span><span class="c1"># replace queued docs and republish all files</span>
+</code></pre></div>
+
+<p>Same policy, same scan, same stream: the command reads files and publishes events, so the worker masks and indexes
+what it indexes for a mined episode and there is no second write path. It therefore needs the stream
+(<code>…_REDIS_HOST</code>) and never the engine. <code>--scope</code> overrides the scope key the proxy would derive from the directory, so
+a repository indexed by hand lands in the collection its agents read from.</p>
+<p><code>--force</code> is for rebuilding after deleting the SSE database or collection, even when file contents have not changed.
+It deletes existing <code>doc</code> and <code>docs_prune</code> entries for the selected scope from the configured Redis stream,
+clears their deduplication claims (including claims for current files whose old entries were already trimmed),
+and republishes every scanned file. It refreshes the scan state after successful publication. Other scopes,
+recipes and session archives are untouched; it does <strong>not</strong> delete the SSE collection itself. <code>--no-prune</code>
+still prevents retiring superseded documents in SSE, but does not disable replacement of queued events.</p>
+<p>Stop the indexing workers and pause other publishers for this scope before using <code>--force</code>, then restart them
+afterwards. Stream deletion cannot cancel a batch a worker has already fetched. Replacement is not atomic:
+if Redis fails midway, the command exits unsuccessfully; rerun with <code>--force</code> to replace the partial attempt.
+Forced scans bypass <code>docs.max_files</code>, <code>docs.max_file_bytes</code> and <code>docs.max_total_bytes</code>, so a large changelog
+does not block rebuilding. File patterns, excluded directories and symlink restrictions still apply; normal scans
+keep their configured limits. Forced scans read all selected files into memory, so preview large repositories first.
+Unreadable files/directories or a truncated scan refuse replacement before touching the stream.
+<code>--force --dry-run</code> previews the same unlimited scan and never accesses Redis.</p>
+<p>The CLI reads Redis settings from <strong>exported environment variables</strong>, not from the scan directory or an automatically
+loaded <code>.env</code> file. <code>--path .</code> only chooses what to scan; previous indexing does not persist connection settings.
+An error saying <code>LLM_ROUTER_KNOWLEDGE_AGENTIC_REDIS_HOST is unset</code> occurs before inspecting any indexed state,
+and <code>--force</code> cannot fix it. Export the same <code>LLM_ROUTER_KNOWLEDGE_AGENTIC_REDIS_HOST</code> (and port, DB and credentials,
+if applicable) used by the worker in this shell before rerunning. <code>--config</code> selects the knowledge policy,
+not Redis connection settings.</p>
+<hr />
+<h2 id="adapters">Adapters<a class="headerlink" href="#adapters" title="link to this section">#</a></h2>
+<h3 id="codex-full">Codex (full)<a class="headerlink" href="#codex-full" title="link to this section">#</a></h3>
+<p>Claims requests with the Codex Responses shape, reuses <code>CodexPayloadParser</code>, <code>collect_phase_evidence</code> and
+<code>CodexPhaseConfig</code> rather than parsing again. Full read <strong>and</strong> write: request class, activity, phase evidence, touched
+paths and the compaction window all come from it. Contract tests for <code>CodexRequest</code>/<code>PhaseEvidence</code> live in
+<code>tests/test_agentic_knowledge_codex_adapter.py</code> — a change there must keep those contracts.</p>
+<p>Tool output is recognized by the Codex envelope (<code>Process exited with code N</code>); without it the phase pipeline cannot
+see a test failure, so no <code>test_failure</code> evidence, no recipe, no loop.</p>
+<p>A patch is read out of the <strong>envelope</strong>, never out of the tool name: releases differ in how they carry one, and a
+current CLI applies it by piping <code>*** Begin Patch</code> … <code>*** End Patch</code> to <code>apply_patch</code> as a here-document inside
+<code>exec_command</code>. Both shapes count — the <code>patch</code>/<code>input</code> argument of an <code>apply_patch</code> call and a here-document the
+command applies — and a quoted envelope in a command that applies nothing does not. Without this a turn edits files
+invisibly, <code>EpisodeMiner.verified()</code> stays false, and the collections stay empty however healthy the layer looks.</p>
+<h3 id="claude-code-basic">Claude Code (basic)<a class="headerlink" href="#claude-code-basic" title="link to this section">#</a></h3>
+<p>Claims requests whose <code>routing.plugin</code> is <code>agentic_routing_claude_code</code>, or that carry the Anthropic <code>messages</code> +
+<code>system</code> shape. Scope comes from the <code>Working directory</code> line in <code>system</code>, <code>latest_user_text</code> from the last <code>user</code>
+message, session identity from <code>metadata.user_id</code> when present. The work mode is the tier from <code>routing.mode</code> mapped
+through <code>claude_code.mode_map</code> — empty by default, which means every request is served as <code>implement</code>. The block is
+appended to <code>system</code> (string or list of blocks; <code>cache_control</code> is left alone). <code>set_model</code> writes <code>payload["model"]</code>.</p>
+<p><strong>No miner and no escalation</strong>: the Anthropic payload carries no phase evidence, so nothing can be verified and a loop
+cannot be seen. Claude Code requests read the shared knowledge base; they do not add to it.</p>
+<hr />
+<h2 id="privacy-masking-retention">Privacy, masking, retention<a class="headerlink" href="#privacy-masking-retention" title="link to this section">#</a></h2>
+<ul>
+<li>The worker masks every document with <code>FastMasker</code> and drops the mappings, so an indexed document cannot be reversed.</li>
+<li>Paths outside <code>repo_root</code> are dropped from metadata; only paths relative to the repository are stored. Absolute paths
+  and the declared working directory are never indexed.</li>
+<li>Annotation and logs carry no document content, no tokens, no hosts, no full session ids.</li>
+<li>Retention deletes only documents of this plugin's own collections, and only of the kind it names.
+  <code>session_archive</code> ages on <code>archive.ttl_seconds</code>
+  (default 14 days), which is the shortest-lived and largest-volume kind.</li>
+<li>Masking is <strong>rule-based, not semantic</strong>. Fixtures with production data are not safe here: do not enable the layer on
+  repositories whose test data carries real customer content.</li>
+</ul>
+<h2 id="stateless-mode">Stateless mode<a class="headerlink" href="#stateless-mode" title="link to this section">#</a></h2>
+<p>With no Redis the plugin still reads: no writes at all, and a cache that lives in <strong>this process only</strong>
+(<code>InMemoryContextCache</code>, the same contract and the same TTL as the Redis one), so a single-worker deployment loses
+nothing but the sharing. <code>max_lookups_per_generation</code> is enforced by an in-process <code>LookupLimiter</code> in both modes, so
+the ceiling on SSE calls is per worker either way and grows with the number of workers — there is no shared
+guarantee. The escalated model carries over to the next request of the generation only inside the worker that decided
+it. There is deliberately no local file fallback, because a fallback that diverges between workers is worse than no
+fallback at all.</p>
+<h2 id="evaluation">Evaluation<a class="headerlink" href="#evaluation" title="link to this section">#</a></h2>
+<div class="codehilite"><pre><span></span><code>bash<span class="w"> </span>scripts/agentic-kb-eval.sh<span class="w">                 </span><span class="c1"># no KB, read</span>
+bash<span class="w"> </span>scripts/agentic-kb-eval.sh<span class="w"> </span>--enable-escalation
+</code></pre></div>
+
+<p><code>evaluation.py</code> replays recorded sequences (<code>tests/data/agentic_knowledge_eval.json</code>, anonymized prefixes from
+<code>agents-conversation/</code>) offline. For request <em>k</em> the fake store is fed <strong>only</strong> events mined before <em>k</em>, so no future
+knowledge leaks backwards, and the question is whether retrieval would have returned the fix the session eventually
+used. Metrics: <code>recipe_hit_rate</code>, <code>turns_potentially_saved</code>, <code>missed_saves</code>, <code>loop_detection_precision/recall</code>,
+<code>escalations</code>, <code>injected_chars_per_turn</code>, reported per variant: <code>no_kb</code>, <code>read</code>, <code>read_escalate</code>. Use it to decide
+whether escalation is worth enabling; <code>tests/test_agentic_knowledge_evaluation.py</code> keeps the replay deterministic and
+leak-free.</p>
+<h2 id="limitations">Limitations<a class="headerlink" href="#limitations" title="link to this section">#</a></h2>
+<ul>
+<li><strong>Signature quality decides everything.</strong> Loop detection and recipe relevance both hang on <code>signature.py</code>, which
+  normalizes paths, line numbers, addresses, hashes and timestamps. Verify on real output before trusting a threshold.</li>
+<li><strong>Token cost.</strong> Re-injecting every request of a generation costs tokens, bounded per mode by <code>max_chars</code>; the
+  <code>chars</code> field of the annotation is the meter.</li>
+<li><strong>Document count.</strong> Every knowledge entry is a separate SSE document, so collections grow; hence retention and
+  <code>max_stream_len</code>.</li>
+<li><strong>False escalations.</strong> A flaky test looks like a loop. Identical signatures and <code>loop_threshold</code> help; keep
+  <code>ESCALATION_ENABLED</code> off until the replay is convincing.</li>
+<li><strong>No architectural decisions.</strong> Documentation is copied into the knowledge base, never distilled from a session:
+  extracting the decision behind a change would need generation, and a wrong summary indexed as a convention is worse
+  than the source file an agent can read itself.</li>
+<li><strong>Documentation is read where the router runs.</strong> The scan reads <code>repo_root</code> from this host; a router that does not
+  run next to the agents cannot scan their repositories and its outcomes say <code>skipped: no-such-directory</code>. Publish the
+  documentation with <code>llm-router-agentic-kb-docs</code> from a machine that can see them.</li>
+<li><strong>A lost scan state republishes a repository's documentation.</strong> <code>&lt;key_prefix&gt;:docs:&lt;scope&gt;</code> is what keeps a scan from
+  re-publishing unchanged files and what names the documents a change supersedes; flush it and the next scan publishes
+  everything again, leaving the previous copies of each file in the collection until they are deleted by hand. The
+  listing names the collection it was written for, so changing <code>collection_prefix</code> — or moving the documentation into
+  <code>&lt;prefix&gt;_&lt;scope&gt;_docs</code> — republishes it once where it now belongs and leaves the old collection alone.</li>
+<li><strong>The standing context is a map, not a summary.</strong> It says which documentation exists and what
+  the pages are titled; it does not know what they argue. A repository whose README is one long
+  sentence and whose pages are titled <code>Notes</code> gets a map that says little — the fix is better
+  headings, which helps the retrieval leg too.</li>
+<li><strong>A <code>doc_types</code> list excludes what it does not name.</strong> A guide filed as <code>note</code> because its file says nothing else is
+  read only by a mode that lists <code>note</code> (or lists nothing); a mode that names kinds reads exactly those. When a
+  repository's prose stops appearing, read the mode's <code>doc_types</code> before suspecting the retrieval.
+  The reverse also holds: delete documents out of the engine by hand and the scan will not republish them — their
+  content is unchanged and their fingerprints are deduplicated — so delete the scope's state key together with them.</li>
+<li><strong>Coupling to the <code>codex</code> package.</strong> The adapter imports its parser, phase and state modules explicitly; their
+  contracts are pinned by tests.</li>
+</ul>
+<h2 id="see-also">See also<a class="headerlink" href="#see-also" title="link to this section">#</a></h2>
+<ul>
+<li><code>llm_router_plugins/utils/routing/agentic_routing/codex/README.md</code> — the routing plugin this layer builds on.</li>
+<li><code>.plans/in_progress/agentic-knowledge-layer-re.md</code> — the plan this implementation follows.</li>
+<li><code>scripts/agentic-kb-eval.sh</code> — the offline replay.</li>
+</ul></article>
+<nav class="pager" aria-label="Previous and next page"><a class="next" href="../../rag/langchain-rag.html"><span class="dir">next &rarr;</span><span class="pt">LangChain RAG Plugin for LLM‑Router</span></a></nav>
+<footer class="doc-meta">
+<div class="meta-row"><span class="meta-k">repository</span><a class="mono" href="https://github.com/radlab-dev-group/llm-router-plugins">llm-router-plugins</a></div>
+<div class="meta-row"><span class="meta-k">source</span><a class="mono" href="https://github.com/radlab-dev-group/llm-router-plugins/blob/v0.1.5/llm_router_plugins/utils/knowledge/agentic_knowledge/README.md">llm_router_plugins/utils/knowledge/agentic_knowledge/README.md</a></div>
+<div class="meta-row"><span class="meta-k">last commit</span><time datetime="2026-10-27T13:31:29+01:00"><a href="https://github.com/radlab-dev-group/llm-router-plugins/commit/1d09a29">2026-10-27</a></time></div>
+<div class="meta-row"><span class="meta-k">built from</span><span class="mono"><a href="https://github.com/radlab-dev-group/llm-router-plugins/tree/v0.1.5">v0.1.5</a>&nbsp;@&nbsp;<a href="https://github.com/radlab-dev-group/llm-router-plugins/commit/1d09a29">1d09a29</a></span></div>
+<p class="hint">Generated from the Markdown file in the repository: commit a change and the next build republishes it.</p>
+</footer>
+<footer class="foot"><div class="foot-inner">
+<span class="mono">llm-router &middot; docs are generated from the repository by <code>tools/build_docs.py</code></span>
+<span class="mono"><a href="https://github.com/radlab-dev-group/llm-router-plugins/tree/v0.1.5">1.1.10</a> @ <a href="https://github.com/radlab-dev-group/llm-router-plugins/commit/1d09a29">1d09a29</a></span>
+<span class="mono"><a href="../../../../../../privacy.html">privacy</a> &middot; <a href="../../../../../../privacy.html#cookies" data-consent-open>cookie settings</a></span>
+</div></footer>
+</main>
+<aside class="dtoc" id="dtoc"><h2 class="toc-title">on this page</h2><div class="toc-body"><ul><li><a href="#what-the-plugin-changes">What the plugin changes</a></li><li><a href="#quick-start">Quick start</a><ul><li><a href="#1-install">1. Install</a></li><li><a href="#2-load-it-into-the-pipeline-after-routing">2. Load it into the pipeline, after routing</a></li><li><a href="#3-point-it-at-sse-and-redis">3. Point it at SSE and Redis</a></li><li><a href="#4-run-the-indexing-worker">4. Run the indexing worker</a></li><li><a href="#5-verify">5. Verify</a></li></ul></li><li><a href="#how-it-works">How it works</a><ul><li><a href="#scope">Scope</a></li><li><a href="#collections-and-documents">Collections and documents</a></li><li><a href="#read-path-retrieval-per-work-mode">Read path: retrieval per work mode</a></li><li><a href="#generation-cache">Generation cache</a></li><li><a href="#write-path">Write path</a></li><li><a href="#compaction-archive">Compaction archive</a></li><li><a href="#documentation-doc">Documentation (doc)</a></li><li><a href="#standing-documentation-context-doc_context">Standing documentation context (doc_context)</a></li><li><a href="#linking-knowledge-to-documentation">Linking knowledge to documentation</a></li><li><a href="#knowledge-or-escalate">Knowledge-or-escalate</a></li><li><a href="#annotation">Annotation</a></li></ul></li><li><a href="#configuration">Configuration</a><ul><li><a href="#how-one-request-reads-the-engine">How one request reads the engine</a></li><li><a href="#environment-variables">Environment variables</a></li><li><a href="#worker-environment">Worker environment</a></li><li><a href="#documentation-command">Documentation command</a></li></ul></li><li><a href="#adapters">Adapters</a><ul><li><a href="#codex-full">Codex (full)</a></li><li><a href="#claude-code-basic">Claude Code (basic)</a></li></ul></li><li><a href="#privacy-masking-retention">Privacy, masking, retention</a></li><li><a href="#stateless-mode">Stateless mode</a></li><li><a href="#evaluation">Evaluation</a></li><li><a href="#limitations">Limitations</a></li><li><a href="#see-also">See also</a></li></ul></div></aside>
+</div>
+</body>
+</html>

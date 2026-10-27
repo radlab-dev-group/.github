@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../../assets/consent.js" defer data-privacy="../../../privacy.html"></script>
+<title>Changelog · v0.1.4 · llm-router docs</title>
+<meta name="description" content="# Changelog All notable changes to the `llm-router-plugins` package are documented here. Versions follow the `MAJOR.MINOR.PATCH` scheme; a new entry is added for every release tagged as `v&lt;version&gt;`. ## Summary | Version | Changelog | | --…">
+<meta name="theme-color" content="#05070a">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Changelog · v0.1.4 · llm-router docs">
+<meta property="og:description" content="# Changelog All notable changes to the `llm-router-plugins` package are documented here. Versions follow the `MAJOR.MINOR.PATCH` scheme; a new entry is added for every release tagged as `v&lt;version&gt;`. ## Summary | Version | Changelog | | --…">
+<meta name="docs-version" content="0.1.4">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2305070a'/%3E%3Cpath d='M8 22V10M8 16h9M17 10v12M17 13h7M17 19h7' stroke='%2300e59b' stroke-width='2' stroke-linecap='round' fill='none'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="../../assets/docs.css">
+<link rel="stylesheet" href="../../assets/pygments.css">
+<script src="../../assets/docs.js" defer></script>
+</head>
+<body class="page" data-version="0.1.4" data-search="search.json" data-latest="1.1.10" data-repo="plugins" data-docs-root="../../">
+<a class="skip" href="#main">skip to content</a>
+<header class="topbar">
+<div class="topbar-inner">
+<button class="burger" id="burger" aria-label="Toggle documentation menu" aria-expanded="false" aria-controls="sidebar">&#9776;</button>
+<a class="brand" href="../../.."><svg width="21" height="21" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="7" fill="#0b1119" stroke="#1a232e"/><path d="M8 22V10M8 16h9M17 10v12M17 13h7M17 19h7" stroke="#00e59b" stroke-width="2" stroke-linecap="round" fill="none"/></svg><span>llm<span class="dash">-</span>router</span><span class="brand-docs">/docs</span></a>
+<div class="topbar-right">
+<form class="search" id="search" role="search" autocomplete="off">
+<span class="search-icon" aria-hidden="true">&#8981;</span>
+<input id="q" type="search" placeholder="search this version" aria-label="Search documentation" role="combobox" aria-expanded="false" aria-controls="results" aria-autocomplete="list">
+<kbd>/</kbd>
+<div class="results" id="results" role="listbox" aria-label="Search results" hidden></div>
+</form>
+
+<a class="iconbtn" href="https://github.com/radlab-dev-group/llm-router-plugins" aria-label="Repository on GitHub" title="Repository on GitHub"><svg width="17" height="17" viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8a8 8 0 0 0 5.47 7.59c.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.46-.53.42-.02.72.39.82.55.48.81 1.25.94 1.56.73.2-.27.6-.94.94-1.13-.01-.2-.05-.82-.14-.98-.6.1-1.22.2-1.87.2-1.9 0-3.62-1.13-3.62-3.53 0-.78.28-1.42.74-1.92-.07-.18-.32-.91.07-1.9 0 0 .6-.19 1.97.74a6.8 6.8 0 0 1 3.58 0c1.37-.93 1.97-.74 1.97-.74.39.99.14 1.72.07 1.9.46.5.74 1.14.74 1.92 0 2.41-1.47 3.53-3.87 3.72.3.26.57.77.57 1.56 0 1.13-.012.04-.01 2.32 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg></a>
+</div>
+</div>
+</header>
+<div class="scrim" id="scrim" hidden></div>
+<div class="shell">
+<aside class="sidebar" id="sidebar"><nav class="nav-tree" aria-label="Documentation"><div data-nav-repo="router"><details class="nav-group"><summary class="nav-repo"><span class="repo-name">llm-router</span></summary><div data-router-context><div class="side-head"><span class="side-v mono">v1.1.10</span><span class="side-tag live">latest</span></div><a class="side-hub" href="../../router/1.1.10/index.html">documentation index</a></div><label class="vselect side-versions"><span class="sr-only">llm-router version</span><select id="versions-router" data-switch="router" aria-label="llm-router documentation version"><option value="../../router/1.1.10/index.html" data-version="1.1.10" data-root="../../router/1.1.10/index.html" selected>1.1.10  · latest</option>
+<option value="../../router/1.1.9/index.html" data-version="1.1.9" data-root="../../router/1.1.9/index.html">1.1.9</option>
+<option value="../../router/1.1.8/index.html" data-version="1.1.8" data-root="../../router/1.1.8/index.html">1.1.8</option>
+<option value="../../router/1.1.7/index.html" data-version="1.1.7" data-root="../../router/1.1.7/index.html">1.1.7</option>
+<option value="../../router/1.1.6/index.html" data-version="1.1.6" data-root="../../router/1.1.6/index.html">1.1.6</option>
+<option value="../../router/1.1.5/index.html" data-version="1.1.5" data-root="../../router/1.1.5/index.html">1.1.5</option>
+<option value="../../router/1.1.4/index.html" data-version="1.1.4" data-root="../../router/1.1.4/index.html">1.1.4</option>
+<option value="../../router/1.1.3/index.html" data-version="1.1.3" data-root="../../router/1.1.3/index.html">1.1.3</option>
+<option value="../../router/1.1.2/index.html" data-version="1.1.2" data-root="../../router/1.1.2/index.html">1.1.2</option>
+<option value="../../router/1.1.1/index.html" data-version="1.1.1" data-root="../../router/1.1.1/index.html">1.1.1</option>
+<option value="../../router/1.1.0/index.html" data-version="1.1.0" data-root="../../router/1.1.0/index.html">1.1.0</option>
+<option value="../../router/1.0.8/index.html" data-version="1.0.8" data-root="../../router/1.0.8/index.html">1.0.8</option>
+<option value="../../router/1.0.7/index.html" data-version="1.0.7" data-root="../../router/1.0.7/index.html">1.0.7</option>
+<option value="../../router/1.0.6/index.html" data-version="1.0.6" data-root="../../router/1.0.6/index.html">1.0.6</option>
+<option value="../../router/1.0.5/index.html" data-version="1.0.5" data-root="../../router/1.0.5/index.html">1.0.5</option>
+<option value="../../router/1.0.4/index.html" data-version="1.0.4" data-root="../../router/1.0.4/index.html">1.0.4</option>
+<option value="../../router/1.0.3/index.html" data-version="1.0.3" data-root="../../router/1.0.3/index.html">1.0.3</option>
+<option value="../../router/1.0.1/index.html" data-version="1.0.1" data-root="../../router/1.0.1/index.html">1.0.1</option>
+<option value="../../router/1.0.0/index.html" data-version="1.0.0" data-root="../../router/1.0.0/index.html">1.0.0</option>
+<option value="../../router/0.9.6/index.html" data-version="0.9.6" data-root="../../router/0.9.6/index.html">0.9.6</option>
+<option value="../../router/0.9.5/index.html" data-version="0.9.5" data-root="../../router/0.9.5/index.html">0.9.5</option>
+<option value="../../router/0.9.4/index.html" data-version="0.9.4" data-root="../../router/0.9.4/index.html">0.9.4</option>
+<option value="../../router/0.9.2/index.html" data-version="0.9.2" data-root="../../router/0.9.2/index.html">0.9.2</option>
+<option value="../../router/0.9.1/index.html" data-version="0.9.1" data-root="../../router/0.9.1/index.html">0.9.1</option>
+<option value="../../router/0.9.0/index.html" data-version="0.9.0" data-root="../../router/0.9.0/index.html">0.9.0</option>
+<option value="../../router/0.8.0/index.html" data-version="0.8.0" data-root="../../router/0.8.0/index.html">0.8.0</option>
+<option value="../../router/0.7.0/index.html" data-version="0.7.0" data-root="../../router/0.7.0/index.html">0.7.0</option>
+<option value="../../router/0.6.9/index.html" data-version="0.6.9" data-root="../../router/0.6.9/index.html">0.6.9</option>
+<option value="../../router/0.6.8/index.html" data-version="0.6.8" data-root="../../router/0.6.8/index.html">0.6.8</option>
+<option value="../../router/0.6.7/index.html" data-version="0.6.7" data-root="../../router/0.6.7/index.html">0.6.7</option>
+<option value="../../router/0.6.6/index.html" data-version="0.6.6" data-root="../../router/0.6.6/index.html">0.6.6</option>
+<option value="../../router/0.6.5/index.html" data-version="0.6.5" data-root="../../router/0.6.5/index.html">0.6.5</option>
+<option value="../../router/0.6.4/index.html" data-version="0.6.4" data-root="../../router/0.6.4/index.html">0.6.4</option>
+<option value="../../router/0.6.3/index.html" data-version="0.6.3" data-root="../../router/0.6.3/index.html">0.6.3</option>
+<option value="../../router/0.6.2/index.html" data-version="0.6.2" data-root="../../router/0.6.2/index.html">0.6.2</option>
+<option value="../../router/0.6.1/index.html" data-version="0.6.1" data-root="../../router/0.6.1/index.html">0.6.1</option>
+<option value="../../router/0.6.0/index.html" data-version="0.6.0" data-root="../../router/0.6.0/index.html">0.6.0</option>
+<option value="../../router/0.5.2/index.html" data-version="0.5.2" data-root="../../router/0.5.2/index.html">0.5.2</option>
+<option value="../../router/0.5.1/index.html" data-version="0.5.1" data-root="../../router/0.5.1/index.html">0.5.1</option>
+<option value="../../router/0.5.0/index.html" data-version="0.5.0" data-root="../../router/0.5.0/index.html">0.5.0</option>
+<option value="../../router/0.4.6/index.html" data-version="0.4.6" data-root="../../router/0.4.6/index.html">0.4.6</option>
+<option value="../../router/0.4.5/index.html" data-version="0.4.5" data-root="../../router/0.4.5/index.html">0.4.5</option>
+<option value="../../router/0.4.4/index.html" data-version="0.4.4" data-root="../../router/0.4.4/index.html">0.4.4</option>
+<option value="../../router/0.4.3/index.html" data-version="0.4.3" data-root="../../router/0.4.3/index.html">0.4.3</option>
+<option value="../../router/0.4.2/index.html" data-version="0.4.2" data-root="../../router/0.4.2/index.html">0.4.2</option>
+<option value="../../router/0.4.1/index.html" data-version="0.4.1" data-root="../../router/0.4.1/index.html">0.4.1</option>
+<option value="../../router/0.4.0/index.html" data-version="0.4.0" data-root="../../router/0.4.0/index.html">0.4.0</option>
+<option value="../../router/0.3.1/index.html" data-version="0.3.1" data-root="../../router/0.3.1/index.html">0.3.1</option>
+<option value="../../router/0.3.0/index.html" data-version="0.3.0" data-root="../../router/0.3.0/index.html">0.3.0</option>
+<option value="../../router/0.2.3/index.html" data-version="0.2.3" data-root="../../router/0.2.3/index.html">0.2.3</option>
+<option value="../../router/0.2.2/index.html" data-version="0.2.2" data-root="../../router/0.2.2/index.html">0.2.2</option>
+<option value="../../router/0.2.1/index.html" data-version="0.2.1" data-root="../../router/0.2.1/index.html">0.2.1</option>
+<option value="../../router/0.2.0/index.html" data-version="0.2.0" data-root="../../router/0.2.0/index.html">0.2.0</option>
+<option value="../../router/0.1.1/index.html" data-version="0.1.1" data-root="../../router/0.1.1/index.html">0.1.1</option>
+<option value="../../router/0.1.0/index.html" data-version="0.1.0" data-root="../../router/0.1.0/index.html">0.1.0</option></select></label><section class="nav-sec open"><h2 class="nav-sec-title"><a href="../../router/1.1.10/overview.html">Getting started</a></h2><ul><li><a href="../../router/1.1.10/overview.html">Overview</a></li><li><a href="../../router/1.1.10/llm-router-api/docs/installation.html">Installation</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="../../router/1.1.10/llm-router-api/docs/env-definitions.html">Configuration</a></h2><ul><li><a href="../../router/1.1.10/llm-router-api/docs/env-definitions.html">Environment Variables</a></li><li><a href="../../router/1.1.10/llm-router-api/docs/models-config.html">Models configuration description (JSON)</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="../../router/1.1.10/llm-router-api/docs/keepalive.html">Routing &amp; resilience</a></h2><ul><li><a href="../../router/1.1.10/llm-router-api/docs/keepalive.html">Keep‑Alive Utility Overview</a></li><li><a href="../../router/1.1.10/llm-router-api/docs/lb-strategies.html">Load Balancing Strategies</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="../../router/1.1.10/llm-router-api/core/auditor/index.html">Security &amp; auditing</a></h2><ul><li><a href="../../router/1.1.10/llm-router-api/core/auditor/index.html">Auditing subsystem – llm-router</a></li><li><a href="../../router/1.1.10/llm-router-api/docs/authentication.html">Authentication &amp; Authorization</a></li><li><a href="../../router/1.1.10/llm-router-api/docs/rate-limiting.html">Rate Limiting</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="../../router/1.1.10/llm-router-api/docs/routing-metrics.html">Observability</a></h2><ul><li><a href="../../router/1.1.10/llm-router-api/docs/routing-metrics.html">Router Prometheus Metrics</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="../../router/1.1.10/llm-router-api/index.html">REST API</a></h2><ul><li><a href="../../router/1.1.10/llm-router-api/index.html">REST API reference</a></li><li><a href="../../router/1.1.10/llm-router-api/endpoints/index.html">Endpoints Overview</a></li><li><a href="../../router/1.1.10/llm-router-api/docs/endpoint-dev.html">Endpoint Development Guide</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="../../router/1.1.10/llm-router-cli/index.html">CLI</a></h2><ul><li><a href="../../router/1.1.10/llm-router-cli/index.html">llm-router CLI — Command Reference</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="../../router/1.1.10/llm-router-lib/index.html">Python library</a></h2><ul><li><a href="../../router/1.1.10/llm-router-lib/index.html">llmrouterlib</a></li><li><a href="../../router/1.1.10/llm-router-lib/response-models.html">Response models</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="../../router/1.1.10/helm-charts/index.html">Deployment</a></h2><ul><li><a href="../../router/1.1.10/helm-charts/index.html">LLM‑Router Helm Chart</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="../../router/1.1.10/examples/index.html">Examples</a></h2><ul><li><a href="../../router/1.1.10/examples/index.html">Integration Examples with LLM Router</a></li><li><a href="../../router/1.1.10/examples/quickstart/index.html">Full Stack with Local Models</a></li><li><a href="../../router/1.1.10/examples/readme-llamaindex.html">Using LlamaIndex with Local Models via the LLM‑Router</a></li><li><a href="../../router/1.1.10/examples/quickstart/google-gemma3-12b-it/vllm.html">vLLM + google/gemma‑3‑12b‑it – Quick‑Start Guide (Ubuntu)</a></li><li><a href="../../router/1.1.10/examples/quickstart/speakleash-bielik-11b-v2-3-instruct/vllm.html">vLLM + speakleash/Bielik-11B-v2.3-Instruct – Przewodnik Szybkiego Startu (Ubuntu)</a></li><li><a href="../../router/1.1.10/examples/quickstart/speakleash-bielik-11b-v2-3-instruct/index.html">🚀 Przewodnik Szybkiego Startu dla speakleash/Bielik-11B-v2.3-Instruct z vLLM &amp; LLM‑Router</a></li><li><a href="../../router/1.1.10/examples/quickstart/google-gemma3-12b-it/index.html">🚀 Quick‑Start Guide for google/gemma-3-12b‑it with vLLM &amp; LLM‑Router</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="../../router/1.1.10/changelog.html">Release notes</a></h2><ul><li><a href="../../router/1.1.10/changelog.html">Changelog</a></li></ul></section></details></div><div data-nav-repo="plugins"><details class="nav-group"><summary class="nav-repo"><span class="repo-name">llm-router-plugins</span></summary><div class="side-head"><span class="side-v mono">v0.1.4</span><span class="side-tag old">archived</span></div><label class="vselect side-versions"><span class="sr-only">llm-router-plugins version</span><select id="versions-plugins" data-switch="plugins" aria-label="llm-router-plugins documentation version"><option value="../0.1.5/changelog.html" data-version="0.1.5" data-root="../0.1.5/index.html">v0.1.5  · latest</option>
+<option value="changelog.html" data-version="0.1.4" data-root="index.html" selected>v0.1.4</option>
+<option value="../0.1.3/index.html" data-version="0.1.3" data-root="../0.1.3/index.html">v0.1.3</option>
+<option value="../0.1.2/index.html" data-version="0.1.2" data-root="../0.1.2/index.html">v0.1.2</option>
+<option value="../0.1.1/index.html" data-version="0.1.1" data-root="../0.1.1/index.html">v0.1.1</option>
+<option value="../0.1.0/index.html" data-version="0.1.0" data-root="../0.1.0/index.html">v0.1.0</option>
+<option value="../0.0.6/index.html" data-version="0.0.6" data-root="../0.0.6/index.html">v0.0.6</option>
+<option value="../0.0.5/index.html" data-version="0.0.5" data-root="../0.0.5/index.html">v0.0.5</option>
+<option value="../0.0.2/index.html" data-version="0.0.2" data-root="../0.0.2/index.html">v0.0.2</option>
+<option value="../0.0.1/index.html" data-version="0.0.1" data-root="../0.0.1/index.html">v0.0.1</option></select></label><section class="nav-sec open"><h2 class="nav-sec-title"><a href="index-2.html">Plugins overview</a></h2><ul><li><a href="index-2.html">Plugins overview</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="llm-router-plugins/maskers/fast-masker/index.html">Masker plugins</a></h2><ul><li><a href="llm-router-plugins/maskers/fast-masker/index.html">Overview</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="llm-router-plugins/utils/routing/agentic-routing/claude-code/index.html">Routing plugins</a></h2><ul><li><a href="llm-router-plugins/utils/routing/agentic-routing/claude-code/index.html">Claude Code Model Swap (agenticroutingclaude_code)</a></li><li><a href="llm-router-plugins/utils/routing/agentic-routing/codex/index.html">Codex CLI Routing (agenticroutingcodex)</a></li><li><a href="llm-router-plugins/utils/routing/agentic-routing/codex/codex-eval-howto-en.html">Codex routing calibration and evaluation</a></li><li><a href="llm-router-plugins/utils/routing/agentic-routing/codex/codex-eval-howto-pl.html">Kalibracja i ewaluacja routingu Codexa</a></li><li><a href="llm-router-plugins/utils/routing/semantic-biencoder/index.html">Semantic BiEncoder Routing (semanticbiencoderrouting)</a></li><li><a href="llm-router-plugins/utils/routing/index.html">Semantic Routing Plugins</a></li><li><a href="llm-router-plugins/utils/routing/simple-semantic/index.html">Simple Semantic Routing (simplesemanticrouting)</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="llm-router-plugins/utils/knowledge/agentic-knowledge/index.html">Utility plugins</a></h2><ul><li><a href="llm-router-plugins/utils/knowledge/agentic-knowledge/index.html">Agentic knowledge layer (agentic_knowledge)</a></li><li><a href="llm-router-plugins/utils/rag/langchain-rag.html">LangChain RAG Plugin for LLM‑Router</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="scripts/plugins/auto-codex/eval/index.html">Plugin scripts</a></h2><ul><li><a href="scripts/plugins/auto-codex/eval/index.html">Codex routing — offline corpus and replay</a></li><li><a href="scripts/plugins/auto-codex/payload-parser/index.html">Codex routing — per-request payload export</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="changelog.html">Other plugins docs</a></h2><ul><li><a href="changelog.html" class="active">Changelog</a></li></ul></section></details></div><div data-nav-repo="services"><details class="nav-group"><summary class="nav-repo"><span class="repo-name">llm-router-services</span></summary><div class="side-head"><span class="side-v mono">v0.0.4</span><span class="side-tag live">latest</span></div><label class="vselect side-versions"><span class="sr-only">llm-router-services version</span><select id="versions-services" data-switch="services" aria-label="llm-router-services documentation version"><option value="../../services/0.0.4/index.html" data-version="0.0.4" data-root="../../services/0.0.4/index.html" selected>v0.0.4  · latest</option>
+<option value="../../services/0.0.3/index.html" data-version="0.0.3" data-root="../../services/0.0.3/index.html">v0.0.3</option>
+<option value="../../services/0.0.2/index.html" data-version="0.0.2" data-root="../../services/0.0.2/index.html">v0.0.2</option>
+<option value="../../services/0.0.1/index.html" data-version="0.0.1" data-root="../../services/0.0.1/index.html">v0.0.1</option></select></label><section class="nav-sec open"><h2 class="nav-sec-title"><a href="../../services/index-2.html">Services overview</a></h2><ul><li><a href="../../services/index-2.html">llm-router services</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="../../services/llm-router-services/guardrails/index.html">Guardrail services</a></h2><ul><li><a href="../../services/llm-router-services/guardrails/index.html">Guardrails Package</a></li><li><a href="../../services/llm-router-services/guardrails/speakleash/index.html">Integration of Bielik‑Guard‑0.1B as llm‑router guardrail service (Sojka)</a></li><li><a href="../../services/llm-router-services/guardrails/nask/index.html">Integration of HerBERT‑PL‑Guard with the naskpibguard_app.py Service</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="../../services/docker/index.html">Docker &amp; deployment</a></h2><ul><li><a href="../../services/docker/index.html">LLM‑Router Services – Docker Build &amp; Run Guide</a></li></ul></section></details></div></nav><div class="side-foot"><a href="../../..">&larr;&nbsp;landing page</a><a class="mono" href="search.json">search.json</a></div></aside>
+<main class="main" id="main"><nav class="crumbs" aria-label="Breadcrumb">
+<a href="../../..">llm-router</a><span class="sep">/</span><a href="index.html">docs</a><span class="sep">/</span><a href="changelog.html">Other plugins docs</a><span class="sep">/</span><em>Changelog</em>
+</nav>
+<article class="prose"><h1 id="changelog">Changelog<a class="headerlink" href="#changelog" title="link to this section">#</a></h1>
+<p>All notable changes to the <code>llm-router-plugins</code> package are documented here.
+Versions follow the <code>MAJOR.MINOR.PATCH</code> scheme; a new entry is added for every
+release tagged as <code>v&lt;version&gt;</code>.</p>
+<h2 id="summary">Summary<a class="headerlink" href="#summary" title="link to this section">#</a></h2>
+<table>
+<thead>
+<tr>
+<th>Version</th>
+<th>Changelog</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0.1.4</td>
+<td><strong>Added:</strong> <code>agentic_knowledge</code> — a knowledge layer that runs behind the Codex router: per-work-mode retrieval of verified fixes, dead ends and the pre-compaction archive from the Semantic Search Engine, a masked learn-from-traffic write path through a Redis Stream and an indexing worker, and optional knowledge-or-escalate model selection. Adapters for Codex (full) and Claude Code (read-only), plus offline counterfactual evaluation. <strong>Fix:</strong> the <code>agentic_knowledge</code> collection names are reduced to the engine's character set at configuration time, so a repository scope that would produce a hyphen can no longer make every indexing attempt fail with a 500 at collection creation; the retention pass still sweeps the legacy <code>prefix-&lt;scope&gt;-sessions</code> archives; the repository of a request is read from the leading messages, so a compaction (which re-sends the whole window) is filed under its own project instead of into a scope-less prefix, and a request with no known repository publishes nothing; a search of a repository that has not been indexed yet is an empty answer, not a failed search <strong>Added:</strong> engine login for a Semantic Search Engine that authenticates by username and password rather than by a pre-issued token (<code>SSE_API_USERNAME</code>/<code>SSE_API_PASSWORD</code>); every mined episode now carries the work <strong>phase</strong> its evidence names (<code>test</code>, <code>implement</code>, …) in its header and in <code>metadata_json.phase</code>, and a retrieval source can be restricted in its policy to phases (<code>"phases": ["test"]</code>) or to routing modes (<code>"modes": ["debug"]</code>) — the filter is engine-side, unions across names, intersects the source's categories, never touches the archived window whose <code>thread_id</code> owns the single metadata slot, and a policy cannot mix the two dimensions in one request. <strong>Added:</strong> <code>agentic_knowledge</code> indexes the repository's own documentation — a heading-aware scan of its <code>*.md</code> files published as <code>doc</code> documents, republished on content change, superseded documents retired through a <code>docs_prune</code> control message (never on a truncated scan), plus the <code>llm-router-agentic-kb-docs</code> command and the <code>docs</code> policy section. Documentation now lives in <code>&lt;prefix&gt;_&lt;scope&gt;_docs</code>, is read per work mode through <code>doc_types</code>, is searched on the turn's subject rather than its failure signature, and a guide about a file the turn edits outranks one that is not. On top of retrieval a session carries a <strong>standing documentation map</strong> — structural, stable per repository, budgeted first — and every mined fix or dead end points at the page that documents the module it touched. <strong>Fix:</strong> the Codex routing record follows the phase that was actually routed with instead of the last signal it could rebuild, so an interleaved command no longer freezes the record and repeats a conflict on every request of the turn (captured-session replay: 11 conflicts -&gt; 0). <strong>Added:</strong> <code>RememberResult</code> carries why a memory write was skipped; the log names the real cause instead of an undifferentiated <code>version conflict</code>. <strong>Added:</strong> <code>agentic_knowledge</code> mines <code>playbook</code> — a change a test run accepted with no failure in between — so the correct steps of a task are knowledge too, not only the ones that went wrong; a mode routing did not resolve is served by a <code>*</code> fallback policy instead of reading nothing; every mode now reads the kinds it ignored (<code>doc</code> in <code>debug</code>/<code>test</code>, <code>deadend</code> in <code>implement</code>, <code>playbook</code>/<code>recipe</code> where a plan or a review could use them). <strong>Fix:</strong> a read budget equal to one engine call started no search of any request — the deadline left no room for the call it budgeted — which looked like an empty knowledge base; the budget is now raised above one call at validation, defaults to three calls, and the "searches not started" warning names both numbers and repeats at most once per repository per interval.</td>
+</tr>
+<tr>
+<td>0.1.3</td>
+<td><strong>Added:</strong> an accepted semantic decision can be carried across one command generation (<code>MEMORY_CARRY_DECISIONS</code>). <strong>Changed:</strong> semantic rankings are read against their own scale; the phase layer separates work states from shell noise; CLI-injected context is kept out of the intent text.</td>
+</tr>
+<tr>
+<td>0.1.2</td>
+<td><strong>Added:</strong> optional Redis-backed shared session memory with <code>MEMORY_MAX_RETRIES</code>; offline routing evaluation with calibration replay; a configurable <code>phase</code> layer reading assistant actions and tool activity; heuristic <code>negation_pattern</code> / <code>min_margin</code> / <code>weights</code>; <code>per_target_top_k</code> aggregation. <strong>Changed:</strong> mode definitions refined; semantic context built from the latest assistant utterance only.</td>
+</tr>
+<tr>
+<td>0.1.1</td>
+<td><strong>Added:</strong> <code>ClaudeCodeRoutingPlugin</code> (tier-to-model mapping); <code>lint_signals</code> start-up validation; <code>classify_max_chars</code> budget. <strong>Changed:</strong> <code>agentic_routing</code> consolidated into <code>CodexRoutingPlugin</code>; word-boundary heuristic matching; similarity threshold lowered to <code>0.51</code>; sliding-window encoding for over-length queries.</td>
+</tr>
+<tr>
+<td>0.1.0</td>
+<td><strong>Deps:</strong> moved to <code>radlab-pii-classification</code>; additional files shipped in the distribution.</td>
+</tr>
+<tr>
+<td>0.0.6</td>
+<td><strong>Added:</strong> <code>SemanticBiEncoder</code> routing with a persisted FAISS store (<code>vector_store_path</code>) and persistence tests. <strong>Changed:</strong> <code>simple_semantic_routing</code> removed in favour of the BiEncoder; embedding model referenced by package identifier.</td>
+</tr>
+<tr>
+<td>0.0.5</td>
+<td><strong>Added:</strong> <code>TimeRule</code>, an IBAN masking test suite, spaced car-plate formats. <strong>Changed:</strong> multi-format IBAN anchors, <code>_iban_mod97</code> moved to <code>validators</code>, PEP 8 import cleanup and no <code>__init__.py</code> re-exports.</td>
+</tr>
+<tr>
+<td>0.0.2</td>
+<td><strong>Added:</strong> PII masking plugin, dynamic pseudonym generation with de-anonymization in <code>FastMasker</code>, LangChain RAG plugin with CLI, <code>SojkaGuardPlugin</code>, lint/format/type/security configuration. <strong>Changed:</strong> <code>mask()</code> returns <code>(masked_text, mappings)</code>; <code>numpy</code> loaded only when LangChain RAG is enabled.</td>
+</tr>
+<tr>
+<td>0.0.1</td>
+<td><strong>Added:</strong> <code>fast_masker</code> plugin (IP, KRS, JWT, NRB, NIP, URL, SSN and other rules), packaging (<code>setup.py</code>) with the initial <code>.version</code>, License section in the README.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="unreleased">[Unreleased]<a class="headerlink" href="#unreleased" title="link to this section">#</a></h2>
+<h3 id="added">Added<a class="headerlink" href="#added" title="link to this section">#</a></h3>
+<ul>
+<li><code>agentic_knowledge</code> mines a fourth kind of episode: <strong><code>playbook</code></strong>, a change
+  whose test run passed with <strong>no failure in between</strong>. Until now a turn that
+  went right from the first try taught the repository nothing — a recipe needs a
+  failure to be filed under, and most work has none — so the base filled up with
+  fixes and dead ends while the procedures that work were never written down.
+  A procedure is one stretch of a turn between two green runs, so a turn that
+  implements, tests, extends and tests again writes two of them; the document
+  leads with what was asked for, then what was changed, then the command that
+  proved it. It is never written for a stretch a verified recipe already covers,
+  and never for a change no run accepted: an intention indexed as a verified
+  procedure is a guess the next session would trust. It carries no failure
+  signature, so it cannot be the "strong recipe" that holds a looping model in
+  place, and it renders under its own heading,
+  <code>## Verified procedures in this repo</code>.</li>
+<li><strong>A fallback policy (<code>modes."*"</code>)</strong> serves a mode routing did not resolve —
+  an empty mode, or a name the policy does not know — so the request is asked of
+  the base instead of being skipped. A mode's own policy always wins, and a
+  configuration without <code>*</code> keeps the previous behaviour exactly.</li>
+<li><strong>Every mode reads what it ignored.</strong> <code>debug</code> and <code>test</code> now read the
+  repository's documentation (a guide about the module that failed; the
+  contributing rules a change has to keep), <code>implement</code> reads dead ends, and
+  <code>plan</code>/<code>review</code>/<code>git_review</code> read mined knowledge and procedures. Every mode
+  reads <code>playbook</code> in some measure, weighted for what the mode is doing.</li>
+</ul>
+<h3 id="changed">Changed<a class="headerlink" href="#changed" title="link to this section">#</a></h3>
+<ul>
+<li>The shipped <code>read.timeout_seconds</code> is 6.0 — three calls of the two-second
+  engine default, which is how many collections a widened mode can ask.</li>
+</ul>
+<h3 id="fixed">Fixed<a class="headerlink" href="#fixed" title="link to this section">#</a></h3>
+<ul>
+<li><strong>A read budget equal to one engine call started no search at all.</strong> A search
+  begins only while a whole call fits before the request's deadline, and the
+  deadline was read from the clock a moment <em>before</em> the call was made — so a
+  budget of exactly one call was spent by the microseconds in between, and every
+  request of a deployment that set <code>READ_TIMEOUT_SECONDS</code> to
+  <code>SSE_API_TIMEOUT</code> reported "N search(es) not started" and injected nothing.
+  Validation now keeps a margin over one call, so the invariant
+  "a request can always ask once" holds whatever the environment says.</li>
+<li>That warning now names the per-call timeout next to the budget (the usual
+  cause is the second number, not the first) and repeats at most once per
+  repository per interval: a starved configuration starves every request of
+  every session, and a warning printed on every request is a warning nobody
+  reads.</li>
+</ul>
+<h2 id="014-2026-10-21">[0.1.4] - 2026-10-21<a class="headerlink" href="#014-2026-10-21" title="link to this section">#</a></h2>
+<h3 id="added_1">Added<a class="headerlink" href="#added_1" title="link to this section">#</a></h3>
+<ul>
+<li><code>agentic_knowledge</code> — an <strong>agentic knowledge layer</strong> for coding agents
+  (<code>llm_router_plugins/utils/knowledge/agentic_knowledge/</code>), registered in <code>MAIN_UTILS_REGISTRY</code> and placed in the
+  utils pipeline <strong>behind</strong> <code>agentic_routing_codex</code>. It reads the routing decision the router has just made, retrieves
+  what this repository has already learned from the Semantic Search Engine (SSE), and injects it as a separate,
+  removable context block — with no cooperation from the agent. Fully fail-open: no SSE host means no reads, no Redis
+  means no writes, and any failure passes the request through untouched.</li>
+<li><strong>Engine login.</strong> A Semantic Search Engine that authenticates by username and
+  password rather than by a pre-issued token now works: <code>…_SSE_API_USERNAME</code> and
+  <code>…_SSE_API_PASSWORD</code> flow from the environment through the store and the
+  indexing worker, and the client logs in on its first call.  A token, when set,
+  wins, and a name without a secret is no credential at all, so nothing is ever
+  attempted that would log a 401 as an indexing failure.</li>
+<li><strong>Phases and modes.</strong> Every mined episode carries the work phase its own
+  evidence names — the mode most of its items are in, the newest one breaking a
+  tie, the turn's mode when it names none — written into the document header and
+  into <code>metadata_json.phase</code>, verbatim, because the reader filters on it; the
+  routing <code>mode</code> of the producing request is stored the same way.  A retrieval
+  source can be restricted in the policy to phases
+  (<code>{"category": "recipe", "phases": ["test", "debug"]}</code>) or to modes
+  (<code>{"category": "deadend", "modes": ["debug"]}</code>): one engine-side
+  <code>metadata_filters</code> entry per name (the engine unions them, which is exactly
+  "one of these"), intersecting the source's categories.  The two share the
+  single metadata slot the engine allows, so a policy may restrict one
+  dimension but not both in one request; a source without a restriction leaves
+  the whole request unrestricted, and an archived source never carries either —
+  its <code>thread_id</code> filter owns the slot, and a second would widen the archived
+  window to every thread of the repository.  The phase is cited on every
+  injected entry (<code>[recipe · in test · 2026-10-12 · src/a.py]</code>).</li>
+<li><strong>Fix:</strong> the daemon worker no longer reports a <code>TimeoutError</code> on every idle
+  read.  Its blocking read waits <code>worker.block_ms</code> (5 s) server-side, but its
+  Redis socket timeout came from the request-path settings, where 1 s is a
+  feature — the socket closed first and the loop never actually blocked.  The
+  worker now raises only its own socket timeout over its own block (plus a
+  margin); an operator-set socket timeout that already covers it is kept.</li>
+<li><strong>Added:</strong> <code>scripts/plugins/agentic_knowledge/run-agentic-kb-worker.sh</code> in the <code>llm-router</code> checkout
+  starts the indexing worker with the environment of the router's own run script — it reads that
+  script's assignments rather than executing it, so no second server starts.
+  A <code>--once</code> run now also logs how many events the batch drained, so a cron
+  worker is not indistinguishable from one that never ran.</li>
+<li><strong>Fix:</strong> a search for a repository whose knowledge has not been indexed yet
+  stops being a per-request failure.  The engine answers a missing collection
+  with an error code in a 200 body rather than with an empty list, so every
+  request of a project before its first episode was logged as a failed search;
+  the read path now recognizes that code and answers it as an empty one
+  (nothing known yet) until the worker creates the collection on the first
+  event.</li>
+<li><strong>Fix:</strong> the repository of a request is found in the leading messages rather
+  than only in the first <code>input</code> item.  A Codex compaction re-sends the whole
+  conversation, so its <code>&lt;environment_context&gt;</code> sits behind the developer
+  instructions — every event it produced carried an empty scope and was indexed
+  into the bare collection prefix instead of the project's own, so a real
+  repository never got its collections.  The search is bounded (a message and a
+  request each have a ceiling, a fraction of a millisecond) and reads only what
+  the agent sends as a message: a <code>&lt;cwd&gt;</code> quoted by a tool output is not a
+  declaration, and the first declaration wins over one quoted later.  A request
+  whose repository stays unknown now publishes nothing — the annotation says
+  <code>write.status=disabled</code> — instead of archiving the conversation of one
+  checkout into a prefix shared by every other scope-less one.</li>
+<li><strong>Fix:</strong> the <em>scope</em> half of a collection name is reduced to the engine's
+  character set like the prefix — a hyphenated checkout (<code>llm-router</code>) could
+  never get a collection created (a 500, so nothing indexed), and the indexing
+  consumer group now starts at the start of the stream, so episodes the proxy
+  published while no worker was running are drained instead of skipped
+  silently.</li>
+<li><strong>Read path.</strong> Per-work-mode retrieval policies (<code>debug</code>, <code>test</code>, <code>implement</code>, <code>plan</code>, <code>git_review</code>, <code>review</code>) over
+  weighted sources (<code>{category, weight, max_items}</code>) with a character budget per mode; <code>ContextAssembler</code> normalizes
+  SSE scores, adds a bonus for a matching error signature or path, deduplicates by document name and cuts to the
+  budget. The block is appended as the <strong>last element of <code>input</code></strong> (a <code>developer</code> message), never to <code>instructions</code>, so
+  the CLI's prompt-cache prefix survives, and an already-present block is never duplicated. <code>GenerationContextCache</code>
+  keeps the injected set per command generation in Redis, so repeated requests of one turn issue no search and get
+  byte-identical text.</li>
+<li><strong>Write path.</strong> <code>EpisodeMiner</code> derives a <code>recipe</code> from a <code>test_failure → patch → test pass</code> episode and a <code>deadend</code>
+  from a failure repeating with an identical signature; <code>KnowledgeEventPublisher</code> deduplicates with <code>SET NX</code> before
+  <code>XADD … MAXLEN ~</code>, releasing the key when <code>XADD</code> fails so an episode is retried rather than lost. The new
+  <code>llm-router-agentic-kb-worker</code> console script consumes the stream with a consumer group, masks every document with
+  <code>FastMasker</code> and discards the mappings, creates a scope's collection on first use, retries indexing a bounded number
+  of times, and applies retention to this plugin's own documents only.</li>
+<li><strong>Compaction archive.</strong> A request classified <code>compaction</code> is written and never read from: its window is chunked and
+  indexed into <code>&lt;prefix&gt;-&lt;scope&gt;-sessions</code>, so later requests of the same thread get back the exact fragments the
+  summary dropped (<code>## Exact context from before compaction</code>).</li>
+<li><strong>Knowledge-or-escalate.</strong> <code>EscalationPolicy</code> switches a looping agent to the mode's <code>escalation_model_name</code> only
+  when routing was not explicit, the same error signature has failed <code>loop_threshold</code> times in the generation, and no
+  recipe scores at least <code>strong_recipe_score</code>; a strong recipe keeps the routed model. The escalated model persists
+  for the generation. <strong>Off by default</strong> (<code>escalation.enabled=false</code>) until the replay shows the detection is right.</li>
+<li><strong>Adapters.</strong> Codex reuses <code>codex.payload</code> and <code>codex.phase</code> instead of parsing again and serves the full read and
+  write path; Claude Code is served in a basic form — scope from the <code>Working directory</code> line, latest user text,
+  injection into <code>system</code> — and, having no phase evidence, reads the shared knowledge base without mining it or
+  escalating.</li>
+<li><strong>Scope isolation.</strong> The repository is identified by the working directory the agent itself declares (<code>&lt;cwd&gt;</code> for
+  Codex, <code>Working directory:</code> for Claude Code) and reduced to a path-free key; one collection per scope, so a search of
+  one repository cannot return a document of another and no absolute path is ever indexed.</li>
+<li><strong>Annotation.</strong> <code>payload["routing"]["knowledge"]</code> reports the adapter, scope, injected hits, characters, per-source
+  counts, cache state, loop count, escalation and write status — never document content, tokens, hosts or full session
+  ids. When this plugin replaces a model, the previous one is kept in <code>routing.model_before_knowledge</code>.</li>
+<li><strong>Counterfactual evaluation.</strong> <code>agentic_knowledge/evaluation.py</code> replays recorded sessions offline, feeding the store
+  only events mined <em>before</em> the request under evaluation, and reports <code>recipe_hit_rate</code>, <code>turns_potentially_saved</code>,
+  <code>missed_saves</code>, loop-detection precision/recall, <code>escalations</code> and <code>injected_chars_per_turn</code> for the <code>no_kb</code>, <code>read</code>
+  and <code>read_escalate</code> variants; <code>scripts/agentic-kb-eval.sh</code> runs it.</li>
+<li><code>agentic-knowledge</code> pip extra (<code>sse-lib</code>, <code>redis&gt;=5</code>) and <code>llm_router_plugins/resources/knowledge/agentic_knowledge.json</code>,
+  the reviewable policy — connection settings come exclusively from <code>LLM_ROUTER_KNOWLEDGE_AGENTIC_*</code>.</li>
+<li><code>agentic_knowledge</code> indexes <strong>the repository's own documentation</strong>. <code>docs_ingestor.py</code> scans the directory a request
+  declared for its <code>*.md</code> files, splits each one at its headings (a section keeps its heading path, cut at
+  <code>docs.max_section_chars</code>), and publishes one <code>doc</code> event per section to the stream the miner already uses — so the
+  worker masks and indexes documentation exactly as it does a mined recipe, into <code>category=doc</code> of
+  <code>&lt;prefix&gt;_&lt;scope&gt;</code>, which <code>plan</code>, <code>implement</code> and <code>review</code> already ask for and which rendered nothing before.</li>
+<li>A file is republished when its <strong>content</strong> changes, not when it is looked at: the digest of the whole file feeds every
+  section's fingerprint, and a scan state in Redis (<code>&lt;key_prefix&gt;:docs:&lt;scope&gt;</code>, one key per scope) compares digests, so
+  a <code>touch</code> or a branch checkout over unchanged files publishes nothing. A changed file gets new document names and the
+  scan publishes a <code>docs_prune</code> control message retiring the names it superseded, which is also what removes the
+  documents of a deleted file. <strong>A scan that ran out of <code>docs.max_files</code> or <code>docs.max_total_bytes</code> publishes no
+  retirement at all</strong> — pruning against a partial listing would delete documentation the scan never reached.</li>
+<li>The scan runs on the request path, bounded by <code>docs.rescan_interval_seconds</code> per process and by its byte and file
+  ceilings, and is <strong>fail-open</strong> like the rest of the layer: a repository the router cannot see is
+  <code>skipped: no-such-directory</code>, never an error. Where the router does not run next to the agents, the new
+  <code>llm-router-agentic-kb-docs</code> command (<code>--path</code>, <code>--scope</code>, <code>--dry-run</code>, <code>--no-prune</code>, <code>--json</code>) does the same scan
+  against the same policy from a machine that can; it publishes to the stream and never talks to the engine.</li>
+<li>Policy: a <code>docs</code> section (<code>enabled</code>, <code>auto_index</code>, <code>patterns</code>, <code>excluded_dirs</code>, <code>max_files</code>, <code>max_file_bytes</code>,
+  <code>max_total_bytes</code>, <code>max_section_chars</code>, <code>rescan_interval_seconds</code>, <code>state_ttl_seconds</code>) and the matching
+  <code>LLM_ROUTER_KNOWLEDGE_AGENTIC_DOCS_*</code> environment overrides. <code>payload["routing"]["knowledge"]</code> carries a <code>docs</code>
+  outcome (<code>status</code>, <code>files</code>, <code>published</code>, <code>pruned</code>, <code>reason</code>, <code>truncated</code>) — no paths and no document names.</li>
+<li>Documentation is <strong>its own collection</strong>, <code>&lt;prefix&gt;_&lt;scope&gt;_docs</code>, apart from mined knowledge. One search request
+  carries one metadata dimension, so a mode can narrow a search by <code>doc_type</code> only when nothing else shares the request;
+  giving the documentation a collection of its own is what buys that, and it lets a repository's prose be re-indexed and
+  pruned as a set. The scan state records the collection a listing was written for, so a policy that moves the
+  documentation republishes it where it now belongs instead of believing a listing of files indexed where nobody reads.</li>
+<li><strong><code>SourcePolicy.doc_types</code></strong> — which documentation kinds a work mode reads (<code>readme</code>, <code>guide</code>, <code>changelog</code>,
+  <code>contributing</code>, <code>security</code>, <code>license</code>, <code>agent</code>, <code>note</code>), sent as engine-side <code>metadata_filters</code> on <code>doc_type</code>, one
+  <code>eq</code> per kind, unioned. It is the <code>doc</code> source's own dimension: a <code>doc</code> source restricting phases or modes, or
+  <code>doc_types</code> on any other source, is a configuration error. The shipped policy reads <code>readme</code>/<code>guide</code>/<code>contributing</code>
+  when implementing, adds <code>changelog</code> and <code>note</code> when planning, and <code>guide</code>/<code>contributing</code>/<code>security</code> when reviewing;
+  an <code>AGENTS.md</code> is in no list, because the agent already has that file in its context.</li>
+<li>A session carries a <strong>standing documentation context</strong> (<code>doc_context.py</code>): a short map of what the repository has
+  written down — its documentation files, their kinds, and their heading outlines — injected on every request a mode
+  reads documentation in, whether or not this turn's query matched anything. It answers what the project is and where
+  its documentation lives, which is what an agent otherwise rediscovers with <code>ls</code> and <code>find</code> once per command. The map
+  is <strong>structural and carries no prose</strong>: the write path masks a document before indexing it, and a digest of README
+  sentences built on the request path would carry them unmasked to a model. <code>docs.context_enabled</code>,
+  <code>docs.context_max_chars</code> (default <code>700</code>) and <code>docs.context_ttl_seconds</code>, with the matching <code>…_DOCS_CONTEXT_*</code>
+  environment overrides.</li>
+<li>The digest is <strong>stable per repository, not per request</strong>: it is refreshed by the scan that already runs and by
+  <code>llm-router-agentic-kb-docs</code>, kept in Redis (<code>&lt;key_prefix&gt;:docs:context:&lt;scope&gt;</code>), and read with one <code>GET</code> by every
+  other request of the session. Its text moves when the documentation's outline moves and not when a paragraph is
+  reworded, so the prompt under the provider's cache does not move either; its fingerprint records the revisions it was
+  drawn from. It is charged against <code>modes.&lt;mode&gt;.max_chars</code> <strong>before</strong> anything is retrieved, and a digest too big for
+  the mode is not injected at all. <code>payload["routing"]["knowledge"]["doc_context"]</code> reports <code>level</code>, <code>chars</code> and
+  <code>source_files</code>.</li>
+<li>Documentation is <strong>searched with a query of its own</strong>: the user's words plus the touched paths and their stems, never
+  the failure signature. A recipe is filed under the error it fixed and a guide is filed under the module it explains;
+  asking the second with the first was retrieval noise. <code>ContextAssembler</code> adds a bonus when a retrieved document
+  <strong>documents a file the turn is touching</strong> (<code>docs/export.md</code> for an edited <code>src/export.py</code>) — a link no retrieval leg
+  sees — drops a document whose declared kind the mode does not read, and cites what it quotes by file and heading
+  (<code>[doc · guide · docs/export.md › Export helpers]</code>).</li>
+<li><strong>A mined entry points at the page that documents the module it changed.</strong> A
+  verified fix says what worked; the repository's own page about that module
+  says what it has to keep doing, and neither search connects the two: a recipe
+  is filed under a failure, a page under a module. The link is resolved on the
+  reader side against the documentation map the request already carries: a named
+  page matches by file stem (<code>src/export.py</code> → <code>docs/export.md</code>), a generic page
+  (<code>README.md</code>, <code>AGENTS.md</code>) by the directory it documents, and never a second
+  time for a path the entry already cites — so a recipe or dead end renders with
+  a <code>→ docs/export.md</code> tail whether or not the query retrieved the page. The
+  same rule now drives the documentation ranking bonus, which previously matched
+  generic stems too: a root <code>README.md</code> is not documentation of everything. Two deliberate limits: the link
+  is not written into the document's metadata, because the engine never returns
+  document metadata on a search hit — a field nothing could read would be
+  write-only — and a documentation page never counts toward
+  <code>best_recipe_score</code>, because a README is not a verified fix and must not
+  push a mode past its escalation threshold.</li>
+<li><code>RememberResult</code> — the outcome of <code>remember_decision</code> now carries a log-safe
+  reason for a conflict (<code>state</code> still compares equal to the outcome string).</li>
+</ul>
+<h3 id="changed_1">Changed<a class="headerlink" href="#changed_1" title="link to this section">#</a></h3>
+<ul>
+<li><strong>The worker says on the console what it is doing, and follows the router's
+  debug switch.</strong> On start it writes its configuration block (engine, stream,
+  group, consumer, chunking, retention, and which switch chose the log level);
+  during a run it reports each batch's read/indexed/dropped counts and elapsed
+  time, names a created collection, reports what retention and a docs prune
+  removed, and beats an idle heartbeat every five minutes. <code>DEBUG</code> adds the
+  per-event line — kind, scope, thread, fingerprint. The level resolves from
+  <code>--log-level</code>, else <code>LLM_ROUTER_IN_DEBUG</code> (the router's own debug switch,
+  which the operator's wrapper already exports), else <code>LLM_ROUTER_LOG_LEVEL</code>,
+  else <code>INFO</code>, so a deployment the operator turned debug on gets a debug worker
+  without repeating the switch. A failure is logged with the engine's own
+  message, not only the exception's class, and credentials are reported by kind
+  (<code>auth=token</code>), never by value.</li>
+<li><strong>The knowledge extra and its CLI package are named after the plugin.</strong> <code>pip install
+  radlab-llm-router-plugins[knowledge]</code> is now <code>…[agentic-knowledge]</code>, so an operator installing
+  the extra sees the same name the pipeline does, and the console commands are built from
+  <code>llm_router_plugins.cli.plugins.utils.agentic_knowledge</code> — <code>utils.knowledge</code> named a directory
+  of two commands and said nothing about which layer they belonged to. The commands themselves,
+  <code>llm-router-agentic-kb-worker</code> and <code>llm-router-agentic-kb-docs</code>, are unchanged.</li>
+<li><strong>The operator's knowledge scripts moved to the <code>llm-router</code> checkout, and the worker stopped
+  fishing for <code>sse_lib</code> in a sibling checkout.</strong> The <code>run-agentic-kb-{worker,docs}.sh</code> wrappers now
+  live in <code>scripts/plugins/agentic_knowledge/</code> of that checkout, next to the plugin they operate,
+  with their configuration still in the <code>run-rest-api-gunicorn.sh</code> script they read.
+  The <code>sse-lib</code> dependency of the <code>knowledge</code> extra is pinned to <code>&gt;=0.1.0</code> — the first
+  published release with <code>ignore_question_lang_detect</code> on <code>SSEClient.search</code> — and the
+  wrappers no longer prepend a sibling <code>semantic-search-engine/sse_lib/src</code> to
+  <code>PYTHONPATH</code>: the interpreter the script runs with (default <code>python3</code>, override with
+  <code>PYTHON=</code>) must have the package installed from the extra.</li>
+<li>
+<p><strong>The read path stopped losing every search to its own timeout, and stopped asking the engine to
+  guess the query's language.</strong> Two independent faults made the knowledge base invisible in
+  production, measured against a real engine on another host:
+  <code>sse_api.engine.controllers.search.semantic</code> detects the language of the <em>question</em> and applies it
+  twice — as a metadata filter on the vector leg (<code>text_language == &lt;lang&gt;</code>), and as the name of the
+  PostgreSQL full-text configuration (<code>pl</code> → <code>polish</code>).  A knowledge base is indexed in the language
+  of the code and asked in the language of the operator, so the first filter throws the answers away
+  and, on a cluster without a <code>polish</code> text search configuration, the second answers a Polish
+  question with <code>ProgrammingError: text search configuration "polish" does not exist</code> — an HTTP 500,
+  which this layer can only read as an unavailable engine.  The plugin now sends
+  <code>ignore_question_lang_detect</code> (<code>…_SSE_IGNORE_LANGUAGE_DETECT</code>, on by default; a client too old to
+  take the keyword is detected and asked without it), so the engine drops the filter and falls back
+  to the <code>simple</code> configuration.
+  Separately: one number used to be both the per-call transport timeout and the read budget, so a
+  mode reading three sources waited three times what the operator wrote, while the 1.5 s default was
+  below the 1.7 s median a hybrid search actually takes — five of five searches timed out.  They are
+  two numbers now: <code>…_SSE_API_TIMEOUT</code> (default <code>2.0</code>) ceilings one call, <code>…_READ_TIMEOUT_SECONDS</code>
+  (default <code>4.0</code>) ceilings the request, a search starts only while a whole call fits before that
+  deadline, and the budget is never allowed below one call.  A budget spent mid-request skips the
+  remaining sources and warns once, naming the scope and the number skipped.</p>
+</li>
+<li>
+<p>The knowledge generation cache entry grew a schema version (<code>2</code>): a hit now keeps <code>source</code>, <code>doc_type</code> and <code>heading</code>,
+  and an entry keeps the standing documentation digest it was built with, so a cache hit reports the same context the
+  first request of the generation reported. Entries written under schema <code>1</code> are ignored rather than misread — one
+  rebuilt block per generation, then normal service.</p>
+</li>
+<li>A skipped Codex routing memory write is logged with the actual cause instead
+  of one undifferentiated <code>version conflict</code>:</li>
+<li><code>expected version N, record is M</code> — a concurrent writer moved first;</li>
+<li><code>incomparable history</code> / <code>stale history</code> / <code>reordered history</code> /
+    <code>context changed</code> — the continuity proof failed;</li>
+<li><code>mode disagreement</code>, <code>generation changed</code>, <code>write</code> — the other refusal
+    paths.</li>
+</ul>
+<h3 id="fixed_1">Fixed<a class="headerlink" href="#fixed_1" title="link to this section">#</a></h3>
+<ul>
+<li><code>agentic_knowledge</code>: collection names are now reduced to the engine's
+  character set when the policy is loaded.  The engine refuses to create a
+  collection whose name is not identifier-like — a hyphen, or a name starting
+  with a digit, is a <code>500 Internal Server Error</code> at creation time, and the
+  default <code>agentic-kb-&lt;scope&gt;</code> name carries a hyphen, so no repository could
+  ever be indexed: the worker kept retrying an event that could never land.
+  The prefix and the collection names are now one engine-safe spelling
+  (<code>agentic_kb_&lt;scope&gt;</code> / <code>agentic_kb_&lt;scope&gt;_sessions</code>), and the retention
+  pass still sweeps the legacy <code>agentic-kb-&lt;scope&gt;-sessions</code> archives.</li>
+<li>The Codex routing record now follows the phase the cascade actually routed
+  with instead of the last signal it could rebuild from the history. The
+  cascade names the phase dominating the recent window, so an edit interleaved
+  between test runs is still an implementation turn. Previously the record
+  froze on the last signal, the write was refused, and every later request of
+  the same command generation reported a <code>mode disagreement</code> conflict.
+  Verified by replaying a captured Codex CLI session (149 requests): conflicts
+  drop from 11 to 0 and the stored record tracks the decided mode.</li>
+</ul>
+<h2 id="013-2026-10-11">[0.1.3] - 2026-10-11<a class="headerlink" href="#013-2026-10-11" title="link to this section">#</a></h2>
+<h3 id="added_2">Added<a class="headerlink" href="#added_2" title="link to this section">#</a></h3>
+<ul>
+<li>An accepted semantic decision can be carried across one command generation,
+  so repeated requests of a long agent turn do not re-decide it from scratch
+  (opt-in via <code>MEMORY_CARRY_DECISIONS</code>).</li>
+</ul>
+<h3 id="changed_2">Changed<a class="headerlink" href="#changed_2" title="link to this section">#</a></h3>
+<ul>
+<li>Semantic rankings are read against their own scale: the similarity
+  threshold, the minimum margin and the top-k are compared on the score
+  distribution of the request, not on an absolute cosine.</li>
+<li>The phase layer distinguishes work states from shell noise, so a turn is
+  not re-labelled by an unrelated command interleaved between real work.</li>
+<li>CLI-injected context is kept out of the intent text used by the heuristic
+  and semantic layers.</li>
+</ul>
+<h3 id="fixed_2">Fixed<a class="headerlink" href="#fixed_2" title="link to this section">#</a></h3>
+<ul>
+<li>Held out the conv-03 goal turn and reported refusal rates in the routing
+  quality suite.</li>
+</ul>
+<h2 id="012-2026-10-08">[0.1.2] - 2026-10-08<a class="headerlink" href="#012-2026-10-08" title="link to this section">#</a></h2>
+<h3 id="added_3">Added<a class="headerlink" href="#added_3" title="link to this section">#</a></h3>
+<ul>
+<li>Shared session memory for the Codex routing cascade, Redis-backed and
+  optional, so a neutral request in the middle of an action keeps the last
+  reliable phase; <code>MEMORY_MAX_RETRIES</code> bounds the attempts after a version
+  conflict before the request continues statelessly.</li>
+<li>Offline Codex routing evaluation with semantic quality calibration and a
+  replay harness.</li>
+<li>A configurable <code>phase</code> layer that routes from assistant actions and tool
+  activity (commands, patches, test outcomes).</li>
+<li>A configurable heuristic <code>negation_pattern</code>, <code>min_margin</code> and <code>weights</code>.</li>
+<li><code>per_target_top_k</code> aggregation, <code>min_margin</code> and independent segment budgets
+  in the semantic layer.</li>
+</ul>
+<h3 id="changed_3">Changed<a class="headerlink" href="#changed_3" title="link to this section">#</a></h3>
+<ul>
+<li>Routing mode definitions for <code>plan</code>, <code>implement</code>, <code>test</code>, <code>git_review</code>,
+  <code>review</code> and <code>debug</code> were refined.</li>
+<li>Semantic context is built from the latest assistant utterance only.</li>
+<li><code>aux_title</code> routing recognizes title requests by shape in addition to
+  metadata.</li>
+</ul>
+<h2 id="011-2026-09-25">[0.1.1] - 2026-09-25<a class="headerlink" href="#011-2026-09-25" title="link to this section">#</a></h2>
+<h3 id="added_4">Added<a class="headerlink" href="#added_4" title="link to this section">#</a></h3>
+<ul>
+<li><code>ClaudeCodeRoutingPlugin</code> — tier-to-model mapping for Claude Code, with
+  configuration, registry entry, docs and tests.</li>
+<li>Startup linting for unusable signals and <code>lint_signals</code> configuration
+  validation.</li>
+<li>A <code>classify_max_chars</code> budget for the user text the deterministic layers
+  may read.</li>
+</ul>
+<h3 id="changed_4">Changed<a class="headerlink" href="#changed_4" title="link to this section">#</a></h3>
+<ul>
+<li><code>agentic_routing</code> was consolidated into <code>CodexRoutingPlugin</code>; the generic
+  <code>agentic_routing</code> plugin and its test suite were removed.</li>
+<li>Heuristic scoring now uses word-boundary matching and a stricter
+  <code>heuristic_min_score</code>.</li>
+<li>The semantic similarity threshold was lowered to <code>0.51</code>.</li>
+<li>Sliding-window encoding for over-length queries with capped window
+  aggregation.</li>
+</ul>
+<h2 id="010-2026-09-06">[0.1.0] - 2026-09-06<a class="headerlink" href="#010-2026-09-06" title="link to this section">#</a></h2>
+<h3 id="changed_5">Changed<a class="headerlink" href="#changed_5" title="link to this section">#</a></h3>
+<ul>
+<li>Dependency moved to <code>radlab-pii-classification</code> and additional files added
+  to the package distribution.</li>
+</ul>
+<h2 id="006-2026-08-31">[0.0.6] - 2026-08-31<a class="headerlink" href="#006-2026-08-31" title="link to this section">#</a></h2>
+<h3 id="added_5">Added<a class="headerlink" href="#added_5" title="link to this section">#</a></h3>
+<ul>
+<li><code>SemanticBiEncoder</code> routing plugin with a FAISS vector store and persistence,
+  plus a <code>vector_store_path</code> configuration.</li>
+<li>FAISS persistence tests and environment-variable name updates.</li>
+</ul>
+<h3 id="changed_6">Changed<a class="headerlink" href="#changed_6" title="link to this section">#</a></h3>
+<ul>
+<li><code>simple_semantic_routing</code> was removed; the BiEncoder plugin replaces it.</li>
+<li>Embedding model identified by package name
+  (<code>radlab/semantic-euro-bert-encoder-v1</code>).</li>
+<li>Extensive docstrings and documentation for the semantic routing plugins.</li>
+</ul>
+<h2 id="005-2026-07-16">[0.0.5] - 2026-07-16<a class="headerlink" href="#005-2026-07-16" title="link to this section">#</a></h2>
+<h3 id="added_6">Added<a class="headerlink" href="#added_6" title="link to this section">#</a></h3>
+<ul>
+<li><code>TimeRule</code> in <code>fast_masker</code>.</li>
+<li>Comprehensive IBAN masking tests for <code>BankAccountRule</code> across formats and
+  countries.</li>
+<li>Spaced car-plate format support in <code>CarPlateRule</code>.</li>
+</ul>
+<h3 id="changed_7">Changed<a class="headerlink" href="#changed_7" title="link to this section">#</a></h3>
+<ul>
+<li>IBAN anchor handling in <code>BankAccountRule</code> with enhanced multi-format regex.</li>
+<li><code>_iban_mod97</code> logic moved to <code>validators</code>.</li>
+<li>PEP 8 import cleanup and removal of <code>__init__.py</code> re-exports.</li>
+</ul>
+<h2 id="002-2026-05-10">[0.0.2] - 2026-05-10<a class="headerlink" href="#002-2026-05-10" title="link to this section">#</a></h2>
+<h3 id="added_7">Added<a class="headerlink" href="#added_7" title="link to this section">#</a></h3>
+<ul>
+<li>PII masking plugin support.</li>
+<li>Dynamic pseudonym generation, mapping storage and de-anonymization in
+  <code>FastMasker</code>.</li>
+<li><code>LangChain RAG</code> utility plugin with engine, registry, pipeline and a CLI
+  wrapper for indexing and search.</li>
+<li><code>SojkaGuardPlugin</code> guardrail.</li>
+<li>Linting, formatting, type-checking and security configuration
+  (Black, Flake8, MyPy, Pylint, Bandit).</li>
+<li>Medusa data preparation script for LangChain RAG indexing.</li>
+</ul>
+<h3 id="changed_8">Changed<a class="headerlink" href="#changed_8" title="link to this section">#</a></h3>
+<ul>
+<li><code>PayloadInterface.mask</code> returns <code>(masked_text, mappings)</code> to support
+  de-anonymization.</li>
+<li><code>maskers_http_base</code> returns the anonymized payload instead of plain text.</li>
+<li>FastMasker rules standardized to return <code>(text, mappings)</code> and to accept an
+  <code>anonymizer_fn</code>.</li>
+<li><code>numpy</code> is loaded only when LangChain RAG is enabled.</li>
+<li>Guardrails inherit from <code>GuardrailsBase</code>.</li>
+</ul>
+<h2 id="001-2025-11-28">[0.0.1] - 2025-11-28<a class="headerlink" href="#001-2025-11-28" title="link to this section">#</a></h2>
+<h3 id="added_8">Added<a class="headerlink" href="#added_8" title="link to this section">#</a></h3>
+<ul>
+<li><code>fast_masker</code> plugin with rules for IP, KRS, JWT, NRB, NIP, URL, SSN and
+  other personal-data patterns.</li>
+<li>Packaging configuration (<code>setup.py</code>) and the initial <code>.version</code> file.</li>
+<li>License section in the README.</li>
+</ul></article>
+<nav class="pager" aria-label="Previous and next page"></nav>
+<footer class="doc-meta">
+<div class="meta-row"><span class="meta-k">repository</span><a class="mono" href="https://github.com/radlab-dev-group/llm-router-plugins">llm-router-plugins</a></div>
+<div class="meta-row"><span class="meta-k">source</span><a class="mono" href="https://github.com/radlab-dev-group/llm-router-plugins/blob/v0.1.4/CHANGELOG.md">CHANGELOG.md</a></div>
+<div class="meta-row"><span class="meta-k">last commit</span><time datetime="2026-10-24T19:46:24+02:00"><a href="https://github.com/radlab-dev-group/llm-router-plugins/commit/c37ec03">2026-10-24</a></time></div>
+<div class="meta-row"><span class="meta-k">built from</span><span class="mono"><a href="https://github.com/radlab-dev-group/llm-router-plugins/tree/v0.1.4">v0.1.4</a>&nbsp;@&nbsp;<a href="https://github.com/radlab-dev-group/llm-router-plugins/commit/c37ec03">c37ec03</a></span></div>
+<p class="hint">Generated from the Markdown file in the repository: commit a change and the next build republishes it.</p>
+</footer>
+<footer class="foot"><div class="foot-inner">
+<span class="mono">llm-router &middot; docs are generated from the repository by <code>tools/build_docs.py</code></span>
+<span class="mono"><a href="https://github.com/radlab-dev-group/llm-router-plugins/tree/v0.1.4">0.1.4</a> @ <a href="https://github.com/radlab-dev-group/llm-router-plugins/commit/c37ec03">c37ec03</a></span>
+<span class="mono"><a href="../../../privacy.html">privacy</a> &middot; <a href="../../../privacy.html#cookies" data-consent-open>cookie settings</a></span>
+</div></footer>
+</main>
+<aside class="dtoc" id="dtoc"><h2 class="toc-title">on this page</h2><div class="toc-body"><ul><li><a href="#summary">Summary</a></li><li><a href="#unreleased">[Unreleased]</a><ul><li><a href="#added">Added</a></li><li><a href="#changed">Changed</a></li><li><a href="#fixed">Fixed</a></li></ul></li><li><a href="#014-2026-10-21">[0.1.4] - 2026-10-21</a><ul><li><a href="#added_1">Added</a></li><li><a href="#changed_1">Changed</a></li><li><a href="#fixed_1">Fixed</a></li></ul></li><li><a href="#013-2026-10-11">[0.1.3] - 2026-10-11</a><ul><li><a href="#added_2">Added</a></li><li><a href="#changed_2">Changed</a></li><li><a href="#fixed_2">Fixed</a></li></ul></li><li><a href="#012-2026-10-08">[0.1.2] - 2026-10-08</a><ul><li><a href="#added_3">Added</a></li><li><a href="#changed_3">Changed</a></li></ul></li><li><a href="#011-2026-09-25">[0.1.1] - 2026-09-25</a><ul><li><a href="#added_4">Added</a></li><li><a href="#changed_4">Changed</a></li></ul></li><li><a href="#010-2026-09-06">[0.1.0] - 2026-09-06</a><ul><li><a href="#changed_5">Changed</a></li></ul></li><li><a href="#006-2026-08-31">[0.0.6] - 2026-08-31</a><ul><li><a href="#added_5">Added</a></li><li><a href="#changed_6">Changed</a></li></ul></li><li><a href="#005-2026-07-16">[0.0.5] - 2026-07-16</a><ul><li><a href="#added_6">Added</a></li><li><a href="#changed_7">Changed</a></li></ul></li><li><a href="#002-2026-05-10">[0.0.2] - 2026-05-10</a><ul><li><a href="#added_7">Added</a></li><li><a href="#changed_8">Changed</a></li></ul></li><li><a href="#001-2025-11-28">[0.0.1] - 2025-11-28</a><ul><li><a href="#added_8">Added</a></li></ul></li></ul></div></aside>
+</div>
+</body>
+</html>
