@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">Local agents, shared infrastructure</title>
+  <desc id="desc">Codex CLI and Claude Code connect to the LLM Router. Plugins select the model, and the strategy assigns a server and slot: Flash-Next on Lab3 or Qwen 27B on Lab2 and Lab5. Redis shares slot occupancy data.</desc>
+  <defs>
+    <linearGradient id="bg" x2="1" y2="1"><stop stop-color="#0a1427"/><stop offset="1" stop-color="#172945"/></linearGradient>
+    <linearGradient id="panel" x2="1" y2="1"><stop stop-color="#203955"/><stop offset="1" stop-color="#12243b"/></linearGradient>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="#82bfff" stroke-opacity=".055"/></pattern>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="m0 0 7 4-7 4" fill="none" stroke="#64dfca" stroke-width="1.5"/></marker>
+  </defs>
+  <rect width="1600" height="900" fill="url(#bg)"/>
+  <rect width="1600" height="900" fill="url(#grid)"/>
+  <circle cx="800" cy="460" r="290" fill="none" stroke="#67dfcb" stroke-opacity=".07" stroke-width="55"/>
+  <g font-family="Inter, DejaVu Sans, sans-serif">
+    <text x="90" y="85" fill="#64dfca" font-size="21" letter-spacing="5">RADLAB / ENGINEERING</text>
+    <text x="90" y="153" fill="#f0f6ff" font-size="48" font-weight="700">Local agents. Shared GPUs.</text>
+    <text x="90" y="199" fill="#a8bcd5" font-size="24">Two routing paths — one entry point to the lab.</text>
+    <g fill="none" stroke="#64dfca" stroke-width="3" marker-end="url(#arrow)">
+      <path d="M410 355H470V445H535"/>
+      <path d="M410 590H470V485H535"/>
+      <path d="M1015 445H1070V335H1140"/>
+      <path d="M1015 465H1100V520H1140"/>
+      <path d="M1015 485H1070V705H1140"/>
+    </g>
+    <g stroke="#45617e" stroke-width="2" fill="url(#panel)">
+      <rect x="90" y="280" width="320" height="150" rx="20"/>
+      <rect x="90" y="515" width="320" height="150" rx="20"/>
+      <rect x="535" y="290" width="480" height="350" rx="26" stroke="#64dfca"/>
+      <rect x="1140" y="265" width="370" height="140" rx="18"/>
+      <rect x="1140" y="450" width="370" height="140" rx="18"/>
+      <rect x="1140" y="635" width="370" height="140" rx="18"/>
+    </g>
+    <g fill="#f0f6ff" font-size="30" font-weight="700">
+      <text x="120" y="335">&gt;_ Codex CLI</text>
+      <text x="120" y="570">&gt;_ Claude Code</text>
+      <text x="570" y="346">LLM ROUTER</text>
+      <text x="1170" y="309">Lab3</text>
+      <text x="1170" y="494">Lab2</text>
+      <text x="1170" y="679">Lab5</text>
+    </g>
+    <g fill="#a8bcd5" font-size="21">
+      <text x="120" y="377">auto_codex</text>
+      <text x="120" y="407">/v1/responses</text>
+      <text x="120" y="612">Claude model mapping</text>
+      <text x="120" y="642">/v1/messages</text>
+      <text x="1170" y="347">Qwen3.8-Flash-Next</text>
+      <text x="1170" y="380">6 × 24 GB GPU · llama.cpp</text>
+      <text x="1170" y="532">Qwen3.8-27B</text>
+      <text x="1170" y="565">2 × 24 GB GPU · llama.cpp</text>
+      <text x="1170" y="717">Qwen3.8-27B</text>
+      <text x="1170" y="750">1 × 48 GB GPU · llama.cpp</text>
+    </g>
+    <path d="M570 370H980" stroke="#45617e"/>
+    <g font-size="23">
+      <text x="570" y="416" fill="#64dfca" font-weight="700">01 / MODEL SELECTION</text>
+      <text x="570" y="452" fill="#d5e2f3">Codex phase or Claude Code tier</text>
+      <text x="570" y="517" fill="#f5c979" font-weight="700">02 / PROVIDER SELECTION</text>
+      <text x="570" y="553" fill="#d5e2f3">healthy server + free slot</text>
+      <text x="570" y="606" fill="#a8bcd5" font-size="18">first_available_optim_nworkers</text>
+    </g>
+    <path d="M775 640V705" stroke="#f5c979" stroke-width="2" stroke-dasharray="7 7"/>
+    <rect x="560" y="705" width="430" height="70" rx="16" fill="#283346" stroke="#f5c979"/>
+    <text x="775" y="749" text-anchor="middle" fill="#f5c979" font-size="22">Redis / shared slots</text>
+    <text x="90" y="843" fill="#a8bcd5" font-size="21">The agent drives the work. The plugin selects the model. The router allocates resources.</text>
+    <text x="1510" y="843" text-anchor="end" fill="#64dfca" font-size="21">radlab.dev</text>
+  </g>
+</svg>
