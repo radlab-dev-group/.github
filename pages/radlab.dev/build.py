@@ -481,7 +481,7 @@ class ImagePipeline:
         return self.cfg.base + "/" + relative.as_posix()
 
     def variants(self, source: Path) -> dict | None:
-        if not self.enabled or not self.available:
+        if not self.enabled or not self.available or source.suffix.lower() == ".svg":
             return None
         if source in self.cache:
             return self.cache[source]
@@ -530,7 +530,7 @@ class ImagePipeline:
             return f'<img src="{html.escape(token_path)}" alt="{html.escape(alt)}">'
 
         data = self.variants(source)
-        if data is None:  # images disabled or Pillow unavailable: plain tag
+        if data is None:  # SVG, images disabled or Pillow unavailable: plain tag
             path = self.media_url(source)
             return f'<img src="{html.escape(path)}" alt="{html.escape(alt)}" loading="lazy">'
 
@@ -554,7 +554,7 @@ class ImagePipeline:
         if not post.image or not self.available:
             return None
         source = self.master_for(post.image)
-        if source is None:
+        if source is None or source.suffix.lower() == ".svg":
             return None
         from PIL import Image
 

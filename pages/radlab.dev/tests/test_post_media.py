@@ -16,6 +16,23 @@ SPEC.loader.exec_module(builder)
 
 
 class PostMediaTests(unittest.TestCase):
+    def test_svg_is_copied_without_raster_processing(self):
+        with tempfile.TemporaryDirectory(dir=ROOT) as directory:
+            root = Path(directory)
+            source = root / "content/pl/blog/posts/example/media/image.svg"
+            source.parent.mkdir(parents=True)
+            source.write_text('<svg xmlns="http://www.w3.org/2000/svg" width="32" height="16"/>')
+            cfg = builder.load_config(ROOT / "config/site.toml")
+            cfg.raw["site"]["base_path"] = "/preview"
+            with patch.object(builder, "ROOT", root):
+                site = builder.Site(cfg)
+                image = site.pipeline.picture_html(str(source.relative_to(root)), "Diagram")
+                self.assertEqual(site.pipeline.missing, [])
+                self.assertIn('/preview/pl/blog/posts/example/media/image.svg', image)
+                self.assertNotIn('<picture>', image)
+                self.assertEqual((site.dist / source.relative_to(root / "content")).read_bytes(),
+                                 source.read_bytes())
+
     def test_fast_build_is_complete_without_network_or_previous_output(self):
         with tempfile.TemporaryDirectory(dir=ROOT) as directory:
             site = builder.Site(builder.load_config(ROOT / "config/site.toml"), fast=True)
