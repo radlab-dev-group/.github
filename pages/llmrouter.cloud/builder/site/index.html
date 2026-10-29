@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>LLM Router — open-source AI gateway for self-hosted LLM infrastructure</title>
-<meta name="description" content="LLM Router is an open-source (Apache-2.0) AI gateway you run in your own infrastructure. One OpenAI-compatible endpoint in front of vLLM, Ollama, LM Studio, OpenAI and Anthropic — with PII masking, guardrails, load balancing, Redis rate limiting, GPG audit logs and Prometheus metrics.">
+<meta name="description" content="LLM Router is an open-source (Apache-2.0) AI gateway you run in your own infrastructure. One OpenAI-compatible endpoint in front of vLLM, Ollama, LM Studio, OpenAI, Anthropic, Google Vertex AI and Amazon Bedrock — with PII masking, guardrails, load balancing, Redis rate limiting, GPG audit logs and Prometheus metrics.">
 <meta name="keywords" content="llm router, ai gateway, openai-compatible api, self-hosted llm, vllm router, ollama gateway, lm studio proxy, anthropic proxy, llm load balancing, pii masking, prompt guardrails, redis rate limiting, prometheus llm metrics, gpg audit logging, kubernetes helm chart, python llm sdk, on-premise ai, air-gapped ai deployment, rag enrichment, semantic routing, generative ai infrastructure">
 <meta name="theme-color" content="#05070a">
 <meta property="og:type" content="website">
@@ -509,7 +509,7 @@ ul.ticks li b{color:#dce7f1;font-weight:600}
   <div class="provider-line">
     <p>Connect your stack</p>
     <ul aria-label="Supported upstreams">
-      <li>vLLM</li><li>Ollama</li><li>llama.cpp</li><li>LM Studio</li><li>OpenAI-compatible APIs</li><li>Anthropic</li>
+      <li>vLLM</li><li>Ollama</li><li>llama.cpp</li><li>LM Studio</li><li>OpenAI-compatible APIs</li><li>Anthropic</li><li>Google Vertex AI</li><li>Amazon Bedrock</li>
     </ul>
   </div>
 </div>
@@ -724,6 +724,18 @@ ul.ticks li b{color:#dce7f1;font-weight:600}
         </ul>
       </div>
     </div>
+    <div class="split" style="margin-top:32px">
+      <div class="panel reveal">
+        <h3><span class="mono-i">07</span> Agentic Knowledge</h3>
+        <p class="hint">Give Codex and Claude Code task-relevant repository knowledge without changing the agents themselves.</p>
+        <ul class="feature-list">
+          <li><b>agentic_knowledge</b> retrieves context from a Semantic Search Engine and injects it into the request after agentic routing</li>
+          <li>Learns from verified fixes and dead ends via a separately run indexing worker; can escalate a stuck agent to a stronger model</li>
+          <li>Fail-open: unavailable knowledge services do not block requests; retrieval needs SSE and persistent learning needs Redis</li>
+        </ul>
+        <p class="hint" style="margin-top:8px">Enable after routing: <code>LLM_ROUTER_UTILS_PLUGINS_PIPELINE="agentic_routing_codex,agentic_knowledge"</code></p>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -743,7 +755,7 @@ ul.ticks li b{color:#dce7f1;font-weight:600}
         <p>Point existing clients at the router and keep them there: <code>/v1/chat/completions</code>,
         <code>/v1/responses</code>, <code>/v1/embeddings</code> plus native <code>/v1/messages</code>
         for Anthropic. SSE streaming honors the <code>stream</code> flag with correct cache headers.</p>
-        <div class="tagrow"><span class="on">openai</span><span class="on">anthropic</span><span>vllm</span><span>ollama</span><span>llama.cpp</span><span>lm studio</span></div>
+        <div class="tagrow"><span class="on">openai</span><span class="on">anthropic</span><span class="on">vertex_ai</span><span class="on">bedrock</span><span>vllm</span><span>ollama</span><span>llama.cpp</span><span>lm studio</span></div>
       </article>
 
       <article class="card reveal">
@@ -1494,8 +1506,15 @@ $ <span class="k-str">./scripts/decrypt_auditor_logs.sh</span> 2026-09-09</pre>
         <div class="tagrow">
           <span class="on">vLLM</span><span class="on">Ollama</span><span class="on">llama.cpp</span>
           <span class="on">LM Studio</span><span class="on">OpenAI-compatible</span>
-          <span class="gd">Anthropic</span><span>local GGUF</span>
+          <span class="on">Anthropic</span><span class="on">Google Vertex AI</span>
+          <span class="on">Amazon Bedrock</span><span>local GGUF</span>
         </div>
+        <p class="hint" style="margin-top:12px">
+          Use <code>api_type</code> <code>vertex_ai</code> for Gemini on Google Vertex AI
+          (chat, streaming, tools and embeddings), or <code>bedrock</code> for Amazon Bedrock
+          Converse/ConverseStream and supported embeddings with AWS SigV4 authentication.
+          Anthropic supports the native <code>/v1/messages</code> endpoint.
+        </p>
       </div>
     </div>
   </div>
@@ -1550,6 +1569,13 @@ $ <span class="k-str">./scripts/decrypt_auditor_logs.sh</span> 2026-09-09</pre>
             <td><span class="dot part"></span></td>
           </tr>
           <tr>
+            <td class="name">anthropic / vertex ai / bedrock backends</td>
+            <td class="hl"><span class="dot ok"></span></td>
+            <td><span class="dot ok"></span></td>
+            <td><span class="dot ok"></span></td>
+            <td><span class="dot ok"></span></td>
+          </tr>
+          <tr>
             <td class="name">claude code over local models</td>
             <td class="hl"><span class="dot ok"></span><span class="st">&#9733;&#9733;&#9733;</span></td>
             <td><span class="dot part"></span></td>
@@ -1589,6 +1615,13 @@ $ <span class="k-str">./scripts/decrypt_auditor_logs.sh</span> 2026-09-09</pre>
             <td class="hl"><span class="dot ok"></span><span class="st">&#9733;&#9733;&#9733;</span></td>
             <td><span class="dot part"></span></td>
             <td><span class="dot no"></span></td>
+            <td><span class="dot part"></span></td>
+          </tr>
+          <tr>
+            <td class="name">agentic knowledge retrieval and learning (plugin)</td>
+            <td class="hl"><span class="dot ok"></span></td>
+            <td><span class="dot part"></span></td>
+            <td><span class="dot part"></span></td>
             <td><span class="dot part"></span></td>
           </tr>
           <tr>
@@ -1772,6 +1805,13 @@ $ <span class="k-str">./scripts/decrypt_auditor_logs.sh</span> 2026-09-09</pre>
             <td class="hl"><span class="dot ok"></span><span class="st">&#9733;&#9733;&#9733;</span></td>
             <td><span class="dot part"></span></td>
             <td><span class="dot no"></span></td>
+            <td><span class="dot part"></span></td>
+          </tr>
+          <tr>
+            <td class="name">agentic knowledge (codex / claude code, sse + optional redis)</td>
+            <td class="hl"><span class="dot ok"></span></td>
+            <td><span class="dot part"></span></td>
+            <td><span class="dot part"></span></td>
             <td><span class="dot part"></span></td>
           </tr>
           <tr>
