@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../../assets/consent.js" defer data-privacy="../../../privacy.html"></script>
+<title>POPRAWAKB — plan naprawy warstwy wiedzy (agenticknowledge) · v0.1.6 · llm-router docs</title>
+<meta name="description" content="# POPRAWA_KB — plan naprawy warstwy wiedzy (`agentic_knowledge`) &gt; **Status po realizacji (2026-10-28):** etap 0–4 wykonany na gałęzi `fix.kb-improvements`; każda pozycja ma status i commit poniżej przy sobie. Testy: `1624 passed, 19 skipp…">
+<meta name="theme-color" content="#05070a">
+<meta property="og:type" content="article">
+<meta property="og:title" content="POPRAWAKB — plan naprawy warstwy wiedzy (agenticknowledge) · v0.1.6 · llm-router docs">
+<meta property="og:description" content="# POPRAWA_KB — plan naprawy warstwy wiedzy (`agentic_knowledge`) &gt; **Status po realizacji (2026-10-28):** etap 0–4 wykonany na gałęzi `fix.kb-improvements`; każda pozycja ma status i commit poniżej przy sobie. Testy: `1624 passed, 19 skipp…">
+<meta name="docs-version" content="0.1.6">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2305070a'/%3E%3Cpath d='M8 22V10M8 16h9M17 10v12M17 13h7M17 19h7' stroke='%2300e59b' stroke-width='2' stroke-linecap='round' fill='none'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="../../assets/docs.css">
+<link rel="stylesheet" href="../../assets/pygments.css">
+<script src="../../assets/docs.js" defer></script>
+</head>
+<body class="page" data-version="0.1.6" data-search="search.json" data-latest="1.1.10" data-repo="plugins" data-docs-root="../../">
+<a class="skip" href="#main">skip to content</a>
+<header class="topbar">
+<div class="topbar-inner">
+<button class="burger" id="burger" aria-label="Toggle documentation menu" aria-expanded="false" aria-controls="sidebar">&#9776;</button>
+<a class="brand" href="../../.."><svg width="21" height="21" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="7" fill="#0b1119" stroke="#1a232e"/><path d="M8 22V10M8 16h9M17 10v12M17 13h7M17 19h7" stroke="#00e59b" stroke-width="2" stroke-linecap="round" fill="none"/></svg><span>llm<span class="dash">-</span>router</span><span class="brand-docs">/docs</span></a>
+<div class="topbar-right">
+<form class="search" id="search" role="search" autocomplete="off">
+<span class="search-icon" aria-hidden="true">&#8981;</span>
+<input id="q" type="search" placeholder="search this version" aria-label="Search documentation" role="combobox" aria-expanded="false" aria-controls="results" aria-autocomplete="list">
+<kbd>/</kbd>
+<div class="results" id="results" role="listbox" aria-label="Search results" hidden></div>
+</form>
+
+<a class="iconbtn" href="https://github.com/radlab-dev-group/llm-router-plugins" aria-label="Repository on GitHub" title="Repository on GitHub"><svg width="17" height="17" viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8a8 8 0 0 0 5.47 7.59c.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.46-.53.42-.02.72.39.82.55.48.81 1.25.94 1.56.73.2-.27.6-.94.94-1.13-.01-.2-.05-.82-.14-.98-.6.1-1.22.2-1.87.2-1.9 0-3.62-1.13-3.62-3.53 0-.78.28-1.42.74-1.92-.07-.18-.32-.91.07-1.9 0 0 .6-.19 1.97.74a6.8 6.8 0 0 1 3.58 0c1.37-.93 1.97-.74 1.97-.74.39.99.14 1.72.07 1.9.46.5.74 1.14.74 1.92 0 2.41-1.47 3.53-3.87 3.72.3.26.57.77.57 1.56 0 1.13-.012.04-.01 2.32 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg></a>
+</div>
+</div>
+</header>
+<div class="scrim" id="scrim" hidden></div>
+<div class="shell">
+<aside class="sidebar" id="sidebar"><nav class="nav-tree" aria-label="Documentation"><div data-nav-repo="router"><details class="nav-group"><summary class="nav-repo"><span class="repo-name">llm-router</span></summary><div data-router-context><div class="side-head"><span class="side-v mono">v1.1.10</span><span class="side-tag live">latest</span></div><a class="side-hub" href="../../router/1.1.10/index.html">documentation index</a></div><label class="vselect side-versions"><span class="sr-only">llm-router version</span><select id="versions-router" data-switch="router" aria-label="llm-router documentation version"><option value="../../router/1.1.10/index.html" data-version="1.1.10" data-root="../../router/1.1.10/index.html" selected>1.1.10  · latest</option>
+<option value="../../router/1.1.9/index.html" data-version="1.1.9" data-root="../../router/1.1.9/index.html">1.1.9</option>
+<option value="../../router/1.1.8/index.html" data-version="1.1.8" data-root="../../router/1.1.8/index.html">1.1.8</option>
+<option value="../../router/1.1.7/index.html" data-version="1.1.7" data-root="../../router/1.1.7/index.html">1.1.7</option>
+<option value="../../router/1.1.6/index.html" data-version="1.1.6" data-root="../../router/1.1.6/index.html">1.1.6</option>
+<option value="../../router/1.1.5/index.html" data-version="1.1.5" data-root="../../router/1.1.5/index.html">1.1.5</option>
+<option value="../../router/1.1.4/index.html" data-version="1.1.4" data-root="../../router/1.1.4/index.html">1.1.4</option>
+<option value="../../router/1.1.3/index.html" data-version="1.1.3" data-root="../../router/1.1.3/index.html">1.1.3</option>
+<option value="../../router/1.1.2/index.html" data-version="1.1.2" data-root="../../router/1.1.2/index.html">1.1.2</option>
+<option value="../../router/1.1.1/index.html" data-version="1.1.1" data-root="../../router/1.1.1/index.html">1.1.1</option>
+<option value="../../router/1.1.0/index.html" data-version="1.1.0" data-root="../../router/1.1.0/index.html">1.1.0</option>
+<option value="../../router/1.0.8/index.html" data-version="1.0.8" data-root="../../router/1.0.8/index.html">1.0.8</option>
+<option value="../../router/1.0.7/index.html" data-version="1.0.7" data-root="../../router/1.0.7/index.html">1.0.7</option>
+<option value="../../router/1.0.6/index.html" data-version="1.0.6" data-root="../../router/1.0.6/index.html">1.0.6</option>
+<option value="../../router/1.0.5/index.html" data-version="1.0.5" data-root="../../router/1.0.5/index.html">1.0.5</option>
+<option value="../../router/1.0.4/index.html" data-version="1.0.4" data-root="../../router/1.0.4/index.html">1.0.4</option>
+<option value="../../router/1.0.3/index.html" data-version="1.0.3" data-root="../../router/1.0.3/index.html">1.0.3</option>
+<option value="../../router/1.0.1/index.html" data-version="1.0.1" data-root="../../router/1.0.1/index.html">1.0.1</option>
+<option value="../../router/1.0.0/index.html" data-version="1.0.0" data-root="../../router/1.0.0/index.html">1.0.0</option>
+<option value="../../router/0.9.6/index.html" data-version="0.9.6" data-root="../../router/0.9.6/index.html">0.9.6</option>
+<option value="../../router/0.9.5/index.html" data-version="0.9.5" data-root="../../router/0.9.5/index.html">0.9.5</option>
+<option value="../../router/0.9.4/index.html" data-version="0.9.4" data-root="../../router/0.9.4/index.html">0.9.4</option>
+<option value="../../router/0.9.2/index.html" data-version="0.9.2" data-root="../../router/0.9.2/index.html">0.9.2</option>
+<option value="../../router/0.9.1/index.html" data-version="0.9.1" data-root="../../router/0.9.1/index.html">0.9.1</option>
+<option value="../../router/0.9.0/index.html" data-version="0.9.0" data-root="../../router/0.9.0/index.html">0.9.0</option>
+<option value="../../router/0.8.0/index.html" data-version="0.8.0" data-root="../../router/0.8.0/index.html">0.8.0</option>
+<option value="../../router/0.7.0/index.html" data-version="0.7.0" data-root="../../router/0.7.0/index.html">0.7.0</option>
+<option value="../../router/0.6.9/index.html" data-version="0.6.9" data-root="../../router/0.6.9/index.html">0.6.9</option>
+<option value="../../router/0.6.8/index.html" data-version="0.6.8" data-root="../../router/0.6.8/index.html">0.6.8</option>
+<option value="../../router/0.6.7/index.html" data-version="0.6.7" data-root="../../router/0.6.7/index.html">0.6.7</option>
+<option value="../../router/0.6.6/index.html" data-version="0.6.6" data-root="../../router/0.6.6/index.html">0.6.6</option>
+<option value="../../router/0.6.5/index.html" data-version="0.6.5" data-root="../../router/0.6.5/index.html">0.6.5</option>
+<option value="../../router/0.6.4/index.html" data-version="0.6.4" data-root="../../router/0.6.4/index.html">0.6.4</option>
+<option value="../../router/0.6.3/index.html" data-version="0.6.3" data-root="../../router/0.6.3/index.html">0.6.3</option>
+<option value="../../router/0.6.2/index.html" data-version="0.6.2" data-root="../../router/0.6.2/index.html">0.6.2</option>
+<option value="../../router/0.6.1/index.html" data-version="0.6.1" data-root="../../router/0.6.1/index.html">0.6.1</option>
+<option value="../../router/0.6.0/index.html" data-version="0.6.0" data-root="../../router/0.6.0/index.html">0.6.0</option>
+<option value="../../router/0.5.2/index.html" data-version="0.5.2" data-root="../../router/0.5.2/index.html">0.5.2</option>
+<option value="../../router/0.5.1/index.html" data-version="0.5.1" data-root="../../router/0.5.1/index.html">0.5.1</option>
+<option value="../../router/0.5.0/index.html" data-version="0.5.0" data-root="../../router/0.5.0/index.html">0.5.0</option>
+<option value="../../router/0.4.6/index.html" data-version="0.4.6" data-root="../../router/0.4.6/index.html">0.4.6</option>
+<option value="../../router/0.4.5/index.html" data-version="0.4.5" data-root="../../router/0.4.5/index.html">0.4.5</option>
+<option value="../../router/0.4.4/index.html" data-version="0.4.4" data-root="../../router/0.4.4/index.html">0.4.4</option>
+<option value="../../router/0.4.3/index.html" data-version="0.4.3" data-root="../../router/0.4.3/index.html">0.4.3</option>
+<option value="../../router/0.4.2/index.html" data-version="0.4.2" data-root="../../router/0.4.2/index.html">0.4.2</option>
+<option value="../../router/0.4.1/index.html" data-version="0.4.1" data-root="../../router/0.4.1/index.html">0.4.1</option>
+<option value="../../router/0.4.0/index.html" data-version="0.4.0" data-root="../../router/0.4.0/index.html">0.4.0</option>
+<option value="../../router/0.3.1/index.html" data-version="0.3.1" data-root="../../router/0.3.1/index.html">0.3.1</option>
+<option value="../../router/0.3.0/index.html" data-version="0.3.0" data-root="../../router/0.3.0/index.html">0.3.0</option>
+<option value="../../router/0.2.3/index.html" data-version="0.2.3" data-root="../../router/0.2.3/index.html">0.2.3</option>
+<option value="../../router/0.2.2/index.html" data-version="0.2.2" data-root="../../router/0.2.2/index.html">0.2.2</option>
+<option value="../../router/0.2.1/index.html" data-version="0.2.1" data-root="../../router/0.2.1/index.html">0.2.1</option>
+<option value="../../router/0.2.0/index.html" data-version="0.2.0" data-root="../../router/0.2.0/index.html">0.2.0</option>
+<option value="../../router/0.1.1/index.html" data-version="0.1.1" data-root="../../router/0.1.1/index.html">0.1.1</option>
+<option value="../../router/0.1.0/index.html" data-version="0.1.0" data-root="../../router/0.1.0/index.html">0.1.0</option></select></label><section class="nav-sec open"><h2 class="nav-sec-title"><a href="../../router/1.1.10/overview.html">Getting started</a></h2><ul><li><a href="../../router/1.1.10/overview.html">Overview</a></li><li><a href="../../router/1.1.10/llm-router-api/docs/installation.html">Installation</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="../../router/1.1.10/llm-router-api/docs/env-definitions.html">Configuration</a></h2><ul><li><a href="../../router/1.1.10/llm-router-api/docs/env-definitions.html">Environment Variables</a></li><li><a href="../../router/1.1.10/llm-router-api/docs/models-config.html">Models configuration description (JSON)</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="../../router/1.1.10/llm-router-api/docs/keepalive.html">Routing &amp; resilience</a></h2><ul><li><a href="../../router/1.1.10/llm-router-api/docs/keepalive.html">Keep‑Alive Utility Overview</a></li><li><a href="../../router/1.1.10/llm-router-api/docs/lb-strategies.html">Load Balancing Strategies</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="../../router/1.1.10/llm-router-api/core/auditor/index.html">Security &amp; auditing</a></h2><ul><li><a href="../../router/1.1.10/llm-router-api/core/auditor/index.html">Auditing subsystem – llm-router</a></li><li><a href="../../router/1.1.10/llm-router-api/docs/authentication.html">Authentication &amp; Authorization</a></li><li><a href="../../router/1.1.10/llm-router-api/docs/rate-limiting.html">Rate Limiting</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="../../router/1.1.10/llm-router-api/docs/routing-metrics.html">Observability</a></h2><ul><li><a href="../../router/1.1.10/llm-router-api/docs/routing-metrics.html">Router Prometheus Metrics</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="../../router/1.1.10/llm-router-api/index.html">REST API</a></h2><ul><li><a href="../../router/1.1.10/llm-router-api/index.html">REST API reference</a></li><li><a href="../../router/1.1.10/llm-router-api/endpoints/index.html">Endpoints Overview</a></li><li><a href="../../router/1.1.10/llm-router-api/docs/endpoint-dev.html">Endpoint Development Guide</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="../../router/1.1.10/llm-router-cli/index.html">CLI</a></h2><ul><li><a href="../../router/1.1.10/llm-router-cli/index.html">llm-router CLI — Command Reference</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="../../router/1.1.10/llm-router-lib/index.html">Python library</a></h2><ul><li><a href="../../router/1.1.10/llm-router-lib/index.html">llmrouterlib</a></li><li><a href="../../router/1.1.10/llm-router-lib/response-models.html">Response models</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="../../router/1.1.10/helm-charts/index.html">Deployment</a></h2><ul><li><a href="../../router/1.1.10/helm-charts/index.html">LLM‑Router Helm Chart</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="../../router/1.1.10/examples/index.html">Examples</a></h2><ul><li><a href="../../router/1.1.10/examples/index.html">Integration Examples with LLM Router</a></li><li><a href="../../router/1.1.10/examples/quickstart/index.html">Full Stack with Local Models</a></li><li><a href="../../router/1.1.10/examples/readme-llamaindex.html">Using LlamaIndex with Local Models via the LLM‑Router</a></li><li><a href="../../router/1.1.10/examples/quickstart/google-gemma3-12b-it/vllm.html">vLLM + google/gemma‑3‑12b‑it – Quick‑Start Guide (Ubuntu)</a></li><li><a href="../../router/1.1.10/examples/quickstart/speakleash-bielik-11b-v2-3-instruct/vllm.html">vLLM + speakleash/Bielik-11B-v2.3-Instruct – Przewodnik Szybkiego Startu (Ubuntu)</a></li><li><a href="../../router/1.1.10/examples/quickstart/speakleash-bielik-11b-v2-3-instruct/index.html">🚀 Przewodnik Szybkiego Startu dla speakleash/Bielik-11B-v2.3-Instruct z vLLM &amp; LLM‑Router</a></li><li><a href="../../router/1.1.10/examples/quickstart/google-gemma3-12b-it/index.html">🚀 Quick‑Start Guide for google/gemma-3-12b‑it with vLLM &amp; LLM‑Router</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="../../router/1.1.10/changelog.html">Release notes</a></h2><ul><li><a href="../../router/1.1.10/changelog.html">Changelog</a></li></ul></section></details></div><div data-nav-repo="plugins"><details class="nav-group"><summary class="nav-repo"><span class="repo-name">llm-router-plugins</span></summary><div class="side-head"><span class="side-v mono">v0.1.6</span><span class="side-tag live">latest</span></div><label class="vselect side-versions"><span class="sr-only">llm-router-plugins version</span><select id="versions-plugins" data-switch="plugins" aria-label="llm-router-plugins documentation version"><option value="poprawa-kb.html" data-version="0.1.6" data-root="index.html" selected>v0.1.6  · latest</option>
+<option value="../0.1.5/index.html" data-version="0.1.5" data-root="../0.1.5/index.html">v0.1.5</option>
+<option value="../0.1.4/index.html" data-version="0.1.4" data-root="../0.1.4/index.html">v0.1.4</option>
+<option value="../0.1.3/index.html" data-version="0.1.3" data-root="../0.1.3/index.html">v0.1.3</option>
+<option value="../0.1.2/index.html" data-version="0.1.2" data-root="../0.1.2/index.html">v0.1.2</option>
+<option value="../0.1.1/index.html" data-version="0.1.1" data-root="../0.1.1/index.html">v0.1.1</option>
+<option value="../0.1.0/index.html" data-version="0.1.0" data-root="../0.1.0/index.html">v0.1.0</option>
+<option value="../0.0.6/index.html" data-version="0.0.6" data-root="../0.0.6/index.html">v0.0.6</option>
+<option value="../0.0.5/index.html" data-version="0.0.5" data-root="../0.0.5/index.html">v0.0.5</option>
+<option value="../0.0.2/index.html" data-version="0.0.2" data-root="../0.0.2/index.html">v0.0.2</option>
+<option value="../0.0.1/index.html" data-version="0.0.1" data-root="../0.0.1/index.html">v0.0.1</option></select></label><section class="nav-sec open"><h2 class="nav-sec-title"><a href="index-2.html">Plugins overview</a></h2><ul><li><a href="index-2.html">Plugins overview</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="llm-router-plugins/maskers/fast-masker/index.html">Masker plugins</a></h2><ul><li><a href="llm-router-plugins/maskers/fast-masker/index.html">Overview</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="llm-router-plugins/utils/routing/agentic-routing/claude-code/index.html">Routing plugins</a></h2><ul><li><a href="llm-router-plugins/utils/routing/agentic-routing/claude-code/index.html">Claude Code Model Swap (agenticroutingclaude_code)</a></li><li><a href="llm-router-plugins/utils/routing/agentic-routing/codex/index.html">Codex CLI Routing (agenticroutingcodex)</a></li><li><a href="llm-router-plugins/utils/routing/agentic-routing/codex/codex-eval-howto-en.html">Codex routing calibration and evaluation</a></li><li><a href="llm-router-plugins/utils/routing/agentic-routing/codex/codex-eval-howto-pl.html">Kalibracja i ewaluacja routingu Codexa</a></li><li><a href="llm-router-plugins/utils/routing/semantic-biencoder/index.html">Semantic BiEncoder Routing (semanticbiencoderrouting)</a></li><li><a href="llm-router-plugins/utils/routing/index.html">Semantic Routing Plugins</a></li><li><a href="llm-router-plugins/utils/routing/simple-semantic/index.html">Simple Semantic Routing (simplesemanticrouting)</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="llm-router-plugins/utils/knowledge/agentic-knowledge/index.html">Utility plugins</a></h2><ul><li><a href="llm-router-plugins/utils/knowledge/agentic-knowledge/index.html">Agentic knowledge layer (agentic_knowledge)</a></li><li><a href="llm-router-plugins/utils/rag/langchain-rag.html">LangChain RAG Plugin for LLM‑Router</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="scripts/plugins/auto-codex/eval/index.html">Plugin scripts</a></h2><ul><li><a href="scripts/plugins/auto-codex/eval/index.html">Codex routing — offline corpus and replay</a></li><li><a href="scripts/plugins/auto-codex/payload-parser/index.html">Codex routing — per-request payload export</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="docs/plugin-agentic-routing-claude-code.html">Other plugins docs</a></h2><ul><li><a href="docs/plugin-agentic-routing-claude-code.html">Agentic Claude Code routing guide</a></li><li><a href="docs/plugin-agentic-routing-codex.html">Agentic Codex routing guide</a></li><li><a href="docs/plugin-semantic-biencoder-routing.html">Bi-encoder semantic routing guide</a></li><li><a href="changelog.html">Changelog</a></li><li><a href="docs/plugin-fast-masker.html">FastMasker plugin guide</a></li><li><a href="docs/knowledge-base.en.html">Knowledge base operator guide</a></li><li><a href="docs/plugin-langchain-rag.html">LangChain RAG plugin guide</a></li><li><a href="docs/plugin-nask-guard.html">NASK guardrail guide</a></li><li><a href="docs/plugin-pii-masker.html">PII masker plugin guide</a></li><li><a href="poprawa-kb.html" class="active">POPRAWAKB — plan naprawy warstwy wiedzy (agenticknowledge)</a></li><li><a href="docs/knowledge-base.pl.html">Przewodnik operatora bazy wiedzy</a></li><li><a href="docs/plugin-simple-semantic-routing.html">Simple semantic routing guide</a></li><li><a href="docs/plugin-sojka-guard.html">Sojka guardrail guide</a></li></ul></section></details></div><div data-nav-repo="services"><details class="nav-group"><summary class="nav-repo"><span class="repo-name">llm-router-services</span></summary><div class="side-head"><span class="side-v mono">v0.0.4</span><span class="side-tag live">latest</span></div><label class="vselect side-versions"><span class="sr-only">llm-router-services version</span><select id="versions-services" data-switch="services" aria-label="llm-router-services documentation version"><option value="../../services/0.0.4/index.html" data-version="0.0.4" data-root="../../services/0.0.4/index.html" selected>v0.0.4  · latest</option>
+<option value="../../services/0.0.3/index.html" data-version="0.0.3" data-root="../../services/0.0.3/index.html">v0.0.3</option>
+<option value="../../services/0.0.2/index.html" data-version="0.0.2" data-root="../../services/0.0.2/index.html">v0.0.2</option>
+<option value="../../services/0.0.1/index.html" data-version="0.0.1" data-root="../../services/0.0.1/index.html">v0.0.1</option></select></label><section class="nav-sec open"><h2 class="nav-sec-title"><a href="../../services/index-2.html">Services overview</a></h2><ul><li><a href="../../services/index-2.html">llm-router services</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="../../services/llm-router-services/guardrails/index.html">Guardrail services</a></h2><ul><li><a href="../../services/llm-router-services/guardrails/index.html">Guardrails Package</a></li><li><a href="../../services/llm-router-services/guardrails/speakleash/index.html">Integration of Bielik‑Guard‑0.1B as llm‑router guardrail service (Sojka)</a></li><li><a href="../../services/llm-router-services/guardrails/nask/index.html">Integration of HerBERT‑PL‑Guard with the naskpibguard_app.py Service</a></li></ul></section><section class="nav-sec open"><h2 class="nav-sec-title"><a href="../../services/docker/index.html">Docker &amp; deployment</a></h2><ul><li><a href="../../services/docker/index.html">LLM‑Router Services – Docker Build &amp; Run Guide</a></li></ul></section></details></div></nav><div class="side-foot"><a href="../../..">&larr;&nbsp;landing page</a><a class="mono" href="search.json">search.json</a></div></aside>
+<main class="main" id="main"><nav class="crumbs" aria-label="Breadcrumb">
+<a href="../../..">llm-router</a><span class="sep">/</span><a href="index.html">docs</a><span class="sep">/</span><a href="docs/plugin-agentic-routing-claude-code.html">Other plugins docs</a><span class="sep">/</span><em>POPRAWAKB — plan naprawy warstwy wiedzy (agenticknowledge)</em>
+</nav>
+<article class="prose"><h1 id="poprawa_kb-plan-naprawy-warstwy-wiedzy-agentic_knowledge">POPRAWA_KB — plan naprawy warstwy wiedzy (<code>agentic_knowledge</code>)<a class="headerlink" href="#poprawa_kb-plan-naprawy-warstwy-wiedzy-agentic_knowledge" title="link to this section">#</a></h1>
+<blockquote>
+<p><strong>Status po realizacji (2026-10-28):</strong> etap 0–4 wykonany na gałęzi <code>fix.kb-improvements</code>; każda pozycja ma status i commit poniżej przy sobie. Testy: <code>1624 passed, 19 skipped</code> (zestaw <code>agentic</code>), pełny przebieg <code>2067 passed, 19 skipped</code>.</p>
+</blockquote>
+<p>Data przeglądu: 2026-10-25 · Zakres: <code>llm_router_plugins/utils/knowledge/agentic_knowledge/</code>,
+<code>llm_router_plugins/cli/plugins/utils/agentic_knowledge/</code>, polityka
+<code>llm_router_plugins/resources/knowledge/agentic_knowledge.json</code>.
+Metoda: replay 841 nagrań z <code>agents-conversation/codex/payloads-gold</code> przez prawdziwy plugin
+(fałszywy tylko silnik i strumień) + testy właściwości na kodzie syntetycznym + testy
+jednostkowe repozytorium (<code>593 passed, 1 skipped</code>).</p>
+<h2 id="ustalenia-ktore-determinuja-plan">Ustalenia, które determinują plan<a class="headerlink" href="#ustalenia-ktore-determinuja-plan" title="link to this section">#</a></h2>
+<table>
+<thead>
+<tr>
+<th>miara z korpusu</th>
+<th>wartość</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>dowody faz: <code>command</code> / <code>test_failure</code> / <code>patch</code></td>
+<td>23 854 / 35 / <strong>4</strong></td>
+</tr>
+<tr>
+<td><strong>różne</strong> wywołania, które zakończyły się porażką testu</td>
+<td><strong>1</strong></td>
+</tr>
+<tr>
+<td>wywołania z kopertą <code>*** Begin Patch</code> przy 61 381 <code>function_call</code></td>
+<td>5</td>
+</tr>
+<tr>
+<td>narzędzie <code>apply_patch</code> na liście narzędzi tego buildu CLI</td>
+<td>brak (edycja przez <code>exec_command</code>)</td>
+</tr>
+<tr>
+<td>zapisane zdarzenia: <code>recipe</code> / <code>playbook</code> / <code>deadend</code></td>
+<td><strong>0 / 0 / 0</strong></td>
+</tr>
+<tr>
+<td>zapisane zdarzenia: <code>session_archive</code> / <code>doc</code></td>
+<td>1 877 / 57</td>
+</tr>
+<tr>
+<td><code>loop_count</code> maksimum (próg eskalacji 3)</td>
+<td>1</td>
+</tr>
+<tr>
+<td>żądania wykonujące zapytania do silnika</td>
+<td>177 / 841 (429 wywołań, 2–3 na żądanie)</td>
+</tr>
+<tr>
+<td>kwerendy z sygnaturą błędu / ze ścieżkami</td>
+<td>0 / 841 · 4 / 841</td>
+</tr>
+<tr>
+<td>tryby zwrócone przez router w 776 decyzjach</td>
+<td><code>git_review</code> 332, <code>implement</code> 171, <code>test</code> 138, <code>plan</code> 103, <code>compaction</code> 19, <code>aux_title</code> 13 — <strong><code>review</code> 0, <code>debug</code> 0</strong></td>
+</tr>
+</tbody>
+</table>
+<p>Wniosek nadrzędny: <strong>baza nie uczy się, bo nie widzi edycji agenta</strong> (nie dlatego, że miner jest
+zły), a <strong>odczyt płaci latencją za zbiory, które są puste</strong>. Wszystko poniżej jest podporządkowane
+naprawieniu tych dwóch rzeczy, przy zachowaniu dwóch invariantów: warstwa nigdy nie podnosi
+żądania i nigdy nie myli repozytoriów.</p>
+<h2 id="zasady-obowiazujace-przy-wszystkich-zmianach">Zasady obowiązujące przy wszystkich zmianach<a class="headerlink" href="#zasady-obowiazujace-przy-wszystkich-zmianach" title="link to this section">#</a></h2>
+<ol>
+<li>Fail-open na ścieżce żądania pozostaje nienaruszalny; nowe ścieżki błędu kończą się adnotacją,
+   nie wyjątkiem.</li>
+<li>Każda zmiana ma test regresji <em>przed</em> zmianą kodu (tam, gdzie da się go zrobić bez silnika).</li>
+<li>Klucze filtrów (<code>thread_id</code>, <code>scope</code>, <code>kind</code>, <code>mode</code>, <code>phase</code>, <code>category</code>, <code>source_file</code>,
+   <code>doc_type</code>) pozostają zapisywane bez maskowania.</li>
+<li>Zmiany w <code>phase.py</code> / <code>payload.py</code> dotykają też routingu — wymagają przejścia pełnego
+   <code>pytest -k agentic</code> (nie tylko <code>agentic_knowledge</code>).</li>
+</ol>
+<hr />
+<h2 id="etap-0-kliny-i-utrata-danych-p0-jeden-dzien-ryzyko-niskie">ETAP 0 — kliny i utrata danych (P0, jeden dzień, ryzyko niskie)<a class="headerlink" href="#etap-0-kliny-i-utrata-danych-p0-jeden-dzien-ryzyko-niskie" title="link to this section">#</a></h2>
+<p>Te cztery poprawki nie zmieniają zachowania zdrowego ruchu; eliminują stany, w których warstwa
+przestaje cokolwiek robić albo kasuje własną wiedzę.</p>
+<h3 id="01-worker-jedno-zdarzenie-zawiesza-cay-strumien">0.1 Worker: jedno zdarzenie zawiesza cały strumień<a class="headerlink" href="#01-worker-jedno-zdarzenie-zawiesza-cay-strumien" title="link to this section">#</a></h3>
+<blockquote>
+<p>Zrobione — <code>11e880f</code>
+<code>worker.py:386</code> — <code>self._config.collection(event.scope, event.kind)</code> jest wywołane <strong>poza</strong>
+<code>try</code>, więc <code>ValueError</code> z <code>config.py:141-143</code> ucieka ponad pętlą batcha: zdarzenie nigdy nie
+trafia do <code>XACK</code>, licznik prób nie rośnie i każdy kolejny odczyt przetwarza batch od nowa.</p>
+</blockquote>
+<ul>
+<li><strong>Zmiana:</strong> przenieść wyliczenie kolekcji do <code>try</code> i potraktować wyjątek jak zwykłe
+  <code>_settle_failure(entry_id, event, exc)</code>; dodatkowo log z <code>entry_id</code> i rodzajem przyczyny
+  (bez treści).</li>
+<li><strong>Test:</strong> zdarzenie z <code>scope="-"</code> w strumieniu → batch kończy pracę, zdarzenie po limicie prób
+  zostaje odrzucone z logiem, pozostałe indeksują się normalnie.</li>
+<li><strong>Kryterium:</strong> <code>XPENDING</code> nie rośnie monotonicznie w czasie.</li>
+</ul>
+<h3 id="02-cli-dokumentow-scope-trafia-do-silnika-bez-normalizacji">0.2 CLI dokumentów: <code>--scope</code> trafia do silnika bez normalizacji<a class="headerlink" href="#02-cli-dokumentow-scope-trafia-do-silnika-bez-normalizacji" title="link to this section">#</a></h3>
+<blockquote>
+<p>Zrobione — <code>9832570</code>
+<code>docs.py:219</code> bierze <code>args.scope</code> dosłownie; <code>--scope "-"</code> albo <code>" "</code> produkuje scope, którego
+<code>config.collection()</code> odmawia (czyli dokładnie sytuację z 0.1).</p>
+</blockquote>
+<ul>
+<li><strong>Zmiana:</strong> przepuścić <code>--scope</code> przez <code>scope_key(...)</code>/ten sam mechanizm co ścieżka proxy i
+  przerwać z jasnym komunikatem, gdy wynik jest pusty (komunikat już istnieje dla przypadku
+  domyślnego — rozszerzyć na jawne <code>--scope</code>).</li>
+<li><strong>Test:</strong> <code>--scope "-"</code>, <code>--scope " "</code>, <code>--scope "../x"</code> → błąd walidacji przed jakimkolwiek
+  zapisem do Redis.</li>
+</ul>
+<h3 id="03-cofniecie-edycji-pliku-usuwa-jego-dokumentacje">0.3 Cofnięcie edycji pliku usuwa jego dokumentację<a class="headerlink" href="#03-cofniecie-edycji-pliku-usuwa-jego-dokumentacje" title="link to this section">#</a></h3>
+<blockquote>
+<p>Zrobione — <code>435379e</code>
+<code>docs_ingestor.py:1016-1049</code>: odcisk dokumentu jest liczony z treści, a <code>events.py</code> deduplikuje
+po <code>SET NX &lt;fingerprint&gt; EX 604800</code>. Sekwencja <code>v1 → v2 → git checkout</code> w oknie dedupu publikuje
+<code>docs_prune</code> na nazwie od <code>v2</code>, a publikacja kopii <code>v1</code> zostaje <strong>cicho</strong> odrzucona jako duplikat.
+Dokument znika z kolekcji i nie wraca, dopóki treść się nie zmieni.</p>
+</blockquote>
+<ul>
+<li><strong>Zmiana (dwuczęściowa):</strong></li>
+<li><code>docs_prune</code> publikowany wyłącznie dla plików, których dokument zastępczy faktycznie
+     przeszedł (<code>published</code>, nie <code>attempted</code> — por. <code>docs_ingestor.py:1040</code>);</li>
+<li>przy publikacji <code>doc</code> odświeżać TTL istniejącego claimu zamiast polegać na jego
+     nieistnieniu (albo: claim per <code>(fingerprint, document_name)</code> z nadpisaniem).</li>
+<li><strong>Test:</strong> stan <code>v1</code> → skan (<code>v2</code>) → przywrócenie <code>v1</code> → skan; asercja: w kolekcji dokładnie
+  jeden aktualny dokument pliku, a <code>state</code> wskazuje nazwę, która istnieje.</li>
+</ul>
+<h3 id="04-scope-nazwy-spoza-ascii-traca-wiedze-albo-mieszaja-repozytoria">0.4 Scope: nazwy spoza ASCII tracą wiedzę albo mieszają repozytoria<a class="headerlink" href="#04-scope-nazwy-spoza-ascii-traca-wiedze-albo-mieszaja-repozytoria" title="link to this section">#</a></h3>
+<blockquote>
+<p>Zrobione — <code>f4ae064</code> (normalizacja i transliteracja), <code>baddc29</code> (zgoda <code>--scope</code> z drogą nie-ASCII)
+<code>scope.py:67,303</code> — normalizacja <code>[^a-z0-9._-]+</code> → <code>-</code> kasuje znaki nie-ASCII.</p>
+</blockquote>
+<p>Zmierzone: <code>/home/u/проект</code>, <code>/home/u/日本</code>, <code>/home/u/-</code> → <strong>scope pusty</strong> (cała warstwa bezgłośnie
+niedziała); <code>/home/u/repo-ą</code> i <code>/home/u/repo-ę</code> → <strong>to samo kolekcja</strong> <code>agentic_kb_repo</code>;
+<code>ścieżki</code> → <code>cie-ki</code>.</p>
+<ul>
+<li><strong>Zmiana:</strong> transliteracja <code>unicodedata.normalize("NFKD", …)</code> + mapowanie znaku na ASCII przed
+  usunięciem; gdy po transliteracji wynik jest pusty — deterministyczny skrót od pełnej ścieżki
+  (<code>sha1(path)[:8]</code>) jako scope, nigdy pusty; kolizja dwóch różnych ścieżek do tego samego klucza
+  jest błędem konfiguracyjnym logowanym raz na proces (ewentualnie wymuszającym <code>scope.overrides</code>).</li>
+<li><strong>Test:</strong> tabela <code>проект</code>/<code>日本</code>/<code>ścieżki</code>/<code>repo-ą</code>/<code>repo-ę</code> — wszystkie dają niepusty klucz,
+  różne ścieżki dają różne klucze, a <code>collection()</code> nigdy nie rzuca.</li>
+</ul>
+<hr />
+<h2 id="etap-1-przywrocenie-widzialnosci-edycji-p0-wartosc-24-dni">ETAP 1 — przywrócenie widzialności edycji (P0, wartość, 2–4 dni)<a class="headerlink" href="#etap-1-przywrocenie-widzialnosci-edycji-p0-wartosc-24-dni" title="link to this section">#</a></h2>
+<p>Bez tego etapu pozostałe poprawki nie mają czego odzyskiwać: przy 4 dowodach patcha na 841 żądań
+<code>recipe</code>, <code>playbook</code> i <code>deadend</code> pozostaną puste.</p>
+<h3 id="11-rejestr-dowodow-patcha-dla-edycji-przez-exec_command">1.1 Rejestr dowodów patcha dla edycji przez <code>exec_command</code><a class="headerlink" href="#11-rejestr-dowodow-patcha-dla-edycji-przez-exec_command" title="link to this section">#</a></h3>
+<blockquote>
+<p>Zrobione — <code>7323167</code> (dowód <code>weak</code> z <code>cat &gt;</code>/<code>tee</code>/<code>sed -i</code>/heredok pythona, <code>metadata.edited_by="exec"</code>; weryfikacja przepisu wymaga <code>strong</code> — hamulec z planu działa)
+Obecnie dowód <code>patch</code> dają wyłącznie koperty <code>*** Begin Patch</code> (<code>README</code>: „a quoted envelope in a
+command that applies nothing does not count" — zasada zostaje). W tym buildzie CLI edycje idą
+przez <code>cat &gt; plik &lt;&lt;'EOF'</code>, <code>tee</code>, <code>sed -i</code>, <code>python - &lt;&lt;'EOF' … write_text(...)</code>.</p>
+</blockquote>
+<ul>
+<li><strong>Zmiana:</strong> wprowadzić <strong>dwa poziomy</strong> sygnału edycji:</li>
+<li><code>strong</code> (obecny) — koperta patcha: pozwala pisać <code>recipe</code>, <code>playbook</code>, <code>deadend</code>;</li>
+<li><code>weak</code> — strukturalne zapisy pliku rozpoznawane z samej komendy i jej argumentów:
+    <code>cat &gt; path &lt;&lt;EOF</code>, <code>… | tee path</code>, <code>sed -i</code>, <code>open(path, "w")</code>/<code>write_text(</code> w heredoku
+    pythona; dowód <code>weak</code> pozwala pisać <strong>tylko <code>playbook</code></strong> i nigdy nie domyka weryfikacji
+    przepisu.
+  Nowe dowody trafiają do <code>phase.py</code> (wspólne z routingiem) z osobnym <code>reason=</code>, żeby dało się
+  liczyć, ile z nich to fałszywe trafienia.</li>
+<li><strong>Ryzyko i hamulec:</strong> fałszywy patch → fałszywy playbook. Dlatego <code>weak</code> nie startuje
+  weryfikacji (<code>_verifies</code> wymaga zielonego przebiegu po <code>strong</code>), a <code>miner</code> oznacza dokument
+  polem <code>metadata.edited_by="exec"</code>; polityka czytająca może go później odrzucić jednym filtrem.</li>
+<li><strong>Test:</strong> dla 10 nagrań z korpusu, w których agent zapisał plik przez <code>cat &gt;</code>, powstaje dowód
+  <code>weak</code>; dla <code>cat &gt; notes.md &lt;&lt;EOF</code> <strong>bez</strong> zmian kodu — nie powstaje <code>strong</code>.</li>
+</ul>
+<h3 id="12-mierzalnik-dlaczego-epizod-nie-powsta">1.2 Mierzalnik: dlaczego epizod nie powstał<a class="headerlink" href="#12-mierzalnik-dlaczego-epizod-nie-powsta" title="link to this section">#</a></h3>
+<blockquote>
+<p>Zrobione — <code>b1e4de8</code> (liczniki <code>no_failure</code>/<code>no_patch</code>/<code>not_verified</code>/<code>covered_by_recipe</code>/<code>published</code> w diagnostyce minera)
+Zanim dołożymy cokolwiek dalej, niech mining mówi, czego zabrakło — dziś „brak zdarzeń" i „brak
+dowodów" wyglądają identycznie.</p>
+</blockquote>
+<ul>
+<li><strong>Zmiana:</strong> liczniki w adnotacji <code>routing.knowledge.write</code>: <code>no_failure</code>, <code>no_patch</code>,
+  <code>not_verified</code>, <code>covered_by_recipe</code>, <code>published</code>.</li>
+<li><strong>Kryterium:</strong> po 1.1 na korpusie <code>no_patch</code> spada z 100% do wartości odzwierciedlającej realne
+  braki, a replay syntetyczny (<code>failure → patch → green</code>) daje <code>recipe</code>.</li>
+</ul>
+<h3 id="13-nie-pakac-nad-pustym-repozytorium">1.3 Nie płakać nad pustym repozytorium<a class="headerlink" href="#13-nie-pakac-nad-pustym-repozytorium" title="link to this section">#</a></h3>
+<blockquote>
+<p>Zrobione — <code>757b74d</code> (zimny scope pomija wyszukiwanie wydobytą, archiwum i dokumentacja pytane jak zawsze)
+Repozytorium, które nie ma jeszcze żadnego wiedzy wydobytej, nie powinno płacić za jego
+przeszukanie.</p>
+</blockquote>
+<ul>
+<li><strong>Zmiana:</strong> licznik zdarzeń zapisanych per scope w Redis (albo flaga „kolekcja istnieje");
+  dopóki zero — pomijamy szukanie po <code>recipe</code>/<code>playbook</code>/<code>deadend</code>, zostawiając <code>doc</code> i
+  <code>session_archive</code>.</li>
+<li><strong>Kryterium:</strong> na korpusie liczba wywołań silnika na żądanie spada z 2,4 do ~1,2 bez utraty
+  czegokolwiek, co dziś wraca.</li>
+</ul>
+<hr />
+<h2 id="etap-2-odczyt-jakosc-odpowiedzi-i-koszt-p1-35-dni">ETAP 2 — odczyt: jakość odpowiedzi i koszt (P1, 3–5 dni)<a class="headerlink" href="#etap-2-odczyt-jakosc-odpowiedzi-i-koszt-p1-35-dni" title="link to this section">#</a></h2>
+<h3 id="21-kwerenda-bez-tego-co-wiadomo">2.1 Kwerenda bez tego, co wiadomo<a class="headerlink" href="#21-kwerenda-bez-tego-co-wiadomo" title="link to this section">#</a></h3>
+<blockquote>
+<p>Zrobione — <code>223a823</code> (sygnatura błędu i <code>test_command</code> z minera do kwerendy <code>debug</code>; <code>touched_paths</code> jadą z dowodów edycji z 1.1)
+Zmierzone: 0/841 kwerend ma sygnaturę błędu, 4/841 ma ścieżki — mimo że obie rzeczy są policzone
+w minerze i w adapterze.</p>
+</blockquote>
+<ul>
+<li><strong>Zmiana A:</strong> wynieść sygnaturę z <code>miner._loop</code> (wynik miningu już ją zwraca jako
+  <code>signature_hash</code>) do <code>AgentTurn</code>, a <code>QueryBuilder</code> ma dokładać do kwerendy <code>debug</code> czytelne
+  <code>signature</code> (nie sam hash) + <code>test_command</code>.</li>
+<li><strong>Zmiana B:</strong> <code>git_review</code>/<code>review</code>/<code>test</code> mają dokładać <code>touched_paths</code>; skoro są puste przy
+  braku dowodów patcha, po etapie 1.1 pojawią się naturalnie.</li>
+<li><strong>Test:</strong> na syntetycznym <code>debug</code> z znaną sygnaturą kwerenda zawiera jej tekst; asercja
+  długości — kwerenda nie przekracza 512 znaków i nie wciąga całego okna.</li>
+</ul>
+<h3 id="22-skala-wynikow-przestac-mieszac-rrf-z-bonusami">2.2 Skala wyników: przestać mieszać RRF z bonusami<a class="headerlink" href="#22-skala-wynikow-przestac-mieszac-rrf-z-bonusami" title="link to this section">#</a></h3>
+<blockquote>
+<p>Zrobione — <code>a8b996e</code> (ranga RRF remapowana do 0–1 wewnątrz zbioru, <code>score_scale</code> w trafieniu i w adnotacji, progi walidowane względem skali; <code>min_similarity</code> zostaje po stronie silnika).
+Domknięte po pomiarze na żywym silniku — <code>f666970</code>: test obiecujący, że „przy włączonym rerankerze próg 0,75 jest osiągalny”, nie zachodził na silniku odniesienia: przepis niosący własną sygnaturę zapytania dawał <code>score=0,731</code> z rerankerem i <code>1,0</code> bez niego. Skala to nie nazwa — jest noszona na każdym trafieniu (<code>score_scale</code>) i decyzja eskalacji czyta próg tylko na skalach, na których on coś znaczy (cosine, remapowane RRF, brak skali = próg zostaje); na skali rerankera decyduje tożsamość sygnatury + <code>test_command</code>, a decyzja to nazywa (<code>strong_recipe_identity</code>), więc reguła nie znika cicho. Walidacja progu na starcie wypala też dla nogi rerankera (wcześniej wracała bez słowa).
+<code>assembler.py:400</code> liczy <code>vote = base * weight + bonus</code>, przy czym <code>base</code> to <code>score_normalized</code>,
+czyli <strong>przy domyślnej konfiguracji (<code>hybrid_search: true</code>, <code>rerank_results: false</code>) ranga RRF
+o maksimum ~0,033</strong>, a bonusy to 0,20–0,44 (<code>assembler.py:64-84</code>). Wykonany test: przy
+<code>score = 0,033</code> wynik to 0,033, <code>has_strong_recipe = False</code>, a maksymalny osiągalny wynik
+przepisu to ~0,47 przy progu <code>strong_recipe_score: 0.75</code>.</p>
+</blockquote>
+<p>Konsekwencje dziś: (a) o kolejności decyduje waga źródła i trafienie ścieżką, nie podobieństwo;
+(b) po włączeniu eskalacji zasada „najpierw daj szansę przepisowi" nigdy nie zadziała.</p>
+<ul>
+<li><strong>Zmiana:</strong> wprowadź <code>score_scale</code> (już zwracany przez silnik, patrzy na to <code>sse.py</code>) jako
+  jawny argument wejściowy assemblera i <strong>znormalizuj głos w ramach skali</strong>: dla <code>rrf</code> przelicz rangę na
+  <code>0…1</code> (albo użyj kolejności rang i traktuj bonusy jako przesunięcia o ułamek szerokości
+  skali), dla <code>cosine</code>/<code>reranker</code> zostaw obecne progi. Progi konfiguracyjne (<code>min_similarity</code>,
+  <code>strong_recipe_score</code>) muszą być walidowane względem skali — brak zgodności to ostrzeżenie na
+  starcie, nie cichy brak trafień.</li>
+<li><strong>Dodatkowo:</strong> <code>min_similarity</code> pozostaje progiem <strong>nogi wektorowej po stronie silnika</strong> (udokumentowane
+  w <code>sse.py</code>), więc assembler nie może go ponownie nakładać na <code>score_normalized</code>; jeśli dziś
+  gdzieś nakłada — usunąć.</li>
+<li><strong>Test:</strong> dwa dokumenty, jeden z bazą 10× lepszą, drugi z trafieniem ścieżką — przy <code>rrf</code>
+  wygrywa lepszy bazą (bonus nie może przykryć rzędu wielkości); przy włączonym rerankerze próg
+  0,75 jest osiągalny i <code>keep</code> zamiast <code>escalate</code>.</li>
+</ul>
+<h3 id="23-polityki-trybow-ktorych-router-nie-emituje">2.3 Polityki trybów, których router nie emituje<a class="headerlink" href="#23-polityki-trybow-ktorych-router-nie-emituje" title="link to this section">#</a></h3>
+<blockquote>
+<p>Zrobione — <code>ec0d3c7</code> (<code>git_review</code> dostaje <code>doc</code> <code>guide</code>/<code>contributing</code>/<code>security</code>, <code>review</code> jest aliasem; test liczy tryby z konfiguracji routingu, więc lista nie rozjedzie się ponownie)
+<code>review</code> i <code>debug</code> nie pojawiły się ani razu w 776 zagranych decyzjach, a <code>git_review</code> (332 żądania)
+<strong>nie ma źródła <code>doc</code></strong> w ogóle. Czyli polityka pisana pod przegląd kodu (jedyne <code>security</code> +
+<code>contributing</code>) nigdy nie startuje.</p>
+</blockquote>
+<ul>
+<li><strong>Zmiana:</strong> w polityce <code>resources/knowledge/agentic_knowledge.json</code>:</li>
+<li>dodać <code>doc</code> (<code>guide</code>, <code>contributing</code>, <code>security</code>) do <code>git_review</code>;</li>
+<li>oznaczyć <code>review</code> jako alias <code>git_review</code> (albo przenieść jego treść do <code>git_review</code> i
+    usunąć wpis), żeby nie utrzymywać martwej konfiguracji;</li>
+<li>przemyśleć <code>escalation_model_name</code> dla <code>debug</code> w sytuacji, gdy <code>debug</code> nie jest emitowany
+    (wtedy realną ścieżkę eskalacji ma tylko <code>test</code>).</li>
+<li><strong>Test:</strong> dla każdego trybu, który router jest w stanie zwrócić (wyczerpująca lista z
+  <code>resources/routing/agentic_routing_codex.json</code>), istnieje polityka z co najmniej jednym źródłem
+  nie pustym. Test wylicza tryby z konfiguracji routingu, żeby lista się nie rozjechała ponownie.</li>
+</ul>
+<h3 id="24-latencja-jeden-budzet-mniej-wywoan-rownolegosc">2.4 Latencja: jeden budżet, mniej wywołań, równoległość<a class="headerlink" href="#24-latencja-jeden-budzet-mniej-wywoan-rownolegosc" title="link to this section">#</a></h3>
+<blockquote>
+<p>(a) zrobione — <code>d062dc1</code> (źródła trybu pytane równolegle pod jednym budżetem); (b) częściowo — <code>d062dc1</code> (domyślny <code>read.timeout_seconds</code> 6.0 → 3.0; obniżenie <code>SSE_API_TIMEOUT</code> do ~1.5 pominięte, bo wymaga pomiaru na prawdziwym silniku); (c) pominięte — kolejność ofiary budżetu zostaje kolejnością polityki, wymaga pomiaru na prawdziwym silniku</p>
+</blockquote>
+<p>Dziś 2–3 wywołania seryjnie przy <code>read.timeout_seconds: 6.0</code> i medianie ~1,7 s na hybrid search
+(własny pomiar README) — czyli ogon 4–5 s na 21% żądań.</p>
+<ul>
+<li><strong>Zmiana:</strong> (a) uruchamiać zapytania do różnych kolekcji równolegle (krótka pula wątków,
+  limit = liczba źródeł, bez zmian kontraktu <code>KnowledgeStore.search</code>); (b) obniżyć
+  <code>read.timeout_seconds</code> do ~3,0 i <code>SSE_API_TIMEOUT</code> do ~1,5 po pomiarze na prawdziwym silniku;
+  (c) kolejność źródeł w trybie tak, aby najtańsze i najbardziej wartościowe szło pierwsze, a
+  porzucone przy wyczerpaniu budżetu było najmniej wartościowe (dziś kolejność = kolejność w
+  polityce, czyli ofiarą pada najczęściej dokumentacja).</li>
+<li><strong>Kryterium:</strong> p95 dodatkowego czasu warstwy na żądanie &lt; 400 ms przy włączonym cache i
+  &lt; 1,5 s przy pudle; liczba wywołań na żądanie ≤ 1,5.</li>
+</ul>
+<h3 id="25-cache-generacji-a-zmiana-trybu">2.5 Cache generacji a zmiana trybu<a class="headerlink" href="#25-cache-generacji-a-zmiana-trybu" title="link to this section">#</a></h3>
+<blockquote>
+<p>Zrobione — <code>5a4282c</code> (klucz cache nosi podpis polityki trybu; zmiana trybu na inną politykę nie podaje odpowiedzi poprzedniego, przy tej samej polityce blok jest identyczny i zero wywołań)
+Klucz unieważnia każda zmiana <code>mode</code>, a tryb w trakcie jednej komendy skacze (pudło ~48% żądań,
+~60% par w obrębie tej samej generacji).</p>
+</blockquote>
+<ul>
+<li><strong>Zmiana:</strong> nie unieważniać przy zmianie trybie, jeśli nie zmienił się fingerprint dowodów;
+  przy pudle z powodu trybu — przeliczać tylko sekcje, których tryb dotyczy, zamiast całego
+  bloku. Atrybuty rozjechania bajtów pod provider prompt-cache opisane w README mają wtedy
+  szansę być spełnione naprawdę.</li>
+<li><strong>Test:</strong> ta sama generacja, dwa tryby, te same dowody → identyczny blok i zero wywołań.</li>
+</ul>
+<hr />
+<h2 id="etap-3-dokumenty-retencja-spojnosc-stanu-szczelnosc-p2-23-dni">ETAP 3 — dokumenty: retencja, spójność stanu, szczelność (P2, 2–3 dni)<a class="headerlink" href="#etap-3-dokumenty-retencja-spojnosc-stanu-szczelnosc-p2-23-dni" title="link to this section">#</a></h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>problem</th>
+<th>zmiana</th>
+<th>status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>3.1</td>
+<td><code>docs_ingestor.py:1048</code> zapisuje stan po skanie uciętym przez <code>max_files</code>; <code>_next_entries</code> zostawia tylko sczytane pliki, więc dokumenty pozostałych są nieusuwalne</td>
+<td>nie zapisywać stanu przy <code>truncated</code>, albo zapisywać z flagą „lista niepełna" i przy niej nie prune'ować nigdy</td>
+<td>Zrobione — <code>3e5aff1</code> (skan ucięty nie prune'uje plików, których nie zobaczył)</td>
+</tr>
+<tr>
+<td>3.2</td>
+<td>retencja sprząta wyłącznie <code>_sessions</code> (<code>worker.py:962-992</code>); <code>_docs</code> nie starzeje się w ogóle</td>
+<td>objąć retencją <code>_docs</code> (TTL liczony od publikacji dokumentu) albo udokumentować, że <code>_docs</code> czyści wyłącznie prune</td>
+<td>Pominięte — niska priorytetowość: <code>_docs</code> czyści wyłącznie przez prune, to już jest zachowanie; TTL od publikacji to osobna decyzja</td>
+</tr>
+<tr>
+<td>3.3</td>
+<td><code>doc_context.py:208-227</code>: śledzenie fence trzyma 3 znaki i domyka po <code>startswith</code>, więc blok <code>```</code>zamyka się na przykładzie z <code>```</code> i komentarze <code># …</code> stają się „nagłówkami" wstrzykiwanymi bez maskowania</td>
+<td>pełne porównanie długości znaku otwierającego; test na przykładach z README w README; asercja, że w dyżescie nie ma linii zaczynającej się od <code>#</code> wewnątrz bloku kodu</td>
+<td>Zrobione — <code>3b2a430</code> (fence domyka się na pełnym znaku otwierającym, nie na prefiksie)</td>
+</tr>
+<tr>
+<td>3.4</td>
+<td>pliki binarne/nie-UTF-8 dekodowane z <code>errors="replace"</code> trafiają do indeksu jako mojibake</td>
+<td>odmówić publikacji pliku, który nie jest tekstem (stosunek znaków niedrukowalnych)</td>
+<td>Pominięte — niska priorytetowość: <code>errors="replace"</code> zostaje; odmowa nie-tekstu to osobna zmiana</td>
+</tr>
+<tr>
+<td>3.5</td>
+<td><code>--force</code> przy częściowej porażce (część <code>xadd</code> nie weszła) kończy się, ale <code>state</code> opisuje stan <strong>sprzed</strong> operacji</td>
+<td>nie ruszać stanu przy statusie <code>unavailable</code>; komunikat ma mówić, ile zdarzeń weszło</td>
+<td>Zrobione — <code>435379e</code> (claim odświeża TTL; przy <code>unavailable</code> stan nie opisuje stanu sprzed operacji)</td>
+</tr>
+<tr>
+<td>3.6</td>
+<td><code>docs_ingestor.py:1311</code> liczy kubełek nazwy po <code>date.today()</code>, worker po <code>created_at</code> — skan i indeksowanie przez północ zostawiają dokument, którego prune nigdy nie znajdzie</td>
+<td>jedna strefa/timestamp: nazwa liczona z <code>created_at</code> zdarzenia</td>
+<td>Zrobione — <code>8141007</code> (nazwa liczona z <code>created_at</code> zdarzenia, nie z <code>date.today()</code>)</td>
+</tr>
+<tr>
+<td>3.7</td>
+<td><code>--force</code> znosi wszystkie limity bez zastępczego zabezpieczenia (cały markdown do pamięci i na strumień)</td>
+<td>zostawić możliwość, ale wymagać jawnego <code>--yes-unbounded</code> przy przekroczeniu np. 20 MB i logować rozmiar</td>
+<td>Pominięte — niska priorytetowość: <code>--yes-unbounded</code> to zabezpieczenie operacyjne, nie poprawka zachowania</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="etap-4-ewaluacja-i-obserwowalnosc-p2-2-dni">ETAP 4 — ewaluacja i obserwowalność (P2, 2 dni)<a class="headerlink" href="#etap-4-ewaluacja-i-obserwowalnosc-p2-2-dni" title="link to this section">#</a></h2>
+<p>Obecna ewaluacja nie jest w stanie pokazać żadnej z powyższych regresji: <code>_FakeStore</code>
+(<code>evaluation.py:113-144</code>) indeksuje <strong>tylko przepisy</strong>, ignoruje <code>doc_types</code>, kolekcje i
+<code>min_similarity</code>, a <code>assemble()</code> wywoływany jest bez <code>doc_context</code>, więc <code>injected_chars_per_turn</code>
+zaniża to, co realnie jedzie do modelu (mapa dokumentów to do 700 znaków na żądanie, domyślnie
+włączone).</p>
+<ul>
+<li><strong>4.1</strong> Fake store: respektuj kolekcję, <code>doc_types</code>, <code>min_similarity</code> i kolejność rang;
+  indeksuj wszystkie rodzaje, nie tylko <code>recipe</code>. <strong>Status:</strong> Zrobione — <code>dd05abb</code> (fake store respektuje kolekcję, <code>doc_types</code> i kolejność rang; indeksuje wszystkie rodzaje)</li>
+<li><strong>4.2</strong> <code>assemble(...)</code> w replay dostarczaj <code>doc_context</code>; mierz <code>injected_chars_per_turn</code> z nim
+  i bez, jako dwie metryki. <strong>Status:</strong> Zrobione — <code>dd05abb</code> (<code>doc_context</code> w replay; <code>injected_chars_per_turn</code> mierzony z nim i bez, jako dwie metryki)</li>
+<li><strong>4.3</strong> Zestaw syntetyczny (bo korpus prawdziwych przepisów nie zawiera): <code>failure → patch →
+  green</code>, <code>failure → patch → failure → patch → green</code>, <code>patch → green</code>, <code>patch → green → failure</code>,
+  edycja przez <code>cat &gt;</code> — z oczekiwanymi rodzajami i odciskami dokumentów. To ten zestaw ma pilnować
+  etapu 1. <strong>Status:</strong> Zrobione — <code>dd05abb</code> (zestaw syntetyczny z oczekiwanymi rodzajami i odciskami; pilnuje etapu 1)</li>
+<li><strong>4.4</strong> Metryki produkcyjne do logów (bez treści): <code>searches_per_request</code>, <code>read_budget_skips</code>,
+  <code>cache_miss_reason</code> (<code>mode</code> / <code>evidence</code> / <code>cold</code>), <code>mined_kinds</code>, <code>no_patch</code>,
+  <code>docs_publish_dropped_as_duplicate</code>, <code>pending_stream_age</code>. <strong>Status:</strong> Zrobione — <code>2c3821d</code> (blok <code>metrics</code> w adnotacji: <code>searches</code>, <code>budget_skipped</code>, <code>cache_miss_reason</code>; heartbeat workera: <code>pending</code>, <code>oldest_age</code>)</li>
+<li><strong>4.5</strong> Jedna linia w README na każdy zmieniony kontrakt (skala wyników, <code>--scope</code>, scope
+  nie-ASCII, widzialność edycji). <strong>Status:</strong> Zrobione — <code>2c3821d</code> (README: skala wyników, równoległe czytanie i budżet, <code>metrics</code>, <code>--scope</code>)</li>
+</ul>
+<hr />
+<h2 id="kolejnosc-i-oszacowanie">Kolejność i oszacowanie<a class="headerlink" href="#kolejnosc-i-oszacowanie" title="link to this section">#</a></h2>
+<p>| kolejność | etap | dni | ryzyko | co odblokowuje |
+|---|---|---|---|
+| 1 | 0.1–0.4 (kliny, utrata dokumentów, scope) | 1 | niskie | bezpieczeństwo pracy workera i CLI |
+| 2 | 1.1–1.3 (widzialność edycji, liczniki, zimne repo) | 2–4 | średnie (fałszywe <code>weak</code> patche) | jakikolwiek mined knowledge |
+| 3 | 2.2 (skala wyników) | 1–2 | niskie | sensowna kolejność i przyszła eskalacja |
+| 4 | 2.1 + 2.3 (kwerenda, polityki trybów) | 1–2 | niskie | trafność |
+| 5 | 2.4–2.5 (latencja, cache) | 2 | średnie (równoległość) | obietnica „szybciej" |
+| 6 | 3.1–3.7 (dokumenty) | 2–3 | niskie | trwałość wiedzy |
+| 7 | 4.1–4.5 (ewaluacja, metryki) | 2 | niskie | obrona przed regresjami |</p>
+<h2 id="kryteria-sukcesu-do-zmierzenia-replayem-logami-nie-deklaracja">Kryteria sukcesu (do zmierzenia replayem + logami, nie deklaracją)<a class="headerlink" href="#kryteria-sukcesu-do-zmierzenia-replayem-logami-nie-deklaracja" title="link to this section">#</a></h2>
+<ol>
+<li><code>XPENDING</code> strumienia wiedzy nie rośnie; zdarzenia odrzucone mają limity prób i log.</li>
+<li>Na korpusie syntetycznym: <code>recipe &gt; 0</code>, <code>playbook &gt; 0</code>, <code>deadend &gt; 0</code>; na korpusie prawdziwym
+   <code>no_patch</code> &lt; 20% żądań z dowodami poleceń.</li>
+<li>p95 dodatkowej latencji warstwy &lt; 400 ms przy trafieniu cache; liczba wywołań silnika
+   na żądanie ≤ 3 (po jednym na kolekcję, odczyt równoległy). <em>Sformułowanie po pomiarze
+   (2026-10-29):</em> pierwotna obietnica „&lt; 1,5 s przy pudle” nie jest osiągalna na silniku
+   odniesienia dla odczytu 3-źródłowego — warm read mierzony na 0,00 s (cel 400 ms spełniony),
+   zimne pudło na 5–7 s, bo silnik obsługuje zapytania sekwencyjnie; sufit, który ma sens,
+   to <code>read.timeout_seconds</code> (3,0 s) jako budżet całego odczytu, a nie latencja pojedynczego
+   pudła.</li>
+<li>Żaden dokument nie znika po <code>git checkout</code> pliku markdown; żaden dokument nie zostaje
+   osierocony przez ucięty skan.</li>
+<li>Zero kolizji scope i zero pustych scope'ów dla ścieżek z polskimi i diakrytycznymi nazwami.</li>
+<li>Po włączeniu <code>escalation.enabled</code>: dla przepisu spełniającego warunki decyzja to <code>keep</code>, a nie
+   <code>loop_without_recipe</code> (czyli 2.2 zostało dowiezione).</li>
+</ol>
+<h2 id="swiadomie-poza-zakresem">Świadomie poza zakresem<a class="headerlink" href="#swiadomie-poza-zakresem" title="link to this section">#</a></h2>
+<ul>
+<li>Przebudowa routingu (<code>agentic_routing_codex</code>): rejestrowane decyzje nie emitują <code>review</code> ani
+  <code>debug</code>; to osobna decyzja projektowa, tu tylko domykamy polityki wiedzy do realnych trybów.</li>
+<li>Zgoda na „patcha" rozpoznawanego semantycznie z treści polecenia — zostajemy przy
+  rozróżnieniu <code>strong</code> (koperta) / <code>weak</code> (skierowany zapis pliku) i przy tym, że przepis
+  domyka wyłącznie zielony przebieg w tym samym zakresie (<code>_verifies</code>, sprawdzone: <code>cd … &amp;&amp; pytest</code>
+  celowo <strong>nie</strong> weryfikuje).</li>
+<li>Włączanie eskalacji na produkcji — najwcześniej po 2.2 i po 4.3.</li>
+</ul>
+<h2 id="co-zostao-po-realizacji-a-co-wymaga-pomiaru">Co zostało po realizacji, a co wymaga pomiaru<a class="headerlink" href="#co-zostao-po-realizacji-a-co-wymaga-pomiaru" title="link to this section">#</a></h2>
+<p>Testy repozytorium domykają zachowanie (testy regresji z każdej pozycji plus
+pełny zestaw <code>agentic</code>); kryteria, których test nie może zmierzyć, zostają do
+weryfikacji na prawdziwym silniku i na ruchu produkcyjnym:</p>
+<ul>
+<li><strong>Kryterium 3</strong> — zmierzone (2026-10-29): cache trafiony = 0,00 s (cel 400 ms
+  spełniony), zimne pudło 3 źródeł = 5–7 s, bo silnik odniesienia serializuje
+  zapytania (3 równoległe = 7,3 s ścienne vs 5,2 s sekwencyjnie); hybrydowe
+  zapytanie mediana ~1,7 s, p95 ~2,9 s. Stąd sformułowanie kryterium wprost
+  (powyżej) i pominięcie 2.4b (część) i 2.4c.</li>
+<li><strong>Kryterium 2 na korpusie prawdziwym</strong> (<code>no_patch</code> &lt; 20%) — liczniki (1.2) są
+  na miejscu, wartość na 841 nagraniach trzeba zmierzyć jeszcze raz po etapie 1.</li>
+<li><strong>Kryterium 6</strong> (eskalacja: <code>keep</code> zamiast <code>loop_without_recipe</code>) — zweryfikowane
+  na żywym silniku (2026-10-29): ten sam przepis + pętla 3 → <code>keep/strong_recipe</code>
+  na gałęzi, <code>escalate/loop_without_recipe</code> na <code>main</code> z surowym RRF; po <code>f666970</code>
+  zachowanie jest to samo na obu skalach odczytu (reranker decyduje tożsamością,
+  powód <code>strong_recipe_identity</code>). Decyzja o włączeniu eskalacji na produkcji
+  zostaje świadomie poza tymi zmianami.</li>
+<li><strong>Pominięte z priorytetu:</strong> 3.2 (TTL <code>_docs</code>), 3.4 (odmowa nie-tekstu),
+  3.7 (<code>--yes-unbounded</code>) — każda to osobna zmiana z własnym testem, żadna nie
+  blokuje reszty.</li>
+</ul></article>
+<nav class="pager" aria-label="Previous and next page"><a class="prev" href="docs/plugin-pii-masker.html"><span class="dir">&larr; previous</span><span class="pt">PII masker plugin guide</span></a><a class="next" href="docs/knowledge-base.pl.html"><span class="dir">next &rarr;</span><span class="pt">Przewodnik operatora bazy wiedzy</span></a></nav>
+<footer class="doc-meta">
+<div class="meta-row"><span class="meta-k">repository</span><a class="mono" href="https://github.com/radlab-dev-group/llm-router-plugins">llm-router-plugins</a></div>
+<div class="meta-row"><span class="meta-k">source</span><a class="mono" href="https://github.com/radlab-dev-group/llm-router-plugins/blob/v0.1.6/POPRAWA_KB.md">POPRAWA_KB.md</a></div>
+<div class="meta-row"><span class="meta-k">last commit</span><time datetime="2026-10-29T11:11:13+01:00"><a href="https://github.com/radlab-dev-group/llm-router-plugins/commit/aeccafe">2026-10-29</a></time></div>
+<div class="meta-row"><span class="meta-k">built from</span><span class="mono"><a href="https://github.com/radlab-dev-group/llm-router-plugins/tree/v0.1.6">v0.1.6</a>&nbsp;@&nbsp;<a href="https://github.com/radlab-dev-group/llm-router-plugins/commit/aeccafe">aeccafe</a></span></div>
+<p class="hint">Generated from the Markdown file in the repository: commit a change and the next build republishes it.</p>
+</footer>
+<footer class="foot"><div class="foot-inner">
+<span class="mono">llm-router &middot; docs are generated from the repository by <code>tools/build_docs.py</code></span>
+<span class="mono"><a href="https://github.com/radlab-dev-group/llm-router-plugins/tree/v0.1.6">0.1.6</a> @ <a href="https://github.com/radlab-dev-group/llm-router-plugins/commit/aeccafe">aeccafe</a></span>
+<span class="mono"><a href="../../../privacy.html">privacy</a> &middot; <a href="../../../privacy.html#cookies" data-consent-open>cookie settings</a></span>
+</div></footer>
+</main>
+<aside class="dtoc" id="dtoc"><h2 class="toc-title">on this page</h2><div class="toc-body"><ul><li><a href="#ustalenia-ktore-determinuja-plan">Ustalenia, które determinują plan</a></li><li><a href="#zasady-obowiazujace-przy-wszystkich-zmianach">Zasady obowiązujące przy wszystkich zmianach</a></li><li><a href="#etap-0-kliny-i-utrata-danych-p0-jeden-dzien-ryzyko-niskie">ETAP 0 — kliny i utrata danych (P0, jeden dzień, ryzyko niskie)</a><ul><li><a href="#01-worker-jedno-zdarzenie-zawiesza-cay-strumien">0.1 Worker: jedno zdarzenie zawiesza cały strumień</a></li><li><a href="#02-cli-dokumentow-scope-trafia-do-silnika-bez-normalizacji">0.2 CLI dokumentów: --scope trafia do silnika bez normalizacji</a></li><li><a href="#03-cofniecie-edycji-pliku-usuwa-jego-dokumentacje">0.3 Cofnięcie edycji pliku usuwa jego dokumentację</a></li><li><a href="#04-scope-nazwy-spoza-ascii-traca-wiedze-albo-mieszaja-repozytoria">0.4 Scope: nazwy spoza ASCII tracą wiedzę albo mieszają repozytoria</a></li></ul></li><li><a href="#etap-1-przywrocenie-widzialnosci-edycji-p0-wartosc-24-dni">ETAP 1 — przywrócenie widzialności edycji (P0, wartość, 2–4 dni)</a><ul><li><a href="#11-rejestr-dowodow-patcha-dla-edycji-przez-exec_command">1.1 Rejestr dowodów patcha dla edycji przez exec_command</a></li><li><a href="#12-mierzalnik-dlaczego-epizod-nie-powsta">1.2 Mierzalnik: dlaczego epizod nie powstał</a></li><li><a href="#13-nie-pakac-nad-pustym-repozytorium">1.3 Nie płakać nad pustym repozytorium</a></li></ul></li><li><a href="#etap-2-odczyt-jakosc-odpowiedzi-i-koszt-p1-35-dni">ETAP 2 — odczyt: jakość odpowiedzi i koszt (P1, 3–5 dni)</a><ul><li><a href="#21-kwerenda-bez-tego-co-wiadomo">2.1 Kwerenda bez tego, co wiadomo</a></li><li><a href="#22-skala-wynikow-przestac-mieszac-rrf-z-bonusami">2.2 Skala wyników: przestać mieszać RRF z bonusami</a></li><li><a href="#23-polityki-trybow-ktorych-router-nie-emituje">2.3 Polityki trybów, których router nie emituje</a></li><li><a href="#24-latencja-jeden-budzet-mniej-wywoan-rownolegosc">2.4 Latencja: jeden budżet, mniej wywołań, równoległość</a></li><li><a href="#25-cache-generacji-a-zmiana-trybu">2.5 Cache generacji a zmiana trybu</a></li></ul></li><li><a href="#etap-3-dokumenty-retencja-spojnosc-stanu-szczelnosc-p2-23-dni">ETAP 3 — dokumenty: retencja, spójność stanu, szczelność (P2, 2–3 dni)</a></li><li><a href="#etap-4-ewaluacja-i-obserwowalnosc-p2-2-dni">ETAP 4 — ewaluacja i obserwowalność (P2, 2 dni)</a></li><li><a href="#kolejnosc-i-oszacowanie">Kolejność i oszacowanie</a></li><li><a href="#kryteria-sukcesu-do-zmierzenia-replayem-logami-nie-deklaracja">Kryteria sukcesu (do zmierzenia replayem + logami, nie deklaracją)</a></li><li><a href="#swiadomie-poza-zakresem">Świadomie poza zakresem</a></li><li><a href="#co-zostao-po-realizacji-a-co-wymaga-pomiaru">Co zostało po realizacji, a co wymaga pomiaru</a></li></ul></div></aside>
+</div>
+</body>
+</html>

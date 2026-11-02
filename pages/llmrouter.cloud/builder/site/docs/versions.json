@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-27T23:15:04Z",
+  "updated": "2026-11-02T19:36:48Z",
   "latest": "1.1.10",
   "versions": [
     {
@@ -8,7 +8,7 @@
       "date": "2026-10-28T00:06:18+01:00",
       "prerelease": false,
       "satellites": {
-        "plugins": "0.1.5",
+        "plugins": "0.1.6",
         "services": "0.0.4"
       },
       "ref": "v1.1.10",
@@ -61,6 +61,7 @@
         "plugins/docs/plugin-langchain_rag.md": "docs/plugin-langchain-rag.html",
         "plugins/docs/plugin-nask_guard.md": "docs/plugin-nask-guard.html",
         "plugins/docs/plugin-pii_masker.md": "docs/plugin-pii-masker.html",
+        "plugins/POPRAWA_KB.md": "poprawa-kb.html",
         "plugins/docs/knowledge-base.pl.md": "docs/knowledge-base.pl.html",
         "plugins/docs/plugin-simple_semantic_routing.md": "docs/plugin-simple-semantic-routing.html",
         "plugins/docs/plugin-sojka_guard.md": "docs/plugin-sojka-guard.html",
@@ -79,10 +80,10 @@
           "url": "https://github.com/radlab-dev-group/llm-router"
         },
         "plugins": {
-          "ref": "v0.1.5",
-          "sha": "1d09a29",
-          "date": "2026-10-27T18:02:23+01:00",
-          "version": "0.1.5",
+          "ref": "v0.1.6",
+          "sha": "aeccafe",
+          "date": "2026-10-30T00:50:03+01:00",
+          "version": "0.1.6",
           "url": "https://github.com/radlab-dev-group/llm-router-plugins"
         },
         "services": {

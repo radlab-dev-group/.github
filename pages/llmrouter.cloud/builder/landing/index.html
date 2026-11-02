@@ -101,6 +101,8 @@ section[id]{scroll-margin-top:calc(var(--nav-h) + 14px)}
 .btn:hover{border-color:#2b3a4a;background:#121a23;text-decoration:none;color:#fff}
 .btn-primary{background:var(--mint);border-color:var(--mint);color:#032018;font-weight:600}
 .btn-primary:hover{background:#26ffb4;border-color:#26ffb4;color:#02170f}
+.btn-bench{border-color:rgba(90,169,255,.4);color:var(--blue);background:rgba(90,169,255,.08);font-weight:500}
+.btn-bench:hover{border-color:var(--blue);background:rgba(90,169,255,.2);color:#fff}
 .burger{display:none;background:none;border:1px solid var(--line);border-radius:8px;
   width:44px;height:44px;color:var(--fg);cursor:pointer;font-size:15px;line-height:1}
 
@@ -409,7 +411,7 @@ ul.ticks li b{color:#dce7f1;font-weight:600}
   .nav-inner{gap:10px}
   .nav-right{gap:8px}
   .nav-right .btn{padding:8px 10px;font-size:11px}
-  .nav-right .btn.ghost{display:none}
+  .nav-right .btn.ghost,.nav-right .btn-bench{display:none}
   .hero h1{font-size:clamp(2.5rem,10.5vw,3.75rem)}
   .hero .lede{font-size:17px}
   .hero .cta-row .btn{padding:12px 14px;font-size:13px}
@@ -446,6 +448,7 @@ ul.ticks li b{color:#dce7f1;font-weight:600}
       <a href="docs/">Docs</a>
     </nav>
     <div class="nav-right">
+      <a class="btn btn-bench" href="https://bench.llm-router.cloud/" rel="noopener">Bench</a>
       <a class="btn ghost" href="https://github.com/radlab-dev-group/llm-router" rel="noopener">GitHub</a>
       <a class="btn btn-primary" href="docs/#docs-quickstart">Quick start</a>
       <button class="burger" id="burger" type="button" aria-label="Toggle navigation" aria-controls="navlinks" aria-expanded="false">&#9776;</button>
