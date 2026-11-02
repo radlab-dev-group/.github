@@ -176,7 +176,7 @@ table.x-dense td:not(.num) { min-width: 5.6rem; }
 .warn { color: var(--warn); }
 .muted { color: var(--muted); }
 /* a verdict in a cell or a card reads as a pill, so a column of them scans */
-td > .pass, td > .fail, .card .value > .pass, .card .value > .fail {
+td > .pass, td > .fail:not(.error-text), .card .value > .pass, .card .value > .fail {
   display: inline-block; padding: .08rem .55rem; border-radius: 999px; font-size: .9em;
   font-weight: 600; border: 1px solid currentColor; background: rgba(0, 0, 0, .2);
 }
@@ -193,10 +193,26 @@ td > .pass, td > .fail, .card .value > .pass, .card .value > .fail {
   background: rgba(243, 182, 63, .08); }
 .badge.pass { border-color: rgba(62, 207, 142, .5); color: var(--pass);
   background: rgba(62, 207, 142, .08); }
+.badge.fail { border-color: rgba(255, 107, 122, .5); color: var(--fail);
+  background: rgba(255, 107, 122, .08); }
 .notice {
   border: 1px solid rgba(243, 182, 63, .35); border-left: 3px solid var(--warn);
   background: rgba(243, 182, 63, .07);
   padding: .8rem 1rem; margin: 1rem 0; font-size: .88rem; border-radius: 8px;
+}
+.notice.error {
+  border-color: rgba(255, 107, 122, .35); border-left-color: var(--fail);
+  background: rgba(255, 107, 122, .07); color: var(--fail);
+}
+.error-text {
+  color: var(--fail); font-weight: 500; display: inline-block;
+  line-height: 1.4; word-break: break-word; white-space: normal;
+}
+tr.run-error {
+  background: rgba(255, 107, 122, .08);
+}
+tbody tr.run-error:hover {
+  background: rgba(255, 107, 122, .18);
 }
 code {
   font: .82rem/1.5 var(--mono); word-break: break-all; color: var(--bright);
