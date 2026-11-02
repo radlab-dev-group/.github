@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Datasets, tasks and workspaces (Phase 3)</title><link rel="stylesheet" href="../../assets/style.css"></head><body><main><header class="topbar"><a class="brand" href="../../index.html"><span class="mark"></span>AK-Bench<span class="tag">benchmark report</span></a><nav class="nav"><a href="../../index.html">dashboard</a><a href="../../agents/index.html">agents</a><a href="../../runtimes/index.html">runtimes</a><a href="../../plugins/index.html">plugins</a><a href="../../models/index.html">models</a><a href="../../tasks/index.html">tasks</a><a href="../../runs/index.html">runs</a><a href="../../docs/index.html">docs</a></nav></header><div class="docs-shell"><nav class="docs-breadcrumb" aria-label="Breadcrumb"><a href="../../docs/index.html">Documentation</a><span aria-hidden="true">/</span><span>Handbook</span></nav><div class="docs-layout"><nav class="docs-menu" aria-label="Documentation"><a href="../../docs/index.html">Documentation overview</a><details class="menu-group"><summary class="menu-title">Project<span class="docs-count">1</span></summary><ul><li><a href="../../docs/readme/index.html">AK-Bench</a></li></ul></details><details class="menu-group" open><summary class="menu-title">Handbook<span class="docs-count">18</span></summary><ul><li><a href="../../docs/docs-agent-adapters/index.html">Agent adapters</a></li><li><a href="../../docs/docs-agent-integration/index.html">Agent integration — spike results (Phase 0)</a></li><li><a href="../../docs/docs-cli/index.html">CLI</a></li><li><a class="current" aria-current="page" href="../../docs/docs-datasets/index.html">Datasets, tasks and workspaces (Phase 3)</a><span class="toc"><a href="#task-layout">Task layout</a><a href="#task-descriptor">Task Descriptor</a><a href="#repositories-and-seeds">Repositories and seeds</a><a href="#workspaces">Workspaces</a><a href="#mutation-verification-plan-8-4">Mutation verification (plan 8.4)</a><a href="#shipped-tasks">Shipped tasks</a><a class="toc-sub" href="#what-makes-the-harder-tasks-hard">What makes the harder tasks hard</a><a class="toc-sub" href="#durable-state-expert-tasks">Durable-state expert tasks</a><a class="toc-sub" href="#compiler-and-dependency-solver-expert-tasks">Compiler and dependency-solver expert tasks</a><a class="toc-sub" href="#fixtures-and-their-dependencies">Fixtures and their dependencies</a><a href="#cli">CLI</a><a href="#what-is-deliberately-not-here-yet">What is deliberately not here yet</a></span></li><li><a href="../../docs/docs-descriptor-system/index.html">Descriptor system (Phase 2)</a></li><li><a href="../../docs/docs-development/index.html">Development environment</a></li><li><a href="../../docs/docs-evaluators/index.html">Evaluator Engine</a></li><li><a href="../../docs/docs-experiments/index.html">Experiments and planning</a></li><li><a href="../../docs/docs-export/index.html">Export</a></li><li><a href="../../docs/docs-knowledge-replay/index.html">Knowledge Replay</a></li><li><a href="../../docs/docs-metrics/index.html">Metrics and Observability</a></li><li><a href="../../docs/docs-plugins/index.html">Plugin Configuration and Observability</a></li><li><a href="../../docs/docs-reporting/index.html">Reporting</a></li><li><a href="../../docs/docs-reproducibility/index.html">Reproducibility</a></li><li><a href="../../docs/docs-router-integration/index.html">LLM Router integration — spike results (Phase 0)</a></li><li><a href="../../docs/docs-runtime-manager/index.html">Runtime Manager</a></li><li><a href="../../docs/docs-run-orchestrator/index.html">Run Orchestrator</a></li><li><a href="../../docs/docs-storage/index.html">Storage</a></li></ul></details><details class="menu-group"><summary class="menu-title">Datasets<span class="docs-count">31</span></summary><ul><li><a href="../../docs/datasets-readme/index.html">Readme</a></li><li><a href="../../docs/datasets-sources-bookshop-readme/index.html">bookshop</a></li><li><a href="../../docs/datasets-sources-cadence-readme/index.html">cadence</a></li><li><a href="../../docs/datasets-sources-depweaver-readme/index.html">Depweaver</a></li><li><a href="../../docs/datasets-sources-depweaver-spec/index.html">Resolution and repair contract</a></li><li><a href="../../docs/datasets-sources-freight-readme/index.html">freight</a></li><li><a href="../../docs/datasets-sources-ledgerlite-readme/index.html">ledgerlite</a></li><li><a href="../../docs/datasets-sources-notesapi-readme/index.html">notesapi</a></li><li><a href="../../docs/datasets-sources-stockpile-readme/index.html">stockpile</a></li><li><a href="../../docs/datasets-sources-streamforge-readme/index.html">Streamforge</a></li><li><a href="../../docs/datasets-sources-textkit-readme/index.html">textkit</a></li><li><a href="../../docs/datasets-sources-typeweave-readme/index.html">Typeweave</a></li><li><a href="../../docs/datasets-sources-typeweave-spec/index.html">Type inference implementation contract</a></li><li><a href="../../docs/datasets-sources-walqueue-readme/index.html">WALQueue</a></li><li><a href="../../docs/datasets-bug-fix-bookshop-stock-002-description/index.html">Cancelling a confirmed order leaves the stock reserved</a></li><li><a href="../../docs/datasets-bug-fix-bookshop-tiers-001-description/index.html">The five percent tier is lost at exactly one hundred dollars</a></li><li><a href="../../docs/datasets-bug-fix-cadence-takeover-001-description/index.html">A worker with a stale epoch can take a live lease back</a></li><li><a href="../../docs/datasets-bug-fix-depweaver-backtracking-001-description/index.html">Repair the resolver&#x27;s branch and context protocol</a></li><li><a href="../../docs/datasets-bug-fix-ledgerlite-rates-001-description/index.html">A conversion answers with the oldest rate in force</a></li><li><a href="../../docs/datasets-bug-fix-stockpile-writeoff-001-description/index.html">A write-off destroys the reserved part of an expired lot</a></li><li><a href="../../docs/datasets-bug-fix-walqueue-recovery-001-description/index.html">Repair durable queue recovery</a></li><li><a href="../../docs/datasets-bug-fix-wordcount-001-description/index.html">Word counting must ignore repeated whitespace</a></li><li><a href="../../docs/datasets-new-feature-cadence-catchup-001-description/index.html">Implement `plan_catch_up` from its specification</a></li><li><a href="../../docs/datasets-new-feature-freight-shop-001-description/index.html">Implement `shop` from its specification</a></li><li><a href="../../docs/datasets-new-feature-ledgerlite-reconcile-001-description/index.html">Implement `reconcile` from its specification</a></li><li><a href="../../docs/datasets-new-feature-notes-search-001-description/index.html">Implement `search_notes` from its specification</a></li><li><a href="../../docs/datasets-new-feature-notes-sync-001-description/index.html">Implement `merge` from its specification</a></li><li><a href="../../docs/datasets-new-feature-slugify-001-description/index.html">Implement `slugify` from the specification</a></li><li><a href="../../docs/datasets-new-feature-stockpile-fefo-001-description/index.html">Implement `allocate` from its specification</a></li><li><a href="../../docs/datasets-new-feature-streamforge-windows-001-description/index.html">Implement a restartable event-time engine</a></li><li><a href="../../docs/datasets-new-feature-typeweave-inference-001-description/index.html">Complete the type checker of an existing compiler</a></li></ul></details><details class="menu-group"><summary class="menu-title">Plan<span class="docs-count">1</span></summary><ul><li><a href="../../docs/plans-ak-bench-implementation-plan/index.html">AK-Bench --- kompletny plan implementacji</a></li></ul></details><details class="menu-group"><summary class="menu-title">Spike<span class="docs-count">2</span></summary><ul><li><a href="../../docs/spike-readme/index.html">Phase 0 — integration spike</a></li><li><a href="../../docs/spike-repo-readme/index.html">Spike fixture repo</a></li></ul></details></nav><div class="docs-article"><p class="docs-source doc-path">docs/DATASETS.md</p><article class="prose"><h1 id="datasets-tasks-and-workspaces-phase-3">Datasets, tasks and workspaces (Phase 3)</h1>
+<p>A <strong>task</strong> is a versioned definition of a benchmark problem. Everything in this</p>
+<p>layer is built so that a workspace is <em>repeatable</em>: the same task always</p>
+<p>produces the same starting state, and a defect is only admitted after tests</p>
+<p>prove it exists.</p>
+<h2 id="task-layout">Task layout</h2>
+<div class="code-block"><span class="code-lang">text</span><pre>datasets/
+  &lt;category&gt;/
+    &lt;task-id&gt;/
+      task.yaml           # the Task Descriptor (required)
+      description.md      # the statement given to the agent
+      hidden_tests/       # run by the evaluator, never inside an agent workspace
+      public_tests/       # optional, visible tests
+      mutations/          # versioned defect patches (required for bug_fix)
+        mutation-001.patch</pre></div>
+<p>The category comes from the descriptor registry, not from a hardcoded enum:</p>
+<p>registering a category is a descriptor change (plan 8.1).</p>
+<h2 id="task-descriptor">Task Descriptor</h2>
+<div class="code-block"><span class="code-lang">yaml</span><pre>schema_version: &quot;1.0&quot;
+id: wordcount-001
+version: &quot;1.0.0&quot;
+task:
+  category: bug_fix
+  difficulty: easy            # easy | medium | hard | expert
+  repository:
+    source: datasets/_sources/wordcount   # git URL/path or a seed directory
+    ref: HEAD                     # branch, tag or commit — resolved per run
+  mutation:                     # required for bug_fix
+    patch: mutations/mutation-001.patch
+    version: &quot;1.0.0&quot;
+  evaluator: pytest_evaluator
+  hidden_tests: hidden_tests
+  public_tests: public_tests</pre></div>
+<p><code>id</code>, <code>version</code> and a stable <code>uid</code> (<code>id@version</code>) are the task&#x27;s identity; the</p>
+<p><code>tasks</code> table stores one row per uid.</p>
+<h2 id="repositories-and-seeds">Repositories and seeds</h2>
+<p><code>RepositoryManager</code> keeps a bare cache per source under <code>data/repositories</code>.</p>
+<ul>
+<li><strong>git sources</strong> (URL or path to a git repository) are cloned bare and fetched,</li>
+</ul>
+<p>so <code>ref</code> is always resolved to a commit hash and recorded on the run.</p>
+<ul>
+<li><strong>seed directories</strong> (a plain directory, no git metadata) are used for</li>
+</ul>
+<p>fixtures. The cache is built with a fixed identity and fixed commit</p>
+<p>timestamps, so identical content always produces the same commit. Real</p>
+<p>datasets should pin a commit in a real repository; a seed exists so examples</p>
+<p>stay honest and self-contained.</p>
+<h2 id="workspaces">Workspaces</h2>
+<p><code>WorkspaceManager.prepare</code> creates a <strong>detached git worktree</strong> of the pinned</p>
+<p>commit under <code>data/workspaces/&lt;workspace-id&gt;</code>, then applies the mutation to the</p>
+<p><em>working tree</em>. Two fingerprints are recorded:</p>
+<ul>
+<li><code>tree</code> — the committed git tree (the pinned state);</li>
+<li><code>fingerprint</code> — the working tree including local changes and untracked files,</li>
+</ul>
+<p>which is the actual content an agent will work on.</p>
+<p>A mutation is deliberately <strong>not committed</strong>, so an agent can never read the</p>
+<p>defect from <code>git log</code>. A workspace is per-run: preparing an already-used id is</p>
+<p>refused, and <code>cleanup</code> removes both the directory and the worktree</p>
+<p>registration.</p>
+<p>Hidden tests are never copied into an agent workspace. They are copied in only</p>
+<p>for the duration of a verification/evaluation run and deleted afterwards.</p>
+<h2 id="mutation-verification-plan-8-4">Mutation verification (plan 8.4)</h2>
+<p>A bug-fix mutation is only accepted if the hidden tests **pass on the base</p>
+<p>commit and fail once the mutation is applied**. <code>MutationVerifier</code> runs both in</p>
+<p>throwaway workspaces and reports:</p>
+<ul>
+<li><code>verified</code> — base passes, mutated fails (the defect is real and detectable);</li>
+<li><code>no_mutation</code> — the task declares no mutation (non bug-fix tasks);</li>
+<li><code>base_broken</code> — the task&#x27;s own tests do not pass on the pinned base;</li>
+<li><code>not_detectable</code> — the mutation does not break the hidden tests;</li>
+<li><code>test_error</code> — pytest could not run or collect (never counted as a pass).</li>
+</ul>
+<p>A pytest exit code of 5 (&quot;no tests collected&quot;) is treated as an error, not a</p>
+<p>pass.</p>
+<h2 id="shipped-tasks">Shipped tasks</h2>
+<div class="table-wrap"><table class="docs"><thead><tr><th>task</th><th>category</th><th>difficulty</th><th>fixture</th><th>base state vs. hidden tests</th></tr></thead><tbody><tr><td><code>wordcount-001</code></td><td><code>bug_fix</code></td><td>easy</td><td><code>wordcount</code></td><td>passes on the base commit, fails once the mutation patch is applied (<code>verified</code>)</td></tr><tr><td><code>bookshop-tiers-001</code></td><td><code>bug_fix</code></td><td>hard</td><td><code>bookshop</code></td><td>passes on the base commit, fails once the mutation patch is applied (<code>verified</code>)</td></tr><tr><td><code>bookshop-stock-002</code></td><td><code>bug_fix</code></td><td>expert</td><td><code>bookshop</code></td><td>passes on the base commit, fails once the mutation patch is applied (<code>verified</code>)</td></tr><tr><td><code>slugify-001</code></td><td><code>new_feature</code></td><td>easy</td><td><code>textkit</code></td><td>fails on the base commit because the feature is missing; passes once the agent implements the specification</td></tr><tr><td><code>notes-search-001</code></td><td><code>new_feature</code></td><td>hard</td><td><code>notesapi</code></td><td>fails on the base commit because the feature is missing; passes once the agent implements the specification</td></tr><tr><td><code>notes-sync-001</code></td><td><code>new_feature</code></td><td>expert</td><td><code>notesapi</code></td><td>fails on the base commit because the feature is missing; passes once the agent implements the specification</td></tr><tr><td><code>cadence-catchup-001</code></td><td><code>new_feature</code></td><td>expert</td><td><code>cadence</code></td><td>fails on the base commit because the feature is missing; passes once the agent implements the specification</td></tr><tr><td><code>cadence-takeover-001</code></td><td><code>bug_fix</code></td><td>expert</td><td><code>cadence</code></td><td>passes on the base commit, fails once the mutation patch is applied (<code>verified</code>)</td></tr><tr><td><code>ledgerlite-reconcile-001</code></td><td><code>new_feature</code></td><td>expert</td><td><code>ledgerlite</code></td><td>fails on the base commit because the feature is missing; passes once the agent implements the specification</td></tr><tr><td><code>ledgerlite-rates-001</code></td><td><code>bug_fix</code></td><td>expert</td><td><code>ledgerlite</code></td><td>passes on the base commit, fails once the mutation patch is applied (<code>verified</code>)</td></tr><tr><td><code>stockpile-fefo-001</code></td><td><code>new_feature</code></td><td>expert</td><td><code>stockpile</code></td><td>fails on the base commit because the feature is missing; passes once the agent implements the specification</td></tr><tr><td><code>stockpile-writeoff-001</code></td><td><code>bug_fix</code></td><td>expert</td><td><code>stockpile</code></td><td>passes on the base commit, fails once the mutation patch is applied (<code>verified</code>)</td></tr><tr><td><code>freight-shop-001</code></td><td><code>new_feature</code></td><td>expert</td><td><code>freight</code></td><td>fails on the base commit because the feature is missing; passes once the agent implements the specification</td></tr><tr><td><code>streamforge-windows-001</code></td><td><code>new_feature</code></td><td>expert</td><td><code>streamforge</code></td><td>missing operators fail public and hidden tests; an external reference implementation passes both</td></tr><tr><td><code>walqueue-recovery-001</code></td><td><code>bug_fix</code></td><td>expert</td><td><code>walqueue</code></td><td>base passes; a multi-module recovery regression fails hidden tests while the seed suite stays green</td></tr><tr><td><code>typeweave-inference-001</code></td><td><code>new_feature</code></td><td>expert</td><td><code>typeweave</code></td><td>missing typechecker fails; an isolated reference passes source, public and hidden tests</td></tr><tr><td><code>depweaver-backtracking-001</code></td><td><code>bug_fix</code></td><td>expert</td><td><code>depweaver</code></td><td>base passes; eight independent regressions fail their own witnesses and the combined mutation preserves the seed suite</td></tr></tbody></table></div>
+<p><code>slugify-001</code> declares no mutation, so <code>--verify-mutations</code> reports</p>
+<p><code>no_mutation</code> for it. Its honesty check lives in</p>
+<p><code>tests/integration/test_workspaces.py</code>: the hidden tests must fail on the base</p>
+<p>state and pass against a reference implementation.</p>
+<h3 id="what-makes-the-harder-tasks-hard">What makes the harder tasks hard</h3>
+<p>The two <code>bookshop</code> tasks are one working Flask service with two defects. Each</p>
+<p>defect leaves the fixture&#x27;s own suite green, so an agent cannot watch a red</p>
+<p>test: <code>bookshop-tiers-001</code> is wrong only at a subtotal that sits exactly on a</p>
+<p>tier threshold, and <code>bookshop-stock-002</code> is a missing release that shows up as</p>
+<p>an inventory count nobody asserts on. Finding either means reading the rules</p>
+<p>and following an invariant.</p>
+<p>The two <code>notesapi</code> tasks are specifications rather than puzzles: <code>search_notes</code></p>
+<p>and <code>merge</code> are declared, their contract is written in the module docstring,</p>
+<p>and the body raises <code>NotImplementedError</code>. <code>notes-sync-001</code> is the harder of</p>
+<p>the pair because its contract has to be complete — every branch says who wins</p>
+<p>and which list the id lands in, including the branches a careless spec would</p>
+<p>leave out (an older client write, a conflict, an id only the server has).</p>
+<p>The two <code>cadence</code> tasks run on a working, stdlib-only job scheduler: cron</p>
+<p>schedules resolved in a time zone, a dependency graph, a write-ahead log, and</p>
+<p>leases with epochs. <code>cadence-takeover-001</code> is the harder of the bug-fix pair:</p>
+<p>the defect is a missing epoch check in <code>LeaseBook.takeover</code>, so a worker that</p>
+<p>was cut off and comes back can steal the resource from the holder that has it</p>
+<p>now — and every count the repository suite looks at stays intact, because the</p>
+<p>suite only ever takes a resource back by the epoch it still carries.</p>
+<p><code>cadence-catchup-001</code> is the catch-up planner: declared and specified to the</p>
+<p>occurrence in the module docstring (the window, the two dependencies and their</p>
+<p>skip propagation, the per-task cap, the ordering) and not yet written; the</p>
+<p>plan must come back in an order the scheduler could execute top-down.</p>
+<p>The two <code>ledgerlite</code> tasks run on a complete, stdlib-only double-entry ledger:</p>
+<p>a chart of accounts with normal sides, an append-only journal that refuses</p>
+<p>unbalanced entries, an FX rate book that converts as of a moment, a half-open</p>
+<p>period close, and a bank reconciliation. <code>ledgerlite-rates-001</code> is the harder</p>
+<p>of the pair: once a currency&#x27;s rate is revised, <code>rate_for</code> answers with the</p>
+<p>first published rate at or before the moment instead of the last, so every</p>
+<p>conversion is silently valued at the superseded rate — and the repository suite</p>
+<p>only ever publishes one rate per currency, for which first and last are the</p>
+<p>same. <code>ledgerlite-reconcile-001</code> is the reconciliation itself: declared and</p>
+<p>specified to the claim in the module docstring (the exact-amount rule, the</p>
+<p>window and how days are counted, the two passes and their ordering, what stays</p>
+<p>open) and not yet written.</p>
+<p>The two <code>stockpile</code> tasks run on an inventory engine: lots with receipt and</p>
+<p>expiry dates, reservations that are not taking, commits that are, transfers</p>
+<p>that carry the expiry with them, and a movement ledger. <code>stockpile-fefo-001</code></p>
+<p>is the first-expired-first-out allocation: declared and specified to the unit</p>
+<p>in the module docstring (eligibility, what an earlier plan does to a lot, the</p>
+<p>order and its two tie-breaks, how much each lot gives, and why a partial plan</p>
+<p>is never returned) and not yet written. <code>stockpile-writeoff-001</code> is the</p>
+<p>harder of the pair: a write-off zeroes the reserved quantity of an expired lot</p>
+<p>along with its free quantity, so an order already holding stock on the lot is</p>
+<p>left with nothing to commit — and the repository suite only ever writes off an</p>
+<p>expired lot that carries no reservation.</p>
+<p>The <code>freight-shop-001</code> task runs on a freight rate-shopping engine: a zone</p>
+<p>table that reads postal codes by longest prefix, a billable-weight rule that</p>
+<p>rounds exactly once and only at the end, rate cards that refuse what they will</p>
+<p>not carry, and surcharges with their own base, group and ordering rules.</p>
+<p><code>shop</code> is declared and specified to the cent in the module docstring — who</p>
+<p>gets asked and who is refused with what reason, per-carrier billable weight,</p>
+<p>the surcharge pass in declaration order with its groups and its tie between</p>
+<p>equal amounts, the two tie-breaks of the cheapest quote, and why an empty run</p>
+<p>is an error — and not yet written.</p>
+<h3 id="durable-state-expert-tasks">Durable-state expert tasks</h3>
+<p><code>streamforge-windows-001</code> requires coordinated implementation in three modules,</p>
+<p>not a single function: fixed and non-divisible sliding windows, transitively</p>
+<p>merged sessions, ordered retract/upsert output, partition watermarks and</p>
+<p>idleness, deduplication, strict finalization and complete checkpoint recovery.</p>
+<p>Late input can merge emitted sessions and reopen the resulting session, so</p>
+<p>window arithmetic alone is insufficient. Negative event times, independent</p>
+<p>keys, reordered declarations, atomic error handling and fresh-process restore</p>
+<p>are specified. Hidden tests compare generated traces against an independent</p>
+<p>batch implementation that groups raw events rather than using production</p>
+<p>operators. Operator-level tests also check snapshot consistency and ownership.</p>
+<p><code>walqueue-recovery-001</code> provides a complete transaction queue with segmented,</p>
+<p>checksummed WAL frames, atomic snapshot publication, permanent request keys,</p>
+<p>retry/dead-letter states and generation-fenced leases. Its mutation introduces</p>
+<p>a faulty recovery fast path across snapshot projection, publication selection,</p>
+<p>replay boundaries and torn-tail repair. A successful fix must preserve the</p>
+<p>entire protocol: completed/dead tombstones, active leases, generations, original</p>
+<p>idempotency identities, and every complete transaction before a torn tail.</p>
+<p>Hidden tests cover every append/compaction crash phase, second restarts, suffix</p>
+<p>replay, orphan snapshots, corruption and independent generated queue traces.</p>
+<p>Crashes are deterministic exceptions at explicit phases; tests use no sleeps,</p>
+<p>real services or assumptions about worker timing.</p>
+<p>Both tasks allow 7200 seconds for an agent and use the existing <code>expert</code></p>
+<p>difficulty and <code>pytest_evaluator</code>. This timeout is an upper bound, not a claim</p>
+<p>about required runtime or a guarantee that any particular model will fail.</p>
+<p>Their infrastructure and seeds depend only on the standard library; pytest</p>
+<p>is supplied by AK-Bench. The integration proof is</p>
+<p><code>tests/integration/test_durable_dataset_tasks.py</code>. The Streamforge reference</p>
+<p>implementation lives under <code>tests/fixtures/streamforge_solution</code>, outside the</p>
+<p>seed, so agents never receive it in their prepared workspace.</p>
+<p>Run the focused benchmark integrity checks with:</p>
+<div class="code-block"><span class="code-lang">bash</span><pre>python -m pytest tests/integration/test_durable_dataset_tasks.py
+akbench dataset validate --check-repositories --verify-mutations</pre></div>
+<p>The integrity checks prove missing-feature failures, reference-solution passes,</p>
+<p>base/mutated bug detection, and seed-suite compatibility. Hidden tests and</p>
+<p>reference code must remain outside the source projects. Runtime APIs and the</p>
+<p>source README contracts are English, as are the other shipped tasks.</p>
+<h3 id="compiler-and-dependency-solver-expert-tasks">Compiler and dependency-solver expert tasks</h3>
+<p><code>typeweave-inference-001</code> supplies approximately 4,000 lines of production Python</p>
+<p>across a working compiler front end, interpreter, independent bytecode VM, AST</p>
+<p>and artifact codecs, source packages, dependency graphs, incremental compilation,</p>
+<p>module linking and versioned editor services. The missing feature occupies five</p>
+<p>modules: substitution/unification, Hindley–Milner inference, nominal datatype</p>
+<p>elaboration, recursive pattern matrices and portable module interfaces. A correct</p>
+<p>implementation must combine normalized environment generalization, monomorphic</p>
+<p>recursive SCCs, a conservative value restriction, an occurs-check, deferred typed</p>
+<p>coverage and closed alpha-normalized exports. Hidden tests include transitive</p>
+<p>nominal types, opaque constructor families, independently loaded schemes, deep</p>
+<p>patterns, source provenance, generated programs and their ill-typed neighbors.</p>
+<p>They exercise both runtimes, typed editor inspections and interface-sensitive</p>
+<p>artifact reuse. The reference lives in <code>tests/fixtures/typeweave_solution</code>, never</p>
+<p>inside the seed or the prepared agent workspace.</p>
+<p><code>depweaver-backtracking-001</code> supplies approximately 4,300 lines of production</p>
+<p>Python: semantic versions, parsed environment markers, metadata indexes,</p>
+<p>fixed-point feature propagation, a trailed solver, contextual clause learning,</p>
+<p>backjumping, domain caching, target-bound lockfiles and partial updates. Project</p>
+<p>tooling includes TOML profiles, multi-target bundles, replayable sessions,</p>
+<p>transactional workspace lock publication, independent validation, graph and</p>
+<p>conflict explanations, offline advisories, installation plans, inventories,</p>
+<p>wheel/RECORD inspection and content-addressed artifact storage. Eight injected</p>
+<p>regressions affect rollback, re-expansion after feature activation, feature union,</p>
+<p>owner-relative markers, clause context, request scoping, cache context and pins</p>
+<p>outside the update set. Tests check each defect independently, compare generated</p>
+<p>small repositories against an exhaustive oracle, and include larger domains</p>
+<p>with a decision budget. The oracle is only a test tool; production search must</p>
+<p>retain working caching, learning and nonchronological conflict return.</p>
+<p>Production line counts exclude tests, documentation, patches and external</p>
+<p>reference code. Both tasks use <code>expert</code>, <code>pytest_evaluator</code> and a 10,800-second</p>
+<p>agent timeout. The timeout permits sustained work; difficulty is established by</p>
+<p>the specified interactions and regression proofs, not by guaranteed failure of</p>
+<p>a particular model. Both projects require only Python 3.12&#x27;s standard library</p>
+<p>plus the benchmark&#x27;s pytest runner.</p>
+<p>The integrity suite is <code>tests/integration/test_senior_dataset_tasks.py</code>. It proves</p>
+<p>the compiler feature is missing on the seed and complete under its isolated</p>
+<p>reference, verifies the resolver&#x27;s combined base/mutated behavior, confirms the</p>
+<p>source suite stays green after mutation, and applies each of eight separate</p>
+<p>regression patches against its named hidden witness. These checks complement</p>
+<p>the earlier durable-state tasks and dataset CLI discovery/validation checks.</p>
+<div class="code-block"><span class="code-lang">bash</span><pre>python -m pytest tests/integration/test_senior_dataset_tasks.py</pre></div>
+<h3 id="fixtures-and-their-dependencies">Fixtures and their dependencies</h3>
+<p>A task runs with the interpreter that runs AK-Bench, so a third-party package a</p>
+<p>fixture imports is a dataset requirement. <code>bookshop</code> and <code>notesapi</code> need Flask,</p>
+<p>declared as the <code>datasets</code> extra:</p>
+<div class="code-block"><span class="code-lang">bash</span><pre>uv pip install -e &quot;.[dev,datasets]&quot;</pre></div>
+<p>A missing dependency is reported by the evaluator as an infrastructure error,</p>
+<p>never as an agent failure.</p>
+<h2 id="cli">CLI</h2>
+<div class="code-block"><span class="code-lang">bash</span><pre>akbench dataset list [--category C] [--json]
+akbench dataset validate [--check-repositories] [--verify-mutations] [--json]
+akbench dataset show REFERENCE [--json]
+akbench dataset prepare REFERENCE [--workspace-id ID] [--no-mutation] [--json]</pre></div>
+<p><code>validate</code> cross-checks every task against the descriptor registries (category</p>
+<p>registered and enabled, difficulty allowed, evaluator registered, hidden tests</p>
+<p>present, directory matches the id) and, with <code>--verify-mutations</code>, proves each</p>
+<p>mutation. It exits 1 if any task fails.</p>
+<h2 id="what-is-deliberately-not-here-yet">What is deliberately not here yet</h2>
+<p>The evaluator <em>engine</em> that runs hidden tests against an agent&#x27;s produced</p>
+<p>workspace (plan 16) lands in Phase 6; the <code>evaluator</code> field in a task names the</p>
+<p>descriptor that will do it. Knowledge/Replay isolation (plan 17) and the</p>
+<p>reproducibility manifest (plan 14) build on the fingerprints recorded here.</p></article></div></div></div><footer>generated 2026-11-02T19:53:57.573863+00:00 from the recorded history</footer></main><script>
+// Sorting of a report table: clicking a column header reorders the rows.
+// This is the one script a report page carries, and it changes the order of
+// rows and nothing else — no number is computed, fetched or altered here. A
+// page read with scripting off still shows every row, in the order it was
+// written in, which is the order the history recorded.
+(function () {
+  "use strict";
+
+  var MISSING = Object.freeze({ missing: true });
+
+  function text(cell) {
+    return (cell.textContent || "").trim();
+  }
+
+  // A value the report could not measure never sorts as a zero: it goes last.
+  function isMissing(value) {
+    return (
+      value === "" ||
+      value === "not measured" ||
+      value === "not started" ||
+      value === "not recorded" ||
+      value === "not evaluated" ||
+      value === "—"
+    );
+  }
+
+  // "3 m 25 s", "1 h 2 m", "12.5 s", "1,234", "97.9%" -> a number; anything
+  // else is null, so the caller can fall back to comparing the text.
+  function asNumber(raw) {
+    if (isMissing(raw)) return MISSING;
+    var value = raw.replace(/,/g, "");
+    var pattern =
+      "^(?:(\d+(?:\.\d+)?)\s*h)?\s*(?:(\d+(?:\.\d+)?)\s*m)?\s*(?:(\d+(?:\.\d+)?)\s*s)?$";
+    var duration = value.match(new RegExp(pattern));
+    if (duration && (duration[1] || duration[2] || duration[3])) {
+      return (
+        (parseFloat(duration[1] || 0) * 3600) +
+        (parseFloat(duration[2] || 0) * 60) +
+        parseFloat(duration[3] || 0)
+      );
+    }
+    var plain = value.replace(/%$/, "");
+    if (/^-?\d+(?:\.\d+)?$/.test(plain)) return parseFloat(plain);
+    return null;
+  }
+
+  function column(table, index) {
+    var out = [];
+    var rows = table.tBodies[0] ? table.tBodies[0].rows : [];
+    for (var i = 0; i < rows.length; i += 1) {
+      out.push(rows[i].cells[index] ? text(rows[i].cells[index]) : "");
+    }
+    return out;
+  }
+
+  function isNumeric(values) {
+    var parsed = false;
+    for (var i = 0; i < values.length; i += 1) {
+      var value = asNumber(values[i]);
+      if (value === null) return false;
+      if (value !== MISSING) parsed = true;
+    }
+    return parsed;
+  }
+
+  function sort(table, index, ascending) {
+    var body = table.tBodies[0];
+    if (!body) return;
+    var values = column(table, index);
+    var numeric = isNumeric(values);
+    var rows = Array.prototype.slice.call(body.rows);
+    var position = new Map();
+    rows.forEach(function (row, index) { position.set(row, index); });
+
+    rows.sort(function (left, right) {
+      var a = values[position.get(left)];
+      var b = values[position.get(right)];
+      if (numeric) {
+        var na = asNumber(a);
+        var nb = asNumber(b);
+        var aMissing = na === MISSING;
+        var bMissing = nb === MISSING;
+        if (aMissing && bMissing) return position.get(left) - position.get(right);
+        if (aMissing) return 1;   // never measured, always after what was
+        if (bMissing) return -1;
+        return ascending ? na - nb : nb - na;
+      }
+      var compared = String(a).localeCompare(String(b), undefined, { numeric: true });
+      if (compared !== 0) return ascending ? compared : -compared;
+      return position.get(left) - position.get(right);
+    });
+
+    rows.forEach(function (row) { body.appendChild(row); });
+    markHeaders(table, index, ascending);
+  }
+
+  function markHeaders(table, index, ascending) {
+    var cells = table.tHead ? table.tHead.rows[0].cells : [];
+    for (var i = 0; i < cells.length; i += 1) {
+      // the direction that was applied is remembered on the header, because
+      // the next click has to flip it: without this every click sorts the same
+      // way, which is the bug this line exists to prevent
+      if (i === index) {
+        cells[i].setAttribute("data-dir", ascending ? "asc" : "desc");
+        cells[i].setAttribute(
+          "aria-sort",
+          ascending ? "ascending" : "descending"
+        );
+      } else {
+        cells[i].removeAttribute("data-dir");
+        cells[i].setAttribute("aria-sort", "none");
+      }
+    }
+  }
+
+  function activate(header, index) {
+    var table = header.closest("table");
+    var ascending = header.getAttribute("data-dir") !== "asc";
+    sort(table, index, ascending);
+  }
+
+  document.addEventListener("click", function (event) {
+    var header = event.target.closest ? event.target.closest("th.sortable") : null;
+    if (header) activate(header, Array.prototype.indexOf.call(header.parentNode.cells, header));
+  });
+
+  document.addEventListener("keydown", function (event) {
+    if (event.key !== "Enter" && event.key !== " ") return;
+    var header = event.target.closest ? event.target.closest("th.sortable") : null;
+    if (!header) return;
+    event.preventDefault();
+    activate(header, Array.prototype.indexOf.call(header.parentNode.cells, header));
+  });
+})();
+</script></body></html>

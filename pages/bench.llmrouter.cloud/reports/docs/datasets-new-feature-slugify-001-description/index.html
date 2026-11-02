@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Implement `slugify` from the specification</title><link rel="stylesheet" href="../../assets/style.css"></head><body><main><header class="topbar"><a class="brand" href="../../index.html"><span class="mark"></span>AK-Bench<span class="tag">benchmark report</span></a><nav class="nav"><a href="../../index.html">dashboard</a><a href="../../agents/index.html">agents</a><a href="../../runtimes/index.html">runtimes</a><a href="../../plugins/index.html">plugins</a><a href="../../models/index.html">models</a><a href="../../tasks/index.html">tasks</a><a href="../../runs/index.html">runs</a><a href="../../docs/index.html">docs</a></nav></header><div class="docs-shell"><nav class="docs-breadcrumb" aria-label="Breadcrumb"><a href="../../docs/index.html">Documentation</a><span aria-hidden="true">/</span><span>Datasets</span></nav><div class="docs-layout"><nav class="docs-menu" aria-label="Documentation"><a href="../../docs/index.html">Documentation overview</a><details class="menu-group"><summary class="menu-title">Project<span class="docs-count">1</span></summary><ul><li><a href="../../docs/readme/index.html">AK-Bench</a></li></ul></details><details class="menu-group"><summary class="menu-title">Handbook<span class="docs-count">18</span></summary><ul><li><a href="../../docs/docs-agent-adapters/index.html">Agent adapters</a></li><li><a href="../../docs/docs-agent-integration/index.html">Agent integration — spike results (Phase 0)</a></li><li><a href="../../docs/docs-cli/index.html">CLI</a></li><li><a href="../../docs/docs-datasets/index.html">Datasets, tasks and workspaces (Phase 3)</a></li><li><a href="../../docs/docs-descriptor-system/index.html">Descriptor system (Phase 2)</a></li><li><a href="../../docs/docs-development/index.html">Development environment</a></li><li><a href="../../docs/docs-evaluators/index.html">Evaluator Engine</a></li><li><a href="../../docs/docs-experiments/index.html">Experiments and planning</a></li><li><a href="../../docs/docs-export/index.html">Export</a></li><li><a href="../../docs/docs-knowledge-replay/index.html">Knowledge Replay</a></li><li><a href="../../docs/docs-metrics/index.html">Metrics and Observability</a></li><li><a href="../../docs/docs-plugins/index.html">Plugin Configuration and Observability</a></li><li><a href="../../docs/docs-reporting/index.html">Reporting</a></li><li><a href="../../docs/docs-reproducibility/index.html">Reproducibility</a></li><li><a href="../../docs/docs-router-integration/index.html">LLM Router integration — spike results (Phase 0)</a></li><li><a href="../../docs/docs-runtime-manager/index.html">Runtime Manager</a></li><li><a href="../../docs/docs-run-orchestrator/index.html">Run Orchestrator</a></li><li><a href="../../docs/docs-storage/index.html">Storage</a></li></ul></details><details class="menu-group" open><summary class="menu-title">Datasets<span class="docs-count">31</span></summary><ul><li><a href="../../docs/datasets-readme/index.html">Readme</a></li><li><a href="../../docs/datasets-sources-bookshop-readme/index.html">bookshop</a></li><li><a href="../../docs/datasets-sources-cadence-readme/index.html">cadence</a></li><li><a href="../../docs/datasets-sources-depweaver-readme/index.html">Depweaver</a></li><li><a href="../../docs/datasets-sources-depweaver-spec/index.html">Resolution and repair contract</a></li><li><a href="../../docs/datasets-sources-freight-readme/index.html">freight</a></li><li><a href="../../docs/datasets-sources-ledgerlite-readme/index.html">ledgerlite</a></li><li><a href="../../docs/datasets-sources-notesapi-readme/index.html">notesapi</a></li><li><a href="../../docs/datasets-sources-stockpile-readme/index.html">stockpile</a></li><li><a href="../../docs/datasets-sources-streamforge-readme/index.html">Streamforge</a></li><li><a href="../../docs/datasets-sources-textkit-readme/index.html">textkit</a></li><li><a href="../../docs/datasets-sources-typeweave-readme/index.html">Typeweave</a></li><li><a href="../../docs/datasets-sources-typeweave-spec/index.html">Type inference implementation contract</a></li><li><a href="../../docs/datasets-sources-walqueue-readme/index.html">WALQueue</a></li><li><a href="../../docs/datasets-bug-fix-bookshop-stock-002-description/index.html">Cancelling a confirmed order leaves the stock reserved</a></li><li><a href="../../docs/datasets-bug-fix-bookshop-tiers-001-description/index.html">The five percent tier is lost at exactly one hundred dollars</a></li><li><a href="../../docs/datasets-bug-fix-cadence-takeover-001-description/index.html">A worker with a stale epoch can take a live lease back</a></li><li><a href="../../docs/datasets-bug-fix-depweaver-backtracking-001-description/index.html">Repair the resolver&#x27;s branch and context protocol</a></li><li><a href="../../docs/datasets-bug-fix-ledgerlite-rates-001-description/index.html">A conversion answers with the oldest rate in force</a></li><li><a href="../../docs/datasets-bug-fix-stockpile-writeoff-001-description/index.html">A write-off destroys the reserved part of an expired lot</a></li><li><a href="../../docs/datasets-bug-fix-walqueue-recovery-001-description/index.html">Repair durable queue recovery</a></li><li><a href="../../docs/datasets-bug-fix-wordcount-001-description/index.html">Word counting must ignore repeated whitespace</a></li><li><a href="../../docs/datasets-new-feature-cadence-catchup-001-description/index.html">Implement `plan_catch_up` from its specification</a></li><li><a href="../../docs/datasets-new-feature-freight-shop-001-description/index.html">Implement `shop` from its specification</a></li><li><a href="../../docs/datasets-new-feature-ledgerlite-reconcile-001-description/index.html">Implement `reconcile` from its specification</a></li><li><a href="../../docs/datasets-new-feature-notes-search-001-description/index.html">Implement `search_notes` from its specification</a></li><li><a href="../../docs/datasets-new-feature-notes-sync-001-description/index.html">Implement `merge` from its specification</a></li><li><a class="current" aria-current="page" href="../../docs/datasets-new-feature-slugify-001-description/index.html">Implement `slugify` from the specification</a><span class="toc"><a href="#contract">Contract</a><a href="#examples">Examples</a><a href="#boundaries">Boundaries</a></span></li><li><a href="../../docs/datasets-new-feature-stockpile-fefo-001-description/index.html">Implement `allocate` from its specification</a></li><li><a href="../../docs/datasets-new-feature-streamforge-windows-001-description/index.html">Implement a restartable event-time engine</a></li><li><a href="../../docs/datasets-new-feature-typeweave-inference-001-description/index.html">Complete the type checker of an existing compiler</a></li></ul></details><details class="menu-group"><summary class="menu-title">Plan<span class="docs-count">1</span></summary><ul><li><a href="../../docs/plans-ak-bench-implementation-plan/index.html">AK-Bench --- kompletny plan implementacji</a></li></ul></details><details class="menu-group"><summary class="menu-title">Spike<span class="docs-count">2</span></summary><ul><li><a href="../../docs/spike-readme/index.html">Phase 0 — integration spike</a></li><li><a href="../../docs/spike-repo-readme/index.html">Spike fixture repo</a></li></ul></details></nav><div class="docs-article"><p class="docs-source doc-path">datasets/new_feature/slugify-001/description.md</p><article class="prose"><h1 id="implement-slugify-from-the-specification">Implement <code>slugify</code> from the specification</h1>
+<p><code>textkit.slugify</code> in <code>src/textkit/slugify.py</code> is declared, documented and</p>
+<p>tested, but its body raises <code>NotImplementedError</code>. Write it.</p>
+<h2 id="contract">Contract</h2>
+<p><code>slugify(text: str, separator: str = &quot;-&quot;) -&gt; str</code> builds a URL slug:</p>
+<ol>
+<li>The result is lowercase.</li>
+<li>ASCII letters (<code>a-z</code>, <code>A-Z</code>) and digits (<code>0-9</code>) are kept.</li>
+<li>Every other character — including spaces, punctuation and non-ASCII letters</li>
+</ol>
+<p>such as <code>ż</code> or <code>é</code> — acts as a separator. There is no transliteration.</p>
+<ol>
+<li>A run of one or more separator characters collapses to a single <code>separator</code>.</li>
+<li>The result never starts or ends with <code>separator</code>.</li>
+<li>An input with no letters or digits yields an empty string.</li>
+<li><code>separator</code> is a single character and is inserted verbatim.</li>
+</ol>
+<h2 id="examples">Examples</h2>
+<div class="table-wrap"><table class="docs"><thead><tr><th>call</th><th>result</th></tr></thead><tbody><tr><td><code>slugify(&quot;Hello World&quot;)</code></td><td><code>&quot;hello-world&quot;</code></td></tr><tr><td><code>slugify(&quot;Hello, World!&quot;)</code></td><td><code>&quot;hello-world&quot;</code></td></tr><tr><td><code>slugify(&quot;one -- two ___ three&quot;)</code></td><td><code>&quot;one-two-three&quot;</code></td></tr><tr><td><code>slugify(&quot;  --Trimmed--  &quot;)</code></td><td><code>&quot;trimmed&quot;</code></td></tr><tr><td><code>slugify(&quot;AK-Bench 2026&quot;)</code></td><td><code>&quot;ak-bench-2026&quot;</code></td></tr><tr><td><code>slugify(&quot;Zażółć&quot;)</code></td><td><code>&quot;za&quot;</code></td></tr><tr><td><code>slugify(&quot;Zażółć gęślami&quot;)</code></td><td><code>&quot;za-g-lami&quot;</code></td></tr><tr><td><code>slugify(&quot;!!!&quot;)</code></td><td><code>&quot;&quot;</code></td></tr><tr><td><code>slugify(&quot;&quot;)</code></td><td><code>&quot;&quot;</code></td></tr><tr><td><code>slugify(&quot;Hello World&quot;, separator=&quot;_&quot;)</code></td><td><code>&quot;hello_world&quot;</code></td></tr></tbody></table></div>
+<p>Applying <code>slugify</code> to its own result must not change it again.</p>
+<h2 id="boundaries">Boundaries</h2>
+<ul>
+<li>Implement it in <code>src/textkit/slugify.py</code>; the public API of the <code>textkit</code></li>
+</ul>
+<p>package stays as it is.</p>
+<ul>
+<li>Do not modify the tests and do not add third-party dependencies — the standard</li>
+</ul>
+<p>library is enough.</p>
+<ul>
+<li>The repository&#x27;s own test suite (<code>pytest</code>) has to stay green, so</li>
+</ul>
+<p><code>textkit.casefold_word</code> must keep working.</p></article></div></div></div><footer>generated 2026-11-02T19:53:57.573863+00:00 from the recorded history</footer></main><script>
+// Sorting of a report table: clicking a column header reorders the rows.
+// This is the one script a report page carries, and it changes the order of
+// rows and nothing else — no number is computed, fetched or altered here. A
+// page read with scripting off still shows every row, in the order it was
+// written in, which is the order the history recorded.
+(function () {
+  "use strict";
+
+  var MISSING = Object.freeze({ missing: true });
+
+  function text(cell) {
+    return (cell.textContent || "").trim();
+  }
+
+  // A value the report could not measure never sorts as a zero: it goes last.
+  function isMissing(value) {
+    return (
+      value === "" ||
+      value === "not measured" ||
+      value === "not started" ||
+      value === "not recorded" ||
+      value === "not evaluated" ||
+      value === "—"
+    );
+  }
+
+  // "3 m 25 s", "1 h 2 m", "12.5 s", "1,234", "97.9%" -> a number; anything
+  // else is null, so the caller can fall back to comparing the text.
+  function asNumber(raw) {
+    if (isMissing(raw)) return MISSING;
+    var value = raw.replace(/,/g, "");
+    var pattern =
+      "^(?:(\d+(?:\.\d+)?)\s*h)?\s*(?:(\d+(?:\.\d+)?)\s*m)?\s*(?:(\d+(?:\.\d+)?)\s*s)?$";
+    var duration = value.match(new RegExp(pattern));
+    if (duration && (duration[1] || duration[2] || duration[3])) {
+      return (
+        (parseFloat(duration[1] || 0) * 3600) +
+        (parseFloat(duration[2] || 0) * 60) +
+        parseFloat(duration[3] || 0)
+      );
+    }
+    var plain = value.replace(/%$/, "");
+    if (/^-?\d+(?:\.\d+)?$/.test(plain)) return parseFloat(plain);
+    return null;
+  }
+
+  function column(table, index) {
+    var out = [];
+    var rows = table.tBodies[0] ? table.tBodies[0].rows : [];
+    for (var i = 0; i < rows.length; i += 1) {
+      out.push(rows[i].cells[index] ? text(rows[i].cells[index]) : "");
+    }
+    return out;
+  }
+
+  function isNumeric(values) {
+    var parsed = false;
+    for (var i = 0; i < values.length; i += 1) {
+      var value = asNumber(values[i]);
+      if (value === null) return false;
+      if (value !== MISSING) parsed = true;
+    }
+    return parsed;
+  }
+
+  function sort(table, index, ascending) {
+    var body = table.tBodies[0];
+    if (!body) return;
+    var values = column(table, index);
+    var numeric = isNumeric(values);
+    var rows = Array.prototype.slice.call(body.rows);
+    var position = new Map();
+    rows.forEach(function (row, index) { position.set(row, index); });
+
+    rows.sort(function (left, right) {
+      var a = values[position.get(left)];
+      var b = values[position.get(right)];
+      if (numeric) {
+        var na = asNumber(a);
+        var nb = asNumber(b);
+        var aMissing = na === MISSING;
+        var bMissing = nb === MISSING;
+        if (aMissing && bMissing) return position.get(left) - position.get(right);
+        if (aMissing) return 1;   // never measured, always after what was
+        if (bMissing) return -1;
+        return ascending ? na - nb : nb - na;
+      }
+      var compared = String(a).localeCompare(String(b), undefined, { numeric: true });
+      if (compared !== 0) return ascending ? compared : -compared;
+      return position.get(left) - position.get(right);
+    });
+
+    rows.forEach(function (row) { body.appendChild(row); });
+    markHeaders(table, index, ascending);
+  }
+
+  function markHeaders(table, index, ascending) {
+    var cells = table.tHead ? table.tHead.rows[0].cells : [];
+    for (var i = 0; i < cells.length; i += 1) {
+      // the direction that was applied is remembered on the header, because
+      // the next click has to flip it: without this every click sorts the same
+      // way, which is the bug this line exists to prevent
+      if (i === index) {
+        cells[i].setAttribute("data-dir", ascending ? "asc" : "desc");
+        cells[i].setAttribute(
+          "aria-sort",
+          ascending ? "ascending" : "descending"
+        );
+      } else {
+        cells[i].removeAttribute("data-dir");
+        cells[i].setAttribute("aria-sort", "none");
+      }
+    }
+  }
+
+  function activate(header, index) {
+    var table = header.closest("table");
+    var ascending = header.getAttribute("data-dir") !== "asc";
+    sort(table, index, ascending);
+  }
+
+  document.addEventListener("click", function (event) {
+    var header = event.target.closest ? event.target.closest("th.sortable") : null;
+    if (header) activate(header, Array.prototype.indexOf.call(header.parentNode.cells, header));
+  });
+
+  document.addEventListener("keydown", function (event) {
+    if (event.key !== "Enter" && event.key !== " ") return;
+    var header = event.target.closest ? event.target.closest("th.sortable") : null;
+    if (!header) return;
+    event.preventDefault();
+    activate(header, Array.prototype.indexOf.call(header.parentNode.cells, header));
+  });
+})();
+</script></body></html>

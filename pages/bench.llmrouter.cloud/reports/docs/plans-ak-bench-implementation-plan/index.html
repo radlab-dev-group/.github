@@ -1,0 +1,1392 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>AK-Bench --- kompletny plan implementacji</title><link rel="stylesheet" href="../../assets/style.css"></head><body><main><header class="topbar"><a class="brand" href="../../index.html"><span class="mark"></span>AK-Bench<span class="tag">benchmark report</span></a><nav class="nav"><a href="../../index.html">dashboard</a><a href="../../agents/index.html">agents</a><a href="../../runtimes/index.html">runtimes</a><a href="../../plugins/index.html">plugins</a><a href="../../models/index.html">models</a><a href="../../tasks/index.html">tasks</a><a href="../../runs/index.html">runs</a><a href="../../docs/index.html">docs</a></nav></header><div class="docs-shell"><nav class="docs-breadcrumb" aria-label="Breadcrumb"><a href="../../docs/index.html">Documentation</a><span aria-hidden="true">/</span><span>Plan</span></nav><div class="docs-layout"><nav class="docs-menu" aria-label="Documentation"><a href="../../docs/index.html">Documentation overview</a><details class="menu-group"><summary class="menu-title">Project<span class="docs-count">1</span></summary><ul><li><a href="../../docs/readme/index.html">AK-Bench</a></li></ul></details><details class="menu-group"><summary class="menu-title">Handbook<span class="docs-count">18</span></summary><ul><li><a href="../../docs/docs-agent-adapters/index.html">Agent adapters</a></li><li><a href="../../docs/docs-agent-integration/index.html">Agent integration — spike results (Phase 0)</a></li><li><a href="../../docs/docs-cli/index.html">CLI</a></li><li><a href="../../docs/docs-datasets/index.html">Datasets, tasks and workspaces (Phase 3)</a></li><li><a href="../../docs/docs-descriptor-system/index.html">Descriptor system (Phase 2)</a></li><li><a href="../../docs/docs-development/index.html">Development environment</a></li><li><a href="../../docs/docs-evaluators/index.html">Evaluator Engine</a></li><li><a href="../../docs/docs-experiments/index.html">Experiments and planning</a></li><li><a href="../../docs/docs-export/index.html">Export</a></li><li><a href="../../docs/docs-knowledge-replay/index.html">Knowledge Replay</a></li><li><a href="../../docs/docs-metrics/index.html">Metrics and Observability</a></li><li><a href="../../docs/docs-plugins/index.html">Plugin Configuration and Observability</a></li><li><a href="../../docs/docs-reporting/index.html">Reporting</a></li><li><a href="../../docs/docs-reproducibility/index.html">Reproducibility</a></li><li><a href="../../docs/docs-router-integration/index.html">LLM Router integration — spike results (Phase 0)</a></li><li><a href="../../docs/docs-runtime-manager/index.html">Runtime Manager</a></li><li><a href="../../docs/docs-run-orchestrator/index.html">Run Orchestrator</a></li><li><a href="../../docs/docs-storage/index.html">Storage</a></li></ul></details><details class="menu-group"><summary class="menu-title">Datasets<span class="docs-count">31</span></summary><ul><li><a href="../../docs/datasets-readme/index.html">Readme</a></li><li><a href="../../docs/datasets-sources-bookshop-readme/index.html">bookshop</a></li><li><a href="../../docs/datasets-sources-cadence-readme/index.html">cadence</a></li><li><a href="../../docs/datasets-sources-depweaver-readme/index.html">Depweaver</a></li><li><a href="../../docs/datasets-sources-depweaver-spec/index.html">Resolution and repair contract</a></li><li><a href="../../docs/datasets-sources-freight-readme/index.html">freight</a></li><li><a href="../../docs/datasets-sources-ledgerlite-readme/index.html">ledgerlite</a></li><li><a href="../../docs/datasets-sources-notesapi-readme/index.html">notesapi</a></li><li><a href="../../docs/datasets-sources-stockpile-readme/index.html">stockpile</a></li><li><a href="../../docs/datasets-sources-streamforge-readme/index.html">Streamforge</a></li><li><a href="../../docs/datasets-sources-textkit-readme/index.html">textkit</a></li><li><a href="../../docs/datasets-sources-typeweave-readme/index.html">Typeweave</a></li><li><a href="../../docs/datasets-sources-typeweave-spec/index.html">Type inference implementation contract</a></li><li><a href="../../docs/datasets-sources-walqueue-readme/index.html">WALQueue</a></li><li><a href="../../docs/datasets-bug-fix-bookshop-stock-002-description/index.html">Cancelling a confirmed order leaves the stock reserved</a></li><li><a href="../../docs/datasets-bug-fix-bookshop-tiers-001-description/index.html">The five percent tier is lost at exactly one hundred dollars</a></li><li><a href="../../docs/datasets-bug-fix-cadence-takeover-001-description/index.html">A worker with a stale epoch can take a live lease back</a></li><li><a href="../../docs/datasets-bug-fix-depweaver-backtracking-001-description/index.html">Repair the resolver&#x27;s branch and context protocol</a></li><li><a href="../../docs/datasets-bug-fix-ledgerlite-rates-001-description/index.html">A conversion answers with the oldest rate in force</a></li><li><a href="../../docs/datasets-bug-fix-stockpile-writeoff-001-description/index.html">A write-off destroys the reserved part of an expired lot</a></li><li><a href="../../docs/datasets-bug-fix-walqueue-recovery-001-description/index.html">Repair durable queue recovery</a></li><li><a href="../../docs/datasets-bug-fix-wordcount-001-description/index.html">Word counting must ignore repeated whitespace</a></li><li><a href="../../docs/datasets-new-feature-cadence-catchup-001-description/index.html">Implement `plan_catch_up` from its specification</a></li><li><a href="../../docs/datasets-new-feature-freight-shop-001-description/index.html">Implement `shop` from its specification</a></li><li><a href="../../docs/datasets-new-feature-ledgerlite-reconcile-001-description/index.html">Implement `reconcile` from its specification</a></li><li><a href="../../docs/datasets-new-feature-notes-search-001-description/index.html">Implement `search_notes` from its specification</a></li><li><a href="../../docs/datasets-new-feature-notes-sync-001-description/index.html">Implement `merge` from its specification</a></li><li><a href="../../docs/datasets-new-feature-slugify-001-description/index.html">Implement `slugify` from the specification</a></li><li><a href="../../docs/datasets-new-feature-stockpile-fefo-001-description/index.html">Implement `allocate` from its specification</a></li><li><a href="../../docs/datasets-new-feature-streamforge-windows-001-description/index.html">Implement a restartable event-time engine</a></li><li><a href="../../docs/datasets-new-feature-typeweave-inference-001-description/index.html">Complete the type checker of an existing compiler</a></li></ul></details><details class="menu-group" open><summary class="menu-title">Plan<span class="docs-count">1</span></summary><ul><li><a class="current" aria-current="page" href="../../docs/plans-ak-bench-implementation-plan/index.html">AK-Bench --- kompletny plan implementacji</a><span class="toc"><a href="#1-cel-projektu">1. Cel projektu</a><a href="#2-zasady-architektoniczne">2. Zasady architektoniczne</a><a href="#3-architektura-wysokiego-poziomu">3. Architektura wysokiego poziomu</a><a class="toc-sub" href="#3-1-rozdzielenie-agent-w-router-w-i-modeli">3.1. Rozdzielenie agentów, routerów i modeli</a><a class="toc-sub" href="#3-2-g-wne-modu-y">3.2. Główne moduły</a><a href="#4-etap-0-integracyjny-spike">4. Etap 0 --- integracyjny spike</a><a class="toc-sub" href="#4-1-spike-agenta">4.1. Spike agenta</a><a class="toc-sub" href="#4-2-spike-routera">4.2. Spike routera</a><a class="toc-sub" href="#4-3-test-end-to-end">4.3. Test end-to-end</a><a class="toc-sub" href="#4-4-kryterium-uko-czenia">4.4. Kryterium ukończenia</a><a href="#5-szkielet-projektu-i-technologie">5. Szkielet projektu i technologie</a><a class="toc-sub" href="#5-1-proponowana-struktura-katalog-w">5.1. Proponowana struktura katalogów</a><a href="#6-system-agent-w-najwa-niejszy-kontrakt-rozszerzalno-ci">6. System agentów --- najważniejszy kontrakt rozszerzalności</a><a class="toc-sub" href="#6-1-agent-registry">6.1. Agent Registry</a><a class="toc-sub" href="#6-2-agent-adapter">6.2. Agent Adapter</a><a class="toc-sub" href="#6-3-uniwersalny-wynik-agenta">6.3. Uniwersalny wynik agenta</a><a class="toc-sub" href="#6-4-capability-model">6.4. Capability model</a><a class="toc-sub" href="#6-5-r-ne-klasy-agent-w">6.5. Różne klasy agentów</a><a class="toc-sub" href="#6-6-agent-descriptor">6.6. Agent Descriptor</a><a class="toc-sub" href="#6-7-konfiguracja-agenta">6.7. Konfiguracja agenta</a><a class="toc-sub" href="#6-8-testy-kontraktowe-adapter-w">6.8. Testy kontraktowe adapterów</a><a href="#7-runtime-i-router-manager">7. Runtime i Router Manager</a><a class="toc-sub" href="#7-1-tryby-wykonania">7.1. Tryby wykonania</a><a class="toc-sub" href="#7-2-router-manager">7.2. Router Manager</a><a class="toc-sub" href="#7-3-modele">7.3. Modele</a><a href="#8-dataset-zadania-i-kategorie">8. Dataset, zadania i kategorie</a><a class="toc-sub" href="#8-1-kategorie">8.1. Kategorie</a><a class="toc-sub" href="#8-2-trudno">8.2. Trudność</a><a class="toc-sub" href="#8-3-task-descriptor">8.3. Task Descriptor</a><a class="toc-sub" href="#8-4-bug-fix">8.4. Bug Fix</a><a class="toc-sub" href="#8-5-new-feature">8.5. New Feature</a><a class="toc-sub" href="#8-6-hidden-tests">8.6. Hidden tests</a><a href="#9-deskryptory-i-registry">9. Deskryptory i registry</a><a href="#10-plugin-descriptor-i-env">10. Plugin Descriptor i ENV</a><a class="toc-sub" href="#10-1-rozdzielenie-p-l">10.1. Rozdzielenie pól</a><a class="toc-sub" href="#10-2-stan-pluginu">10.2. Stan pluginu</a><a class="toc-sub" href="#10-3-plugin-adapter">10.3. Plugin Adapter</a><a href="#11-dimension-descriptor">11. Dimension Descriptor</a><a href="#12-experiment-descriptor">12. Experiment Descriptor</a><a class="toc-sub" href="#12-1-walidacja">12.1. Walidacja</a><a class="toc-sub" href="#12-2-strategie-generowania-wariant-w">12.2. Strategie generowania wariantów</a><a class="toc-sub" href="#12-3-wariant-eksperymentu">12.3. Wariant eksperymentu</a><a href="#13-router-manager">13. Router Manager</a><a href="#14-izolacja-i-workspace-manager">14. Izolacja i Workspace Manager</a><a href="#15-run-orchestrator-i-lifecycle">15. Run Orchestrator i lifecycle</a><a href="#16-evaluator-engine">16. Evaluator Engine</a><a href="#17-knowledge-learning-replay">17. Knowledge Learning / Replay</a><a href="#18-metrics-i-observability">18. Metrics i Observability</a><a class="toc-sub" href="#18-1-quality">18.1. Quality</a><a class="toc-sub" href="#18-2-efficiency">18.2. Efficiency</a><a class="toc-sub" href="#18-3-agent-i-runtime">18.3. Agent i runtime</a><a class="toc-sub" href="#18-4-knowledge">18.4. Knowledge</a><a class="toc-sub" href="#18-5-reliability">18.5. Reliability</a><a href="#19-storage">19. Storage</a><a href="#20-reporting-engine">20. Reporting Engine</a><a href="#21-export-i-publikowanie">21. Export i publikowanie</a><a href="#22-cli">22. CLI</a><a href="#23-bezpiecze-stwo-i-wiarygodno">23. Bezpieczeństwo i wiarygodność</a><a href="#24-testy">24. Testy</a><a class="toc-sub" href="#unit-tests">Unit tests</a><a class="toc-sub" href="#adapter-contract-tests">Adapter contract tests</a><a class="toc-sub" href="#integration-tests">Integration tests</a><a class="toc-sub" href="#end-to-end">End-to-end</a><a class="toc-sub" href="#reproducibility-tests">Reproducibility tests</a><a href="#25-przyk-adowe-eksperymenty-startowe">25. Przykładowe eksperymenty startowe</a><a class="toc-sub" href="#a-por-wnanie-agent-w">A. Porównanie agentów</a><a class="toc-sub" href="#b-wp-yw-knowledge">B. Wpływ Knowledge</a><a class="toc-sub" href="#c-wp-yw-auto-codex">C. Wpływ Auto Codex</a><a class="toc-sub" href="#d-por-wnanie-modeli">D. Porównanie modeli</a><a class="toc-sub" href="#e-pe-na-macierz">E. Pełna macierz</a><a class="toc-sub" href="#f-knowledge-learning-replay">F. Knowledge Learning / Replay</a><a href="#26-kolejno-implementacji">26. Kolejność implementacji</a><a class="toc-sub" href="#faza-0-integracyjny-spike">Faza 0 --- integracyjny spike</a><a class="toc-sub" href="#faza-1-szkielet">Faza 1 --- szkielet</a><a class="toc-sub" href="#faza-2-deskryptory-i-registry">Faza 2 --- deskryptory i registry</a><a class="toc-sub" href="#faza-3-dataset-i-repozytoria">Faza 3 --- dataset i repozytoria</a><a class="toc-sub" href="#faza-4-agent-adapter-framework">Faza 4 --- Agent Adapter Framework</a><a class="toc-sub" href="#faza-5-runtime-manager">Faza 5 --- Runtime Manager</a><a class="toc-sub" href="#faza-6-evaluator-engine">Faza 6 --- Evaluator Engine</a><a class="toc-sub" href="#faza-7-run-orchestrator-i-scheduler">Faza 7 --- Run Orchestrator i Scheduler</a><a class="toc-sub" href="#faza-8-experiment-descriptor-i-planner">Faza 8 --- Experiment Descriptor i Planner</a><a class="toc-sub" href="#faza-9-plugin-configuration-i-observability">Faza 9 --- Plugin Configuration i Observability</a><a class="toc-sub" href="#faza-10-knowledge-replay">Faza 10 --- Knowledge Replay</a><a class="toc-sub" href="#faza-11-storage-i-metrics">Faza 11 --- Storage i Metrics</a><a class="toc-sub" href="#faza-12-reporting">Faza 12 --- Reporting</a><a class="toc-sub" href="#faza-13-export-i-stabilizacja">Faza 13 --- Export i stabilizacja</a><a href="#27-zakres-mvp">27. Zakres MVP</a><a href="#28-dokumentacja-projektu">28. Dokumentacja projektu</a><a href="#29-instrukcje-dla-agenta-implementuj-cego">29. Instrukcje dla agenta implementującego</a><a href="#30-ko-cowy-rezultat">30. Końcowy rezultat</a></span></li></ul></details><details class="menu-group"><summary class="menu-title">Spike<span class="docs-count">2</span></summary><ul><li><a href="../../docs/spike-readme/index.html">Phase 0 — integration spike</a></li><li><a href="../../docs/spike-repo-readme/index.html">Spike fixture repo</a></li></ul></details></nav><div class="docs-article"><p class="docs-source doc-path">.plans/AK-Bench-implementation-plan.md</p><article class="prose"><h1 id="ak-bench-kompletny-plan-implementacji">AK-Bench --- kompletny plan implementacji</h1>
+<h2 id="1-cel-projektu">1. Cel projektu</h2>
+<p>Zbuduj <strong>AK-Bench (Agent Knowledge Benchmark)</strong> --- rozszerzalną</p>
+<p>platformę do powtarzalnej oceny agentów AI, LLM Routerów, modeli oraz</p>
+<p>pluginów rozszerzających ich możliwości.</p>
+<p>AK-Bench ma być narzędziem badawczo-testowym uruchamianym początkowo</p>
+<p>lokalnie. Ma umożliwiać wykonywanie zadań na rzeczywistych</p>
+<p>repozytoriach, kontrolowanie konfiguracji, izolowanie sesji i środowisk,</p>
+<p>mierzenie jakości oraz kosztu, a następnie generowanie raportów HTML i</p>
+<p>eksportów danych.</p>
+<p>**Najważniejsza zasada architektoniczna: testowany agent jest wymiennym</p>
+<p>komponentem.** Pierwszym adapterem będzie Codex, ale AK-Bench nie może</p>
+<p>być zbudowany jako benchmark Codexa. W przyszłości powinien obsługiwać</p>
+<p>innych agentów CLI, agentów API, agentów uruchamianych przez router oraz</p>
+<p>własne implementacje adapterów. Silnik benchmarku nie może zakładać</p>
+<p>konkretnego interfejsu, formatu sesji, sposobu przekazywania promptu ani</p>
+<p>formatu trace&#x27;ów jednego agenta.</p>
+<p>AK-Bench nie implementuje własnego agenta, pamięci ani routingu.</p>
+<p>Orkiestruje wykonanie zadań przez wybranego agenta lub system agentowy,</p>
+<p>np. agenta uruchamianego przez LLM Router.</p>
+<h2 id="2-zasady-architektoniczne">2. Zasady architektoniczne</h2>
+<ol>
+<li>Agent, router, model, plugin, evaluator i kategoria zadania są</li>
+</ol>
+<p>niezależnymi, wymiennymi komponentami.</p>
+<ol>
+<li>Integracja z konkretnym agentem odbywa się przez <code>Agent Adapter</code> i</li>
+</ol>
+<p><code>Agent Descriptor</code>.</p>
+<ol>
+<li>Logika eksperymentów nie może zależeć od Codexa ani od konkretnego</li>
+</ol>
+<p>sposobu uruchamiania agenta.</p>
+<ol>
+<li>Agent może działać bezpośrednio albo za pośrednictwem routera.</li>
+</ol>
+<p>Router jest opcjonalną warstwą wykonawczą, nie częścią definicji</p>
+<p>agenta.</p>
+<ol>
+<li>Wszystkie komponenty i deskryptory są wersjonowane.</li>
+<li>Każdy run ma izolowany workspace i niezależny kontekst wykonania, o</li>
+</ol>
+<p>ile możliwości badanego agenta na to pozwalają.</p>
+<ol>
+<li>Rejestrowane są konfiguracja żądana, efektywna i zaobserwowana.</li>
+<li>Konfiguracja nie jest uznawana za aktywną bez weryfikacji.</li>
+<li>Nieznane możliwości komponentu są oznaczane jako <code>unsupported</code> lub</li>
+</ol>
+<p><code>unverified</code>, a nie symulowane.</p>
+<ol>
+<li>Wyniki muszą być odtwarzalne na poziomie warunków eksperymentu,</li>
+</ol>
+<p>wersji, snapshotów i konfiguracji.</p>
+<ol>
+<li>Błędy infrastruktury muszą być odróżnione od błędów agenta.</li>
+<li>Kategorie, pluginy, metryki i wymiary eksperymentów są rozszerzalne</li>
+</ol>
+<p>przez deskryptory i adaptery.</p>
+<h2 id="3-architektura-wysokiego-poziomu">3. Architektura wysokiego poziomu</h2>
+<div class="code-block"><span class="code-lang">text</span><pre>                         AK-BENCH
+                             |
+       +---------------------+----------------------+
+       |                     |                      |
+  Dataset Manager      Experiment Manager      Reporting
+       |                     |                      |
+       |               Experiment Planner           |
+       |                     |                      |
+       +--------------- Run Scheduler --------------+
+                             |
+                       Run Orchestrator
+                             |
+             +---------------+----------------+
+             |                                |
+       Agent Adapter                    Workspace Manager
+             |                                |
+      Tested Agent                         Git Worktree
+             |
+       Optional Runtime
+             |
+       +-----+-------------------------+
+       |                               |
+  Direct execution                 LLM Router
+                                       |
+                               Router Plugin System
+                                       |
+                         Knowledge / Routing / Optimization
+             |
+       Observability Adapters
+             |
+      Metrics / Events / Traces
+             |
+         Evaluator
+             |
+         Result Store
+             |
+       HTML / JSON / CSV</pre></div>
+<h3 id="3-1-rozdzielenie-agent-w-router-w-i-modeli">3.1. Rozdzielenie agentów, routerów i modeli</h3>
+<p>Należy rozróżnić trzy pojęcia:</p>
+<ul>
+<li><strong>Agent</strong> --- testowany system wykonujący zadanie. Przykłady: Codex,</li>
+</ul>
+<p>inny agent CLI, agent API, agent własny.</p>
+<ul>
+<li><strong>Runtime / Router</strong> --- opcjonalna warstwa pośrednicząca w</li>
+</ul>
+<p>uruchamianiu agenta, dostarczaniu narzędzi, routingu lub pluginów.</p>
+<p>Przykładem jest LLM Router.</p>
+<ul>
+<li><strong>Model</strong> --- model lub modele wykorzystywane przez agenta albo</li>
+</ul>
+<p>router. Agent może używać jednego modelu, wielu modeli lub</p>
+<p>dynamicznego routingu.</p>
+<p>Nie zakładać, że każdy agent ma jawnie konfigurowalny model. Niektóre</p>
+<p>agenty mogą zarządzać wyborem modelu samodzielnie. W takim przypadku</p>
+<p>należy rejestrować model tylko wtedy, gdy dostępne są wiarygodne dane.</p>
+<h3 id="3-2-g-wne-modu-y">3.2. Główne moduły</h3>
+<p>Moduł                          Odpowiedzialność</p>
+<p>------------------------------ --------------------------------------------</p>
+<p>Dataset Manager                Zadania, wersje datasetów i metadane</p>
+<p>Category Registry              Rozszerzalne kategorie zadań</p>
+<p>Repository Manager             Repozytoria, commity i snapshoty</p>
+<p>Mutation Engine                Kontrolowane mutacje repozytoriów</p>
+<p>Experiment Manager             Definicje i lifecycle eksperymentów</p>
+<p>Experiment Planner             Generowanie wariantów i planu runów</p>
+<p>Agent Registry                 Odkrywanie i rejestracja agentów</p>
+<p>Agent Adapter                  Uniwersalny kontrakt komunikacji z agentem</p>
+<p>Runtime Manager                Opcjonalne zarządzanie routerem/runtime</p>
+<p>Plugin Registry                Deskryptory i adaptery pluginów</p>
+<p>Workspace Manager              Izolacja repozytoriów i środowisk</p>
+<p>Run Orchestrator               Lifecycle pojedynczego runu</p>
+<p>Evaluator Engine               Niezależna ocena wyniku</p>
+<p>Knowledge Experiment Manager   Learning, replay i fresh control</p>
+<p>Observability                  Zdarzenia, trace&#x27;y i metryki</p>
+<p>Result Store                   Trwałe zapisywanie danych</p>
+<p>Reporting Engine               Raporty HTML</p>
+<p>Export Manager                 JSON, CSV i HTML</p>
+<h2 id="4-etap-0-integracyjny-spike">4. Etap 0 --- integracyjny spike</h2>
+<p>Przed implementacją właściwą sprawdzić rzeczywiste możliwości integracji</p>
+<p>z pierwszym agentem --- Codexem --- oraz z LLM Routerem, jeśli będzie</p>
+<p>używany.</p>
+<p>Nie zakładać endpointów, flag CLI, nazw ENV ani formatów zdarzeń bez</p>
+<p>potwierdzenia w dokumentacji lub kodzie.</p>
+<h3 id="4-1-spike-agenta">4.1. Spike agenta</h3>
+<p>Sprawdzić i udokumentować:</p>
+<ul>
+<li>sposób uruchamiania agenta;</li>
+<li>sposób przekazywania zadania/instrukcji;</li>
+<li>sposób wskazywania workspace;</li>
+<li>sposób ustawiania parametrów;</li>
+<li>sposób rozpoczynania i kończenia sesji;</li>
+<li>możliwość wymuszenia nowej sesji;</li>
+<li>możliwość odczytu statusu;</li>
+<li>sposób wykrywania zakończenia;</li>
+<li>sposób obsługi timeoutu i anulowania;</li>
+<li>dostępność token usage i kosztu;</li>
+<li>dostępność tool calls i trace&#x27;ów;</li>
+<li>możliwość ograniczenia dostępu do plików i sieci;</li>
+<li>sposób uzyskiwania końcowego wyniku.</li>
+</ul>
+<p>Przygotować <code>docs/AGENT_INTEGRATION.md</code> z potwierdzonymi informacjami i</p>
+<p>ograniczeniami.</p>
+<h3 id="4-2-spike-routera">4.2. Spike routera</h3>
+<p>Sprawdzić:</p>
+<ul>
+<li>uruchamianie i zatrzymywanie routera;</li>
+<li>konfigurację modeli i pluginów;</li>
+<li>odczyt konfiguracji efektywnej;</li>
+<li>uruchamianie nowych sesji;</li>
+<li>logi i trace&#x27;y;</li>
+<li>identyfikację użytych modeli;</li>
+<li>healthcheck;</li>
+<li>sygnały aktywności pluginów;</li>
+<li>mechanizm zapisu i indeksowania wiedzy.</li>
+</ul>
+<p>Przygotować <code>docs/ROUTER_INTEGRATION.md</code>.</p>
+<h3 id="4-3-test-end-to-end">4.3. Test end-to-end</h3>
+<p>Zbudować mały prototyp, który uruchamia Codexa przez wybrany runtime,</p>
+<p>przekazuje proste zadanie repozytoryjne, odbiera wynik, zapisuje logi i</p>
+<p>końcowy diff oraz poprawnie kończy procesy.</p>
+<h3 id="4-4-kryterium-uko-czenia">4.4. Kryterium ukończenia</h3>
+<p>Integracja ma być potwierdzona działającym prototypem. Wszystkie</p>
+<p>niepotwierdzone możliwości muszą być jawnie opisane. Nie wolno</p>
+<p>implementować fikcyjnych endpointów ani pozornej obsługi funkcji.</p>
+<h2 id="5-szkielet-projektu-i-technologie">5. Szkielet projektu i technologie</h2>
+<p>Proponowany stos:</p>
+<p>Obszar         Technologia</p>
+<p>-------------- ---------------</p>
+<p>Język          Python 3.12+</p>
+<p>Walidacja      Pydantic</p>
+<p>Konfiguracja   YAML</p>
+<p>CLI            Typer</p>
+<p>Baza           SQLite</p>
+<p>ORM            SQLAlchemy</p>
+<p>Migracje       Alembic</p>
+<p>Testy          pytest</p>
+<p>Repozytoria    Git worktrees</p>
+<p>Izolacja       Docker</p>
+<p>Raporty        Jinja2</p>
+<p>Wykresy        Chart.js</p>
+<p>Dane surowe    JSON / JSONL</p>
+<p>Nie budować na początku wieloużytkownikowego SaaS ani rozbudowanego</p>
+<p>frontendowego SPA. Podstawowym interfejsem ma być CLI, a raporty mają</p>
+<p>być statycznymi stronami HTML.</p>
+<h3 id="5-1-proponowana-struktura-katalog-w">5.1. Proponowana struktura katalogów</h3>
+<div class="code-block"><span class="code-lang">text</span><pre>ak-bench/
+├── pyproject.toml
+├── README.md
+├── configs/
+│   ├── defaults.yaml
+│   └── experiments/
+├── datasets/
+├── descriptors/
+│   ├── agents/
+│   ├── runtimes/
+│   ├── routers/
+│   ├── plugins/
+│   ├── models/
+│   ├── evaluators/
+│   ├── categories/
+│   ├── dimensions/
+│   └── metrics/
+├── src/akbench/
+│   ├── cli/
+│   ├── core/
+│   ├── config/
+│   ├── dataset/
+│   ├── categories/
+│   ├── repositories/
+│   ├── mutations/
+│   ├── descriptors/
+│   ├── discovery/
+│   ├── agents/
+│   │   ├── registry.py
+│   │   ├── descriptor.py
+│   │   ├── adapter.py
+│   │   └── adapters/
+│   ├── runtimes/
+│   ├── router/
+│   ├── plugins/
+│   ├── dimensions/
+│   ├── experiments/
+│   ├── sandbox/
+│   ├── runner/
+│   ├── evaluation/
+│   ├── knowledge/
+│   ├── observability/
+│   ├── metrics/
+│   ├── storage/
+│   ├── reporting/
+│   └── export/
+├── tests/
+│   ├── unit/
+│   ├── integration/
+│   ├── e2e/
+│   └── fixtures/
+├── docs/
+├── data/
+│   ├── akbench.sqlite
+│   ├── artifacts/
+│   ├── workspaces/
+│   └── runtime_instances/
+└── reports/</pre></div>
+<h2 id="6-system-agent-w-najwa-niejszy-kontrakt-rozszerzalno-ci">6. System agentów --- najważniejszy kontrakt rozszerzalności</h2>
+<h3 id="6-1-agent-registry">6.1. Agent Registry</h3>
+<p>Agent Registry rejestruje dostępne typy agentów na podstawie</p>
+<p>deskryptorów i adapterów.</p>
+<p>Pierwszym wpisem będzie <code>codex</code>, ale nazwa Codex nie może pojawiać się w</p>
+<p>logice ogólnego runnera, schedulera, evaluatora ani Experiment Managera.</p>
+<p>Dodanie nowego agenta powinno wymagać:</p>
+<ol>
+<li>dodania jego Agent Descriptor;</li>
+<li>implementacji lub konfiguracji odpowiedniego adaptera;</li>
+<li>opcjonalnego adaptera observability;</li>
+<li>testów kontraktowych;</li>
+<li>rejestracji agenta.</li>
+</ol>
+<p>Nie powinno wymagać zmian w logice eksperymentów.</p>
+<h3 id="6-2-agent-adapter">6.2. Agent Adapter</h3>
+<p>Agent Adapter jest warstwą tłumaczącą uniwersalny interfejs AK-Bench na</p>
+<p>konkretny interfejs badanego agenta.</p>
+<p>Przykładowy kontrakt:</p>
+<div class="code-block"><span class="code-lang">python</span><pre>from typing import Protocol
+
+class AgentAdapter(Protocol):
+    def validate_environment(self, config): ...
+    def start_session(self, config, workspace): ...
+    def submit_task(self, session, task): ...
+    def wait_for_completion(self, session, timeout): ...
+    def get_status(self, session): ...
+    def collect_observations(self, session): ...
+    def cancel(self, session): ...
+    def close_session(self, session): ...</pre></div>
+<p>Kontrakt należy dopasować do rzeczywistych możliwości integracyjnych.</p>
+<p>Nie każdy agent musi implementować wszystkie funkcje. Brak możliwości</p>
+<p>powinien być deklarowany jako capability <code>unsupported</code>, a nie</p>
+<p>zastępowany atrapą.</p>
+<h3 id="6-3-uniwersalny-wynik-agenta">6.3. Uniwersalny wynik agenta</h3>
+<p>Adapter powinien normalizować rezultat do wspólnego modelu:</p>
+<div class="code-block"><span class="code-lang">json</span><pre>{
+  &quot;agent_id&quot;: &quot;codex&quot;,
+  &quot;agent_version&quot;: &quot;detected-or-configured-version&quot;,
+  &quot;session_id&quot;: &quot;session-123&quot;,
+  &quot;status&quot;: &quot;completed&quot;,
+  &quot;started_at&quot;: &quot;ISO-8601&quot;,
+  &quot;finished_at&quot;: &quot;ISO-8601&quot;,
+  &quot;final_message&quot;: null,
+  &quot;exit_code&quot;: null,
+  &quot;workspace_changes&quot;: [],
+  &quot;observations&quot;: {},
+  &quot;artifacts&quot;: []
+}</pre></div>
+<p>Pola niedostępne pozostają <code>null</code> lub otrzymują status <code>unavailable</code>.</p>
+<p>Nie należy zgadywać wartości.</p>
+<h3 id="6-4-capability-model">6.4. Capability model</h3>
+<p>Każdy agent deklaruje możliwości, np.:</p>
+<ul>
+<li><code>workspace_binding</code>;</li>
+<li><code>fresh_session</code>;</li>
+<li><code>session_reset</code>;</li>
+<li><code>task_submission</code>;</li>
+<li><code>completion_detection</code>;</li>
+<li><code>cancellation</code>;</li>
+<li><code>token_usage</code>;</li>
+<li><code>cost_usage</code>;</li>
+<li><code>tool_trace</code>;</li>
+<li><code>model_observation</code>;</li>
+<li><code>streaming_output</code>;</li>
+<li><code>network_control</code>;</li>
+<li><code>filesystem_control</code>;</li>
+<li><code>session_export</code>.</li>
+</ul>
+<p>Możliwości powinny być opisane w deskryptorze i potwierdzane przez</p>
+<p>adapter, jeśli to możliwe.</p>
+<p>Eksperyment może wymagać konkretnych capabilities. Planner ma odrzucić</p>
+<p>plan, jeżeli agent ich nie zapewnia, albo oznaczyć ograniczenie, jeśli</p>
+<p>użytkownik jawnie dopuści tryb best-effort.</p>
+<h3 id="6-5-r-ne-klasy-agent-w">6.5. Różne klasy agentów</h3>
+<p>Architektura powinna umożliwiać obsługę:</p>
+<ul>
+<li>agentów CLI uruchamianych jako proces;</li>
+<li>agentów dostępnych przez HTTP/API;</li>
+<li>agentów działających jako usługa;</li>
+<li>agentów uruchamianych przez router;</li>
+<li>agentów z własnym runtime i narzędziami;</li>
+<li>agentów wielomodelowych.</li>
+</ul>
+<p>Nie należy zakładać, że każdy agent ma pojęcie sesji w takim samym</p>
+<p>znaczeniu. Adapter mapuje pojęcia konkretnego systemu na model AK-Bench.</p>
+<h3 id="6-6-agent-descriptor">6.6. Agent Descriptor</h3>
+<p>Przykład:</p>
+<div class="code-block"><span class="code-lang">yaml</span><pre>schema_version: &quot;1.0&quot;
+id: codex
+version: &quot;1.0.0&quot;
+title: Codex
+description: Codex agent adapter configuration.
+
+agent:
+  adapter: codex_cli
+  execution_type: process
+
+  capabilities:
+    workspace_binding: true
+    fresh_session: true
+    cancellation: true
+    token_usage: true
+    cost_usage: false
+    tool_trace: true
+    model_observation: true
+
+  configuration_schema:
+    model:
+      type: string
+      controllable: true
+    reasoning_effort:
+      type: string
+      controllable: true
+
+  observability:
+    session_id: supported
+    token_usage: supported
+    tool_calls: supported
+    model_selection: supported</pre></div>
+<p>To przykładowy format AK-Bench. Faktyczne parametry i capabilities muszą</p>
+<p>być zgodne z integracją danego agenta.</p>
+<h3 id="6-7-konfiguracja-agenta">6.7. Konfiguracja agenta</h3>
+<p>Eksperyment wskazuje agenta i jego konfigurację, ale nie może zakładać,</p>
+<p>że każdy agent obsługuje identyczne parametry.</p>
+<p>Przykładowo:</p>
+<div class="code-block"><span class="code-lang">yaml</span><pre>agent:
+  id: codex
+  version: &quot;1.0.0&quot;
+
+  config:
+    model: model-a
+    reasoning_effort: medium</pre></div>
+<p>Dla innego agenta może to wyglądać inaczej. Walidacja odbywa się według</p>
+<p>Agent Descriptor i schematu adaptera.</p>
+<h3 id="6-8-testy-kontraktowe-adapter-w">6.8. Testy kontraktowe adapterów</h3>
+<p>Każdy adapter musi przejść wspólny zestaw testów:</p>
+<ul>
+<li>walidacja konfiguracji;</li>
+<li>uruchomienie;</li>
+<li>wskazanie workspace;</li>
+<li>przekazanie zadania;</li>
+<li>wykrycie zakończenia;</li>
+<li>timeout;</li>
+<li>anulowanie;</li>
+<li>zamknięcie sesji;</li>
+<li>normalizacja statusu;</li>
+<li>zebranie dostępnych obserwacji;</li>
+<li>obsługa niedostępnych metryk.</li>
+</ul>
+<p>Dodanie nowego agenta wymaga przejścia testów kontraktowych, zanim</p>
+<p>będzie mógł być używany w eksperymentach oznaczonych jako <code>valid</code>.</p>
+<h2 id="7-runtime-i-router-manager">7. Runtime i Router Manager</h2>
+<p>Agent i router muszą być odrębnymi obiektami. Agent może działać bez</p>
+<p>routera.</p>
+<h3 id="7-1-tryby-wykonania">7.1. Tryby wykonania</h3>
+<ul>
+<li><code>direct</code> --- AK-Bench uruchamia agenta bezpośrednio.</li>
+<li><code>runtime</code> --- agent jest uruchamiany przez pośredni runtime.</li>
+<li><code>router</code> --- agent lub żądania modelowe przechodzą przez router.</li>
+</ul>
+<p>Eksperyment musi jawnie wskazać tryb.</p>
+<h3 id="7-2-router-manager">7.2. Router Manager</h3>
+<p>Dla LLM Routera przygotować adapter zarządzający lifecycle:</p>
+<div class="code-block"><span class="code-lang">python</span><pre>class RuntimeManager:
+    def start(self): ...
+    def stop(self): ...
+    def healthcheck(self): ...
+    def apply_configuration(self, config): ...
+    def read_configuration(self): ...
+    def verify_configuration(self, expected): ...
+    def collect_runtime_state(self): ...</pre></div>
+<p>Preferowany początkowy tryb to <code>managed</code>, w którym AK-Bench uruchamia</p>
+<p>dedykowaną instancję. Tryb <code>external</code> można dodać później i wymaga on</p>
+<p>weryfikacji konfiguracji oraz ochrony przed zmianami podczas</p>
+<p>eksperymentu.</p>
+<h3 id="7-3-modele">7.3. Modele</h3>
+<p>Nie utożsamiać agenta z modelem. Model może być:</p>
+<ul>
+<li>konfigurowany bezpośrednio w agencie;</li>
+<li>konfigurowany w routerze;</li>
+<li>wybierany dynamicznie;</li>
+<li>ukryty przed AK-Bench.</li>
+</ul>
+<p>Rejestrować model tylko na podstawie wiarygodnych obserwacji. Przy</p>
+<p>dynamicznym routingu logować każdy faktycznie użyty model i decyzje</p>
+<p>routingu, jeśli są dostępne.</p>
+<h2 id="8-dataset-zadania-i-kategorie">8. Dataset, zadania i kategorie</h2>
+<h3 id="8-1-kategorie">8.1. Kategorie</h3>
+<p>Początkowo:</p>
+<ul>
+<li><code>bug_fix</code>;</li>
+<li><code>new_feature</code>.</li>
+</ul>
+<p>Docelowo również:</p>
+<ul>
+<li><code>refactoring</code>;</li>
+<li><code>performance</code>;</li>
+<li><code>testing</code>;</li>
+<li><code>security</code>;</li>
+<li><code>debugging</code>;</li>
+<li><code>code_review</code>;</li>
+<li><code>architecture</code>.</li>
+</ul>
+<p>Kategorie nie mogą być zamkniętym enumem w silniku. Mają być</p>
+<p>rejestrowane przez Category Descriptor.</p>
+<h3 id="8-2-trudno">8.2. Trudność</h3>
+<p>Poziomy:</p>
+<ul>
+<li><code>easy</code>;</li>
+<li><code>medium</code>;</li>
+<li><code>hard</code>;</li>
+<li><code>expert</code>.</li>
+</ul>
+<p>Trudność jest metadanymi zadania. Nie zmienia automatycznie parametrów</p>
+<p>agenta, chyba że eksperyment jawnie tak definiuje.</p>
+<h3 id="8-3-task-descriptor">8.3. Task Descriptor</h3>
+<p>Każde zadanie ma stabilne ID i wersję, repozytorium, commit, opis,</p>
+<p>kategorię, trudność, setup, testy, evaluator i ograniczenia.</p>
+<p>Przykładowa struktura:</p>
+<div class="code-block"><span class="code-lang">text</span><pre>datasets/
+  bug_fix/
+    bugfix-001/
+      task.yaml
+      description.md
+      repository.yaml
+      public_tests/
+      hidden_tests/
+      evaluator.yaml
+      mutations/
+        mutation-001.patch</pre></div>
+<h3 id="8-4-bug-fix">8.4. Bug Fix</h3>
+<p>Poprawne repozytorium jest modyfikowane kontrolowanym, wersjonowanym</p>
+<p>patchem. Mutacja musi zostać zweryfikowana testami przed udostępnieniem</p>
+<p>zadania agentowi. Nie stosować losowego psucia kodu.</p>
+<h3 id="8-5-new-feature">8.5. New Feature</h3>
+<p>Agent otrzymuje repozytorium bazowe i specyfikację funkcjonalności.</p>
+<p>Ocena odbywa się przez hidden tests, testy regresyjne i ewentualne</p>
+<p>dodatkowe evaluatory.</p>
+<h3 id="8-6-hidden-tests">8.6. Hidden tests</h3>
+<p>Hidden tests i evaluator muszą być poza workspace agenta. Agent nie może</p>
+<p>ich odczytać ani modyfikować. Wyniki należy zbierać w izolowanym</p>
+<p>środowisku.</p>
+<h2 id="9-deskryptory-i-registry">9. Deskryptory i registry</h2>
+<p>Wszystkie rozszerzalne komponenty mają deskryptory wersjonowane przez</p>
+<p><code>schema_version</code>, <code>id</code> i <code>version</code>.</p>
+<p>Rodzaje:</p>
+<p>Deskryptor               Przeznaczenie</p>
+<p>------------------------ -------------------------</p>
+<p>Agent Descriptor         Agent i capabilities</p>
+<p>Runtime Descriptor       Runtime lub router</p>
+<p>Plugin Descriptor        Pluginy runtime/routera</p>
+<p>Model Descriptor         Modele i parametry</p>
+<p>Category Descriptor      Kategorie zadań</p>
+<p>Task Descriptor          Zadania</p>
+<p>Evaluator Descriptor     Sposób oceny</p>
+<p>Experiment Descriptor    Definicja eksperymentu</p>
+<p>Dimension Descriptor     Czynnik eksperymentu</p>
+<p>Metric Descriptor        Metryka</p>
+<p>Environment Descriptor   Środowisko wykonawcze</p>
+<p>Każdy deskryptor musi być walidowany przez Pydantic, wersjonowany i</p>
+<p>zapisywany jako snapshot w eksperymencie. Zmiana deskryptora nie może po</p>
+<p>cichu zmieniać interpretacji historycznych wyników.</p>
+<h2 id="10-plugin-descriptor-i-env">10. Plugin Descriptor i ENV</h2>
+<p>Plugin Descriptor opisuje tożsamość pluginu, wersję, capabilities,</p>
+<p>aktywację, zależności, obserwowalne ENV, metryki i wymiary.</p>
+<p>Przykładowy format:</p>
+<div class="code-block"><span class="code-lang">yaml</span><pre>schema_version: &quot;1.0&quot;
+id: agentic_knowledge
+version: &quot;1.0.0&quot;
+
+plugin:
+  provider: llm-router
+  type: knowledge
+  capabilities:
+    - knowledge_read
+    - knowledge_write
+    - retrieval
+
+benchmark:
+  enabled: true
+
+  activation:
+    method: router_configuration
+
+  verification:
+    required: true
+    methods:
+      - effective_router_config
+      - plugin_runtime_events
+
+  observed_env:
+    - name: ACTUAL_ENV_NAME_FROM_PLUGIN
+      type: boolean
+      role: feature_toggle
+      observed: true
+      dimension: true
+      controllable: true
+      sensitive: false
+
+    - name: ACTUAL_CONNECTION_ENV
+      type: string
+      role: infrastructure
+      observed: true
+      dimension: false
+      controllable: false
+      sensitive: true
+
+  metrics:
+    - knowledge_retrieval_count
+    - knowledge_write_count
+    - knowledge_retrieval_latency</pre></div>
+<p>Nazwy ENV w rzeczywistych deskryptorach muszą pochodzić z dokumentacji</p>
+<p>lub kodu pluginu. Nie kopiować przykładowych nazw jako faktów.</p>
+<h3 id="10-1-rozdzielenie-p-l">10.1. Rozdzielenie pól</h3>
+<ul>
+<li><code>observed</code> --- stan ma być obserwowany;</li>
+<li><code>dimension</code> --- parametr może być czynnikiem eksperymentu;</li>
+<li><code>controllable</code> --- AK-Bench może bezpiecznie zmienić parametr;</li>
+<li><code>sensitive</code> --- wartości nie wolno zapisywać.</li>
+</ul>
+<p>Nie skanować i nie zapisywać całego środowiska procesu. Obserwować</p>
+<p>wyłącznie jawnie wskazane zmienne.</p>
+<p>Sekrety mogą być reprezentowane jedynie jako <code>is_set</code>, bez zapisywania</p>
+<p>treści.</p>
+<h3 id="10-2-stan-pluginu">10.2. Stan pluginu</h3>
+<p>Rejestrować oddzielnie:</p>
+<ul>
+<li><code>requested_config</code>;</li>
+<li><code>configured_value</code>;</li>
+<li><code>effective_value</code>;</li>
+<li><code>observed_value</code>;</li>
+<li><code>verification_status</code>;</li>
+<li><code>value_source</code>.</li>
+</ul>
+<p>Statusy: <code>verified</code>, <code>unverified</code>, <code>mismatch</code>, <code>unsupported</code>,</p>
+<p><code>not_configured</code>, <code>runtime_error</code>.</p>
+<p>Obecność ENV lub wpisu konfiguracyjnego nie jest dowodem działania</p>
+<p>pluginu.</p>
+<h3 id="10-3-plugin-adapter">10.3. Plugin Adapter</h3>
+<p>Adapter odpowiada za odczyt i zmianę konfiguracji, weryfikację,</p>
+<p>interpretację zdarzeń i normalizację metryk. Nie umieszczać obsługi</p>
+<p>konkretnego pluginu w głównym silniku eksperymentów.</p>
+<h2 id="11-dimension-descriptor">11. Dimension Descriptor</h2>
+<p>Dimension opisuje parametr eksperymentu. Obsługiwane typy:</p>
+<ul>
+<li>boolean;</li>
+<li>categorical;</li>
+<li>integer;</li>
+<li>float;</li>
+<li>string;</li>
+<li>agent reference;</li>
+<li>model reference;</li>
+<li>plugin configuration;</li>
+<li>runtime configuration.</li>
+</ul>
+<p>Deskryptor powinien określać źródło, wartości dozwolone,</p>
+<p>controllability, sposób konfiguracji i weryfikacji oraz zależności.</p>
+<p>Wymiary niekontrolowalne mogą być obserwowane, ale nie mogą być używane</p>
+<p>do generowania wariantów.</p>
+<h2 id="12-experiment-descriptor">12. Experiment Descriptor</h2>
+<p>Eksperyment jest definiowany w wersjonowanym YAML. Musi wskazywać</p>
+<p>testowanego agenta, opcjonalny runtime/router, dataset, czynniki,</p>
+<p>strategię macierzy, powtórzenia, izolację, evaluatory i metryki.</p>
+<p>Przykład:</p>
+<div class="code-block"><span class="code-lang">yaml</span><pre>schema_version: &quot;1.0&quot;
+id: knowledge-model-factorial
+version: &quot;1.0.0&quot;
+title: Knowledge and Model Factorial Experiment
+
+experiment:
+  type: configuration
+
+  agent:
+    id: codex
+    version: &quot;1.0.0&quot;
+    config:
+      model: model-a
+
+  execution:
+    mode: router
+    runtime:
+      id: llm_router
+      lifecycle: managed
+
+  dataset:
+    id: software-engineering
+    version: &quot;1.0.0&quot;
+    filters:
+      categories: [bug_fix, new_feature]
+      difficulties: [easy, medium, hard]
+      task_ids: []
+
+  factors:
+    strategy: full_factorial
+    dimensions:
+      - id: knowledge_enabled
+        values: [true, false]
+      - id: auto_codex_enabled
+        values: [true, false]
+      - id: model
+        values: [model-a, model-b, model-c]
+
+  execution_policy:
+    repetitions: 3
+    concurrency: 1
+    timeout_seconds: 1800
+    retry_infrastructure_errors: 1
+    retry_agent_failures: 0
+
+  isolation:
+    workspace_per_run: true
+    fresh_agent_session: true
+    clean_agent_context: true
+
+  evaluation:
+    evaluators:
+      - pytest_evaluator
+
+  metrics:
+    - task_success_rate
+    - hidden_test_pass_rate
+    - execution_time
+    - input_tokens
+    - output_tokens
+    - total_cost
+    - tool_calls
+
+  reporting:
+    generate_html: true
+    generate_json: true
+    generate_csv: true</pre></div>
+<h3 id="12-1-walidacja">12.1. Walidacja</h3>
+<p>Przed uruchomieniem sprawdzić:</p>
+<ul>
+<li>istnienie datasetu i wersji;</li>
+<li>dostępność agenta i adaptera;</li>
+<li>wymagane capabilities agenta;</li>
+<li>dostępność runtime, jeśli jest wymagany;</li>
+<li>istnienie pluginów i wymiarów;</li>
+<li>controllability wymiarów;</li>
+<li>dozwolone wartości;</li>
+<li>kompatybilność parametrów;</li>
+<li>dostępność evaluatorów i metryk;</li>
+<li>limity zasobów;</li>
+<li>sprzeczne ustawienia.</li>
+</ul>
+<p>Niepoprawny deskryptor blokuje uruchomienie.</p>
+<h3 id="12-2-strategie-generowania-wariant-w">12.2. Strategie generowania wariantów</h3>
+<p>Implementować jako wymienne strategie:</p>
+<ul>
+<li><code>full_factorial</code>;</li>
+<li><code>selected_factors</code>;</li>
+<li><code>one_factor_at_a_time</code>;</li>
+<li><code>pairwise</code>;</li>
+<li><code>custom_matrix</code>.</li>
+</ul>
+<p>Każdy eksperyment powinien mieć możliwość wskazania baseline.</p>
+<p>Planner oblicza liczbę wariantów, zadań, powtórzeń i runów. Przed</p>
+<p>uruchomieniem prezentuje kosztowność planu i stosuje konfigurowalne</p>
+<p>limity.</p>
+<h3 id="12-3-wariant-eksperymentu">12.3. Wariant eksperymentu</h3>
+<p>Każdy wariant przechowuje stabilny ID, wartości wymiarów, konfigurację</p>
+<p>żądaną, hash konfiguracji i snapshoty deskryptorów. Każdy run wskazuje</p>
+<p>konkretny wariant.</p>
+<h2 id="13-router-manager">13. Router Manager</h2>
+<p>Router jest opcjonalnym runtime. W pierwszej wersji preferowany jest</p>
+<p>tryb <code>managed</code>, w którym AK-Bench uruchamia dedykowaną instancję. Tryb</p>
+<p><code>external</code> może zostać dodany później.</p>
+<p>Nie zmieniać konfiguracji współdzielonego routera w trakcie</p>
+<p>eksperymentu. Jeśli nie można potwierdzić stabilności konfiguracji,</p>
+<p>eksperyment powinien zostać oznaczony jako niezweryfikowany lub</p>
+<p>nieważny.</p>
+<p>Zapisywać oddzielnie:</p>
+<div class="code-block"><span class="code-lang">json</span><pre>{
+  &quot;requested_config&quot;: {},
+  &quot;effective_config&quot;: {},
+  &quot;observed_config&quot;: {},
+  &quot;verification_status&quot;: &quot;verified&quot;
+}</pre></div>
+<h2 id="14-izolacja-i-workspace-manager">14. Izolacja i Workspace Manager</h2>
+<p>Każdy run otrzymuje osobny workspace, sesję agenta, identyfikator, logi</p>
+<p>i artefakty. W eksperymentach pamięciowych izolować również historię,</p>
+<p>cache, pliki lokalne, procesy i przestrzenie danych pluginów.</p>
+<p>Używać Git worktrees i kontrolowanych kontenerów Docker. Agent nie może</p>
+<p>mieć dostępu do hidden tests, konfiguracji benchmarku ani artefaktów</p>
+<p>innych runów.</p>
+<p>Każdy run musi mieć Reproducibility Manifest zawierający m.in.:</p>
+<ul>
+<li>experiment ID i variant ID;</li>
+<li>agent ID, wersję, adapter i konfigurację;</li>
+<li>runtime/router ID i wersję, jeśli dotyczy;</li>
+<li>wersje pluginów i deskryptorów;</li>
+<li>task ID i wersję;</li>
+<li>commit i hash repozytorium;</li>
+<li>hash konfiguracji;</li>
+<li>obraz sandboxa;</li>
+<li>parametry wykonania.</li>
+</ul>
+<h2 id="15-run-orchestrator-i-lifecycle">15. Run Orchestrator i lifecycle</h2>
+<p>Run Orchestrator nie może znać specyfiki Codexa. Korzysta wyłącznie z</p>
+<p>Agent Adapter, opcjonalnego Runtime Manager, Workspace Manager i</p>
+<p>Evaluator Engine.</p>
+<p>Przykładowy lifecycle:</p>
+<div class="code-block"><span class="code-lang">text</span><pre>PENDING
+  -&gt; PREPARING
+  -&gt; VALIDATING
+  -&gt; CONFIGURING_RUNTIME
+  -&gt; CREATING_WORKSPACE
+  -&gt; STARTING_AGENT
+  -&gt; EXECUTING
+  -&gt; COLLECTING
+  -&gt; EVALUATING
+  -&gt; FINALIZING
+  -&gt; COMPLETED</pre></div>
+<p>Dodatkowe statusy:</p>
+<ul>
+<li><code>FAILED</code>;</li>
+<li><code>TIMEOUT</code>;</li>
+<li><code>CANCELLED</code>;</li>
+<li><code>INFRASTRUCTURE_ERROR</code>;</li>
+<li><code>INVALID_CONFIGURATION</code>;</li>
+<li><code>EVALUATION_ERROR</code>.</li>
+</ul>
+<p>Nie ponawiać automatycznie błędów agenta. Retry infrastruktury musi być</p>
+<p>jawnie skonfigurowany i rejestrowany.</p>
+<h2 id="16-evaluator-engine">16. Evaluator Engine</h2>
+<p>Evaluator ocenia rezultat niezależnie od deklaracji agenta. Obsługiwać:</p>
+<ul>
+<li>pytest;</li>
+<li>command evaluator;</li>
+<li>unit/integration tests;</li>
+<li>static analysis;</li>
+<li>diff evaluator;</li>
+<li>custom Python evaluator.</li>
+</ul>
+<p>Hidden tests uruchamiać poza workspace agenta. Zachowywać surowe wyniki</p>
+<p>testów i wersję evaluatora.</p>
+<p>Rozróżniać:</p>
+<ul>
+<li>pełny sukces;</li>
+<li>częściowy sukces;</li>
+<li>porażkę;</li>
+<li>regresję;</li>
+<li>timeout;</li>
+<li>błąd evaluatora;</li>
+<li>błąd infrastruktury.</li>
+</ul>
+<h2 id="17-knowledge-learning-replay">17. Knowledge Learning / Replay</h2>
+<p>Główny eksperyment badawczy dotyczący <code>agentic_knowledge</code> ma trzy</p>
+<p>warianty:</p>
+<ol>
+<li><strong>Learning Run</strong> --- agent wykonuje zadania z aktywnym zapisem i</li>
+</ol>
+<p>odczytem wiedzy.</p>
+<ol>
+<li><strong>Knowledge Replay</strong> --- nowa sesja, czysty workspace, dostęp do</li>
+</ol>
+<p>wiedzy z Learning, bez historii poprzedniej sesji.</p>
+<ol>
+<li><strong>Fresh Control</strong> --- nowa sesja, czysty workspace, bez dostępu do</li>
+</ol>
+<p>wiedzy z Learning.</p>
+<p>Replay i Fresh muszą korzystać z identycznego snapshotu repozytorium,</p>
+<p>wersji zadania, testów, evaluatora, agenta, parametrów i limitów.</p>
+<p>Przed Replay należy potwierdzić zakończenie zapisu i indeksowania</p>
+<p>wiedzy. Nie zakładać, że koniec sesji oznacza gotowość KB.</p>
+<p>Dodać scenariusze:</p>
+<ul>
+<li>exact replay --- identyczne zadanie;</li>
+<li>related transfer --- podobne, ale inne zadanie;</li>
+<li>negative transfer --- zadanie, w którym wcześniejsza wiedza może być</li>
+</ul>
+<p>myląca.</p>
+<p>Retrieval nie jest równoznaczny z wykorzystaniem wiedzy. Mierzyć oba</p>
+<p>zjawiska oddzielnie.</p>
+<h2 id="18-metrics-i-observability">18. Metrics i Observability</h2>
+<h3 id="18-1-quality">18.1. Quality</h3>
+<ul>
+<li>task success rate;</li>
+<li>hidden test pass rate;</li>
+<li>partial success;</li>
+<li>regression rate;</li>
+<li>evaluator score.</li>
+</ul>
+<h3 id="18-2-efficiency">18.2. Efficiency</h3>
+<ul>
+<li>całkowity i aktywny czas;</li>
+<li>input/output/total tokens;</li>
+<li>koszt;</li>
+<li>liczba wywołań narzędzi;</li>
+<li>liczba wywołań modeli.</li>
+</ul>
+<h3 id="18-3-agent-i-runtime">18.3. Agent i runtime</h3>
+<ul>
+<li>agent i wersja;</li>
+<li>adapter i wersja;</li>
+<li>session ID;</li>
+<li>statusy;</li>
+<li>użyte modele, jeśli obserwowalne;</li>
+<li>routing i eskalacje, jeśli dostępne;</li>
+<li>tool calls i trace&#x27;y, jeśli dostępne.</li>
+</ul>
+<h3 id="18-4-knowledge">18.4. Knowledge</h3>
+<ul>
+<li>liczba zapisów;</li>
+<li>retrieval count;</li>
+<li>hit rate;</li>
+<li>retrieval latency;</li>
+<li>wykorzystanie wiedzy;</li>
+<li>false positive retrieval;</li>
+<li>indexing latency;</li>
+<li>rozmiar KB.</li>
+</ul>
+<h3 id="18-5-reliability">18.5. Reliability</h3>
+<ul>
+<li>timeout rate;</li>
+<li>infrastructure failure rate;</li>
+<li>agent crash rate;</li>
+<li>router error rate;</li>
+<li>incomplete trace rate.</li>
+</ul>
+<p>Brak danych zapisuj jako <code>null</code> lub <code>unavailable</code>. Nie traktuj krótszego</p>
+<p>czasu, mniejszej liczby tokenów ani mniejszej liczby tool calls jako</p>
+<p>automatycznego sukcesu.</p>
+<p>Podstawowe porównania:</p>
+<div class="code-block"><span class="code-lang">text</span><pre>delta_success = success_variant - success_baseline
+speedup = time_baseline / time_variant
+token_saving = 1 - tokens_variant / tokens_baseline</pre></div>
+<p>Przy baseline równym zero raportować różnicę bezwzględną.</p>
+<h2 id="19-storage">19. Storage</h2>
+<p>Początkowo SQLite dla metadanych i relacji, JSONL/JSON oraz pliki dla</p>
+<p>trace&#x27;ów i artefaktów.</p>
+<p>Główne tabele:</p>
+<ul>
+<li><code>benchmarks</code>;</li>
+<li><code>datasets</code>;</li>
+<li><code>tasks</code>;</li>
+<li><code>repositories</code>;</li>
+<li><code>experiments</code>;</li>
+<li><code>experiment_variants</code>;</li>
+<li><code>task_runs</code>;</li>
+<li><code>evaluations</code>;</li>
+<li><code>metrics</code>;</li>
+<li><code>artifacts</code>;</li>
+<li><code>plugin_observations</code>;</li>
+<li><code>agent_observations</code>;</li>
+<li><code>model_observations</code>;</li>
+<li><code>experiment_metrics</code>;</li>
+<li><code>descriptor_snapshots</code>;</li>
+<li><code>events</code>.</li>
+</ul>
+<p>Duże trace&#x27;y nie powinny być przechowywane bezpośrednio w SQLite.</p>
+<p>Przykładowy katalog artefaktów:</p>
+<div class="code-block"><span class="code-lang">text</span><pre>data/artifacts/exp-0001/run-0001/
+  metadata.json
+  manifest.json
+  events.jsonl
+  agent_trace.jsonl
+  runtime_trace.jsonl
+  tool_calls.jsonl
+  evaluation.json
+  diff.patch
+  stdout.log
+  stderr.log
+  metrics.json</pre></div>
+<p>Każdy artefakt powinien mieć checksum, rozmiar, typ i powiązanie z</p>
+<p>runem.</p>
+<h2 id="20-reporting-engine">20. Reporting Engine</h2>
+<p>Generować statyczne raporty HTML:</p>
+<div class="code-block"><span class="code-lang">text</span><pre>reports/
+  index.html
+  experiments/exp-0001/index.html
+  tasks/bugfix-001/index.html
+  agents/index.html
+  runtimes/index.html
+  plugins/index.html
+  models/index.html
+  assets/</pre></div>
+<p>Dashboard główny:</p>
+<ul>
+<li>liczba eksperymentów i runów;</li>
+<li>skuteczność;</li>
+<li>wyniki według kategorii i trudności;</li>
+<li>czas;</li>
+<li>tokeny;</li>
+<li>koszt;</li>
+<li>porównanie agentów;</li>
+<li>porównanie runtime/routerów;</li>
+<li>porównanie pluginów;</li>
+<li>ostatnie eksperymenty.</li>
+</ul>
+<p>Raport eksperymentu powinien pokazywać deskryptor, dataset, warianty,</p>
+<p>konfiguracje requested/effective/observed, status weryfikacji, wyniki,</p>
+<p>metryki, błędy i artefakty.</p>
+<p>Raport pojedynczego zadania powinien pokazywać wszystkie runy, agentów,</p>
+<p>konfiguracje, testy, diffy, czas, tokeny i koszt.</p>
+<p>Raporty nie mogą ukrywać nieudanych runów ani niezweryfikowanych</p>
+<p>konfiguracji.</p>
+<h2 id="21-export-i-publikowanie">21. Export i publikowanie</h2>
+<p>Pierwsze formaty:</p>
+<ul>
+<li>HTML;</li>
+<li>JSON;</li>
+<li>CSV.</li>
+</ul>
+<p>Eksport eksperymentu powinien zawierać deskryptor, snapshoty</p>
+<p>deskryptorów, warianty, runy, metryki, manifesty i wybrane artefakty.</p>
+<p>Przed publikacją usuwać sekrety, klucze API, prywatne dane i wrażliwe</p>
+<p>fragmenty promptów/trace&#x27;ów. Umożliwić wyłączenie eksportu pełnych</p>
+<p>promptów i diffów.</p>
+<h2 id="22-cli">22. CLI</h2>
+<p>Przykładowe komendy:</p>
+<div class="code-block"><span class="code-lang">bash</span><pre>akbench init
+akbench doctor
+
+akbench agent list
+akbench agent inspect codex
+akbench descriptor list
+akbench descriptor validate
+
+akbench dataset list
+akbench dataset validate
+akbench category list
+
+akbench runtime status
+akbench runtime start
+akbench runtime verify
+
+akbench experiment validate configs/experiments/example.yaml
+akbench experiment plan configs/experiments/example.yaml
+akbench experiment run configs/experiments/example.yaml
+akbench experiment list
+akbench experiment show exp-0001
+akbench experiment resume exp-0001
+akbench experiment cancel exp-0001
+
+akbench report --experiment exp-0001
+akbench report --all
+akbench export --experiment exp-0001 --format json</pre></div>
+<p>Nazwy komend są propozycją CLI i mogą zostać dopasowane podczas</p>
+<p>implementacji.</p>
+<p>Przed uruchomieniem eksperymentu CLI powinno wyświetlić liczbę zadań,</p>
+<p>wariantów, powtórzeń i runów, wskazanego agenta, runtime, wymagane</p>
+<p>capabilities oraz status walidacji.</p>
+<h2 id="23-bezpiecze-stwo-i-wiarygodno">23. Bezpieczeństwo i wiarygodność</h2>
+<ul>
+<li>Nie zapisywać sekretów.</li>
+<li>Nie udostępniać agentowi hidden tests.</li>
+<li>Nie pozwalać agentowi modyfikować datasetu, evaluatorów ani</li>
+</ul>
+<p>konfiguracji eksperymentu.</p>
+<ul>
+<li>Izolować workspace i artefakty runów.</li>
+<li>Ograniczać sieć i filesystem w sandboxie.</li>
+<li>Zachowywać manifesty i hashe.</li>
+<li>Nie zmieniać konfiguracji runtime w trakcie runu.</li>
+<li>Nie uznawać deklaracji agenta za wynik ewaluacji.</li>
+<li>Nie ukrywać brakujących danych.</li>
+</ul>
+<p>Status eksperymentu:</p>
+<ul>
+<li><code>valid</code>;</li>
+<li><code>valid_with_warnings</code>;</li>
+<li><code>invalid</code>;</li>
+<li><code>incomplete</code>.</li>
+</ul>
+<p>Przyczyny nieważności mogą obejmować niezweryfikowaną konfigurację, brak</p>
+<p>wymaganych capabilities, brak hidden tests, niepoprawny snapshot,</p>
+<p>przeciek danych lub brak gotowości KB.</p>
+<h2 id="24-testy">24. Testy</h2>
+<h3 id="unit-tests">Unit tests</h3>
+<p>Walidacja deskryptorów, tasków, kategorii, registry, wymiarów,</p>
+<p>generatora wariantów, hashy, ENV allowlist, sekretów, metryk i</p>
+<p>serializacji.</p>
+<h3 id="adapter-contract-tests">Adapter contract tests</h3>
+<p>Wspólny zestaw testów dla każdego agenta: konfiguracja, start,</p>
+<p>workspace, task submission, completion, timeout, cancel, close,</p>
+<p>normalizacja wyniku i obserwacje.</p>
+<h3 id="integration-tests">Integration tests</h3>
+<p>Router/runtime, agent adapter, plugin adapter, repository manager,</p>
+<p>sandbox, evaluator, storage i reporting.</p>
+<h3 id="end-to-end">End-to-end</h3>
+<p>Mały dataset zawierający bug fix, new feature, timeout, błędną</p>
+<p>konfigurację, brak pluginu i błąd evaluatora. Przejść od YAML do raportu</p>
+<p>HTML.</p>
+<h3 id="reproducibility-tests">Reproducibility tests</h3>
+<p>Sprawdzić zgodność snapshotów, konfiguracji, testów, deskryptorów,</p>
+<p>identyfikatorów i kompletności artefaktów. Nie wymagać identycznych</p>
+<p>odpowiedzi LLM, ale wymagać identycznych warunków eksperymentu.</p>
+<h2 id="25-przyk-adowe-eksperymenty-startowe">25. Przykładowe eksperymenty startowe</h2>
+<h3 id="a-por-wnanie-agent-w">A. Porównanie agentów</h3>
+<p>Ten sam dataset, runtime, warunki i evaluator, różni agenci, np. Codex i</p>
+<p>kolejny adapter. Porównywać tylko możliwości wspólne lub jawnie oznaczać</p>
+<p>różnice capabilities.</p>
+<h3 id="b-wp-yw-knowledge">B. Wpływ Knowledge</h3>
+<p>Knowledge ON/OFF, ten sam agent, model i pozostała konfiguracja.</p>
+<h3 id="c-wp-yw-auto-codex">C. Wpływ Auto Codex</h3>
+<p>Auto Codex ON/OFF, z rejestrowaniem faktycznie użytych modeli i decyzji</p>
+<p>routingu.</p>
+<h3 id="d-por-wnanie-modeli">D. Porównanie modeli</h3>
+<p>Jeden agent i stała konfiguracja, różne modele, o ile agent/runtime</p>
+<p>pozwala jawnie sterować modelem.</p>
+<h3 id="e-pe-na-macierz">E. Pełna macierz</h3>
+<p>Knowledge ON/OFF × Auto Codex ON/OFF × Model A/B/C = 12 wariantów.</p>
+<h3 id="f-knowledge-learning-replay">F. Knowledge Learning / Replay</h3>
+<p>Learning, Replay i Fresh Control, z testami exact replay, transfer i</p>
+<p>negative transfer.</p>
+<h2 id="26-kolejno-implementacji">26. Kolejność implementacji</h2>
+<h3 id="faza-0-integracyjny-spike">Faza 0 --- integracyjny spike</h3>
+<p>Potwierdzenie integracji z Codexem, LLM Routerem i pluginami.</p>
+<p>Dokumentacja rzeczywistych możliwości.</p>
+<p><strong>Done:</strong> działający prototyp i <code>AGENT_INTEGRATION.md</code> oraz</p>
+<p><code>ROUTER_INTEGRATION.md</code>.</p>
+<h3 id="faza-1-szkielet">Faza 1 --- szkielet</h3>
+<p>Struktura, CLI, konfiguracja, logging, SQLite, SQLAlchemy, testy.</p>
+<p><strong>Done:</strong> <code>akbench doctor</code>, inicjalizacja i migracje.</p>
+<h3 id="faza-2-deskryptory-i-registry">Faza 2 --- deskryptory i registry</h3>
+<p>Wspólny system deskryptorów, Agent Descriptor, Runtime Descriptor,</p>
+<p>Plugin Descriptor, Model Descriptor, Category, Evaluator, Dimension i</p>
+<p>Metric Descriptor.</p>
+<p><strong>Done:</strong> można dodać agenta i plugin przez adapter/deskryptor bez zmian</p>
+<p>w silniku eksperymentów.</p>
+<h3 id="faza-3-dataset-i-repozytoria">Faza 3 --- dataset i repozytoria</h3>
+<p>Task Descriptor, dataset validation, category registry, snapshoty,</p>
+<p>worktrees i mutacje.</p>
+<p><strong>Done:</strong> powtarzalne workspace dla zadań.</p>
+<h3 id="faza-4-agent-adapter-framework">Faza 4 --- Agent Adapter Framework</h3>
+<p>Uniwersalny kontrakt, Agent Registry, capabilities, testy kontraktowe i</p>
+<p>pierwszy adapter Codexa.</p>
+<p><strong>Done:</strong> Codex działa przez adapter, a runner nie zawiera kodu</p>
+<p>specyficznego dla Codexa.</p>
+<h3 id="faza-5-runtime-manager">Faza 5 --- Runtime Manager</h3>
+<p>Obsługa direct/runtime/router, pierwszy adapter LLM Routera,</p>
+<p>konfiguracja i weryfikacja.</p>
+<p><strong>Done:</strong> zadanie działa z agentem bezpośrednio lub przez zadeklarowany</p>
+<p>runtime.</p>
+<h3 id="faza-6-evaluator-engine">Faza 6 --- Evaluator Engine</h3>
+<p>Pytest, command evaluator, hidden tests i wyniki.</p>
+<p><strong>Done:</strong> niezależna ocena wykonania zadania.</p>
+<h3 id="faza-7-run-orchestrator-i-scheduler">Faza 7 --- Run Orchestrator i Scheduler</h3>
+<p>Lifecycle, retry, timeout, cancel, resume, izolacja i artefakty.</p>
+<p><strong>Done:</strong> stabilna seria runów.</p>
+<h3 id="faza-8-experiment-descriptor-i-planner">Faza 8 --- Experiment Descriptor i Planner</h3>
+<p>Walidacja, Dimension Registry, strategie macierzy, baseline i szacowanie</p>
+<p>skali.</p>
+<p><strong>Done:</strong> plan eksperymentu można wygenerować bez uruchamiania.</p>
+<h3 id="faza-9-plugin-configuration-i-observability">Faza 9 --- Plugin Configuration i Observability</h3>
+<p>Plugin adapters, ENV allowlist, requested/effective/observed, metryki i</p>
+<p>trace&#x27;y.</p>
+<p><strong>Done:</strong> weryfikacja pluginów i zbieranie ich dostępnych danych.</p>
+<h3 id="faza-10-knowledge-replay">Faza 10 --- Knowledge Replay</h3>
+<p>Learning, Replay, Fresh, gotowość KB, izolacja i transfer.</p>
+<p><strong>Done:</strong> poprawny eksperyment pamięciowy.</p>
+<h3 id="faza-11-storage-i-metrics">Faza 11 --- Storage i Metrics</h3>
+<p>Kompletny model danych, artefakty, hashe, agregacje i statystyki.</p>
+<p><strong>Done:</strong> pełna historia eksperymentów jest zapisana.</p>
+<h3 id="faza-12-reporting">Faza 12 --- Reporting</h3>
+<p>Dashboard, raport eksperymentu, zadania, agentów, runtime i pluginów.</p>
+<p><strong>Done:</strong> analiza wyników przez statyczny HTML.</p>
+<h3 id="faza-13-export-i-stabilizacja">Faza 13 --- Export i stabilizacja</h3>
+<p>Eksport, filtrowanie sekretów, E2E, dokumentacja i testy powtarzalności.</p>
+<p><strong>Done:</strong> platforma nadaje się do regularnych eksperymentów testowych.</p>
+<h2 id="27-zakres-mvp">27. Zakres MVP</h2>
+<p>Pierwsza działająca wersja powinna zawierać:</p>
+<hr />
+<p>Obszar                              MVP</p>
+<p>----------------------------------- -----------------------------------</p>
+<p>Agenci                              Framework adapterów + Codex jako</p>
+<p>pierwszy adapter</p>
+<p>Runtime                             Bezpośredni tryb i jeden adapter</p>
+<p>LLM Routera</p>
+<p>Kategorie                           bug_fix, new_feature</p>
+<p>Trudności                           easy, medium, hard, expert</p>
+<p>Pluginy                             agentic_knowledge, auto_codex przez</p>
+<p>deskryptory/adapters</p>
+<p>Modele                              Konfigurowalne, jeśli wspierane</p>
+<p>przez agenta/runtime</p>
+<p>Deskryptory                         agent, runtime, router, plugin,</p>
+<p>model, task, experiment, evaluator,</p>
+<p>dimension</p>
+<p>Eksperymenty                        configuration, knowledge replay,</p>
+<p>agent comparison</p>
+<p>Strategie                           full factorial, custom matrix</p>
+<p>Izolacja                            Git worktree + Docker</p>
+<p>Evaluator                           pytest + command</p>
+<p>Storage                             SQLite + JSONL</p>
+<p>Raporty                             HTML</p>
+<p>Eksport                             JSON, CSV, HTML</p>
+<p>CLI                                 Podstawowe zarządzanie i</p>
+<p>uruchamianie</p>
+<hr />
+<p>Nie implementować na początku SaaS, kont użytkowników, rozproszonego</p>
+<p>schedulera, klastra workerów ani obsługi dziesiątek agentów.</p>
+<p>Architektura ma jednak umożliwiać ich późniejsze dodanie.</p>
+<h2 id="28-dokumentacja-projektu">28. Dokumentacja projektu</h2>
+<p>Utworzyć:</p>
+<div class="code-block"><span class="code-lang">text</span><pre>docs/
+  ARCHITECTURE.md
+  AGENT_INTEGRATION.md
+  ROUTER_INTEGRATION.md
+  AGENT_ADAPTERS.md
+  RUNTIME_ADAPTERS.md
+  DATASET_FORMAT.md
+  TASK_FORMAT.md
+  CATEGORY_SYSTEM.md
+  DESCRIPTOR_SYSTEM.md
+  PLUGIN_DESCRIPTORS.md
+  EXPERIMENT_DESCRIPTORS.md
+  DIMENSION_DESCRIPTORS.md
+  EXPERIMENT_TYPES.md
+  FACTORIAL_DESIGN.md
+  KNOWLEDGE_EXPERIMENTS.md
+  EVALUATORS.md
+  ISOLATION_AND_SECURITY.md
+  METRICS.md
+  STORAGE.md
+  REPORTING.md
+  CLI.md
+  DEVELOPMENT.md
+  REPRODUCIBILITY.md</pre></div>
+<p>Dokumentacja ma odzwierciedlać faktyczną implementację. Nie opisywać</p>
+<p>funkcji, które nie istnieją.</p>
+<h2 id="29-instrukcje-dla-agenta-implementuj-cego">29. Instrukcje dla agenta implementującego</h2>
+<ol>
+<li>Najpierw przeanalizuj istniejące repozytorium i środowisko.</li>
+<li>Rozpocznij od integracyjnego spike&#x27;u, nie od budowania całej</li>
+</ol>
+<p>platformy.</p>
+<ol>
+<li>Nie zakładaj, że Codex będzie jedynym lub docelowym agentem.</li>
+<li>Nie umieszczaj nazw i logiki Codexa w ogólnym runnerze.</li>
+<li>Każdy agent musi być obsługiwany przez Agent Descriptor i Agent</li>
+</ol>
+<p>Adapter.</p>
+<ol>
+<li>Dodanie nowego agenta ma nie wymagać zmian w Experiment Managerze,</li>
+</ol>
+<p>Schedulerze ani Evaluatorze.</p>
+<ol>
+<li>Utrzymuj rozdział agent / runtime / router / model.</li>
+<li>Nie zakładaj, że każdy agent obsługuje sesje, tokeny, koszty,</li>
+</ol>
+<p>trace&#x27;y lub konfigurowalny model.</p>
+<ol>
+<li>Wymagane capabilities waliduj przed eksperymentem.</li>
+<li>Nie wymyślaj endpointów, flag, nazw ENV ani formatów logów.</li>
+<li>Obserwuj tylko ENV jawnie wskazane w deskryptorach.</li>
+<li>Nie zapisuj sekretów.</li>
+<li>Zapisuj requested, effective i observed configuration osobno.</li>
+<li>Nie uznawaj konfiguracji za aktywną bez weryfikacji.</li>
+<li>Nie udostępniaj agentowi hidden tests.</li>
+<li>Nie mieszaj eksperymentów konfiguracji z eksperymentami uczenia</li>
+</ol>
+<p>pamięci.</p>
+<ol>
+<li>Nie utożsamiaj retrieval z wykorzystaniem wiedzy.</li>
+<li>Nie traktuj błędów infrastruktury jako błędów agenta.</li>
+<li>Nie usuwaj nieudanych runów z raportów.</li>
+<li>Każdy run musi mieć manifest i identyfikowalne wersje.</li>
+<li>Każdy deskryptor musi być wersjonowany i walidowany.</li>
+<li>Implementuj etapami, uruchamiaj testy po każdej fazie i aktualizuj</li>
+</ol>
+<p>dokumentację.</p>
+<ol>
+<li>Priorytetem jest poprawność metodologiczna i wiarygodność wyników,</li>
+</ol>
+<p>nie liczba funkcji.</p>
+<ol>
+<li>Nie optymalizuj przedwcześnie pod wielką skalę.</li>
+<li>Jeśli integracja nie zapewnia danej funkcji, oznacz ją jako</li>
+</ol>
+<p><code>unsupported</code> lub <code>unverified</code>; nie twórz pozornej obsługi.</p>
+<h2 id="30-ko-cowy-rezultat">30. Końcowy rezultat</h2>
+<p>Użytkownik powinien móc:</p>
+<ol>
+<li>Dodać dataset z zadaniami.</li>
+<li>Wybrać dowolnego zarejestrowanego agenta.</li>
+<li>Wybrać tryb bezpośredni lub runtime/router, jeśli jest potrzebny.</li>
+<li>Skonfigurować dostępne modele i pluginy.</li>
+<li>Zdefiniować eksperyment w YAML.</li>
+<li>Zweryfikować plan i liczbę runów.</li>
+<li>Uruchomić eksperyment.</li>
+<li>Obserwować wykonanie i zbierane metryki.</li>
+<li>Otrzymać niezależną ocenę każdego zadania.</li>
+<li>Porównać agentów, modele, runtime&#x27;y, pluginy i konfiguracje.</li>
+<li>Otworzyć raport HTML dla eksperymentu i pojedynczego zadania.</li>
+<li>Wyeksportować wyniki i artefakty.</li>
+</ol>
+<p><strong>Warunek jakości:</strong> AK-Bench ma mierzyć rzeczywiste działanie</p>
+<p>testowanego systemu. Musi jednoznacznie odpowiadać na pytania: jaki</p>
+<p>agent został uruchomiony, przez jaki runtime, z jaką konfiguracją, jakie</p>
+<p>capabilities były dostępne, co udało się zaobserwować, co agent</p>
+<p>faktycznie wykonał i jaki był niezależnie zweryfikowany rezultat.</p></article></div></div></div><footer>generated 2026-11-02T19:53:57.573863+00:00 from the recorded history</footer></main><script>
+// Sorting of a report table: clicking a column header reorders the rows.
+// This is the one script a report page carries, and it changes the order of
+// rows and nothing else — no number is computed, fetched or altered here. A
+// page read with scripting off still shows every row, in the order it was
+// written in, which is the order the history recorded.
+(function () {
+  "use strict";
+
+  var MISSING = Object.freeze({ missing: true });
+
+  function text(cell) {
+    return (cell.textContent || "").trim();
+  }
+
+  // A value the report could not measure never sorts as a zero: it goes last.
+  function isMissing(value) {
+    return (
+      value === "" ||
+      value === "not measured" ||
+      value === "not started" ||
+      value === "not recorded" ||
+      value === "not evaluated" ||
+      value === "—"
+    );
+  }
+
+  // "3 m 25 s", "1 h 2 m", "12.5 s", "1,234", "97.9%" -> a number; anything
+  // else is null, so the caller can fall back to comparing the text.
+  function asNumber(raw) {
+    if (isMissing(raw)) return MISSING;
+    var value = raw.replace(/,/g, "");
+    var pattern =
+      "^(?:(\d+(?:\.\d+)?)\s*h)?\s*(?:(\d+(?:\.\d+)?)\s*m)?\s*(?:(\d+(?:\.\d+)?)\s*s)?$";
+    var duration = value.match(new RegExp(pattern));
+    if (duration && (duration[1] || duration[2] || duration[3])) {
+      return (
+        (parseFloat(duration[1] || 0) * 3600) +
+        (parseFloat(duration[2] || 0) * 60) +
+        parseFloat(duration[3] || 0)
+      );
+    }
+    var plain = value.replace(/%$/, "");
+    if (/^-?\d+(?:\.\d+)?$/.test(plain)) return parseFloat(plain);
+    return null;
+  }
+
+  function column(table, index) {
+    var out = [];
+    var rows = table.tBodies[0] ? table.tBodies[0].rows : [];
+    for (var i = 0; i < rows.length; i += 1) {
+      out.push(rows[i].cells[index] ? text(rows[i].cells[index]) : "");
+    }
+    return out;
+  }
+
+  function isNumeric(values) {
+    var parsed = false;
+    for (var i = 0; i < values.length; i += 1) {
+      var value = asNumber(values[i]);
+      if (value === null) return false;
+      if (value !== MISSING) parsed = true;
+    }
+    return parsed;
+  }
+
+  function sort(table, index, ascending) {
+    var body = table.tBodies[0];
+    if (!body) return;
+    var values = column(table, index);
+    var numeric = isNumeric(values);
+    var rows = Array.prototype.slice.call(body.rows);
+    var position = new Map();
+    rows.forEach(function (row, index) { position.set(row, index); });
+
+    rows.sort(function (left, right) {
+      var a = values[position.get(left)];
+      var b = values[position.get(right)];
+      if (numeric) {
+        var na = asNumber(a);
+        var nb = asNumber(b);
+        var aMissing = na === MISSING;
+        var bMissing = nb === MISSING;
+        if (aMissing && bMissing) return position.get(left) - position.get(right);
+        if (aMissing) return 1;   // never measured, always after what was
+        if (bMissing) return -1;
+        return ascending ? na - nb : nb - na;
+      }
+      var compared = String(a).localeCompare(String(b), undefined, { numeric: true });
+      if (compared !== 0) return ascending ? compared : -compared;
+      return position.get(left) - position.get(right);
+    });
+
+    rows.forEach(function (row) { body.appendChild(row); });
+    markHeaders(table, index, ascending);
+  }
+
+  function markHeaders(table, index, ascending) {
+    var cells = table.tHead ? table.tHead.rows[0].cells : [];
+    for (var i = 0; i < cells.length; i += 1) {
+      // the direction that was applied is remembered on the header, because
+      // the next click has to flip it: without this every click sorts the same
+      // way, which is the bug this line exists to prevent
+      if (i === index) {
+        cells[i].setAttribute("data-dir", ascending ? "asc" : "desc");
+        cells[i].setAttribute(
+          "aria-sort",
+          ascending ? "ascending" : "descending"
+        );
+      } else {
+        cells[i].removeAttribute("data-dir");
+        cells[i].setAttribute("aria-sort", "none");
+      }
+    }
+  }
+
+  function activate(header, index) {
+    var table = header.closest("table");
+    var ascending = header.getAttribute("data-dir") !== "asc";
+    sort(table, index, ascending);
+  }
+
+  document.addEventListener("click", function (event) {
+    var header = event.target.closest ? event.target.closest("th.sortable") : null;
+    if (header) activate(header, Array.prototype.indexOf.call(header.parentNode.cells, header));
+  });
+
+  document.addEventListener("keydown", function (event) {
+    if (event.key !== "Enter" && event.key !== " ") return;
+    var header = event.target.closest ? event.target.closest("th.sortable") : null;
+    if (!header) return;
+    event.preventDefault();
+    activate(header, Array.prototype.indexOf.call(header.parentNode.cells, header));
+  });
+})();
+</script></body></html>

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Agents</title><link rel="stylesheet" href="../assets/style.css"></head><body><main><header class="topbar"><a class="brand" href="../index.html"><span class="mark"></span>AK-Bench<span class="tag">benchmark report</span></a><nav class="nav"><a href="../index.html">dashboard</a><a href="../agents/index.html">agents</a><a href="../runtimes/index.html">runtimes</a><a href="../plugins/index.html">plugins</a><a href="../models/index.html">models</a><a href="../tasks/index.html">tasks</a><a href="../runs/index.html">runs</a><a href="../docs/index.html">docs</a></nav></header><h1>Agents</h1><p class='subtitle'>one row per agent identity; a row opens that agent&#x27;s experiments and runs</p><div class="table-wrap"><table class="dense"><thead><tr><th class="sortable" tabindex="0" aria-sort="none" title="sort by agent">agent</th><th class="num sortable" tabindex="0" aria-sort="none" title="sort by runs">runs</th><th class="num sortable" tabindex="0" aria-sort="none" title="sort by evaluated">evaluated</th><th class="num sortable" tabindex="0" aria-sort="none" title="sort by passed">passed</th><th class="sortable" tabindex="0" aria-sort="none" title="sort by success rate">success rate</th><th class="sortable" tabindex="0" aria-sort="none" title="sort by mean time">mean time</th><th class="num sortable" tabindex="0" aria-sort="none" title="sort by input tokens">input tokens</th><th class="num sortable" tabindex="0" aria-sort="none" title="sort by generated tokens">generated tokens</th><th class="num sortable" tabindex="0" aria-sort="none" title="sort by total tokens">total tokens</th><th class="num sortable" tabindex="0" aria-sort="none" title="sort by tool calls">tool calls</th><th class="sortable" tabindex="0" aria-sort="none" title="sort by statuses">statuses</th></tr></thead><tbody><tr><td><a href="codex-codex-cli-0.166.0/index.html">codex@codex-cli 0.166.0</a></td><td class="num">142</td><td class="num">120</td><td class="num">109</td><td>76.8%</td><td>7 m 0 s</td><td class="num">37,233,972</td><td class="num">1,225,590</td><td class="num">38,459,562</td><td class="num">2,146</td><td>completed, timeout</td></tr></tbody></table></div><footer>generated  from the recorded history</footer></main><script>
+// Sorting of a report table: clicking a column header reorders the rows.
+// This is the one script a report page carries, and it changes the order of
+// rows and nothing else — no number is computed, fetched or altered here. A
+// page read with scripting off still shows every row, in the order it was
+// written in, which is the order the history recorded.
+(function () {
+  "use strict";
+
+  var MISSING = Object.freeze({ missing: true });
+
+  function text(cell) {
+    return (cell.textContent || "").trim();
+  }
+
+  // A value the report could not measure never sorts as a zero: it goes last.
+  function isMissing(value) {
+    return (
+      value === "" ||
+      value === "not measured" ||
+      value === "not started" ||
+      value === "not recorded" ||
+      value === "not evaluated" ||
+      value === "—"
+    );
+  }
+
+  // "3 m 25 s", "1 h 2 m", "12.5 s", "1,234", "97.9%" -> a number; anything
+  // else is null, so the caller can fall back to comparing the text.
+  function asNumber(raw) {
+    if (isMissing(raw)) return MISSING;
+    var value = raw.replace(/,/g, "");
+    var pattern =
+      "^(?:(\d+(?:\.\d+)?)\s*h)?\s*(?:(\d+(?:\.\d+)?)\s*m)?\s*(?:(\d+(?:\.\d+)?)\s*s)?$";
+    var duration = value.match(new RegExp(pattern));
+    if (duration && (duration[1] || duration[2] || duration[3])) {
+      return (
+        (parseFloat(duration[1] || 0) * 3600) +
+        (parseFloat(duration[2] || 0) * 60) +
+        parseFloat(duration[3] || 0)
+      );
+    }
+    var plain = value.replace(/%$/, "");
+    if (/^-?\d+(?:\.\d+)?$/.test(plain)) return parseFloat(plain);
+    return null;
+  }
+
+  function column(table, index) {
+    var out = [];
+    var rows = table.tBodies[0] ? table.tBodies[0].rows : [];
+    for (var i = 0; i < rows.length; i += 1) {
+      out.push(rows[i].cells[index] ? text(rows[i].cells[index]) : "");
+    }
+    return out;
+  }
+
+  function isNumeric(values) {
+    var parsed = false;
+    for (var i = 0; i < values.length; i += 1) {
+      var value = asNumber(values[i]);
+      if (value === null) return false;
+      if (value !== MISSING) parsed = true;
+    }
+    return parsed;
+  }
+
+  function sort(table, index, ascending) {
+    var body = table.tBodies[0];
+    if (!body) return;
+    var values = column(table, index);
+    var numeric = isNumeric(values);
+    var rows = Array.prototype.slice.call(body.rows);
+    var position = new Map();
+    rows.forEach(function (row, index) { position.set(row, index); });
+
+    rows.sort(function (left, right) {
+      var a = values[position.get(left)];
+      var b = values[position.get(right)];
+      if (numeric) {
+        var na = asNumber(a);
+        var nb = asNumber(b);
+        var aMissing = na === MISSING;
+        var bMissing = nb === MISSING;
+        if (aMissing && bMissing) return position.get(left) - position.get(right);
+        if (aMissing) return 1;   // never measured, always after what was
+        if (bMissing) return -1;
+        return ascending ? na - nb : nb - na;
+      }
+      var compared = String(a).localeCompare(String(b), undefined, { numeric: true });
+      if (compared !== 0) return ascending ? compared : -compared;
+      return position.get(left) - position.get(right);
+    });
+
+    rows.forEach(function (row) { body.appendChild(row); });
+    markHeaders(table, index, ascending);
+  }
+
+  function markHeaders(table, index, ascending) {
+    var cells = table.tHead ? table.tHead.rows[0].cells : [];
+    for (var i = 0; i < cells.length; i += 1) {
+      // the direction that was applied is remembered on the header, because
+      // the next click has to flip it: without this every click sorts the same
+      // way, which is the bug this line exists to prevent
+      if (i === index) {
+        cells[i].setAttribute("data-dir", ascending ? "asc" : "desc");
+        cells[i].setAttribute(
+          "aria-sort",
+          ascending ? "ascending" : "descending"
+        );
+      } else {
+        cells[i].removeAttribute("data-dir");
+        cells[i].setAttribute("aria-sort", "none");
+      }
+    }
+  }
+
+  function activate(header, index) {
+    var table = header.closest("table");
+    var ascending = header.getAttribute("data-dir") !== "asc";
+    sort(table, index, ascending);
+  }
+
+  document.addEventListener("click", function (event) {
+    var header = event.target.closest ? event.target.closest("th.sortable") : null;
+    if (header) activate(header, Array.prototype.indexOf.call(header.parentNode.cells, header));
+  });
+
+  document.addEventListener("keydown", function (event) {
+    if (event.key !== "Enter" && event.key !== " ") return;
+    var header = event.target.closest ? event.target.closest("th.sortable") : null;
+    if (!header) return;
+    event.preventDefault();
+    activate(header, Array.prototype.indexOf.call(header.parentNode.cells, header));
+  });
+})();
+</script></body></html>

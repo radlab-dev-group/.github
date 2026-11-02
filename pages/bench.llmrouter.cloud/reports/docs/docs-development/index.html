@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Development environment</title><link rel="stylesheet" href="../../assets/style.css"></head><body><main><header class="topbar"><a class="brand" href="../../index.html"><span class="mark"></span>AK-Bench<span class="tag">benchmark report</span></a><nav class="nav"><a href="../../index.html">dashboard</a><a href="../../agents/index.html">agents</a><a href="../../runtimes/index.html">runtimes</a><a href="../../plugins/index.html">plugins</a><a href="../../models/index.html">models</a><a href="../../tasks/index.html">tasks</a><a href="../../runs/index.html">runs</a><a href="../../docs/index.html">docs</a></nav></header><div class="docs-shell"><nav class="docs-breadcrumb" aria-label="Breadcrumb"><a href="../../docs/index.html">Documentation</a><span aria-hidden="true">/</span><span>Handbook</span></nav><div class="docs-layout"><nav class="docs-menu" aria-label="Documentation"><a href="../../docs/index.html">Documentation overview</a><details class="menu-group"><summary class="menu-title">Project<span class="docs-count">1</span></summary><ul><li><a href="../../docs/readme/index.html">AK-Bench</a></li></ul></details><details class="menu-group" open><summary class="menu-title">Handbook<span class="docs-count">18</span></summary><ul><li><a href="../../docs/docs-agent-adapters/index.html">Agent adapters</a></li><li><a href="../../docs/docs-agent-integration/index.html">Agent integration — spike results (Phase 0)</a></li><li><a href="../../docs/docs-cli/index.html">CLI</a></li><li><a href="../../docs/docs-datasets/index.html">Datasets, tasks and workspaces (Phase 3)</a></li><li><a href="../../docs/docs-descriptor-system/index.html">Descriptor system (Phase 2)</a></li><li><a class="current" aria-current="page" href="../../docs/docs-development/index.html">Development environment</a><span class="toc"><a href="#1-setup">1. Setup</a><a href="#2-tests-and-linting">2. Tests and linting</a><a href="#3-migrations">3. Migrations</a><a href="#4-code-conventions">4. Code conventions</a><a href="#5-deliberately-unfinished">5. Deliberately unfinished</a></span></li><li><a href="../../docs/docs-evaluators/index.html">Evaluator Engine</a></li><li><a href="../../docs/docs-experiments/index.html">Experiments and planning</a></li><li><a href="../../docs/docs-export/index.html">Export</a></li><li><a href="../../docs/docs-knowledge-replay/index.html">Knowledge Replay</a></li><li><a href="../../docs/docs-metrics/index.html">Metrics and Observability</a></li><li><a href="../../docs/docs-plugins/index.html">Plugin Configuration and Observability</a></li><li><a href="../../docs/docs-reporting/index.html">Reporting</a></li><li><a href="../../docs/docs-reproducibility/index.html">Reproducibility</a></li><li><a href="../../docs/docs-router-integration/index.html">LLM Router integration — spike results (Phase 0)</a></li><li><a href="../../docs/docs-runtime-manager/index.html">Runtime Manager</a></li><li><a href="../../docs/docs-run-orchestrator/index.html">Run Orchestrator</a></li><li><a href="../../docs/docs-storage/index.html">Storage</a></li></ul></details><details class="menu-group"><summary class="menu-title">Datasets<span class="docs-count">31</span></summary><ul><li><a href="../../docs/datasets-readme/index.html">Readme</a></li><li><a href="../../docs/datasets-sources-bookshop-readme/index.html">bookshop</a></li><li><a href="../../docs/datasets-sources-cadence-readme/index.html">cadence</a></li><li><a href="../../docs/datasets-sources-depweaver-readme/index.html">Depweaver</a></li><li><a href="../../docs/datasets-sources-depweaver-spec/index.html">Resolution and repair contract</a></li><li><a href="../../docs/datasets-sources-freight-readme/index.html">freight</a></li><li><a href="../../docs/datasets-sources-ledgerlite-readme/index.html">ledgerlite</a></li><li><a href="../../docs/datasets-sources-notesapi-readme/index.html">notesapi</a></li><li><a href="../../docs/datasets-sources-stockpile-readme/index.html">stockpile</a></li><li><a href="../../docs/datasets-sources-streamforge-readme/index.html">Streamforge</a></li><li><a href="../../docs/datasets-sources-textkit-readme/index.html">textkit</a></li><li><a href="../../docs/datasets-sources-typeweave-readme/index.html">Typeweave</a></li><li><a href="../../docs/datasets-sources-typeweave-spec/index.html">Type inference implementation contract</a></li><li><a href="../../docs/datasets-sources-walqueue-readme/index.html">WALQueue</a></li><li><a href="../../docs/datasets-bug-fix-bookshop-stock-002-description/index.html">Cancelling a confirmed order leaves the stock reserved</a></li><li><a href="../../docs/datasets-bug-fix-bookshop-tiers-001-description/index.html">The five percent tier is lost at exactly one hundred dollars</a></li><li><a href="../../docs/datasets-bug-fix-cadence-takeover-001-description/index.html">A worker with a stale epoch can take a live lease back</a></li><li><a href="../../docs/datasets-bug-fix-depweaver-backtracking-001-description/index.html">Repair the resolver&#x27;s branch and context protocol</a></li><li><a href="../../docs/datasets-bug-fix-ledgerlite-rates-001-description/index.html">A conversion answers with the oldest rate in force</a></li><li><a href="../../docs/datasets-bug-fix-stockpile-writeoff-001-description/index.html">A write-off destroys the reserved part of an expired lot</a></li><li><a href="../../docs/datasets-bug-fix-walqueue-recovery-001-description/index.html">Repair durable queue recovery</a></li><li><a href="../../docs/datasets-bug-fix-wordcount-001-description/index.html">Word counting must ignore repeated whitespace</a></li><li><a href="../../docs/datasets-new-feature-cadence-catchup-001-description/index.html">Implement `plan_catch_up` from its specification</a></li><li><a href="../../docs/datasets-new-feature-freight-shop-001-description/index.html">Implement `shop` from its specification</a></li><li><a href="../../docs/datasets-new-feature-ledgerlite-reconcile-001-description/index.html">Implement `reconcile` from its specification</a></li><li><a href="../../docs/datasets-new-feature-notes-search-001-description/index.html">Implement `search_notes` from its specification</a></li><li><a href="../../docs/datasets-new-feature-notes-sync-001-description/index.html">Implement `merge` from its specification</a></li><li><a href="../../docs/datasets-new-feature-slugify-001-description/index.html">Implement `slugify` from the specification</a></li><li><a href="../../docs/datasets-new-feature-stockpile-fefo-001-description/index.html">Implement `allocate` from its specification</a></li><li><a href="../../docs/datasets-new-feature-streamforge-windows-001-description/index.html">Implement a restartable event-time engine</a></li><li><a href="../../docs/datasets-new-feature-typeweave-inference-001-description/index.html">Complete the type checker of an existing compiler</a></li></ul></details><details class="menu-group"><summary class="menu-title">Plan<span class="docs-count">1</span></summary><ul><li><a href="../../docs/plans-ak-bench-implementation-plan/index.html">AK-Bench --- kompletny plan implementacji</a></li></ul></details><details class="menu-group"><summary class="menu-title">Spike<span class="docs-count">2</span></summary><ul><li><a href="../../docs/spike-readme/index.html">Phase 0 — integration spike</a></li><li><a href="../../docs/spike-repo-readme/index.html">Spike fixture repo</a></li></ul></details></nav><div class="docs-article"><p class="docs-source doc-path">docs/DEVELOPMENT.md</p><article class="prose"><h1 id="development-environment">Development environment</h1>
+<h2 id="1-setup">1. Setup</h2>
+<div class="code-block"><span class="code-lang">bash</span><pre>uv venv --python 3.12 .venv          # the system Python is 3.10 — not enough
+uv pip install -e &quot;.[dev]&quot;
+akbench init
+akbench doctor</pre></div>
+<p><code>uv</code> is not required by the package, but this machine has no Python 3.12 and</p>
+<p><code>requires-python</code> is <code>&gt;=3.12</code>. Any <code>venv</code> on Python 3.12 works as well.</p>
+<h2 id="2-tests-and-linting">2. Tests and linting</h2>
+<div class="code-block"><span class="code-lang">bash</span><pre>.venv/bin/python -m pytest -q          # everything
+.venv/bin/python -m pytest tests/unit -q
+.venv/bin/ruff check src tests
+.venv/bin/ruff check src tests --fix</pre></div>
+<p>Tests need neither network nor an agent: they run against temporary</p>
+<p>directories, real local git repositories and SQLite files. Integration tests</p>
+<p>(the CLI) use <code>typer.testing.CliRunner</code>.</p>
+<p>Contract tests worth knowing about:</p>
+<ul>
+<li><code>tests/unit/test_migrations_match_models.py</code> — compares the schema produced</li>
+</ul>
+<p>by the migrations with <code>Base.metadata</code> through</p>
+<p><code>alembic.autogenerate.compare_metadata</code>. A migration that drifts from the</p>
+<p>models breaks this test.</p>
+<ul>
+<li><code>tests/integration/test_cli.py</code> — exit codes and the shape of <code>--json</code></li>
+</ul>
+<p>output.</p>
+<ul>
+<li><code>tests/unit/test_descriptor_registry.py</code> — discovery, versioned identity,</li>
+</ul>
+<p>digest stability and conflicts; also asserts that every shipped descriptor</p>
+<p>still loads (and that unavailable metrics carry a reason).</p>
+<ul>
+<li><code>tests/unit/test_env_observation.py</code> — the ENV allowlist: only declared</li>
+</ul>
+<p>variables are read, secrets are reduced to <code>is_set</code>.</p>
+<ul>
+<li><code>tests/integration/test_workspaces.py</code> — git worktree workspaces and mutation</li>
+</ul>
+<p>verification against real repositories (repeatable fingerprints, cleanup,</p>
+<p>hidden-test isolation, <code>not_detectable</code> rejection).</p>
+<ul>
+<li><code>tests/integration/test_dataset_cli.py</code> — the dataset command group.</li>
+</ul>
+<h2 id="3-migrations">3. Migrations</h2>
+<p>The Alembic scripts live <strong>inside the package</strong></p>
+<p>(<code>src/akbench/storage/migrations/</code>), so they work after <code>pip install</code> without</p>
+<p>an <code>alembic.ini</code>. Programmatic entry point: <code>akbench.storage.migrator</code>.</p>
+<p>Because <code>script_location</code> points into the package, in practice you add a file</p>
+<p>under <code>versions/</code> following <code>0001_core_tables.py</code>, then run <code>akbench init</code></p>
+<p>(which applies migrations) and the contract test above.</p>
+<p>Rules:</p>
+<ul>
+<li>SQLite with <code>render_as_batch=True</code> (the <code>ALTER TABLE</code> limitations),</li>
+<li><code>task_uid</code> in <code>task_runs</code> is a plain string for now — the real foreign key to</li>
+</ul>
+<p><code>tasks</code> arrives in Phase 3,</p>
+<ul>
+<li><code>task_runs.task_uid</code> is a real foreign key to <code>tasks.uid</code> from Phase 3 on, so</li>
+</ul>
+<p>a run can never reference a task that was never registered;</p>
+<ul>
+<li>the complete data model (metrics, observations, descriptor snapshots,</li>
+</ul>
+<p>events) lands in Phase 11.</p>
+<h2 id="4-code-conventions">4. Code conventions</h2>
+<ul>
+<li>Python 3.12 (PEP 695 generics), <code>from __future__ import annotations</code>, every</li>
+</ul>
+<p>signature typed.</p>
+<ul>
+<li>Exceptions from <code>akbench.core.errors</code> carry a <code>failure_class</code> — an</li>
+</ul>
+<p>infrastructure error must never look like an agent error (plan rule 11).</p>
+<ul>
+<li>Agent names (for example <code>codex</code>) never appear in the generic runner,</li>
+</ul>
+<p>scheduler or evaluator; external tools are configured through</p>
+<p><code>doctor.required_tools</code>.</p>
+<ul>
+<li><code>--json</code> writes pure JSON to stdout (not through rich, which wraps lines</li>
+</ul>
+<p>inside strings); logs go to stderr. This keeps</p>
+<p><code>akbench doctor --json | jq</code> working, including with <code>2&gt;&amp;1</code>.</p>
+<ul>
+<li>Line length 100 (<code>ruff</code>, <code>E501</code>).</li>
+<li><strong>Language:</strong> code, comments, docstrings, documentation and commit messages</li>
+</ul>
+<p>are English. Only <code>.plans/</code> is Polish.</p>
+<h2 id="5-deliberately-unfinished">5. Deliberately unfinished</h2>
+<p>Every command from the plan&#x27;s CLI sketch is implemented, including</p>
+<p><code>akbench runtime</code>, <code>akbench experiment</code> (list, validate, plan, run),</p>
+<p><code>akbench run</code>, <code>akbench report</code> and <code>akbench export</code>. What remains out of</p>
+<p>scope is:</p>
+<ul>
+<li>The scheduler-facing commands (<code>resume</code>, <code>cancel</code>) — they need a scheduler</li>
+</ul>
+<p>and are intentionally absent rather than stubbed.</p>
+<ul>
+<li>Docker sandboxing — the workspace isolation uses git worktrees; Docker</li>
+</ul>
+<p>availability is verified by <code>akbench doctor</code>, not implemented as a sandbox.</p></article></div></div></div><footer>generated 2026-11-02T19:53:57.573863+00:00 from the recorded history</footer></main><script>
+// Sorting of a report table: clicking a column header reorders the rows.
+// This is the one script a report page carries, and it changes the order of
+// rows and nothing else — no number is computed, fetched or altered here. A
+// page read with scripting off still shows every row, in the order it was
+// written in, which is the order the history recorded.
+(function () {
+  "use strict";
+
+  var MISSING = Object.freeze({ missing: true });
+
+  function text(cell) {
+    return (cell.textContent || "").trim();
+  }
+
+  // A value the report could not measure never sorts as a zero: it goes last.
+  function isMissing(value) {
+    return (
+      value === "" ||
+      value === "not measured" ||
+      value === "not started" ||
+      value === "not recorded" ||
+      value === "not evaluated" ||
+      value === "—"
+    );
+  }
+
+  // "3 m 25 s", "1 h 2 m", "12.5 s", "1,234", "97.9%" -> a number; anything
+  // else is null, so the caller can fall back to comparing the text.
+  function asNumber(raw) {
+    if (isMissing(raw)) return MISSING;
+    var value = raw.replace(/,/g, "");
+    var pattern =
+      "^(?:(\d+(?:\.\d+)?)\s*h)?\s*(?:(\d+(?:\.\d+)?)\s*m)?\s*(?:(\d+(?:\.\d+)?)\s*s)?$";
+    var duration = value.match(new RegExp(pattern));
+    if (duration && (duration[1] || duration[2] || duration[3])) {
+      return (
+        (parseFloat(duration[1] || 0) * 3600) +
+        (parseFloat(duration[2] || 0) * 60) +
+        parseFloat(duration[3] || 0)
+      );
+    }
+    var plain = value.replace(/%$/, "");
+    if (/^-?\d+(?:\.\d+)?$/.test(plain)) return parseFloat(plain);
+    return null;
+  }
+
+  function column(table, index) {
+    var out = [];
+    var rows = table.tBodies[0] ? table.tBodies[0].rows : [];
+    for (var i = 0; i < rows.length; i += 1) {
+      out.push(rows[i].cells[index] ? text(rows[i].cells[index]) : "");
+    }
+    return out;
+  }
+
+  function isNumeric(values) {
+    var parsed = false;
+    for (var i = 0; i < values.length; i += 1) {
+      var value = asNumber(values[i]);
+      if (value === null) return false;
+      if (value !== MISSING) parsed = true;
+    }
+    return parsed;
+  }
+
+  function sort(table, index, ascending) {
+    var body = table.tBodies[0];
+    if (!body) return;
+    var values = column(table, index);
+    var numeric = isNumeric(values);
+    var rows = Array.prototype.slice.call(body.rows);
+    var position = new Map();
+    rows.forEach(function (row, index) { position.set(row, index); });
+
+    rows.sort(function (left, right) {
+      var a = values[position.get(left)];
+      var b = values[position.get(right)];
+      if (numeric) {
+        var na = asNumber(a);
+        var nb = asNumber(b);
+        var aMissing = na === MISSING;
+        var bMissing = nb === MISSING;
+        if (aMissing && bMissing) return position.get(left) - position.get(right);
+        if (aMissing) return 1;   // never measured, always after what was
+        if (bMissing) return -1;
+        return ascending ? na - nb : nb - na;
+      }
+      var compared = String(a).localeCompare(String(b), undefined, { numeric: true });
+      if (compared !== 0) return ascending ? compared : -compared;
+      return position.get(left) - position.get(right);
+    });
+
+    rows.forEach(function (row) { body.appendChild(row); });
+    markHeaders(table, index, ascending);
+  }
+
+  function markHeaders(table, index, ascending) {
+    var cells = table.tHead ? table.tHead.rows[0].cells : [];
+    for (var i = 0; i < cells.length; i += 1) {
+      // the direction that was applied is remembered on the header, because
+      // the next click has to flip it: without this every click sorts the same
+      // way, which is the bug this line exists to prevent
+      if (i === index) {
+        cells[i].setAttribute("data-dir", ascending ? "asc" : "desc");
+        cells[i].setAttribute(
+          "aria-sort",
+          ascending ? "ascending" : "descending"
+        );
+      } else {
+        cells[i].removeAttribute("data-dir");
+        cells[i].setAttribute("aria-sort", "none");
+      }
+    }
+  }
+
+  function activate(header, index) {
+    var table = header.closest("table");
+    var ascending = header.getAttribute("data-dir") !== "asc";
+    sort(table, index, ascending);
+  }
+
+  document.addEventListener("click", function (event) {
+    var header = event.target.closest ? event.target.closest("th.sortable") : null;
+    if (header) activate(header, Array.prototype.indexOf.call(header.parentNode.cells, header));
+  });
+
+  document.addEventListener("keydown", function (event) {
+    if (event.key !== "Enter" && event.key !== " ") return;
+    var header = event.target.closest ? event.target.closest("th.sortable") : null;
+    if (!header) return;
+    event.preventDefault();
+    activate(header, Array.prototype.indexOf.call(header.parentNode.cells, header));
+  });
+})();
+</script></body></html>

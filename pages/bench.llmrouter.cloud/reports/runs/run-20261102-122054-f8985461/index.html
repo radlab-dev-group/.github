@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Run run-20261102-122054-f8985461</title><link rel="stylesheet" href="../../assets/style.css"></head><body><main><header class="topbar"><a class="brand" href="../../index.html"><span class="mark"></span>AK-Bench<span class="tag">benchmark report</span></a><nav class="nav"><a href="../../index.html">dashboard</a><a href="../../agents/index.html">agents</a><a href="../../runtimes/index.html">runtimes</a><a href="../../plugins/index.html">plugins</a><a href="../../models/index.html">models</a><a href="../../tasks/index.html">tasks</a><a href="../../runs/index.html">runs</a><a href="../../docs/index.html">docs</a></nav></header><h1>Run</h1><p class="subtitle">run-20261102-122054-f8985461</p><div class="cards"><div class="card"><div class="label">verdict</div><div class="value"><span class="pass">passed</span></div></div><div class="card"><div class="label">score</div><div class="value">1.000</div></div><div class="card"><div class="label">time</div><div class="value">3 m 3 s</div></div><div class="card"><div class="label">input tokens</div><div class="value">130,716</div></div><div class="card"><div class="label">generated tokens</div><div class="value">3,022</div></div><div class="card"><div class="label">tokens</div><div class="value">133,738</div></div><div class="card"><div class="label">tool calls</div><div class="value">10</div></div><div class="card"><div class="label">status</div><div class="value">completed</div></div></div><h2>Where this run belongs</h2><div class="table-wrap"><table><thead><tr><th class="sortable" tabindex="0" aria-sort="none" title="sort by field">field</th><th class="sortable" tabindex="0" aria-sort="none" title="sort by value">value</th></tr></thead><tbody><tr><td>experiment</td><td><a href="../../experiments/router-config-comparison@1.0.0/index.html">router-config-comparison@1.0.0</a></td></tr><tr><td>task</td><td><a href="../../tasks/stockpile-writeoff-001@1.0.0/index.html">stockpile-writeoff-001@1.0.0</a></td></tr><tr><td>parameters</td><td>knowledge_enabled=False, model=auto_codex</td></tr><tr><td>variant</td><td><a href="../../experiments/router-config-comparison@1.0.0/variants/v-5f6f603add50/index.html">v-5f6f603add50</a></td></tr><tr><td>agent</td><td><a href="../../agents/codex-codex-cli-0.166.0/index.html">codex@codex-cli 0.166.0</a></td></tr><tr><td>runtime</td><td><a href="../../runtimes/llm-router/index.html">llm-router</a></td></tr><tr><td>mode</td><td>router</td></tr><tr><td>repetition</td><td>1</td></tr><tr><td>session</td><td>01a19c34-f2e2-73a0-a9a5-367e671770e5</td></tr><tr><td>manifest digest</td><td><code>sha256:f457f37ccb6aa2914313632cfdc4076731d77d73fc619df843f10b8b3e2ffca5</code></td></tr></tbody></table></div><h2>Evaluation</h2><div class="table-wrap"><table><thead><tr><th class="sortable" tabindex="0" aria-sort="none" title="sort by field">field</th><th class="sortable" tabindex="0" aria-sort="none" title="sort by value">value</th></tr></thead><tbody><tr><td>verdict</td><td><span class="pass">passed</span></td></tr><tr><td>score</td><td>1.0000</td></tr><tr><td>tests passed</td><td>7</td></tr><tr><td>tests failed</td><td>0</td></tr><tr><td>tests total</td><td>7</td></tr></tbody></table></div><h2>What the agent reported</h2><div class="table-wrap"><table><thead><tr><th class="sortable" tabindex="0" aria-sort="none" title="sort by field">field</th><th class="sortable" tabindex="0" aria-sort="none" title="sort by value">value</th></tr></thead><tbody><tr><td>started</td><td>2026-11-02T12:20:54.805242</td></tr><tr><td>finished</td><td>2026-11-02T12:23:58.052064</td></tr><tr><td>wall clock</td><td>3 m 3 s</td></tr><tr><td>input tokens</td><td>130,716</td></tr><tr><td>total tokens</td><td>133,738</td></tr><tr><td>tool calls</td><td>10</td></tr><tr><td>exit code</td><td>0</td></tr><tr><td>failure class</td><td>none</td></tr><tr><td>error</td><td></td></tr></tbody></table></div><h2>Model</h2><div class="table-wrap"><table><thead><tr><th class="sortable" tabindex="0" aria-sort="none" title="sort by requested">requested</th><th class="sortable" tabindex="0" aria-sort="none" title="sort by observed">observed</th><th class="sortable" tabindex="0" aria-sort="none" title="sort by source">source</th><th class="sortable" tabindex="0" aria-sort="none" title="sort by verification">verification</th></tr></thead><tbody><tr><td>auto_codex</td><td>auto_codex</td><td>agent_reported</td><td><span class="badge warn">unverified</span></td></tr></tbody></table></div><h2>Plugins observed</h2><div class="table-wrap"><table><thead><tr><th class="sortable" tabindex="0" aria-sort="none" title="sort by plugin">plugin</th><th class="sortable" tabindex="0" aria-sort="none" title="sort by version">version</th><th class="sortable" tabindex="0" aria-sort="none" title="sort by enabled">enabled</th><th class="sortable" tabindex="0" aria-sort="none" title="sort by verification">verification</th><th class="sortable" tabindex="0" aria-sort="none" title="sort by note">note</th></tr></thead><tbody><tr><td><a href="../../plugins/agentic-knowledge/index.html">agentic_knowledge</a></td><td>1.0.0</td><td>no</td><td><span class="badge warn">unsupported</span></td><td><span class="folded" title="LLM_ROUTER_KNOWLEDGE_AGENTIC_ENABLED is not set, so the plugin keeps its built-in default; verification methods effective_router_config, plugin_runtime_events, kb_state_readback declared by the descriptor are unavailable on this instance: no effective-configuration reader was injected and the router refuses configuration reads">LLM_ROUTER_KNOWLEDGE_AGENTIC_ENABLED is not set, so the plugin keeps its built-in default; verification methods effective_router_config, plugin_runtime_events, <span class='muted'>&hellip;</span></span></td></tr><tr><td><a href="../../plugins/agentic-routing-codex/index.html">agentic_routing_codex</a></td><td>1.0.0</td><td>no</td><td><span class="badge warn">unsupported</span></td><td><span class="folded" title="descriptor declares no plugin-level toggle (benchmark.enabled_when), so activation is not observable and enabled is reported as false; verification methods response_model_field, effective_router_config, plugin_runtime_events declared by the descriptor are unavailable on this instance: no effective-configuration reader was injected and the router refuses configuration reads">descriptor declares no plugin-level toggle (benchmark.enabled_when), so activation is not observable and enabled is reported as false; verification methods resp <span class='muted'>&hellip;</span></span></td></tr></tbody></table></div><h2>Artifacts</h2><div class="table-wrap"><table><thead><tr><th class="sortable" tabindex="0" aria-sort="none" title="sort by kind">kind</th><th class="sortable" tabindex="0" aria-sort="none" title="sort by path">path</th><th class="sortable" tabindex="0" aria-sort="none" title="sort by checksum">checksum</th></tr></thead><tbody><tr><td>manifest</td><td><code>/mnt/data2/dev/develop/ak-bench-data/artifacts/runs/codex-20261102-122054-804860-af506a/manifest.json</code></td><td>sha256:fa4391716e3c210e9e62fecfc8c1d8570fcc0939128f66ac7677838bf7d2bd95</td></tr><tr><td>evaluation_output</td><td><code>/mnt/data2/dev/develop/ak-bench-data/artifacts/runs/codex-20261102-122054-804860-af506a/evaluation/pytest-output.txt</code></td><td>sha256:edad392a4c3ce92531a81631e23654b967c5bec95737266753eb0d70fce7c72d</td></tr><tr><td>junit</td><td><code>/mnt/data2/dev/develop/ak-bench-data/artifacts/runs/codex-20261102-122054-804860-af506a/evaluation/junit.xml</code></td><td>sha256:615a59ecd0bcbcb9483f262f4871dd4f3d85adf1c2e6d802bc4fc199e1ce3b61</td></tr><tr><td>run_record</td><td><code>/mnt/data2/dev/develop/ak-bench-data/artifacts/runs/codex-20261102-122054-804860-af506a/run_record.json</code></td><td>sha256:b8972d74a7b40b28ed9c7c349692debd9f16cf5488955274804bd22104d3f41a</td></tr></tbody></table></div><h2>Not verified</h2><div class="notice"><strong>Configurations that are not verified.</strong> They stay in the report, because a result produced under them is only as trustworthy as they are.</div><div class="table-wrap"><table><thead><tr><th class="sortable" tabindex="0" aria-sort="none" title="sort by kind">kind</th><th class="sortable" tabindex="0" aria-sort="none" title="sort by subject">subject</th><th class="sortable" tabindex="0" aria-sort="none" title="sort by status">status</th><th class="sortable" tabindex="0" aria-sort="none" title="sort by run">run</th><th class="sortable" tabindex="0" aria-sort="none" title="sort by note">note</th></tr></thead><tbody><tr><td>plugin</td><td>agentic_knowledge</td><td><span class="badge warn">unsupported</span></td><td>run-20261102-122054-f8985461</td><td><span class="folded" title="LLM_ROUTER_KNOWLEDGE_AGENTIC_ENABLED is not set, so the plugin keeps its built-in default; verification methods effective_router_config, plugin_runtime_events, kb_state_readback declared by the descriptor are unavailable on this instance: no effective-configuration reader was injected and the router refuses configuration reads">LLM_ROUTER_KNOWLEDGE_AGENTIC_ENABLED is not set, so the plugin keeps its built-in default; verification methods effective_router_config, plugin_runtime_events, <span class='muted'>&hellip;</span></span></td></tr><tr><td>plugin</td><td>agentic_routing_codex</td><td><span class="badge warn">unsupported</span></td><td>run-20261102-122054-f8985461</td><td><span class="folded" title="descriptor declares no plugin-level toggle (benchmark.enabled_when), so activation is not observable and enabled is reported as false; verification methods response_model_field, effective_router_config, plugin_runtime_events declared by the descriptor are unavailable on this instance: no effective-configuration reader was injected and the router refuses configuration reads">descriptor declares no plugin-level toggle (benchmark.enabled_when), so activation is not observable and enabled is reported as false; verification methods resp <span class='muted'>&hellip;</span></span></td></tr><tr><td>model</td><td>auto_codex</td><td><span class="badge warn">unverified</span></td><td>run-20261102-122054-f8985461</td><td></td></tr></tbody></table></div><footer>generated 2026-11-02T19:53:57.573863+00:00 from the recorded history</footer></main><script>
+// Sorting of a report table: clicking a column header reorders the rows.
+// This is the one script a report page carries, and it changes the order of
+// rows and nothing else — no number is computed, fetched or altered here. A
+// page read with scripting off still shows every row, in the order it was
+// written in, which is the order the history recorded.
+(function () {
+  "use strict";
+
+  var MISSING = Object.freeze({ missing: true });
+
+  function text(cell) {
+    return (cell.textContent || "").trim();
+  }
+
+  // A value the report could not measure never sorts as a zero: it goes last.
+  function isMissing(value) {
+    return (
+      value === "" ||
+      value === "not measured" ||
+      value === "not started" ||
+      value === "not recorded" ||
+      value === "not evaluated" ||
+      value === "—"
+    );
+  }
+
+  // "3 m 25 s", "1 h 2 m", "12.5 s", "1,234", "97.9%" -> a number; anything
+  // else is null, so the caller can fall back to comparing the text.
+  function asNumber(raw) {
+    if (isMissing(raw)) return MISSING;
+    var value = raw.replace(/,/g, "");
+    var pattern =
+      "^(?:(\d+(?:\.\d+)?)\s*h)?\s*(?:(\d+(?:\.\d+)?)\s*m)?\s*(?:(\d+(?:\.\d+)?)\s*s)?$";
+    var duration = value.match(new RegExp(pattern));
+    if (duration && (duration[1] || duration[2] || duration[3])) {
+      return (
+        (parseFloat(duration[1] || 0) * 3600) +
+        (parseFloat(duration[2] || 0) * 60) +
+        parseFloat(duration[3] || 0)
+      );
+    }
+    var plain = value.replace(/%$/, "");
+    if (/^-?\d+(?:\.\d+)?$/.test(plain)) return parseFloat(plain);
+    return null;
+  }
+
+  function column(table, index) {
+    var out = [];
+    var rows = table.tBodies[0] ? table.tBodies[0].rows : [];
+    for (var i = 0; i < rows.length; i += 1) {
+      out.push(rows[i].cells[index] ? text(rows[i].cells[index]) : "");
+    }
+    return out;
+  }
+
+  function isNumeric(values) {
+    var parsed = false;
+    for (var i = 0; i < values.length; i += 1) {
+      var value = asNumber(values[i]);
+      if (value === null) return false;
+      if (value !== MISSING) parsed = true;
+    }
+    return parsed;
+  }
+
+  function sort(table, index, ascending) {
+    var body = table.tBodies[0];
+    if (!body) return;
+    var values = column(table, index);
+    var numeric = isNumeric(values);
+    var rows = Array.prototype.slice.call(body.rows);
+    var position = new Map();
+    rows.forEach(function (row, index) { position.set(row, index); });
+
+    rows.sort(function (left, right) {
+      var a = values[position.get(left)];
+      var b = values[position.get(right)];
+      if (numeric) {
+        var na = asNumber(a);
+        var nb = asNumber(b);
+        var aMissing = na === MISSING;
+        var bMissing = nb === MISSING;
+        if (aMissing && bMissing) return position.get(left) - position.get(right);
+        if (aMissing) return 1;   // never measured, always after what was
+        if (bMissing) return -1;
+        return ascending ? na - nb : nb - na;
+      }
+      var compared = String(a).localeCompare(String(b), undefined, { numeric: true });
+      if (compared !== 0) return ascending ? compared : -compared;
+      return position.get(left) - position.get(right);
+    });
+
+    rows.forEach(function (row) { body.appendChild(row); });
+    markHeaders(table, index, ascending);
+  }
+
+  function markHeaders(table, index, ascending) {
+    var cells = table.tHead ? table.tHead.rows[0].cells : [];
+    for (var i = 0; i < cells.length; i += 1) {
+      // the direction that was applied is remembered on the header, because
+      // the next click has to flip it: without this every click sorts the same
+      // way, which is the bug this line exists to prevent
+      if (i === index) {
+        cells[i].setAttribute("data-dir", ascending ? "asc" : "desc");
+        cells[i].setAttribute(
+          "aria-sort",
+          ascending ? "ascending" : "descending"
+        );
+      } else {
+        cells[i].removeAttribute("data-dir");
+        cells[i].setAttribute("aria-sort", "none");
+      }
+    }
+  }
+
+  function activate(header, index) {
+    var table = header.closest("table");
+    var ascending = header.getAttribute("data-dir") !== "asc";
+    sort(table, index, ascending);
+  }
+
+  document.addEventListener("click", function (event) {
+    var header = event.target.closest ? event.target.closest("th.sortable") : null;
+    if (header) activate(header, Array.prototype.indexOf.call(header.parentNode.cells, header));
+  });
+
+  document.addEventListener("keydown", function (event) {
+    if (event.key !== "Enter" && event.key !== " ") return;
+    var header = event.target.closest ? event.target.closest("th.sortable") : null;
+    if (!header) return;
+    event.preventDefault();
+    activate(header, Array.prototype.indexOf.call(header.parentNode.cells, header));
+  });
+})();
+</script></body></html>

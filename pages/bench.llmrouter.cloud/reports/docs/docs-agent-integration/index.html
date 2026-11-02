@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Agent integration — spike results (Phase 0)</title><link rel="stylesheet" href="../../assets/style.css"></head><body><main><header class="topbar"><a class="brand" href="../../index.html"><span class="mark"></span>AK-Bench<span class="tag">benchmark report</span></a><nav class="nav"><a href="../../index.html">dashboard</a><a href="../../agents/index.html">agents</a><a href="../../runtimes/index.html">runtimes</a><a href="../../plugins/index.html">plugins</a><a href="../../models/index.html">models</a><a href="../../tasks/index.html">tasks</a><a href="../../runs/index.html">runs</a><a href="../../docs/index.html">docs</a></nav></header><div class="docs-shell"><nav class="docs-breadcrumb" aria-label="Breadcrumb"><a href="../../docs/index.html">Documentation</a><span aria-hidden="true">/</span><span>Handbook</span></nav><div class="docs-layout"><nav class="docs-menu" aria-label="Documentation"><a href="../../docs/index.html">Documentation overview</a><details class="menu-group"><summary class="menu-title">Project<span class="docs-count">1</span></summary><ul><li><a href="../../docs/readme/index.html">AK-Bench</a></li></ul></details><details class="menu-group" open><summary class="menu-title">Handbook<span class="docs-count">18</span></summary><ul><li><a href="../../docs/docs-agent-adapters/index.html">Agent adapters</a></li><li><a class="current" aria-current="page" href="../../docs/docs-agent-integration/index.html">Agent integration — spike results (Phase 0)</a><span class="toc"><a href="#0-verification-conditions">0. Verification conditions</a><a href="#1-starting-the-agent">1. Starting the agent</a><a href="#2-task-submission">2. Task submission</a><a href="#3-workspace-selection">3. Workspace selection</a><a href="#4-parameterization">4. Parameterization</a><a href="#5-sessions-and-context-isolation">5. Sessions and context isolation</a><a class="toc-sub" href="#5-1-isolated-codex-home">5.1. Isolated `CODEX_HOME`</a><a href="#6-completion-detection-and-status">6. Completion detection and status</a><a href="#7-timeout-and-cancellation">7. Timeout and cancellation</a><a href="#8-traces-tools-observations">8. Traces, tools, observations</a><a href="#9-tokens-and-cost">9. Tokens and cost</a><a href="#10-model-observation-the-key-limitation">10. Model observation — the key limitation</a><a href="#11-file-and-network-isolation">11. File and network isolation</a><a href="#12-capability-table-for-codex-cli-proposal-for-the-agent-descriptor">12. Capability table for `codex_cli` (proposal for the Agent Descriptor)</a><a href="#13-risks-and-inconsistencies-found-during-the-spike">13. Risks and inconsistencies found during the spike</a><a href="#14-how-to-reproduce">14. How to reproduce</a></span></li><li><a href="../../docs/docs-cli/index.html">CLI</a></li><li><a href="../../docs/docs-datasets/index.html">Datasets, tasks and workspaces (Phase 3)</a></li><li><a href="../../docs/docs-descriptor-system/index.html">Descriptor system (Phase 2)</a></li><li><a href="../../docs/docs-development/index.html">Development environment</a></li><li><a href="../../docs/docs-evaluators/index.html">Evaluator Engine</a></li><li><a href="../../docs/docs-experiments/index.html">Experiments and planning</a></li><li><a href="../../docs/docs-export/index.html">Export</a></li><li><a href="../../docs/docs-knowledge-replay/index.html">Knowledge Replay</a></li><li><a href="../../docs/docs-metrics/index.html">Metrics and Observability</a></li><li><a href="../../docs/docs-plugins/index.html">Plugin Configuration and Observability</a></li><li><a href="../../docs/docs-reporting/index.html">Reporting</a></li><li><a href="../../docs/docs-reproducibility/index.html">Reproducibility</a></li><li><a href="../../docs/docs-router-integration/index.html">LLM Router integration — spike results (Phase 0)</a></li><li><a href="../../docs/docs-runtime-manager/index.html">Runtime Manager</a></li><li><a href="../../docs/docs-run-orchestrator/index.html">Run Orchestrator</a></li><li><a href="../../docs/docs-storage/index.html">Storage</a></li></ul></details><details class="menu-group"><summary class="menu-title">Datasets<span class="docs-count">31</span></summary><ul><li><a href="../../docs/datasets-readme/index.html">Readme</a></li><li><a href="../../docs/datasets-sources-bookshop-readme/index.html">bookshop</a></li><li><a href="../../docs/datasets-sources-cadence-readme/index.html">cadence</a></li><li><a href="../../docs/datasets-sources-depweaver-readme/index.html">Depweaver</a></li><li><a href="../../docs/datasets-sources-depweaver-spec/index.html">Resolution and repair contract</a></li><li><a href="../../docs/datasets-sources-freight-readme/index.html">freight</a></li><li><a href="../../docs/datasets-sources-ledgerlite-readme/index.html">ledgerlite</a></li><li><a href="../../docs/datasets-sources-notesapi-readme/index.html">notesapi</a></li><li><a href="../../docs/datasets-sources-stockpile-readme/index.html">stockpile</a></li><li><a href="../../docs/datasets-sources-streamforge-readme/index.html">Streamforge</a></li><li><a href="../../docs/datasets-sources-textkit-readme/index.html">textkit</a></li><li><a href="../../docs/datasets-sources-typeweave-readme/index.html">Typeweave</a></li><li><a href="../../docs/datasets-sources-typeweave-spec/index.html">Type inference implementation contract</a></li><li><a href="../../docs/datasets-sources-walqueue-readme/index.html">WALQueue</a></li><li><a href="../../docs/datasets-bug-fix-bookshop-stock-002-description/index.html">Cancelling a confirmed order leaves the stock reserved</a></li><li><a href="../../docs/datasets-bug-fix-bookshop-tiers-001-description/index.html">The five percent tier is lost at exactly one hundred dollars</a></li><li><a href="../../docs/datasets-bug-fix-cadence-takeover-001-description/index.html">A worker with a stale epoch can take a live lease back</a></li><li><a href="../../docs/datasets-bug-fix-depweaver-backtracking-001-description/index.html">Repair the resolver&#x27;s branch and context protocol</a></li><li><a href="../../docs/datasets-bug-fix-ledgerlite-rates-001-description/index.html">A conversion answers with the oldest rate in force</a></li><li><a href="../../docs/datasets-bug-fix-stockpile-writeoff-001-description/index.html">A write-off destroys the reserved part of an expired lot</a></li><li><a href="../../docs/datasets-bug-fix-walqueue-recovery-001-description/index.html">Repair durable queue recovery</a></li><li><a href="../../docs/datasets-bug-fix-wordcount-001-description/index.html">Word counting must ignore repeated whitespace</a></li><li><a href="../../docs/datasets-new-feature-cadence-catchup-001-description/index.html">Implement `plan_catch_up` from its specification</a></li><li><a href="../../docs/datasets-new-feature-freight-shop-001-description/index.html">Implement `shop` from its specification</a></li><li><a href="../../docs/datasets-new-feature-ledgerlite-reconcile-001-description/index.html">Implement `reconcile` from its specification</a></li><li><a href="../../docs/datasets-new-feature-notes-search-001-description/index.html">Implement `search_notes` from its specification</a></li><li><a href="../../docs/datasets-new-feature-notes-sync-001-description/index.html">Implement `merge` from its specification</a></li><li><a href="../../docs/datasets-new-feature-slugify-001-description/index.html">Implement `slugify` from the specification</a></li><li><a href="../../docs/datasets-new-feature-stockpile-fefo-001-description/index.html">Implement `allocate` from its specification</a></li><li><a href="../../docs/datasets-new-feature-streamforge-windows-001-description/index.html">Implement a restartable event-time engine</a></li><li><a href="../../docs/datasets-new-feature-typeweave-inference-001-description/index.html">Complete the type checker of an existing compiler</a></li></ul></details><details class="menu-group"><summary class="menu-title">Plan<span class="docs-count">1</span></summary><ul><li><a href="../../docs/plans-ak-bench-implementation-plan/index.html">AK-Bench --- kompletny plan implementacji</a></li></ul></details><details class="menu-group"><summary class="menu-title">Spike<span class="docs-count">2</span></summary><ul><li><a href="../../docs/spike-readme/index.html">Phase 0 — integration spike</a></li><li><a href="../../docs/spike-repo-readme/index.html">Spike fixture repo</a></li></ul></details></nav><div class="docs-article"><p class="docs-source doc-path">docs/AGENT_INTEGRATION.md</p><article class="prose"><h1 id="agent-integration-spike-results-phase-0">Agent integration — spike results (Phase 0)</h1>
+<p>This document describes <strong>only facts verified locally</strong>. Every capability is</p>
+<p>marked <code>verified</code>, <code>partial</code>, <code>unsupported</code> or <code>unverified</code>. Nothing here is a</p>
+<p>guess.</p>
+<h2 id="0-verification-conditions">0. Verification conditions</h2>
+<div class="table-wrap"><table class="docs"><thead><tr><th>Item</th><th>Value</th></tr></thead><tbody><tr><td>Agent</td><td>Codex CLI <code>0.166.0</code> (<code>codex-cli 0.166.0</code>), standalone install</td></tr><tr><td>Binary path</td><td><code>~/.local/bin/codex</code> → <code>~/.codex/packages/standalone/releases/0.166.0-x86_64-unknown-linux-musl/bin/codex</code></td></tr><tr><td>System</td><td>Ubuntu 22.04, x86_64 kernel</td></tr><tr><td>Provider / runtime</td><td>LLM Router <code>http://192.168.100.65:8081/v1</code>, <code>wire_api = &quot;responses&quot;</code></td></tr><tr><td>Model (requested)</td><td><code>auto_codex</code> (trigger alias for agentic routing)</td></tr><tr><td>Verified on</td><td>2026-10-30</td></tr><tr><td>Prototype</td><td><code>spike/run_spike.py</code>, output in <code>data/artifacts/spike/spike-20261030-130140/</code></td></tr></tbody></table></div>
+<p>Prototype outcome: status <code>completed</code>, evaluation <code>1 passed</code>, 96.7 s,</p>
+<p><code>input_tokens=39313</code> (<code>cached_input_tokens=21010</code>), <code>output_tokens=588</code>,</p>
+<p>6 <code>exec_command</code> tool calls, session <code>01a18cb0-474a-7da3-9adf-3ae6967c6d69</code>.</p>
+<h2 id="1-starting-the-agent">1. Starting the agent</h2>
+<p>Non-interactive mode (one process = one task):</p>
+<div class="code-block"><span class="code-lang">bash</span><pre>codex exec [OPTIONS] [PROMPT]</pre></div>
+<ul>
+<li>A missing Git repository is an error; <code>--skip-git-repo-check</code> disables the check.</li>
+<li>Exit code: <code>0</code> on a clean finish. Agent errors and infrastructure errors</li>
+</ul>
+<p><strong>must be separated from the JSONL stream and stderr</strong>, not from the exit code.</p>
+<ul>
+<li><code>codex doctor</code> reports installation, authentication and CODEX_HOME database health.</li>
+</ul>
+<h2 id="2-task-submission">2. Task submission</h2>
+<div class="table-wrap"><table class="docs"><thead><tr><th>Method</th><th>Status</th><th>Notes</th></tr></thead><tbody><tr><td><code>PROMPT</code> argument</td><td>verified</td><td>used in the spike</td></tr><tr><td><code>stdin</code> (or <code>-</code>)</td><td>verified (CLI docs)</td><td>when combined with an argument, stdin is appended as a <code>&lt;stdin&gt;</code> block</td></tr><tr><td><code>--output-schema &lt;FILE&gt;</code></td><td>verified (docs)</td><td>forces a final answer matching a JSON Schema</td></tr><tr><td><code>-o, --output-last-message &lt;FILE&gt;</code></td><td>verified</td><td>writes the final message; used in the spike</td></tr></tbody></table></div>
+<h2 id="3-workspace-selection">3. Workspace selection</h2>
+<ul>
+<li><code>-C, --cd &lt;DIR&gt;</code> — the agent&#x27;s working directory. <strong>verified</strong> (used in the spike).</li>
+<li><code>--worktree</code> — a Codex-managed Git worktree. <code>unverified</code> (not exercised;</li>
+</ul>
+<p>AK-Bench has its own Workspace Manager, see the conclusion in §12).</p>
+<ul>
+<li><code>--add-dir &lt;DIR&gt;</code> — extra writable directories. <code>verified</code> (present in the CLI),</li>
+</ul>
+<p>semantics <code>unverified</code>.</p>
+<h2 id="4-parameterization">4. Parameterization</h2>
+<div class="table-wrap"><table class="docs"><thead><tr><th>Parameter</th><th>Status</th><th>Notes</th></tr></thead><tbody><tr><td><code>-m, --model &lt;MODEL&gt;</code></td><td>verified</td><td>passing <code>auto_codex</code> is accepted</td></tr><tr><td><code>-c, --config key=value</code></td><td>verified</td><td>TOML override, dotted paths, e.g. <code>-c approval_policy=&quot;never&quot;</code></td></tr><tr><td><code>-p, --profile &lt;NAME&gt;</code></td><td>verified (CLI)</td><td>layers <code>~/.codex/&lt;name&gt;.config.toml</code></td></tr><tr><td><code>--enable/--disable &lt;FEATURE&gt;</code></td><td>verified (CLI)</td><td>shorthand for <code>-c features.&lt;name&gt;=…</code></td></tr><tr><td><code>--strict-config</code></td><td>unverified</td><td>hard-fail behaviour not exercised</td></tr><tr><td><code>--ignore-user-config</code></td><td>verified</td><td>used indirectly through the isolated <code>CODEX_HOME</code></td></tr><tr><td><code>--ignore-rules</code></td><td>unverified</td><td>not exercised</td></tr></tbody></table></div>
+<h2 id="5-sessions-and-context-isolation">5. Sessions and context isolation</h2>
+<ul>
+<li>Every <code>codex exec</code> call creates a new thread/session — the identifier arrives</li>
+</ul>
+<p>in the <code>thread.started.thread_id</code> event. <strong>verified</strong>.</p>
+<ul>
+<li>Forcing a new session = a new process invocation without <code>resume</code>. <strong>verified</strong>.</li>
+<li><code>codex exec resume &lt;SESSION_ID&gt;</code> / <code>resume --last</code> — continues the context. <strong>verified (CLI)</strong>.</li>
+<li><code>codex exec fork</code> — a new session based on an existing one. <strong>verified (CLI)</strong>.</li>
+<li><code>--ephemeral</code> — does not persist the session to disk. <strong>verified (CLI)</strong>;</li>
+</ul>
+<p>note: that also removes the rollout trace source (§8).</p>
+<ul>
+<li>There is no reset of an existing session — only resume/fork → <code>session_reset: unsupported</code>.</li>
+</ul>
+<h3 id="5-1-isolated-codex-home">5.1. Isolated <code>CODEX_HOME</code></h3>
+<p>Verified: pointing <code>CODEX_HOME</code> at an empty directory is enough to start the</p>
+<p>agent <strong>without logging in</strong>, as long as the provider is configured through</p>
+<p><code>env_key</code>. In the spike the directory contained only a <code>config.toml</code> with the</p>
+<p>provider and <code>env_key = &quot;LLM_ROUTER_API_KEY&quot;</code>.</p>
+<p>Consequences for AK-Bench:</p>
+<ul>
+<li><code>fresh_agent_session</code> and <code>clean_agent_context</code> are achieved with a separate</li>
+</ul>
+<p>process plus a separate <code>CODEX_HOME</code> per run;</p>
+<ul>
+<li><code>CODEX_HOME</code> also holds databases (<code>state_*.sqlite</code>, <code>logs_*.sqlite</code>,</li>
+</ul>
+<p><code>thread_history_*.sqlite</code>), so isolating agent memory means isolating the</p>
+<p>whole directory;</p>
+<ul>
+<li>no <code>[projects.&quot;…&quot;] trust_level</code> entries are needed — with</li>
+</ul>
+<p><code>approval_policy=&quot;never&quot;</code> and <code>sandbox_mode=&quot;workspace-write&quot;</code> the task</p>
+<p>started without trusting the directory. <strong>verified</strong></p>
+<h2 id="6-completion-detection-and-status">6. Completion detection and status</h2>
+<p>The <code>codex exec --json</code> stream (JSONL, flat events — <code>type</code> at the top level):</p>
+<div class="table-wrap"><table class="docs"><thead><tr><th>Event</th><th>Meaning</th></tr></thead><tbody><tr><td><code>thread.started</code></td><td>session identifier</td></tr><tr><td><code>turn.started</code></td><td>turn begins</td></tr><tr><td><code>turn.completed</code></td><td>turn succeeded, carries <code>usage</code></td></tr><tr><td><code>turn.failed</code></td><td>turn failed, carries <code>error</code></td></tr><tr><td><code>item.started</code> / <code>item.updated</code> / <code>item.completed</code></td><td>items (see §8)</td></tr><tr><td><code>error</code></td><td>unrecoverable stream error</td></tr></tbody></table></div>
+<p>Item types: <code>agent_message</code>, <code>reasoning</code>, <code>command_execution</code>, <code>file_change</code>,</p>
+<p><code>mcp_tool_call</code>, <code>web_search</code>, <code>todo_list</code>.</p>
+<ul>
+<li>Completion detection: <code>turn.completed</code> / <code>turn.failed</code> + process exit. <strong>verified</strong></li>
+<li>Status of a running process: <strong>no external API</strong> — stream only.</li>
+</ul>
+<p><code>status_query: partial</code></p>
+<ul>
+<li><code>codex app-server</code> / <code>agents</code> / <code>queue</code> (session control through a daemon)</li>
+</ul>
+<p>exist, but are <strong>unverified</strong> for benchmark use — they were not needed here.</p>
+<h2 id="7-timeout-and-cancellation">7. Timeout and cancellation</h2>
+<ul>
+<li>There is no timeout flag in the CLI. <strong>verified (absent)</strong>.</li>
+<li>Approach used: <code>SIGINT</code> to the process from an alarm (in the prototype),</li>
+</ul>
+<p>then <code>wait()</code>. The timeout path <strong>was not covered</strong> live (the run finished</p>
+<p>before the limit) → <code>cancellation: partial</code>.</p>
+<ul>
+<li><code>SIGKILL</code> kills the process tree — trivial, but leaves the rollout unclosed;</li>
+</ul>
+<p>on retries such a run must be recorded as <code>infrastructure_error</code>, not</p>
+<p><code>agent_error</code>.</p>
+<h2 id="8-traces-tools-observations">8. Traces, tools, observations</h2>
+<p>Two independent sources:</p>
+<ol>
+<li><strong>The JSONL stream</strong> (<code>--json</code>): live items, including <code>command_execution</code></li>
+</ol>
+<p>with <code>command</code>, <code>aggregated_output</code>, <code>exit_code</code>, <code>status</code>.</p>
+<ol>
+<li><strong>The session rollout</strong>: <code>CODEX_HOME/sessions/RRRR/MM/DD/rollout-&lt;time&gt;-&lt;uuid&gt;.jsonl</code>.</li>
+</ol>
+<p>In the rollout (<code>type</code> + <code>payload</code> entries):</p>
+<div class="table-wrap"><table class="docs"><thead><tr><th>Entry</th><th>Contents</th><th>Used by AK-Bench for</th></tr></thead><tbody><tr><td><code>session_meta</code></td><td><code>session_id</code>, <code>cwd</code>, <code>cli_version</code>, <code>model_provider</code>, <code>originator</code>, <code>base_instructions</code></td><td>agent version, observed cwd, provider</td></tr><tr><td><code>turn_context</code></td><td><code>model</code>, <code>cwd</code>, <code>approval_policy</code>, <code>sandbox_policy</code>, <code>permission_profile</code></td><td><strong>observed configuration</strong></td></tr><tr><td><code>response_item/function_call</code></td><td><code>name</code>, <code>arguments</code>, <code>call_id</code>, <code>status</code></td><td>tool trace</td></tr><tr><td><code>response_item/function_call_output</code></td><td>tool result</td><td>correlating tool → effect</td></tr><tr><td><code>response_item/message</code>, <code>/reasoning</code></td><td>agent content, reasoning</td><td>qualitative analysis</td></tr><tr><td><code>token_usage_record</code></td><td><code>usage</code>, <code>turn_token_usage</code>, <code>thread_token_usage</code> (cumulative)</td><td>tokens</td></tr><tr><td><code>world_state</code></td><td>world state</td><td>diagnostics</td></tr></tbody></table></div>
+<p>In the spike: 6 × <code>exec_command</code>; tokens taken from <code>thread_token_usage</code></p>
+<p>(<code>total_tokens</code> is the sum of <code>input</code>/<code>output</code>).</p>
+<p><code>tool_trace: verified</code>.</p>
+<h2 id="9-tokens-and-cost">9. Tokens and cost</h2>
+<ul>
+<li>Token usage: <code>verified</code>. <code>usage</code> keys: <code>input_tokens</code>, <code>cached_input_tokens</code>,</li>
+</ul>
+<p><code>cache_write_input_tokens</code>, <code>output_tokens</code>, <code>reasoning_output_tokens</code>, <code>total_tokens</code>.</p>
+<ul>
+<li><strong>Cost: <code>unsupported</code></strong> — neither the stream nor the rollout contains any cost</li>
+</ul>
+<p>field (no occurrence of <code>cost*</code> anywhere in the rollout), and the router does</p>
+<p>not trust a per-run price list. AK-Bench must report</p>
+<p><code>total_cost = null</code>/<code>unavailable</code>.</p>
+<ul>
+<li><code>rate_limits</code> in the <code>token_count</code> event — <strong>absent</strong> in the spike (local</li>
+</ul>
+<p>provider), so limits cannot be based on them. <code>unverified</code> for OpenAI providers.</p>
+<h2 id="10-model-observation-the-key-limitation">10. Model observation — the key limitation</h2>
+<ul>
+<li><code>turn_context.model</code> = <strong><code>auto_codex</code></strong>, i.e. an alias, not the real model.</li>
+<li>A parallel request to the router (<code>/v1/chat/completions</code>, <code>model: auto_codex</code>)</li>
+</ul>
+<p>returned <code>&quot;model&quot;: &quot;qwen/Qwen3.8-Flash-Next&quot;</code> — routing works and **is visible</p>
+<p>in the <code>model</code> field of the chat/completions response**.</p>
+<ul>
+<li>Codex uses <code>wire_api = &quot;responses&quot;</code>, and the presence of a <code>model</code> field in</li>
+</ul>
+<p>the <code>/v1/responses</code> response was not verified → <code>model_observation: partial</code>.</p>
+<p>Methodological consequence: with agentic routing, AK-Bench <strong>cannot</strong> determine</p>
+<p>model usage from agent data. The source of truth is the router side (logs and</p>
+<p>metrics), not the agent. This also applies to &quot;Auto Codex ON/OFF&quot; experiments.</p>
+<h2 id="11-file-and-network-isolation">11. File and network isolation</h2>
+<div class="table-wrap"><table class="docs"><thead><tr><th>Capability</th><th>Status</th><th>Notes</th></tr></thead><tbody><tr><td><code>read-only</code> / <code>workspace-write</code> / <code>danger-full-access</code></td><td>verified</td><td><code>-s</code>, default <code>read-only</code></td></tr><tr><td>Network disabled by default in <code>workspace-write</code></td><td>verified (docs: <code>sandbox_workspace_write.network_access</code>, default <code>false</code>)</td><td></td></tr><tr><td><code>CODEX_SANDBOX_NETWORK_DISABLED=1</code> in the process environment</td><td>verified (docs)</td><td>useful verification signal</td></tr><tr><td><code>sandbox_workspace_write.writable_roots</code></td><td>verified (docs)</td><td>extra writable roots</td></tr><tr><td><code>--dangerously-bypass-approvals-and-sandbox</code></td><td>verified (exists)</td><td>only exercised under external sandboxing</td></tr><tr><td>Docker as an AK-Bench layer</td><td><code>unverified</code> in this phase</td><td>the Codex sandbox was sufficient; Docker checked separately (v29.2.1)</td></tr></tbody></table></div>
+<h2 id="12-capability-table-for-codex-cli-proposal-for-the-agent-descriptor">12. Capability table for <code>codex_cli</code> (proposal for the Agent Descriptor)</h2>
+<div class="table-wrap"><table class="docs"><thead><tr><th>Capability</th><th>Status</th><th>Note</th></tr></thead><tbody><tr><td><code>workspace_binding</code></td><td>verified</td><td><code>-C</code></td></tr><tr><td><code>fresh_session</code></td><td>verified</td><td>separate process + <code>CODEX_HOME</code></td></tr><tr><td><code>session_reset</code></td><td>unsupported</td><td>resume/fork only</td></tr><tr><td><code>task_submission</code></td><td>verified</td><td>argument or stdin</td></tr><tr><td><code>completion_detection</code></td><td>verified</td><td><code>turn.completed</code> / <code>turn.failed</code></td></tr><tr><td><code>status_query</code></td><td>partial</td><td>stream of the current process only</td></tr><tr><td><code>cancellation</code></td><td>partial</td><td>process signals, no API</td></tr><tr><td><code>token_usage</code></td><td>verified</td><td>rollout + stream</td></tr><tr><td><code>cost_usage</code></td><td>unsupported</td><td>no data available</td></tr><tr><td><code>tool_trace</code></td><td>verified</td><td>rollout + <code>item.completed</code></td></tr><tr><td><code>model_observation</code></td><td>partial</td><td><code>auto_codex</code> alias; real model only on the router side</td></tr><tr><td><code>streaming_output</code></td><td>verified</td><td><code>--json</code></td></tr><tr><td><code>filesystem_control</code></td><td>verified</td><td>sandbox + <code>--add-dir</code></td></tr><tr><td><code>network_control</code></td><td>verified</td><td><code>sandbox_workspace_write.network_access</code></td></tr><tr><td><code>session_export</code></td><td>verified</td><td>the JSONL rollout file</td></tr><tr><td><code>structured_output</code></td><td>verified (docs)</td><td><code>--output-schema</code></td></tr></tbody></table></div>
+<h2 id="13-risks-and-inconsistencies-found-during-the-spike">13. Risks and inconsistencies found during the spike</h2>
+<ol>
+<li><strong>Knowledge contamination of experiments.</strong> The current operator session goes</li>
+</ol>
+<p>through the same router with <code>agentic_knowledge</code> enabled, and the</p>
+<p><code>&lt;agentic_knowledge&gt;</code> block was really injected into context (observed while</p>
+<p>working in this repository). The knowledge layer is scoped per repository, so</p>
+<p>benchmark runs in the same repository may inherit knowledge from the operator</p>
+<p>session. Enforced: a dedicated scope/KB for the benchmark, and verifying KB</p>
+<p>state before a run.</p>
+<ol>
+<li><strong>The model alias hides routing</strong> (§10).</li>
+<li><strong>No cost</strong> (§9) — the cost metric must stay <code>unavailable</code>, never zero.</li>
+<li><strong>No timeout or cancellation at the agent level</strong> (§7) — a real constraint</li>
+</ol>
+<p>for <code>retry_infrastructure_errors</code>.</p>
+<ol>
+<li><strong>The rollout as a trace source is a side effect of session persistence</strong>; it</li>
+</ol>
+<p>disappears with <code>--ephemeral</code>. An adapter must treat this as a critical</p>
+<p>dependency.</p>
+<h2 id="14-how-to-reproduce">14. How to reproduce</h2>
+<div class="code-block"><span class="code-lang">bash</span><pre># required: LLM_ROUTER_API_KEY in the environment
+python3 spike/run_spike.py --dry-run          # prepare environments only
+python3 spike/run_spike.py --timeout 420      # full E2E run</pre></div>
+<p>Artifacts: <code>data/artifacts/spike/&lt;run_id&gt;/</code> — <code>manifest.json</code>,</p>
+<p><code>codex_stdout.jsonl</code>, <code>codex_stderr.log</code>, <code>agent_trace.jsonl</code>,</p>
+<p><code>tool_calls.jsonl</code>, <code>diff.patch</code>, <code>last_message.txt</code>, <code>evaluation.json</code>.</p></article></div></div></div><footer>generated 2026-11-02T19:53:57.573863+00:00 from the recorded history</footer></main><script>
+// Sorting of a report table: clicking a column header reorders the rows.
+// This is the one script a report page carries, and it changes the order of
+// rows and nothing else — no number is computed, fetched or altered here. A
+// page read with scripting off still shows every row, in the order it was
+// written in, which is the order the history recorded.
+(function () {
+  "use strict";
+
+  var MISSING = Object.freeze({ missing: true });
+
+  function text(cell) {
+    return (cell.textContent || "").trim();
+  }
+
+  // A value the report could not measure never sorts as a zero: it goes last.
+  function isMissing(value) {
+    return (
+      value === "" ||
+      value === "not measured" ||
+      value === "not started" ||
+      value === "not recorded" ||
+      value === "not evaluated" ||
+      value === "—"
+    );
+  }
+
+  // "3 m 25 s", "1 h 2 m", "12.5 s", "1,234", "97.9%" -> a number; anything
+  // else is null, so the caller can fall back to comparing the text.
+  function asNumber(raw) {
+    if (isMissing(raw)) return MISSING;
+    var value = raw.replace(/,/g, "");
+    var pattern =
+      "^(?:(\d+(?:\.\d+)?)\s*h)?\s*(?:(\d+(?:\.\d+)?)\s*m)?\s*(?:(\d+(?:\.\d+)?)\s*s)?$";
+    var duration = value.match(new RegExp(pattern));
+    if (duration && (duration[1] || duration[2] || duration[3])) {
+      return (
+        (parseFloat(duration[1] || 0) * 3600) +
+        (parseFloat(duration[2] || 0) * 60) +
+        parseFloat(duration[3] || 0)
+      );
+    }
+    var plain = value.replace(/%$/, "");
+    if (/^-?\d+(?:\.\d+)?$/.test(plain)) return parseFloat(plain);
+    return null;
+  }
+
+  function column(table, index) {
+    var out = [];
+    var rows = table.tBodies[0] ? table.tBodies[0].rows : [];
+    for (var i = 0; i < rows.length; i += 1) {
+      out.push(rows[i].cells[index] ? text(rows[i].cells[index]) : "");
+    }
+    return out;
+  }
+
+  function isNumeric(values) {
+    var parsed = false;
+    for (var i = 0; i < values.length; i += 1) {
+      var value = asNumber(values[i]);
+      if (value === null) return false;
+      if (value !== MISSING) parsed = true;
+    }
+    return parsed;
+  }
+
+  function sort(table, index, ascending) {
+    var body = table.tBodies[0];
+    if (!body) return;
+    var values = column(table, index);
+    var numeric = isNumeric(values);
+    var rows = Array.prototype.slice.call(body.rows);
+    var position = new Map();
+    rows.forEach(function (row, index) { position.set(row, index); });
+
+    rows.sort(function (left, right) {
+      var a = values[position.get(left)];
+      var b = values[position.get(right)];
+      if (numeric) {
+        var na = asNumber(a);
+        var nb = asNumber(b);
+        var aMissing = na === MISSING;
+        var bMissing = nb === MISSING;
+        if (aMissing && bMissing) return position.get(left) - position.get(right);
+        if (aMissing) return 1;   // never measured, always after what was
+        if (bMissing) return -1;
+        return ascending ? na - nb : nb - na;
+      }
+      var compared = String(a).localeCompare(String(b), undefined, { numeric: true });
+      if (compared !== 0) return ascending ? compared : -compared;
+      return position.get(left) - position.get(right);
+    });
+
+    rows.forEach(function (row) { body.appendChild(row); });
+    markHeaders(table, index, ascending);
+  }
+
+  function markHeaders(table, index, ascending) {
+    var cells = table.tHead ? table.tHead.rows[0].cells : [];
+    for (var i = 0; i < cells.length; i += 1) {
+      // the direction that was applied is remembered on the header, because
+      // the next click has to flip it: without this every click sorts the same
+      // way, which is the bug this line exists to prevent
+      if (i === index) {
+        cells[i].setAttribute("data-dir", ascending ? "asc" : "desc");
+        cells[i].setAttribute(
+          "aria-sort",
+          ascending ? "ascending" : "descending"
+        );
+      } else {
+        cells[i].removeAttribute("data-dir");
+        cells[i].setAttribute("aria-sort", "none");
+      }
+    }
+  }
+
+  function activate(header, index) {
+    var table = header.closest("table");
+    var ascending = header.getAttribute("data-dir") !== "asc";
+    sort(table, index, ascending);
+  }
+
+  document.addEventListener("click", function (event) {
+    var header = event.target.closest ? event.target.closest("th.sortable") : null;
+    if (header) activate(header, Array.prototype.indexOf.call(header.parentNode.cells, header));
+  });
+
+  document.addEventListener("keydown", function (event) {
+    if (event.key !== "Enter" && event.key !== " ") return;
+    var header = event.target.closest ? event.target.closest("th.sortable") : null;
+    if (!header) return;
+    event.preventDefault();
+    activate(header, Array.prototype.indexOf.call(header.parentNode.cells, header));
+  });
+})();
+</script></body></html>

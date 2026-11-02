@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>LLM Router integration — spike results (Phase 0)</title><link rel="stylesheet" href="../../assets/style.css"></head><body><main><header class="topbar"><a class="brand" href="../../index.html"><span class="mark"></span>AK-Bench<span class="tag">benchmark report</span></a><nav class="nav"><a href="../../index.html">dashboard</a><a href="../../agents/index.html">agents</a><a href="../../runtimes/index.html">runtimes</a><a href="../../plugins/index.html">plugins</a><a href="../../models/index.html">models</a><a href="../../tasks/index.html">tasks</a><a href="../../runs/index.html">runs</a><a href="../../docs/index.html">docs</a></nav></header><div class="docs-shell"><nav class="docs-breadcrumb" aria-label="Breadcrumb"><a href="../../docs/index.html">Documentation</a><span aria-hidden="true">/</span><span>Handbook</span></nav><div class="docs-layout"><nav class="docs-menu" aria-label="Documentation"><a href="../../docs/index.html">Documentation overview</a><details class="menu-group"><summary class="menu-title">Project<span class="docs-count">1</span></summary><ul><li><a href="../../docs/readme/index.html">AK-Bench</a></li></ul></details><details class="menu-group" open><summary class="menu-title">Handbook<span class="docs-count">18</span></summary><ul><li><a href="../../docs/docs-agent-adapters/index.html">Agent adapters</a></li><li><a href="../../docs/docs-agent-integration/index.html">Agent integration — spike results (Phase 0)</a></li><li><a href="../../docs/docs-cli/index.html">CLI</a></li><li><a href="../../docs/docs-datasets/index.html">Datasets, tasks and workspaces (Phase 3)</a></li><li><a href="../../docs/docs-descriptor-system/index.html">Descriptor system (Phase 2)</a></li><li><a href="../../docs/docs-development/index.html">Development environment</a></li><li><a href="../../docs/docs-evaluators/index.html">Evaluator Engine</a></li><li><a href="../../docs/docs-experiments/index.html">Experiments and planning</a></li><li><a href="../../docs/docs-export/index.html">Export</a></li><li><a href="../../docs/docs-knowledge-replay/index.html">Knowledge Replay</a></li><li><a href="../../docs/docs-metrics/index.html">Metrics and Observability</a></li><li><a href="../../docs/docs-plugins/index.html">Plugin Configuration and Observability</a></li><li><a href="../../docs/docs-reporting/index.html">Reporting</a></li><li><a href="../../docs/docs-reproducibility/index.html">Reproducibility</a></li><li><a class="current" aria-current="page" href="../../docs/docs-router-integration/index.html">LLM Router integration — spike results (Phase 0)</a><span class="toc"><a href="#0-instance-under-test">0. Instance under test</a><a href="#1-healthcheck-verified">1. Healthcheck — verified</a><a href="#2-model-inventory-verified">2. Model inventory — verified</a><a href="#3-can-the-effective-configuration-be-read-not-over-http">3. Can the effective configuration be read? — NOT over HTTP</a><a href="#4-plugin-pipeline-verified-from-code">4. Plugin pipeline — verified from code</a><a href="#5-the-auto-codex-dimension-plugin-agentic-routing-codex">5. The &quot;Auto Codex&quot; dimension (plugin `agentic_routing_codex`)</a><a href="#6-the-knowledge-dimension-plugin-agentic-knowledge">6. The &quot;Knowledge&quot; dimension (plugin `agentic_knowledge`)</a><a href="#7-metrics-and-plugin-activity-signals-a-significant-gap">7. Metrics and plugin activity signals — a significant gap</a><a href="#8-router-runtime-environment-variables-verified-from-docs-env-definitions-md">8. Router runtime environment variables (verified from `docs/ENV_DEFINITIONS.md`)</a><a href="#9-managed-vs-shared-mode-a-design-decision">9. Managed vs shared mode — a design decision</a><a href="#10-integration-status">10. Integration status</a></span></li><li><a href="../../docs/docs-runtime-manager/index.html">Runtime Manager</a></li><li><a href="../../docs/docs-run-orchestrator/index.html">Run Orchestrator</a></li><li><a href="../../docs/docs-storage/index.html">Storage</a></li></ul></details><details class="menu-group"><summary class="menu-title">Datasets<span class="docs-count">31</span></summary><ul><li><a href="../../docs/datasets-readme/index.html">Readme</a></li><li><a href="../../docs/datasets-sources-bookshop-readme/index.html">bookshop</a></li><li><a href="../../docs/datasets-sources-cadence-readme/index.html">cadence</a></li><li><a href="../../docs/datasets-sources-depweaver-readme/index.html">Depweaver</a></li><li><a href="../../docs/datasets-sources-depweaver-spec/index.html">Resolution and repair contract</a></li><li><a href="../../docs/datasets-sources-freight-readme/index.html">freight</a></li><li><a href="../../docs/datasets-sources-ledgerlite-readme/index.html">ledgerlite</a></li><li><a href="../../docs/datasets-sources-notesapi-readme/index.html">notesapi</a></li><li><a href="../../docs/datasets-sources-stockpile-readme/index.html">stockpile</a></li><li><a href="../../docs/datasets-sources-streamforge-readme/index.html">Streamforge</a></li><li><a href="../../docs/datasets-sources-textkit-readme/index.html">textkit</a></li><li><a href="../../docs/datasets-sources-typeweave-readme/index.html">Typeweave</a></li><li><a href="../../docs/datasets-sources-typeweave-spec/index.html">Type inference implementation contract</a></li><li><a href="../../docs/datasets-sources-walqueue-readme/index.html">WALQueue</a></li><li><a href="../../docs/datasets-bug-fix-bookshop-stock-002-description/index.html">Cancelling a confirmed order leaves the stock reserved</a></li><li><a href="../../docs/datasets-bug-fix-bookshop-tiers-001-description/index.html">The five percent tier is lost at exactly one hundred dollars</a></li><li><a href="../../docs/datasets-bug-fix-cadence-takeover-001-description/index.html">A worker with a stale epoch can take a live lease back</a></li><li><a href="../../docs/datasets-bug-fix-depweaver-backtracking-001-description/index.html">Repair the resolver&#x27;s branch and context protocol</a></li><li><a href="../../docs/datasets-bug-fix-ledgerlite-rates-001-description/index.html">A conversion answers with the oldest rate in force</a></li><li><a href="../../docs/datasets-bug-fix-stockpile-writeoff-001-description/index.html">A write-off destroys the reserved part of an expired lot</a></li><li><a href="../../docs/datasets-bug-fix-walqueue-recovery-001-description/index.html">Repair durable queue recovery</a></li><li><a href="../../docs/datasets-bug-fix-wordcount-001-description/index.html">Word counting must ignore repeated whitespace</a></li><li><a href="../../docs/datasets-new-feature-cadence-catchup-001-description/index.html">Implement `plan_catch_up` from its specification</a></li><li><a href="../../docs/datasets-new-feature-freight-shop-001-description/index.html">Implement `shop` from its specification</a></li><li><a href="../../docs/datasets-new-feature-ledgerlite-reconcile-001-description/index.html">Implement `reconcile` from its specification</a></li><li><a href="../../docs/datasets-new-feature-notes-search-001-description/index.html">Implement `search_notes` from its specification</a></li><li><a href="../../docs/datasets-new-feature-notes-sync-001-description/index.html">Implement `merge` from its specification</a></li><li><a href="../../docs/datasets-new-feature-slugify-001-description/index.html">Implement `slugify` from the specification</a></li><li><a href="../../docs/datasets-new-feature-stockpile-fefo-001-description/index.html">Implement `allocate` from its specification</a></li><li><a href="../../docs/datasets-new-feature-streamforge-windows-001-description/index.html">Implement a restartable event-time engine</a></li><li><a href="../../docs/datasets-new-feature-typeweave-inference-001-description/index.html">Complete the type checker of an existing compiler</a></li></ul></details><details class="menu-group"><summary class="menu-title">Plan<span class="docs-count">1</span></summary><ul><li><a href="../../docs/plans-ak-bench-implementation-plan/index.html">AK-Bench --- kompletny plan implementacji</a></li></ul></details><details class="menu-group"><summary class="menu-title">Spike<span class="docs-count">2</span></summary><ul><li><a href="../../docs/spike-readme/index.html">Phase 0 — integration spike</a></li><li><a href="../../docs/spike-repo-readme/index.html">Spike fixture repo</a></li></ul></details></nav><div class="docs-article"><p class="docs-source doc-path">docs/ROUTER_INTEGRATION.md</p><article class="prose"><h1 id="llm-router-integration-spike-results-phase-0">LLM Router integration — spike results (Phase 0)</h1>
+<p>Covers the LLM Router instance the spike runs were executed against. Describes</p>
+<p>only what was checked in HTTP requests or in the code of</p>
+<p><code>/mnt/data2/dev/develop/llm-router</code> and <code>/mnt/data2/dev/develop/llm-router-plugins</code>.</p>
+<h2 id="0-instance-under-test">0. Instance under test</h2>
+<div class="table-wrap"><table class="docs"><thead><tr><th>Item</th><th>Value</th></tr></thead><tbody><tr><td>Address</td><td><code>http://192.168.100.65:8081</code></td></tr><tr><td>Instance lifecycle mode</td><td><strong>external</strong> — shared instance, not managed by AK-Bench</td></tr><tr><td>Authentication</td><td>key in <code>Authorization: Bearer $LLM_ROUTER_API_KEY</code></td></tr><tr><td>Agent-facing endpoints</td><td><code>POST /v1/responses</code> (Codex, <code>wire_api = &quot;responses&quot;</code>), <code>POST /v1/chat/completions</code></td></tr><tr><td>Router code</td><td><code>llm-router</code> (<code>llm_router_api</code>); plugins: <code>llm-router-plugins</code></td></tr></tbody></table></div>
+<h2 id="1-healthcheck-verified">1. Healthcheck — verified</h2>
+<div class="table-wrap"><table class="docs"><thead><tr><th>Method and path</th><th>Response</th></tr></thead><tbody><tr><td><code>GET /health</code></td><td><code>200</code>, body <code>{&quot;body&quot;:&quot;healthy&quot;,&quot;status&quot;:true,&quot;stream&quot;:false}</code></td></tr><tr><td><code>GET /healthz</code></td><td><code>403</code> — denied by the access policy</td></tr><tr><td><code>GET /health/live</code></td><td><code>403</code> — denied by the access policy</td></tr></tbody></table></div>
+<p>Only <code>GET /health</code> is usable as the benchmark healthcheck.</p>
+<h2 id="2-model-inventory-verified">2. Model inventory — verified</h2>
+<p><code>GET /v1/models</code> (code <code>200</code>) returns 6 models:</p>
+<div class="code-block"><span class="code-lang">text</span><pre>google/gemma-4-12b-it
+google/gemini-3.1-flash-lite-preview
+google/gemma-4-12b-it-playground
+qwen3-coder:30b
+qwen/Qwen3.8-27B
+qwen/Qwen3.8-Flash-Next</pre></div>
+<p>Note: <code>auto_codex</code> <strong>does not appear</strong> in this list even though it works as an</p>
+<p>alias in requests. <code>/v1/models</code> is therefore not a complete picture of the</p>
+<p>&quot;model&quot; dimension&#x27;s value space.</p>
+<h2 id="3-can-the-effective-configuration-be-read-not-over-http">3. Can the effective configuration be read? — NOT over HTTP</h2>
+<p>Checked and rejected (<code>403 Access to this endpoint is denied by policy</code>):</p>
+<p><code>/config</code>, <code>/admin/config</code>, <code>/routing/config</code>, <code>/knowledge/stats</code>, <code>/utils</code>,</p>
+<p><code>/version</code>, <code>/api_version</code>, <code>/v1/api_version</code>, <code>/list_models</code>.</p>
+<p>The effective configuration is only reachable on the router host:</p>
+<ul>
+<li>model file: <code>LLM_ROUTER_MODELS_CONFIG</code> (default <code>resources/configs/models-config.json</code>),</li>
+</ul>
+<p>the <code>active_models</code> key is required;</p>
+<ul>
+<li>plugin configuration: <code>llm_router_plugins/resources/&lt;type&gt;/&lt;plugin&gt;.json</code></li>
+</ul>
+<p>plus environment overrides.</p>
+<p>Conclusion: in <code>external</code> mode AK-Bench <strong>cannot verify</strong> the effective</p>
+<p>configuration of the router or its plugins. Per the plan&#x27;s rule (&quot;a</p>
+<p>configuration is not considered active without verification&quot;), experiments on a</p>
+<p>shared router must be marked <code>unverified</code> unless file/log access on the host is</p>
+<p>available.</p>
+<h2 id="4-plugin-pipeline-verified-from-code">4. Plugin pipeline — verified from code</h2>
+<div class="table-wrap"><table class="docs"><thead><tr><th>Item</th><th>Value</th></tr></thead><tbody><tr><td>Pipeline activation variable</td><td><code>LLM_ROUTER_UTILS_PLUGINS_PIPELINE</code>, e.g. <code>&quot;agentic_routing_codex,agentic_knowledge&quot;</code></td></tr><tr><td>Registry</td><td><code>llm_router_plugins.utils.registry.MAIN_UTILS_REGISTRY</code></td></tr><tr><td>Plugin lifecycle</td><td>one instance per process; <code>apply(payload)</code> runs before guardrails and before provider selection</td></tr><tr><td>Ordering</td><td>the first plugin that overwrites <code>model</code> wins the dispatch; <code>agentic_knowledge</code> must run <strong>after</strong> routing</td></tr></tbody></table></div>
+<h2 id="5-the-auto-codex-dimension-plugin-agentic-routing-codex">5. The &quot;Auto Codex&quot; dimension (plugin <code>agentic_routing_codex</code>)</h2>
+<ul>
+<li>Trigger: the <code>auto_codex</code> model alias backed by an <code>api_type: &quot;builtin&quot;</code> provider.</li>
+<li>ENV prefix: <code>LLM_ROUTER_ROUTING_SEMANTIC_AGENTIC_CODEX_</code></li>
+</ul>
+<p>(including <code>…TRIGGER</code>, <code>…HEURISTIC_ENABLED</code>, <code>…SEMANTIC_ENABLED</code>).</p>
+<p>Names confirmed in code: <code>AGENTIC_ROUTING_PREFIX = &quot;LLM_ROUTER_ROUTING_SEMANTIC_AGENTIC_&quot;</code>,</p>
+<p>and the Codex prefix is <code>AGENTIC_CODEX_ROUTING_PREFIX = f&quot;{AGENTIC_ROUTING_PREFIX}CODEX_&quot;</code>.</p>
+<ul>
+<li>Proof of life — <strong>verified</strong>: a request with <code>model: &quot;auto_codex&quot;</code> returned</li>
+</ul>
+<p><code>&quot;model&quot;: &quot;qwen/Qwen3.8-Flash-Next&quot;</code> — routing replaced the model.</p>
+<h2 id="6-the-knowledge-dimension-plugin-agentic-knowledge">6. The &quot;Knowledge&quot; dimension (plugin <code>agentic_knowledge</code>)</h2>
+<div class="table-wrap"><table class="docs"><thead><tr><th>Item</th><th>Value</th></tr></thead><tbody><tr><td>Registry key</td><td><code>agentic_knowledge</code></td></tr><tr><td>Class</td><td><code>llm_router_plugins.utils.knowledge.agentic_knowledge.plugin.AgenticKnowledgePlugin</code></td></tr><tr><td>ENV prefix</td><td><code>LLM_ROUTER_KNOWLEDGE_AGENTIC_</code> (confirmed in <code>config.py</code>)</td></tr><tr><td>ENV flags (verified from code)</td><td><code>ENABLED</code>, <code>READ_ENABLED</code>, <code>WRITE_ENABLED</code>, <code>ESCALATION_ENABLED</code>, <code>ARCHIVE_ENABLED</code>, <code>DOCS_ENABLED</code>, <code>DOCS_CONTEXT_ENABLED</code></td></tr><tr><td>Default configuration</td><td><code>llm_router_plugins/resources/knowledge/agentic_knowledge.json</code></td></tr><tr><td>Indexing worker</td><td><code>llm-router-agentic-kb-worker</code></td></tr><tr><td>Dependencies</td><td>the SSE client (<code>sse_lib</code>) + Redis; without them the plugin loads and does nothing</td></tr><tr><td>Error policy</td><td>fail-open for traffic, fail-hard for an invalid policy (at startup)</td></tr></tbody></table></div>
+<p>Facts that matter for Knowledge/Replay experiments:</p>
+<ul>
+<li>the plugin changes <code>payload[&quot;model&quot;]</code> only when escalation fires, and appends</li>
+</ul>
+<p>a context block; the annotation lands in <code>routing.knowledge</code> **in the internal</p>
+<p>payload**, not in the HTTP response the agent sees;</p>
+<ul>
+<li>the end of an agent session is <strong>not</strong> proof that the KB is ready — indexing is</li>
+</ul>
+<p>asynchronous (worker), so Replay requires confirming that the write and index</p>
+<p>steps have finished first;</p>
+<ul>
+<li>real trace of knowledge at work: the injected <code>&lt;agentic_knowledge&gt;</code> block was</li>
+</ul>
+<p>visible in the context of the current operator session in this repository</p>
+<p>(anecdotal evidence, but from real traffic).</p>
+<h2 id="7-metrics-and-plugin-activity-signals-a-significant-gap">7. Metrics and plugin activity signals — a significant gap</h2>
+<p><code>GET /metrics</code> (code <code>200</code>, Prometheus) contains, among others:</p>
+<div class="code-block"><span class="code-lang">text</span><pre>http_requests_total, http_request_duration_seconds_*, http_request_size_bytes_*
+http_request_exceptions_total, http_requests_in_progress
+llm_router_provider_calls_total, llm_router_provider_error_total
+llm_router_provider_latency_seconds_*, llm_router_model_fallback_total
+llm_router_lb_strategy_selected_total, llm_router_retry_total
+llm_router_tokens_total, llm_router_response_format_total
+llm_router_pipeline_stage_total{result=&quot;success&quot;,stage=&quot;provider_resolved&quot;}
+guardrail_incidents_total, masker_incidents_total</pre></div>
+<ul>
+<li><code>llm_router_pipeline_stage_total</code> has <strong>only</strong> the <code>provider_resolved</code> stage.</li>
+<li>There are no per-plugin counters: neither <code>knowledge_retrieval_count</code>, nor</li>
+</ul>
+<p><code>knowledge_write_count</code>, nor any <code>agentic_routing_codex</code> signal.</p>
+<p>Conclusion: the current metric set is not enough to measure the Knowledge and</p>
+<p>Auto Codex dimensions. One of the following is required:</p>
+<ol>
+<li>enable router logging (<code>LLM_ROUTER_LOG_TO_FILE</code>, <code>LLM_ROUTER_LOG_LEVEL</code>) and</li>
+</ol>
+<p>parse the plugins&#x27; decision lines,</p>
+<ol>
+<li>a custom plugin export into <code>/metrics</code>,</li>
+<li>reading KB/SSE state directly.</li>
+</ol>
+<p>Until one of them exists, knowledge metrics must be reported as <code>unavailable</code>,</p>
+<p>never as zero.</p>
+<p><strong>Measured indexing-lag observation (2026-10-30):</strong> while working in this</p>
+<p>repository, the injected document registry covered only <code>README.md</code> and the plan</p>
+<p>file, even though two new <code>docs/*.md</code> files had been on disk for several</p>
+<p>minutes. This confirms the plan&#x27;s thesis: **KB readiness must be verified</p>
+<p>separately**, and the window between a write and knowledge becoming available is</p>
+<p>a measurable metric (<code>indexing_latency</code>).</p>
+<h2 id="8-router-runtime-environment-variables-verified-from-docs-env-definitions-md">8. Router runtime environment variables (verified from <code>docs/ENV_DEFINITIONS.md</code>)</h2>
+<div class="table-wrap"><table class="docs"><thead><tr><th>Variable</th><th>Default</th><th>Meaning</th></tr></thead><tbody><tr><td><code>LLM_ROUTER_MODELS_CONFIG</code></td><td><code>resources/configs/models-config.json</code></td><td>model configuration file</td></tr><tr><td><code>LLM_ROUTER_LOG_FILENAME</code></td><td><code>llm-router.log</code></td><td>log file name</td></tr><tr><td><code>LLM_ROUTER_LOG_LEVEL</code></td><td><code>INFO</code></td><td>logging level</td></tr><tr><td><code>LLM_ROUTER_LOG_TO_FILE</code></td><td><code>false</code></td><td>also write logs to a file</td></tr><tr><td><code>LLM_ROUTER_LOG_MAX_BYTES</code></td><td><code>52428800</code></td><td>log rotation size</td></tr><tr><td><code>LLM_ROUTER_LOG_BACKUP_COUNT</code></td><td><code>5</code></td><td>number of rotated copies</td></tr><tr><td><code>LLM_ROUTER_MINIMUM</code></td><td><code>False</code></td><td>proxy-only mode</td></tr><tr><td><code>LLM_ROUTER_IN_DEBUG</code></td><td><code>False</code></td><td>debug mode (forces DEBUG)</td></tr><tr><td><code>LLM_ROUTER_VERBOSE</code></td><td><code>False</code></td><td>log raw, <strong>unmasked</strong> requests (PII!)</td></tr><tr><td><code>LLM_ROUTER_AUTH_ENABLED</code></td><td><code>false</code></td><td>enforce <code>sk-llmr-live-</code> key authentication</td></tr></tbody></table></div>
+<p><code>LLM_ROUTER_VERBOSE</code> is the only verified way to see full payloads (and thus the</p>
+<p><code>routing.knowledge</code> annotation), but it logs PII — acceptable for the benchmark</p>
+<p>only in an isolated environment and with secret filtering.</p>
+<h2 id="9-managed-vs-shared-mode-a-design-decision">9. Managed vs shared mode — a design decision</h2>
+<div class="table-wrap"><table class="docs"><thead><tr><th>Property</th><th><code>external</code> (current)</th><th><code>managed</code> (target for experiments)</th></tr></thead><tbody><tr><td>Per-run plugin ENV control</td><td>impossible</td><td>full</td></tr><tr><td>Reading the effective configuration</td><td>impossible (403)</td><td>possible (file + logs)</td></tr><tr><td>KB state isolation</td><td>none</td><td>possible (separate Redis/SSE)</td></tr><tr><td>Risk of changes during a run</td><td>real</td><td>eliminated</td></tr><tr><td>Reproducibility</td><td>limited</td><td>required by the plan</td></tr></tbody></table></div>
+<p><strong>Recommendation:</strong> experiments with the Knowledge and Auto Codex dimensions</p>
+<p>require a <code>managed</code> instance (own container + own Redis/SSE + own configuration</p>
+<p>file). The shared router is fine for integration and smoke tests, but its</p>
+<p>results must be marked <code>valid_with_warnings</code> or <code>invalid</code> depending on the</p>
+<p>capabilities an experiment requires.</p>
+<h2 id="10-integration-status">10. Integration status</h2>
+<div class="table-wrap"><table class="docs"><thead><tr><th>Capability</th><th>Status</th></tr></thead><tbody><tr><td>Healthcheck</td><td>verified</td></tr><tr><td>Model inventory (<code>/v1/models</code>)</td><td>verified</td></tr><tr><td>Calling <code>chat/completions</code> through the <code>auto_codex</code> alias</td><td>verified</td></tr><tr><td>Agentic routing swaps the model</td><td>verified (response <code>model</code>)</td></tr><tr><td>Calling <code>/v1/responses</code> and observing the model in the response</td><td>unverified</td></tr><tr><td>Reading the effective configuration over HTTP</td><td>unsupported</td></tr><tr><td>Per-plugin metrics</td><td>unsupported</td></tr><tr><td>Starting/stopping the instance from AK-Bench</td><td>unverified (not implemented in Phase 0)</td></tr><tr><td>Per-run plugin ENV control</td><td>unverified (requires <code>managed</code>)</td></tr><tr><td>KB readiness (indexing finished)</td><td>unverified</td></tr></tbody></table></div></article></div></div></div><footer>generated 2026-11-02T19:53:57.573863+00:00 from the recorded history</footer></main><script>
+// Sorting of a report table: clicking a column header reorders the rows.
+// This is the one script a report page carries, and it changes the order of
+// rows and nothing else — no number is computed, fetched or altered here. A
+// page read with scripting off still shows every row, in the order it was
+// written in, which is the order the history recorded.
+(function () {
+  "use strict";
+
+  var MISSING = Object.freeze({ missing: true });
+
+  function text(cell) {
+    return (cell.textContent || "").trim();
+  }
+
+  // A value the report could not measure never sorts as a zero: it goes last.
+  function isMissing(value) {
+    return (
+      value === "" ||
+      value === "not measured" ||
+      value === "not started" ||
+      value === "not recorded" ||
+      value === "not evaluated" ||
+      value === "—"
+    );
+  }
+
+  // "3 m 25 s", "1 h 2 m", "12.5 s", "1,234", "97.9%" -> a number; anything
+  // else is null, so the caller can fall back to comparing the text.
+  function asNumber(raw) {
+    if (isMissing(raw)) return MISSING;
+    var value = raw.replace(/,/g, "");
+    var pattern =
+      "^(?:(\d+(?:\.\d+)?)\s*h)?\s*(?:(\d+(?:\.\d+)?)\s*m)?\s*(?:(\d+(?:\.\d+)?)\s*s)?$";
+    var duration = value.match(new RegExp(pattern));
+    if (duration && (duration[1] || duration[2] || duration[3])) {
+      return (
+        (parseFloat(duration[1] || 0) * 3600) +
+        (parseFloat(duration[2] || 0) * 60) +
+        parseFloat(duration[3] || 0)
+      );
+    }
+    var plain = value.replace(/%$/, "");
+    if (/^-?\d+(?:\.\d+)?$/.test(plain)) return parseFloat(plain);
+    return null;
+  }
+
+  function column(table, index) {
+    var out = [];
+    var rows = table.tBodies[0] ? table.tBodies[0].rows : [];
+    for (var i = 0; i < rows.length; i += 1) {
+      out.push(rows[i].cells[index] ? text(rows[i].cells[index]) : "");
+    }
+    return out;
+  }
+
+  function isNumeric(values) {
+    var parsed = false;
+    for (var i = 0; i < values.length; i += 1) {
+      var value = asNumber(values[i]);
+      if (value === null) return false;
+      if (value !== MISSING) parsed = true;
+    }
+    return parsed;
+  }
+
+  function sort(table, index, ascending) {
+    var body = table.tBodies[0];
+    if (!body) return;
+    var values = column(table, index);
+    var numeric = isNumeric(values);
+    var rows = Array.prototype.slice.call(body.rows);
+    var position = new Map();
+    rows.forEach(function (row, index) { position.set(row, index); });
+
+    rows.sort(function (left, right) {
+      var a = values[position.get(left)];
+      var b = values[position.get(right)];
+      if (numeric) {
+        var na = asNumber(a);
+        var nb = asNumber(b);
+        var aMissing = na === MISSING;
+        var bMissing = nb === MISSING;
+        if (aMissing && bMissing) return position.get(left) - position.get(right);
+        if (aMissing) return 1;   // never measured, always after what was
+        if (bMissing) return -1;
+        return ascending ? na - nb : nb - na;
+      }
+      var compared = String(a).localeCompare(String(b), undefined, { numeric: true });
+      if (compared !== 0) return ascending ? compared : -compared;
+      return position.get(left) - position.get(right);
+    });
+
+    rows.forEach(function (row) { body.appendChild(row); });
+    markHeaders(table, index, ascending);
+  }
+
+  function markHeaders(table, index, ascending) {
+    var cells = table.tHead ? table.tHead.rows[0].cells : [];
+    for (var i = 0; i < cells.length; i += 1) {
+      // the direction that was applied is remembered on the header, because
+      // the next click has to flip it: without this every click sorts the same
+      // way, which is the bug this line exists to prevent
+      if (i === index) {
+        cells[i].setAttribute("data-dir", ascending ? "asc" : "desc");
+        cells[i].setAttribute(
+          "aria-sort",
+          ascending ? "ascending" : "descending"
+        );
+      } else {
+        cells[i].removeAttribute("data-dir");
+        cells[i].setAttribute("aria-sort", "none");
+      }
+    }
+  }
+
+  function activate(header, index) {
+    var table = header.closest("table");
+    var ascending = header.getAttribute("data-dir") !== "asc";
+    sort(table, index, ascending);
+  }
+
+  document.addEventListener("click", function (event) {
+    var header = event.target.closest ? event.target.closest("th.sortable") : null;
+    if (header) activate(header, Array.prototype.indexOf.call(header.parentNode.cells, header));
+  });
+
+  document.addEventListener("keydown", function (event) {
+    if (event.key !== "Enter" && event.key !== " ") return;
+    var header = event.target.closest ? event.target.closest("th.sortable") : null;
+    if (!header) return;
+    event.preventDefault();
+    activate(header, Array.prototype.indexOf.call(header.parentNode.cells, header));
+  });
+})();
+</script></body></html>
